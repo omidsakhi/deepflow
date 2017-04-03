@@ -47,3 +47,4 @@
 /third-party/glog
 /third-party/opencv
 /third-party/protobuf
+/build/x64
