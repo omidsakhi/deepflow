@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CudaCompile Include="..\..\src\initializers\fill.cu">
+      <Filter>source\initializers</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\ops\softmax.cu">
+      <Filter>source\ops</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\ops\add.cu">
+      <Filter>source\ops</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\ops\bias_add.cu">
+      <Filter>source\ops</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\ops\relu.cu">
+      <Filter>source\ops</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\ops\square.cu">
+      <Filter>source\ops</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\initializers\index_fill.cu">
+      <Filter>source\initializers</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\core\variable.cu">
+      <Filter>source\core</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\ops\softmax_loss.cu">
+      <Filter>source\ops</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\solvers\sgd_solver.cu">
+      <Filter>source\solver</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\solvers\gain_solver.cu">
+      <Filter>source\solver</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\initializers\step.cu">
+      <Filter>source\initializers</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\initializers\random_uniform.cu">
+      <Filter>source\initializers</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\ops\equal.cu">
+      <Filter>source\ops</Filter>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\core\initializer.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\deep_flow.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\readers\mnist_reader.cpp">
+      <Filter>source\readers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\node.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\observers\backward.cpp">
+      <Filter>source\observers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\observers\forward.cpp">
+      <Filter>source\observers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\block.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\observers\variable_finder.cpp">
+      <Filter>source\observers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\solver.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ops\dropout.cpp">
+      <Filter>source\ops</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\cuda_helper.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\proto\deepflow.pb.cc">
+      <Filter>source\proto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ops\convolution_2d.cpp">
+      <Filter>source\ops</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\terminal.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\observers\init_backward.cpp">
+      <Filter>source\observers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\observers\init_forward.cpp">
+      <Filter>source\observers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\reader.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ops\matmul.cpp">
+      <Filter>source\ops</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ops\pooling.cpp">
+      <Filter>source\ops</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ops\reduce.cpp">
+      <Filter>source\ops</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\tensor.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\initializers\fill.h">
+      <Filter>include\initializers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\common_cu.h">
+      <Filter>include\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\deep_flow.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\initializer.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\reader.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\readers\mnist_reader.h">
+      <Filter>include\readers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\node.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\variable.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\softmax.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\add.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\bias_add.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\matmul.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\relu.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\export.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\square.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\node_observer.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\observers\backward.h">
+      <Filter>include\observers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\observers\forward.h">
+      <Filter>include\observers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\initializers\index_fill.h">
+      <Filter>include\initializers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\block.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\observers\variable_finder.h">
+      <Filter>include\observers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\softmax_loss.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\solver.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\solvers\sgd_solver.h">
+      <Filter>include\solver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\solvers\gain_solver.h">
+      <Filter>include\solver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\dropout.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\cuda_helper.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\initializers\step.h">
+      <Filter>include\initializers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\convolution_2d.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\proto\deepflow.pb.h">
+      <Filter>include\proto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\initializers\random_uniform.h">
+      <Filter>include\initializers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\pooling.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\terminal.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\observers\init_backward.h">
+      <Filter>include\observers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\observers\init_forward.h">
+      <Filter>include\observers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\reduce.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\tensor.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\equal.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{aafb87f9-43f6-4139-8a63-5dfe95f42c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{0b1d59eb-ef45-4e88-b654-6207c8f51a69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\initializers">
+      <UniqueIdentifier>{3ee0a5c5-3e27-43c7-83ec-233806d5bea3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\initializers">
+      <UniqueIdentifier>{4716822b-fdb6-4743-aefe-17adee58bdb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\common">
+      <UniqueIdentifier>{ef158606-8300-4eff-ae05-aec03cf8ffe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\core">
+      <UniqueIdentifier>{6ab3b875-a3fe-4fc6-9e9c-4aab6d7c6120}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\core">
+      <UniqueIdentifier>{7f3b6747-eeaf-4ad7-a9b6-d7fbabfa6457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\readers">
+      <UniqueIdentifier>{4d3e3d24-1123-489d-8637-5a467fa1752c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\readers">
+      <UniqueIdentifier>{a6d53a81-f76f-4f15-a125-fadb1a510a66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\ops">
+      <UniqueIdentifier>{45b44a3f-2991-4a34-aefb-49aafcca691e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\ops">
+      <UniqueIdentifier>{71b88af4-416c-4a35-928f-b004e8628554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\observers">
+      <UniqueIdentifier>{96a6f4db-fec0-447c-afca-b21f24a5ade2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\observers">
+      <UniqueIdentifier>{a6504cf5-1340-42f8-8ecd-dec09cdfbb1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\solver">
+      <UniqueIdentifier>{5b320c04-219a-464a-bd29-c3e099a90405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\solver">
+      <UniqueIdentifier>{ec18f1e4-7893-4cee-9a3a-0cd894f20fbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\proto">
+      <UniqueIdentifier>{ba102505-6b09-4e4b-8320-3cae243ea3fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\proto">
+      <UniqueIdentifier>{e921255b-235b-4a19-9181-f593aebbceab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\proto\deepflow.proto">
+      <Filter>source\proto</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "deepflow", "deepflow\deepflow.vcxproj", "{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mnist_lenet", "mnist_lenet\mnist_lenet.vcxproj", "{59D11F15-EC2D-4F95-9F18-1715AD118E1A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB} = {DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}.Debug|x64.ActiveCfg = Debug|x64
+		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}.Debug|x64.Build.0 = Debug|x64
+		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}.Debug|x86.ActiveCfg = Debug|Win32
+		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}.Debug|x86.Build.0 = Debug|Win32
+		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}.Release|x64.ActiveCfg = Release|x64
+		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}.Release|x64.Build.0 = Release|x64
+		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}.Release|x86.ActiveCfg = Release|Win32
+		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}.Release|x86.Build.0 = Release|Win32
+		{59D11F15-EC2D-4F95-9F18-1715AD118E1A}.Debug|x64.ActiveCfg = Debug|x64
+		{59D11F15-EC2D-4F95-9F18-1715AD118E1A}.Debug|x64.Build.0 = Debug|x64
+		{59D11F15-EC2D-4F95-9F18-1715AD118E1A}.Debug|x86.ActiveCfg = Debug|Win32
+		{59D11F15-EC2D-4F95-9F18-1715AD118E1A}.Debug|x86.Build.0 = Debug|Win32
+		{59D11F15-EC2D-4F95-9F18-1715AD118E1A}.Release|x64.ActiveCfg = Release|x64
+		{59D11F15-EC2D-4F95-9F18-1715AD118E1A}.Release|x64.Build.0 = Release|x64
+		{59D11F15-EC2D-4F95-9F18-1715AD118E1A}.Release|x86.ActiveCfg = Release|Win32
+		{59D11F15-EC2D-4F95-9F18-1715AD118E1A}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

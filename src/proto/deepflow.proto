@@ -1,0 +1,195 @@
+syntax = "proto3";
+
+message TensorParam {
+	enum TensorType
+	{
+		FLOAT = 0;
+		DOUBLE = 1;
+		HALF = 2;
+		INT8 = 3;
+		INT32 = 4;
+		INT8x4 = 5;
+	};
+	TensorType type = 1;
+	repeated int32 dims = 2;	
+}
+
+message OpAddParam {
+	float alpha = 1;
+	float beta = 2;	
+}
+
+message OpEqualParam {
+
+}
+
+message OpBiasAddParam {
+	
+}
+
+message OpPoolingParam {
+	int32 window_h = 1;
+	int32 window_w = 2;		
+	int32 h_pad = 3;
+	int32 v_pad = 4;
+	int32 h_stride = 5;
+	int32 v_stride = 6;
+}
+
+message OpConv2dParam {
+	int32 pad_h = 1;
+	int32 pad_w = 2;
+	int32 u = 3;
+	int32 v = 4;
+	int32 upscale_x = 5;
+	int32 upscale_y = 6;
+}
+
+message OpDropoutParam {
+	float dropout = 1;	
+}
+
+message OpMatMulParam {
+	float alpha = 1;
+	float beta = 2;
+}
+
+message OpReluParam {
+	float negative_slope = 1;	
+}
+
+message OpReduceParam {
+	enum ReduceOp {
+		ADD = 0;
+		MUL = 1;
+		MIN = 2;
+		MAX = 3;
+		AMAX = 4;
+		AVG = 5;
+		NORM1 = 6;
+		NORM2 = 7;
+	}
+	ReduceOp reduce_op = 1;
+	int32 reduce_dim = 2;
+}
+
+message SnapshotParam {
+	int32 snapshot_interval = 1;
+	string snapshot_prefix = 2;
+	int32 per_image_height = 3;
+	int32 per_image_width = 4;	
+}
+
+message VariableParam {
+	SnapshotParam snapshot_param = 1;
+}
+
+
+message BlockParam {
+	
+}
+
+message LossParam {
+	SoftmaxLossParam softmax_loss_param = 1;
+}
+
+message MnistReaderParam {
+	enum ReaderType {
+		TRAIN = 0;
+		TEST = 1;
+	}	
+	string folder_path = 1;
+	int32 batch_size = 2;
+	ReaderType type = 3;
+}
+
+message NodeParam {
+  string name = 1;
+  
+  TensorParam tensor_param = 10;
+  
+  MnistReaderParam mnist_reader_param = 20;
+
+  VariableParam variable_param = 30;  
+  
+  BlockParam block_param = 40;  
+
+  LossParam loss_param = 50;
+
+  OpAddParam op_add_param = 60;
+  OpBiasAddParam op_bias_add_param = 61;
+  OpConv2dParam op_conv_2d_param = 62;
+  OpDropoutParam op_dropout_param = 63;
+  OpReluParam op_relu_param = 64;
+  OpSoftmaxParam op_softmax_param = 65;  
+  OpSquareParam op_square_param = 66;
+  OpMatMulParam op_matmul_param = 67;
+  OpPoolingParam op_pooling_param = 68;
+  OpArgmaxParam op_argmax_param = 69;
+  OpReduceParam op_reduce_param = 70;
+  OpEqualParam op_equal_param = 71;
+}
+
+message OpArgmaxParam {
+	
+}
+
+message OpSquareParam {
+	
+}
+
+message SoftmaxLossParam {
+	float alpha = 1;
+	float beta = 2;		
+}
+
+message OpSoftmaxParam {
+	float alpha = 1;
+	float beta = 2;	
+}
+
+message InitFillParam {
+	float value = 1;		
+}
+
+message InitIndexFillParam {
+	float offset = 1;
+}
+
+message InitRandomUniformParam {
+	float min = 1;
+	float max = 2;
+}
+
+message InitStepParam {
+	float min = 1;
+	float max = 2;	
+}
+
+message InitParam {  
+  TensorParam tensor_param = 1;
+  InitFillParam fill_param = 2;
+  InitIndexFillParam index_fill_param = 3;
+  InitRandomUniformParam random_uniform_param = 4;
+  InitStepParam step_param = 5;
+}
+
+message SGDSolverParam {
+	float momentum = 1;
+	float learning_rate = 2;
+}
+
+message GainSolverParam {
+	float momentum = 1;
+	float learning_rate = 2;
+	float max_gain = 3;
+	float min_gain = 4;
+	float gain_plus = 5;
+	float gain_mult = 6;
+}
+
+message SolverParam {
+	int32 max_iteration = 1;
+	SGDSolverParam sgd_solver = 2;
+	GainSolverParam gain_solver = 3;
+}

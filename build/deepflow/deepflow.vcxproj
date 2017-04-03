@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\core\block.h" />
+    <ClInclude Include="..\..\include\core\common_cu.h" />
+    <ClInclude Include="..\..\include\core\cuda_helper.h" />
+    <ClInclude Include="..\..\include\core\deep_flow.h" />
+    <ClInclude Include="..\..\include\core\export.h" />
+    <ClInclude Include="..\..\include\core\initializer.h" />
+    <ClInclude Include="..\..\include\core\node.h" />
+    <ClInclude Include="..\..\include\core\node_observer.h" />
+    <ClInclude Include="..\..\include\core\reader.h" />
+    <ClInclude Include="..\..\include\core\solver.h" />
+    <ClInclude Include="..\..\include\core\tensor.h" />
+    <ClInclude Include="..\..\include\core\terminal.h" />
+    <ClInclude Include="..\..\include\core\variable.h" />
+    <ClInclude Include="..\..\include\initializers\fill.h" />
+    <ClInclude Include="..\..\include\initializers\index_fill.h" />
+    <ClInclude Include="..\..\include\initializers\random_uniform.h" />
+    <ClInclude Include="..\..\include\initializers\step.h" />
+    <ClInclude Include="..\..\include\observers\backward.h" />
+    <ClInclude Include="..\..\include\observers\forward.h" />
+    <ClInclude Include="..\..\include\observers\init_forward.h" />
+    <ClInclude Include="..\..\include\observers\init_backward.h" />
+    <ClInclude Include="..\..\include\observers\variable_finder.h" />
+    <ClInclude Include="..\..\include\ops\add.h" />
+    <ClInclude Include="..\..\include\ops\bias_add.h" />
+    <ClInclude Include="..\..\include\ops\convolution_2d.h" />
+    <ClInclude Include="..\..\include\ops\dropout.h" />
+    <ClInclude Include="..\..\include\ops\equal.h" />
+    <ClInclude Include="..\..\include\ops\matmul.h" />
+    <ClInclude Include="..\..\include\ops\pooling.h" />
+    <ClInclude Include="..\..\include\ops\reduce.h" />
+    <ClInclude Include="..\..\include\ops\relu.h" />
+    <ClInclude Include="..\..\include\ops\softmax.h" />
+    <ClInclude Include="..\..\include\ops\softmax_loss.h" />
+    <ClInclude Include="..\..\include\ops\square.h" />
+    <ClInclude Include="..\..\include\proto\deepflow.pb.h" />
+    <ClInclude Include="..\..\include\readers\mnist_reader.h" />
+    <ClInclude Include="..\..\include\solvers\gain_solver.h" />
+    <ClInclude Include="..\..\include\solvers\sgd_solver.h" />
+    <ClCompile Include="..\..\src\core\cuda_helper.cpp">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\core\block.cpp" />
+    <ClCompile Include="..\..\src\core\deep_flow.cpp" />
+    <ClCompile Include="..\..\src\core\initializer.cpp" />
+    <ClCompile Include="..\..\src\core\node.cpp" />
+    <ClCompile Include="..\..\src\core\tensor.cpp" />
+    <ClCompile Include="..\..\src\ops\pooling.cpp">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <CudaCompile Include="..\..\src\ops\equal.cu" />
+    <CudaCompile Include="..\..\src\solvers\gain_solver.cu" />
+    <CudaCompile Include="..\..\src\solvers\sgd_solver.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
+    <ClCompile Include="..\..\src\core\reader.cpp" />
+    <ClCompile Include="..\..\src\core\solver.cpp" />
+    <CudaCompile Include="..\..\src\core\variable.cu">
+      <FileType>Document</FileType>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\initializers\step.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
+    <ClCompile Include="..\..\src\core\terminal.cpp" />
+    <ClCompile Include="..\..\src\observers\backward.cpp" />
+    <ClCompile Include="..\..\src\observers\forward.cpp" />
+    <ClCompile Include="..\..\src\observers\init_forward.cpp" />
+    <ClCompile Include="..\..\src\observers\init_backward.cpp" />
+    <ClCompile Include="..\..\src\observers\variable_finder.cpp" />
+    <CudaCompile Include="..\..\src\ops\softmax_loss.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
+    <ClCompile Include="..\..\src\ops\convolution_2d.cpp" />
+    <ClCompile Include="..\..\src\ops\dropout.cpp" />
+    <ClCompile Include="..\..\src\ops\reduce.cpp" />
+    <ClCompile Include="..\..\src\proto\deepflow.pb.cc" />
+    <ClCompile Include="..\..\src\readers\mnist_reader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="..\..\src\initializers\fill.cu" />
+    <CudaCompile Include="..\..\src\initializers\index_fill.cu" />
+    <CudaCompile Include="..\..\src\initializers\random_uniform.cu" />
+    <CudaCompile Include="..\..\src\ops\add.cu" />
+    <CudaCompile Include="..\..\src\ops\bias_add.cu" />
+    <ClCompile Include="..\..\src\ops\matmul.cpp">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <CudaCompile Include="..\..\src\ops\relu.cu" />
+    <CudaCompile Include="..\..\src\ops\softmax.cu" />
+    <CudaCompile Include="..\..\src\ops\square.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\proto\deepflow.proto" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}</ProjectGuid>
+    <RootNamespace>deep_flow</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>deepflow</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 8.0.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
+copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DEEPFLOW_DLL_EXPORT;WIN32;WIN64;_CONSOLE;GFLAGS_DLL_DECLARE_FLAG=;GFLAGS_DLL_DEFINE_FLAG=;GLOG_NO_ABBREVIATED_SEVERITIES;GOOGLE_GLOG_DLL_DECL=;GFLAGS_IS_A_DLL=0;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\include;..\..\third-party\protobuf\src;..\..\third-party\opencv\build\include;..\..\third-party\gflags\build\include;..\..\third-party\glog\src\windows;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\include;..\..\include\proto;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>libprotobufd.lib;opencv_imgcodecs320d.lib;opencv_imgproc320d.lib;opencv_core320d.lib;shlwapi.lib;gflags_static.lib;glog.lib;curand.lib;cublas.lib;cudnn.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\third-party\protobuf\src;..\..\third-party\protobuf\build\Debug;..\..\third-party\opencv\build\lib\Debug;..\..\third-party\glog\build\Debug;..\..\third-party\gflags\build\lib\Debug;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
+copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <CudaCompile>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <CodeGeneration>compute_20,sm_20</CodeGeneration>
+    </CudaCompile>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
+copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>DEEPFLOW_DLL_EXPORT;WIN32;WIN64;NDEBUG;_CONSOLE;GFLAGS_DLL_DECLARE_FLAG=;GFLAGS_DLL_DEFINE_FLAG=;GLOG_NO_ABBREVIATED_SEVERITIES;GOOGLE_GLOG_DLL_DECL=;GFLAGS_IS_A_DLL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\third-party\protobuf\src;..\..\third-party\opencv\build\include;..\..\third-party\gflags\build\include;..\..\third-party\glog\src\windows;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\include;..\..\include\proto;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>libprotobuf.lib;opencv_imgcodecs320.lib;opencv_imgproc320.lib;opencv_core320.lib;shlwapi.lib;gflags_static.lib;glog.lib;curand.lib;cublas.lib;cudnn.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\third-party\protobuf\src;..\..\third-party\protobuf\build\Release;..\..\third-party\opencv\build\lib\Release;..\..\third-party\glog\build\Release;..\..\third-party\gflags\build\lib\Release;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
+copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <CudaCompile>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+    </CudaCompile>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 8.0.targets" />
+  </ImportGroup>
+</Project>
