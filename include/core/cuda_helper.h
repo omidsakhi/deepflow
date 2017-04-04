@@ -11,7 +11,7 @@ public:
 	CudaHelper();
 	std::string cudaStatusToString(cudnnStatus_t status);
 	static void setOptimalThreadsPerBlock();
-	static int numOfBlocks(size_t size);
+	static size_t numOfBlocks(size_t size);
 	static int maxThreadsPerBlock;
 protected:
 	static std::vector<cudaDeviceProp> _cudaDeviceProps;	

@@ -48,3 +48,4 @@
 /third-party/opencv
 /third-party/protobuf
 /build/x64
+/build/deepflow.VC.VC.opendb

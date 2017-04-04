@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "observers/forward.h"
 #include "observers/backward.h"
-#include "observers/obs_reset.h"
+#include "observers/reset.h"
 
 #include "core/variable.h"
 

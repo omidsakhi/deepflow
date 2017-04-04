@@ -5,7 +5,7 @@
 #include "core/reader.h"
 #include "observers/forward.h"
 #include "observers/backward.h"
-#include "observers/obs_reset.h"
+#include "observers/reset.h"
 
 #include <glog/logging.h>
 

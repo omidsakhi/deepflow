@@ -45,7 +45,7 @@ CudaHelper::CudaHelper() {
 	maxThreadsPerBlock = 256;
 }
 
-int CudaHelper::numOfBlocks(size_t size) {
+size_t CudaHelper::numOfBlocks(size_t size) {
 	return (size + maxThreadsPerBlock - 1) / maxThreadsPerBlock;
 }
 
