@@ -28,6 +28,7 @@
 #include "solvers/gain_solver.h"
 
 class DeepFlowDllExport DeepFlow {
+	friend class ::Node;
 public:
 	// READERS
 	std::shared_ptr<MNISTReader> mnist_reader(std::string folder_path, int batch_size, MNISTReaderType type, std::string name = "MNIST");
@@ -69,4 +70,11 @@ public:
 	// SOLVERS
 	std::shared_ptr<SGDSolver> sgd_solver(std::shared_ptr<OutputTerminal> loss, int max_iteration, float momentum, float learning_rate);
 	std::shared_ptr<GainSolver> gain_solver(std::shared_ptr<OutputTerminal> loss, int max_iteration = 1000, float momentum = 0.99999, float learning_rate = 0.0001, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f);
+	
+	void global_node_initializer();
+
+	void eval(std::shared_ptr<OutputTerminal> terminal);
+
+private:
+	std::list<std::shared_ptr<Node>> _nodes;
 };

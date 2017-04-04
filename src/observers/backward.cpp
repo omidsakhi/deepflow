@@ -3,7 +3,7 @@
 
 #include <glog/logging.h>
 
-void BackwardObserver::apply(Node *node) {		
+void BackwardObserver::apply(std::shared_ptr<Node> node) {
 	node->backward();	
 
 }

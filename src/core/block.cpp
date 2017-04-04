@@ -1,6 +1,4 @@
 #include "core/block.h"
-#include "observers/init_forward.h"
-#include "observers/init_backward.h"
 #include "observers/forward.h"
 #include "observers/backward.h"
 
@@ -18,47 +16,47 @@ void Block::initForward() {
 	std::set<std::shared_ptr<Node>> nodes;
 	for (int i = 0; i < _outputs.size(); ++i)
 		nodes.insert(_outputs[i]->parentNode());
-	for (auto node : nodes)
-		node->recursiveInitForward();
+	//for (auto node : nodes)
+	//	node->recursiveInitForward();
 }
 
 void Block::initBackward() {
-	InitBackwardObserver _;
+	//InitBackwardObserver _;
 	std::set<std::shared_ptr<Node>> nodes;
 	for (int i = 0; i < _outputs.size(); ++i)
 		nodes.insert(_outputs[i]->parentNode());
-	for (auto node : nodes)
-		node->recursiveInitBackward();
+	//for (auto node : nodes)
+	//	node->recursiveInitBackward();
 }
 
 void Block::forward() {
 	std::set<std::shared_ptr<Node>> nodes;
 	for (int i = 0; i < _outputs.size(); ++i)
 		nodes.insert(_outputs[i]->parentNode());
-	for (auto node : nodes)
-		node->recursiveForward();
+	//for (auto node : nodes)
+	//	node->recursiveForward();
 }
 
 void Block::backward() {
 	std::set<std::shared_ptr<Node>> nodes;
 	for (int i = 0; i < _outputs.size(); ++i)
 		nodes.insert(_outputs[i]->parentNode());
-	for (auto node : nodes)
-		node->recursiveBackward();
+	//for (auto node : nodes)
+	//	node->recursiveBackward();
 }
 
-void Block::traverse(NodeObserver *observer, TraverseOrder order) {
+void Block::traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition) {
 	std::set<std::shared_ptr<Node>> nodes;
 	for (int i = 0; i < _outputs.size(); ++i)
 		nodes.insert(_outputs[i]->parentNode());
 	for (auto node : nodes)
-		node->traverse(observer, order);
+		node->traverse(observer, order, visit_condition);
 }
 
 void Block::recursiveResetVisit() {
 	std::set<std::shared_ptr<Node>> nodes;
 	for (int i = 0; i < _outputs.size(); ++i)
 		nodes.insert(_outputs[i]->parentNode());
-	for (auto node : nodes)
-		node->recursiveResetVisit();
+	//for (auto node : nodes)
+	//	node->recursiveResetVisit();
 }

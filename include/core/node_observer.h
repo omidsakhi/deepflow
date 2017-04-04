@@ -6,5 +6,5 @@
 
 class DeepFlowDllExport NodeObserver {
 public:
-	virtual void apply(Node *node) = 0;
+	virtual void apply(std::shared_ptr<Node> node) = 0;
 };

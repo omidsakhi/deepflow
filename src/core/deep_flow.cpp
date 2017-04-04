@@ -1,5 +1,8 @@
 #include "core/deep_flow.h"
 
+#include "observers/reset.h"
+#include "observers/forward.h"
+
 #include <vector>
 
 std::shared_ptr<MNISTReader> DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNISTReaderType type, std::string name) {
@@ -10,7 +13,8 @@ std::shared_ptr<MNISTReader> DeepFlow::mnist_reader(std::string folder_path, int
     param->set_type((MnistReaderParam::ReaderType) type);
     param->set_batch_size(batch_size);
     auto node = std::make_shared<MNISTReader>(nodeParam);
-    node->init();
+    node->createIO();
+	_nodes.push_back(node);
     return node;
 
 }
@@ -21,9 +25,10 @@ std::shared_ptr<OutputTerminal> DeepFlow::add(std::shared_ptr<OutputTerminal> a,
     param->set_alpha(1.0f);
     param->set_beta(1.0f);
     auto node = std::make_shared<Add>(nodeParam);
-    node->init();
+    node->createIO();
     node->input(0)->connect(a);
     node->input(1)->connect(b);
+	_nodes.push_back(node);
     return node->output(0);
 }
 
@@ -32,9 +37,10 @@ std::shared_ptr<OutputTerminal> DeepFlow::bias_add(std::shared_ptr<OutputTermina
     nodeParam.set_name(name);
     OpBiasAddParam *param = nodeParam.mutable_op_bias_add_param();
     auto node = std::make_shared<BiasAdd>(nodeParam);
-    node->init();
+    node->createIO();
     node->input(0)->connect(a);
     node->input(1)->connect(b);
+	_nodes.push_back(node);
     return node->output(0);
 }
 
@@ -45,9 +51,10 @@ std::shared_ptr<OutputTerminal> DeepFlow::subtract(std::shared_ptr<OutputTermina
     param->set_alpha(1.0f);
     param->set_beta(-1.0f);
     auto node = std::make_shared<Add>(nodeParam);
-    node->init();
+    node->createIO();
     node->input(0)->connect(a);
     node->input(1)->connect(b);
+	_nodes.push_back(node);
     return node->output(0);
 }
 
@@ -132,8 +139,9 @@ std::shared_ptr<OutputTerminal> DeepFlow::softmax(std::shared_ptr<OutputTerminal
     param->set_alpha(1.0f);
     param->set_beta(0.0f);
     auto node = std::make_shared<Softmax>(nodeParam);
-    node->init();
+    node->createIO();
     node->input(0)->connect(a);
+	_nodes.push_back(node);
     return node->output(0);
 }
 
@@ -142,8 +150,9 @@ std::shared_ptr<OutputTerminal> DeepFlow::square(std::shared_ptr<OutputTerminal>
     nodeParam.set_name(name);
     OpSquareParam *param = nodeParam.mutable_op_square_param();	
     auto node = std::make_shared<Square>(nodeParam);
-    node->init();
+    node->createIO();
     node->input(0)->connect(a);
+	_nodes.push_back(node);
     return node->output(0);
 }
 
@@ -152,7 +161,8 @@ std::shared_ptr<OutputTerminal> DeepFlow::variable(std::shared_ptr<Initializer> 
     nodeParam.set_name(name);
     VariableParam *param = nodeParam.mutable_variable_param();	
     auto node = std::make_shared<Variable>(initializer, nodeParam);
-    node->init();
+    node->createIO();
+	_nodes.push_back(node);
     return node->output(0);
 }
 
@@ -166,7 +176,8 @@ std::shared_ptr<OutputTerminal> DeepFlow::variable(std::shared_ptr<Initializer> 
     snapshot->set_per_image_width(perImageWidth);
     snapshot->set_snapshot_prefix(prefix);
     auto node = std::make_shared<Variable>(initializer, nodeParam);
-    node->init();
+    node->createIO();
+	_nodes.push_back(node);
     return node->output(0);
 }
 
@@ -177,9 +188,10 @@ std::shared_ptr<OutputTerminal> DeepFlow::matmul(std::shared_ptr<OutputTerminal>
     param->set_alpha(1.0f);
     param->set_beta(0.0f);
     auto node = std::make_shared<MatMul>(nodeParam);
-    node->init();
+    node->createIO();
     node->input(0)->connect(a);
     node->input(1)->connect(b);
+	_nodes.push_back(node);
     return node->output(0);
 }
 
@@ -189,8 +201,9 @@ std::shared_ptr<OutputTerminal> DeepFlow::relu(std::shared_ptr<OutputTerminal> a
     OpReluParam *param = nodeParam.mutable_op_relu_param();
     param->set_negative_slope(negative_slope);
     auto node = std::make_shared<Relu>(nodeParam);
-    node->init();
+    node->createIO();
     node->input(0)->connect(a);
+	_nodes.push_back(node);
     return node->output(0);
 }
 
@@ -198,7 +211,9 @@ std::shared_ptr<Block> DeepFlow::block(std::initializer_list<std::shared_ptr<Inp
     NodeParam nodeParam;
     nodeParam.set_name(name);
     BlockParam *param = nodeParam.mutable_block_param();	
-    return std::make_shared<Block>(inputs, outputs, nodeParam);
+	auto node = std::make_shared<Block>(inputs, outputs, nodeParam);
+	_nodes.push_back(node);
+    return node;
 }
 
 std::shared_ptr<OutputTerminal> DeepFlow::softmax_loss(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name) {
@@ -209,9 +224,10 @@ std::shared_ptr<OutputTerminal> DeepFlow::softmax_loss(std::shared_ptr<OutputTer
     param->set_alpha(1.0f);
     param->set_beta(0.0f);	
     auto node = std::make_shared<SoftmaxLoss>(nodeParam);
-    node->init();
+    node->createIO();
     node->input(0)->connect(a);
     node->input(1)->connect(b);
+	_nodes.push_back(node);
     return node->output(0);
 }
 
@@ -243,8 +259,9 @@ std::shared_ptr<OutputTerminal> DeepFlow::dropout(std::shared_ptr<OutputTerminal
     OpDropoutParam *param = nodeParam.mutable_op_dropout_param();
     param->set_dropout(dropout);
     auto node = std::make_shared<Dropout>(nodeParam);
-    node->init();
+    node->createIO();
     node->input(0)->connect(a);
+	_nodes.push_back(node);
     return node->output(0);
 }
 
@@ -259,9 +276,10 @@ std::shared_ptr<OutputTerminal> DeepFlow::conv2d(std::shared_ptr<OutputTerminal>
     param->set_upscale_x(1);
     param->set_upscale_y(1);
     auto node = std::make_shared<Convolution2D>(nodeParam);
-    node->init();
+    node->createIO();
     node->input(0)->connect(input);
     node->input(1)->connect(filter);
+	_nodes.push_back(node);
 	return node->output(0);
 }
 
@@ -276,8 +294,9 @@ std::shared_ptr<OutputTerminal> DeepFlow::pooling(std::shared_ptr<OutputTerminal
     param->set_window_h(windowHeight);
     param->set_window_w(windowWidth);
     auto node = std::make_shared<Pooling>(nodeParam);
-    node->init();
+    node->createIO();
     node->input(0)->connect(input);
+	_nodes.push_back(node);
     return node->output(0);
 }
 
@@ -288,8 +307,9 @@ std::shared_ptr<OutputTerminal> DeepFlow::argmax(std::shared_ptr<OutputTerminal>
 	param->set_reduce_dim(reduceDimension);
 	param->set_reduce_op(OpReduceParam_ReduceOp_MAX);
 	auto node = std::make_shared<Reduce>(nodeParam);
-	node->init();
+	node->createIO();
 	node->input(0)->connect(input);
+	_nodes.push_back(node);
 	return node->output(1);
 }
 
@@ -300,8 +320,9 @@ std::shared_ptr<OutputTerminal> DeepFlow::reduce_max(std::shared_ptr<OutputTermi
 	param->set_reduce_dim(reduceDimension);
 	param->set_reduce_op(OpReduceParam_ReduceOp_MAX);
 	auto node = std::make_shared<Reduce>(nodeParam);
-	node->init();
+	node->createIO();
 	node->input(0)->connect(input);
+	_nodes.push_back(node);
 	return node->output(0);
 }
 
@@ -310,8 +331,45 @@ std::shared_ptr<OutputTerminal> DeepFlow::equal(std::shared_ptr<OutputTerminal> 
 	nodeParam.set_name(name);
 	OpEqualParam *equalParam = nodeParam.mutable_op_equal_param();
 	auto node = std::make_shared<Equal>(nodeParam);
-	node->init();
+	node->createIO();
 	node->input(0)->connect(a);
 	node->input(1)->connect(b);
+	_nodes.push_back(node);
 	return node->output(0);
+}
+
+void DeepFlow::global_node_initializer() {
+	std::list<std::shared_ptr<Node>> queue = _nodes;
+	while (!queue.empty()) {
+		auto node = queue.front();		
+		queue.pop_front();
+		if (node->isInitialized())
+			continue;
+		bool resolved = true;
+		for(auto input : node->inputs()) {
+			auto otherNode = input->otherNode();
+			if (otherNode) {
+				if (otherNode->isInitialized() == false) {
+					resolved = false;
+					break;
+				}
+			}
+		}
+		if (resolved) {
+			node->initForward();
+			node->initBackward();
+			node->setInitialized(true);
+		}
+		else {
+			queue.push_back(node);
+		}
+	}
+}
+
+void DeepFlow::eval(std::shared_ptr<OutputTerminal> terminal) {
+	ResetObserver resetObserver;
+	ForwardObserver forwardObserver;	
+	auto node = terminal->parentNode();
+	node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
+	node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);
 }

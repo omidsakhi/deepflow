@@ -4,5 +4,5 @@
 
 class DeepFlowDllExport BackwardObserver : public NodeObserver {
 public:
-	void apply(Node*node);
+	void apply(std::shared_ptr<Node> node);
 };

@@ -11,6 +11,6 @@ public :
 	int minNumOutputs() { return 0; }
 	void forward();
 	void backward();
-	void traverse(NodeObserver *observer, TraverseOrder order);
+	void traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition);
 	void recursiveResetVisit();
 };

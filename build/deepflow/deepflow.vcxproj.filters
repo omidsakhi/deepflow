@@ -66,9 +66,6 @@
     <ClCompile Include="..\..\src\core\block.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\observers\variable_finder.cpp">
-      <Filter>source\observers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\core\solver.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
@@ -87,12 +84,6 @@
     <ClCompile Include="..\..\src\core\terminal.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\observers\init_backward.cpp">
-      <Filter>source\observers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\observers\init_forward.cpp">
-      <Filter>source\observers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\core\reader.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
@@ -107,6 +98,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\core\tensor.cpp">
       <Filter>source\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\observers\node_finder.cpp">
+      <Filter>source\observers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\observers\reset.cpp">
+      <Filter>source\observers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +167,6 @@
     <ClInclude Include="..\..\include\core\block.h">
       <Filter>include\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\observers\variable_finder.h">
-      <Filter>include\observers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ops\softmax_loss.h">
       <Filter>include\ops</Filter>
     </ClInclude>
@@ -209,12 +203,6 @@
     <ClInclude Include="..\..\include\core\terminal.h">
       <Filter>include\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\observers\init_backward.h">
-      <Filter>include\observers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\observers\init_forward.h">
-      <Filter>include\observers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ops\reduce.h">
       <Filter>include\ops</Filter>
     </ClInclude>
@@ -223,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\ops\equal.h">
       <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\observers\node_finder.h">
+      <Filter>include\observers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\observers\reset.h">
+      <Filter>include\observers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

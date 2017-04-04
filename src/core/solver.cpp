@@ -1,7 +1,8 @@
 #include "core/solver.h"
 #include "core/variable.h"
 
-#include "observers/variable_finder.h"
+#include "observers/node_finder.h"
+#include "observers/reset.h"
 
 #include <glog/logging.h>
 
@@ -13,9 +14,12 @@ Solver::Solver(std::shared_ptr<OutputTerminal> loss, SolverParam param) {
 	_loss_node = loss->parentNode();
 	_current_iteration = 0;
 
-	VariableFinder _(&_variables);
-	_loss_node->recursiveResetVisit();
-	_loss_node->traverse(&_, TraverseOrder::PostOrder);
+	ResetObserver resetObserver;
+	_loss_node->traverse(&resetObserver, TraverseOrder::PostOrder, true);
+
+	NodeFinder<Variable> varObserver(_variables);		
+	_loss_node->traverse(&varObserver, TraverseOrder::PostOrder, false);
+	
 	LOG_IF(FATAL, _variables.size() == 0) << "Network has no variables.";
 	LOG(INFO) << _variables.size() << " variables detected.";
 

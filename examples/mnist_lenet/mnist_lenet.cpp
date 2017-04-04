@@ -2,10 +2,12 @@
 #include "core/deep_flow.h"
 
 void main() {
-	Node::setOptimalThreadsPerBlock();
+	CudaHelper::setOptimalThreadsPerBlock();
+
 	int batch_size = 100;
 	DeepFlow df;
-	auto mnist = df.mnist_reader("./data/mnist", batch_size,(MNISTReaderType) 0);
+	auto mnist = df.mnist_reader("./data/mnist", batch_size, MNISTReaderType::Train);
+
 	auto f1 = df.variable(df.random_uniform({ 20, 1 , 5, 5 }, -0.1f, 0.1f), "f1");
 	auto conv1 = df.conv2d(mnist->output(0), f1, "conv1");
 	auto pool1 = df.pooling(conv1, 2, 2, 0, 0, 2, 2, "pool1");
@@ -24,12 +26,16 @@ void main() {
 	auto target = df.argmax(mnist->output(1), 1);
 	auto accuracy = df.equal(softmax,target);
 
+	df.global_node_initializer();
+
 	auto trainer = df.gain_solver(loss, 2000, 0.9999f, 0.0001f, 100, 0.1, 0.05, 0.95);
-	trainer->train();
-	
-	accuracy->parentNode()->recursiveInitForward();
-	accuracy->parentNode()->recursiveResetVisit();
-	accuracy->parentNode()->recursiveForward();	
-	accuracy->value()->print<float>();
+	for (int iteration = 0; iteration < 10000; ++iteration) {
+		mnist->nextBatch();
+		trainer->train_step();
+		if (iteration % 50 == 0) {
+			df.eval(accuracy);
+			accuracy->value()->print<float>();
+		}
+	}	
 }
 

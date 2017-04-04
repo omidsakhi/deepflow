@@ -38,9 +38,8 @@
     <ClInclude Include="..\..\include\initializers\step.h" />
     <ClInclude Include="..\..\include\observers\backward.h" />
     <ClInclude Include="..\..\include\observers\forward.h" />
-    <ClInclude Include="..\..\include\observers\init_forward.h" />
-    <ClInclude Include="..\..\include\observers\init_backward.h" />
-    <ClInclude Include="..\..\include\observers\variable_finder.h" />
+    <ClInclude Include="..\..\include\observers\node_finder.h" />
+    <ClInclude Include="..\..\include\observers\reset.h" />
     <ClInclude Include="..\..\include\ops\add.h" />
     <ClInclude Include="..\..\include\ops\bias_add.h" />
     <ClInclude Include="..\..\include\ops\convolution_2d.h" />
@@ -67,6 +66,7 @@
     <ClCompile Include="..\..\src\core\initializer.cpp" />
     <ClCompile Include="..\..\src\core\node.cpp" />
     <ClCompile Include="..\..\src\core\tensor.cpp" />
+    <ClCompile Include="..\..\src\observers\reset.cpp" />
     <ClCompile Include="..\..\src\ops\pooling.cpp">
       <FileType>Document</FileType>
     </ClCompile>
@@ -86,9 +86,7 @@
     <ClCompile Include="..\..\src\core\terminal.cpp" />
     <ClCompile Include="..\..\src\observers\backward.cpp" />
     <ClCompile Include="..\..\src\observers\forward.cpp" />
-    <ClCompile Include="..\..\src\observers\init_forward.cpp" />
-    <ClCompile Include="..\..\src\observers\init_backward.cpp" />
-    <ClCompile Include="..\..\src\observers\variable_finder.cpp" />
+    <ClCompile Include="..\..\src\observers\node_finder.cpp" />
     <CudaCompile Include="..\..\src\ops\softmax_loss.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>

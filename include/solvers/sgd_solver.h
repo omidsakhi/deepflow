@@ -5,6 +5,6 @@
 class DeepFlowDllExport SGDSolver : public Solver {
 public:
 	SGDSolver(std::shared_ptr<OutputTerminal> loss, SolverParam param);
-	void step();
-	void train();
+	void train_step();
+	void init();
 };

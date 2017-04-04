@@ -10,7 +10,7 @@ Node::Node(NodeParam param) : CudaHelper() {
     _visited = false;
 }
 
-void Node::init() {
+void Node::createIO() {
     for (int i = 0; i < minNumInputs(); ++i)
         _inputs.push_back(std::make_shared<InputTerminal>(shared_from_this(), i, ""));
     for (int i = 0; i < minNumOutputs(); ++i)
@@ -21,88 +21,20 @@ void Node::setVisited(bool state) {
     _visited = state;
 }
 
-void Node::traverse(NodeObserver *observer, TraverseOrder order) {
-    if (_visited == true)
+void Node::traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition) {
+    if (_visited == visit_condition)
         return;
     if (order == TraverseOrder::PreOrder)
-        observer->apply(this);
+        observer->apply(shared_from_this());
     for (int i = 0; i < _inputs.size(); ++i)
         if (_inputs[i]) {
             auto node = _inputs[i]->otherNode();
             if (node)
-                node->traverse(observer, order);
+                node->traverse(observer, order, visit_condition);
         }			
     if (order == TraverseOrder::PostOrder)
-        observer->apply(this);
-    _visited = true;
-}
-
-void Node::recursiveResetVisit() {
-    if (_visited == false)
-        return;
-    for (int i = 0; i < _inputs.size(); ++i)
-        if (_inputs[i])
-        {
-            auto node = _inputs[i]->otherNode();
-            if (node) node->recursiveResetVisit();
-        }
-    _visited = false;
-}
-
-void Node::recursiveForward() {
-    if (_visited == true)
-        return;
-    for (int i = 0; i < _inputs.size(); ++i)
-        if (_inputs[i])
-        {
-            auto node = _inputs[i]->otherNode();
-            if (node) node->recursiveForward();			
-        }	
-    forward();	
-    _visited = true;
-}
-
-void Node::recursiveBackward() {
-    if (_visited == true)
-        return;	
-    backward();
-    for (int i = 0; i < _inputs.size(); ++i)
-        if (_inputs[i])
-        {
-            auto node = _inputs[i]->otherNode();
-            if (node) node->recursiveBackward();
-        }	
-    _visited = true;
-}
-
-void Node::recursiveInitForward() {
-    if (_visited == true)
-        return;	
-    for (int i = 0; i < _inputs.size(); ++i)
-        if (_inputs[i])
-        {
-            auto node = _inputs[i]->otherNode();
-            if (node) node->recursiveInitForward();
-        }
-    initForward();
-    _visited = true;
-}
-
-void Node::recursiveInitBackward() {
-    if (_visited == true)
-        return;
-    for (int i = 0; i < _inputs.size(); ++i)
-        if (_inputs[i])
-        {
-            auto node = _inputs[i]->otherNode();
-            if (node) node->recursiveInitBackward();
-        }	
-    initBackward();
-    _visited = true;
-}
-
-void Node::deinit() {
-
+        observer->apply(shared_from_this());
+    _visited = visit_condition;
 }
 
 void Node::forward() {}
@@ -127,4 +59,12 @@ std::shared_ptr<InputTerminal> Node::input(int index) {
 
 std::shared_ptr<OutputTerminal> Node::output(int index) {
     return _outputs[index];
+}
+
+bool Node::isInitialized() const {
+	return _initialized;
+}
+
+void Node::setInitialized(bool status) {
+	_initialized = status;
 }

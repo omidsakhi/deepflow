@@ -3,6 +3,9 @@
 #include "core/variable.h"
 
 #include "core/reader.h"
+#include "observers/forward.h"
+#include "observers/backward.h"
+#include "observers/obs_reset.h"
 
 #include <glog/logging.h>
 
@@ -36,12 +39,18 @@ GainSolver::GainSolver(std::shared_ptr<OutputTerminal> loss, SolverParam param) 
 	LOG_IF(FATAL, param.has_gain_solver() == false);
 }
 
-void GainSolver::step() {
+void GainSolver::train_step() {
+	if (_initialized == false) {
+		init();
+	}
 	const GainSolverParam &param = _param.gain_solver();
-	_loss_node->recursiveResetVisit();
-	_loss_node->recursiveForward();
-	_loss_node->recursiveResetVisit();
-	_loss_node->recursiveBackward();
+	ResetObserver resetObserver;
+	ForwardObserver forwardObserver;
+	BackwardObserver backwardObserver;
+	_loss_node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
+	_loss_node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);
+	_loss_node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
+	_loss_node->traverse(&backwardObserver, TraverseOrder::PreOrder, false);	
 	int index = 0;	
 	for( auto var : _variables)
 	{		
@@ -54,44 +63,29 @@ void GainSolver::step() {
 
 	cudaDeviceSynchronize();	
 	
-	for (auto node : _variables)
-	{
-		Variable *var = dynamic_cast<Variable*>(node);
+	for (auto var : _variables)
+	{		
 		if (var->snapshot() && _current_iteration % var->snapshotInterval() == 0)
 			var->toImage(_current_iteration);
 	}
 
-	for (auto reader : _readers)
-		reader->nextBatch();
+	_current_iteration++;
 }
 
-void GainSolver::train() {
-	LOG(INFO) << "GainSolver::train";
-	maxThreadsPerBlock = Node::maxThreadsPerBlock;	
-	_loss_node->recursiveResetVisit();
-	_loss_node->recursiveNodeFinder<Reader>(_readers);
-	LOG(INFO) << _readers.size() << " total readers detected.";
-	_loss_node->recursiveResetVisit();
-	_loss_node->recursiveInitForward();
-	_loss_node->recursiveResetVisit();
-	_loss_node->recursiveInitBackward();
+void GainSolver::init() {
 	for (auto var : _variables)
 	{
 		_streams.push_back(cudaStream_t());
-		cudaStreamCreate(&_streams.back());		
+		cudaStreamCreate(&_streams.back());
 		auto size = var->output(0)->value()->size();
 		auto sizeInBytes = var->output(0)->value()->sizeInBytes();
 		_previous_gradients.push_back(NULL);
-		LOG_IF(FATAL, cudaMalloc(&_previous_gradients.back(), sizeInBytes) != 0);		
+		LOG_IF(FATAL, cudaMalloc(&_previous_gradients.back(), sizeInBytes) != 0);
 		LOG_IF(FATAL, cudaMemset(_previous_gradients.back(), 0, sizeInBytes) != 0);
 		_gains.push_back(NULL);
 		LOG_IF(FATAL, cudaMalloc(&_gains.back(), sizeof(float) * size) != 0);
 		GainFillKernel << <(size + maxThreadsPerBlock - 1) / maxThreadsPerBlock, maxThreadsPerBlock >> >(size, _gains.back());
-		LOG_IF(FATAL, cudaPeekAtLastError() != 0);		
-	}	
-	for (int i = 0; i < _param.max_iteration(); ++i)
-	{
-		_current_iteration = i;
-		step();
+		LOG_IF(FATAL, cudaPeekAtLastError() != 0);
 	}
+	_initialized = true;
 }
