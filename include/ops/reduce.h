@@ -11,13 +11,14 @@ public:
 	void initBackward();
 	void forward();
 	void backward();
+	bool requiresIndices();
 protected:
 	const float alpha = 1.0f;
 	const float beta = 0.0f;
 	cudnnHandle_t _cudnnHandle;
 	cudnnReduceTensorOp_t _reduceTensorOp;
 	cudnnReduceTensorDescriptor_t _reduceTensorDesciptor;
-	cudnnReduceTensorIndices_t _reduceTensotIndices;
+	cudnnReduceTensorIndices_t _reduceTensorIndices;
 	float *_d_workspace;
 	size_t _workspaceSizeInBytes;
 };

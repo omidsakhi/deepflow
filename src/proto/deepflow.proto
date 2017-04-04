@@ -80,7 +80,11 @@ message SnapshotParam {
 	int32 per_image_width = 4;	
 }
 
-message VariableParam {
+message PlaceHolderParam {
+
+}
+
+message VariableParam {	
 	SnapshotParam snapshot_param = 1;
 }
 
@@ -111,7 +115,8 @@ message NodeParam {
   MnistReaderParam mnist_reader_param = 20;
 
   VariableParam variable_param = 30;  
-  
+  PlaceHolderParam place_holder_param = 31;
+
   BlockParam block_param = 40;  
 
   LossParam loss_param = 50;

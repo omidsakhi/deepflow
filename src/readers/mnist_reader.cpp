@@ -8,9 +8,7 @@ MNISTReader::MNISTReader(NodeParam param) : Reader(param) {
 	_folder_path = mnist_param.folder_path();
 	_batch_size = mnist_param.batch_size();
 	_type = (MNISTReaderType)mnist_param.type();	
-	_data_buf = _labels_buf = NULL;	
-	_temp_d = 0;
-	_current_batch = 0;
+	_temp_d = 0;	
 	_init_backward = _init_backward = false;
 	if (_type == MNISTReaderType::Train)
 		_num_total_samples = 60000;
@@ -115,6 +113,10 @@ void MNISTReader::nextBatch() {
 		_ty.read((char*)&_temp_l, sizeof(_temp_l));
 		_labels_buf[i * 10 + _temp_l] = 1.0f;
 	}
+	if (_init_forward)
+		LOG_IF(FATAL, cudaMemcpy(_outputs[0]->value()->mutableData(), _data_buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice) != 0) << "cudaMemcpy [FAILED]";
+	if (_init_backward)
+		LOG_IF(FATAL, cudaMemcpy(_outputs[1]->value()->mutableData(), _labels_buf, _outputs[1]->value()->sizeInBytes(), cudaMemcpyHostToDevice) != 0) << "cudaMemcpy [FAILED]";
 }
 
 void MNISTReader::deinit() {
@@ -125,13 +127,6 @@ void MNISTReader::deinit() {
 	_ty.close();
 }
 
-void MNISTReader::forward() {
-	if (_init_forward)
-		LOG_IF(FATAL, cudaMemcpy(_outputs[0]->value()->mutableData(), _data_buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice) != 0) << "cudaMemcpy [FAILED]" ;
-	if (_init_backward)
-		LOG_IF(FATAL, cudaMemcpy(_outputs[1]->value()->mutableData(), _labels_buf, _outputs[1]->value()->sizeInBytes(), cudaMemcpyHostToDevice) != 0) << "cudaMemcpy [FAILED]";
-}
-
-void MNISTReader::backward() {
-
+bool MNISTReader::isLastBatch() {
+	return _last_batch;
 }

@@ -20,15 +20,19 @@ void Reduce::initForward() {
 	_outputs[0]->initValue(outputDims, Tensor::Float);
 	_outputs[1]->initValue(outputDims, Tensor::Int32);	
 	
-	if (_reduceTensorOp == CUDNN_REDUCE_TENSOR_MAX || _reduceTensorOp == CUDNN_REDUCE_TENSOR_MIN)
-			_reduceTensotIndices = CUDNN_REDUCE_TENSOR_FLATTENED_INDICES;
+	if (requiresIndices())
+		_reduceTensorIndices = CUDNN_REDUCE_TENSOR_FLATTENED_INDICES;
 	else
-		_reduceTensotIndices = CUDNN_REDUCE_TENSOR_NO_INDICES;
-
+		_reduceTensorIndices = CUDNN_REDUCE_TENSOR_NO_INDICES;
+	
 	LOG_IF(FATAL, cudnnCreateReduceTensorDescriptor(&_reduceTensorDesciptor) != 0) << "cudnnCreateReduceTensorDescriptor [FAILED]";
-	LOG_IF(FATAL, cudnnSetReduceTensorDescriptor(_reduceTensorDesciptor, _reduceTensorOp, CUDNN_DATA_FLOAT, CUDNN_PROPAGATE_NAN, _reduceTensotIndices, CUDNN_32BIT_INDICES) != 0) << "cudnnSetReduceTensorDescriptor [FAILED]";
+	LOG_IF(FATAL, cudnnSetReduceTensorDescriptor(_reduceTensorDesciptor, _reduceTensorOp, CUDNN_DATA_FLOAT, CUDNN_PROPAGATE_NAN, _reduceTensorIndices, CUDNN_32BIT_INDICES) != 0) << "cudnnSetReduceTensorDescriptor [FAILED]";
 	LOG_IF(FATAL, cudnnGetReductionWorkspaceSize(_cudnnHandle, _reduceTensorDesciptor, _inputs[0]->value()->descriptor(), _outputs[0]->value()->descriptor(), &_workspaceSizeInBytes) != 0) << "cudnnGetReductionWorkspaceSize [FAILED]" ;
 	LOG_IF(FATAL, cudaMalloc(&_d_workspace, _workspaceSizeInBytes) != 0) << " cudaMalloc(&_d_workspace, ... [FAILED]";
+}
+
+bool Reduce::requiresIndices() {
+	return (_reduceTensorOp == CUDNN_REDUCE_TENSOR_MAX || _reduceTensorOp == CUDNN_REDUCE_TENSOR_MIN);
 }
 
 void Reduce::initBackward() {
@@ -36,12 +40,12 @@ void Reduce::initBackward() {
 }
 
 void Reduce::forward() {		
-	LOG_IF(FATAL,
+	cudnnStatus_t t =
 		cudnnReduceTensor(
 			_cudnnHandle,
 			_reduceTensorDesciptor,
-			_outputs[1]->value()->mutableData(),
-			_outputs[1]->value()->sizeInBytes(),
+			requiresIndices()?_outputs[1]->value()->mutableData():0,
+			requiresIndices()?_outputs[1]->value()->sizeInBytes():0,
 			_d_workspace,
 			_workspaceSizeInBytes,
 			&alpha,
@@ -49,8 +53,8 @@ void Reduce::forward() {
 			_inputs[0]->value()->data(),
 			&beta,
 			_outputs[0]->value()->descriptor(),
-			_outputs[0]->value()->mutableData())
-	!= 0) << "cudnnReduceTensor [FAILED]";
+			_outputs[0]->value()->mutableData());
+	LOG_IF(FATAL,t != 0) << "cudnnReduceTensor - Op: " << OpReduceParam_ReduceOp_Name((OpReduceParam_ReduceOp) _reduceTensorOp) << " - " << cudaStatusToString(t) << " [FAILED]";
 }
 
 void Reduce::backward() {

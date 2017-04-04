@@ -17,12 +17,12 @@ void InputTerminal::connect(std::shared_ptr<OutputTerminal> terminal) {
 	_terminal = terminal;
 }
 
-std::shared_ptr<Node> Terminal::parentNode() {
+std::shared_ptr<Node> Terminal::node() {
 	return _parentNode;
 }
-std::shared_ptr<Node> Terminal::otherNode() {
+std::shared_ptr<Node> Terminal::connectedNode() {
 	if (_terminal)
-		return _terminal->parentNode();
+		return _terminal->node();
 	return 0;
 }
 InputTerminal::InputTerminal(std::shared_ptr<Node> parentNode, int index, std::string name) : Terminal(parentNode, index, name, TerminalType::Input) {
@@ -66,4 +66,9 @@ std::array<int, 4> InputTerminal::dims() {
 
 std::array<int, 4> OutputTerminal::dims() {
 	return _value->dims();
+}
+
+void OutputTerminal::feed(std::shared_ptr<OutputTerminal> t) {
+	LOG_IF(FATAL, t->value()->sizeInBytes() != value()->sizeInBytes()) << "Size mismatch.";	
+	LOG_IF(FATAL, cudaMemcpy(value()->mutableData(), t->value()->data(), value()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0) << "cudaMemcpy [FAILED]";
 }

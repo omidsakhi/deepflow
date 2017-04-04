@@ -15,7 +15,7 @@ Equal::Equal(NodeParam param) : Node(param) {
 
 void Equal::initForward() {
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[0]->value()->size()) << "Size mismatch [FAILED]";
-	_outputs[0]->initValue(_inputs[0]->value()->dims(),_inputs[0]->value()->type());
+	_outputs[0]->initValue(_inputs[0]->value()->dims(), Tensor::TensorType::Float);
 	LOG(INFO) << "Initializing Equal (name: " << _name << " ) | Shape : " << _outputs[0]->value()->toString();
 }
 

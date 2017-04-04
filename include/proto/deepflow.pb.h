@@ -96,6 +96,9 @@ extern OpSoftmaxParamDefaultTypeInternal _OpSoftmaxParam_default_instance_;
 class OpSquareParam;
 class OpSquareParamDefaultTypeInternal;
 extern OpSquareParamDefaultTypeInternal _OpSquareParam_default_instance_;
+class PlaceHolderParam;
+class PlaceHolderParamDefaultTypeInternal;
+extern PlaceHolderParamDefaultTypeInternal _PlaceHolderParam_default_instance_;
 class SGDSolverParam;
 class SGDSolverParamDefaultTypeInternal;
 extern SGDSolverParamDefaultTypeInternal _SGDSolverParam_default_instance_;
@@ -1306,6 +1309,82 @@ class SnapshotParam : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
+class PlaceHolderParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:PlaceHolderParam) */ {
+ public:
+  PlaceHolderParam();
+  virtual ~PlaceHolderParam();
+
+  PlaceHolderParam(const PlaceHolderParam& from);
+
+  inline PlaceHolderParam& operator=(const PlaceHolderParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PlaceHolderParam& default_instance();
+
+  static inline const PlaceHolderParam* internal_default_instance() {
+    return reinterpret_cast<const PlaceHolderParam*>(
+               &_PlaceHolderParam_default_instance_);
+  }
+
+  void Swap(PlaceHolderParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PlaceHolderParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PlaceHolderParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PlaceHolderParam& from);
+  void MergeFrom(const PlaceHolderParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PlaceHolderParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:PlaceHolderParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:VariableParam) */ {
  public:
   VariableParam();
@@ -1793,6 +1872,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::VariableParam* release_variable_param();
   void set_allocated_variable_param(::VariableParam* variable_param);
 
+  // .PlaceHolderParam place_holder_param = 31;
+  bool has_place_holder_param() const;
+  void clear_place_holder_param();
+  static const int kPlaceHolderParamFieldNumber = 31;
+  const ::PlaceHolderParam& place_holder_param() const;
+  ::PlaceHolderParam* mutable_place_holder_param();
+  ::PlaceHolderParam* release_place_holder_param();
+  void set_allocated_place_holder_param(::PlaceHolderParam* place_holder_param);
+
   // .BlockParam block_param = 40;
   bool has_block_param() const;
   void clear_block_param();
@@ -1927,6 +2015,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::TensorParam* tensor_param_;
   ::MnistReaderParam* mnist_reader_param_;
   ::VariableParam* variable_param_;
+  ::PlaceHolderParam* place_holder_param_;
   ::BlockParam* block_param_;
   ::LossParam* loss_param_;
   ::OpAddParam* op_add_param_;
@@ -3527,6 +3616,10 @@ inline void SnapshotParam::set_per_image_width(::google::protobuf::int32 value) 
 
 // -------------------------------------------------------------------
 
+// PlaceHolderParam
+
+// -------------------------------------------------------------------
+
 // VariableParam
 
 // .SnapshotParam snapshot_param = 1;
@@ -3870,6 +3963,45 @@ inline void NodeParam::set_allocated_variable_param(::VariableParam* variable_pa
     
   }
   // @@protoc_insertion_point(field_set_allocated:NodeParam.variable_param)
+}
+
+// .PlaceHolderParam place_holder_param = 31;
+inline bool NodeParam::has_place_holder_param() const {
+  return this != internal_default_instance() && place_holder_param_ != NULL;
+}
+inline void NodeParam::clear_place_holder_param() {
+  if (GetArenaNoVirtual() == NULL && place_holder_param_ != NULL) delete place_holder_param_;
+  place_holder_param_ = NULL;
+}
+inline const ::PlaceHolderParam& NodeParam::place_holder_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.place_holder_param)
+  return place_holder_param_ != NULL ? *place_holder_param_
+                         : *::PlaceHolderParam::internal_default_instance();
+}
+inline ::PlaceHolderParam* NodeParam::mutable_place_holder_param() {
+  
+  if (place_holder_param_ == NULL) {
+    place_holder_param_ = new ::PlaceHolderParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.place_holder_param)
+  return place_holder_param_;
+}
+inline ::PlaceHolderParam* NodeParam::release_place_holder_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.place_holder_param)
+  
+  ::PlaceHolderParam* temp = place_holder_param_;
+  place_holder_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_place_holder_param(::PlaceHolderParam* place_holder_param) {
+  delete place_holder_param_;
+  place_holder_param_ = place_holder_param;
+  if (place_holder_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.place_holder_param)
 }
 
 // .BlockParam block_param = 40;
@@ -5006,6 +5138,8 @@ inline void SolverParam::set_allocated_gain_solver(::GainSolverParam* gain_solve
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

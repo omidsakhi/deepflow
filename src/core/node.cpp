@@ -28,9 +28,9 @@ void Node::traverse(NodeObserver *observer, TraverseOrder order, bool visit_cond
         observer->apply(shared_from_this());
     for (int i = 0; i < _inputs.size(); ++i)
         if (_inputs[i]) {
-            auto node = _inputs[i]->otherNode();
-            if (node)
-                node->traverse(observer, order, visit_condition);
+            auto connectedNode = _inputs[i]->connectedNode();
+            if (connectedNode)
+				connectedNode->traverse(observer, order, visit_condition);
         }			
     if (order == TraverseOrder::PostOrder)
         observer->apply(shared_from_this());

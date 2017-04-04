@@ -105,6 +105,9 @@
     <ClCompile Include="..\..\src\observers\reset.cpp">
       <Filter>source\observers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\core\place_holder.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\observers\reset.h">
       <Filter>include\observers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\place_holder.h">
+      <Filter>include\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

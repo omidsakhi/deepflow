@@ -15,7 +15,7 @@ Block::Block(std::initializer_list<std::shared_ptr<InputTerminal>> inputs, std::
 void Block::initForward() {
 	std::set<std::shared_ptr<Node>> nodes;
 	for (int i = 0; i < _outputs.size(); ++i)
-		nodes.insert(_outputs[i]->parentNode());
+		nodes.insert(_outputs[i]->node());
 	//for (auto node : nodes)
 	//	node->recursiveInitForward();
 }
@@ -24,7 +24,7 @@ void Block::initBackward() {
 	//InitBackwardObserver _;
 	std::set<std::shared_ptr<Node>> nodes;
 	for (int i = 0; i < _outputs.size(); ++i)
-		nodes.insert(_outputs[i]->parentNode());
+		nodes.insert(_outputs[i]->node());
 	//for (auto node : nodes)
 	//	node->recursiveInitBackward();
 }
@@ -32,7 +32,7 @@ void Block::initBackward() {
 void Block::forward() {
 	std::set<std::shared_ptr<Node>> nodes;
 	for (int i = 0; i < _outputs.size(); ++i)
-		nodes.insert(_outputs[i]->parentNode());
+		nodes.insert(_outputs[i]->node());
 	//for (auto node : nodes)
 	//	node->recursiveForward();
 }
@@ -40,7 +40,7 @@ void Block::forward() {
 void Block::backward() {
 	std::set<std::shared_ptr<Node>> nodes;
 	for (int i = 0; i < _outputs.size(); ++i)
-		nodes.insert(_outputs[i]->parentNode());
+		nodes.insert(_outputs[i]->node());
 	//for (auto node : nodes)
 	//	node->recursiveBackward();
 }
@@ -48,7 +48,7 @@ void Block::backward() {
 void Block::traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition) {
 	std::set<std::shared_ptr<Node>> nodes;
 	for (int i = 0; i < _outputs.size(); ++i)
-		nodes.insert(_outputs[i]->parentNode());
+		nodes.insert(_outputs[i]->node());
 	for (auto node : nodes)
 		node->traverse(observer, order, visit_condition);
 }
@@ -56,7 +56,7 @@ void Block::traverse(NodeObserver *observer, TraverseOrder order, bool visit_con
 void Block::recursiveResetVisit() {
 	std::set<std::shared_ptr<Node>> nodes;
 	for (int i = 0; i < _outputs.size(); ++i)
-		nodes.insert(_outputs[i]->parentNode());
+		nodes.insert(_outputs[i]->node());
 	//for (auto node : nodes)
 	//	node->recursiveResetVisit();
 }

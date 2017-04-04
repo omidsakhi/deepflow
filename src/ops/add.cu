@@ -35,7 +35,7 @@ void Add::initForward() {
 	_beta = _param.op_add_param().beta();
 
 	LOG_IF(FATAL, a->value()->size() != b->value()->size()) << "Different input sizes";	
-	LOG(INFO) << "Initializing Add (name: " << _name << " ) for " << a->parentNode()->name() << " and " << b->parentNode()->name();	
+	LOG(INFO) << "Initializing Add (name: " << _name << " ) for " << a->node()->name() << " and " << b->node()->name();	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
 }
 

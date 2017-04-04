@@ -2,6 +2,7 @@
 
 #include "core/export.h"
 #include "core/variable.h"
+#include "core/place_holder.h"
 #include "core/block.h"
 
 #include "readers/mnist_reader.h"
@@ -41,9 +42,10 @@ public:
 	std::shared_ptr<RandomUniform> random_uniform(std::initializer_list<int> dims, float min, float max, Tensor::TensorType type = Tensor::Float);
 	std::shared_ptr<Step> step(std::initializer_list<int> dims, float min, float max, Tensor::TensorType type = Tensor::Float);
 
-	// VARIABLES
+	// VARIABLES & PLACE HOLDERS
 	std::shared_ptr<OutputTerminal> variable(std::shared_ptr<Initializer> initializer, std::string name = "Variable");
 	std::shared_ptr<OutputTerminal> variable(std::shared_ptr<Initializer> initializer, int interval , std::string prefix, int perImageHeight, int perImageWidth ,  std::string name = "VariableWithSnapshot");
+	std::shared_ptr<OutputTerminal> place_holder(std::array<int,4> dims, Tensor::TensorType type = Tensor::Float, std::string name = "PlaceHolder");
 
 	// OPS
 	std::shared_ptr<OutputTerminal> add(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name = "Add");
@@ -59,14 +61,15 @@ public:
 	std::shared_ptr<OutputTerminal> argmax(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "Argmax");
 	std::shared_ptr<OutputTerminal> reduce_max(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "Max");
 	std::shared_ptr<OutputTerminal> equal(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name = "Equal");
+	std::shared_ptr<OutputTerminal> reduce_mean(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "Mean");
+	std::shared_ptr<OutputTerminal> reduce_sum(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "Sum");
 
 	// BLOCK
 	std::shared_ptr<Block> block(std::initializer_list<std::shared_ptr<InputTerminal>> inputs, std::initializer_list<std::shared_ptr<OutputTerminal>> outputs, std::string name = "Block");	
 
 	// LOSS
 	std::shared_ptr<OutputTerminal> softmax_loss(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name = "SoftmaxLoss");
-	
-	
+		
 	// SOLVERS
 	std::shared_ptr<SGDSolver> sgd_solver(std::shared_ptr<OutputTerminal> loss, int max_iteration, float momentum, float learning_rate);
 	std::shared_ptr<GainSolver> gain_solver(std::shared_ptr<OutputTerminal> loss, int max_iteration = 1000, float momentum = 0.99999, float learning_rate = 0.0001, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f);

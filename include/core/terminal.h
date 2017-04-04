@@ -16,8 +16,8 @@ enum TerminalType {
 class DeepFlowDllExport Terminal {
 public :
 	Terminal(std::shared_ptr<Node> parentNode, int index,  std::string name, TerminalType type);	
-	std::shared_ptr<Node> parentNode();
-	std::shared_ptr<Node> otherNode();
+	std::shared_ptr<Node> node();
+	std::shared_ptr<Node> connectedNode();
 	TerminalType type();
 	virtual std::array<int, 4> dims() = 0;
 	virtual std::shared_ptr<Tensor> value() = 0;
@@ -45,7 +45,8 @@ class DeepFlowDllExport OutputTerminal : public Terminal {
 public:
 	OutputTerminal(std::shared_ptr<Node> parentNode, int index, std::string name);		
 	void initValue(std::array<int, 4> dims, Tensor::TensorType type = Tensor::Float);
-	std::array<int, 4> dims();		
+	std::array<int, 4> dims();
+	void feed(std::shared_ptr<OutputTerminal> t);
 	void initDiff();	
 	void cpyValueToDiff();
 	std::shared_ptr<Tensor> value();

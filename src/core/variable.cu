@@ -12,7 +12,7 @@
 #include <glog/logging.h>
 
 Variable::Variable(std::shared_ptr<Initializer> initializer, NodeParam param) : Node(param) {
-	LOG_IF(FATAL, param.has_variable_param() == false);
+	LOG_IF(FATAL, param.has_variable_param() == false) << "param.has_variable_param() == false";
 	_initializer = initializer;			
 }
 

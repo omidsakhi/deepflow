@@ -27,6 +27,7 @@
     <ClInclude Include="..\..\include\core\initializer.h" />
     <ClInclude Include="..\..\include\core\node.h" />
     <ClInclude Include="..\..\include\core\node_observer.h" />
+    <ClInclude Include="..\..\include\core\place_holder.h" />
     <ClInclude Include="..\..\include\core\reader.h" />
     <ClInclude Include="..\..\include\core\solver.h" />
     <ClInclude Include="..\..\include\core\tensor.h" />
@@ -65,6 +66,7 @@
     <ClCompile Include="..\..\src\core\deep_flow.cpp" />
     <ClCompile Include="..\..\src\core\initializer.cpp" />
     <ClCompile Include="..\..\src\core\node.cpp" />
+    <ClCompile Include="..\..\src\core\place_holder.cpp" />
     <ClCompile Include="..\..\src\core\tensor.cpp" />
     <ClCompile Include="..\..\src\observers\reset.cpp" />
     <ClCompile Include="..\..\src\ops\pooling.cpp">
