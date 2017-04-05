@@ -50,6 +50,7 @@ public:
 	template <typename T>
 	std::shared_ptr<std::vector<T>> cpyToHost() const;
 
+	float toFloat() const;
 protected:
 	std::array<int, 4> _dims;
 	size_t _size;

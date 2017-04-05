@@ -34,19 +34,26 @@ void main() {
 	df.global_node_initializer();
 
 	auto trainer = df.gain_solver(loss, 2000, 0.9999f, 0.0001f, 100, 0.1, 0.05, 0.95);
+	int epoch = 1;
 	for (int iteration = 0; iteration < 10000; ++iteration) {
 		x->feed(mnist_trainset->output(0));
 		y->feed(mnist_trainset->output(1));
 		trainer->train_step();
-		df.eval(mse);
-		auto h_mse = mse->value()->cpyToHost<float>();
-		std::cout << "Iteraration " << iteration << " - MSE: " << h_mse->at(0) << std::endl;
+		//df.eval(mse);		
+		//std::cout << "Iteraration " << iteration << " - MSE: " << mse->value()->toFloat() << std::endl;
 		if (mnist_trainset->isLastBatch()) {
-			x->feed(mnist_testset->output(0));
-			y->feed(mnist_testset->output(1));
-			df.eval(accuracy);
-			auto h_accuracy = accuracy->value()->cpyToHost<float>();
-			std::cout << "Epoch Accuracy: " << h_accuracy->at(0) << std::endl;
+			double sum = 0;
+			size_t count = 0;
+			do {
+				x->feed(mnist_testset->output(0));
+				y->feed(mnist_testset->output(1));
+				df.eval(accuracy);
+				sum += accuracy->value()->toFloat();
+				count++;
+				mnist_testset->nextBatch();
+			} while (!mnist_testset->isLastBatch());
+			std::cout << "Epoch " << epoch << " Accuracy: " << sum / count << std::endl;
+			epoch++;
 		}
 		mnist_trainset->nextBatch();
 	}	
