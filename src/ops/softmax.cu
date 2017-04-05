@@ -2,7 +2,7 @@
 
 #include <glog/logging.h>
 
-Softmax::Softmax(NodeParam param) : Node(param) {
+Softmax::Softmax(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_op_softmax_param() == false);
 }
 

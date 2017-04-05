@@ -9,11 +9,11 @@ class Variable;
 
 class DeepFlowDllExport Initializer : public CudaHelper {
 public:
-	Initializer(InitParam param);
+	Initializer(const InitParam &param);
 	Initializer(std::array<int, 4> dims, Tensor::TensorType type);
 	virtual void init() = 0;
 	virtual void apply(Variable *variable) = 0;	
-	std::array<int, 4> dims();
+	std::array<int, 4> dims() const;
 protected:	
 	InitParam _param;
 	std::array<int, 4> _dims;

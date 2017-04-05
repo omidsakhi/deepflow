@@ -2,7 +2,7 @@
 
 #include <glog/logging.h>
 
-MatMul::MatMul(NodeParam param) : Node(param) {
+MatMul::MatMul(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_op_matmul_param() == false);
 }
 

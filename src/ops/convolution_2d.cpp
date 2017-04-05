@@ -1,6 +1,6 @@
 #include "ops/convolution_2d.h"
 
-Convolution2D::Convolution2D(NodeParam param) : Node(param) {
+Convolution2D::Convolution2D(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_op_conv_2d_param() == false) << "param.has_op_conv_2d_param() [FAILED]";
 	d_workspace = 0;
 }

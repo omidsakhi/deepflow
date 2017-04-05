@@ -9,7 +9,7 @@ class Initializer;
 
 class DeepFlowDllExport Variable : public Node {
 public:		
-	Variable(std::shared_ptr<Initializer> initializer, NodeParam param);
+	Variable(std::shared_ptr<Initializer> initializer, const NodeParam &param);
 	void initForward();
 	void initBackward();	
 	void forward();

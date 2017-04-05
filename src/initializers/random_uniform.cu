@@ -11,7 +11,7 @@ __global__ void RandKernel(const float min, const float max,const int n, float* 
 		dst[i] = (curand_uniform(&state) * (max - min)) + min;
 }
 
-RandomUniform::RandomUniform(InitParam param) : Initializer(param) {
+RandomUniform::RandomUniform(const InitParam &param) : Initializer(param) {
 	LOG_IF(FATAL, param.has_random_uniform_param() == false);
 }
 

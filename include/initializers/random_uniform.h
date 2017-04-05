@@ -6,7 +6,7 @@
 
 class DeepFlowDllExport RandomUniform : public Initializer {
 public:
-	RandomUniform(InitParam param);
+	RandomUniform(const InitParam &param);
 	void init() {}
 	void apply(Variable *variable);
 };

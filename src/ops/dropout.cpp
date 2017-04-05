@@ -2,7 +2,7 @@
 
 #include "ops/dropout.h"
 
-Dropout::Dropout(NodeParam param) : Node(param) {
+Dropout::Dropout(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_op_dropout_param() == false);
 }
 

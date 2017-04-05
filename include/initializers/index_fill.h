@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport IndexFill : public Initializer {
 public:
-	IndexFill(InitParam param);
+	IndexFill(const InitParam &param);
 	void apply(Variable *variable);
 	void init() {}
 };

@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport Step : public Initializer {
 public:
-	Step(InitParam param);
+	Step(const InitParam &param);
 	void apply(Variable *variable);
 	void init();
 };

@@ -1,6 +1,6 @@
 #include "ops/pooling.h"
 
-Pooling::Pooling(NodeParam param) : Node(param) {
+Pooling::Pooling(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_op_pooling_param() == false) << "param.has_op_pooling_param() == false";
 }
 

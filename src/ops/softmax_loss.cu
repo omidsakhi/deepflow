@@ -12,7 +12,7 @@ void SoftmaxLossKernelBackward(const int n, const float *softmax_output,const fl
 }
 
 
-SoftmaxLoss::SoftmaxLoss(NodeParam param ) : Node(param) {
+SoftmaxLoss::SoftmaxLoss(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.loss_param().has_softmax_loss_param() == false);
 }
 

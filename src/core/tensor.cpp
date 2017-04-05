@@ -5,7 +5,7 @@ Tensor::Tensor() {
 	d_data = NULL;
 }
 
-Tensor::Tensor(TensorParam param) {
+Tensor::Tensor(const TensorParam &param) {
 	switch (param.dims_size()) {
 	case 1:
 		_dims = { 1,param.dims(0),1,1 };

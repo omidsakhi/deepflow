@@ -7,7 +7,7 @@ class PlaceHolder;
 
 class DeepFlowDllExport Reader : public Node {
 public:	
-	Reader(NodeParam param);
+	Reader(const NodeParam &param);
 	virtual void nextBatch() = 0;
 	virtual bool isLastBatch() = 0;
 };

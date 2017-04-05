@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport Fill : public Initializer {
 public:
-	Fill(InitParam param);
+	Fill(const InitParam &param);
 	void apply(Variable *variable);
 	void init() {}
 };

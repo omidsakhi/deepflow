@@ -1,6 +1,6 @@
 #include "ops/reduce.h"
 
-Reduce::Reduce(NodeParam param) : Node(param) {
+Reduce::Reduce(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_op_reduce_param() == false) << "param.has_op_reduce_param() == false [FAILED]";
 }
 

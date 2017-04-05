@@ -36,7 +36,7 @@ enum NodePrintType {
 
 class DeepFlowDllExport Node : public std::enable_shared_from_this<Node>, public CudaHelper {
 public:
-	Node(NodeParam param);
+	Node(const NodeParam &param);
 	void createIO();
 	virtual void initForward() = 0;
 	virtual void initBackward() = 0;
@@ -44,7 +44,7 @@ public:
 	virtual int minNumOutputs() = 0;	
 	virtual void forward();
 	virtual void backward();	
-	std::string name();		
+	std::string name() const;		
 	virtual void traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition);
 	void setVisited(bool state);
 	std::vector<std::shared_ptr<InputTerminal>> &inputs();

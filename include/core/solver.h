@@ -7,7 +7,7 @@
 
 class DeepFlowDllExport Solver : public CudaHelper {
 public:
-	Solver(std::shared_ptr<OutputTerminal> loss, SolverParam param);
+	Solver(std::shared_ptr<OutputTerminal> loss, const SolverParam &param);
 	virtual void train_step() = 0;
 	virtual void init() = 0;
 protected:

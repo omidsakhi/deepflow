@@ -9,7 +9,7 @@ void EqualKernel(int n, const int * __restrict__ a,  const int * __restrict__ b,
 }
 
 
-Equal::Equal(NodeParam param) : Node(param) {
+Equal::Equal(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_op_equal_param() == false) << "param.has_op_equal_param() == false";
 }
 

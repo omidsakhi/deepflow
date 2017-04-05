@@ -15,13 +15,15 @@ enum TerminalType {
 
 class DeepFlowDllExport Terminal {
 public :
-	Terminal(std::shared_ptr<Node> parentNode, int index,  std::string name, TerminalType type);	
-	std::shared_ptr<Node> node();
-	std::shared_ptr<Node> connectedNode();
-	TerminalType type();
+	Terminal(std::shared_ptr<Node> parentNode, int index, const std::string &name, TerminalType type);	
+	std::shared_ptr<Node> node() const;
+	std::shared_ptr<Node> connectedNode() const;
+	const TerminalType& type() const;
 	virtual std::array<int, 4> dims() = 0;
 	virtual std::shared_ptr<Tensor> value() = 0;
 	virtual std::shared_ptr<Tensor> diff() = 0;
+	const std::string& name() const;
+	const int& index() const;
 protected:
 	std::shared_ptr<Node> _parentNode;
 	int _index;
@@ -34,7 +36,7 @@ class OutputTerminal;
 
 class DeepFlowDllExport InputTerminal : public Terminal {
 public:
-	InputTerminal(std::shared_ptr<Node> parentNode, int index, std::string name);	
+	InputTerminal(std::shared_ptr<Node> parentNode, int index, const std::string &name);	
 	void connect(std::shared_ptr<OutputTerminal> terminal);
 	std::array<int, 4> dims();
 	std::shared_ptr<Tensor> value();
@@ -43,7 +45,7 @@ public:
 
 class DeepFlowDllExport OutputTerminal : public Terminal {
 public:
-	OutputTerminal(std::shared_ptr<Node> parentNode, int index, std::string name);		
+	OutputTerminal(std::shared_ptr<Node> parentNode, int index, const std::string &name);		
 	void initValue(std::array<int, 4> dims, Tensor::TensorType type = Tensor::Float);
 	std::array<int, 4> dims();
 	void feed(std::shared_ptr<OutputTerminal> t);

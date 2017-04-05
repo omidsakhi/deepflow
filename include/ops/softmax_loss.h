@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport SoftmaxLoss : public Node {
 public:
-	SoftmaxLoss(NodeParam param);
+	SoftmaxLoss(const NodeParam &param);
 	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 2; }
 	void initForward();	

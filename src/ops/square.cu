@@ -15,7 +15,7 @@ void SquareKernelBackward(const int n, const float *x, const float *diff, float 
 	if (i < n) out[i] = 2.0f * x[i] * diff[i];
 }
 
-Square::Square(NodeParam param) : Node(param) {
+Square::Square(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_op_square_param() == false);
 }
 

@@ -1,5 +1,5 @@
 #include "core/reader.h"
 
-Reader::Reader(NodeParam param) : Node(param) {
+Reader::Reader(const NodeParam &param) : Node(param) {
 	
 }

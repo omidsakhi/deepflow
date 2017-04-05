@@ -10,7 +10,7 @@ void IndexFillKernel(const int n, float *a,const float offset)
 	if (i < n) a[i] = offset + i;
 }
 
-IndexFill::IndexFill(InitParam param) : Initializer(param) {
+IndexFill::IndexFill(const InitParam &param) : Initializer(param) {
 	LOG_IF(FATAL, param.has_index_fill_param() == false);	
 }
 

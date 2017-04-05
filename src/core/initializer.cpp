@@ -2,7 +2,7 @@
 
 #include <glog/logging.h>
 
-Initializer::Initializer(InitParam param) : CudaHelper() {
+Initializer::Initializer(const InitParam &param) : CudaHelper() {
 	_param = param;
 	LOG_IF(FATAL, param.has_tensor_param() == false) << "param.has_tensor_param() == false [FAILED]";
 	const TensorParam &tensorParam = param.tensor_param();
@@ -29,6 +29,6 @@ Initializer::Initializer(std::array<int, 4> dims, Tensor::TensorType type) {
 	_type = type;
 }
 
-std::array<int, 4> Initializer::dims() {
+std::array<int, 4> Initializer::dims() const {
 	return _dims;
 }

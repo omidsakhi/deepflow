@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport Relu : public Node {
 public:
-	Relu(NodeParam param);
+	Relu(const NodeParam &param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();

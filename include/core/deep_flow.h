@@ -58,17 +58,17 @@ public:
 	std::shared_ptr<OutputTerminal> dropout(std::shared_ptr<OutputTerminal> a, float dropout = 0.5f, std::string name = "Dropout");
 	std::shared_ptr<OutputTerminal> conv2d(std::shared_ptr<OutputTerminal> input, std::shared_ptr<OutputTerminal> filter, std::string name = "Conv");
 	std::shared_ptr<OutputTerminal> pooling(std::shared_ptr<OutputTerminal> input, int windowHeight = 3, int windowWidth = 3, int verticalPadding = 0, int horizontalPadding = 0, int verticalStride = 1, int horizontalStride = 1, std::string name = "MaxPool");
-	std::shared_ptr<OutputTerminal> argmax(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "Argmax");
-	std::shared_ptr<OutputTerminal> reduce_max(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "Max");
+	std::shared_ptr<OutputTerminal> argmax(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "ReduceArgmax");
+	std::shared_ptr<OutputTerminal> reduce_max(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "ReduceMax");
 	std::shared_ptr<OutputTerminal> equal(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name = "Equal");
-	std::shared_ptr<OutputTerminal> reduce_mean(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "Mean");
-	std::shared_ptr<OutputTerminal> reduce_sum(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "Sum");
+	std::shared_ptr<OutputTerminal> reduce_mean(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "ReduceMean");
+	std::shared_ptr<OutputTerminal> reduce_sum(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "ReduceSum");
 
 	// BLOCK
 	std::shared_ptr<Block> block(std::initializer_list<std::shared_ptr<InputTerminal>> inputs, std::initializer_list<std::shared_ptr<OutputTerminal>> outputs, std::string name = "Block");	
 
 	// LOSS
-	std::shared_ptr<OutputTerminal> softmax_loss(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name = "SoftmaxLoss");
+	std::shared_ptr<OutputTerminal> softmax_loss(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name = "SoftmaxWithLoss");
 		
 	// SOLVERS
 	std::shared_ptr<SGDSolver> sgd_solver(std::shared_ptr<OutputTerminal> loss, int max_iteration, float momentum, float learning_rate);
@@ -78,6 +78,8 @@ public:
 
 	void eval(std::shared_ptr<OutputTerminal> terminal);
 
+	std::shared_ptr<Node> findNodeByName(const std::string &name) const;
+	std::string getUniqueNodeName(const std::string &prefix) const;
 private:
 	std::list<std::shared_ptr<Node>> _nodes;
 };

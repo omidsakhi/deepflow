@@ -15,7 +15,7 @@ void ReluKernel(int n, const float * __restrict__ x, const float * __restrict__ 
 	}
 }
 
-Relu::Relu(NodeParam param) : Node(param) {	
+Relu::Relu(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_op_relu_param() == false) << "param.has_op_relu_param() == false";	
 }
 

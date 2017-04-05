@@ -2,34 +2,41 @@
 
 #include "core/node.h"
 
-Terminal::Terminal(std::shared_ptr<Node> parentNode, int index, std::string name, TerminalType type) {
+Terminal::Terminal(std::shared_ptr<Node> parentNode, int index, const std::string &name, TerminalType type) {
 	_parentNode = parentNode;
 	_index = index;
 	_name = name;	
 	_type = type;
 }
 
-TerminalType Terminal::type() {
+const TerminalType& Terminal::type() const {
 	return _type;
+}
+
+const std::string& Terminal::name() const {
+	return _name;
+}
+
+const int& Terminal::index() const {
+	return _index;
 }
 
 void InputTerminal::connect(std::shared_ptr<OutputTerminal> terminal) {
 	_terminal = terminal;
 }
 
-std::shared_ptr<Node> Terminal::node() {
+std::shared_ptr<Node> Terminal::node() const {
 	return _parentNode;
 }
-std::shared_ptr<Node> Terminal::connectedNode() {
+std::shared_ptr<Node> Terminal::connectedNode() const {
 	if (_terminal)
 		return _terminal->node();
 	return 0;
 }
-InputTerminal::InputTerminal(std::shared_ptr<Node> parentNode, int index, std::string name) : Terminal(parentNode, index, name, TerminalType::Input) {
-
+InputTerminal::InputTerminal(std::shared_ptr<Node> parentNode, int index, const std::string &name) : Terminal(parentNode, index, name, TerminalType::Input) {
 }
 
-OutputTerminal::OutputTerminal(std::shared_ptr<Node> parentNode, int index, std::string name) : Terminal(parentNode, index, name, TerminalType::Output) {
+OutputTerminal::OutputTerminal(std::shared_ptr<Node> parentNode, int index, const std::string &name) : Terminal(parentNode, index, name, TerminalType::Output) {
 }
 
 std::shared_ptr<Tensor> InputTerminal::value() {	
@@ -69,6 +76,6 @@ std::array<int, 4> OutputTerminal::dims() {
 }
 
 void OutputTerminal::feed(std::shared_ptr<OutputTerminal> t) {
-	LOG_IF(FATAL, t->value()->sizeInBytes() != value()->sizeInBytes()) << "Size mismatch.";	
+	LOG_IF(FATAL, t->value()->sizeInBytes() != value()->sizeInBytes()) << "Size mismatch between terminals: " << _name << " and " << t->name();
 	LOG_IF(FATAL, cudaMemcpy(value()->mutableData(), t->value()->data(), value()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0) << "cudaMemcpy [FAILED]";
 }

@@ -24,7 +24,7 @@ public:
 	};
 
 	Tensor();
-	Tensor(TensorParam param);
+	Tensor(const TensorParam &param);
 	//Tensor(std::initializer_list<int> dims, TensorType type);
 	Tensor(std::array<int, 4> dims, TensorType type);	
 	cudnnDataType_t cudnnType() const;
