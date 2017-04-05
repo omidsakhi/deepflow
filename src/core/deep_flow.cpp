@@ -423,7 +423,7 @@ std::shared_ptr<Node> DeepFlow::findNodeByName(const std::string &name) const {
 }
 
 std::string DeepFlow::getUniqueNodeName(const std::string &prefix) const {
-	int index = _nodes.size();
+	int index = 1;
 	std::string nodeName = prefix + "_" + std::to_string(index);
 	while (findNodeByName(nodeName) != 0) {
 		index++;

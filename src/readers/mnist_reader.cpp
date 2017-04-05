@@ -2,7 +2,7 @@
 
 #include <glog/logging.h>
 
-MNISTReader::MNISTReader(NodeParam param) : Reader(param) {
+MNISTReader::MNISTReader(const NodeParam &param) : Reader(param) {
 	LOG_IF(FATAL, param.has_mnist_reader_param() == false);
 	const MnistReaderParam &mnist_param = param.mnist_reader_param();
 	_folder_path = mnist_param.folder_path();

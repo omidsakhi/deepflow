@@ -19,7 +19,7 @@ enum DeepFlowDllExport MNISTReaderType {
 
 class DeepFlowDllExport MNISTReader : public Reader {
 public:
-	MNISTReader(NodeParam param);
+	MNISTReader(const NodeParam &param);
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 2; }
 	void nextBatch();

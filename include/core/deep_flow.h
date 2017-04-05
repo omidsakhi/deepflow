@@ -49,7 +49,7 @@ public:
 
 	// OPS
 	std::shared_ptr<OutputTerminal> add(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name = "Add");
-	std::shared_ptr<OutputTerminal> bias_add(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name = "Bias");
+	std::shared_ptr<OutputTerminal> bias_add(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name = "BiasAdd");
 	std::shared_ptr<OutputTerminal> subtract(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name = "Subtract");
 	std::shared_ptr<OutputTerminal> softmax(std::shared_ptr<OutputTerminal> a, std::string name = "Softmax");
 	std::shared_ptr<OutputTerminal> square(std::shared_ptr<OutputTerminal> a, std::string name = "Square");
