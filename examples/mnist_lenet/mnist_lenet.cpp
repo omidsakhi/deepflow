@@ -2,7 +2,7 @@
 #include "core/deep_flow.h"
 
 void main() {
-	CudaHelper::setOptimalThreadsPerBlock();
+	CudaHelper::setOptimalThreadsPerBlock();	
 
 	int batch_size = 100;
 	DeepFlow df;
@@ -39,20 +39,9 @@ void main() {
 		x->feed(mnist_trainset->output(0));
 		y->feed(mnist_trainset->output(1));
 		trainer->train_step();
-		//df.eval(mse);		
-		//std::cout << "Iteraration " << iteration << " - MSE: " << mse->value()->toFloat() << std::endl;
 		if (mnist_trainset->isLastBatch()) {
-			double sum = 0;
-			size_t count = 0;
-			do {
-				x->feed(mnist_testset->output(0));
-				y->feed(mnist_testset->output(1));
-				df.eval(accuracy);
-				sum += accuracy->value()->toFloat();
-				count++;
-				mnist_testset->nextBatch();
-			} while (!mnist_testset->isLastBatch());
-			std::cout << "Epoch " << epoch << " Accuracy: " << sum / count << std::endl;
+			auto result = df.run(mse, accuracy, { {"x",mnist_testset->output(0)},{"y",mnist_testset->output(1) } });			
+			std::cout << "Epoch " << epoch << " MSE: " << result.first << " Accuracy: " << result.second << std::endl;
 			epoch++;
 		}
 		mnist_trainset->nextBatch();

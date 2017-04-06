@@ -7,8 +7,7 @@
 #include <iostream>
 
 class DeepFlowDllExport CudaHelper {
-public:
-	CudaHelper();
+public:	
 	std::string cudaStatusToString(cudnnStatus_t status);
 	static void setOptimalThreadsPerBlock();
 	static size_t numOfBlocks(const size_t &size);

@@ -28,6 +28,11 @@
 #include "solvers/sgd_solver.h"
 #include "solvers/gain_solver.h"
 
+#include <unordered_map>
+#include <map>
+
+#include<memory>
+
 class DeepFlowDllExport DeepFlow {
 	friend class ::Node;
 public:
@@ -77,9 +82,13 @@ public:
 	void global_node_initializer();
 
 	void eval(std::shared_ptr<OutputTerminal> terminal);
+	
+	std::pair<float,float> run(std::shared_ptr<OutputTerminal> loss, std::shared_ptr<OutputTerminal> accuracy, std::unordered_map<std::string, std::shared_ptr<OutputTerminal>> feed);
 
 	std::shared_ptr<Node> findNodeByName(const std::string &name) const;
 	std::string getUniqueNodeName(const std::string &prefix) const;
+
+
 private:
 	std::list<std::shared_ptr<Node>> _nodes;
 };

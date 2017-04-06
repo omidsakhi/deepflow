@@ -406,11 +406,11 @@ void DeepFlow::global_node_initializer() {
 	}
 }
 
-void DeepFlow::eval(std::shared_ptr<OutputTerminal> terminal) {
-	ResetObserver resetObserver;
-	ForwardObserver forwardObserver;	
+void DeepFlow::eval(std::shared_ptr<OutputTerminal> terminal) {		
 	auto node = terminal->node();
+	ResetObserver resetObserver;
 	node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
+	ForwardObserver forwardObserver;
 	node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);
 }
 
@@ -423,6 +423,8 @@ std::shared_ptr<Node> DeepFlow::findNodeByName(const std::string &name) const {
 }
 
 std::string DeepFlow::getUniqueNodeName(const std::string &prefix) const {
+	if (findNodeByName(prefix) == 0)
+		return prefix;
 	int index = 1;
 	std::string nodeName = prefix + "_" + std::to_string(index);
 	while (findNodeByName(nodeName) != 0) {
@@ -430,4 +432,50 @@ std::string DeepFlow::getUniqueNodeName(const std::string &prefix) const {
 		nodeName = prefix + "_" + std::to_string(index);
 	}
 	return nodeName;
+}
+
+std::pair<float, float> DeepFlow::run(std::shared_ptr<OutputTerminal> loss, std::shared_ptr<OutputTerminal> accuracy, std::unordered_map<std::string, std::shared_ptr<OutputTerminal>> feed) {
+	
+	std::set<std::shared_ptr<Reader>> readers;
+	std::unordered_map<std::shared_ptr<OutputTerminal>, std::shared_ptr<OutputTerminal>> mapReaderTerminalToPlaceHolderOutput;
+
+	for (auto item : feed) {
+		auto node = item.second->node();
+		auto reader = std::dynamic_pointer_cast<Reader>(node);
+		LOG_IF(FATAL, reader == 0) << "Feeds must come from a reader.";
+		readers.insert(reader);
+		auto placeHolderName = item.first;
+		auto placeHolderNode = findNodeByName(placeHolderName);
+		LOG_IF(FATAL, placeHolderNode == 0) << "Couldn't find placeholder with name " << placeHolderName;
+		auto placeHolder = std::dynamic_pointer_cast<PlaceHolder>(placeHolderNode);
+		LOG_IF(FATAL, placeHolder == 0) << placeHolderName << " is not a placeholder";
+		mapReaderTerminalToPlaceHolderOutput.insert({ item.second,placeHolder->output(0) });
+	}
+
+	bool any_last_batch = false;
+
+	float accuracyResult = 0;
+	float lossResult = 0;
+	int count = 0;
+	do {
+		for (auto item : mapReaderTerminalToPlaceHolderOutput)
+			item.second->feed(item.first);
+		if (loss) {
+			eval(loss);
+			lossResult += loss->value()->toFloat();
+		}		
+		if (accuracy) {
+			eval(accuracy);
+			accuracyResult += accuracy->value()->toFloat();
+		}				
+		count++;				
+		for (auto reader : readers) {
+			if (reader->isLastBatch())
+				any_last_batch = true;
+			reader->nextBatch();
+		}
+	} while (any_last_batch == false);
+	accuracyResult /= count;
+	lossResult /= count;	
+	return std::pair<float,float>(lossResult, accuracyResult);
 }

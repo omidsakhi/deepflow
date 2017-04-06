@@ -41,10 +41,6 @@ void CudaHelper::setOptimalThreadsPerBlock() {
 	}
 }
 
-CudaHelper::CudaHelper() {
-	maxThreadsPerBlock = 256;
-}
-
 size_t CudaHelper::numOfBlocks(const size_t &size) {
 	return (size + maxThreadsPerBlock - 1) / maxThreadsPerBlock;
 }

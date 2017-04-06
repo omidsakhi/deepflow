@@ -31,7 +31,7 @@ void Relu::initBackward() {
 }
 
 void Relu::forward() {	
-	auto size = _inputs[0]->value()->size();
+	auto size = _inputs[0]->value()->size();	
 	ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData(), _negative_slope);
 	LOG_IF(FATAL, cudaPeekAtLastError() != 0);	
 }
