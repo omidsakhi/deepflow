@@ -34,7 +34,7 @@ void BiasAdd::initForward() {
 
 	LOG_IF(FATAL, ad[1] != bd[1]) << "ad[1] != bd[1] [FAILED]";
 	_outputs[0]->initValue({ ad[0], ad[1], 1, 1 });	
-	LOG(INFO) << "Initializing Bias (name: " << _name << " ) - " << a->value()->toString() << " + " << b->value()->toString() << " -> " << _outputs[0]->value()->toString();	
+	LOG(INFO) << "Initializing Bias (name: " << _name << " ) - " << a->value()->shape() << " + " << b->value()->shape() << " -> " << _outputs[0]->value()->shape();	
 }
 
 void BiasAdd::initBackward() {

@@ -75,7 +75,7 @@ Tensor::TensorType Tensor::type() const {
 	return _type;
 }
 
-std::string Tensor::toString() const {
+std::string Tensor::shape() const {
 	return _string;
 }
 

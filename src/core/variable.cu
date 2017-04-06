@@ -19,7 +19,7 @@ Variable::Variable(std::shared_ptr<Initializer> initializer, const NodeParam &pa
 void Variable::initForward() {	
 	_initializer->init();
 	_outputs[0]->initValue(_initializer->dims());	
-	LOG(INFO) << "Initialize Variable (name: " << _name << ") - " << _outputs[0]->value()->toString();
+	LOG(INFO) << "Initialize Variable (name: " << _name << ") - " << _outputs[0]->value()->shape();
 	_initializer->apply(this);
 }
 

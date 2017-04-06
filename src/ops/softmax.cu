@@ -11,7 +11,7 @@ void Softmax::initForward() {
 	_beta = _param.op_softmax_param().beta();		
 	LOG_IF(FATAL, cudnnCreate(&_cudnnHandle) != 0);
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Initializing Softmax (name: " << _name << " ) | Shape : " << _outputs[0]->value()->toString();
+	LOG(INFO) << "Initializing Softmax (name: " << _name << " ) | Shape : " << _outputs[0]->value()->shape();
 }
 
 void Softmax::initBackward() {

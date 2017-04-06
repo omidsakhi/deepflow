@@ -8,7 +8,7 @@ Dropout::Dropout(const NodeParam &param) : Node(param) {
 
 void Dropout::initForward() {	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Initializing Dropout (name: " << _name << " ) Shape: " << _outputs[0]->value()->toString();
+	LOG(INFO) << "Initializing Dropout (name: " << _name << " ) Shape: " << _outputs[0]->value()->shape();
 	_dropout = _param.op_dropout_param().dropout();
 	cudnnStatus_t status;
 	LOG_IF(FATAL, (status = cudnnCreate(&_cudnnHandle)) != 0) << cudaStatusToString(status);	

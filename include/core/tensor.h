@@ -30,7 +30,7 @@ public:
 	cudnnDataType_t cudnnType() const;
 	TensorType type() const;
 	void init();
-	std::string toString() const;
+	std::string shape() const;
 	int size() const;
 	size_t sizeInBytes() const;
 	cudnnTensorDescriptor_t descriptor() const;
@@ -64,7 +64,7 @@ protected:
 
 template <typename T>
 void Tensor::print() const {
-	std::cout << "Shape: " << toString() << std::endl;
+	std::cout << "Shape: " << shape() << std::endl;
 	auto h_data = cpyToHost<T>();
 	for (int i = 0; i < _size; ++i) {
 		std::cout << h_data->data()[i] << " ";

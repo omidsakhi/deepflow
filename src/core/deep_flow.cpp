@@ -434,7 +434,7 @@ std::string DeepFlow::getUniqueNodeName(const std::string &prefix) const {
 	return nodeName;
 }
 
-std::pair<float, float> DeepFlow::run(std::shared_ptr<OutputTerminal> loss, std::shared_ptr<OutputTerminal> accuracy, std::unordered_map<std::string, std::shared_ptr<OutputTerminal>> feed) {
+std::pair<float, float> DeepFlow::run(std::shared_ptr<OutputTerminal> loss, std::shared_ptr<OutputTerminal> accuracy, std::map<std::string, std::shared_ptr<OutputTerminal>> feed) {
 	
 	std::set<std::shared_ptr<Reader>> readers;
 	std::unordered_map<std::shared_ptr<OutputTerminal>, std::shared_ptr<OutputTerminal>> mapReaderTerminalToPlaceHolderOutput;

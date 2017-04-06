@@ -23,7 +23,7 @@ void Relu::initForward() {
 	_negative_slope = _param.op_relu_param().negative_slope();
 	LOG_IF(FATAL, _negative_slope > 0) << " negative_slope > 0";
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Initializing Relu (name: " << _name << " ) | Shape : " << _outputs[0]->value()->toString();
+	LOG(INFO) << "Initializing Relu (name: " << _name << " ) | Shape : " << _outputs[0]->value()->shape();
 }
 
 void Relu::initBackward() {

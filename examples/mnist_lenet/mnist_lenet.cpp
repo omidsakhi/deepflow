@@ -13,10 +13,10 @@ void main() {
 	auto y = df.place_holder({ 100, 10, 1, 1 }, Tensor::TensorType::Float, "y");
 	auto f1 = df.variable(df.random_uniform({ 20, 1 , 5, 5 }, -0.1f, 0.1f), "f1");
 	auto conv1 = df.conv2d(x, f1, "conv1");
-	auto pool1 = df.pooling(conv1, 2, 2, 0, 0, 2, 2, "pool1");
+	auto pool1 = df.pooling(conv1, 2, 2, 1, 1, 2, 2, "pool1");
 	auto f2 = df.variable(df.random_uniform({ 50, 20 , 5, 5 }, -0.1f, 0.1f), "f2");
 	auto conv2 = df.conv2d(pool1, f2, "conv2");
-	auto pool2 = df.pooling(conv2, 2, 2, 0, 0, 2, 2, "pool2");
+	auto pool2 = df.pooling(conv2, 2, 2, 1, 1, 2, 2, "pool2");
 	auto w1 = df.variable(df.random_uniform({ 800, 500, 1 , 1 }, -0.1f, 0.1f), "w1");
 	auto b1 = df.variable(df.step({ 1, 500, 1 , 1 }, -1.0f, 1.0f), "b1");
 	auto a1 = df.relu(df.bias_add(df.matmul(pool2, w1), b1));
@@ -33,9 +33,9 @@ void main() {
 
 	df.global_node_initializer();
 
-	auto trainer = df.gain_solver(loss, 2000, 0.9999f, 0.0001f, 100, 0.1, 0.05, 0.95);
+	auto trainer = df.gain_solver(loss, 2000, 0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f);
 	int epoch = 1;
-	for (int iteration = 0; iteration < 10000; ++iteration) {
+	for (int iteration = 0; iteration < 1000; ++iteration) {
 		x->feed(mnist_trainset->output(0));
 		y->feed(mnist_trainset->output(1));
 		trainer->train_step();

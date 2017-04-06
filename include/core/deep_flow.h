@@ -83,7 +83,7 @@ public:
 
 	void eval(std::shared_ptr<OutputTerminal> terminal);
 	
-	std::pair<float,float> run(std::shared_ptr<OutputTerminal> loss, std::shared_ptr<OutputTerminal> accuracy, std::unordered_map<std::string, std::shared_ptr<OutputTerminal>> feed);
+	std::pair<float,float> run(std::shared_ptr<OutputTerminal> loss, std::shared_ptr<OutputTerminal> accuracy, std::map<std::string, std::shared_ptr<OutputTerminal>> feed);
 
 	std::shared_ptr<Node> findNodeByName(const std::string &name) const;
 	std::string getUniqueNodeName(const std::string &prefix) const;

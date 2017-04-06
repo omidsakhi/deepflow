@@ -21,7 +21,7 @@ Square::Square(const NodeParam &param) : Node(param) {
 
 void Square::initForward() {		
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Initializing Square (name: " << _name << " ) | Shape : " << _outputs[0]->value()->toString();
+	LOG(INFO) << "Initializing Square (name: " << _name << " ) | Shape : " << _outputs[0]->value()->shape();
 }
 
 void Square::initBackward() {

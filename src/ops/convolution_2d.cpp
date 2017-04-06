@@ -19,7 +19,7 @@ void Convolution2D::initForward() {
 	int n, c, h, w;
 	LOG_IF(FATAL, cudnnGetConvolution2dForwardOutputDim(_convDesc, _inputs[0]->value()->descriptor(), _filterDesc, &n, &c, &h, &w) != 0);	
 	_outputs[0]->initValue({ n, c, h, w });
-	LOG(INFO) << "Initializing Convolution (name: " << _name << " ) - " << _inputs[0]->value()->toString() << " * " << _inputs[1]->value()->toString() << " -> " << _outputs[0]->value()->toString();	
+	LOG(INFO) << "Initializing Convolution (name: " << _name << " ) - " << _inputs[0]->value()->shape() << " * " << _inputs[1]->value()->shape() << " -> " << _outputs[0]->value()->shape();	
 	LOG_IF(FATAL, cudnnGetConvolutionForwardAlgorithm(_cudnnHandle, _inputs[0]->value()->descriptor(), _filterDesc, _convDesc, _outputs[0]->value()->descriptor(), CUDNN_CONVOLUTION_FWD_PREFER_FASTEST, 0, &_fwdAlgo) != 0);
 	LOG_IF(FATAL, cudnnGetConvolutionForwardWorkspaceSize(_cudnnHandle, _inputs[0]->value()->descriptor(), _filterDesc, _convDesc, _outputs[0]->value()->descriptor(), _fwdAlgo, &_fwdWorkspaceSize) != 0);
 	_maxWorkspaceSize = _fwdWorkspaceSize; 
