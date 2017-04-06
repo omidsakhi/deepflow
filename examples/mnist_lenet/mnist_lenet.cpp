@@ -35,7 +35,7 @@ void main() {
 
 	auto trainer = df.gain_solver(loss, 2000, 0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f);
 	int epoch = 1;
-	for (int iteration = 0; iteration < 1000; ++iteration) {
+	for (int iteration = 0; iteration < 100; ++iteration) {
 		x->feed(mnist_trainset->output(0));
 		y->feed(mnist_trainset->output(1));
 		trainer->train_step();
@@ -46,5 +46,7 @@ void main() {
 		}
 		mnist_trainset->nextBatch();
 	}	
+
+	df.saveAsString("./network.prototxt");
 }
 

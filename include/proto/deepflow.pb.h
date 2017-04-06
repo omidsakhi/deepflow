@@ -57,6 +57,9 @@ extern LossParamDefaultTypeInternal _LossParam_default_instance_;
 class MnistReaderParam;
 class MnistReaderParamDefaultTypeInternal;
 extern MnistReaderParamDefaultTypeInternal _MnistReaderParam_default_instance_;
+class NetworkParam;
+class NetworkParamDefaultTypeInternal;
+extern NetworkParamDefaultTypeInternal _NetworkParam_default_instance_;
 class NodeParam;
 class NodeParamDefaultTypeInternal;
 extern NodeParamDefaultTypeInternal _NodeParam_default_instance_;
@@ -1831,6 +1834,50 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
+  // repeated string inputs = 2;
+  int inputs_size() const;
+  void clear_inputs();
+  static const int kInputsFieldNumber = 2;
+  const ::std::string& inputs(int index) const;
+  ::std::string* mutable_inputs(int index);
+  void set_inputs(int index, const ::std::string& value);
+  #if LANG_CXX11
+  void set_inputs(int index, ::std::string&& value);
+  #endif
+  void set_inputs(int index, const char* value);
+  void set_inputs(int index, const char* value, size_t size);
+  ::std::string* add_inputs();
+  void add_inputs(const ::std::string& value);
+  #if LANG_CXX11
+  void add_inputs(::std::string&& value);
+  #endif
+  void add_inputs(const char* value);
+  void add_inputs(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& inputs() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_inputs();
+
+  // repeated string outputs = 3;
+  int outputs_size() const;
+  void clear_outputs();
+  static const int kOutputsFieldNumber = 3;
+  const ::std::string& outputs(int index) const;
+  ::std::string* mutable_outputs(int index);
+  void set_outputs(int index, const ::std::string& value);
+  #if LANG_CXX11
+  void set_outputs(int index, ::std::string&& value);
+  #endif
+  void set_outputs(int index, const char* value);
+  void set_outputs(int index, const char* value, size_t size);
+  ::std::string* add_outputs();
+  void add_outputs(const ::std::string& value);
+  #if LANG_CXX11
+  void add_outputs(::std::string&& value);
+  #endif
+  void add_outputs(const char* value);
+  void add_outputs(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& outputs() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_outputs();
+
   // string name = 1;
   void clear_name();
   static const int kNameFieldNumber = 1;
@@ -2011,6 +2058,8 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> inputs_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> outputs_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::TensorParam* tensor_param_;
   ::MnistReaderParam* mnist_reader_param_;
@@ -3148,6 +3197,95 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
+// -------------------------------------------------------------------
+
+class NetworkParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:NetworkParam) */ {
+ public:
+  NetworkParam();
+  virtual ~NetworkParam();
+
+  NetworkParam(const NetworkParam& from);
+
+  inline NetworkParam& operator=(const NetworkParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const NetworkParam& default_instance();
+
+  static inline const NetworkParam* internal_default_instance() {
+    return reinterpret_cast<const NetworkParam*>(
+               &_NetworkParam_default_instance_);
+  }
+
+  void Swap(NetworkParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline NetworkParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  NetworkParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const NetworkParam& from);
+  void MergeFrom(const NetworkParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(NetworkParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .NodeParam node_param = 1;
+  int node_param_size() const;
+  void clear_node_param();
+  static const int kNodeParamFieldNumber = 1;
+  const ::NodeParam& node_param(int index) const;
+  ::NodeParam* mutable_node_param(int index);
+  ::NodeParam* add_node_param();
+  ::google::protobuf::RepeatedPtrField< ::NodeParam >*
+      mutable_node_param();
+  const ::google::protobuf::RepeatedPtrField< ::NodeParam >&
+      node_param() const;
+
+  // @@protoc_insertion_point(class_scope:NetworkParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::NodeParam > node_param_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
 // ===================================================================
 
 
@@ -3846,6 +3984,140 @@ inline void NodeParam::set_allocated_name(::std::string* name) {
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
   // @@protoc_insertion_point(field_set_allocated:NodeParam.name)
+}
+
+// repeated string inputs = 2;
+inline int NodeParam::inputs_size() const {
+  return inputs_.size();
+}
+inline void NodeParam::clear_inputs() {
+  inputs_.Clear();
+}
+inline const ::std::string& NodeParam::inputs(int index) const {
+  // @@protoc_insertion_point(field_get:NodeParam.inputs)
+  return inputs_.Get(index);
+}
+inline ::std::string* NodeParam::mutable_inputs(int index) {
+  // @@protoc_insertion_point(field_mutable:NodeParam.inputs)
+  return inputs_.Mutable(index);
+}
+inline void NodeParam::set_inputs(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:NodeParam.inputs)
+  inputs_.Mutable(index)->assign(value);
+}
+#if LANG_CXX11
+inline void NodeParam::set_inputs(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:NodeParam.inputs)
+  inputs_.Mutable(index)->assign(std::move(value));
+}
+#endif
+inline void NodeParam::set_inputs(int index, const char* value) {
+  inputs_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:NodeParam.inputs)
+}
+inline void NodeParam::set_inputs(int index, const char* value, size_t size) {
+  inputs_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:NodeParam.inputs)
+}
+inline ::std::string* NodeParam::add_inputs() {
+  // @@protoc_insertion_point(field_add_mutable:NodeParam.inputs)
+  return inputs_.Add();
+}
+inline void NodeParam::add_inputs(const ::std::string& value) {
+  inputs_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:NodeParam.inputs)
+}
+#if LANG_CXX11
+inline void NodeParam::add_inputs(::std::string&& value) {
+  inputs_.Add()->assign(std::move(value));
+  // @@protoc_insertion_point(field_add:NodeParam.inputs)
+}
+#endif
+inline void NodeParam::add_inputs(const char* value) {
+  inputs_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:NodeParam.inputs)
+}
+inline void NodeParam::add_inputs(const char* value, size_t size) {
+  inputs_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:NodeParam.inputs)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+NodeParam::inputs() const {
+  // @@protoc_insertion_point(field_list:NodeParam.inputs)
+  return inputs_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+NodeParam::mutable_inputs() {
+  // @@protoc_insertion_point(field_mutable_list:NodeParam.inputs)
+  return &inputs_;
+}
+
+// repeated string outputs = 3;
+inline int NodeParam::outputs_size() const {
+  return outputs_.size();
+}
+inline void NodeParam::clear_outputs() {
+  outputs_.Clear();
+}
+inline const ::std::string& NodeParam::outputs(int index) const {
+  // @@protoc_insertion_point(field_get:NodeParam.outputs)
+  return outputs_.Get(index);
+}
+inline ::std::string* NodeParam::mutable_outputs(int index) {
+  // @@protoc_insertion_point(field_mutable:NodeParam.outputs)
+  return outputs_.Mutable(index);
+}
+inline void NodeParam::set_outputs(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:NodeParam.outputs)
+  outputs_.Mutable(index)->assign(value);
+}
+#if LANG_CXX11
+inline void NodeParam::set_outputs(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:NodeParam.outputs)
+  outputs_.Mutable(index)->assign(std::move(value));
+}
+#endif
+inline void NodeParam::set_outputs(int index, const char* value) {
+  outputs_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:NodeParam.outputs)
+}
+inline void NodeParam::set_outputs(int index, const char* value, size_t size) {
+  outputs_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:NodeParam.outputs)
+}
+inline ::std::string* NodeParam::add_outputs() {
+  // @@protoc_insertion_point(field_add_mutable:NodeParam.outputs)
+  return outputs_.Add();
+}
+inline void NodeParam::add_outputs(const ::std::string& value) {
+  outputs_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:NodeParam.outputs)
+}
+#if LANG_CXX11
+inline void NodeParam::add_outputs(::std::string&& value) {
+  outputs_.Add()->assign(std::move(value));
+  // @@protoc_insertion_point(field_add:NodeParam.outputs)
+}
+#endif
+inline void NodeParam::add_outputs(const char* value) {
+  outputs_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:NodeParam.outputs)
+}
+inline void NodeParam::add_outputs(const char* value, size_t size) {
+  outputs_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:NodeParam.outputs)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+NodeParam::outputs() const {
+  // @@protoc_insertion_point(field_list:NodeParam.outputs)
+  return outputs_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+NodeParam::mutable_outputs() {
+  // @@protoc_insertion_point(field_mutable_list:NodeParam.outputs)
+  return &outputs_;
 }
 
 // .TensorParam tensor_param = 10;
@@ -5137,7 +5409,43 @@ inline void SolverParam::set_allocated_gain_solver(::GainSolverParam* gain_solve
   // @@protoc_insertion_point(field_set_allocated:SolverParam.gain_solver)
 }
 
+// -------------------------------------------------------------------
+
+// NetworkParam
+
+// repeated .NodeParam node_param = 1;
+inline int NetworkParam::node_param_size() const {
+  return node_param_.size();
+}
+inline void NetworkParam::clear_node_param() {
+  node_param_.Clear();
+}
+inline const ::NodeParam& NetworkParam::node_param(int index) const {
+  // @@protoc_insertion_point(field_get:NetworkParam.node_param)
+  return node_param_.Get(index);
+}
+inline ::NodeParam* NetworkParam::mutable_node_param(int index) {
+  // @@protoc_insertion_point(field_mutable:NetworkParam.node_param)
+  return node_param_.Mutable(index);
+}
+inline ::NodeParam* NetworkParam::add_node_param() {
+  // @@protoc_insertion_point(field_add:NetworkParam.node_param)
+  return node_param_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::NodeParam >*
+NetworkParam::mutable_node_param() {
+  // @@protoc_insertion_point(field_mutable_list:NetworkParam.node_param)
+  return &node_param_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::NodeParam >&
+NetworkParam::node_param() const {
+  // @@protoc_insertion_point(field_list:NetworkParam.node_param)
+  return node_param_;
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

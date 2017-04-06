@@ -11,10 +11,14 @@ Node::Node(const NodeParam &param) : CudaHelper() {
 }
 
 void Node::createIO() {
-	for (int i = 0; i < minNumInputs(); ++i)
-		_inputs.push_back(std::make_shared<InputTerminal>(shared_from_this(), i, name() + std::string("_input_") + std::to_string(i)));
-	for (int i = 0; i < minNumOutputs(); ++i)
+	for (int i = 0; i < minNumInputs(); ++i) {
+		_inputs.push_back(std::make_shared<InputTerminal>(shared_from_this(), i));
+		_param.add_inputs();
+	}
+	for (int i = 0; i < minNumOutputs(); ++i) {
 		_outputs.push_back(std::make_shared<OutputTerminal>(shared_from_this(), i, name() + std::string("_output_") + std::to_string(i)));
+		_param.add_outputs();
+	}
 }
 
 void Node::setVisited(bool state) {
@@ -42,7 +46,7 @@ void Node::forward() {}
 void Node::backward() {}
 
 std::string Node::name() const {
-	return _name;
+	return _name;	
 }
 
 std::vector<std::shared_ptr<InputTerminal>> & Node::inputs() {
@@ -67,4 +71,8 @@ bool Node::isInitialized() const {
 
 void Node::setInitialized(bool status) {
 	_initialized = status;
+}
+
+NodeParam &Node::param() {
+	return _param;
 }

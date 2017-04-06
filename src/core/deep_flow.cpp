@@ -5,6 +5,8 @@
 
 #include <vector>
 
+#include <fstream>
+
 std::shared_ptr<MNISTReader> DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNISTReaderType type, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
@@ -20,7 +22,7 @@ std::shared_ptr<MNISTReader> DeepFlow::mnist_reader(std::string folder_path, int
 }
 std::shared_ptr<OutputTerminal> DeepFlow::add(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name) {
 	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+	nodeParam.set_name(getUniqueNodeName(name));	
 	OpAddParam *param = nodeParam.mutable_op_add_param();
 	param->set_alpha(1.0f);
 	param->set_beta(1.0f);
@@ -496,4 +498,29 @@ std::pair<float, float> DeepFlow::run(std::shared_ptr<OutputTerminal> loss, std:
 	accuracyResult /= count;
 	lossResult /= count;	
 	return std::pair<float,float>(lossResult, accuracyResult);
+}
+
+void DeepFlow::save(std::string filePath) {
+	NetworkParam netParam;
+	for (auto node : _nodes) {
+		NodeParam *nodeParam = netParam.add_node_param();
+		nodeParam->CopyFrom(node->param());
+	}
+	std::fstream output(filePath, std::ios::out | std::ios::trunc | std::ios::binary);
+	LOG_IF(FATAL, !netParam.SerializeToOstream(&output)) << "Failed to write network.";
+}
+
+#include <google/protobuf/text_format.h>
+
+void DeepFlow::saveAsString(std::string filePath) {
+	NetworkParam netParam;
+	for (auto node : _nodes) {
+		NodeParam *nodeParam = netParam.add_node_param();
+		nodeParam->CopyFrom(node->param());
+	}
+	std::string text;	
+	google::protobuf::TextFormat::PrintToString(netParam,&text);	
+	std::ofstream out(filePath);
+	out << text;
+	out.close();	
 }

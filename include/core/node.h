@@ -53,6 +53,7 @@ public:
 	std::shared_ptr<OutputTerminal> output(int index);
 	bool isInitialized() const;
 	void setInitialized(bool status);
+	NodeParam &param();
 protected:	
 	std::vector<std::shared_ptr<InputTerminal>> _inputs;
 	std::vector<std::shared_ptr<OutputTerminal>> _outputs;

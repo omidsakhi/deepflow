@@ -2,10 +2,9 @@
 
 #include "core/node.h"
 
-Terminal::Terminal(std::shared_ptr<Node> parentNode, int index, const std::string &name, TerminalType type) {
+Terminal::Terminal(std::shared_ptr<Node> parentNode, int index, TerminalType type) {
 	_parentNode = parentNode;
-	_index = index;
-	_name = name;	
+	_index = index;	
 	_type = type;
 }
 
@@ -13,7 +12,11 @@ const TerminalType& Terminal::type() const {
 	return _type;
 }
 
-const std::string& Terminal::name() const {
+const std::string& InputTerminal::name() const {
+	return _terminal->name();
+}
+
+const std::string& OutputTerminal::name() const {
 	return _name;
 }
 
@@ -23,6 +26,8 @@ const int& Terminal::index() const {
 
 void InputTerminal::connect(std::shared_ptr<OutputTerminal> terminal) {
 	_terminal = terminal;
+	_parentNode->param().set_inputs(_index, terminal->name());
+	_terminal->node()->param().set_outputs(_terminal->index(), terminal->name());
 }
 
 std::shared_ptr<Node> Terminal::node() const {
@@ -33,10 +38,11 @@ std::shared_ptr<Node> Terminal::connectedNode() const {
 		return _terminal->node();
 	return 0;
 }
-InputTerminal::InputTerminal(std::shared_ptr<Node> parentNode, int index, const std::string &name) : Terminal(parentNode, index, name, TerminalType::Input) {
+InputTerminal::InputTerminal(std::shared_ptr<Node> parentNode, int index) : Terminal(parentNode, index, TerminalType::Input) {
 }
 
-OutputTerminal::OutputTerminal(std::shared_ptr<Node> parentNode, int index, const std::string &name) : Terminal(parentNode, index, name, TerminalType::Output) {
+OutputTerminal::OutputTerminal(std::shared_ptr<Node> parentNode, int index, const std::string &name) : Terminal(parentNode, index, TerminalType::Output) {
+	_name = name;
 }
 
 std::shared_ptr<Tensor> InputTerminal::value() {	

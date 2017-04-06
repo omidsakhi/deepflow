@@ -80,15 +80,14 @@ public:
 	std::shared_ptr<SGDSolver> sgd_solver(std::shared_ptr<OutputTerminal> loss, int max_iteration, float momentum, float learning_rate);
 	std::shared_ptr<GainSolver> gain_solver(std::shared_ptr<OutputTerminal> loss, int max_iteration = 1000, float momentum = 0.99999, float learning_rate = 0.0001, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f);
 	
+	// UTILITIES
 	void global_node_initializer();
-
-	void eval(std::shared_ptr<OutputTerminal> terminal);
-	
+	void eval(std::shared_ptr<OutputTerminal> terminal);	
 	std::pair<float,float> run(std::shared_ptr<OutputTerminal> loss, std::shared_ptr<OutputTerminal> accuracy, std::map<std::string, std::shared_ptr<OutputTerminal>> feed);
-
 	std::shared_ptr<Node> findNodeByName(const std::string &name) const;
 	std::string getUniqueNodeName(const std::string &prefix) const;
-
+	void save(std::string filePath);
+	void saveAsString(std::string filePath);
 
 private:
 	std::list<std::shared_ptr<Node>> _nodes;

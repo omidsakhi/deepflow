@@ -15,19 +15,18 @@ enum TerminalType {
 
 class DeepFlowDllExport Terminal {
 public :
-	Terminal(std::shared_ptr<Node> parentNode, int index, const std::string &name, TerminalType type);	
+	Terminal(std::shared_ptr<Node> parentNode, int index, TerminalType type);	
 	std::shared_ptr<Node> node() const;
 	std::shared_ptr<Node> connectedNode() const;
 	const TerminalType& type() const;
 	virtual std::array<int, 4> dims() = 0;
 	virtual std::shared_ptr<Tensor> value() = 0;
 	virtual std::shared_ptr<Tensor> diff() = 0;
-	const std::string& name() const;
+	virtual const std::string& name() const = 0;
 	const int& index() const;
 protected:
 	std::shared_ptr<Node> _parentNode;
-	int _index;
-	std::string _name;
+	int _index;	
 	std::shared_ptr<Terminal> _terminal;
 	TerminalType _type;
 };
@@ -36,11 +35,12 @@ class OutputTerminal;
 
 class DeepFlowDllExport InputTerminal : public Terminal {
 public:
-	InputTerminal(std::shared_ptr<Node> parentNode, int index, const std::string &name);	
+	InputTerminal(std::shared_ptr<Node> parentNode, int index);	
 	void connect(std::shared_ptr<OutputTerminal> terminal);
 	std::array<int, 4> dims();
 	std::shared_ptr<Tensor> value();
 	std::shared_ptr<Tensor> diff();
+	virtual const std::string& name() const;
 };
 
 class DeepFlowDllExport OutputTerminal : public Terminal {
@@ -53,7 +53,9 @@ public:
 	void cpyValueToDiff();
 	std::shared_ptr<Tensor> value();
 	std::shared_ptr<Tensor> diff();
+	virtual const std::string& name() const;
 protected:
 	std::shared_ptr<Tensor> _value;
 	std::shared_ptr<Tensor> _diff;
+	std::string _name;
 };
