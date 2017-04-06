@@ -61,6 +61,7 @@ public:
 	std::shared_ptr<OutputTerminal> matmul(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name = "InnerProduct");
 	std::shared_ptr<OutputTerminal> relu(std::shared_ptr<OutputTerminal> a, float negative_slope = -0.01f, std::string name = "Relu");
 	std::shared_ptr<OutputTerminal> dropout(std::shared_ptr<OutputTerminal> a, float dropout = 0.5f, std::string name = "Dropout");
+	std::shared_ptr<OutputTerminal> conv2d(std::shared_ptr<OutputTerminal> input, std::shared_ptr<OutputTerminal> filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation , std::string name = "Conv");
 	std::shared_ptr<OutputTerminal> conv2d(std::shared_ptr<OutputTerminal> input, std::shared_ptr<OutputTerminal> filter, std::string name = "Conv");
 	std::shared_ptr<OutputTerminal> pooling(std::shared_ptr<OutputTerminal> input, int windowHeight = 3, int windowWidth = 3, int verticalPadding = 0, int horizontalPadding = 0, int verticalStride = 1, int horizontalStride = 1, std::string name = "MaxPool");
 	std::shared_ptr<OutputTerminal> argmax(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name = "ReduceArgmax");

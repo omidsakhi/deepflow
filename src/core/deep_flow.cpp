@@ -279,6 +279,24 @@ std::shared_ptr<OutputTerminal> DeepFlow::dropout(std::shared_ptr<OutputTerminal
 	return node->output(0);
 }
 
+std::shared_ptr<OutputTerminal> DeepFlow::conv2d(std::shared_ptr<OutputTerminal> input, std::shared_ptr<OutputTerminal> filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name) {
+	NodeParam nodeParam;
+	nodeParam.set_name(getUniqueNodeName(name));
+	OpConv2dParam *param = nodeParam.mutable_op_conv_2d_param();
+	param->set_pad_h(pad_top_bottom);
+	param->set_pad_w(pad_left_right);
+	param->set_u(vertical_filter_stride);
+	param->set_v(horizontal_filter_stride);
+	param->set_dilation_h(filter_height_dilation);
+	param->set_dilation_w(filter_width_dialation);
+	auto node = std::make_shared<Convolution2D>(nodeParam);
+	node->createIO();
+	node->input(0)->connect(input);
+	node->input(1)->connect(filter);
+	_nodes.push_back(node);
+	return node->output(0);
+}
+
 std::shared_ptr<OutputTerminal> DeepFlow::conv2d(std::shared_ptr<OutputTerminal> input, std::shared_ptr<OutputTerminal> filter, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
@@ -287,8 +305,8 @@ std::shared_ptr<OutputTerminal> DeepFlow::conv2d(std::shared_ptr<OutputTerminal>
 	param->set_pad_w(0);
 	param->set_u(1);
 	param->set_v(1);
-	param->set_upscale_x(1);
-	param->set_upscale_y(1);
+	param->set_dilation_h(1);
+	param->set_dilation_w(1);
 	auto node = std::make_shared<Convolution2D>(nodeParam);
 	node->createIO();
 	node->input(0)->connect(input);

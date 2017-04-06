@@ -124,8 +124,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OpConv2dParam, pad_w_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OpConv2dParam, u_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OpConv2dParam, v_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OpConv2dParam, upscale_x_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OpConv2dParam, upscale_y_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OpConv2dParam, dilation_h_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OpConv2dParam, dilation_w_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OpDropoutParam, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -533,70 +533,70 @@ void AddDescriptorsImpl() {
       "am\"v\n\016OpPoolingParam\022\020\n\010window_h\030\001 \001(\005\022\020"
       "\n\010window_w\030\002 \001(\005\022\r\n\005h_pad\030\003 \001(\005\022\r\n\005v_pad"
       "\030\004 \001(\005\022\020\n\010h_stride\030\005 \001(\005\022\020\n\010v_stride\030\006 \001"
-      "(\005\"i\n\rOpConv2dParam\022\r\n\005pad_h\030\001 \001(\005\022\r\n\005pa"
-      "d_w\030\002 \001(\005\022\t\n\001u\030\003 \001(\005\022\t\n\001v\030\004 \001(\005\022\021\n\tupsca"
-      "le_x\030\005 \001(\005\022\021\n\tupscale_y\030\006 \001(\005\"!\n\016OpDropo"
-      "utParam\022\017\n\007dropout\030\001 \001(\002\",\n\rOpMatMulPara"
-      "m\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"%\n\013OpRelu"
-      "Param\022\026\n\016negative_slope\030\001 \001(\002\"\250\001\n\rOpRedu"
-      "ceParam\022*\n\treduce_op\030\001 \001(\0162\027.OpReducePar"
-      "am.ReduceOp\022\022\n\nreduce_dim\030\002 \001(\005\"W\n\010Reduc"
-      "eOp\022\007\n\003ADD\020\000\022\007\n\003MUL\020\001\022\007\n\003MIN\020\002\022\007\n\003MAX\020\003\022"
-      "\010\n\004AMAX\020\004\022\007\n\003AVG\020\005\022\t\n\005NORM1\020\006\022\t\n\005NORM2\020\007"
-      "\"v\n\rSnapshotParam\022\031\n\021snapshot_interval\030\001"
-      " \001(\005\022\027\n\017snapshot_prefix\030\002 \001(\t\022\030\n\020per_ima"
-      "ge_height\030\003 \001(\005\022\027\n\017per_image_width\030\004 \001(\005"
-      "\"\022\n\020PlaceHolderParam\"7\n\rVariableParam\022&\n"
-      "\016snapshot_param\030\001 \001(\0132\016.SnapshotParam\"\014\n"
-      "\nBlockParam\":\n\tLossParam\022-\n\022softmax_loss"
-      "_param\030\001 \001(\0132\021.SoftmaxLossParam\"\212\001\n\020Mnis"
-      "tReaderParam\022\023\n\013folder_path\030\001 \001(\t\022\022\n\nbat"
-      "ch_size\030\002 \001(\005\022*\n\004type\030\003 \001(\0162\034.MnistReade"
-      "rParam.ReaderType\"!\n\nReaderType\022\t\n\005TRAIN"
-      "\020\000\022\010\n\004TEST\020\001\"\357\005\n\tNodeParam\022\014\n\004name\030\001 \001(\t"
-      "\022\"\n\014tensor_param\030\n \001(\0132\014.TensorParam\022-\n\022"
-      "mnist_reader_param\030\024 \001(\0132\021.MnistReaderPa"
-      "ram\022&\n\016variable_param\030\036 \001(\0132\016.VariablePa"
-      "ram\022-\n\022place_holder_param\030\037 \001(\0132\021.PlaceH"
-      "olderParam\022 \n\013block_param\030( \001(\0132\013.BlockP"
-      "aram\022\036\n\nloss_param\0302 \001(\0132\n.LossParam\022!\n\014"
-      "op_add_param\030< \001(\0132\013.OpAddParam\022*\n\021op_bi"
-      "as_add_param\030= \001(\0132\017.OpBiasAddParam\022(\n\020o"
-      "p_conv_2d_param\030> \001(\0132\016.OpConv2dParam\022)\n"
-      "\020op_dropout_param\030\? \001(\0132\017.OpDropoutParam"
-      "\022#\n\rop_relu_param\030@ \001(\0132\014.OpReluParam\022)\n"
-      "\020op_softmax_param\030A \001(\0132\017.OpSoftmaxParam"
-      "\022\'\n\017op_square_param\030B \001(\0132\016.OpSquarePara"
-      "m\022\'\n\017op_matmul_param\030C \001(\0132\016.OpMatMulPar"
-      "am\022)\n\020op_pooling_param\030D \001(\0132\017.OpPooling"
-      "Param\022\'\n\017op_argmax_param\030E \001(\0132\016.OpArgma"
-      "xParam\022\'\n\017op_reduce_param\030F \001(\0132\016.OpRedu"
-      "ceParam\022%\n\016op_equal_param\030G \001(\0132\r.OpEqua"
-      "lParam\"\017\n\rOpArgmaxParam\"\017\n\rOpSquareParam"
-      "\"/\n\020SoftmaxLossParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004b"
-      "eta\030\002 \001(\002\"-\n\016OpSoftmaxParam\022\r\n\005alpha\030\001 \001"
-      "(\002\022\014\n\004beta\030\002 \001(\002\"\036\n\rInitFillParam\022\r\n\005val"
-      "ue\030\001 \001(\002\"$\n\022InitIndexFillParam\022\016\n\006offset"
-      "\030\001 \001(\002\"2\n\026InitRandomUniformParam\022\013\n\003min\030"
-      "\001 \001(\002\022\013\n\003max\030\002 \001(\002\")\n\rInitStepParam\022\013\n\003m"
-      "in\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"\335\001\n\tInitParam\022\"\n\014t"
-      "ensor_param\030\001 \001(\0132\014.TensorParam\022\"\n\nfill_"
-      "param\030\002 \001(\0132\016.InitFillParam\022-\n\020index_fil"
-      "l_param\030\003 \001(\0132\023.InitIndexFillParam\0225\n\024ra"
-      "ndom_uniform_param\030\004 \001(\0132\027.InitRandomUni"
-      "formParam\022\"\n\nstep_param\030\005 \001(\0132\016.InitStep"
-      "Param\"9\n\016SGDSolverParam\022\020\n\010momentum\030\001 \001("
-      "\002\022\025\n\rlearning_rate\030\002 \001(\002\"\204\001\n\017GainSolverP"
-      "aram\022\020\n\010momentum\030\001 \001(\002\022\025\n\rlearning_rate\030"
-      "\002 \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020\n\010min_gain\030\004 \001("
-      "\002\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tgain_mult\030\006 \001(\002\""
-      "p\n\013SolverParam\022\025\n\rmax_iteration\030\001 \001(\005\022#\n"
-      "\nsgd_solver\030\002 \001(\0132\017.SGDSolverParam\022%\n\013ga"
-      "in_solver\030\003 \001(\0132\020.GainSolverParamb\006proto"
-      "3"
+      "(\005\"k\n\rOpConv2dParam\022\r\n\005pad_h\030\001 \001(\005\022\r\n\005pa"
+      "d_w\030\002 \001(\005\022\t\n\001u\030\003 \001(\005\022\t\n\001v\030\004 \001(\005\022\022\n\ndilat"
+      "ion_h\030\005 \001(\005\022\022\n\ndilation_w\030\006 \001(\005\"!\n\016OpDro"
+      "poutParam\022\017\n\007dropout\030\001 \001(\002\",\n\rOpMatMulPa"
+      "ram\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"%\n\013OpRe"
+      "luParam\022\026\n\016negative_slope\030\001 \001(\002\"\250\001\n\rOpRe"
+      "duceParam\022*\n\treduce_op\030\001 \001(\0162\027.OpReduceP"
+      "aram.ReduceOp\022\022\n\nreduce_dim\030\002 \001(\005\"W\n\010Red"
+      "uceOp\022\007\n\003ADD\020\000\022\007\n\003MUL\020\001\022\007\n\003MIN\020\002\022\007\n\003MAX\020"
+      "\003\022\010\n\004AMAX\020\004\022\007\n\003AVG\020\005\022\t\n\005NORM1\020\006\022\t\n\005NORM2"
+      "\020\007\"v\n\rSnapshotParam\022\031\n\021snapshot_interval"
+      "\030\001 \001(\005\022\027\n\017snapshot_prefix\030\002 \001(\t\022\030\n\020per_i"
+      "mage_height\030\003 \001(\005\022\027\n\017per_image_width\030\004 \001"
+      "(\005\"\022\n\020PlaceHolderParam\"7\n\rVariableParam\022"
+      "&\n\016snapshot_param\030\001 \001(\0132\016.SnapshotParam\""
+      "\014\n\nBlockParam\":\n\tLossParam\022-\n\022softmax_lo"
+      "ss_param\030\001 \001(\0132\021.SoftmaxLossParam\"\212\001\n\020Mn"
+      "istReaderParam\022\023\n\013folder_path\030\001 \001(\t\022\022\n\nb"
+      "atch_size\030\002 \001(\005\022*\n\004type\030\003 \001(\0162\034.MnistRea"
+      "derParam.ReaderType\"!\n\nReaderType\022\t\n\005TRA"
+      "IN\020\000\022\010\n\004TEST\020\001\"\357\005\n\tNodeParam\022\014\n\004name\030\001 \001"
+      "(\t\022\"\n\014tensor_param\030\n \001(\0132\014.TensorParam\022-"
+      "\n\022mnist_reader_param\030\024 \001(\0132\021.MnistReader"
+      "Param\022&\n\016variable_param\030\036 \001(\0132\016.Variable"
+      "Param\022-\n\022place_holder_param\030\037 \001(\0132\021.Plac"
+      "eHolderParam\022 \n\013block_param\030( \001(\0132\013.Bloc"
+      "kParam\022\036\n\nloss_param\0302 \001(\0132\n.LossParam\022!"
+      "\n\014op_add_param\030< \001(\0132\013.OpAddParam\022*\n\021op_"
+      "bias_add_param\030= \001(\0132\017.OpBiasAddParam\022(\n"
+      "\020op_conv_2d_param\030> \001(\0132\016.OpConv2dParam\022"
+      ")\n\020op_dropout_param\030\? \001(\0132\017.OpDropoutPar"
+      "am\022#\n\rop_relu_param\030@ \001(\0132\014.OpReluParam\022"
+      ")\n\020op_softmax_param\030A \001(\0132\017.OpSoftmaxPar"
+      "am\022\'\n\017op_square_param\030B \001(\0132\016.OpSquarePa"
+      "ram\022\'\n\017op_matmul_param\030C \001(\0132\016.OpMatMulP"
+      "aram\022)\n\020op_pooling_param\030D \001(\0132\017.OpPooli"
+      "ngParam\022\'\n\017op_argmax_param\030E \001(\0132\016.OpArg"
+      "maxParam\022\'\n\017op_reduce_param\030F \001(\0132\016.OpRe"
+      "duceParam\022%\n\016op_equal_param\030G \001(\0132\r.OpEq"
+      "ualParam\"\017\n\rOpArgmaxParam\"\017\n\rOpSquarePar"
+      "am\"/\n\020SoftmaxLossParam\022\r\n\005alpha\030\001 \001(\002\022\014\n"
+      "\004beta\030\002 \001(\002\"-\n\016OpSoftmaxParam\022\r\n\005alpha\030\001"
+      " \001(\002\022\014\n\004beta\030\002 \001(\002\"\036\n\rInitFillParam\022\r\n\005v"
+      "alue\030\001 \001(\002\"$\n\022InitIndexFillParam\022\016\n\006offs"
+      "et\030\001 \001(\002\"2\n\026InitRandomUniformParam\022\013\n\003mi"
+      "n\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\")\n\rInitStepParam\022\013\n"
+      "\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"\335\001\n\tInitParam\022\"\n"
+      "\014tensor_param\030\001 \001(\0132\014.TensorParam\022\"\n\nfil"
+      "l_param\030\002 \001(\0132\016.InitFillParam\022-\n\020index_f"
+      "ill_param\030\003 \001(\0132\023.InitIndexFillParam\0225\n\024"
+      "random_uniform_param\030\004 \001(\0132\027.InitRandomU"
+      "niformParam\022\"\n\nstep_param\030\005 \001(\0132\016.InitSt"
+      "epParam\"9\n\016SGDSolverParam\022\020\n\010momentum\030\001 "
+      "\001(\002\022\025\n\rlearning_rate\030\002 \001(\002\"\204\001\n\017GainSolve"
+      "rParam\022\020\n\010momentum\030\001 \001(\002\022\025\n\rlearning_rat"
+      "e\030\002 \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020\n\010min_gain\030\004 "
+      "\001(\002\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tgain_mult\030\006 \001("
+      "\002\"p\n\013SolverParam\022\025\n\rmax_iteration\030\001 \001(\005\022"
+      "#\n\nsgd_solver\030\002 \001(\0132\017.SGDSolverParam\022%\n\013"
+      "gain_solver\030\003 \001(\0132\020.GainSolverParamb\006pro"
+      "to3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 2761);
+      descriptor, 2763);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -2118,8 +2118,8 @@ const int OpConv2dParam::kPadHFieldNumber;
 const int OpConv2dParam::kPadWFieldNumber;
 const int OpConv2dParam::kUFieldNumber;
 const int OpConv2dParam::kVFieldNumber;
-const int OpConv2dParam::kUpscaleXFieldNumber;
-const int OpConv2dParam::kUpscaleYFieldNumber;
+const int OpConv2dParam::kDilationHFieldNumber;
+const int OpConv2dParam::kDilationWFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 OpConv2dParam::OpConv2dParam()
@@ -2136,14 +2136,14 @@ OpConv2dParam::OpConv2dParam(const OpConv2dParam& from)
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&pad_h_, &from.pad_h_,
-    reinterpret_cast<char*>(&upscale_y_) -
-    reinterpret_cast<char*>(&pad_h_) + sizeof(upscale_y_));
+    reinterpret_cast<char*>(&dilation_w_) -
+    reinterpret_cast<char*>(&pad_h_) + sizeof(dilation_w_));
   // @@protoc_insertion_point(copy_constructor:OpConv2dParam)
 }
 
 void OpConv2dParam::SharedCtor() {
-  ::memset(&pad_h_, 0, reinterpret_cast<char*>(&upscale_y_) -
-    reinterpret_cast<char*>(&pad_h_) + sizeof(upscale_y_));
+  ::memset(&pad_h_, 0, reinterpret_cast<char*>(&dilation_w_) -
+    reinterpret_cast<char*>(&pad_h_) + sizeof(dilation_w_));
   _cached_size_ = 0;
 }
 
@@ -2180,8 +2180,8 @@ OpConv2dParam* OpConv2dParam::New(::google::protobuf::Arena* arena) const {
 
 void OpConv2dParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:OpConv2dParam)
-  ::memset(&pad_h_, 0, reinterpret_cast<char*>(&upscale_y_) -
-    reinterpret_cast<char*>(&pad_h_) + sizeof(upscale_y_));
+  ::memset(&pad_h_, 0, reinterpret_cast<char*>(&dilation_w_) -
+    reinterpret_cast<char*>(&pad_h_) + sizeof(dilation_w_));
 }
 
 bool OpConv2dParam::MergePartialFromCodedStream(
@@ -2250,28 +2250,28 @@ bool OpConv2dParam::MergePartialFromCodedStream(
         break;
       }
 
-      // int32 upscale_x = 5;
+      // int32 dilation_h = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(40u)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &upscale_x_)));
+                 input, &dilation_h_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int32 upscale_y = 6;
+      // int32 dilation_w = 6;
       case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(48u)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &upscale_y_)));
+                 input, &dilation_w_)));
         } else {
           goto handle_unusual;
         }
@@ -2322,14 +2322,14 @@ void OpConv2dParam::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->v(), output);
   }
 
-  // int32 upscale_x = 5;
-  if (this->upscale_x() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->upscale_x(), output);
+  // int32 dilation_h = 5;
+  if (this->dilation_h() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->dilation_h(), output);
   }
 
-  // int32 upscale_y = 6;
-  if (this->upscale_y() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->upscale_y(), output);
+  // int32 dilation_w = 6;
+  if (this->dilation_w() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->dilation_w(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:OpConv2dParam)
@@ -2359,14 +2359,14 @@ void OpConv2dParam::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->v(), target);
   }
 
-  // int32 upscale_x = 5;
-  if (this->upscale_x() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->upscale_x(), target);
+  // int32 dilation_h = 5;
+  if (this->dilation_h() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->dilation_h(), target);
   }
 
-  // int32 upscale_y = 6;
-  if (this->upscale_y() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->upscale_y(), target);
+  // int32 dilation_w = 6;
+  if (this->dilation_w() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->dilation_w(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:OpConv2dParam)
@@ -2405,18 +2405,18 @@ size_t OpConv2dParam::ByteSizeLong() const {
         this->v());
   }
 
-  // int32 upscale_x = 5;
-  if (this->upscale_x() != 0) {
+  // int32 dilation_h = 5;
+  if (this->dilation_h() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->upscale_x());
+        this->dilation_h());
   }
 
-  // int32 upscale_y = 6;
-  if (this->upscale_y() != 0) {
+  // int32 dilation_w = 6;
+  if (this->dilation_w() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->upscale_y());
+        this->dilation_w());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2457,11 +2457,11 @@ void OpConv2dParam::MergeFrom(const OpConv2dParam& from) {
   if (from.v() != 0) {
     set_v(from.v());
   }
-  if (from.upscale_x() != 0) {
-    set_upscale_x(from.upscale_x());
+  if (from.dilation_h() != 0) {
+    set_dilation_h(from.dilation_h());
   }
-  if (from.upscale_y() != 0) {
-    set_upscale_y(from.upscale_y());
+  if (from.dilation_w() != 0) {
+    set_dilation_w(from.dilation_w());
   }
 }
 
@@ -2492,8 +2492,8 @@ void OpConv2dParam::InternalSwap(OpConv2dParam* other) {
   std::swap(pad_w_, other->pad_w_);
   std::swap(u_, other->u_);
   std::swap(v_, other->v_);
-  std::swap(upscale_x_, other->upscale_x_);
-  std::swap(upscale_y_, other->upscale_y_);
+  std::swap(dilation_h_, other->dilation_h_);
+  std::swap(dilation_w_, other->dilation_w_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -2561,32 +2561,32 @@ void OpConv2dParam::set_v(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:OpConv2dParam.v)
 }
 
-// int32 upscale_x = 5;
-void OpConv2dParam::clear_upscale_x() {
-  upscale_x_ = 0;
+// int32 dilation_h = 5;
+void OpConv2dParam::clear_dilation_h() {
+  dilation_h_ = 0;
 }
-::google::protobuf::int32 OpConv2dParam::upscale_x() const {
-  // @@protoc_insertion_point(field_get:OpConv2dParam.upscale_x)
-  return upscale_x_;
+::google::protobuf::int32 OpConv2dParam::dilation_h() const {
+  // @@protoc_insertion_point(field_get:OpConv2dParam.dilation_h)
+  return dilation_h_;
 }
-void OpConv2dParam::set_upscale_x(::google::protobuf::int32 value) {
+void OpConv2dParam::set_dilation_h(::google::protobuf::int32 value) {
   
-  upscale_x_ = value;
-  // @@protoc_insertion_point(field_set:OpConv2dParam.upscale_x)
+  dilation_h_ = value;
+  // @@protoc_insertion_point(field_set:OpConv2dParam.dilation_h)
 }
 
-// int32 upscale_y = 6;
-void OpConv2dParam::clear_upscale_y() {
-  upscale_y_ = 0;
+// int32 dilation_w = 6;
+void OpConv2dParam::clear_dilation_w() {
+  dilation_w_ = 0;
 }
-::google::protobuf::int32 OpConv2dParam::upscale_y() const {
-  // @@protoc_insertion_point(field_get:OpConv2dParam.upscale_y)
-  return upscale_y_;
+::google::protobuf::int32 OpConv2dParam::dilation_w() const {
+  // @@protoc_insertion_point(field_get:OpConv2dParam.dilation_w)
+  return dilation_w_;
 }
-void OpConv2dParam::set_upscale_y(::google::protobuf::int32 value) {
+void OpConv2dParam::set_dilation_w(::google::protobuf::int32 value) {
   
-  upscale_y_ = value;
-  // @@protoc_insertion_point(field_set:OpConv2dParam.upscale_y)
+  dilation_w_ = value;
+  // @@protoc_insertion_point(field_set:OpConv2dParam.dilation_w)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

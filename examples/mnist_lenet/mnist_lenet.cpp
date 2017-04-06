@@ -12,12 +12,12 @@ void main() {
 	auto x = df.place_holder({ 100, 1, 28, 28 }, Tensor::TensorType::Float, "x");
 	auto y = df.place_holder({ 100, 10, 1, 1 }, Tensor::TensorType::Float, "y");
 	auto f1 = df.variable(df.random_uniform({ 20, 1 , 5, 5 }, -0.1f, 0.1f), "f1");
-	auto conv1 = df.conv2d(x, f1, "conv1");
-	auto pool1 = df.pooling(conv1, 2, 2, 1, 1, 2, 2, "pool1");
+	auto conv1 = df.conv2d(x, f1, 2, 2, 1, 1, 1, 1, "conv1");
+	auto pool1 = df.pooling(conv1, 2, 2, 0, 0, 2, 2, "pool1");
 	auto f2 = df.variable(df.random_uniform({ 50, 20 , 5, 5 }, -0.1f, 0.1f), "f2");
 	auto conv2 = df.conv2d(pool1, f2, "conv2");
-	auto pool2 = df.pooling(conv2, 2, 2, 1, 1, 2, 2, "pool2");
-	auto w1 = df.variable(df.random_uniform({ 800, 500, 1 , 1 }, -0.1f, 0.1f), "w1");
+	auto pool2 = df.pooling(conv2, 2, 2, 0, 0, 2, 2, "pool2");
+	auto w1 = df.variable(df.random_uniform({ 1250, 500, 1 , 1 }, -0.1f, 0.1f), "w1");
 	auto b1 = df.variable(df.step({ 1, 500, 1 , 1 }, -1.0f, 1.0f), "b1");
 	auto a1 = df.relu(df.bias_add(df.matmul(pool2, w1), b1));
 	auto d1 = df.dropout(a1);

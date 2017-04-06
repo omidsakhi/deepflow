@@ -15,7 +15,13 @@ void Convolution2D::initForward() {
 	LOG_IF(FATAL, cudnnSetFilter4dDescriptor(_filterDesc, CUDNN_DATA_FLOAT, CUDNN_TENSOR_NCHW, filterDims[0], filterDims[1], filterDims[2], filterDims[3]) != 0);
 	OpConv2dParam *param = _param.mutable_op_conv_2d_param();
 	LOG_IF(FATAL, cudnnCreateConvolutionDescriptor(&_convDesc) != 0);
-	LOG_IF(FATAL, cudnnSetConvolution2dDescriptor(_convDesc, param->pad_h(), param->pad_w(), param->u(), param->v(), param->upscale_x(), param->upscale_y(), CUDNN_CROSS_CORRELATION, CUDNN_DATA_FLOAT) != 0);
+	LOG_IF(FATAL, param->pad_h() < 0) << "pad_top_bottom (pad_h) < 0";
+	LOG_IF(FATAL, param->pad_w() < 0) << "pad_left_right (pad_w) < 0";
+	LOG_IF(FATAL, param->u() <= 0) << "vertical_filter_stride (u) <= 0";
+	LOG_IF(FATAL, param->v() <= 0) << "horizontal_filter_stride (v) <= 0";
+	LOG_IF(FATAL, param->dilation_h() <= 0) << "filter_height_dilation (dilation_h) <= 0";
+	LOG_IF(FATAL, param->dilation_w() <= 0) << "filter_width_dilation (dilation_w) <= 0";
+	LOG_IF(FATAL, cudnnSetConvolution2dDescriptor(_convDesc, param->pad_h(), param->pad_w(), param->u(), param->v(), param->dilation_h(), param->dilation_w(), CUDNN_CROSS_CORRELATION, CUDNN_DATA_FLOAT) != 0);
 	int n, c, h, w;
 	LOG_IF(FATAL, cudnnGetConvolution2dForwardOutputDim(_convDesc, _inputs[0]->value()->descriptor(), _filterDesc, &n, &c, &h, &w) != 0);	
 	_outputs[0]->initValue({ n, c, h, w });

@@ -786,17 +786,17 @@ class OpConv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::int32 v() const;
   void set_v(::google::protobuf::int32 value);
 
-  // int32 upscale_x = 5;
-  void clear_upscale_x();
-  static const int kUpscaleXFieldNumber = 5;
-  ::google::protobuf::int32 upscale_x() const;
-  void set_upscale_x(::google::protobuf::int32 value);
+  // int32 dilation_h = 5;
+  void clear_dilation_h();
+  static const int kDilationHFieldNumber = 5;
+  ::google::protobuf::int32 dilation_h() const;
+  void set_dilation_h(::google::protobuf::int32 value);
 
-  // int32 upscale_y = 6;
-  void clear_upscale_y();
-  static const int kUpscaleYFieldNumber = 6;
-  ::google::protobuf::int32 upscale_y() const;
-  void set_upscale_y(::google::protobuf::int32 value);
+  // int32 dilation_w = 6;
+  void clear_dilation_w();
+  static const int kDilationWFieldNumber = 6;
+  ::google::protobuf::int32 dilation_w() const;
+  void set_dilation_w(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:OpConv2dParam)
  private:
@@ -806,8 +806,8 @@ class OpConv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::int32 pad_w_;
   ::google::protobuf::int32 u_;
   ::google::protobuf::int32 v_;
-  ::google::protobuf::int32 upscale_x_;
-  ::google::protobuf::int32 upscale_y_;
+  ::google::protobuf::int32 dilation_h_;
+  ::google::protobuf::int32 dilation_w_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3388,32 +3388,32 @@ inline void OpConv2dParam::set_v(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:OpConv2dParam.v)
 }
 
-// int32 upscale_x = 5;
-inline void OpConv2dParam::clear_upscale_x() {
-  upscale_x_ = 0;
+// int32 dilation_h = 5;
+inline void OpConv2dParam::clear_dilation_h() {
+  dilation_h_ = 0;
 }
-inline ::google::protobuf::int32 OpConv2dParam::upscale_x() const {
-  // @@protoc_insertion_point(field_get:OpConv2dParam.upscale_x)
-  return upscale_x_;
+inline ::google::protobuf::int32 OpConv2dParam::dilation_h() const {
+  // @@protoc_insertion_point(field_get:OpConv2dParam.dilation_h)
+  return dilation_h_;
 }
-inline void OpConv2dParam::set_upscale_x(::google::protobuf::int32 value) {
+inline void OpConv2dParam::set_dilation_h(::google::protobuf::int32 value) {
   
-  upscale_x_ = value;
-  // @@protoc_insertion_point(field_set:OpConv2dParam.upscale_x)
+  dilation_h_ = value;
+  // @@protoc_insertion_point(field_set:OpConv2dParam.dilation_h)
 }
 
-// int32 upscale_y = 6;
-inline void OpConv2dParam::clear_upscale_y() {
-  upscale_y_ = 0;
+// int32 dilation_w = 6;
+inline void OpConv2dParam::clear_dilation_w() {
+  dilation_w_ = 0;
 }
-inline ::google::protobuf::int32 OpConv2dParam::upscale_y() const {
-  // @@protoc_insertion_point(field_get:OpConv2dParam.upscale_y)
-  return upscale_y_;
+inline ::google::protobuf::int32 OpConv2dParam::dilation_w() const {
+  // @@protoc_insertion_point(field_get:OpConv2dParam.dilation_w)
+  return dilation_w_;
 }
-inline void OpConv2dParam::set_upscale_y(::google::protobuf::int32 value) {
+inline void OpConv2dParam::set_dilation_w(::google::protobuf::int32 value) {
   
-  upscale_y_ = value;
-  // @@protoc_insertion_point(field_set:OpConv2dParam.upscale_y)
+  dilation_w_ = value;
+  // @@protoc_insertion_point(field_set:OpConv2dParam.dilation_w)
 }
 
 // -------------------------------------------------------------------

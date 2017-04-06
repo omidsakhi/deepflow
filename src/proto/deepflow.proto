@@ -41,8 +41,8 @@ message OpConv2dParam {
 	int32 pad_w = 2;
 	int32 u = 3;
 	int32 v = 4;
-	int32 upscale_x = 5;
-	int32 upscale_y = 6;
+	int32 dilation_h = 5;
+	int32 dilation_w = 6;
 }
 
 message OpDropoutParam {
