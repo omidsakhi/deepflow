@@ -137,7 +137,7 @@ void Tensor::reset() {
 
 float Tensor::toFloat() const {
 	LOG_IF(FATAL, _type != TensorType::Float) << "_type != TensorType::Float";
-	LOG_IF(FATAL, _size != 1) << "_size != 1";
+	LOG_IF(FATAL, _size != 1) << "toFloat() - _size != 1 [FAILED]";
 	auto h_data = cpyToHost<float>();
 	return h_data->at(0);
 }

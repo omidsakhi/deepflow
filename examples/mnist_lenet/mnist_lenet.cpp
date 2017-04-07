@@ -2,9 +2,9 @@
 #include "core/deep_flow.h"
 
 void main() {
-	//CudaHelper::setOptimalThreadsPerBlock();	
+	CudaHelper::setOptimalThreadsPerBlock();	
 
-	int batch_size = 200;
+	int batch_size = 100;
 	DeepFlow df;
 	auto mnist_trainset = df.mnist_reader("./data/mnist", batch_size, MNISTReaderType::Train);
 	auto mnist_testset = df.mnist_reader("./data/mnist", batch_size, MNISTReaderType::Test);
@@ -47,12 +47,12 @@ void main() {
 				exit = true;
 			mnist_trainset->nextBatch();
 		}
-		auto train_result = df.run(mse, accuracy, { { x,mnist_trainset->output(0) },{ y,mnist_trainset->output(1) } });
-		auto test_result = df.run(mse, accuracy, { {x,mnist_testset->output(0)},{y,mnist_testset->output(1) } });		
 		std::cout << "Epoch " << epoch << "( Iteration: " << iteration << " )" << std::endl;
-		std::cout << "  Total Train Batches: " << std::get<2>(train_result) << " Train  MSE: " << std::get<0>(train_result) << " Train Accuracy: " << std::get<1>(train_result) * 100 << "%" << std::endl;
+		//auto train_result = df.run(mse, accuracy, { { x,mnist_trainset->output(0) },{ y,mnist_trainset->output(1) } });
+		//std::cout << "  Total Train Batches: " << std::get<2>(train_result) << " Train  MSE: " << std::get<0>(train_result) << " Train Accuracy: " << std::get<1>(train_result) * 100 << "%" << std::endl;
+		auto test_result = df.run(mse, accuracy, { {x,mnist_testset->output(0)},{y,mnist_testset->output(1) } });						
 		std::cout << "  Total  Test Batches: " << std::get<2>(test_result)  << "  Test  MSE: " << std::get<0>(test_result)  << "  Test Accuracy: " << std::get<1>(test_result)  * 100 << "%" << std::endl;
-	}	
+	}
 
 	df.saveAsBinary("./network.bin");
 }
