@@ -200,6 +200,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, name_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, input_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, output_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, phase_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, mnist_reader_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, variable_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, place_holder_param_),
@@ -297,6 +298,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetworkParam, node_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetworkParam, solver_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetworkParam, phase_),
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
@@ -318,19 +320,19 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 91, -1, sizeof(LossParam)},
   { 96, -1, sizeof(MnistReaderParam)},
   { 103, -1, sizeof(NodeParam)},
-  { 127, -1, sizeof(ArgmaxParam)},
-  { 131, -1, sizeof(SquareParam)},
-  { 135, -1, sizeof(SoftmaxLossParam)},
-  { 141, -1, sizeof(SoftmaxParam)},
-  { 147, -1, sizeof(InitFillParam)},
-  { 152, -1, sizeof(InitIndexFillParam)},
-  { 157, -1, sizeof(InitRandomUniformParam)},
-  { 163, -1, sizeof(InitStepParam)},
-  { 169, -1, sizeof(InitParam)},
-  { 178, -1, sizeof(SGDSolverParam)},
-  { 184, -1, sizeof(GainSolverParam)},
-  { 194, -1, sizeof(SolverParam)},
-  { 201, -1, sizeof(NetworkParam)},
+  { 128, -1, sizeof(ArgmaxParam)},
+  { 132, -1, sizeof(SquareParam)},
+  { 136, -1, sizeof(SoftmaxLossParam)},
+  { 142, -1, sizeof(SoftmaxParam)},
+  { 148, -1, sizeof(InitFillParam)},
+  { 153, -1, sizeof(InitIndexFillParam)},
+  { 158, -1, sizeof(InitRandomUniformParam)},
+  { 164, -1, sizeof(InitStepParam)},
+  { 170, -1, sizeof(InitParam)},
+  { 179, -1, sizeof(SGDSolverParam)},
+  { 185, -1, sizeof(GainSolverParam)},
+  { 195, -1, sizeof(SolverParam)},
+  { 202, -1, sizeof(NetworkParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -589,49 +591,50 @@ void AddDescriptorsImpl() {
       "am\022\023\n\013folder_path\030\001 \001(\t\022\022\n\nbatch_size\030\002 "
       "\001(\005\022*\n\004type\030\003 \001(\0162\034.MnistReaderParam.Rea"
       "derType\"!\n\nReaderType\022\t\n\005TRAIN\020\000\022\010\n\004TEST"
-      "\020\001\"\256\005\n\tNodeParam\022\014\n\004name\030\001 \001(\t\022\r\n\005input\030"
-      "\002 \003(\t\022\016\n\006output\030\003 \003(\t\022-\n\022mnist_reader_pa"
-      "ram\030\024 \001(\0132\021.MnistReaderParam\022&\n\016variable"
-      "_param\030\036 \001(\0132\016.VariableParam\022-\n\022place_ho"
-      "lder_param\030\037 \001(\0132\021.PlaceHolderParam\022 \n\013b"
-      "lock_param\030( \001(\0132\013.BlockParam\022\036\n\nloss_pa"
-      "ram\0302 \001(\0132\n.LossParam\022\034\n\tadd_param\030< \001(\013"
-      "2\t.AddParam\022%\n\016bias_add_param\030= \001(\0132\r.Bi"
-      "asAddParam\022#\n\rconv_2d_param\030> \001(\0132\014.Conv"
-      "2dParam\022$\n\rdropout_param\030\? \001(\0132\r.Dropout"
-      "Param\022\036\n\nrelu_param\030@ \001(\0132\n.ReluParam\022$\n"
-      "\rsoftmax_param\030A \001(\0132\r.SoftmaxParam\022\"\n\014s"
-      "quare_param\030B \001(\0132\014.SquareParam\022\"\n\014matmu"
-      "l_param\030C \001(\0132\014.MatMulParam\022$\n\rpooling_p"
-      "aram\030D \001(\0132\r.PoolingParam\022\"\n\014argmax_para"
-      "m\030E \001(\0132\014.ArgmaxParam\022\"\n\014reduce_param\030F "
-      "\001(\0132\014.ReduceParam\022 \n\013equal_param\030G \001(\0132\013"
-      ".EqualParam\"\r\n\013ArgmaxParam\"\r\n\013SquarePara"
-      "m\"/\n\020SoftmaxLossParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004"
-      "beta\030\002 \001(\002\"+\n\014SoftmaxParam\022\r\n\005alpha\030\001 \001("
-      "\002\022\014\n\004beta\030\002 \001(\002\"\036\n\rInitFillParam\022\r\n\005valu"
-      "e\030\001 \001(\002\"$\n\022InitIndexFillParam\022\016\n\006offset\030"
-      "\001 \001(\002\"2\n\026InitRandomUniformParam\022\013\n\003min\030\001"
-      " \001(\002\022\013\n\003max\030\002 \001(\002\")\n\rInitStepParam\022\013\n\003mi"
-      "n\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"\335\001\n\tInitParam\022\"\n\014te"
-      "nsor_param\030\001 \001(\0132\014.TensorParam\022\"\n\nfill_p"
-      "aram\030\002 \001(\0132\016.InitFillParam\022-\n\020index_fill"
-      "_param\030\003 \001(\0132\023.InitIndexFillParam\0225\n\024ran"
-      "dom_uniform_param\030\004 \001(\0132\027.InitRandomUnif"
-      "ormParam\022\"\n\nstep_param\030\005 \001(\0132\016.InitStepP"
-      "aram\"9\n\016SGDSolverParam\022\020\n\010momentum\030\001 \001(\002"
-      "\022\025\n\rlearning_rate\030\002 \001(\002\"\204\001\n\017GainSolverPa"
-      "ram\022\020\n\010momentum\030\001 \001(\002\022\025\n\rlearning_rate\030\002"
-      " \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020\n\010min_gain\030\004 \001(\002"
-      "\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tgain_mult\030\006 \001(\002\"p"
-      "\n\013SolverParam\022\025\n\rmax_iteration\030\001 \001(\005\022#\n\n"
-      "sgd_solver\030\002 \001(\0132\017.SGDSolverParam\022%\n\013gai"
-      "n_solver\030\003 \001(\0132\020.GainSolverParam\"F\n\014Netw"
-      "orkParam\022\030\n\004node\030\001 \003(\0132\n.NodeParam\022\034\n\006so"
-      "lver\030\002 \003(\0132\014.SolverParamb\006proto3"
+      "\020\001\"\275\005\n\tNodeParam\022\014\n\004name\030\001 \001(\t\022\r\n\005input\030"
+      "\002 \003(\t\022\016\n\006output\030\003 \003(\t\022\r\n\005phase\030\004 \003(\t\022-\n\022"
+      "mnist_reader_param\030\024 \001(\0132\021.MnistReaderPa"
+      "ram\022&\n\016variable_param\030\036 \001(\0132\016.VariablePa"
+      "ram\022-\n\022place_holder_param\030\037 \001(\0132\021.PlaceH"
+      "olderParam\022 \n\013block_param\030( \001(\0132\013.BlockP"
+      "aram\022\036\n\nloss_param\0302 \001(\0132\n.LossParam\022\034\n\t"
+      "add_param\030< \001(\0132\t.AddParam\022%\n\016bias_add_p"
+      "aram\030= \001(\0132\r.BiasAddParam\022#\n\rconv_2d_par"
+      "am\030> \001(\0132\014.Conv2dParam\022$\n\rdropout_param\030"
+      "\? \001(\0132\r.DropoutParam\022\036\n\nrelu_param\030@ \001(\013"
+      "2\n.ReluParam\022$\n\rsoftmax_param\030A \001(\0132\r.So"
+      "ftmaxParam\022\"\n\014square_param\030B \001(\0132\014.Squar"
+      "eParam\022\"\n\014matmul_param\030C \001(\0132\014.MatMulPar"
+      "am\022$\n\rpooling_param\030D \001(\0132\r.PoolingParam"
+      "\022\"\n\014argmax_param\030E \001(\0132\014.ArgmaxParam\022\"\n\014"
+      "reduce_param\030F \001(\0132\014.ReduceParam\022 \n\013equa"
+      "l_param\030G \001(\0132\013.EqualParam\"\r\n\013ArgmaxPara"
+      "m\"\r\n\013SquareParam\"/\n\020SoftmaxLossParam\022\r\n\005"
+      "alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"+\n\014SoftmaxPara"
+      "m\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"\036\n\rInitFi"
+      "llParam\022\r\n\005value\030\001 \001(\002\"$\n\022InitIndexFillP"
+      "aram\022\016\n\006offset\030\001 \001(\002\"2\n\026InitRandomUnifor"
+      "mParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\")\n\rInit"
+      "StepParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"\335\001\n\t"
+      "InitParam\022\"\n\014tensor_param\030\001 \001(\0132\014.Tensor"
+      "Param\022\"\n\nfill_param\030\002 \001(\0132\016.InitFillPara"
+      "m\022-\n\020index_fill_param\030\003 \001(\0132\023.InitIndexF"
+      "illParam\0225\n\024random_uniform_param\030\004 \001(\0132\027"
+      ".InitRandomUniformParam\022\"\n\nstep_param\030\005 "
+      "\001(\0132\016.InitStepParam\"9\n\016SGDSolverParam\022\020\n"
+      "\010momentum\030\001 \001(\002\022\025\n\rlearning_rate\030\002 \001(\002\"\204"
+      "\001\n\017GainSolverParam\022\020\n\010momentum\030\001 \001(\002\022\025\n\r"
+      "learning_rate\030\002 \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020\n"
+      "\010min_gain\030\004 \001(\002\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tga"
+      "in_mult\030\006 \001(\002\"p\n\013SolverParam\022\025\n\rmax_iter"
+      "ation\030\001 \001(\005\022#\n\nsgd_solver\030\002 \001(\0132\017.SGDSol"
+      "verParam\022%\n\013gain_solver\030\003 \001(\0132\020.GainSolv"
+      "erParam\"U\n\014NetworkParam\022\030\n\004node\030\001 \003(\0132\n."
+      "NodeParam\022\034\n\006solver\030\002 \003(\0132\014.SolverParam\022"
+      "\r\n\005phase\030\003 \003(\tb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 2872);
+      descriptor, 2902);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -5862,6 +5865,7 @@ void MnistReaderParam::set_type(::MnistReaderParam_ReaderType value) {
 const int NodeParam::kNameFieldNumber;
 const int NodeParam::kInputFieldNumber;
 const int NodeParam::kOutputFieldNumber;
+const int NodeParam::kPhaseFieldNumber;
 const int NodeParam::kMnistReaderParamFieldNumber;
 const int NodeParam::kVariableParamFieldNumber;
 const int NodeParam::kPlaceHolderParamFieldNumber;
@@ -5894,6 +5898,7 @@ NodeParam::NodeParam(const NodeParam& from)
       _internal_metadata_(NULL),
       input_(from.input_),
       output_(from.output_),
+      phase_(from.phase_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -6082,6 +6087,7 @@ void NodeParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:NodeParam)
   input_.Clear();
   output_.Clear();
+  phase_.Clear();
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && mnist_reader_param_ != NULL) {
     delete mnist_reader_param_;
@@ -6207,6 +6213,23 @@ bool NodeParam::MergePartialFromCodedStream(
             this->output(this->output_size() - 1).length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "NodeParam.output"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated string phase = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_phase()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->phase(this->phase_size() - 1).data(),
+            this->phase(this->phase_size() - 1).length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "NodeParam.phase"));
         } else {
           goto handle_unusual;
         }
@@ -6471,6 +6494,16 @@ void NodeParam::SerializeWithCachedSizes(
       3, this->output(i), output);
   }
 
+  // repeated string phase = 4;
+  for (int i = 0, n = this->phase_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->phase(i).data(), this->phase(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "NodeParam.phase");
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      4, this->phase(i), output);
+  }
+
   // .MnistReaderParam mnist_reader_param = 20;
   if (this->has_mnist_reader_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -6609,6 +6642,16 @@ void NodeParam::SerializeWithCachedSizes(
       "NodeParam.output");
     target = ::google::protobuf::internal::WireFormatLite::
       WriteStringToArray(3, this->output(i), target);
+  }
+
+  // repeated string phase = 4;
+  for (int i = 0, n = this->phase_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->phase(i).data(), this->phase(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "NodeParam.phase");
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(4, this->phase(i), target);
   }
 
   // .MnistReaderParam mnist_reader_param = 20;
@@ -6752,6 +6795,14 @@ size_t NodeParam::ByteSizeLong() const {
   for (int i = 0, n = this->output_size(); i < n; i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
       this->output(i));
+  }
+
+  // repeated string phase = 4;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->phase_size());
+  for (int i = 0, n = this->phase_size(); i < n; i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->phase(i));
   }
 
   // string name = 1;
@@ -6908,6 +6959,7 @@ void NodeParam::MergeFrom(const NodeParam& from) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   input_.MergeFrom(from.input_);
   output_.MergeFrom(from.output_);
+  phase_.MergeFrom(from.phase_);
   if (from.name().size() > 0) {
 
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
@@ -6990,6 +7042,7 @@ void NodeParam::Swap(NodeParam* other) {
 void NodeParam::InternalSwap(NodeParam* other) {
   input_.UnsafeArenaSwap(&other->input_);
   output_.UnsafeArenaSwap(&other->output_);
+  phase_.UnsafeArenaSwap(&other->phase_);
   name_.Swap(&other->name_);
   std::swap(mnist_reader_param_, other->mnist_reader_param_);
   std::swap(variable_param_, other->variable_param_);
@@ -7203,6 +7256,73 @@ NodeParam::output() const {
 NodeParam::mutable_output() {
   // @@protoc_insertion_point(field_mutable_list:NodeParam.output)
   return &output_;
+}
+
+// repeated string phase = 4;
+int NodeParam::phase_size() const {
+  return phase_.size();
+}
+void NodeParam::clear_phase() {
+  phase_.Clear();
+}
+const ::std::string& NodeParam::phase(int index) const {
+  // @@protoc_insertion_point(field_get:NodeParam.phase)
+  return phase_.Get(index);
+}
+::std::string* NodeParam::mutable_phase(int index) {
+  // @@protoc_insertion_point(field_mutable:NodeParam.phase)
+  return phase_.Mutable(index);
+}
+void NodeParam::set_phase(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:NodeParam.phase)
+  phase_.Mutable(index)->assign(value);
+}
+#if LANG_CXX11
+void NodeParam::set_phase(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:NodeParam.phase)
+  phase_.Mutable(index)->assign(std::move(value));
+}
+#endif
+void NodeParam::set_phase(int index, const char* value) {
+  phase_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:NodeParam.phase)
+}
+void NodeParam::set_phase(int index, const char* value, size_t size) {
+  phase_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:NodeParam.phase)
+}
+::std::string* NodeParam::add_phase() {
+  // @@protoc_insertion_point(field_add_mutable:NodeParam.phase)
+  return phase_.Add();
+}
+void NodeParam::add_phase(const ::std::string& value) {
+  phase_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:NodeParam.phase)
+}
+#if LANG_CXX11
+void NodeParam::add_phase(::std::string&& value) {
+  phase_.Add()->assign(std::move(value));
+  // @@protoc_insertion_point(field_add:NodeParam.phase)
+}
+#endif
+void NodeParam::add_phase(const char* value) {
+  phase_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:NodeParam.phase)
+}
+void NodeParam::add_phase(const char* value, size_t size) {
+  phase_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:NodeParam.phase)
+}
+const ::google::protobuf::RepeatedPtrField< ::std::string>&
+NodeParam::phase() const {
+  // @@protoc_insertion_point(field_list:NodeParam.phase)
+  return phase_;
+}
+::google::protobuf::RepeatedPtrField< ::std::string>*
+NodeParam::mutable_phase() {
+  // @@protoc_insertion_point(field_mutable_list:NodeParam.phase)
+  return &phase_;
 }
 
 // .MnistReaderParam mnist_reader_param = 20;
@@ -11525,6 +11645,7 @@ void SolverParam::set_allocated_gain_solver(::GainSolverParam* gain_solver) {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int NetworkParam::kNodeFieldNumber;
 const int NetworkParam::kSolverFieldNumber;
+const int NetworkParam::kPhaseFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 NetworkParam::NetworkParam()
@@ -11540,6 +11661,7 @@ NetworkParam::NetworkParam(const NetworkParam& from)
       _internal_metadata_(NULL),
       node_(from.node_),
       solver_(from.solver_),
+      phase_(from.phase_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:NetworkParam)
@@ -11584,6 +11706,7 @@ void NetworkParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:NetworkParam)
   node_.Clear();
   solver_.Clear();
+  phase_.Clear();
 }
 
 bool NetworkParam::MergePartialFromCodedStream(
@@ -11624,6 +11747,23 @@ bool NetworkParam::MergePartialFromCodedStream(
         break;
       }
 
+      // repeated string phase = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_phase()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->phase(this->phase_size() - 1).data(),
+            this->phase(this->phase_size() - 1).length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "NetworkParam.phase"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -11660,6 +11800,16 @@ void NetworkParam::SerializeWithCachedSizes(
       2, this->solver(i), output);
   }
 
+  // repeated string phase = 3;
+  for (int i = 0, n = this->phase_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->phase(i).data(), this->phase(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "NetworkParam.phase");
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->phase(i), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:NetworkParam)
 }
 
@@ -11679,6 +11829,16 @@ void NetworkParam::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         2, this->solver(i), false, target);
+  }
+
+  // repeated string phase = 3;
+  for (int i = 0, n = this->phase_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->phase(i).data(), this->phase(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "NetworkParam.phase");
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(3, this->phase(i), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:NetworkParam)
@@ -11711,6 +11871,14 @@ size_t NetworkParam::ByteSizeLong() const {
     }
   }
 
+  // repeated string phase = 3;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->phase_size());
+  for (int i = 0, n = this->phase_size(); i < n; i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->phase(i));
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -11739,6 +11907,7 @@ void NetworkParam::MergeFrom(const NetworkParam& from) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   node_.MergeFrom(from.node_);
   solver_.MergeFrom(from.solver_);
+  phase_.MergeFrom(from.phase_);
 }
 
 void NetworkParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -11766,6 +11935,7 @@ void NetworkParam::Swap(NetworkParam* other) {
 void NetworkParam::InternalSwap(NetworkParam* other) {
   node_.UnsafeArenaSwap(&other->node_);
   solver_.UnsafeArenaSwap(&other->solver_);
+  phase_.UnsafeArenaSwap(&other->phase_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -11835,6 +12005,73 @@ const ::google::protobuf::RepeatedPtrField< ::SolverParam >&
 NetworkParam::solver() const {
   // @@protoc_insertion_point(field_list:NetworkParam.solver)
   return solver_;
+}
+
+// repeated string phase = 3;
+int NetworkParam::phase_size() const {
+  return phase_.size();
+}
+void NetworkParam::clear_phase() {
+  phase_.Clear();
+}
+const ::std::string& NetworkParam::phase(int index) const {
+  // @@protoc_insertion_point(field_get:NetworkParam.phase)
+  return phase_.Get(index);
+}
+::std::string* NetworkParam::mutable_phase(int index) {
+  // @@protoc_insertion_point(field_mutable:NetworkParam.phase)
+  return phase_.Mutable(index);
+}
+void NetworkParam::set_phase(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:NetworkParam.phase)
+  phase_.Mutable(index)->assign(value);
+}
+#if LANG_CXX11
+void NetworkParam::set_phase(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:NetworkParam.phase)
+  phase_.Mutable(index)->assign(std::move(value));
+}
+#endif
+void NetworkParam::set_phase(int index, const char* value) {
+  phase_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:NetworkParam.phase)
+}
+void NetworkParam::set_phase(int index, const char* value, size_t size) {
+  phase_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:NetworkParam.phase)
+}
+::std::string* NetworkParam::add_phase() {
+  // @@protoc_insertion_point(field_add_mutable:NetworkParam.phase)
+  return phase_.Add();
+}
+void NetworkParam::add_phase(const ::std::string& value) {
+  phase_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:NetworkParam.phase)
+}
+#if LANG_CXX11
+void NetworkParam::add_phase(::std::string&& value) {
+  phase_.Add()->assign(std::move(value));
+  // @@protoc_insertion_point(field_add:NetworkParam.phase)
+}
+#endif
+void NetworkParam::add_phase(const char* value) {
+  phase_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:NetworkParam.phase)
+}
+void NetworkParam::add_phase(const char* value, size_t size) {
+  phase_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:NetworkParam.phase)
+}
+const ::google::protobuf::RepeatedPtrField< ::std::string>&
+NetworkParam::phase() const {
+  // @@protoc_insertion_point(field_list:NetworkParam.phase)
+  return phase_;
+}
+::google::protobuf::RepeatedPtrField< ::std::string>*
+NetworkParam::mutable_phase() {
+  // @@protoc_insertion_point(field_mutable_list:NetworkParam.phase)
+  return &phase_;
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

@@ -4,12 +4,12 @@
 
 #include <glog/logging.h>
 
-Block::Block(std::initializer_list<std::shared_ptr<InputTerminal>> inputs, std::initializer_list<std::shared_ptr<OutputTerminal>> outputs, NodeParam param) : Node(param) {
+Block::Block(std::initializer_list<std::shared_ptr<NodeInput>> inputs, std::initializer_list<std::shared_ptr<NodeOutput>> outputs, NodeParam param) : Node(param) {
 	LOG_IF(FATAL, param.has_block_param() == false) << "param.has_block_param() [FAILED]";	
-	for (auto inputTerminal : inputs)
-		_inputs.push_back(inputTerminal);		
-	for (auto outputTerminal : outputs)
-		_outputs.push_back(outputTerminal);	
+	for (auto NodeInput : inputs)
+		_inputs.push_back(NodeInput);		
+	for (auto NodeOutput : outputs)
+		_outputs.push_back(NodeOutput);	
 }
 
 void Block::initForward() {

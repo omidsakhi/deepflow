@@ -12,11 +12,11 @@ const TerminalType& Terminal::type() const {
 	return _type;
 }
 
-const std::string& InputTerminal::name() const {
+const std::string& NodeInput::name() const {
 	return _terminal->name();
 }
 
-const std::string& OutputTerminal::name() const {
+const std::string& NodeOutput::name() const {
 	return _name;
 }
 
@@ -24,7 +24,7 @@ const int& Terminal::index() const {
 	return _index;
 }
 
-void InputTerminal::connect(std::shared_ptr<OutputTerminal> terminal) {
+void NodeInput::connect(std::shared_ptr<NodeOutput> terminal) {
 	_terminal = terminal;
 	_parentNode->param().set_input(_index, terminal->name());
 	_terminal->node()->param().set_output(_terminal->index(), terminal->name());
@@ -38,50 +38,50 @@ std::shared_ptr<Node> Terminal::connectedNode() const {
 		return _terminal->node();
 	return 0;
 }
-InputTerminal::InputTerminal(std::shared_ptr<Node> parentNode, int index) : Terminal(parentNode, index, TerminalType::Input) {
+NodeInput::NodeInput(std::shared_ptr<Node> parentNode, int index) : Terminal(parentNode, index, TerminalType::Input) {
 }
 
-OutputTerminal::OutputTerminal(std::shared_ptr<Node> parentNode, int index, const std::string &name) : Terminal(parentNode, index, TerminalType::Output) {
+NodeOutput::NodeOutput(std::shared_ptr<Node> parentNode, int index, const std::string &name) : Terminal(parentNode, index, TerminalType::Output) {
 	_name = name;
 }
 
-std::shared_ptr<Tensor> InputTerminal::value() {	
+std::shared_ptr<Tensor> NodeInput::value() {	
 	return _terminal->value();
 }
 
-std::shared_ptr<Tensor> InputTerminal::diff() {	
+std::shared_ptr<Tensor> NodeInput::diff() {	
 	return _terminal->diff();
 }
 
-std::shared_ptr<Tensor> OutputTerminal::value() {	
+std::shared_ptr<Tensor> NodeOutput::value() {	
 	return _value;
 }
 
-std::shared_ptr<Tensor> OutputTerminal::diff() {	
+std::shared_ptr<Tensor> NodeOutput::diff() {	
 	return _diff;
 }
 
-void OutputTerminal::initValue(std::array<int, 4> dims, Tensor::TensorType type) {
+void NodeOutput::initValue(std::array<int, 4> dims, Tensor::TensorType type) {
 	_value = std::make_shared<Tensor>(dims,type);
 }
 
-void OutputTerminal::initDiff() {
+void NodeOutput::initDiff() {
 	_diff = std::make_shared<Tensor>(_value->dims(),_value->type());
 }
 
-void OutputTerminal::cpyValueToDiff() {
+void NodeOutput::cpyValueToDiff() {
 	LOG_IF(FATAL, cudaMemcpy(_diff->mutableData(), _value->data(), _value->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0) << "cudaMemcpy [FAILED]";
 }
 
-std::array<int, 4> InputTerminal::dims() {
+std::array<int, 4> NodeInput::dims() {
 	return _terminal->value()->dims();
 }
 
-std::array<int, 4> OutputTerminal::dims() {
+std::array<int, 4> NodeOutput::dims() {
 	return _value->dims();
 }
 
-void OutputTerminal::feed(std::shared_ptr<OutputTerminal> t) {
+void NodeOutput::feed(std::shared_ptr<NodeOutput> t) {
 	LOG_IF(FATAL, t->value()->sizeInBytes() != value()->sizeInBytes()) << "Size mismatch between terminals: " << _name << " and " << t->name();
 	LOG_IF(FATAL, cudaMemcpy(value()->mutableData(), t->value()->data(), value()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0) << "cudaMemcpy [FAILED]";
 }

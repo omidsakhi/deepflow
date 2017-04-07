@@ -1,9 +1,9 @@
 #pragma once
 
-#include "core/node.h"
+#include "core/loss.h"
 #include "proto/deepflow.pb.h"
 
-class DeepFlowDllExport SoftmaxLoss : public Node {
+class DeepFlowDllExport SoftmaxLoss : public Loss {
 public:
 	SoftmaxLoss(const NodeParam &param);
 	int minNumInputs() { return 2; }

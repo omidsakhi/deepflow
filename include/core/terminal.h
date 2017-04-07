@@ -31,24 +31,24 @@ protected:
 	TerminalType _type;
 };
 
-class OutputTerminal;
+class NodeOutput;
 
-class DeepFlowDllExport InputTerminal : public Terminal {
+class DeepFlowDllExport NodeInput : public Terminal {
 public:
-	InputTerminal(std::shared_ptr<Node> parentNode, int index);	
-	void connect(std::shared_ptr<OutputTerminal> terminal);
+	NodeInput(std::shared_ptr<Node> parentNode, int index);	
+	void connect(std::shared_ptr<NodeOutput> terminal);
 	std::array<int, 4> dims();
 	std::shared_ptr<Tensor> value();
 	std::shared_ptr<Tensor> diff();
 	virtual const std::string& name() const;
 };
 
-class DeepFlowDllExport OutputTerminal : public Terminal {
+class DeepFlowDllExport NodeOutput : public Terminal {
 public:
-	OutputTerminal(std::shared_ptr<Node> parentNode, int index, const std::string &name);		
+	NodeOutput(std::shared_ptr<Node> parentNode, int index, const std::string &name);		
 	void initValue(std::array<int, 4> dims, Tensor::TensorType type = Tensor::Float);
 	std::array<int, 4> dims();
-	void feed(std::shared_ptr<OutputTerminal> t);
+	void feed(std::shared_ptr<NodeOutput> t);
 	void initDiff();	
 	void cpyValueToDiff();
 	std::shared_ptr<Tensor> value();
@@ -59,3 +59,6 @@ protected:
 	std::shared_ptr<Tensor> _diff;
 	std::string _name;
 };
+
+using NodeInputPtr = std::shared_ptr<NodeInput>;
+using NodeOutputPtr = std::shared_ptr<NodeOutput>;

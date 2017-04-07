@@ -117,7 +117,8 @@ message NodeParam {
   string name = 1;
   repeated string input = 2;
   repeated string output = 3;  
-  
+  repeated string phase = 4;
+
   MnistReaderParam mnist_reader_param = 20;
 
   VariableParam variable_param = 30;  
@@ -208,4 +209,5 @@ message SolverParam {
 message NetworkParam {
 	repeated NodeParam node = 1;
 	repeated SolverParam solver = 2;
+	repeated string phase = 3;
 }

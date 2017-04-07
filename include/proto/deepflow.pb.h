@@ -2001,6 +2001,28 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   const ::google::protobuf::RepeatedPtrField< ::std::string>& output() const;
   ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_output();
 
+  // repeated string phase = 4;
+  int phase_size() const;
+  void clear_phase();
+  static const int kPhaseFieldNumber = 4;
+  const ::std::string& phase(int index) const;
+  ::std::string* mutable_phase(int index);
+  void set_phase(int index, const ::std::string& value);
+  #if LANG_CXX11
+  void set_phase(int index, ::std::string&& value);
+  #endif
+  void set_phase(int index, const char* value);
+  void set_phase(int index, const char* value, size_t size);
+  ::std::string* add_phase();
+  void add_phase(const ::std::string& value);
+  #if LANG_CXX11
+  void add_phase(::std::string&& value);
+  #endif
+  void add_phase(const char* value);
+  void add_phase(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& phase() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_phase();
+
   // string name = 1;
   void clear_name();
   static const int kNameFieldNumber = 1;
@@ -2174,6 +2196,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::std::string> input_;
   ::google::protobuf::RepeatedPtrField< ::std::string> output_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::MnistReaderParam* mnist_reader_param_;
   ::VariableParam* variable_param_;
@@ -3403,12 +3426,35 @@ class NetworkParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   const ::google::protobuf::RepeatedPtrField< ::SolverParam >&
       solver() const;
 
+  // repeated string phase = 3;
+  int phase_size() const;
+  void clear_phase();
+  static const int kPhaseFieldNumber = 3;
+  const ::std::string& phase(int index) const;
+  ::std::string* mutable_phase(int index);
+  void set_phase(int index, const ::std::string& value);
+  #if LANG_CXX11
+  void set_phase(int index, ::std::string&& value);
+  #endif
+  void set_phase(int index, const char* value);
+  void set_phase(int index, const char* value, size_t size);
+  ::std::string* add_phase();
+  void add_phase(const ::std::string& value);
+  #if LANG_CXX11
+  void add_phase(::std::string&& value);
+  #endif
+  void add_phase(const char* value);
+  void add_phase(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& phase() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_phase();
+
   // @@protoc_insertion_point(class_scope:NetworkParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::NodeParam > node_;
   ::google::protobuf::RepeatedPtrField< ::SolverParam > solver_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4395,6 +4441,73 @@ inline ::google::protobuf::RepeatedPtrField< ::std::string>*
 NodeParam::mutable_output() {
   // @@protoc_insertion_point(field_mutable_list:NodeParam.output)
   return &output_;
+}
+
+// repeated string phase = 4;
+inline int NodeParam::phase_size() const {
+  return phase_.size();
+}
+inline void NodeParam::clear_phase() {
+  phase_.Clear();
+}
+inline const ::std::string& NodeParam::phase(int index) const {
+  // @@protoc_insertion_point(field_get:NodeParam.phase)
+  return phase_.Get(index);
+}
+inline ::std::string* NodeParam::mutable_phase(int index) {
+  // @@protoc_insertion_point(field_mutable:NodeParam.phase)
+  return phase_.Mutable(index);
+}
+inline void NodeParam::set_phase(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:NodeParam.phase)
+  phase_.Mutable(index)->assign(value);
+}
+#if LANG_CXX11
+inline void NodeParam::set_phase(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:NodeParam.phase)
+  phase_.Mutable(index)->assign(std::move(value));
+}
+#endif
+inline void NodeParam::set_phase(int index, const char* value) {
+  phase_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:NodeParam.phase)
+}
+inline void NodeParam::set_phase(int index, const char* value, size_t size) {
+  phase_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:NodeParam.phase)
+}
+inline ::std::string* NodeParam::add_phase() {
+  // @@protoc_insertion_point(field_add_mutable:NodeParam.phase)
+  return phase_.Add();
+}
+inline void NodeParam::add_phase(const ::std::string& value) {
+  phase_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:NodeParam.phase)
+}
+#if LANG_CXX11
+inline void NodeParam::add_phase(::std::string&& value) {
+  phase_.Add()->assign(std::move(value));
+  // @@protoc_insertion_point(field_add:NodeParam.phase)
+}
+#endif
+inline void NodeParam::add_phase(const char* value) {
+  phase_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:NodeParam.phase)
+}
+inline void NodeParam::add_phase(const char* value, size_t size) {
+  phase_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:NodeParam.phase)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+NodeParam::phase() const {
+  // @@protoc_insertion_point(field_list:NodeParam.phase)
+  return phase_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+NodeParam::mutable_phase() {
+  // @@protoc_insertion_point(field_mutable_list:NodeParam.phase)
+  return &phase_;
 }
 
 // .MnistReaderParam mnist_reader_param = 20;
@@ -5709,6 +5822,73 @@ inline const ::google::protobuf::RepeatedPtrField< ::SolverParam >&
 NetworkParam::solver() const {
   // @@protoc_insertion_point(field_list:NetworkParam.solver)
   return solver_;
+}
+
+// repeated string phase = 3;
+inline int NetworkParam::phase_size() const {
+  return phase_.size();
+}
+inline void NetworkParam::clear_phase() {
+  phase_.Clear();
+}
+inline const ::std::string& NetworkParam::phase(int index) const {
+  // @@protoc_insertion_point(field_get:NetworkParam.phase)
+  return phase_.Get(index);
+}
+inline ::std::string* NetworkParam::mutable_phase(int index) {
+  // @@protoc_insertion_point(field_mutable:NetworkParam.phase)
+  return phase_.Mutable(index);
+}
+inline void NetworkParam::set_phase(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:NetworkParam.phase)
+  phase_.Mutable(index)->assign(value);
+}
+#if LANG_CXX11
+inline void NetworkParam::set_phase(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:NetworkParam.phase)
+  phase_.Mutable(index)->assign(std::move(value));
+}
+#endif
+inline void NetworkParam::set_phase(int index, const char* value) {
+  phase_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:NetworkParam.phase)
+}
+inline void NetworkParam::set_phase(int index, const char* value, size_t size) {
+  phase_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:NetworkParam.phase)
+}
+inline ::std::string* NetworkParam::add_phase() {
+  // @@protoc_insertion_point(field_add_mutable:NetworkParam.phase)
+  return phase_.Add();
+}
+inline void NetworkParam::add_phase(const ::std::string& value) {
+  phase_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:NetworkParam.phase)
+}
+#if LANG_CXX11
+inline void NetworkParam::add_phase(::std::string&& value) {
+  phase_.Add()->assign(std::move(value));
+  // @@protoc_insertion_point(field_add:NetworkParam.phase)
+}
+#endif
+inline void NetworkParam::add_phase(const char* value) {
+  phase_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:NetworkParam.phase)
+}
+inline void NetworkParam::add_phase(const char* value, size_t size) {
+  phase_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:NetworkParam.phase)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+NetworkParam::phase() const {
+  // @@protoc_insertion_point(field_list:NetworkParam.phase)
+  return phase_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+NetworkParam::mutable_phase() {
+  // @@protoc_insertion_point(field_mutable_list:NetworkParam.phase)
+  return &phase_;
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS

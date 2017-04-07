@@ -5,17 +5,17 @@
 
 Node::Node(const NodeParam &param) : CudaHelper() {
 	_param = param;	
-	_name = param.name();	
+	_name = param.name();
 	_visited = false;
 }
 
 void Node::createIO() {
 	for (int i = 0; i < minNumInputs(); ++i) {
-		_inputs.push_back(std::make_shared<InputTerminal>(shared_from_this(), i));
+		_inputs.push_back(std::make_shared<NodeInput>(shared_from_this(), i));
 		_param.add_input();
 	}
 	for (int i = 0; i < minNumOutputs(); ++i) {
-		_outputs.push_back(std::make_shared<OutputTerminal>(shared_from_this(), i, name() + std::string("_output_") + std::to_string(i)));
+		_outputs.push_back(std::make_shared<NodeOutput>(shared_from_this(), i, name() + std::string("_output_") + std::to_string(i)));
 		_param.add_output();
 	}
 }
@@ -48,19 +48,19 @@ std::string Node::name() const {
 	return _name;	
 }
 
-std::vector<std::shared_ptr<InputTerminal>> & Node::inputs() {
+std::vector<std::shared_ptr<NodeInput>> & Node::inputs() {
 	return _inputs;
 }
 
-std::vector<std::shared_ptr<OutputTerminal>> &Node::outputs() {
+std::vector<std::shared_ptr<NodeOutput>> &Node::outputs() {
 	return _outputs;
 }
 
-std::shared_ptr<InputTerminal> Node::input(int index) {
+std::shared_ptr<NodeInput> Node::input(int index) {
 	return _inputs[index];
 }
 
-std::shared_ptr<OutputTerminal> Node::output(int index) {
+std::shared_ptr<NodeOutput> Node::output(int index) {
 	return _outputs[index];
 }
 
@@ -74,4 +74,11 @@ void Node::setInitialized(bool status) {
 
 NodeParam &Node::param() {
 	return _param;
+}
+
+bool Node::includePhase(const std::string &phase) {
+	for (int i = 0; i < _param.phase_size(); ++i)
+		if (_param.phase(i) == phase)
+			return true;
+	return false;
 }

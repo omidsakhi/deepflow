@@ -35,7 +35,7 @@ void GainStepKernel(const int n, float *current_weight, float *current_gradient,
 	}
 }
 
-GainSolver::GainSolver(std::shared_ptr<OutputTerminal> loss, const SolverParam &param) : Solver(loss,param) {
+GainSolver::GainSolver(std::shared_ptr<NodeOutput> loss, const SolverParam &param) : Solver(loss,param) {
 	LOG_IF(FATAL, param.has_gain_solver() == false);
 }
 

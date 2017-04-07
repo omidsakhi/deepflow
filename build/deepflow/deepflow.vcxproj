@@ -25,6 +25,7 @@
     <ClInclude Include="..\..\include\core\deep_flow.h" />
     <ClInclude Include="..\..\include\core\export.h" />
     <ClInclude Include="..\..\include\core\initializer.h" />
+    <ClInclude Include="..\..\include\core\loss.h" />
     <ClInclude Include="..\..\include\core\node.h" />
     <ClInclude Include="..\..\include\core\node_observer.h" />
     <ClInclude Include="..\..\include\core\place_holder.h" />
@@ -65,6 +66,7 @@
     <ClCompile Include="..\..\src\core\block.cpp" />
     <ClCompile Include="..\..\src\core\deep_flow.cpp" />
     <ClCompile Include="..\..\src\core\initializer.cpp" />
+    <ClCompile Include="..\..\src\core\loss.cpp" />
     <ClCompile Include="..\..\src\core\node.cpp" />
     <ClCompile Include="..\..\src\core\place_holder.cpp" />
     <ClCompile Include="..\..\src\core\tensor.cpp" />

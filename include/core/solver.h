@@ -7,13 +7,13 @@
 
 class DeepFlowDllExport Solver : public CudaHelper {
 public:
-	Solver(std::shared_ptr<OutputTerminal> loss, const SolverParam &param);
+	Solver(std::shared_ptr<NodeOutput> loss, const SolverParam &param);
 	virtual void train_step() = 0;
 	virtual void init() = 0;
 	const SolverParam& param() const;
 protected:
 	int _current_iteration = 0;
-	std::shared_ptr<OutputTerminal> _loss_terminal;
+	std::shared_ptr<NodeOutput> _loss_terminal;
 	std::shared_ptr<Node> _loss_node;
 	std::list<std::shared_ptr<Variable>> _variables;
 	SolverParam _param;
