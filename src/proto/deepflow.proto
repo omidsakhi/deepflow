@@ -1,5 +1,9 @@
 syntax = "proto3";
 
+message TensorData {
+	repeated float weight = 1;
+}
+
 message TensorParam {
 	enum TensorType
 	{
@@ -11,23 +15,23 @@ message TensorParam {
 		INT8x4 = 5;
 	};
 	TensorType type = 1;
-	repeated int32 dims = 2;	
+	repeated int32 dims = 2;		
 }
 
-message OpAddParam {
+message AddParam {
 	float alpha = 1;
 	float beta = 2;	
 }
 
-message OpEqualParam {
+message EqualParam {
 
 }
 
-message OpBiasAddParam {
+message BiasAddParam {
 	
 }
 
-message OpPoolingParam {
+message PoolingParam {
 	int32 window_h = 1;
 	int32 window_w = 2;		
 	int32 h_pad = 3;
@@ -36,7 +40,7 @@ message OpPoolingParam {
 	int32 v_stride = 6;
 }
 
-message OpConv2dParam {
+message Conv2dParam {
 	int32 pad_h = 1;
 	int32 pad_w = 2;
 	int32 u = 3;
@@ -45,20 +49,20 @@ message OpConv2dParam {
 	int32 dilation_w = 6;
 }
 
-message OpDropoutParam {
+message DropoutParam {
 	float dropout = 1;	
 }
 
-message OpMatMulParam {
+message MatMulParam {
 	float alpha = 1;
 	float beta = 2;
 }
 
-message OpReluParam {
+message ReluParam {
 	float negative_slope = 1;	
 }
 
-message OpReduceParam {
+message ReduceParam {
 	enum ReduceOp {
 		ADD = 0;
 		MUL = 1;
@@ -81,11 +85,13 @@ message SnapshotParam {
 }
 
 message PlaceHolderParam {
-
+	TensorParam tensor_param = 1;
 }
 
 message VariableParam {	
-	SnapshotParam snapshot_param = 1;
+	InitParam init_param = 1;
+	SnapshotParam snapshot_param = 2;	
+	TensorData weights = 3;
 }
 
 
@@ -109,10 +115,8 @@ message MnistReaderParam {
 
 message NodeParam {
   string name = 1;
-  repeated string inputs = 2;
-  repeated string outputs = 3;
-
-  TensorParam tensor_param = 10;
+  repeated string input = 2;
+  repeated string output = 3;  
   
   MnistReaderParam mnist_reader_param = 20;
 
@@ -123,25 +127,25 @@ message NodeParam {
 
   LossParam loss_param = 50;
 
-  OpAddParam op_add_param = 60;
-  OpBiasAddParam op_bias_add_param = 61;
-  OpConv2dParam op_conv_2d_param = 62;
-  OpDropoutParam op_dropout_param = 63;
-  OpReluParam op_relu_param = 64;
-  OpSoftmaxParam op_softmax_param = 65;  
-  OpSquareParam op_square_param = 66;
-  OpMatMulParam op_matmul_param = 67;
-  OpPoolingParam op_pooling_param = 68;
-  OpArgmaxParam op_argmax_param = 69;
-  OpReduceParam op_reduce_param = 70;
-  OpEqualParam op_equal_param = 71;
+  AddParam add_param = 60;
+  BiasAddParam bias_add_param = 61;
+  Conv2dParam conv_2d_param = 62;
+  DropoutParam dropout_param = 63;
+  ReluParam relu_param = 64;
+  SoftmaxParam softmax_param = 65;  
+  SquareParam square_param = 66;
+  MatMulParam matmul_param = 67;
+  PoolingParam pooling_param = 68;
+  ArgmaxParam argmax_param = 69;
+  ReduceParam reduce_param = 70;
+  EqualParam equal_param = 71;
 }
 
-message OpArgmaxParam {
+message ArgmaxParam {
 	
 }
 
-message OpSquareParam {
+message SquareParam {
 	
 }
 
@@ -150,7 +154,7 @@ message SoftmaxLossParam {
 	float beta = 2;		
 }
 
-message OpSoftmaxParam {
+message SoftmaxParam {
 	float alpha = 1;
 	float beta = 2;	
 }
@@ -173,7 +177,7 @@ message InitStepParam {
 	float max = 2;	
 }
 
-message InitParam {  
+message InitParam {
   TensorParam tensor_param = 1;
   InitFillParam fill_param = 2;
   InitIndexFillParam index_fill_param = 3;
@@ -202,5 +206,6 @@ message SolverParam {
 }
 
 message NetworkParam {
-	repeated NodeParam node_param = 1;	
+	repeated NodeParam node = 1;
+	repeated SolverParam solver = 2;
 }

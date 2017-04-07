@@ -30,9 +30,27 @@
 #include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
+class AddParam;
+class AddParamDefaultTypeInternal;
+extern AddParamDefaultTypeInternal _AddParam_default_instance_;
+class ArgmaxParam;
+class ArgmaxParamDefaultTypeInternal;
+extern ArgmaxParamDefaultTypeInternal _ArgmaxParam_default_instance_;
+class BiasAddParam;
+class BiasAddParamDefaultTypeInternal;
+extern BiasAddParamDefaultTypeInternal _BiasAddParam_default_instance_;
 class BlockParam;
 class BlockParamDefaultTypeInternal;
 extern BlockParamDefaultTypeInternal _BlockParam_default_instance_;
+class Conv2dParam;
+class Conv2dParamDefaultTypeInternal;
+extern Conv2dParamDefaultTypeInternal _Conv2dParam_default_instance_;
+class DropoutParam;
+class DropoutParamDefaultTypeInternal;
+extern DropoutParamDefaultTypeInternal _DropoutParam_default_instance_;
+class EqualParam;
+class EqualParamDefaultTypeInternal;
+extern EqualParamDefaultTypeInternal _EqualParam_default_instance_;
 class GainSolverParam;
 class GainSolverParamDefaultTypeInternal;
 extern GainSolverParamDefaultTypeInternal _GainSolverParam_default_instance_;
@@ -54,6 +72,9 @@ extern InitStepParamDefaultTypeInternal _InitStepParam_default_instance_;
 class LossParam;
 class LossParamDefaultTypeInternal;
 extern LossParamDefaultTypeInternal _LossParam_default_instance_;
+class MatMulParam;
+class MatMulParamDefaultTypeInternal;
+extern MatMulParamDefaultTypeInternal _MatMulParam_default_instance_;
 class MnistReaderParam;
 class MnistReaderParamDefaultTypeInternal;
 extern MnistReaderParamDefaultTypeInternal _MnistReaderParam_default_instance_;
@@ -63,45 +84,18 @@ extern NetworkParamDefaultTypeInternal _NetworkParam_default_instance_;
 class NodeParam;
 class NodeParamDefaultTypeInternal;
 extern NodeParamDefaultTypeInternal _NodeParam_default_instance_;
-class OpAddParam;
-class OpAddParamDefaultTypeInternal;
-extern OpAddParamDefaultTypeInternal _OpAddParam_default_instance_;
-class OpArgmaxParam;
-class OpArgmaxParamDefaultTypeInternal;
-extern OpArgmaxParamDefaultTypeInternal _OpArgmaxParam_default_instance_;
-class OpBiasAddParam;
-class OpBiasAddParamDefaultTypeInternal;
-extern OpBiasAddParamDefaultTypeInternal _OpBiasAddParam_default_instance_;
-class OpConv2dParam;
-class OpConv2dParamDefaultTypeInternal;
-extern OpConv2dParamDefaultTypeInternal _OpConv2dParam_default_instance_;
-class OpDropoutParam;
-class OpDropoutParamDefaultTypeInternal;
-extern OpDropoutParamDefaultTypeInternal _OpDropoutParam_default_instance_;
-class OpEqualParam;
-class OpEqualParamDefaultTypeInternal;
-extern OpEqualParamDefaultTypeInternal _OpEqualParam_default_instance_;
-class OpMatMulParam;
-class OpMatMulParamDefaultTypeInternal;
-extern OpMatMulParamDefaultTypeInternal _OpMatMulParam_default_instance_;
-class OpPoolingParam;
-class OpPoolingParamDefaultTypeInternal;
-extern OpPoolingParamDefaultTypeInternal _OpPoolingParam_default_instance_;
-class OpReduceParam;
-class OpReduceParamDefaultTypeInternal;
-extern OpReduceParamDefaultTypeInternal _OpReduceParam_default_instance_;
-class OpReluParam;
-class OpReluParamDefaultTypeInternal;
-extern OpReluParamDefaultTypeInternal _OpReluParam_default_instance_;
-class OpSoftmaxParam;
-class OpSoftmaxParamDefaultTypeInternal;
-extern OpSoftmaxParamDefaultTypeInternal _OpSoftmaxParam_default_instance_;
-class OpSquareParam;
-class OpSquareParamDefaultTypeInternal;
-extern OpSquareParamDefaultTypeInternal _OpSquareParam_default_instance_;
 class PlaceHolderParam;
 class PlaceHolderParamDefaultTypeInternal;
 extern PlaceHolderParamDefaultTypeInternal _PlaceHolderParam_default_instance_;
+class PoolingParam;
+class PoolingParamDefaultTypeInternal;
+extern PoolingParamDefaultTypeInternal _PoolingParam_default_instance_;
+class ReduceParam;
+class ReduceParamDefaultTypeInternal;
+extern ReduceParamDefaultTypeInternal _ReduceParam_default_instance_;
+class ReluParam;
+class ReluParamDefaultTypeInternal;
+extern ReluParamDefaultTypeInternal _ReluParam_default_instance_;
 class SGDSolverParam;
 class SGDSolverParamDefaultTypeInternal;
 extern SGDSolverParamDefaultTypeInternal _SGDSolverParam_default_instance_;
@@ -111,9 +105,18 @@ extern SnapshotParamDefaultTypeInternal _SnapshotParam_default_instance_;
 class SoftmaxLossParam;
 class SoftmaxLossParamDefaultTypeInternal;
 extern SoftmaxLossParamDefaultTypeInternal _SoftmaxLossParam_default_instance_;
+class SoftmaxParam;
+class SoftmaxParamDefaultTypeInternal;
+extern SoftmaxParamDefaultTypeInternal _SoftmaxParam_default_instance_;
 class SolverParam;
 class SolverParamDefaultTypeInternal;
 extern SolverParamDefaultTypeInternal _SolverParam_default_instance_;
+class SquareParam;
+class SquareParamDefaultTypeInternal;
+extern SquareParamDefaultTypeInternal _SquareParam_default_instance_;
+class TensorData;
+class TensorDataDefaultTypeInternal;
+extern TensorDataDefaultTypeInternal _TensorData_default_instance_;
 class TensorParam;
 class TensorParamDefaultTypeInternal;
 extern TensorParamDefaultTypeInternal _TensorParam_default_instance_;
@@ -157,32 +160,32 @@ inline bool TensorParam_TensorType_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<TensorParam_TensorType>(
     TensorParam_TensorType_descriptor(), name, value);
 }
-enum OpReduceParam_ReduceOp {
-  OpReduceParam_ReduceOp_ADD = 0,
-  OpReduceParam_ReduceOp_MUL = 1,
-  OpReduceParam_ReduceOp_MIN = 2,
-  OpReduceParam_ReduceOp_MAX = 3,
-  OpReduceParam_ReduceOp_AMAX = 4,
-  OpReduceParam_ReduceOp_AVG = 5,
-  OpReduceParam_ReduceOp_NORM1 = 6,
-  OpReduceParam_ReduceOp_NORM2 = 7,
-  OpReduceParam_ReduceOp_OpReduceParam_ReduceOp_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  OpReduceParam_ReduceOp_OpReduceParam_ReduceOp_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+enum ReduceParam_ReduceOp {
+  ReduceParam_ReduceOp_ADD = 0,
+  ReduceParam_ReduceOp_MUL = 1,
+  ReduceParam_ReduceOp_MIN = 2,
+  ReduceParam_ReduceOp_MAX = 3,
+  ReduceParam_ReduceOp_AMAX = 4,
+  ReduceParam_ReduceOp_AVG = 5,
+  ReduceParam_ReduceOp_NORM1 = 6,
+  ReduceParam_ReduceOp_NORM2 = 7,
+  ReduceParam_ReduceOp_ReduceParam_ReduceOp_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  ReduceParam_ReduceOp_ReduceParam_ReduceOp_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
-bool OpReduceParam_ReduceOp_IsValid(int value);
-const OpReduceParam_ReduceOp OpReduceParam_ReduceOp_ReduceOp_MIN = OpReduceParam_ReduceOp_ADD;
-const OpReduceParam_ReduceOp OpReduceParam_ReduceOp_ReduceOp_MAX = OpReduceParam_ReduceOp_NORM2;
-const int OpReduceParam_ReduceOp_ReduceOp_ARRAYSIZE = OpReduceParam_ReduceOp_ReduceOp_MAX + 1;
+bool ReduceParam_ReduceOp_IsValid(int value);
+const ReduceParam_ReduceOp ReduceParam_ReduceOp_ReduceOp_MIN = ReduceParam_ReduceOp_ADD;
+const ReduceParam_ReduceOp ReduceParam_ReduceOp_ReduceOp_MAX = ReduceParam_ReduceOp_NORM2;
+const int ReduceParam_ReduceOp_ReduceOp_ARRAYSIZE = ReduceParam_ReduceOp_ReduceOp_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* OpReduceParam_ReduceOp_descriptor();
-inline const ::std::string& OpReduceParam_ReduceOp_Name(OpReduceParam_ReduceOp value) {
+const ::google::protobuf::EnumDescriptor* ReduceParam_ReduceOp_descriptor();
+inline const ::std::string& ReduceParam_ReduceOp_Name(ReduceParam_ReduceOp value) {
   return ::google::protobuf::internal::NameOfEnum(
-    OpReduceParam_ReduceOp_descriptor(), value);
+    ReduceParam_ReduceOp_descriptor(), value);
 }
-inline bool OpReduceParam_ReduceOp_Parse(
-    const ::std::string& name, OpReduceParam_ReduceOp* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<OpReduceParam_ReduceOp>(
-    OpReduceParam_ReduceOp_descriptor(), name, value);
+inline bool ReduceParam_ReduceOp_Parse(
+    const ::std::string& name, ReduceParam_ReduceOp* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ReduceParam_ReduceOp>(
+    ReduceParam_ReduceOp_descriptor(), name, value);
 }
 enum MnistReaderParam_ReaderType {
   MnistReaderParam_ReaderType_TRAIN = 0,
@@ -206,6 +209,96 @@ inline bool MnistReaderParam_ReaderType_Parse(
     MnistReaderParam_ReaderType_descriptor(), name, value);
 }
 // ===================================================================
+
+class TensorData : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:TensorData) */ {
+ public:
+  TensorData();
+  virtual ~TensorData();
+
+  TensorData(const TensorData& from);
+
+  inline TensorData& operator=(const TensorData& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const TensorData& default_instance();
+
+  static inline const TensorData* internal_default_instance() {
+    return reinterpret_cast<const TensorData*>(
+               &_TensorData_default_instance_);
+  }
+
+  void Swap(TensorData* other);
+
+  // implements Message ----------------------------------------------
+
+  inline TensorData* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  TensorData* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const TensorData& from);
+  void MergeFrom(const TensorData& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(TensorData* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated float weight = 1;
+  int weight_size() const;
+  void clear_weight();
+  static const int kWeightFieldNumber = 1;
+  float weight(int index) const;
+  void set_weight(int index, float value);
+  void add_weight(float value);
+  const ::google::protobuf::RepeatedField< float >&
+      weight() const;
+  ::google::protobuf::RepeatedField< float >*
+      mutable_weight();
+
+  // @@protoc_insertion_point(class_scope:TensorData)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< float > weight_;
+  mutable int _weight_cached_byte_size_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
 
 class TensorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:TensorParam) */ {
  public:
@@ -338,37 +431,37 @@ class TensorParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 };
 // -------------------------------------------------------------------
 
-class OpAddParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:OpAddParam) */ {
+class AddParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:AddParam) */ {
  public:
-  OpAddParam();
-  virtual ~OpAddParam();
+  AddParam();
+  virtual ~AddParam();
 
-  OpAddParam(const OpAddParam& from);
+  AddParam(const AddParam& from);
 
-  inline OpAddParam& operator=(const OpAddParam& from) {
+  inline AddParam& operator=(const AddParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const OpAddParam& default_instance();
+  static const AddParam& default_instance();
 
-  static inline const OpAddParam* internal_default_instance() {
-    return reinterpret_cast<const OpAddParam*>(
-               &_OpAddParam_default_instance_);
+  static inline const AddParam* internal_default_instance() {
+    return reinterpret_cast<const AddParam*>(
+               &_AddParam_default_instance_);
   }
 
-  void Swap(OpAddParam* other);
+  void Swap(AddParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline OpAddParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline AddParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  OpAddParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  AddParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const OpAddParam& from);
-  void MergeFrom(const OpAddParam& from);
+  void CopyFrom(const AddParam& from);
+  void MergeFrom(const AddParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -389,7 +482,7 @@ class OpAddParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(OpAddParam* other);
+  void InternalSwap(AddParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -417,7 +510,7 @@ class OpAddParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   float beta() const;
   void set_beta(float value);
 
-  // @@protoc_insertion_point(class_scope:OpAddParam)
+  // @@protoc_insertion_point(class_scope:AddParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -428,37 +521,37 @@ class OpAddParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
 };
 // -------------------------------------------------------------------
 
-class OpEqualParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:OpEqualParam) */ {
+class EqualParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:EqualParam) */ {
  public:
-  OpEqualParam();
-  virtual ~OpEqualParam();
+  EqualParam();
+  virtual ~EqualParam();
 
-  OpEqualParam(const OpEqualParam& from);
+  EqualParam(const EqualParam& from);
 
-  inline OpEqualParam& operator=(const OpEqualParam& from) {
+  inline EqualParam& operator=(const EqualParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const OpEqualParam& default_instance();
+  static const EqualParam& default_instance();
 
-  static inline const OpEqualParam* internal_default_instance() {
-    return reinterpret_cast<const OpEqualParam*>(
-               &_OpEqualParam_default_instance_);
+  static inline const EqualParam* internal_default_instance() {
+    return reinterpret_cast<const EqualParam*>(
+               &_EqualParam_default_instance_);
   }
 
-  void Swap(OpEqualParam* other);
+  void Swap(EqualParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline OpEqualParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline EqualParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  OpEqualParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  EqualParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const OpEqualParam& from);
-  void MergeFrom(const OpEqualParam& from);
+  void CopyFrom(const EqualParam& from);
+  void MergeFrom(const EqualParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -479,7 +572,7 @@ class OpEqualParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(OpEqualParam* other);
+  void InternalSwap(EqualParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -495,7 +588,7 @@ class OpEqualParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:OpEqualParam)
+  // @@protoc_insertion_point(class_scope:EqualParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -504,37 +597,37 @@ class OpEqualParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 };
 // -------------------------------------------------------------------
 
-class OpBiasAddParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:OpBiasAddParam) */ {
+class BiasAddParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:BiasAddParam) */ {
  public:
-  OpBiasAddParam();
-  virtual ~OpBiasAddParam();
+  BiasAddParam();
+  virtual ~BiasAddParam();
 
-  OpBiasAddParam(const OpBiasAddParam& from);
+  BiasAddParam(const BiasAddParam& from);
 
-  inline OpBiasAddParam& operator=(const OpBiasAddParam& from) {
+  inline BiasAddParam& operator=(const BiasAddParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const OpBiasAddParam& default_instance();
+  static const BiasAddParam& default_instance();
 
-  static inline const OpBiasAddParam* internal_default_instance() {
-    return reinterpret_cast<const OpBiasAddParam*>(
-               &_OpBiasAddParam_default_instance_);
+  static inline const BiasAddParam* internal_default_instance() {
+    return reinterpret_cast<const BiasAddParam*>(
+               &_BiasAddParam_default_instance_);
   }
 
-  void Swap(OpBiasAddParam* other);
+  void Swap(BiasAddParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline OpBiasAddParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline BiasAddParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  OpBiasAddParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  BiasAddParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const OpBiasAddParam& from);
-  void MergeFrom(const OpBiasAddParam& from);
+  void CopyFrom(const BiasAddParam& from);
+  void MergeFrom(const BiasAddParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -555,7 +648,7 @@ class OpBiasAddParam : public ::google::protobuf::Message /* @@protoc_insertion_
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(OpBiasAddParam* other);
+  void InternalSwap(BiasAddParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -571,7 +664,7 @@ class OpBiasAddParam : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:OpBiasAddParam)
+  // @@protoc_insertion_point(class_scope:BiasAddParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -580,37 +673,37 @@ class OpBiasAddParam : public ::google::protobuf::Message /* @@protoc_insertion_
 };
 // -------------------------------------------------------------------
 
-class OpPoolingParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:OpPoolingParam) */ {
+class PoolingParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:PoolingParam) */ {
  public:
-  OpPoolingParam();
-  virtual ~OpPoolingParam();
+  PoolingParam();
+  virtual ~PoolingParam();
 
-  OpPoolingParam(const OpPoolingParam& from);
+  PoolingParam(const PoolingParam& from);
 
-  inline OpPoolingParam& operator=(const OpPoolingParam& from) {
+  inline PoolingParam& operator=(const PoolingParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const OpPoolingParam& default_instance();
+  static const PoolingParam& default_instance();
 
-  static inline const OpPoolingParam* internal_default_instance() {
-    return reinterpret_cast<const OpPoolingParam*>(
-               &_OpPoolingParam_default_instance_);
+  static inline const PoolingParam* internal_default_instance() {
+    return reinterpret_cast<const PoolingParam*>(
+               &_PoolingParam_default_instance_);
   }
 
-  void Swap(OpPoolingParam* other);
+  void Swap(PoolingParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline OpPoolingParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline PoolingParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  OpPoolingParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  PoolingParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const OpPoolingParam& from);
-  void MergeFrom(const OpPoolingParam& from);
+  void CopyFrom(const PoolingParam& from);
+  void MergeFrom(const PoolingParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -631,7 +724,7 @@ class OpPoolingParam : public ::google::protobuf::Message /* @@protoc_insertion_
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(OpPoolingParam* other);
+  void InternalSwap(PoolingParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -683,7 +776,7 @@ class OpPoolingParam : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 v_stride() const;
   void set_v_stride(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:OpPoolingParam)
+  // @@protoc_insertion_point(class_scope:PoolingParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -698,37 +791,37 @@ class OpPoolingParam : public ::google::protobuf::Message /* @@protoc_insertion_
 };
 // -------------------------------------------------------------------
 
-class OpConv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:OpConv2dParam) */ {
+class Conv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Conv2dParam) */ {
  public:
-  OpConv2dParam();
-  virtual ~OpConv2dParam();
+  Conv2dParam();
+  virtual ~Conv2dParam();
 
-  OpConv2dParam(const OpConv2dParam& from);
+  Conv2dParam(const Conv2dParam& from);
 
-  inline OpConv2dParam& operator=(const OpConv2dParam& from) {
+  inline Conv2dParam& operator=(const Conv2dParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const OpConv2dParam& default_instance();
+  static const Conv2dParam& default_instance();
 
-  static inline const OpConv2dParam* internal_default_instance() {
-    return reinterpret_cast<const OpConv2dParam*>(
-               &_OpConv2dParam_default_instance_);
+  static inline const Conv2dParam* internal_default_instance() {
+    return reinterpret_cast<const Conv2dParam*>(
+               &_Conv2dParam_default_instance_);
   }
 
-  void Swap(OpConv2dParam* other);
+  void Swap(Conv2dParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline OpConv2dParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline Conv2dParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  OpConv2dParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  Conv2dParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const OpConv2dParam& from);
-  void MergeFrom(const OpConv2dParam& from);
+  void CopyFrom(const Conv2dParam& from);
+  void MergeFrom(const Conv2dParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -749,7 +842,7 @@ class OpConv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_p
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(OpConv2dParam* other);
+  void InternalSwap(Conv2dParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -801,7 +894,7 @@ class OpConv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::int32 dilation_w() const;
   void set_dilation_w(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:OpConv2dParam)
+  // @@protoc_insertion_point(class_scope:Conv2dParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -816,37 +909,37 @@ class OpConv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
-class OpDropoutParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:OpDropoutParam) */ {
+class DropoutParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:DropoutParam) */ {
  public:
-  OpDropoutParam();
-  virtual ~OpDropoutParam();
+  DropoutParam();
+  virtual ~DropoutParam();
 
-  OpDropoutParam(const OpDropoutParam& from);
+  DropoutParam(const DropoutParam& from);
 
-  inline OpDropoutParam& operator=(const OpDropoutParam& from) {
+  inline DropoutParam& operator=(const DropoutParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const OpDropoutParam& default_instance();
+  static const DropoutParam& default_instance();
 
-  static inline const OpDropoutParam* internal_default_instance() {
-    return reinterpret_cast<const OpDropoutParam*>(
-               &_OpDropoutParam_default_instance_);
+  static inline const DropoutParam* internal_default_instance() {
+    return reinterpret_cast<const DropoutParam*>(
+               &_DropoutParam_default_instance_);
   }
 
-  void Swap(OpDropoutParam* other);
+  void Swap(DropoutParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline OpDropoutParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline DropoutParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  OpDropoutParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  DropoutParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const OpDropoutParam& from);
-  void MergeFrom(const OpDropoutParam& from);
+  void CopyFrom(const DropoutParam& from);
+  void MergeFrom(const DropoutParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -867,7 +960,7 @@ class OpDropoutParam : public ::google::protobuf::Message /* @@protoc_insertion_
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(OpDropoutParam* other);
+  void InternalSwap(DropoutParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -889,7 +982,7 @@ class OpDropoutParam : public ::google::protobuf::Message /* @@protoc_insertion_
   float dropout() const;
   void set_dropout(float value);
 
-  // @@protoc_insertion_point(class_scope:OpDropoutParam)
+  // @@protoc_insertion_point(class_scope:DropoutParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -899,37 +992,37 @@ class OpDropoutParam : public ::google::protobuf::Message /* @@protoc_insertion_
 };
 // -------------------------------------------------------------------
 
-class OpMatMulParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:OpMatMulParam) */ {
+class MatMulParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:MatMulParam) */ {
  public:
-  OpMatMulParam();
-  virtual ~OpMatMulParam();
+  MatMulParam();
+  virtual ~MatMulParam();
 
-  OpMatMulParam(const OpMatMulParam& from);
+  MatMulParam(const MatMulParam& from);
 
-  inline OpMatMulParam& operator=(const OpMatMulParam& from) {
+  inline MatMulParam& operator=(const MatMulParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const OpMatMulParam& default_instance();
+  static const MatMulParam& default_instance();
 
-  static inline const OpMatMulParam* internal_default_instance() {
-    return reinterpret_cast<const OpMatMulParam*>(
-               &_OpMatMulParam_default_instance_);
+  static inline const MatMulParam* internal_default_instance() {
+    return reinterpret_cast<const MatMulParam*>(
+               &_MatMulParam_default_instance_);
   }
 
-  void Swap(OpMatMulParam* other);
+  void Swap(MatMulParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline OpMatMulParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline MatMulParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  OpMatMulParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  MatMulParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const OpMatMulParam& from);
-  void MergeFrom(const OpMatMulParam& from);
+  void CopyFrom(const MatMulParam& from);
+  void MergeFrom(const MatMulParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -950,7 +1043,7 @@ class OpMatMulParam : public ::google::protobuf::Message /* @@protoc_insertion_p
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(OpMatMulParam* other);
+  void InternalSwap(MatMulParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -978,7 +1071,7 @@ class OpMatMulParam : public ::google::protobuf::Message /* @@protoc_insertion_p
   float beta() const;
   void set_beta(float value);
 
-  // @@protoc_insertion_point(class_scope:OpMatMulParam)
+  // @@protoc_insertion_point(class_scope:MatMulParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -989,37 +1082,37 @@ class OpMatMulParam : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
-class OpReluParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:OpReluParam) */ {
+class ReluParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ReluParam) */ {
  public:
-  OpReluParam();
-  virtual ~OpReluParam();
+  ReluParam();
+  virtual ~ReluParam();
 
-  OpReluParam(const OpReluParam& from);
+  ReluParam(const ReluParam& from);
 
-  inline OpReluParam& operator=(const OpReluParam& from) {
+  inline ReluParam& operator=(const ReluParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const OpReluParam& default_instance();
+  static const ReluParam& default_instance();
 
-  static inline const OpReluParam* internal_default_instance() {
-    return reinterpret_cast<const OpReluParam*>(
-               &_OpReluParam_default_instance_);
+  static inline const ReluParam* internal_default_instance() {
+    return reinterpret_cast<const ReluParam*>(
+               &_ReluParam_default_instance_);
   }
 
-  void Swap(OpReluParam* other);
+  void Swap(ReluParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline OpReluParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline ReluParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  OpReluParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  ReluParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const OpReluParam& from);
-  void MergeFrom(const OpReluParam& from);
+  void CopyFrom(const ReluParam& from);
+  void MergeFrom(const ReluParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -1040,7 +1133,7 @@ class OpReluParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(OpReluParam* other);
+  void InternalSwap(ReluParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1062,7 +1155,7 @@ class OpReluParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   float negative_slope() const;
   void set_negative_slope(float value);
 
-  // @@protoc_insertion_point(class_scope:OpReluParam)
+  // @@protoc_insertion_point(class_scope:ReluParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -1072,37 +1165,37 @@ class OpReluParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 };
 // -------------------------------------------------------------------
 
-class OpReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:OpReduceParam) */ {
+class ReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ReduceParam) */ {
  public:
-  OpReduceParam();
-  virtual ~OpReduceParam();
+  ReduceParam();
+  virtual ~ReduceParam();
 
-  OpReduceParam(const OpReduceParam& from);
+  ReduceParam(const ReduceParam& from);
 
-  inline OpReduceParam& operator=(const OpReduceParam& from) {
+  inline ReduceParam& operator=(const ReduceParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const OpReduceParam& default_instance();
+  static const ReduceParam& default_instance();
 
-  static inline const OpReduceParam* internal_default_instance() {
-    return reinterpret_cast<const OpReduceParam*>(
-               &_OpReduceParam_default_instance_);
+  static inline const ReduceParam* internal_default_instance() {
+    return reinterpret_cast<const ReduceParam*>(
+               &_ReduceParam_default_instance_);
   }
 
-  void Swap(OpReduceParam* other);
+  void Swap(ReduceParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline OpReduceParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline ReduceParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  OpReduceParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  ReduceParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const OpReduceParam& from);
-  void MergeFrom(const OpReduceParam& from);
+  void CopyFrom(const ReduceParam& from);
+  void MergeFrom(const ReduceParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -1123,7 +1216,7 @@ class OpReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_p
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(OpReduceParam* other);
+  void InternalSwap(ReduceParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1137,51 +1230,51 @@ class OpReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_p
 
   // nested types ----------------------------------------------------
 
-  typedef OpReduceParam_ReduceOp ReduceOp;
+  typedef ReduceParam_ReduceOp ReduceOp;
   static const ReduceOp ADD =
-    OpReduceParam_ReduceOp_ADD;
+    ReduceParam_ReduceOp_ADD;
   static const ReduceOp MUL =
-    OpReduceParam_ReduceOp_MUL;
+    ReduceParam_ReduceOp_MUL;
   static const ReduceOp MIN =
-    OpReduceParam_ReduceOp_MIN;
+    ReduceParam_ReduceOp_MIN;
   static const ReduceOp MAX =
-    OpReduceParam_ReduceOp_MAX;
+    ReduceParam_ReduceOp_MAX;
   static const ReduceOp AMAX =
-    OpReduceParam_ReduceOp_AMAX;
+    ReduceParam_ReduceOp_AMAX;
   static const ReduceOp AVG =
-    OpReduceParam_ReduceOp_AVG;
+    ReduceParam_ReduceOp_AVG;
   static const ReduceOp NORM1 =
-    OpReduceParam_ReduceOp_NORM1;
+    ReduceParam_ReduceOp_NORM1;
   static const ReduceOp NORM2 =
-    OpReduceParam_ReduceOp_NORM2;
+    ReduceParam_ReduceOp_NORM2;
   static inline bool ReduceOp_IsValid(int value) {
-    return OpReduceParam_ReduceOp_IsValid(value);
+    return ReduceParam_ReduceOp_IsValid(value);
   }
   static const ReduceOp ReduceOp_MIN =
-    OpReduceParam_ReduceOp_ReduceOp_MIN;
+    ReduceParam_ReduceOp_ReduceOp_MIN;
   static const ReduceOp ReduceOp_MAX =
-    OpReduceParam_ReduceOp_ReduceOp_MAX;
+    ReduceParam_ReduceOp_ReduceOp_MAX;
   static const int ReduceOp_ARRAYSIZE =
-    OpReduceParam_ReduceOp_ReduceOp_ARRAYSIZE;
+    ReduceParam_ReduceOp_ReduceOp_ARRAYSIZE;
   static inline const ::google::protobuf::EnumDescriptor*
   ReduceOp_descriptor() {
-    return OpReduceParam_ReduceOp_descriptor();
+    return ReduceParam_ReduceOp_descriptor();
   }
   static inline const ::std::string& ReduceOp_Name(ReduceOp value) {
-    return OpReduceParam_ReduceOp_Name(value);
+    return ReduceParam_ReduceOp_Name(value);
   }
   static inline bool ReduceOp_Parse(const ::std::string& name,
       ReduceOp* value) {
-    return OpReduceParam_ReduceOp_Parse(name, value);
+    return ReduceParam_ReduceOp_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
 
-  // .OpReduceParam.ReduceOp reduce_op = 1;
+  // .ReduceParam.ReduceOp reduce_op = 1;
   void clear_reduce_op();
   static const int kReduceOpFieldNumber = 1;
-  ::OpReduceParam_ReduceOp reduce_op() const;
-  void set_reduce_op(::OpReduceParam_ReduceOp value);
+  ::ReduceParam_ReduceOp reduce_op() const;
+  void set_reduce_op(::ReduceParam_ReduceOp value);
 
   // int32 reduce_dim = 2;
   void clear_reduce_dim();
@@ -1189,7 +1282,7 @@ class OpReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::int32 reduce_dim() const;
   void set_reduce_dim(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:OpReduceParam)
+  // @@protoc_insertion_point(class_scope:ReduceParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -1379,10 +1472,20 @@ class PlaceHolderParam : public ::google::protobuf::Message /* @@protoc_insertio
 
   // accessors -------------------------------------------------------
 
+  // .TensorParam tensor_param = 1;
+  bool has_tensor_param() const;
+  void clear_tensor_param();
+  static const int kTensorParamFieldNumber = 1;
+  const ::TensorParam& tensor_param() const;
+  ::TensorParam* mutable_tensor_param();
+  ::TensorParam* release_tensor_param();
+  void set_allocated_tensor_param(::TensorParam* tensor_param);
+
   // @@protoc_insertion_point(class_scope:PlaceHolderParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::TensorParam* tensor_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -1455,20 +1558,40 @@ class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_p
 
   // accessors -------------------------------------------------------
 
-  // .SnapshotParam snapshot_param = 1;
+  // .InitParam init_param = 1;
+  bool has_init_param() const;
+  void clear_init_param();
+  static const int kInitParamFieldNumber = 1;
+  const ::InitParam& init_param() const;
+  ::InitParam* mutable_init_param();
+  ::InitParam* release_init_param();
+  void set_allocated_init_param(::InitParam* init_param);
+
+  // .SnapshotParam snapshot_param = 2;
   bool has_snapshot_param() const;
   void clear_snapshot_param();
-  static const int kSnapshotParamFieldNumber = 1;
+  static const int kSnapshotParamFieldNumber = 2;
   const ::SnapshotParam& snapshot_param() const;
   ::SnapshotParam* mutable_snapshot_param();
   ::SnapshotParam* release_snapshot_param();
   void set_allocated_snapshot_param(::SnapshotParam* snapshot_param);
 
+  // .TensorData weights = 3;
+  bool has_weights() const;
+  void clear_weights();
+  static const int kWeightsFieldNumber = 3;
+  const ::TensorData& weights() const;
+  ::TensorData* mutable_weights();
+  ::TensorData* release_weights();
+  void set_allocated_weights(::TensorData* weights);
+
   // @@protoc_insertion_point(class_scope:VariableParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::InitParam* init_param_;
   ::SnapshotParam* snapshot_param_;
+  ::TensorData* weights_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -1834,49 +1957,49 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
-  // repeated string inputs = 2;
-  int inputs_size() const;
-  void clear_inputs();
-  static const int kInputsFieldNumber = 2;
-  const ::std::string& inputs(int index) const;
-  ::std::string* mutable_inputs(int index);
-  void set_inputs(int index, const ::std::string& value);
+  // repeated string input = 2;
+  int input_size() const;
+  void clear_input();
+  static const int kInputFieldNumber = 2;
+  const ::std::string& input(int index) const;
+  ::std::string* mutable_input(int index);
+  void set_input(int index, const ::std::string& value);
   #if LANG_CXX11
-  void set_inputs(int index, ::std::string&& value);
+  void set_input(int index, ::std::string&& value);
   #endif
-  void set_inputs(int index, const char* value);
-  void set_inputs(int index, const char* value, size_t size);
-  ::std::string* add_inputs();
-  void add_inputs(const ::std::string& value);
+  void set_input(int index, const char* value);
+  void set_input(int index, const char* value, size_t size);
+  ::std::string* add_input();
+  void add_input(const ::std::string& value);
   #if LANG_CXX11
-  void add_inputs(::std::string&& value);
+  void add_input(::std::string&& value);
   #endif
-  void add_inputs(const char* value);
-  void add_inputs(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& inputs() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_inputs();
+  void add_input(const char* value);
+  void add_input(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& input() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_input();
 
-  // repeated string outputs = 3;
-  int outputs_size() const;
-  void clear_outputs();
-  static const int kOutputsFieldNumber = 3;
-  const ::std::string& outputs(int index) const;
-  ::std::string* mutable_outputs(int index);
-  void set_outputs(int index, const ::std::string& value);
+  // repeated string output = 3;
+  int output_size() const;
+  void clear_output();
+  static const int kOutputFieldNumber = 3;
+  const ::std::string& output(int index) const;
+  ::std::string* mutable_output(int index);
+  void set_output(int index, const ::std::string& value);
   #if LANG_CXX11
-  void set_outputs(int index, ::std::string&& value);
+  void set_output(int index, ::std::string&& value);
   #endif
-  void set_outputs(int index, const char* value);
-  void set_outputs(int index, const char* value, size_t size);
-  ::std::string* add_outputs();
-  void add_outputs(const ::std::string& value);
+  void set_output(int index, const char* value);
+  void set_output(int index, const char* value, size_t size);
+  ::std::string* add_output();
+  void add_output(const ::std::string& value);
   #if LANG_CXX11
-  void add_outputs(::std::string&& value);
+  void add_output(::std::string&& value);
   #endif
-  void add_outputs(const char* value);
-  void add_outputs(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& outputs() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_outputs();
+  void add_output(const char* value);
+  void add_output(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& output() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_output();
 
   // string name = 1;
   void clear_name();
@@ -1891,15 +2014,6 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* mutable_name();
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
-
-  // .TensorParam tensor_param = 10;
-  bool has_tensor_param() const;
-  void clear_tensor_param();
-  static const int kTensorParamFieldNumber = 10;
-  const ::TensorParam& tensor_param() const;
-  ::TensorParam* mutable_tensor_param();
-  ::TensorParam* release_tensor_param();
-  void set_allocated_tensor_param(::TensorParam* tensor_param);
 
   // .MnistReaderParam mnist_reader_param = 20;
   bool has_mnist_reader_param() const;
@@ -1946,175 +2060,174 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::LossParam* release_loss_param();
   void set_allocated_loss_param(::LossParam* loss_param);
 
-  // .OpAddParam op_add_param = 60;
-  bool has_op_add_param() const;
-  void clear_op_add_param();
-  static const int kOpAddParamFieldNumber = 60;
-  const ::OpAddParam& op_add_param() const;
-  ::OpAddParam* mutable_op_add_param();
-  ::OpAddParam* release_op_add_param();
-  void set_allocated_op_add_param(::OpAddParam* op_add_param);
+  // .AddParam add_param = 60;
+  bool has_add_param() const;
+  void clear_add_param();
+  static const int kAddParamFieldNumber = 60;
+  const ::AddParam& add_param() const;
+  ::AddParam* mutable_add_param();
+  ::AddParam* release_add_param();
+  void set_allocated_add_param(::AddParam* add_param);
 
-  // .OpBiasAddParam op_bias_add_param = 61;
-  bool has_op_bias_add_param() const;
-  void clear_op_bias_add_param();
-  static const int kOpBiasAddParamFieldNumber = 61;
-  const ::OpBiasAddParam& op_bias_add_param() const;
-  ::OpBiasAddParam* mutable_op_bias_add_param();
-  ::OpBiasAddParam* release_op_bias_add_param();
-  void set_allocated_op_bias_add_param(::OpBiasAddParam* op_bias_add_param);
+  // .BiasAddParam bias_add_param = 61;
+  bool has_bias_add_param() const;
+  void clear_bias_add_param();
+  static const int kBiasAddParamFieldNumber = 61;
+  const ::BiasAddParam& bias_add_param() const;
+  ::BiasAddParam* mutable_bias_add_param();
+  ::BiasAddParam* release_bias_add_param();
+  void set_allocated_bias_add_param(::BiasAddParam* bias_add_param);
 
-  // .OpConv2dParam op_conv_2d_param = 62;
-  bool has_op_conv_2d_param() const;
-  void clear_op_conv_2d_param();
-  static const int kOpConv2DParamFieldNumber = 62;
-  const ::OpConv2dParam& op_conv_2d_param() const;
-  ::OpConv2dParam* mutable_op_conv_2d_param();
-  ::OpConv2dParam* release_op_conv_2d_param();
-  void set_allocated_op_conv_2d_param(::OpConv2dParam* op_conv_2d_param);
+  // .Conv2dParam conv_2d_param = 62;
+  bool has_conv_2d_param() const;
+  void clear_conv_2d_param();
+  static const int kConv2DParamFieldNumber = 62;
+  const ::Conv2dParam& conv_2d_param() const;
+  ::Conv2dParam* mutable_conv_2d_param();
+  ::Conv2dParam* release_conv_2d_param();
+  void set_allocated_conv_2d_param(::Conv2dParam* conv_2d_param);
 
-  // .OpDropoutParam op_dropout_param = 63;
-  bool has_op_dropout_param() const;
-  void clear_op_dropout_param();
-  static const int kOpDropoutParamFieldNumber = 63;
-  const ::OpDropoutParam& op_dropout_param() const;
-  ::OpDropoutParam* mutable_op_dropout_param();
-  ::OpDropoutParam* release_op_dropout_param();
-  void set_allocated_op_dropout_param(::OpDropoutParam* op_dropout_param);
+  // .DropoutParam dropout_param = 63;
+  bool has_dropout_param() const;
+  void clear_dropout_param();
+  static const int kDropoutParamFieldNumber = 63;
+  const ::DropoutParam& dropout_param() const;
+  ::DropoutParam* mutable_dropout_param();
+  ::DropoutParam* release_dropout_param();
+  void set_allocated_dropout_param(::DropoutParam* dropout_param);
 
-  // .OpReluParam op_relu_param = 64;
-  bool has_op_relu_param() const;
-  void clear_op_relu_param();
-  static const int kOpReluParamFieldNumber = 64;
-  const ::OpReluParam& op_relu_param() const;
-  ::OpReluParam* mutable_op_relu_param();
-  ::OpReluParam* release_op_relu_param();
-  void set_allocated_op_relu_param(::OpReluParam* op_relu_param);
+  // .ReluParam relu_param = 64;
+  bool has_relu_param() const;
+  void clear_relu_param();
+  static const int kReluParamFieldNumber = 64;
+  const ::ReluParam& relu_param() const;
+  ::ReluParam* mutable_relu_param();
+  ::ReluParam* release_relu_param();
+  void set_allocated_relu_param(::ReluParam* relu_param);
 
-  // .OpSoftmaxParam op_softmax_param = 65;
-  bool has_op_softmax_param() const;
-  void clear_op_softmax_param();
-  static const int kOpSoftmaxParamFieldNumber = 65;
-  const ::OpSoftmaxParam& op_softmax_param() const;
-  ::OpSoftmaxParam* mutable_op_softmax_param();
-  ::OpSoftmaxParam* release_op_softmax_param();
-  void set_allocated_op_softmax_param(::OpSoftmaxParam* op_softmax_param);
+  // .SoftmaxParam softmax_param = 65;
+  bool has_softmax_param() const;
+  void clear_softmax_param();
+  static const int kSoftmaxParamFieldNumber = 65;
+  const ::SoftmaxParam& softmax_param() const;
+  ::SoftmaxParam* mutable_softmax_param();
+  ::SoftmaxParam* release_softmax_param();
+  void set_allocated_softmax_param(::SoftmaxParam* softmax_param);
 
-  // .OpSquareParam op_square_param = 66;
-  bool has_op_square_param() const;
-  void clear_op_square_param();
-  static const int kOpSquareParamFieldNumber = 66;
-  const ::OpSquareParam& op_square_param() const;
-  ::OpSquareParam* mutable_op_square_param();
-  ::OpSquareParam* release_op_square_param();
-  void set_allocated_op_square_param(::OpSquareParam* op_square_param);
+  // .SquareParam square_param = 66;
+  bool has_square_param() const;
+  void clear_square_param();
+  static const int kSquareParamFieldNumber = 66;
+  const ::SquareParam& square_param() const;
+  ::SquareParam* mutable_square_param();
+  ::SquareParam* release_square_param();
+  void set_allocated_square_param(::SquareParam* square_param);
 
-  // .OpMatMulParam op_matmul_param = 67;
-  bool has_op_matmul_param() const;
-  void clear_op_matmul_param();
-  static const int kOpMatmulParamFieldNumber = 67;
-  const ::OpMatMulParam& op_matmul_param() const;
-  ::OpMatMulParam* mutable_op_matmul_param();
-  ::OpMatMulParam* release_op_matmul_param();
-  void set_allocated_op_matmul_param(::OpMatMulParam* op_matmul_param);
+  // .MatMulParam matmul_param = 67;
+  bool has_matmul_param() const;
+  void clear_matmul_param();
+  static const int kMatmulParamFieldNumber = 67;
+  const ::MatMulParam& matmul_param() const;
+  ::MatMulParam* mutable_matmul_param();
+  ::MatMulParam* release_matmul_param();
+  void set_allocated_matmul_param(::MatMulParam* matmul_param);
 
-  // .OpPoolingParam op_pooling_param = 68;
-  bool has_op_pooling_param() const;
-  void clear_op_pooling_param();
-  static const int kOpPoolingParamFieldNumber = 68;
-  const ::OpPoolingParam& op_pooling_param() const;
-  ::OpPoolingParam* mutable_op_pooling_param();
-  ::OpPoolingParam* release_op_pooling_param();
-  void set_allocated_op_pooling_param(::OpPoolingParam* op_pooling_param);
+  // .PoolingParam pooling_param = 68;
+  bool has_pooling_param() const;
+  void clear_pooling_param();
+  static const int kPoolingParamFieldNumber = 68;
+  const ::PoolingParam& pooling_param() const;
+  ::PoolingParam* mutable_pooling_param();
+  ::PoolingParam* release_pooling_param();
+  void set_allocated_pooling_param(::PoolingParam* pooling_param);
 
-  // .OpArgmaxParam op_argmax_param = 69;
-  bool has_op_argmax_param() const;
-  void clear_op_argmax_param();
-  static const int kOpArgmaxParamFieldNumber = 69;
-  const ::OpArgmaxParam& op_argmax_param() const;
-  ::OpArgmaxParam* mutable_op_argmax_param();
-  ::OpArgmaxParam* release_op_argmax_param();
-  void set_allocated_op_argmax_param(::OpArgmaxParam* op_argmax_param);
+  // .ArgmaxParam argmax_param = 69;
+  bool has_argmax_param() const;
+  void clear_argmax_param();
+  static const int kArgmaxParamFieldNumber = 69;
+  const ::ArgmaxParam& argmax_param() const;
+  ::ArgmaxParam* mutable_argmax_param();
+  ::ArgmaxParam* release_argmax_param();
+  void set_allocated_argmax_param(::ArgmaxParam* argmax_param);
 
-  // .OpReduceParam op_reduce_param = 70;
-  bool has_op_reduce_param() const;
-  void clear_op_reduce_param();
-  static const int kOpReduceParamFieldNumber = 70;
-  const ::OpReduceParam& op_reduce_param() const;
-  ::OpReduceParam* mutable_op_reduce_param();
-  ::OpReduceParam* release_op_reduce_param();
-  void set_allocated_op_reduce_param(::OpReduceParam* op_reduce_param);
+  // .ReduceParam reduce_param = 70;
+  bool has_reduce_param() const;
+  void clear_reduce_param();
+  static const int kReduceParamFieldNumber = 70;
+  const ::ReduceParam& reduce_param() const;
+  ::ReduceParam* mutable_reduce_param();
+  ::ReduceParam* release_reduce_param();
+  void set_allocated_reduce_param(::ReduceParam* reduce_param);
 
-  // .OpEqualParam op_equal_param = 71;
-  bool has_op_equal_param() const;
-  void clear_op_equal_param();
-  static const int kOpEqualParamFieldNumber = 71;
-  const ::OpEqualParam& op_equal_param() const;
-  ::OpEqualParam* mutable_op_equal_param();
-  ::OpEqualParam* release_op_equal_param();
-  void set_allocated_op_equal_param(::OpEqualParam* op_equal_param);
+  // .EqualParam equal_param = 71;
+  bool has_equal_param() const;
+  void clear_equal_param();
+  static const int kEqualParamFieldNumber = 71;
+  const ::EqualParam& equal_param() const;
+  ::EqualParam* mutable_equal_param();
+  ::EqualParam* release_equal_param();
+  void set_allocated_equal_param(::EqualParam* equal_param);
 
   // @@protoc_insertion_point(class_scope:NodeParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> inputs_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> outputs_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> input_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> output_;
   ::google::protobuf::internal::ArenaStringPtr name_;
-  ::TensorParam* tensor_param_;
   ::MnistReaderParam* mnist_reader_param_;
   ::VariableParam* variable_param_;
   ::PlaceHolderParam* place_holder_param_;
   ::BlockParam* block_param_;
   ::LossParam* loss_param_;
-  ::OpAddParam* op_add_param_;
-  ::OpBiasAddParam* op_bias_add_param_;
-  ::OpConv2dParam* op_conv_2d_param_;
-  ::OpDropoutParam* op_dropout_param_;
-  ::OpReluParam* op_relu_param_;
-  ::OpSoftmaxParam* op_softmax_param_;
-  ::OpSquareParam* op_square_param_;
-  ::OpMatMulParam* op_matmul_param_;
-  ::OpPoolingParam* op_pooling_param_;
-  ::OpArgmaxParam* op_argmax_param_;
-  ::OpReduceParam* op_reduce_param_;
-  ::OpEqualParam* op_equal_param_;
+  ::AddParam* add_param_;
+  ::BiasAddParam* bias_add_param_;
+  ::Conv2dParam* conv_2d_param_;
+  ::DropoutParam* dropout_param_;
+  ::ReluParam* relu_param_;
+  ::SoftmaxParam* softmax_param_;
+  ::SquareParam* square_param_;
+  ::MatMulParam* matmul_param_;
+  ::PoolingParam* pooling_param_;
+  ::ArgmaxParam* argmax_param_;
+  ::ReduceParam* reduce_param_;
+  ::EqualParam* equal_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class OpArgmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:OpArgmaxParam) */ {
+class ArgmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ArgmaxParam) */ {
  public:
-  OpArgmaxParam();
-  virtual ~OpArgmaxParam();
+  ArgmaxParam();
+  virtual ~ArgmaxParam();
 
-  OpArgmaxParam(const OpArgmaxParam& from);
+  ArgmaxParam(const ArgmaxParam& from);
 
-  inline OpArgmaxParam& operator=(const OpArgmaxParam& from) {
+  inline ArgmaxParam& operator=(const ArgmaxParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const OpArgmaxParam& default_instance();
+  static const ArgmaxParam& default_instance();
 
-  static inline const OpArgmaxParam* internal_default_instance() {
-    return reinterpret_cast<const OpArgmaxParam*>(
-               &_OpArgmaxParam_default_instance_);
+  static inline const ArgmaxParam* internal_default_instance() {
+    return reinterpret_cast<const ArgmaxParam*>(
+               &_ArgmaxParam_default_instance_);
   }
 
-  void Swap(OpArgmaxParam* other);
+  void Swap(ArgmaxParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline OpArgmaxParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline ArgmaxParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  OpArgmaxParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  ArgmaxParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const OpArgmaxParam& from);
-  void MergeFrom(const OpArgmaxParam& from);
+  void CopyFrom(const ArgmaxParam& from);
+  void MergeFrom(const ArgmaxParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -2135,7 +2248,7 @@ class OpArgmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_p
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(OpArgmaxParam* other);
+  void InternalSwap(ArgmaxParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -2151,7 +2264,7 @@ class OpArgmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_p
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:OpArgmaxParam)
+  // @@protoc_insertion_point(class_scope:ArgmaxParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -2160,37 +2273,37 @@ class OpArgmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
-class OpSquareParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:OpSquareParam) */ {
+class SquareParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:SquareParam) */ {
  public:
-  OpSquareParam();
-  virtual ~OpSquareParam();
+  SquareParam();
+  virtual ~SquareParam();
 
-  OpSquareParam(const OpSquareParam& from);
+  SquareParam(const SquareParam& from);
 
-  inline OpSquareParam& operator=(const OpSquareParam& from) {
+  inline SquareParam& operator=(const SquareParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const OpSquareParam& default_instance();
+  static const SquareParam& default_instance();
 
-  static inline const OpSquareParam* internal_default_instance() {
-    return reinterpret_cast<const OpSquareParam*>(
-               &_OpSquareParam_default_instance_);
+  static inline const SquareParam* internal_default_instance() {
+    return reinterpret_cast<const SquareParam*>(
+               &_SquareParam_default_instance_);
   }
 
-  void Swap(OpSquareParam* other);
+  void Swap(SquareParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline OpSquareParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline SquareParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  OpSquareParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  SquareParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const OpSquareParam& from);
-  void MergeFrom(const OpSquareParam& from);
+  void CopyFrom(const SquareParam& from);
+  void MergeFrom(const SquareParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -2211,7 +2324,7 @@ class OpSquareParam : public ::google::protobuf::Message /* @@protoc_insertion_p
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(OpSquareParam* other);
+  void InternalSwap(SquareParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -2227,7 +2340,7 @@ class OpSquareParam : public ::google::protobuf::Message /* @@protoc_insertion_p
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:OpSquareParam)
+  // @@protoc_insertion_point(class_scope:SquareParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -2326,37 +2439,37 @@ class SoftmaxLossParam : public ::google::protobuf::Message /* @@protoc_insertio
 };
 // -------------------------------------------------------------------
 
-class OpSoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:OpSoftmaxParam) */ {
+class SoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:SoftmaxParam) */ {
  public:
-  OpSoftmaxParam();
-  virtual ~OpSoftmaxParam();
+  SoftmaxParam();
+  virtual ~SoftmaxParam();
 
-  OpSoftmaxParam(const OpSoftmaxParam& from);
+  SoftmaxParam(const SoftmaxParam& from);
 
-  inline OpSoftmaxParam& operator=(const OpSoftmaxParam& from) {
+  inline SoftmaxParam& operator=(const SoftmaxParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const OpSoftmaxParam& default_instance();
+  static const SoftmaxParam& default_instance();
 
-  static inline const OpSoftmaxParam* internal_default_instance() {
-    return reinterpret_cast<const OpSoftmaxParam*>(
-               &_OpSoftmaxParam_default_instance_);
+  static inline const SoftmaxParam* internal_default_instance() {
+    return reinterpret_cast<const SoftmaxParam*>(
+               &_SoftmaxParam_default_instance_);
   }
 
-  void Swap(OpSoftmaxParam* other);
+  void Swap(SoftmaxParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline OpSoftmaxParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline SoftmaxParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  OpSoftmaxParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  SoftmaxParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const OpSoftmaxParam& from);
-  void MergeFrom(const OpSoftmaxParam& from);
+  void CopyFrom(const SoftmaxParam& from);
+  void MergeFrom(const SoftmaxParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -2377,7 +2490,7 @@ class OpSoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(OpSoftmaxParam* other);
+  void InternalSwap(SoftmaxParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -2405,7 +2518,7 @@ class OpSoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_
   float beta() const;
   void set_beta(float value);
 
-  // @@protoc_insertion_point(class_scope:OpSoftmaxParam)
+  // @@protoc_insertion_point(class_scope:SoftmaxParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -3266,23 +3379,36 @@ class NetworkParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // repeated .NodeParam node_param = 1;
-  int node_param_size() const;
-  void clear_node_param();
-  static const int kNodeParamFieldNumber = 1;
-  const ::NodeParam& node_param(int index) const;
-  ::NodeParam* mutable_node_param(int index);
-  ::NodeParam* add_node_param();
+  // repeated .NodeParam node = 1;
+  int node_size() const;
+  void clear_node();
+  static const int kNodeFieldNumber = 1;
+  const ::NodeParam& node(int index) const;
+  ::NodeParam* mutable_node(int index);
+  ::NodeParam* add_node();
   ::google::protobuf::RepeatedPtrField< ::NodeParam >*
-      mutable_node_param();
+      mutable_node();
   const ::google::protobuf::RepeatedPtrField< ::NodeParam >&
-      node_param() const;
+      node() const;
+
+  // repeated .SolverParam solver = 2;
+  int solver_size() const;
+  void clear_solver();
+  static const int kSolverFieldNumber = 2;
+  const ::SolverParam& solver(int index) const;
+  ::SolverParam* mutable_solver(int index);
+  ::SolverParam* add_solver();
+  ::google::protobuf::RepeatedPtrField< ::SolverParam >*
+      mutable_solver();
+  const ::google::protobuf::RepeatedPtrField< ::SolverParam >&
+      solver() const;
 
   // @@protoc_insertion_point(class_scope:NetworkParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::NodeParam > node_param_;
+  ::google::protobuf::RepeatedPtrField< ::NodeParam > node_;
+  ::google::protobuf::RepeatedPtrField< ::SolverParam > solver_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3292,6 +3418,40 @@ class NetworkParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 // ===================================================================
 
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
+// TensorData
+
+// repeated float weight = 1;
+inline int TensorData::weight_size() const {
+  return weight_.size();
+}
+inline void TensorData::clear_weight() {
+  weight_.Clear();
+}
+inline float TensorData::weight(int index) const {
+  // @@protoc_insertion_point(field_get:TensorData.weight)
+  return weight_.Get(index);
+}
+inline void TensorData::set_weight(int index, float value) {
+  weight_.Set(index, value);
+  // @@protoc_insertion_point(field_set:TensorData.weight)
+}
+inline void TensorData::add_weight(float value) {
+  weight_.Add(value);
+  // @@protoc_insertion_point(field_add:TensorData.weight)
+}
+inline const ::google::protobuf::RepeatedField< float >&
+TensorData::weight() const {
+  // @@protoc_insertion_point(field_list:TensorData.weight)
+  return weight_;
+}
+inline ::google::protobuf::RepeatedField< float >*
+TensorData::mutable_weight() {
+  // @@protoc_insertion_point(field_mutable_list:TensorData.weight)
+  return &weight_;
+}
+
+// -------------------------------------------------------------------
+
 // TensorParam
 
 // .TensorParam.TensorType type = 1;
@@ -3340,318 +3500,318 @@ TensorParam::mutable_dims() {
 
 // -------------------------------------------------------------------
 
-// OpAddParam
+// AddParam
 
 // float alpha = 1;
-inline void OpAddParam::clear_alpha() {
+inline void AddParam::clear_alpha() {
   alpha_ = 0;
 }
-inline float OpAddParam::alpha() const {
-  // @@protoc_insertion_point(field_get:OpAddParam.alpha)
+inline float AddParam::alpha() const {
+  // @@protoc_insertion_point(field_get:AddParam.alpha)
   return alpha_;
 }
-inline void OpAddParam::set_alpha(float value) {
+inline void AddParam::set_alpha(float value) {
   
   alpha_ = value;
-  // @@protoc_insertion_point(field_set:OpAddParam.alpha)
+  // @@protoc_insertion_point(field_set:AddParam.alpha)
 }
 
 // float beta = 2;
-inline void OpAddParam::clear_beta() {
+inline void AddParam::clear_beta() {
   beta_ = 0;
 }
-inline float OpAddParam::beta() const {
-  // @@protoc_insertion_point(field_get:OpAddParam.beta)
+inline float AddParam::beta() const {
+  // @@protoc_insertion_point(field_get:AddParam.beta)
   return beta_;
 }
-inline void OpAddParam::set_beta(float value) {
+inline void AddParam::set_beta(float value) {
   
   beta_ = value;
-  // @@protoc_insertion_point(field_set:OpAddParam.beta)
+  // @@protoc_insertion_point(field_set:AddParam.beta)
 }
 
 // -------------------------------------------------------------------
 
-// OpEqualParam
+// EqualParam
 
 // -------------------------------------------------------------------
 
-// OpBiasAddParam
+// BiasAddParam
 
 // -------------------------------------------------------------------
 
-// OpPoolingParam
+// PoolingParam
 
 // int32 window_h = 1;
-inline void OpPoolingParam::clear_window_h() {
+inline void PoolingParam::clear_window_h() {
   window_h_ = 0;
 }
-inline ::google::protobuf::int32 OpPoolingParam::window_h() const {
-  // @@protoc_insertion_point(field_get:OpPoolingParam.window_h)
+inline ::google::protobuf::int32 PoolingParam::window_h() const {
+  // @@protoc_insertion_point(field_get:PoolingParam.window_h)
   return window_h_;
 }
-inline void OpPoolingParam::set_window_h(::google::protobuf::int32 value) {
+inline void PoolingParam::set_window_h(::google::protobuf::int32 value) {
   
   window_h_ = value;
-  // @@protoc_insertion_point(field_set:OpPoolingParam.window_h)
+  // @@protoc_insertion_point(field_set:PoolingParam.window_h)
 }
 
 // int32 window_w = 2;
-inline void OpPoolingParam::clear_window_w() {
+inline void PoolingParam::clear_window_w() {
   window_w_ = 0;
 }
-inline ::google::protobuf::int32 OpPoolingParam::window_w() const {
-  // @@protoc_insertion_point(field_get:OpPoolingParam.window_w)
+inline ::google::protobuf::int32 PoolingParam::window_w() const {
+  // @@protoc_insertion_point(field_get:PoolingParam.window_w)
   return window_w_;
 }
-inline void OpPoolingParam::set_window_w(::google::protobuf::int32 value) {
+inline void PoolingParam::set_window_w(::google::protobuf::int32 value) {
   
   window_w_ = value;
-  // @@protoc_insertion_point(field_set:OpPoolingParam.window_w)
+  // @@protoc_insertion_point(field_set:PoolingParam.window_w)
 }
 
 // int32 h_pad = 3;
-inline void OpPoolingParam::clear_h_pad() {
+inline void PoolingParam::clear_h_pad() {
   h_pad_ = 0;
 }
-inline ::google::protobuf::int32 OpPoolingParam::h_pad() const {
-  // @@protoc_insertion_point(field_get:OpPoolingParam.h_pad)
+inline ::google::protobuf::int32 PoolingParam::h_pad() const {
+  // @@protoc_insertion_point(field_get:PoolingParam.h_pad)
   return h_pad_;
 }
-inline void OpPoolingParam::set_h_pad(::google::protobuf::int32 value) {
+inline void PoolingParam::set_h_pad(::google::protobuf::int32 value) {
   
   h_pad_ = value;
-  // @@protoc_insertion_point(field_set:OpPoolingParam.h_pad)
+  // @@protoc_insertion_point(field_set:PoolingParam.h_pad)
 }
 
 // int32 v_pad = 4;
-inline void OpPoolingParam::clear_v_pad() {
+inline void PoolingParam::clear_v_pad() {
   v_pad_ = 0;
 }
-inline ::google::protobuf::int32 OpPoolingParam::v_pad() const {
-  // @@protoc_insertion_point(field_get:OpPoolingParam.v_pad)
+inline ::google::protobuf::int32 PoolingParam::v_pad() const {
+  // @@protoc_insertion_point(field_get:PoolingParam.v_pad)
   return v_pad_;
 }
-inline void OpPoolingParam::set_v_pad(::google::protobuf::int32 value) {
+inline void PoolingParam::set_v_pad(::google::protobuf::int32 value) {
   
   v_pad_ = value;
-  // @@protoc_insertion_point(field_set:OpPoolingParam.v_pad)
+  // @@protoc_insertion_point(field_set:PoolingParam.v_pad)
 }
 
 // int32 h_stride = 5;
-inline void OpPoolingParam::clear_h_stride() {
+inline void PoolingParam::clear_h_stride() {
   h_stride_ = 0;
 }
-inline ::google::protobuf::int32 OpPoolingParam::h_stride() const {
-  // @@protoc_insertion_point(field_get:OpPoolingParam.h_stride)
+inline ::google::protobuf::int32 PoolingParam::h_stride() const {
+  // @@protoc_insertion_point(field_get:PoolingParam.h_stride)
   return h_stride_;
 }
-inline void OpPoolingParam::set_h_stride(::google::protobuf::int32 value) {
+inline void PoolingParam::set_h_stride(::google::protobuf::int32 value) {
   
   h_stride_ = value;
-  // @@protoc_insertion_point(field_set:OpPoolingParam.h_stride)
+  // @@protoc_insertion_point(field_set:PoolingParam.h_stride)
 }
 
 // int32 v_stride = 6;
-inline void OpPoolingParam::clear_v_stride() {
+inline void PoolingParam::clear_v_stride() {
   v_stride_ = 0;
 }
-inline ::google::protobuf::int32 OpPoolingParam::v_stride() const {
-  // @@protoc_insertion_point(field_get:OpPoolingParam.v_stride)
+inline ::google::protobuf::int32 PoolingParam::v_stride() const {
+  // @@protoc_insertion_point(field_get:PoolingParam.v_stride)
   return v_stride_;
 }
-inline void OpPoolingParam::set_v_stride(::google::protobuf::int32 value) {
+inline void PoolingParam::set_v_stride(::google::protobuf::int32 value) {
   
   v_stride_ = value;
-  // @@protoc_insertion_point(field_set:OpPoolingParam.v_stride)
+  // @@protoc_insertion_point(field_set:PoolingParam.v_stride)
 }
 
 // -------------------------------------------------------------------
 
-// OpConv2dParam
+// Conv2dParam
 
 // int32 pad_h = 1;
-inline void OpConv2dParam::clear_pad_h() {
+inline void Conv2dParam::clear_pad_h() {
   pad_h_ = 0;
 }
-inline ::google::protobuf::int32 OpConv2dParam::pad_h() const {
-  // @@protoc_insertion_point(field_get:OpConv2dParam.pad_h)
+inline ::google::protobuf::int32 Conv2dParam::pad_h() const {
+  // @@protoc_insertion_point(field_get:Conv2dParam.pad_h)
   return pad_h_;
 }
-inline void OpConv2dParam::set_pad_h(::google::protobuf::int32 value) {
+inline void Conv2dParam::set_pad_h(::google::protobuf::int32 value) {
   
   pad_h_ = value;
-  // @@protoc_insertion_point(field_set:OpConv2dParam.pad_h)
+  // @@protoc_insertion_point(field_set:Conv2dParam.pad_h)
 }
 
 // int32 pad_w = 2;
-inline void OpConv2dParam::clear_pad_w() {
+inline void Conv2dParam::clear_pad_w() {
   pad_w_ = 0;
 }
-inline ::google::protobuf::int32 OpConv2dParam::pad_w() const {
-  // @@protoc_insertion_point(field_get:OpConv2dParam.pad_w)
+inline ::google::protobuf::int32 Conv2dParam::pad_w() const {
+  // @@protoc_insertion_point(field_get:Conv2dParam.pad_w)
   return pad_w_;
 }
-inline void OpConv2dParam::set_pad_w(::google::protobuf::int32 value) {
+inline void Conv2dParam::set_pad_w(::google::protobuf::int32 value) {
   
   pad_w_ = value;
-  // @@protoc_insertion_point(field_set:OpConv2dParam.pad_w)
+  // @@protoc_insertion_point(field_set:Conv2dParam.pad_w)
 }
 
 // int32 u = 3;
-inline void OpConv2dParam::clear_u() {
+inline void Conv2dParam::clear_u() {
   u_ = 0;
 }
-inline ::google::protobuf::int32 OpConv2dParam::u() const {
-  // @@protoc_insertion_point(field_get:OpConv2dParam.u)
+inline ::google::protobuf::int32 Conv2dParam::u() const {
+  // @@protoc_insertion_point(field_get:Conv2dParam.u)
   return u_;
 }
-inline void OpConv2dParam::set_u(::google::protobuf::int32 value) {
+inline void Conv2dParam::set_u(::google::protobuf::int32 value) {
   
   u_ = value;
-  // @@protoc_insertion_point(field_set:OpConv2dParam.u)
+  // @@protoc_insertion_point(field_set:Conv2dParam.u)
 }
 
 // int32 v = 4;
-inline void OpConv2dParam::clear_v() {
+inline void Conv2dParam::clear_v() {
   v_ = 0;
 }
-inline ::google::protobuf::int32 OpConv2dParam::v() const {
-  // @@protoc_insertion_point(field_get:OpConv2dParam.v)
+inline ::google::protobuf::int32 Conv2dParam::v() const {
+  // @@protoc_insertion_point(field_get:Conv2dParam.v)
   return v_;
 }
-inline void OpConv2dParam::set_v(::google::protobuf::int32 value) {
+inline void Conv2dParam::set_v(::google::protobuf::int32 value) {
   
   v_ = value;
-  // @@protoc_insertion_point(field_set:OpConv2dParam.v)
+  // @@protoc_insertion_point(field_set:Conv2dParam.v)
 }
 
 // int32 dilation_h = 5;
-inline void OpConv2dParam::clear_dilation_h() {
+inline void Conv2dParam::clear_dilation_h() {
   dilation_h_ = 0;
 }
-inline ::google::protobuf::int32 OpConv2dParam::dilation_h() const {
-  // @@protoc_insertion_point(field_get:OpConv2dParam.dilation_h)
+inline ::google::protobuf::int32 Conv2dParam::dilation_h() const {
+  // @@protoc_insertion_point(field_get:Conv2dParam.dilation_h)
   return dilation_h_;
 }
-inline void OpConv2dParam::set_dilation_h(::google::protobuf::int32 value) {
+inline void Conv2dParam::set_dilation_h(::google::protobuf::int32 value) {
   
   dilation_h_ = value;
-  // @@protoc_insertion_point(field_set:OpConv2dParam.dilation_h)
+  // @@protoc_insertion_point(field_set:Conv2dParam.dilation_h)
 }
 
 // int32 dilation_w = 6;
-inline void OpConv2dParam::clear_dilation_w() {
+inline void Conv2dParam::clear_dilation_w() {
   dilation_w_ = 0;
 }
-inline ::google::protobuf::int32 OpConv2dParam::dilation_w() const {
-  // @@protoc_insertion_point(field_get:OpConv2dParam.dilation_w)
+inline ::google::protobuf::int32 Conv2dParam::dilation_w() const {
+  // @@protoc_insertion_point(field_get:Conv2dParam.dilation_w)
   return dilation_w_;
 }
-inline void OpConv2dParam::set_dilation_w(::google::protobuf::int32 value) {
+inline void Conv2dParam::set_dilation_w(::google::protobuf::int32 value) {
   
   dilation_w_ = value;
-  // @@protoc_insertion_point(field_set:OpConv2dParam.dilation_w)
+  // @@protoc_insertion_point(field_set:Conv2dParam.dilation_w)
 }
 
 // -------------------------------------------------------------------
 
-// OpDropoutParam
+// DropoutParam
 
 // float dropout = 1;
-inline void OpDropoutParam::clear_dropout() {
+inline void DropoutParam::clear_dropout() {
   dropout_ = 0;
 }
-inline float OpDropoutParam::dropout() const {
-  // @@protoc_insertion_point(field_get:OpDropoutParam.dropout)
+inline float DropoutParam::dropout() const {
+  // @@protoc_insertion_point(field_get:DropoutParam.dropout)
   return dropout_;
 }
-inline void OpDropoutParam::set_dropout(float value) {
+inline void DropoutParam::set_dropout(float value) {
   
   dropout_ = value;
-  // @@protoc_insertion_point(field_set:OpDropoutParam.dropout)
+  // @@protoc_insertion_point(field_set:DropoutParam.dropout)
 }
 
 // -------------------------------------------------------------------
 
-// OpMatMulParam
+// MatMulParam
 
 // float alpha = 1;
-inline void OpMatMulParam::clear_alpha() {
+inline void MatMulParam::clear_alpha() {
   alpha_ = 0;
 }
-inline float OpMatMulParam::alpha() const {
-  // @@protoc_insertion_point(field_get:OpMatMulParam.alpha)
+inline float MatMulParam::alpha() const {
+  // @@protoc_insertion_point(field_get:MatMulParam.alpha)
   return alpha_;
 }
-inline void OpMatMulParam::set_alpha(float value) {
+inline void MatMulParam::set_alpha(float value) {
   
   alpha_ = value;
-  // @@protoc_insertion_point(field_set:OpMatMulParam.alpha)
+  // @@protoc_insertion_point(field_set:MatMulParam.alpha)
 }
 
 // float beta = 2;
-inline void OpMatMulParam::clear_beta() {
+inline void MatMulParam::clear_beta() {
   beta_ = 0;
 }
-inline float OpMatMulParam::beta() const {
-  // @@protoc_insertion_point(field_get:OpMatMulParam.beta)
+inline float MatMulParam::beta() const {
+  // @@protoc_insertion_point(field_get:MatMulParam.beta)
   return beta_;
 }
-inline void OpMatMulParam::set_beta(float value) {
+inline void MatMulParam::set_beta(float value) {
   
   beta_ = value;
-  // @@protoc_insertion_point(field_set:OpMatMulParam.beta)
+  // @@protoc_insertion_point(field_set:MatMulParam.beta)
 }
 
 // -------------------------------------------------------------------
 
-// OpReluParam
+// ReluParam
 
 // float negative_slope = 1;
-inline void OpReluParam::clear_negative_slope() {
+inline void ReluParam::clear_negative_slope() {
   negative_slope_ = 0;
 }
-inline float OpReluParam::negative_slope() const {
-  // @@protoc_insertion_point(field_get:OpReluParam.negative_slope)
+inline float ReluParam::negative_slope() const {
+  // @@protoc_insertion_point(field_get:ReluParam.negative_slope)
   return negative_slope_;
 }
-inline void OpReluParam::set_negative_slope(float value) {
+inline void ReluParam::set_negative_slope(float value) {
   
   negative_slope_ = value;
-  // @@protoc_insertion_point(field_set:OpReluParam.negative_slope)
+  // @@protoc_insertion_point(field_set:ReluParam.negative_slope)
 }
 
 // -------------------------------------------------------------------
 
-// OpReduceParam
+// ReduceParam
 
-// .OpReduceParam.ReduceOp reduce_op = 1;
-inline void OpReduceParam::clear_reduce_op() {
+// .ReduceParam.ReduceOp reduce_op = 1;
+inline void ReduceParam::clear_reduce_op() {
   reduce_op_ = 0;
 }
-inline ::OpReduceParam_ReduceOp OpReduceParam::reduce_op() const {
-  // @@protoc_insertion_point(field_get:OpReduceParam.reduce_op)
-  return static_cast< ::OpReduceParam_ReduceOp >(reduce_op_);
+inline ::ReduceParam_ReduceOp ReduceParam::reduce_op() const {
+  // @@protoc_insertion_point(field_get:ReduceParam.reduce_op)
+  return static_cast< ::ReduceParam_ReduceOp >(reduce_op_);
 }
-inline void OpReduceParam::set_reduce_op(::OpReduceParam_ReduceOp value) {
+inline void ReduceParam::set_reduce_op(::ReduceParam_ReduceOp value) {
   
   reduce_op_ = value;
-  // @@protoc_insertion_point(field_set:OpReduceParam.reduce_op)
+  // @@protoc_insertion_point(field_set:ReduceParam.reduce_op)
 }
 
 // int32 reduce_dim = 2;
-inline void OpReduceParam::clear_reduce_dim() {
+inline void ReduceParam::clear_reduce_dim() {
   reduce_dim_ = 0;
 }
-inline ::google::protobuf::int32 OpReduceParam::reduce_dim() const {
-  // @@protoc_insertion_point(field_get:OpReduceParam.reduce_dim)
+inline ::google::protobuf::int32 ReduceParam::reduce_dim() const {
+  // @@protoc_insertion_point(field_get:ReduceParam.reduce_dim)
   return reduce_dim_;
 }
-inline void OpReduceParam::set_reduce_dim(::google::protobuf::int32 value) {
+inline void ReduceParam::set_reduce_dim(::google::protobuf::int32 value) {
   
   reduce_dim_ = value;
-  // @@protoc_insertion_point(field_set:OpReduceParam.reduce_dim)
+  // @@protoc_insertion_point(field_set:ReduceParam.reduce_dim)
 }
 
 // -------------------------------------------------------------------
@@ -3756,11 +3916,89 @@ inline void SnapshotParam::set_per_image_width(::google::protobuf::int32 value) 
 
 // PlaceHolderParam
 
+// .TensorParam tensor_param = 1;
+inline bool PlaceHolderParam::has_tensor_param() const {
+  return this != internal_default_instance() && tensor_param_ != NULL;
+}
+inline void PlaceHolderParam::clear_tensor_param() {
+  if (GetArenaNoVirtual() == NULL && tensor_param_ != NULL) delete tensor_param_;
+  tensor_param_ = NULL;
+}
+inline const ::TensorParam& PlaceHolderParam::tensor_param() const {
+  // @@protoc_insertion_point(field_get:PlaceHolderParam.tensor_param)
+  return tensor_param_ != NULL ? *tensor_param_
+                         : *::TensorParam::internal_default_instance();
+}
+inline ::TensorParam* PlaceHolderParam::mutable_tensor_param() {
+  
+  if (tensor_param_ == NULL) {
+    tensor_param_ = new ::TensorParam;
+  }
+  // @@protoc_insertion_point(field_mutable:PlaceHolderParam.tensor_param)
+  return tensor_param_;
+}
+inline ::TensorParam* PlaceHolderParam::release_tensor_param() {
+  // @@protoc_insertion_point(field_release:PlaceHolderParam.tensor_param)
+  
+  ::TensorParam* temp = tensor_param_;
+  tensor_param_ = NULL;
+  return temp;
+}
+inline void PlaceHolderParam::set_allocated_tensor_param(::TensorParam* tensor_param) {
+  delete tensor_param_;
+  tensor_param_ = tensor_param;
+  if (tensor_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:PlaceHolderParam.tensor_param)
+}
+
 // -------------------------------------------------------------------
 
 // VariableParam
 
-// .SnapshotParam snapshot_param = 1;
+// .InitParam init_param = 1;
+inline bool VariableParam::has_init_param() const {
+  return this != internal_default_instance() && init_param_ != NULL;
+}
+inline void VariableParam::clear_init_param() {
+  if (GetArenaNoVirtual() == NULL && init_param_ != NULL) delete init_param_;
+  init_param_ = NULL;
+}
+inline const ::InitParam& VariableParam::init_param() const {
+  // @@protoc_insertion_point(field_get:VariableParam.init_param)
+  return init_param_ != NULL ? *init_param_
+                         : *::InitParam::internal_default_instance();
+}
+inline ::InitParam* VariableParam::mutable_init_param() {
+  
+  if (init_param_ == NULL) {
+    init_param_ = new ::InitParam;
+  }
+  // @@protoc_insertion_point(field_mutable:VariableParam.init_param)
+  return init_param_;
+}
+inline ::InitParam* VariableParam::release_init_param() {
+  // @@protoc_insertion_point(field_release:VariableParam.init_param)
+  
+  ::InitParam* temp = init_param_;
+  init_param_ = NULL;
+  return temp;
+}
+inline void VariableParam::set_allocated_init_param(::InitParam* init_param) {
+  delete init_param_;
+  init_param_ = init_param;
+  if (init_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:VariableParam.init_param)
+}
+
+// .SnapshotParam snapshot_param = 2;
 inline bool VariableParam::has_snapshot_param() const {
   return this != internal_default_instance() && snapshot_param_ != NULL;
 }
@@ -3797,6 +4035,45 @@ inline void VariableParam::set_allocated_snapshot_param(::SnapshotParam* snapsho
     
   }
   // @@protoc_insertion_point(field_set_allocated:VariableParam.snapshot_param)
+}
+
+// .TensorData weights = 3;
+inline bool VariableParam::has_weights() const {
+  return this != internal_default_instance() && weights_ != NULL;
+}
+inline void VariableParam::clear_weights() {
+  if (GetArenaNoVirtual() == NULL && weights_ != NULL) delete weights_;
+  weights_ = NULL;
+}
+inline const ::TensorData& VariableParam::weights() const {
+  // @@protoc_insertion_point(field_get:VariableParam.weights)
+  return weights_ != NULL ? *weights_
+                         : *::TensorData::internal_default_instance();
+}
+inline ::TensorData* VariableParam::mutable_weights() {
+  
+  if (weights_ == NULL) {
+    weights_ = new ::TensorData;
+  }
+  // @@protoc_insertion_point(field_mutable:VariableParam.weights)
+  return weights_;
+}
+inline ::TensorData* VariableParam::release_weights() {
+  // @@protoc_insertion_point(field_release:VariableParam.weights)
+  
+  ::TensorData* temp = weights_;
+  weights_ = NULL;
+  return temp;
+}
+inline void VariableParam::set_allocated_weights(::TensorData* weights) {
+  delete weights_;
+  weights_ = weights;
+  if (weights) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:VariableParam.weights)
 }
 
 // -------------------------------------------------------------------
@@ -3986,177 +4263,138 @@ inline void NodeParam::set_allocated_name(::std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.name)
 }
 
-// repeated string inputs = 2;
-inline int NodeParam::inputs_size() const {
-  return inputs_.size();
+// repeated string input = 2;
+inline int NodeParam::input_size() const {
+  return input_.size();
 }
-inline void NodeParam::clear_inputs() {
-  inputs_.Clear();
+inline void NodeParam::clear_input() {
+  input_.Clear();
 }
-inline const ::std::string& NodeParam::inputs(int index) const {
-  // @@protoc_insertion_point(field_get:NodeParam.inputs)
-  return inputs_.Get(index);
+inline const ::std::string& NodeParam::input(int index) const {
+  // @@protoc_insertion_point(field_get:NodeParam.input)
+  return input_.Get(index);
 }
-inline ::std::string* NodeParam::mutable_inputs(int index) {
-  // @@protoc_insertion_point(field_mutable:NodeParam.inputs)
-  return inputs_.Mutable(index);
+inline ::std::string* NodeParam::mutable_input(int index) {
+  // @@protoc_insertion_point(field_mutable:NodeParam.input)
+  return input_.Mutable(index);
 }
-inline void NodeParam::set_inputs(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:NodeParam.inputs)
-  inputs_.Mutable(index)->assign(value);
+inline void NodeParam::set_input(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:NodeParam.input)
+  input_.Mutable(index)->assign(value);
 }
 #if LANG_CXX11
-inline void NodeParam::set_inputs(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:NodeParam.inputs)
-  inputs_.Mutable(index)->assign(std::move(value));
+inline void NodeParam::set_input(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:NodeParam.input)
+  input_.Mutable(index)->assign(std::move(value));
 }
 #endif
-inline void NodeParam::set_inputs(int index, const char* value) {
-  inputs_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:NodeParam.inputs)
+inline void NodeParam::set_input(int index, const char* value) {
+  input_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:NodeParam.input)
 }
-inline void NodeParam::set_inputs(int index, const char* value, size_t size) {
-  inputs_.Mutable(index)->assign(
+inline void NodeParam::set_input(int index, const char* value, size_t size) {
+  input_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:NodeParam.inputs)
+  // @@protoc_insertion_point(field_set_pointer:NodeParam.input)
 }
-inline ::std::string* NodeParam::add_inputs() {
-  // @@protoc_insertion_point(field_add_mutable:NodeParam.inputs)
-  return inputs_.Add();
+inline ::std::string* NodeParam::add_input() {
+  // @@protoc_insertion_point(field_add_mutable:NodeParam.input)
+  return input_.Add();
 }
-inline void NodeParam::add_inputs(const ::std::string& value) {
-  inputs_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:NodeParam.inputs)
+inline void NodeParam::add_input(const ::std::string& value) {
+  input_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:NodeParam.input)
 }
 #if LANG_CXX11
-inline void NodeParam::add_inputs(::std::string&& value) {
-  inputs_.Add()->assign(std::move(value));
-  // @@protoc_insertion_point(field_add:NodeParam.inputs)
+inline void NodeParam::add_input(::std::string&& value) {
+  input_.Add()->assign(std::move(value));
+  // @@protoc_insertion_point(field_add:NodeParam.input)
 }
 #endif
-inline void NodeParam::add_inputs(const char* value) {
-  inputs_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:NodeParam.inputs)
+inline void NodeParam::add_input(const char* value) {
+  input_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:NodeParam.input)
 }
-inline void NodeParam::add_inputs(const char* value, size_t size) {
-  inputs_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:NodeParam.inputs)
+inline void NodeParam::add_input(const char* value, size_t size) {
+  input_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:NodeParam.input)
 }
 inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-NodeParam::inputs() const {
-  // @@protoc_insertion_point(field_list:NodeParam.inputs)
-  return inputs_;
+NodeParam::input() const {
+  // @@protoc_insertion_point(field_list:NodeParam.input)
+  return input_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-NodeParam::mutable_inputs() {
-  // @@protoc_insertion_point(field_mutable_list:NodeParam.inputs)
-  return &inputs_;
+NodeParam::mutable_input() {
+  // @@protoc_insertion_point(field_mutable_list:NodeParam.input)
+  return &input_;
 }
 
-// repeated string outputs = 3;
-inline int NodeParam::outputs_size() const {
-  return outputs_.size();
+// repeated string output = 3;
+inline int NodeParam::output_size() const {
+  return output_.size();
 }
-inline void NodeParam::clear_outputs() {
-  outputs_.Clear();
+inline void NodeParam::clear_output() {
+  output_.Clear();
 }
-inline const ::std::string& NodeParam::outputs(int index) const {
-  // @@protoc_insertion_point(field_get:NodeParam.outputs)
-  return outputs_.Get(index);
+inline const ::std::string& NodeParam::output(int index) const {
+  // @@protoc_insertion_point(field_get:NodeParam.output)
+  return output_.Get(index);
 }
-inline ::std::string* NodeParam::mutable_outputs(int index) {
-  // @@protoc_insertion_point(field_mutable:NodeParam.outputs)
-  return outputs_.Mutable(index);
+inline ::std::string* NodeParam::mutable_output(int index) {
+  // @@protoc_insertion_point(field_mutable:NodeParam.output)
+  return output_.Mutable(index);
 }
-inline void NodeParam::set_outputs(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:NodeParam.outputs)
-  outputs_.Mutable(index)->assign(value);
+inline void NodeParam::set_output(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:NodeParam.output)
+  output_.Mutable(index)->assign(value);
 }
 #if LANG_CXX11
-inline void NodeParam::set_outputs(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:NodeParam.outputs)
-  outputs_.Mutable(index)->assign(std::move(value));
+inline void NodeParam::set_output(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:NodeParam.output)
+  output_.Mutable(index)->assign(std::move(value));
 }
 #endif
-inline void NodeParam::set_outputs(int index, const char* value) {
-  outputs_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:NodeParam.outputs)
+inline void NodeParam::set_output(int index, const char* value) {
+  output_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:NodeParam.output)
 }
-inline void NodeParam::set_outputs(int index, const char* value, size_t size) {
-  outputs_.Mutable(index)->assign(
+inline void NodeParam::set_output(int index, const char* value, size_t size) {
+  output_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:NodeParam.outputs)
+  // @@protoc_insertion_point(field_set_pointer:NodeParam.output)
 }
-inline ::std::string* NodeParam::add_outputs() {
-  // @@protoc_insertion_point(field_add_mutable:NodeParam.outputs)
-  return outputs_.Add();
+inline ::std::string* NodeParam::add_output() {
+  // @@protoc_insertion_point(field_add_mutable:NodeParam.output)
+  return output_.Add();
 }
-inline void NodeParam::add_outputs(const ::std::string& value) {
-  outputs_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:NodeParam.outputs)
+inline void NodeParam::add_output(const ::std::string& value) {
+  output_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:NodeParam.output)
 }
 #if LANG_CXX11
-inline void NodeParam::add_outputs(::std::string&& value) {
-  outputs_.Add()->assign(std::move(value));
-  // @@protoc_insertion_point(field_add:NodeParam.outputs)
+inline void NodeParam::add_output(::std::string&& value) {
+  output_.Add()->assign(std::move(value));
+  // @@protoc_insertion_point(field_add:NodeParam.output)
 }
 #endif
-inline void NodeParam::add_outputs(const char* value) {
-  outputs_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:NodeParam.outputs)
+inline void NodeParam::add_output(const char* value) {
+  output_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:NodeParam.output)
 }
-inline void NodeParam::add_outputs(const char* value, size_t size) {
-  outputs_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:NodeParam.outputs)
+inline void NodeParam::add_output(const char* value, size_t size) {
+  output_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:NodeParam.output)
 }
 inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-NodeParam::outputs() const {
-  // @@protoc_insertion_point(field_list:NodeParam.outputs)
-  return outputs_;
+NodeParam::output() const {
+  // @@protoc_insertion_point(field_list:NodeParam.output)
+  return output_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-NodeParam::mutable_outputs() {
-  // @@protoc_insertion_point(field_mutable_list:NodeParam.outputs)
-  return &outputs_;
-}
-
-// .TensorParam tensor_param = 10;
-inline bool NodeParam::has_tensor_param() const {
-  return this != internal_default_instance() && tensor_param_ != NULL;
-}
-inline void NodeParam::clear_tensor_param() {
-  if (GetArenaNoVirtual() == NULL && tensor_param_ != NULL) delete tensor_param_;
-  tensor_param_ = NULL;
-}
-inline const ::TensorParam& NodeParam::tensor_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.tensor_param)
-  return tensor_param_ != NULL ? *tensor_param_
-                         : *::TensorParam::internal_default_instance();
-}
-inline ::TensorParam* NodeParam::mutable_tensor_param() {
-  
-  if (tensor_param_ == NULL) {
-    tensor_param_ = new ::TensorParam;
-  }
-  // @@protoc_insertion_point(field_mutable:NodeParam.tensor_param)
-  return tensor_param_;
-}
-inline ::TensorParam* NodeParam::release_tensor_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.tensor_param)
-  
-  ::TensorParam* temp = tensor_param_;
-  tensor_param_ = NULL;
-  return temp;
-}
-inline void NodeParam::set_allocated_tensor_param(::TensorParam* tensor_param) {
-  delete tensor_param_;
-  tensor_param_ = tensor_param;
-  if (tensor_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.tensor_param)
+NodeParam::mutable_output() {
+  // @@protoc_insertion_point(field_mutable_list:NodeParam.output)
+  return &output_;
 }
 
 // .MnistReaderParam mnist_reader_param = 20;
@@ -4354,481 +4592,481 @@ inline void NodeParam::set_allocated_loss_param(::LossParam* loss_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.loss_param)
 }
 
-// .OpAddParam op_add_param = 60;
-inline bool NodeParam::has_op_add_param() const {
-  return this != internal_default_instance() && op_add_param_ != NULL;
+// .AddParam add_param = 60;
+inline bool NodeParam::has_add_param() const {
+  return this != internal_default_instance() && add_param_ != NULL;
 }
-inline void NodeParam::clear_op_add_param() {
-  if (GetArenaNoVirtual() == NULL && op_add_param_ != NULL) delete op_add_param_;
-  op_add_param_ = NULL;
+inline void NodeParam::clear_add_param() {
+  if (GetArenaNoVirtual() == NULL && add_param_ != NULL) delete add_param_;
+  add_param_ = NULL;
 }
-inline const ::OpAddParam& NodeParam::op_add_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.op_add_param)
-  return op_add_param_ != NULL ? *op_add_param_
-                         : *::OpAddParam::internal_default_instance();
+inline const ::AddParam& NodeParam::add_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.add_param)
+  return add_param_ != NULL ? *add_param_
+                         : *::AddParam::internal_default_instance();
 }
-inline ::OpAddParam* NodeParam::mutable_op_add_param() {
+inline ::AddParam* NodeParam::mutable_add_param() {
   
-  if (op_add_param_ == NULL) {
-    op_add_param_ = new ::OpAddParam;
+  if (add_param_ == NULL) {
+    add_param_ = new ::AddParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.op_add_param)
-  return op_add_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.add_param)
+  return add_param_;
 }
-inline ::OpAddParam* NodeParam::release_op_add_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.op_add_param)
+inline ::AddParam* NodeParam::release_add_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.add_param)
   
-  ::OpAddParam* temp = op_add_param_;
-  op_add_param_ = NULL;
+  ::AddParam* temp = add_param_;
+  add_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_op_add_param(::OpAddParam* op_add_param) {
-  delete op_add_param_;
-  op_add_param_ = op_add_param;
-  if (op_add_param) {
+inline void NodeParam::set_allocated_add_param(::AddParam* add_param) {
+  delete add_param_;
+  add_param_ = add_param;
+  if (add_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.op_add_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.add_param)
 }
 
-// .OpBiasAddParam op_bias_add_param = 61;
-inline bool NodeParam::has_op_bias_add_param() const {
-  return this != internal_default_instance() && op_bias_add_param_ != NULL;
+// .BiasAddParam bias_add_param = 61;
+inline bool NodeParam::has_bias_add_param() const {
+  return this != internal_default_instance() && bias_add_param_ != NULL;
 }
-inline void NodeParam::clear_op_bias_add_param() {
-  if (GetArenaNoVirtual() == NULL && op_bias_add_param_ != NULL) delete op_bias_add_param_;
-  op_bias_add_param_ = NULL;
+inline void NodeParam::clear_bias_add_param() {
+  if (GetArenaNoVirtual() == NULL && bias_add_param_ != NULL) delete bias_add_param_;
+  bias_add_param_ = NULL;
 }
-inline const ::OpBiasAddParam& NodeParam::op_bias_add_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.op_bias_add_param)
-  return op_bias_add_param_ != NULL ? *op_bias_add_param_
-                         : *::OpBiasAddParam::internal_default_instance();
+inline const ::BiasAddParam& NodeParam::bias_add_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.bias_add_param)
+  return bias_add_param_ != NULL ? *bias_add_param_
+                         : *::BiasAddParam::internal_default_instance();
 }
-inline ::OpBiasAddParam* NodeParam::mutable_op_bias_add_param() {
+inline ::BiasAddParam* NodeParam::mutable_bias_add_param() {
   
-  if (op_bias_add_param_ == NULL) {
-    op_bias_add_param_ = new ::OpBiasAddParam;
+  if (bias_add_param_ == NULL) {
+    bias_add_param_ = new ::BiasAddParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.op_bias_add_param)
-  return op_bias_add_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.bias_add_param)
+  return bias_add_param_;
 }
-inline ::OpBiasAddParam* NodeParam::release_op_bias_add_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.op_bias_add_param)
+inline ::BiasAddParam* NodeParam::release_bias_add_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.bias_add_param)
   
-  ::OpBiasAddParam* temp = op_bias_add_param_;
-  op_bias_add_param_ = NULL;
+  ::BiasAddParam* temp = bias_add_param_;
+  bias_add_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_op_bias_add_param(::OpBiasAddParam* op_bias_add_param) {
-  delete op_bias_add_param_;
-  op_bias_add_param_ = op_bias_add_param;
-  if (op_bias_add_param) {
+inline void NodeParam::set_allocated_bias_add_param(::BiasAddParam* bias_add_param) {
+  delete bias_add_param_;
+  bias_add_param_ = bias_add_param;
+  if (bias_add_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.op_bias_add_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.bias_add_param)
 }
 
-// .OpConv2dParam op_conv_2d_param = 62;
-inline bool NodeParam::has_op_conv_2d_param() const {
-  return this != internal_default_instance() && op_conv_2d_param_ != NULL;
+// .Conv2dParam conv_2d_param = 62;
+inline bool NodeParam::has_conv_2d_param() const {
+  return this != internal_default_instance() && conv_2d_param_ != NULL;
 }
-inline void NodeParam::clear_op_conv_2d_param() {
-  if (GetArenaNoVirtual() == NULL && op_conv_2d_param_ != NULL) delete op_conv_2d_param_;
-  op_conv_2d_param_ = NULL;
+inline void NodeParam::clear_conv_2d_param() {
+  if (GetArenaNoVirtual() == NULL && conv_2d_param_ != NULL) delete conv_2d_param_;
+  conv_2d_param_ = NULL;
 }
-inline const ::OpConv2dParam& NodeParam::op_conv_2d_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.op_conv_2d_param)
-  return op_conv_2d_param_ != NULL ? *op_conv_2d_param_
-                         : *::OpConv2dParam::internal_default_instance();
+inline const ::Conv2dParam& NodeParam::conv_2d_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.conv_2d_param)
+  return conv_2d_param_ != NULL ? *conv_2d_param_
+                         : *::Conv2dParam::internal_default_instance();
 }
-inline ::OpConv2dParam* NodeParam::mutable_op_conv_2d_param() {
+inline ::Conv2dParam* NodeParam::mutable_conv_2d_param() {
   
-  if (op_conv_2d_param_ == NULL) {
-    op_conv_2d_param_ = new ::OpConv2dParam;
+  if (conv_2d_param_ == NULL) {
+    conv_2d_param_ = new ::Conv2dParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.op_conv_2d_param)
-  return op_conv_2d_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.conv_2d_param)
+  return conv_2d_param_;
 }
-inline ::OpConv2dParam* NodeParam::release_op_conv_2d_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.op_conv_2d_param)
+inline ::Conv2dParam* NodeParam::release_conv_2d_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.conv_2d_param)
   
-  ::OpConv2dParam* temp = op_conv_2d_param_;
-  op_conv_2d_param_ = NULL;
+  ::Conv2dParam* temp = conv_2d_param_;
+  conv_2d_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_op_conv_2d_param(::OpConv2dParam* op_conv_2d_param) {
-  delete op_conv_2d_param_;
-  op_conv_2d_param_ = op_conv_2d_param;
-  if (op_conv_2d_param) {
+inline void NodeParam::set_allocated_conv_2d_param(::Conv2dParam* conv_2d_param) {
+  delete conv_2d_param_;
+  conv_2d_param_ = conv_2d_param;
+  if (conv_2d_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.op_conv_2d_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.conv_2d_param)
 }
 
-// .OpDropoutParam op_dropout_param = 63;
-inline bool NodeParam::has_op_dropout_param() const {
-  return this != internal_default_instance() && op_dropout_param_ != NULL;
+// .DropoutParam dropout_param = 63;
+inline bool NodeParam::has_dropout_param() const {
+  return this != internal_default_instance() && dropout_param_ != NULL;
 }
-inline void NodeParam::clear_op_dropout_param() {
-  if (GetArenaNoVirtual() == NULL && op_dropout_param_ != NULL) delete op_dropout_param_;
-  op_dropout_param_ = NULL;
+inline void NodeParam::clear_dropout_param() {
+  if (GetArenaNoVirtual() == NULL && dropout_param_ != NULL) delete dropout_param_;
+  dropout_param_ = NULL;
 }
-inline const ::OpDropoutParam& NodeParam::op_dropout_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.op_dropout_param)
-  return op_dropout_param_ != NULL ? *op_dropout_param_
-                         : *::OpDropoutParam::internal_default_instance();
+inline const ::DropoutParam& NodeParam::dropout_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.dropout_param)
+  return dropout_param_ != NULL ? *dropout_param_
+                         : *::DropoutParam::internal_default_instance();
 }
-inline ::OpDropoutParam* NodeParam::mutable_op_dropout_param() {
+inline ::DropoutParam* NodeParam::mutable_dropout_param() {
   
-  if (op_dropout_param_ == NULL) {
-    op_dropout_param_ = new ::OpDropoutParam;
+  if (dropout_param_ == NULL) {
+    dropout_param_ = new ::DropoutParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.op_dropout_param)
-  return op_dropout_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.dropout_param)
+  return dropout_param_;
 }
-inline ::OpDropoutParam* NodeParam::release_op_dropout_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.op_dropout_param)
+inline ::DropoutParam* NodeParam::release_dropout_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.dropout_param)
   
-  ::OpDropoutParam* temp = op_dropout_param_;
-  op_dropout_param_ = NULL;
+  ::DropoutParam* temp = dropout_param_;
+  dropout_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_op_dropout_param(::OpDropoutParam* op_dropout_param) {
-  delete op_dropout_param_;
-  op_dropout_param_ = op_dropout_param;
-  if (op_dropout_param) {
+inline void NodeParam::set_allocated_dropout_param(::DropoutParam* dropout_param) {
+  delete dropout_param_;
+  dropout_param_ = dropout_param;
+  if (dropout_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.op_dropout_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.dropout_param)
 }
 
-// .OpReluParam op_relu_param = 64;
-inline bool NodeParam::has_op_relu_param() const {
-  return this != internal_default_instance() && op_relu_param_ != NULL;
+// .ReluParam relu_param = 64;
+inline bool NodeParam::has_relu_param() const {
+  return this != internal_default_instance() && relu_param_ != NULL;
 }
-inline void NodeParam::clear_op_relu_param() {
-  if (GetArenaNoVirtual() == NULL && op_relu_param_ != NULL) delete op_relu_param_;
-  op_relu_param_ = NULL;
+inline void NodeParam::clear_relu_param() {
+  if (GetArenaNoVirtual() == NULL && relu_param_ != NULL) delete relu_param_;
+  relu_param_ = NULL;
 }
-inline const ::OpReluParam& NodeParam::op_relu_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.op_relu_param)
-  return op_relu_param_ != NULL ? *op_relu_param_
-                         : *::OpReluParam::internal_default_instance();
+inline const ::ReluParam& NodeParam::relu_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.relu_param)
+  return relu_param_ != NULL ? *relu_param_
+                         : *::ReluParam::internal_default_instance();
 }
-inline ::OpReluParam* NodeParam::mutable_op_relu_param() {
+inline ::ReluParam* NodeParam::mutable_relu_param() {
   
-  if (op_relu_param_ == NULL) {
-    op_relu_param_ = new ::OpReluParam;
+  if (relu_param_ == NULL) {
+    relu_param_ = new ::ReluParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.op_relu_param)
-  return op_relu_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.relu_param)
+  return relu_param_;
 }
-inline ::OpReluParam* NodeParam::release_op_relu_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.op_relu_param)
+inline ::ReluParam* NodeParam::release_relu_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.relu_param)
   
-  ::OpReluParam* temp = op_relu_param_;
-  op_relu_param_ = NULL;
+  ::ReluParam* temp = relu_param_;
+  relu_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_op_relu_param(::OpReluParam* op_relu_param) {
-  delete op_relu_param_;
-  op_relu_param_ = op_relu_param;
-  if (op_relu_param) {
+inline void NodeParam::set_allocated_relu_param(::ReluParam* relu_param) {
+  delete relu_param_;
+  relu_param_ = relu_param;
+  if (relu_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.op_relu_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.relu_param)
 }
 
-// .OpSoftmaxParam op_softmax_param = 65;
-inline bool NodeParam::has_op_softmax_param() const {
-  return this != internal_default_instance() && op_softmax_param_ != NULL;
+// .SoftmaxParam softmax_param = 65;
+inline bool NodeParam::has_softmax_param() const {
+  return this != internal_default_instance() && softmax_param_ != NULL;
 }
-inline void NodeParam::clear_op_softmax_param() {
-  if (GetArenaNoVirtual() == NULL && op_softmax_param_ != NULL) delete op_softmax_param_;
-  op_softmax_param_ = NULL;
+inline void NodeParam::clear_softmax_param() {
+  if (GetArenaNoVirtual() == NULL && softmax_param_ != NULL) delete softmax_param_;
+  softmax_param_ = NULL;
 }
-inline const ::OpSoftmaxParam& NodeParam::op_softmax_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.op_softmax_param)
-  return op_softmax_param_ != NULL ? *op_softmax_param_
-                         : *::OpSoftmaxParam::internal_default_instance();
+inline const ::SoftmaxParam& NodeParam::softmax_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.softmax_param)
+  return softmax_param_ != NULL ? *softmax_param_
+                         : *::SoftmaxParam::internal_default_instance();
 }
-inline ::OpSoftmaxParam* NodeParam::mutable_op_softmax_param() {
+inline ::SoftmaxParam* NodeParam::mutable_softmax_param() {
   
-  if (op_softmax_param_ == NULL) {
-    op_softmax_param_ = new ::OpSoftmaxParam;
+  if (softmax_param_ == NULL) {
+    softmax_param_ = new ::SoftmaxParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.op_softmax_param)
-  return op_softmax_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.softmax_param)
+  return softmax_param_;
 }
-inline ::OpSoftmaxParam* NodeParam::release_op_softmax_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.op_softmax_param)
+inline ::SoftmaxParam* NodeParam::release_softmax_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.softmax_param)
   
-  ::OpSoftmaxParam* temp = op_softmax_param_;
-  op_softmax_param_ = NULL;
+  ::SoftmaxParam* temp = softmax_param_;
+  softmax_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_op_softmax_param(::OpSoftmaxParam* op_softmax_param) {
-  delete op_softmax_param_;
-  op_softmax_param_ = op_softmax_param;
-  if (op_softmax_param) {
+inline void NodeParam::set_allocated_softmax_param(::SoftmaxParam* softmax_param) {
+  delete softmax_param_;
+  softmax_param_ = softmax_param;
+  if (softmax_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.op_softmax_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.softmax_param)
 }
 
-// .OpSquareParam op_square_param = 66;
-inline bool NodeParam::has_op_square_param() const {
-  return this != internal_default_instance() && op_square_param_ != NULL;
+// .SquareParam square_param = 66;
+inline bool NodeParam::has_square_param() const {
+  return this != internal_default_instance() && square_param_ != NULL;
 }
-inline void NodeParam::clear_op_square_param() {
-  if (GetArenaNoVirtual() == NULL && op_square_param_ != NULL) delete op_square_param_;
-  op_square_param_ = NULL;
+inline void NodeParam::clear_square_param() {
+  if (GetArenaNoVirtual() == NULL && square_param_ != NULL) delete square_param_;
+  square_param_ = NULL;
 }
-inline const ::OpSquareParam& NodeParam::op_square_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.op_square_param)
-  return op_square_param_ != NULL ? *op_square_param_
-                         : *::OpSquareParam::internal_default_instance();
+inline const ::SquareParam& NodeParam::square_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.square_param)
+  return square_param_ != NULL ? *square_param_
+                         : *::SquareParam::internal_default_instance();
 }
-inline ::OpSquareParam* NodeParam::mutable_op_square_param() {
+inline ::SquareParam* NodeParam::mutable_square_param() {
   
-  if (op_square_param_ == NULL) {
-    op_square_param_ = new ::OpSquareParam;
+  if (square_param_ == NULL) {
+    square_param_ = new ::SquareParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.op_square_param)
-  return op_square_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.square_param)
+  return square_param_;
 }
-inline ::OpSquareParam* NodeParam::release_op_square_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.op_square_param)
+inline ::SquareParam* NodeParam::release_square_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.square_param)
   
-  ::OpSquareParam* temp = op_square_param_;
-  op_square_param_ = NULL;
+  ::SquareParam* temp = square_param_;
+  square_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_op_square_param(::OpSquareParam* op_square_param) {
-  delete op_square_param_;
-  op_square_param_ = op_square_param;
-  if (op_square_param) {
+inline void NodeParam::set_allocated_square_param(::SquareParam* square_param) {
+  delete square_param_;
+  square_param_ = square_param;
+  if (square_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.op_square_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.square_param)
 }
 
-// .OpMatMulParam op_matmul_param = 67;
-inline bool NodeParam::has_op_matmul_param() const {
-  return this != internal_default_instance() && op_matmul_param_ != NULL;
+// .MatMulParam matmul_param = 67;
+inline bool NodeParam::has_matmul_param() const {
+  return this != internal_default_instance() && matmul_param_ != NULL;
 }
-inline void NodeParam::clear_op_matmul_param() {
-  if (GetArenaNoVirtual() == NULL && op_matmul_param_ != NULL) delete op_matmul_param_;
-  op_matmul_param_ = NULL;
+inline void NodeParam::clear_matmul_param() {
+  if (GetArenaNoVirtual() == NULL && matmul_param_ != NULL) delete matmul_param_;
+  matmul_param_ = NULL;
 }
-inline const ::OpMatMulParam& NodeParam::op_matmul_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.op_matmul_param)
-  return op_matmul_param_ != NULL ? *op_matmul_param_
-                         : *::OpMatMulParam::internal_default_instance();
+inline const ::MatMulParam& NodeParam::matmul_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.matmul_param)
+  return matmul_param_ != NULL ? *matmul_param_
+                         : *::MatMulParam::internal_default_instance();
 }
-inline ::OpMatMulParam* NodeParam::mutable_op_matmul_param() {
+inline ::MatMulParam* NodeParam::mutable_matmul_param() {
   
-  if (op_matmul_param_ == NULL) {
-    op_matmul_param_ = new ::OpMatMulParam;
+  if (matmul_param_ == NULL) {
+    matmul_param_ = new ::MatMulParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.op_matmul_param)
-  return op_matmul_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.matmul_param)
+  return matmul_param_;
 }
-inline ::OpMatMulParam* NodeParam::release_op_matmul_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.op_matmul_param)
+inline ::MatMulParam* NodeParam::release_matmul_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.matmul_param)
   
-  ::OpMatMulParam* temp = op_matmul_param_;
-  op_matmul_param_ = NULL;
+  ::MatMulParam* temp = matmul_param_;
+  matmul_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_op_matmul_param(::OpMatMulParam* op_matmul_param) {
-  delete op_matmul_param_;
-  op_matmul_param_ = op_matmul_param;
-  if (op_matmul_param) {
+inline void NodeParam::set_allocated_matmul_param(::MatMulParam* matmul_param) {
+  delete matmul_param_;
+  matmul_param_ = matmul_param;
+  if (matmul_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.op_matmul_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.matmul_param)
 }
 
-// .OpPoolingParam op_pooling_param = 68;
-inline bool NodeParam::has_op_pooling_param() const {
-  return this != internal_default_instance() && op_pooling_param_ != NULL;
+// .PoolingParam pooling_param = 68;
+inline bool NodeParam::has_pooling_param() const {
+  return this != internal_default_instance() && pooling_param_ != NULL;
 }
-inline void NodeParam::clear_op_pooling_param() {
-  if (GetArenaNoVirtual() == NULL && op_pooling_param_ != NULL) delete op_pooling_param_;
-  op_pooling_param_ = NULL;
+inline void NodeParam::clear_pooling_param() {
+  if (GetArenaNoVirtual() == NULL && pooling_param_ != NULL) delete pooling_param_;
+  pooling_param_ = NULL;
 }
-inline const ::OpPoolingParam& NodeParam::op_pooling_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.op_pooling_param)
-  return op_pooling_param_ != NULL ? *op_pooling_param_
-                         : *::OpPoolingParam::internal_default_instance();
+inline const ::PoolingParam& NodeParam::pooling_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.pooling_param)
+  return pooling_param_ != NULL ? *pooling_param_
+                         : *::PoolingParam::internal_default_instance();
 }
-inline ::OpPoolingParam* NodeParam::mutable_op_pooling_param() {
+inline ::PoolingParam* NodeParam::mutable_pooling_param() {
   
-  if (op_pooling_param_ == NULL) {
-    op_pooling_param_ = new ::OpPoolingParam;
+  if (pooling_param_ == NULL) {
+    pooling_param_ = new ::PoolingParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.op_pooling_param)
-  return op_pooling_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.pooling_param)
+  return pooling_param_;
 }
-inline ::OpPoolingParam* NodeParam::release_op_pooling_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.op_pooling_param)
+inline ::PoolingParam* NodeParam::release_pooling_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.pooling_param)
   
-  ::OpPoolingParam* temp = op_pooling_param_;
-  op_pooling_param_ = NULL;
+  ::PoolingParam* temp = pooling_param_;
+  pooling_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_op_pooling_param(::OpPoolingParam* op_pooling_param) {
-  delete op_pooling_param_;
-  op_pooling_param_ = op_pooling_param;
-  if (op_pooling_param) {
+inline void NodeParam::set_allocated_pooling_param(::PoolingParam* pooling_param) {
+  delete pooling_param_;
+  pooling_param_ = pooling_param;
+  if (pooling_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.op_pooling_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.pooling_param)
 }
 
-// .OpArgmaxParam op_argmax_param = 69;
-inline bool NodeParam::has_op_argmax_param() const {
-  return this != internal_default_instance() && op_argmax_param_ != NULL;
+// .ArgmaxParam argmax_param = 69;
+inline bool NodeParam::has_argmax_param() const {
+  return this != internal_default_instance() && argmax_param_ != NULL;
 }
-inline void NodeParam::clear_op_argmax_param() {
-  if (GetArenaNoVirtual() == NULL && op_argmax_param_ != NULL) delete op_argmax_param_;
-  op_argmax_param_ = NULL;
+inline void NodeParam::clear_argmax_param() {
+  if (GetArenaNoVirtual() == NULL && argmax_param_ != NULL) delete argmax_param_;
+  argmax_param_ = NULL;
 }
-inline const ::OpArgmaxParam& NodeParam::op_argmax_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.op_argmax_param)
-  return op_argmax_param_ != NULL ? *op_argmax_param_
-                         : *::OpArgmaxParam::internal_default_instance();
+inline const ::ArgmaxParam& NodeParam::argmax_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.argmax_param)
+  return argmax_param_ != NULL ? *argmax_param_
+                         : *::ArgmaxParam::internal_default_instance();
 }
-inline ::OpArgmaxParam* NodeParam::mutable_op_argmax_param() {
+inline ::ArgmaxParam* NodeParam::mutable_argmax_param() {
   
-  if (op_argmax_param_ == NULL) {
-    op_argmax_param_ = new ::OpArgmaxParam;
+  if (argmax_param_ == NULL) {
+    argmax_param_ = new ::ArgmaxParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.op_argmax_param)
-  return op_argmax_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.argmax_param)
+  return argmax_param_;
 }
-inline ::OpArgmaxParam* NodeParam::release_op_argmax_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.op_argmax_param)
+inline ::ArgmaxParam* NodeParam::release_argmax_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.argmax_param)
   
-  ::OpArgmaxParam* temp = op_argmax_param_;
-  op_argmax_param_ = NULL;
+  ::ArgmaxParam* temp = argmax_param_;
+  argmax_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_op_argmax_param(::OpArgmaxParam* op_argmax_param) {
-  delete op_argmax_param_;
-  op_argmax_param_ = op_argmax_param;
-  if (op_argmax_param) {
+inline void NodeParam::set_allocated_argmax_param(::ArgmaxParam* argmax_param) {
+  delete argmax_param_;
+  argmax_param_ = argmax_param;
+  if (argmax_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.op_argmax_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.argmax_param)
 }
 
-// .OpReduceParam op_reduce_param = 70;
-inline bool NodeParam::has_op_reduce_param() const {
-  return this != internal_default_instance() && op_reduce_param_ != NULL;
+// .ReduceParam reduce_param = 70;
+inline bool NodeParam::has_reduce_param() const {
+  return this != internal_default_instance() && reduce_param_ != NULL;
 }
-inline void NodeParam::clear_op_reduce_param() {
-  if (GetArenaNoVirtual() == NULL && op_reduce_param_ != NULL) delete op_reduce_param_;
-  op_reduce_param_ = NULL;
+inline void NodeParam::clear_reduce_param() {
+  if (GetArenaNoVirtual() == NULL && reduce_param_ != NULL) delete reduce_param_;
+  reduce_param_ = NULL;
 }
-inline const ::OpReduceParam& NodeParam::op_reduce_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.op_reduce_param)
-  return op_reduce_param_ != NULL ? *op_reduce_param_
-                         : *::OpReduceParam::internal_default_instance();
+inline const ::ReduceParam& NodeParam::reduce_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.reduce_param)
+  return reduce_param_ != NULL ? *reduce_param_
+                         : *::ReduceParam::internal_default_instance();
 }
-inline ::OpReduceParam* NodeParam::mutable_op_reduce_param() {
+inline ::ReduceParam* NodeParam::mutable_reduce_param() {
   
-  if (op_reduce_param_ == NULL) {
-    op_reduce_param_ = new ::OpReduceParam;
+  if (reduce_param_ == NULL) {
+    reduce_param_ = new ::ReduceParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.op_reduce_param)
-  return op_reduce_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.reduce_param)
+  return reduce_param_;
 }
-inline ::OpReduceParam* NodeParam::release_op_reduce_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.op_reduce_param)
+inline ::ReduceParam* NodeParam::release_reduce_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.reduce_param)
   
-  ::OpReduceParam* temp = op_reduce_param_;
-  op_reduce_param_ = NULL;
+  ::ReduceParam* temp = reduce_param_;
+  reduce_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_op_reduce_param(::OpReduceParam* op_reduce_param) {
-  delete op_reduce_param_;
-  op_reduce_param_ = op_reduce_param;
-  if (op_reduce_param) {
+inline void NodeParam::set_allocated_reduce_param(::ReduceParam* reduce_param) {
+  delete reduce_param_;
+  reduce_param_ = reduce_param;
+  if (reduce_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.op_reduce_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.reduce_param)
 }
 
-// .OpEqualParam op_equal_param = 71;
-inline bool NodeParam::has_op_equal_param() const {
-  return this != internal_default_instance() && op_equal_param_ != NULL;
+// .EqualParam equal_param = 71;
+inline bool NodeParam::has_equal_param() const {
+  return this != internal_default_instance() && equal_param_ != NULL;
 }
-inline void NodeParam::clear_op_equal_param() {
-  if (GetArenaNoVirtual() == NULL && op_equal_param_ != NULL) delete op_equal_param_;
-  op_equal_param_ = NULL;
+inline void NodeParam::clear_equal_param() {
+  if (GetArenaNoVirtual() == NULL && equal_param_ != NULL) delete equal_param_;
+  equal_param_ = NULL;
 }
-inline const ::OpEqualParam& NodeParam::op_equal_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.op_equal_param)
-  return op_equal_param_ != NULL ? *op_equal_param_
-                         : *::OpEqualParam::internal_default_instance();
+inline const ::EqualParam& NodeParam::equal_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.equal_param)
+  return equal_param_ != NULL ? *equal_param_
+                         : *::EqualParam::internal_default_instance();
 }
-inline ::OpEqualParam* NodeParam::mutable_op_equal_param() {
+inline ::EqualParam* NodeParam::mutable_equal_param() {
   
-  if (op_equal_param_ == NULL) {
-    op_equal_param_ = new ::OpEqualParam;
+  if (equal_param_ == NULL) {
+    equal_param_ = new ::EqualParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.op_equal_param)
-  return op_equal_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.equal_param)
+  return equal_param_;
 }
-inline ::OpEqualParam* NodeParam::release_op_equal_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.op_equal_param)
+inline ::EqualParam* NodeParam::release_equal_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.equal_param)
   
-  ::OpEqualParam* temp = op_equal_param_;
-  op_equal_param_ = NULL;
+  ::EqualParam* temp = equal_param_;
+  equal_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_op_equal_param(::OpEqualParam* op_equal_param) {
-  delete op_equal_param_;
-  op_equal_param_ = op_equal_param;
-  if (op_equal_param) {
+inline void NodeParam::set_allocated_equal_param(::EqualParam* equal_param) {
+  delete equal_param_;
+  equal_param_ = equal_param;
+  if (equal_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.op_equal_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.equal_param)
 }
 
 // -------------------------------------------------------------------
 
-// OpArgmaxParam
+// ArgmaxParam
 
 // -------------------------------------------------------------------
 
-// OpSquareParam
+// SquareParam
 
 // -------------------------------------------------------------------
 
@@ -4864,34 +5102,34 @@ inline void SoftmaxLossParam::set_beta(float value) {
 
 // -------------------------------------------------------------------
 
-// OpSoftmaxParam
+// SoftmaxParam
 
 // float alpha = 1;
-inline void OpSoftmaxParam::clear_alpha() {
+inline void SoftmaxParam::clear_alpha() {
   alpha_ = 0;
 }
-inline float OpSoftmaxParam::alpha() const {
-  // @@protoc_insertion_point(field_get:OpSoftmaxParam.alpha)
+inline float SoftmaxParam::alpha() const {
+  // @@protoc_insertion_point(field_get:SoftmaxParam.alpha)
   return alpha_;
 }
-inline void OpSoftmaxParam::set_alpha(float value) {
+inline void SoftmaxParam::set_alpha(float value) {
   
   alpha_ = value;
-  // @@protoc_insertion_point(field_set:OpSoftmaxParam.alpha)
+  // @@protoc_insertion_point(field_set:SoftmaxParam.alpha)
 }
 
 // float beta = 2;
-inline void OpSoftmaxParam::clear_beta() {
+inline void SoftmaxParam::clear_beta() {
   beta_ = 0;
 }
-inline float OpSoftmaxParam::beta() const {
-  // @@protoc_insertion_point(field_get:OpSoftmaxParam.beta)
+inline float SoftmaxParam::beta() const {
+  // @@protoc_insertion_point(field_get:SoftmaxParam.beta)
   return beta_;
 }
-inline void OpSoftmaxParam::set_beta(float value) {
+inline void SoftmaxParam::set_beta(float value) {
   
   beta_ = value;
-  // @@protoc_insertion_point(field_set:OpSoftmaxParam.beta)
+  // @@protoc_insertion_point(field_set:SoftmaxParam.beta)
 }
 
 // -------------------------------------------------------------------
@@ -5413,37 +5651,69 @@ inline void SolverParam::set_allocated_gain_solver(::GainSolverParam* gain_solve
 
 // NetworkParam
 
-// repeated .NodeParam node_param = 1;
-inline int NetworkParam::node_param_size() const {
-  return node_param_.size();
+// repeated .NodeParam node = 1;
+inline int NetworkParam::node_size() const {
+  return node_.size();
 }
-inline void NetworkParam::clear_node_param() {
-  node_param_.Clear();
+inline void NetworkParam::clear_node() {
+  node_.Clear();
 }
-inline const ::NodeParam& NetworkParam::node_param(int index) const {
-  // @@protoc_insertion_point(field_get:NetworkParam.node_param)
-  return node_param_.Get(index);
+inline const ::NodeParam& NetworkParam::node(int index) const {
+  // @@protoc_insertion_point(field_get:NetworkParam.node)
+  return node_.Get(index);
 }
-inline ::NodeParam* NetworkParam::mutable_node_param(int index) {
-  // @@protoc_insertion_point(field_mutable:NetworkParam.node_param)
-  return node_param_.Mutable(index);
+inline ::NodeParam* NetworkParam::mutable_node(int index) {
+  // @@protoc_insertion_point(field_mutable:NetworkParam.node)
+  return node_.Mutable(index);
 }
-inline ::NodeParam* NetworkParam::add_node_param() {
-  // @@protoc_insertion_point(field_add:NetworkParam.node_param)
-  return node_param_.Add();
+inline ::NodeParam* NetworkParam::add_node() {
+  // @@protoc_insertion_point(field_add:NetworkParam.node)
+  return node_.Add();
 }
 inline ::google::protobuf::RepeatedPtrField< ::NodeParam >*
-NetworkParam::mutable_node_param() {
-  // @@protoc_insertion_point(field_mutable_list:NetworkParam.node_param)
-  return &node_param_;
+NetworkParam::mutable_node() {
+  // @@protoc_insertion_point(field_mutable_list:NetworkParam.node)
+  return &node_;
 }
 inline const ::google::protobuf::RepeatedPtrField< ::NodeParam >&
-NetworkParam::node_param() const {
-  // @@protoc_insertion_point(field_list:NetworkParam.node_param)
-  return node_param_;
+NetworkParam::node() const {
+  // @@protoc_insertion_point(field_list:NetworkParam.node)
+  return node_;
+}
+
+// repeated .SolverParam solver = 2;
+inline int NetworkParam::solver_size() const {
+  return solver_.size();
+}
+inline void NetworkParam::clear_solver() {
+  solver_.Clear();
+}
+inline const ::SolverParam& NetworkParam::solver(int index) const {
+  // @@protoc_insertion_point(field_get:NetworkParam.solver)
+  return solver_.Get(index);
+}
+inline ::SolverParam* NetworkParam::mutable_solver(int index) {
+  // @@protoc_insertion_point(field_mutable:NetworkParam.solver)
+  return solver_.Mutable(index);
+}
+inline ::SolverParam* NetworkParam::add_solver() {
+  // @@protoc_insertion_point(field_add:NetworkParam.solver)
+  return solver_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::SolverParam >*
+NetworkParam::mutable_solver() {
+  // @@protoc_insertion_point(field_mutable_list:NetworkParam.solver)
+  return &solver_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::SolverParam >&
+NetworkParam::solver() const {
+  // @@protoc_insertion_point(field_list:NetworkParam.solver)
+  return solver_;
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -5515,10 +5785,10 @@ template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::TensorParam_TensorType>() {
   return ::TensorParam_TensorType_descriptor();
 }
-template <> struct is_proto_enum< ::OpReduceParam_ReduceOp> : ::google::protobuf::internal::true_type {};
+template <> struct is_proto_enum< ::ReduceParam_ReduceOp> : ::google::protobuf::internal::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::OpReduceParam_ReduceOp>() {
-  return ::OpReduceParam_ReduceOp_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::ReduceParam_ReduceOp>() {
+  return ::ReduceParam_ReduceOp_descriptor();
 }
 template <> struct is_proto_enum< ::MnistReaderParam_ReaderType> : ::google::protobuf::internal::true_type {};
 template <>

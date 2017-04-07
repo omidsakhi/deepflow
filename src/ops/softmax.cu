@@ -3,12 +3,12 @@
 #include <glog/logging.h>
 
 Softmax::Softmax(const NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_op_softmax_param() == false);
+	LOG_IF(FATAL, param.has_softmax_param() == false);
 }
 
 void Softmax::initForward() {		
-	_alpha = _param.op_softmax_param().alpha();
-	_beta = _param.op_softmax_param().beta();		
+	_alpha = _param.softmax_param().alpha();
+	_beta = _param.softmax_param().beta();		
 	LOG_IF(FATAL, cudnnCreate(&_cudnnHandle) != 0);
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
 	LOG(INFO) << "Initializing Softmax (name: " << _name << " ) | Shape : " << _outputs[0]->value()->shape();

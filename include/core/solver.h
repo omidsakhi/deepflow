@@ -10,6 +10,7 @@ public:
 	Solver(std::shared_ptr<OutputTerminal> loss, const SolverParam &param);
 	virtual void train_step() = 0;
 	virtual void init() = 0;
+	const SolverParam& param() const;
 protected:
 	int _current_iteration = 0;
 	std::shared_ptr<OutputTerminal> _loss_terminal;

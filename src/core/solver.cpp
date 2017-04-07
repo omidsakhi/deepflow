@@ -24,3 +24,7 @@ Solver::Solver(std::shared_ptr<OutputTerminal> loss,const SolverParam &param) {
 	LOG(INFO) << _variables.size() << " variables detected.";
 
 }
+
+const SolverParam& Solver::param() const {
+	return _param;
+}

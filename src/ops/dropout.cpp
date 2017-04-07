@@ -3,13 +3,13 @@
 #include "ops/dropout.h"
 
 Dropout::Dropout(const NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_op_dropout_param() == false);
+	LOG_IF(FATAL, param.has_dropout_param() == false);
 }
 
 void Dropout::initForward() {	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
 	LOG(INFO) << "Initializing Dropout (name: " << _name << " ) Shape: " << _outputs[0]->value()->shape();
-	_dropout = _param.op_dropout_param().dropout();
+	_dropout = _param.dropout_param().dropout();
 	cudnnStatus_t status;
 	LOG_IF(FATAL, (status = cudnnCreate(&_cudnnHandle)) != 0) << cudaStatusToString(status);	
 	LOG_IF(FATAL, (status = cudnnCreateDropoutDescriptor(&_dropoutDesc)) != 0) << cudaStatusToString(status);

@@ -18,6 +18,7 @@ public:
 	void toImage(int iteration);
 	bool snapshot();
 	int snapshotInterval();
+	void transferDataToParam();
 protected:		
 	std::shared_ptr<Initializer> _initializer;	
 };

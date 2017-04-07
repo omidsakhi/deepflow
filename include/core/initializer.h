@@ -14,6 +14,7 @@ public:
 	virtual void init() = 0;
 	virtual void apply(Variable *variable) = 0;	
 	std::array<int, 4> dims() const;
+	const InitParam &param() const;
 protected:	
 	InitParam _param;
 	std::array<int, 4> _dims;

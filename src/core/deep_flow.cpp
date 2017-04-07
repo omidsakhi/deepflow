@@ -23,7 +23,7 @@ std::shared_ptr<MNISTReader> DeepFlow::mnist_reader(std::string folder_path, int
 std::shared_ptr<OutputTerminal> DeepFlow::add(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));	
-	OpAddParam *param = nodeParam.mutable_op_add_param();
+	AddParam *param = nodeParam.mutable_add_param();
 	param->set_alpha(1.0f);
 	param->set_beta(1.0f);
 	auto node = std::make_shared<Add>(nodeParam);
@@ -37,7 +37,7 @@ std::shared_ptr<OutputTerminal> DeepFlow::add(std::shared_ptr<OutputTerminal> a,
 std::shared_ptr<OutputTerminal> DeepFlow::bias_add(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpBiasAddParam *param = nodeParam.mutable_op_bias_add_param();
+	BiasAddParam *param = nodeParam.mutable_bias_add_param();
 	auto node = std::make_shared<BiasAdd>(nodeParam);
 	node->createIO();
 	node->input(0)->connect(a);
@@ -49,7 +49,7 @@ std::shared_ptr<OutputTerminal> DeepFlow::bias_add(std::shared_ptr<OutputTermina
 std::shared_ptr<OutputTerminal> DeepFlow::subtract(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpAddParam *param = nodeParam.mutable_op_add_param();
+	AddParam *param = nodeParam.mutable_add_param();
 	param->set_alpha(1.0f);
 	param->set_beta(-1.0f);
 	auto node = std::make_shared<Add>(nodeParam);
@@ -137,7 +137,7 @@ std::shared_ptr<RandomUniform> DeepFlow::random_uniform(std::initializer_list<in
 std::shared_ptr<OutputTerminal> DeepFlow::softmax(std::shared_ptr<OutputTerminal> a, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpSoftmaxParam *param = nodeParam.mutable_op_softmax_param();
+	SoftmaxParam *param = nodeParam.mutable_softmax_param();
 	param->set_alpha(1.0f);
 	param->set_beta(0.0f);
 	auto node = std::make_shared<Softmax>(nodeParam);
@@ -150,7 +150,7 @@ std::shared_ptr<OutputTerminal> DeepFlow::softmax(std::shared_ptr<OutputTerminal
 std::shared_ptr<OutputTerminal> DeepFlow::square(std::shared_ptr<OutputTerminal> a, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpSquareParam *param = nodeParam.mutable_op_square_param();	
+	SquareParam *param = nodeParam.mutable_square_param();	
 	auto node = std::make_shared<Square>(nodeParam);
 	node->createIO();
 	node->input(0)->connect(a);
@@ -162,7 +162,7 @@ std::shared_ptr<OutputTerminal> DeepFlow::place_holder(std::array<int, 4> dims, 
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
 	PlaceHolderParam *param = nodeParam.mutable_place_holder_param();
-	TensorParam *tParam = nodeParam.mutable_tensor_param();
+	TensorParam *tParam = param->mutable_tensor_param();
 	tParam->set_type((TensorParam_TensorType)type);
 	for (int i=0; i<4; ++i)
 		tParam->add_dims(dims[i]);
@@ -175,18 +175,23 @@ std::shared_ptr<OutputTerminal> DeepFlow::place_holder(std::array<int, 4> dims, 
 std::shared_ptr<OutputTerminal> DeepFlow::variable(std::shared_ptr<Initializer> initializer, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	VariableParam *param = nodeParam.mutable_variable_param();	
+	VariableParam *varParam = nodeParam.mutable_variable_param();
+	InitParam *initParam = varParam->mutable_init_param();
+	initParam->CopyFrom(initializer->param());
 	auto node = std::make_shared<Variable>(initializer, nodeParam);
 	node->createIO();
 	_nodes.push_back(node);
+	_variables.push_back(node);
 	return node->output(0);
 }
 
 std::shared_ptr<OutputTerminal> DeepFlow::variable(std::shared_ptr<Initializer> initializer, int interval, std::string prefix, int perImageHeight, int perImageWidth, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	VariableParam *param = nodeParam.mutable_variable_param();
-	SnapshotParam *snapshot = param->mutable_snapshot_param();
+	VariableParam *varParam = nodeParam.mutable_variable_param();
+	InitParam *initParam = varParam->mutable_init_param();
+	initParam->CopyFrom(initializer->param());
+	SnapshotParam *snapshot = varParam->mutable_snapshot_param();
 	snapshot->set_snapshot_interval(interval);
 	snapshot->set_per_image_height(perImageHeight);
 	snapshot->set_per_image_width(perImageWidth);
@@ -194,13 +199,14 @@ std::shared_ptr<OutputTerminal> DeepFlow::variable(std::shared_ptr<Initializer> 
 	auto node = std::make_shared<Variable>(initializer, nodeParam);
 	node->createIO();
 	_nodes.push_back(node);
+	_variables.push_back(node);
 	return node->output(0);
 }
 
 std::shared_ptr<OutputTerminal> DeepFlow::matmul(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpMatMulParam *param = nodeParam.mutable_op_matmul_param();
+	MatMulParam *param = nodeParam.mutable_matmul_param();
 	param->set_alpha(1.0f);
 	param->set_beta(0.0f);
 	auto node = std::make_shared<MatMul>(nodeParam);
@@ -214,7 +220,7 @@ std::shared_ptr<OutputTerminal> DeepFlow::matmul(std::shared_ptr<OutputTerminal>
 std::shared_ptr<OutputTerminal> DeepFlow::relu(std::shared_ptr<OutputTerminal> a, float negative_slope, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpReluParam *param = nodeParam.mutable_op_relu_param();
+	ReluParam *param = nodeParam.mutable_relu_param();
 	param->set_negative_slope(negative_slope);
 	auto node = std::make_shared<Relu>(nodeParam);
 	node->createIO();
@@ -253,7 +259,9 @@ std::shared_ptr<SGDSolver> DeepFlow::sgd_solver(std::shared_ptr<OutputTerminal> 
 	SGDSolverParam *sp = param.mutable_sgd_solver();
 	sp->set_learning_rate(learning_rate);
 	sp->set_momentum(momentum);
-	return std::make_shared<SGDSolver>(loss, param);
+	auto solver = std::make_shared<SGDSolver>(loss, param);
+	_solvers.push_back(solver);
+	return solver;
 }
 
 std::shared_ptr<GainSolver> DeepFlow::gain_solver(std::shared_ptr<OutputTerminal> loss, int max_iteration, float momentum, float learning_rate, float max_gain, float min_gain, float gain_plus, float gain_mult) {
@@ -266,13 +274,15 @@ std::shared_ptr<GainSolver> DeepFlow::gain_solver(std::shared_ptr<OutputTerminal
 	gsp->set_min_gain(min_gain);
 	gsp->set_gain_plus(gain_plus);
 	gsp->set_gain_mult(gain_mult);    
-	return std::make_shared<GainSolver>(loss, param);
+	auto solver = std::make_shared<GainSolver>(loss, param);
+	_solvers.push_back(solver);
+	return solver;
 }
 
 std::shared_ptr<OutputTerminal> DeepFlow::dropout(std::shared_ptr<OutputTerminal> a, float dropout, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpDropoutParam *param = nodeParam.mutable_op_dropout_param();
+	DropoutParam *param = nodeParam.mutable_dropout_param();
 	param->set_dropout(dropout);
 	auto node = std::make_shared<Dropout>(nodeParam);
 	node->createIO();
@@ -284,7 +294,7 @@ std::shared_ptr<OutputTerminal> DeepFlow::dropout(std::shared_ptr<OutputTerminal
 std::shared_ptr<OutputTerminal> DeepFlow::conv2d(std::shared_ptr<OutputTerminal> input, std::shared_ptr<OutputTerminal> filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpConv2dParam *param = nodeParam.mutable_op_conv_2d_param();
+	Conv2dParam *param = nodeParam.mutable_conv_2d_param();
 	param->set_pad_h(pad_top_bottom);
 	param->set_pad_w(pad_left_right);
 	param->set_u(vertical_filter_stride);
@@ -302,7 +312,7 @@ std::shared_ptr<OutputTerminal> DeepFlow::conv2d(std::shared_ptr<OutputTerminal>
 std::shared_ptr<OutputTerminal> DeepFlow::conv2d(std::shared_ptr<OutputTerminal> input, std::shared_ptr<OutputTerminal> filter, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpConv2dParam *param = nodeParam.mutable_op_conv_2d_param();
+	Conv2dParam *param = nodeParam.mutable_conv_2d_param();
 	param->set_pad_h(0);
 	param->set_pad_w(0);
 	param->set_u(1);
@@ -320,7 +330,7 @@ std::shared_ptr<OutputTerminal> DeepFlow::conv2d(std::shared_ptr<OutputTerminal>
 std::shared_ptr<OutputTerminal> DeepFlow::pooling(std::shared_ptr<OutputTerminal> input, int windowHeight, int windowWidth, int verticalPadding, int horizontalPadding, int verticalStride, int horizontalStride, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpPoolingParam *param = nodeParam.mutable_op_pooling_param();
+	PoolingParam *param = nodeParam.mutable_pooling_param();
 	param->set_h_pad(horizontalPadding);
 	param->set_v_pad(verticalPadding);
 	param->set_h_stride(horizontalStride);
@@ -337,9 +347,9 @@ std::shared_ptr<OutputTerminal> DeepFlow::pooling(std::shared_ptr<OutputTerminal
 std::shared_ptr<OutputTerminal> DeepFlow::argmax(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpReduceParam *param = nodeParam.mutable_op_reduce_param();
+	ReduceParam *param = nodeParam.mutable_reduce_param();
 	param->set_reduce_dim(reduceDimension);
-	param->set_reduce_op(OpReduceParam_ReduceOp_MAX);
+	param->set_reduce_op(ReduceParam_ReduceOp_MAX);
 	auto node = std::make_shared<Reduce>(nodeParam);
 	node->createIO();
 	node->input(0)->connect(input);
@@ -350,9 +360,9 @@ std::shared_ptr<OutputTerminal> DeepFlow::argmax(std::shared_ptr<OutputTerminal>
 std::shared_ptr<OutputTerminal> DeepFlow::reduce_max(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpReduceParam *param = nodeParam.mutable_op_reduce_param();
+	ReduceParam *param = nodeParam.mutable_reduce_param();
 	param->set_reduce_dim(reduceDimension);
-	param->set_reduce_op(OpReduceParam_ReduceOp_MAX);
+	param->set_reduce_op(ReduceParam_ReduceOp_MAX);
 	auto node = std::make_shared<Reduce>(nodeParam);
 	node->createIO();
 	node->input(0)->connect(input);
@@ -363,9 +373,9 @@ std::shared_ptr<OutputTerminal> DeepFlow::reduce_max(std::shared_ptr<OutputTermi
 std::shared_ptr<OutputTerminal> DeepFlow::reduce_sum(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpReduceParam *param = nodeParam.mutable_op_reduce_param();
+	ReduceParam *param = nodeParam.mutable_reduce_param();
 	param->set_reduce_dim(reduceDimension);
-	param->set_reduce_op(OpReduceParam_ReduceOp_ADD);
+	param->set_reduce_op(ReduceParam_ReduceOp_ADD);
 	auto node = std::make_shared<Reduce>(nodeParam);
 	node->createIO();
 	node->input(0)->connect(input);
@@ -376,9 +386,9 @@ std::shared_ptr<OutputTerminal> DeepFlow::reduce_sum(std::shared_ptr<OutputTermi
 std::shared_ptr<OutputTerminal> DeepFlow::reduce_mean(std::shared_ptr<OutputTerminal> input, int reduceDimension, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpReduceParam *param = nodeParam.mutable_op_reduce_param();
+	ReduceParam *param = nodeParam.mutable_reduce_param();
 	param->set_reduce_dim(reduceDimension);
-	param->set_reduce_op(OpReduceParam_ReduceOp_AVG);
+	param->set_reduce_op(ReduceParam_ReduceOp_AVG);
 	auto node = std::make_shared<Reduce>(nodeParam);
 	node->createIO();
 	node->input(0)->connect(input);
@@ -389,7 +399,7 @@ std::shared_ptr<OutputTerminal> DeepFlow::reduce_mean(std::shared_ptr<OutputTerm
 std::shared_ptr<OutputTerminal> DeepFlow::equal(std::shared_ptr<OutputTerminal> a, std::shared_ptr<OutputTerminal> b, std::string name) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
-	OpEqualParam *equalParam = nodeParam.mutable_op_equal_param();
+	EqualParam *equalParam = nodeParam.mutable_equal_param();
 	auto node = std::make_shared<Equal>(nodeParam);
 	node->createIO();
 	node->input(0)->connect(a);
@@ -426,10 +436,12 @@ void DeepFlow::global_node_initializer() {
 	}
 }
 
-void DeepFlow::eval(std::shared_ptr<OutputTerminal> terminal) {		
+void DeepFlow::eval(std::shared_ptr<OutputTerminal> terminal, bool restart) {		
 	auto node = terminal->node();
-	ResetObserver resetObserver;
-	node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
+	if (restart) {
+		ResetObserver resetObserver;
+		node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
+	}
 	ForwardObserver forwardObserver;
 	node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);
 }
@@ -454,57 +466,63 @@ std::string DeepFlow::getUniqueNodeName(const std::string &prefix) const {
 	return nodeName;
 }
 
-std::pair<float, float> DeepFlow::run(std::shared_ptr<OutputTerminal> loss, std::shared_ptr<OutputTerminal> accuracy, std::map<std::string, std::shared_ptr<OutputTerminal>> feed) {
+std::tuple<float, float,int> DeepFlow::run(std::shared_ptr<OutputTerminal> loss, std::shared_ptr<OutputTerminal> accuracy, std::map<std::shared_ptr<OutputTerminal>, std::shared_ptr<OutputTerminal>> feed) {
 	
-	std::set<std::shared_ptr<Reader>> readers;
-	std::unordered_map<std::shared_ptr<OutputTerminal>, std::shared_ptr<OutputTerminal>> mapReaderTerminalToPlaceHolderOutput;
+	std::set<std::shared_ptr<Reader>> readers;	
 
 	for (auto item : feed) {
-		auto node = item.second->node();
-		auto reader = std::dynamic_pointer_cast<Reader>(node);
-		LOG_IF(FATAL, reader == 0) << "Feeds must come from a reader.";
-		readers.insert(reader);
-		auto placeHolderName = item.first;
-		auto placeHolderNode = findNodeByName(placeHolderName);
-		LOG_IF(FATAL, placeHolderNode == 0) << "Couldn't find placeholder with name " << placeHolderName;
+		auto readerNode = item.second->node();
+		auto reader = std::dynamic_pointer_cast<Reader>(readerNode);
+		LOG_IF(FATAL, reader == 0) << readerNode->name() << " is not a reader.";
+		readers.insert(reader);		
+		auto placeHolderNode = item.first->node();		
 		auto placeHolder = std::dynamic_pointer_cast<PlaceHolder>(placeHolderNode);
-		LOG_IF(FATAL, placeHolder == 0) << placeHolderName << " is not a placeholder";
-		mapReaderTerminalToPlaceHolderOutput.insert({ item.second,placeHolder->output(0) });
+		LOG_IF(FATAL, placeHolder == 0) << placeHolderNode->name() << " is not a placeholder.";		
 	}
+		
+	ResetObserver resetObserver;
+	loss->node()->traverse(&resetObserver, TraverseOrder::PreOrder, true);
+	accuracy->node()->traverse(&resetObserver, TraverseOrder::PreOrder, true);
 
+	float totalAccuracy = 0;
+	float totalLoss = 0;
+	int totalBatch = 0;
 	bool any_last_batch = false;
-
-	float accuracyResult = 0;
-	float lossResult = 0;
-	int count = 0;
 	do {
-		for (auto item : mapReaderTerminalToPlaceHolderOutput)
-			item.second->feed(item.first);
+		for (auto item : feed)
+			item.first->feed(item.second);
 		if (loss) {
 			eval(loss);
-			lossResult += loss->value()->toFloat();
+			totalLoss += loss->value()->toFloat();
 		}		
 		if (accuracy) {
-			eval(accuracy);
-			accuracyResult += accuracy->value()->toFloat();
+			eval(accuracy, loss? false: true);
+			totalAccuracy += accuracy->value()->toFloat();
 		}				
-		count++;				
+		totalBatch++;
 		for (auto reader : readers) {
 			if (reader->isLastBatch())
 				any_last_batch = true;
 			reader->nextBatch();
 		}
 	} while (any_last_batch == false);
-	accuracyResult /= count;
-	lossResult /= count;	
-	return std::pair<float,float>(lossResult, accuracyResult);
+	totalAccuracy /= totalBatch;
+	totalLoss /= totalBatch;	
+	return std::make_tuple(totalLoss, totalAccuracy, totalBatch);
 }
 
-void DeepFlow::save(std::string filePath) {
+void DeepFlow::saveAsBinary(std::string filePath) {
 	NetworkParam netParam;
-	for (auto node : _nodes) {
-		NodeParam *nodeParam = netParam.add_node_param();
+	for (auto var : _variables) {
+		var->transferDataToParam();
+	}
+	for (auto node : _nodes) {		
+		NodeParam *nodeParam = netParam.add_node();
 		nodeParam->CopyFrom(node->param());
+	}
+	for (auto solver : _solvers) {
+		SolverParam *solverParam = netParam.add_solver();
+		solverParam->CopyFrom(solver->param());
 	}
 	std::fstream output(filePath, std::ios::out | std::ios::trunc | std::ios::binary);
 	LOG_IF(FATAL, !netParam.SerializeToOstream(&output)) << "Failed to write network.";
@@ -514,13 +532,20 @@ void DeepFlow::save(std::string filePath) {
 
 void DeepFlow::saveAsString(std::string filePath) {
 	NetworkParam netParam;
+	for (auto var : _variables) {
+		var->transferDataToParam();
+	}
 	for (auto node : _nodes) {
-		NodeParam *nodeParam = netParam.add_node_param();
+		NodeParam *nodeParam = netParam.add_node();
 		nodeParam->CopyFrom(node->param());
 	}
-	std::string text;	
+	for (auto solver : _solvers) {
+		SolverParam *solverParam = netParam.add_solver();
+		solverParam->CopyFrom(solver->param());
+	}
+	std::string text;
 	google::protobuf::TextFormat::PrintToString(netParam,&text);	
 	std::ofstream out(filePath);
 	out << text;
-	out.close();	
+	out.close();
 }

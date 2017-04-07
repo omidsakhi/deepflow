@@ -5,19 +5,18 @@
 
 Node::Node(const NodeParam &param) : CudaHelper() {
 	_param = param;	
-	_name = param.name();
-	LOG(INFO) << "Creating Node (name: " << _name << " )";
+	_name = param.name();	
 	_visited = false;
 }
 
 void Node::createIO() {
 	for (int i = 0; i < minNumInputs(); ++i) {
 		_inputs.push_back(std::make_shared<InputTerminal>(shared_from_this(), i));
-		_param.add_inputs();
+		_param.add_input();
 	}
 	for (int i = 0; i < minNumOutputs(); ++i) {
 		_outputs.push_back(std::make_shared<OutputTerminal>(shared_from_this(), i, name() + std::string("_output_") + std::to_string(i)));
-		_param.add_outputs();
+		_param.add_output();
 	}
 }
 

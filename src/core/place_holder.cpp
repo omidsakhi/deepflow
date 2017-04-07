@@ -7,7 +7,8 @@ PlaceHolder::PlaceHolder(const NodeParam &param) : Node(param) {
 void PlaceHolder::initForward() {
 		
 	std::array<int, 4> dims;
-	const TensorParam &tensorParam = _param.tensor_param();
+	const PlaceHolderParam &placeHolderParam = _param.place_holder_param();
+	const TensorParam &tensorParam = placeHolderParam.tensor_param();
 	switch (tensorParam.dims_size()) {
 	case 1:
 		dims = { 1,tensorParam.dims(0),1,1 };

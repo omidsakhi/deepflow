@@ -32,3 +32,7 @@ Initializer::Initializer(std::array<int, 4> dims, Tensor::TensorType type) {
 std::array<int, 4> Initializer::dims() const {
 	return _dims;
 }
+
+const InitParam &Initializer::param() const {
+	return _param;
+}

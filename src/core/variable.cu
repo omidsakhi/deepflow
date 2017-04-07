@@ -39,6 +39,17 @@ int Variable::snapshotInterval() {
 	return _param.variable_param().snapshot_param().snapshot_interval();
 }
 
+void Variable::transferDataToParam() {
+	auto dma = _param.mutable_variable_param()->mutable_weights();
+	for (int i = 0; i < _outputs[0]->value()->size(); ++i)
+		dma->add_weight(0);
+	LOG_IF(FATAL,
+		cudaMemcpy(
+			dma->mutable_weight()->mutable_data(),
+			_outputs[0]->value()->data(),
+			_outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToHost
+		) != 0) << "cudaMemcpy [FAILED]";
+}
 
 void Variable::toImage(int iteration) {	
 	LOG_IF(FATAL, _param.variable_param().has_snapshot_param() == false);

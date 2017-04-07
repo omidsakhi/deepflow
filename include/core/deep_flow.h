@@ -82,13 +82,15 @@ public:
 	
 	// UTILITIES
 	void global_node_initializer();
-	void eval(std::shared_ptr<OutputTerminal> terminal);	
-	std::pair<float,float> run(std::shared_ptr<OutputTerminal> loss, std::shared_ptr<OutputTerminal> accuracy, std::map<std::string, std::shared_ptr<OutputTerminal>> feed);
+	void eval(std::shared_ptr<OutputTerminal> terminal, bool restart = true);
+	std::tuple<float, float, int> run(std::shared_ptr<OutputTerminal> loss, std::shared_ptr<OutputTerminal> accuracy, std::map<std::shared_ptr<OutputTerminal>, std::shared_ptr<OutputTerminal>> feed);
 	std::shared_ptr<Node> findNodeByName(const std::string &name) const;
 	std::string getUniqueNodeName(const std::string &prefix) const;
-	void save(std::string filePath);
+	void saveAsBinary(std::string filePath);
 	void saveAsString(std::string filePath);
 
 private:
 	std::list<std::shared_ptr<Node>> _nodes;
+	std::list<std::shared_ptr<Variable>> _variables;
+	std::list<std::shared_ptr<Solver>> _solvers;
 };

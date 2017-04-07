@@ -1,12 +1,12 @@
 #include "ops/reduce.h"
 
 Reduce::Reduce(const NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_op_reduce_param() == false) << "param.has_op_reduce_param() == false [FAILED]";
+	LOG_IF(FATAL, param.has_reduce_param() == false) << "param.has_op_reduce_param() == false [FAILED]";
 }
 
 void Reduce::initForward() {
 	
-	const OpReduceParam &reduceParam = _param.op_reduce_param();
+	const ReduceParam &reduceParam = _param.reduce_param();
 	int reduceDim = reduceParam.reduce_dim();
 	LOG_IF(FATAL, reduceDim > 3) << "reduceDim > 3 [FAILED]";
 	_reduceTensorOp = (cudnnReduceTensorOp_t) reduceParam.reduce_op();
@@ -54,7 +54,7 @@ void Reduce::forward() {
 			&beta,
 			_outputs[0]->value()->descriptor(),
 			_outputs[0]->value()->mutableData());
-	LOG_IF(FATAL,t != 0) << "cudnnReduceTensor - Op: " << OpReduceParam_ReduceOp_Name((OpReduceParam_ReduceOp) _reduceTensorOp) << " - " << cudaStatusToString(t) << " [FAILED]";
+	LOG_IF(FATAL,t != 0) << "cudnnReduceTensor - Op: " << ReduceParam_ReduceOp_Name((ReduceParam_ReduceOp) _reduceTensorOp) << " - " << cudaStatusToString(t) << " [FAILED]";
 }
 
 void Reduce::backward() {

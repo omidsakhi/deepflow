@@ -3,15 +3,15 @@
 #include <glog/logging.h>
 
 MatMul::MatMul(const NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_op_matmul_param() == false);
+	LOG_IF(FATAL, param.has_matmul_param() == false);
 }
 
 void MatMul::initForward() {	
 	auto a = _inputs[0];
 	auto b = _inputs[1];
 	
-	_alpha = _param.op_matmul_param().alpha();
-	_beta = _param.op_matmul_param().beta();
+	_alpha = _param.matmul_param().alpha();
+	_beta = _param.matmul_param().beta();
 
 	auto ad = a->value()->dims();
 	auto bd = b->value()->dims();

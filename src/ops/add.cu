@@ -20,7 +20,7 @@ void AddKernelBackward(const int n, const float *diff, const float alpha, float 
 }
 
 Add::Add(const NodeParam &param) : Node(param) {	
-	LOG_IF(FATAL, param.has_op_add_param() == false);	
+	LOG_IF(FATAL, param.has_add_param() == false);	
 }
 
 void Add::initForward() {
@@ -31,8 +31,8 @@ void Add::initForward() {
 	auto b = _inputs[1];
 	auto bd = b->dims();
 
-	_alpha = _param.op_add_param().alpha();
-	_beta = _param.op_add_param().beta();
+	_alpha = _param.add_param().alpha();
+	_beta = _param.add_param().beta();
 
 	LOG_IF(FATAL, a->value()->size() != b->value()->size()) << "Different input sizes";	
 	LOG(INFO) << "Initializing Add (name: " << _name << " ) for " << a->node()->name() << " and " << b->node()->name();	
