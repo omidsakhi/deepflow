@@ -34,7 +34,7 @@ void SGDSolver::train_step() {
 	for(auto var : _variables) {
 		auto output = var->output(0);
 		auto size = output->value()->size();						
-		ApplyGradientKernel << <(size + 255) / 256, 256 >> > (size, param.momentum(), param.learning_rate(), (float*) output->value()->mutableData(), (float*) output->diff()->data());
+		ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, param.momentum(), param.learning_rate(), (float*) output->value()->mutableData(), (float*) output->diff()->data());
 		LOG_IF(FATAL, cudaPeekAtLastError() != 0);		
 		if (var->snapshot() && _current_iteration % var->snapshotInterval() == 0)
 			var->toImage(_current_iteration);		

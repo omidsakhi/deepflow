@@ -1,8 +1,10 @@
 
 #include "core/deep_flow.h"
 
+#include <chrono>
+
 void main() {
-	CudaHelper::setOptimalThreadsPerBlock();	
+	//CudaHelper::setOptimalThreadsPerBlock();	
 
 	int batch_size = 100;
 	DeepFlow df;
@@ -34,10 +36,12 @@ void main() {
 	df.global_node_initializer();
 
 	auto trainer = df.gain_solver(loss, 2000, 0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f);
+	//auto trainer = df.sgd_solver(loss, 2000, 0.9999f, 0.0001f);
 
 	int iteration = 0;
 	for (int epoch = 1; epoch <= 5; ++epoch) {
 		bool exit = false;
+		auto start = std::chrono::high_resolution_clock::now();
 		while (!exit) {
 			x->feed(mnist_trainset->output(0));
 			y->feed(mnist_trainset->output(1));
@@ -47,7 +51,9 @@ void main() {
 				exit = true;
 			mnist_trainset->nextBatch();
 		}
-		std::cout << "Epoch " << epoch << "( Iteration: " << iteration << " )" << std::endl;
+		auto finish = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> elapsed = finish - start;
+		std::cout << "Epoch " << epoch << " ( Iteration: " << iteration << " )" << " Elapsed time: " << elapsed.count() << " seconds" << std::endl;
 		//auto train_result = df.run(mse, accuracy, { { x,mnist_trainset->output(0) },{ y,mnist_trainset->output(1) } });
 		//std::cout << "  Total Train Batches: " << std::get<2>(train_result) << " Train  MSE: " << std::get<0>(train_result) << " Train Accuracy: " << std::get<1>(train_result) * 100 << "%" << std::endl;
 		auto test_result = df.run(mse, accuracy, { {x,mnist_testset->output(0)},{y,mnist_testset->output(1) } });						

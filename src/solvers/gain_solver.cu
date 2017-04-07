@@ -56,7 +56,7 @@ void GainSolver::train_step() {
 	{		
 		auto output = var->output(0);
 		auto size = output->value()->size();
-		GainStepKernel << <(size + maxThreadsPerBlock - 1) / maxThreadsPerBlock, maxThreadsPerBlock, 0 , _streams[index]>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->mutableData(), _previous_gradients[index], _gains[index], param.max_gain(), param.min_gain(), param.gain_plus(), param.gain_mult(), param.momentum(), param.learning_rate());
+		GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock, 0 , _streams[index]>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->mutableData(), _previous_gradients[index], _gains[index], param.max_gain(), param.min_gain(), param.gain_plus(), param.gain_mult(), param.momentum(), param.learning_rate());
 		LOG_IF(FATAL, cudaPeekAtLastError() != 0);		
 		index++;
 	}
@@ -84,7 +84,7 @@ void GainSolver::init() {
 		LOG_IF(FATAL, cudaMemset(_previous_gradients.back(), 0, sizeInBytes) != 0);
 		_gains.push_back(NULL);
 		LOG_IF(FATAL, cudaMalloc(&_gains.back(), sizeof(float) * size) != 0);
-		GainFillKernel << <(size + maxThreadsPerBlock - 1) / maxThreadsPerBlock, maxThreadsPerBlock >> >(size, _gains.back());
+		GainFillKernel <<<numOfBlocks(size), maxThreadsPerBlock>>>(size, _gains.back());
 		LOG_IF(FATAL, cudaPeekAtLastError() != 0);
 	}
 	_initialized = true;
