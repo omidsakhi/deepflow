@@ -15,7 +15,7 @@ void ApplyGradientKernel(const int n, const float momentum, const float learning
 	if (i < n) var[i] = momentum * var[i] + learning_rate * grad[i];
 }
 
-SGDSolver::SGDSolver(std::shared_ptr<NodeOutput> loss, const SolverParam &param) : Solver(loss, param) {
+SGDSolver::SGDSolver(NodeOutputPtr loss, const SolverParam &param) : Solver(loss, param) {
 	LOG_IF(FATAL, param.has_sgd_solver() == false);
 }
 

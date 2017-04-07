@@ -47,20 +47,22 @@ public:
 	std::string name() const;		
 	virtual void traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition);
 	void setVisited(bool state);
-	std::vector<std::shared_ptr<NodeInput>> &inputs();
-	std::vector<std::shared_ptr<NodeOutput>> &outputs();
-	std::shared_ptr<NodeInput> input(int index);
-	std::shared_ptr<NodeOutput> output(int index);
+	std::vector<NodeInputPtr> &inputs();
+	std::vector<NodeOutputPtr> &outputs();
+	NodeInputPtr input(int index);
+	NodeOutputPtr output(int index);
 	bool isInitialized() const;
 	void setInitialized(bool status);
 	NodeParam &param();
 	bool includePhase(const std::string &phase);
+	void setExecutionPhase(std::string phase);
 protected:	
-	std::vector<std::shared_ptr<NodeInput>> _inputs;
-	std::vector<std::shared_ptr<NodeOutput>> _outputs;
+	std::vector<NodeInputPtr> _inputs;
+	std::vector<NodeOutputPtr> _outputs;
 	std::string _name;	
 	bool _visited = false;
 	bool _initialized = false;	
 	NodeParam _param;	
+	std::string _executionPhase;
 };
 

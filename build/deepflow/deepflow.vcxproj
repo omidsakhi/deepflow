@@ -28,6 +28,7 @@
     <ClInclude Include="..\..\include\core\loss.h" />
     <ClInclude Include="..\..\include\core\node.h" />
     <ClInclude Include="..\..\include\core\node_observer.h" />
+    <ClInclude Include="..\..\include\core\phaseplexer.h" />
     <ClInclude Include="..\..\include\core\place_holder.h" />
     <ClInclude Include="..\..\include\core\reader.h" />
     <ClInclude Include="..\..\include\core\solver.h" />
@@ -68,6 +69,7 @@
     <ClCompile Include="..\..\src\core\initializer.cpp" />
     <ClCompile Include="..\..\src\core\loss.cpp" />
     <ClCompile Include="..\..\src\core\node.cpp" />
+    <ClCompile Include="..\..\src\core\phaseplexer.cpp" />
     <ClCompile Include="..\..\src\core\place_holder.cpp" />
     <ClCompile Include="..\..\src\core\tensor.cpp" />
     <ClCompile Include="..\..\src\observers\reset.cpp" />

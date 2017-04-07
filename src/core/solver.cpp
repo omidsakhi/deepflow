@@ -8,7 +8,7 @@
 
 #include <memory>
 
-Solver::Solver(std::shared_ptr<NodeOutput> loss,const SolverParam &param) {
+Solver::Solver(NodeOutputPtr loss,const SolverParam &param) {
 	_param = param;
 	_loss_terminal = loss;	
 	_loss_node = loss->node();

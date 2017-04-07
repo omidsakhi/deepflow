@@ -60,5 +60,6 @@ protected:
 	std::string _name;
 };
 
-using NodeInputPtr = std::shared_ptr<NodeInput>;
 using NodeOutputPtr = std::shared_ptr<NodeOutput>;
+
+using NodeInputPtr = std::shared_ptr<NodeInput>;

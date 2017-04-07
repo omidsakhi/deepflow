@@ -18,6 +18,10 @@ message TensorParam {
 	repeated int32 dims = 2;		
 }
 
+message PhaseplexerParam {
+	repeated string phase = 1;
+}
+
 message AddParam {
 	float alpha = 1;
 	float beta = 2;	
@@ -123,6 +127,8 @@ message NodeParam {
 
   VariableParam variable_param = 30;  
   PlaceHolderParam place_holder_param = 31;
+  
+  PhaseplexerParam phaseplexer_param = 32;
 
   BlockParam block_param = 40;  
 
@@ -140,6 +146,7 @@ message NodeParam {
   ArgmaxParam argmax_param = 69;
   ReduceParam reduce_param = 70;
   EqualParam equal_param = 71;
+
 }
 
 message ArgmaxParam {
@@ -206,8 +213,17 @@ message SolverParam {
 	GainSolverParam gain_solver = 3;
 }
 
+message PhaseParam {
+	enum PhaseBehaviour {
+		TRAIN = 0;
+		TEST = 1;
+	}
+	string phase = 1;	
+	PhaseBehaviour behaviour = 2;
+}
+
 message NetworkParam {
 	repeated NodeParam node = 1;
 	repeated SolverParam solver = 2;
-	repeated string phase = 3;
+	repeated PhaseParam phase = 3;
 }

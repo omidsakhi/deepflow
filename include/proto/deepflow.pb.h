@@ -84,6 +84,12 @@ extern NetworkParamDefaultTypeInternal _NetworkParam_default_instance_;
 class NodeParam;
 class NodeParamDefaultTypeInternal;
 extern NodeParamDefaultTypeInternal _NodeParam_default_instance_;
+class PhaseParam;
+class PhaseParamDefaultTypeInternal;
+extern PhaseParamDefaultTypeInternal _PhaseParam_default_instance_;
+class PhaseplexerParam;
+class PhaseplexerParamDefaultTypeInternal;
+extern PhaseplexerParamDefaultTypeInternal _PhaseplexerParam_default_instance_;
 class PlaceHolderParam;
 class PlaceHolderParamDefaultTypeInternal;
 extern PlaceHolderParamDefaultTypeInternal _PlaceHolderParam_default_instance_;
@@ -207,6 +213,27 @@ inline bool MnistReaderParam_ReaderType_Parse(
     const ::std::string& name, MnistReaderParam_ReaderType* value) {
   return ::google::protobuf::internal::ParseNamedEnum<MnistReaderParam_ReaderType>(
     MnistReaderParam_ReaderType_descriptor(), name, value);
+}
+enum PhaseParam_PhaseBehaviour {
+  PhaseParam_PhaseBehaviour_TRAIN = 0,
+  PhaseParam_PhaseBehaviour_TEST = 1,
+  PhaseParam_PhaseBehaviour_PhaseParam_PhaseBehaviour_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  PhaseParam_PhaseBehaviour_PhaseParam_PhaseBehaviour_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool PhaseParam_PhaseBehaviour_IsValid(int value);
+const PhaseParam_PhaseBehaviour PhaseParam_PhaseBehaviour_PhaseBehaviour_MIN = PhaseParam_PhaseBehaviour_TRAIN;
+const PhaseParam_PhaseBehaviour PhaseParam_PhaseBehaviour_PhaseBehaviour_MAX = PhaseParam_PhaseBehaviour_TEST;
+const int PhaseParam_PhaseBehaviour_PhaseBehaviour_ARRAYSIZE = PhaseParam_PhaseBehaviour_PhaseBehaviour_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* PhaseParam_PhaseBehaviour_descriptor();
+inline const ::std::string& PhaseParam_PhaseBehaviour_Name(PhaseParam_PhaseBehaviour value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    PhaseParam_PhaseBehaviour_descriptor(), value);
+}
+inline bool PhaseParam_PhaseBehaviour_Parse(
+    const ::std::string& name, PhaseParam_PhaseBehaviour* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PhaseParam_PhaseBehaviour>(
+    PhaseParam_PhaseBehaviour_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -426,6 +453,105 @@ class TensorParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 > dims_;
   mutable int _dims_cached_byte_size_;
   int type_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class PhaseplexerParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:PhaseplexerParam) */ {
+ public:
+  PhaseplexerParam();
+  virtual ~PhaseplexerParam();
+
+  PhaseplexerParam(const PhaseplexerParam& from);
+
+  inline PhaseplexerParam& operator=(const PhaseplexerParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PhaseplexerParam& default_instance();
+
+  static inline const PhaseplexerParam* internal_default_instance() {
+    return reinterpret_cast<const PhaseplexerParam*>(
+               &_PhaseplexerParam_default_instance_);
+  }
+
+  void Swap(PhaseplexerParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PhaseplexerParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PhaseplexerParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PhaseplexerParam& from);
+  void MergeFrom(const PhaseplexerParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PhaseplexerParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated string phase = 1;
+  int phase_size() const;
+  void clear_phase();
+  static const int kPhaseFieldNumber = 1;
+  const ::std::string& phase(int index) const;
+  ::std::string* mutable_phase(int index);
+  void set_phase(int index, const ::std::string& value);
+  #if LANG_CXX11
+  void set_phase(int index, ::std::string&& value);
+  #endif
+  void set_phase(int index, const char* value);
+  void set_phase(int index, const char* value, size_t size);
+  ::std::string* add_phase();
+  void add_phase(const ::std::string& value);
+  #if LANG_CXX11
+  void add_phase(::std::string&& value);
+  #endif
+  void add_phase(const char* value);
+  void add_phase(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& phase() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_phase();
+
+  // @@protoc_insertion_point(class_scope:PhaseplexerParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2064,6 +2190,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::PlaceHolderParam* release_place_holder_param();
   void set_allocated_place_holder_param(::PlaceHolderParam* place_holder_param);
 
+  // .PhaseplexerParam phaseplexer_param = 32;
+  bool has_phaseplexer_param() const;
+  void clear_phaseplexer_param();
+  static const int kPhaseplexerParamFieldNumber = 32;
+  const ::PhaseplexerParam& phaseplexer_param() const;
+  ::PhaseplexerParam* mutable_phaseplexer_param();
+  ::PhaseplexerParam* release_phaseplexer_param();
+  void set_allocated_phaseplexer_param(::PhaseplexerParam* phaseplexer_param);
+
   // .BlockParam block_param = 40;
   bool has_block_param() const;
   void clear_block_param();
@@ -2201,6 +2336,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::MnistReaderParam* mnist_reader_param_;
   ::VariableParam* variable_param_;
   ::PlaceHolderParam* place_holder_param_;
+  ::PhaseplexerParam* phaseplexer_param_;
   ::BlockParam* block_param_;
   ::LossParam* loss_param_;
   ::AddParam* add_param_;
@@ -3335,6 +3471,130 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 };
 // -------------------------------------------------------------------
 
+class PhaseParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:PhaseParam) */ {
+ public:
+  PhaseParam();
+  virtual ~PhaseParam();
+
+  PhaseParam(const PhaseParam& from);
+
+  inline PhaseParam& operator=(const PhaseParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PhaseParam& default_instance();
+
+  static inline const PhaseParam* internal_default_instance() {
+    return reinterpret_cast<const PhaseParam*>(
+               &_PhaseParam_default_instance_);
+  }
+
+  void Swap(PhaseParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PhaseParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PhaseParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PhaseParam& from);
+  void MergeFrom(const PhaseParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PhaseParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef PhaseParam_PhaseBehaviour PhaseBehaviour;
+  static const PhaseBehaviour TRAIN =
+    PhaseParam_PhaseBehaviour_TRAIN;
+  static const PhaseBehaviour TEST =
+    PhaseParam_PhaseBehaviour_TEST;
+  static inline bool PhaseBehaviour_IsValid(int value) {
+    return PhaseParam_PhaseBehaviour_IsValid(value);
+  }
+  static const PhaseBehaviour PhaseBehaviour_MIN =
+    PhaseParam_PhaseBehaviour_PhaseBehaviour_MIN;
+  static const PhaseBehaviour PhaseBehaviour_MAX =
+    PhaseParam_PhaseBehaviour_PhaseBehaviour_MAX;
+  static const int PhaseBehaviour_ARRAYSIZE =
+    PhaseParam_PhaseBehaviour_PhaseBehaviour_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  PhaseBehaviour_descriptor() {
+    return PhaseParam_PhaseBehaviour_descriptor();
+  }
+  static inline const ::std::string& PhaseBehaviour_Name(PhaseBehaviour value) {
+    return PhaseParam_PhaseBehaviour_Name(value);
+  }
+  static inline bool PhaseBehaviour_Parse(const ::std::string& name,
+      PhaseBehaviour* value) {
+    return PhaseParam_PhaseBehaviour_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // string phase = 1;
+  void clear_phase();
+  static const int kPhaseFieldNumber = 1;
+  const ::std::string& phase() const;
+  void set_phase(const ::std::string& value);
+  #if LANG_CXX11
+  void set_phase(::std::string&& value);
+  #endif
+  void set_phase(const char* value);
+  void set_phase(const char* value, size_t size);
+  ::std::string* mutable_phase();
+  ::std::string* release_phase();
+  void set_allocated_phase(::std::string* phase);
+
+  // .PhaseParam.PhaseBehaviour behaviour = 2;
+  void clear_behaviour();
+  static const int kBehaviourFieldNumber = 2;
+  ::PhaseParam_PhaseBehaviour behaviour() const;
+  void set_behaviour(::PhaseParam_PhaseBehaviour value);
+
+  // @@protoc_insertion_point(class_scope:PhaseParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr phase_;
+  int behaviour_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class NetworkParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:NetworkParam) */ {
  public:
   NetworkParam();
@@ -3426,27 +3686,17 @@ class NetworkParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   const ::google::protobuf::RepeatedPtrField< ::SolverParam >&
       solver() const;
 
-  // repeated string phase = 3;
+  // repeated .PhaseParam phase = 3;
   int phase_size() const;
   void clear_phase();
   static const int kPhaseFieldNumber = 3;
-  const ::std::string& phase(int index) const;
-  ::std::string* mutable_phase(int index);
-  void set_phase(int index, const ::std::string& value);
-  #if LANG_CXX11
-  void set_phase(int index, ::std::string&& value);
-  #endif
-  void set_phase(int index, const char* value);
-  void set_phase(int index, const char* value, size_t size);
-  ::std::string* add_phase();
-  void add_phase(const ::std::string& value);
-  #if LANG_CXX11
-  void add_phase(::std::string&& value);
-  #endif
-  void add_phase(const char* value);
-  void add_phase(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& phase() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_phase();
+  const ::PhaseParam& phase(int index) const;
+  ::PhaseParam* mutable_phase(int index);
+  ::PhaseParam* add_phase();
+  ::google::protobuf::RepeatedPtrField< ::PhaseParam >*
+      mutable_phase();
+  const ::google::protobuf::RepeatedPtrField< ::PhaseParam >&
+      phase() const;
 
   // @@protoc_insertion_point(class_scope:NetworkParam)
  private:
@@ -3454,7 +3704,7 @@ class NetworkParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::NodeParam > node_;
   ::google::protobuf::RepeatedPtrField< ::SolverParam > solver_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
+  ::google::protobuf::RepeatedPtrField< ::PhaseParam > phase_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3542,6 +3792,77 @@ inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
 TensorParam::mutable_dims() {
   // @@protoc_insertion_point(field_mutable_list:TensorParam.dims)
   return &dims_;
+}
+
+// -------------------------------------------------------------------
+
+// PhaseplexerParam
+
+// repeated string phase = 1;
+inline int PhaseplexerParam::phase_size() const {
+  return phase_.size();
+}
+inline void PhaseplexerParam::clear_phase() {
+  phase_.Clear();
+}
+inline const ::std::string& PhaseplexerParam::phase(int index) const {
+  // @@protoc_insertion_point(field_get:PhaseplexerParam.phase)
+  return phase_.Get(index);
+}
+inline ::std::string* PhaseplexerParam::mutable_phase(int index) {
+  // @@protoc_insertion_point(field_mutable:PhaseplexerParam.phase)
+  return phase_.Mutable(index);
+}
+inline void PhaseplexerParam::set_phase(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:PhaseplexerParam.phase)
+  phase_.Mutable(index)->assign(value);
+}
+#if LANG_CXX11
+inline void PhaseplexerParam::set_phase(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:PhaseplexerParam.phase)
+  phase_.Mutable(index)->assign(std::move(value));
+}
+#endif
+inline void PhaseplexerParam::set_phase(int index, const char* value) {
+  phase_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:PhaseplexerParam.phase)
+}
+inline void PhaseplexerParam::set_phase(int index, const char* value, size_t size) {
+  phase_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:PhaseplexerParam.phase)
+}
+inline ::std::string* PhaseplexerParam::add_phase() {
+  // @@protoc_insertion_point(field_add_mutable:PhaseplexerParam.phase)
+  return phase_.Add();
+}
+inline void PhaseplexerParam::add_phase(const ::std::string& value) {
+  phase_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:PhaseplexerParam.phase)
+}
+#if LANG_CXX11
+inline void PhaseplexerParam::add_phase(::std::string&& value) {
+  phase_.Add()->assign(std::move(value));
+  // @@protoc_insertion_point(field_add:PhaseplexerParam.phase)
+}
+#endif
+inline void PhaseplexerParam::add_phase(const char* value) {
+  phase_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:PhaseplexerParam.phase)
+}
+inline void PhaseplexerParam::add_phase(const char* value, size_t size) {
+  phase_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:PhaseplexerParam.phase)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+PhaseplexerParam::phase() const {
+  // @@protoc_insertion_point(field_list:PhaseplexerParam.phase)
+  return phase_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+PhaseplexerParam::mutable_phase() {
+  // @@protoc_insertion_point(field_mutable_list:PhaseplexerParam.phase)
+  return &phase_;
 }
 
 // -------------------------------------------------------------------
@@ -4625,6 +4946,45 @@ inline void NodeParam::set_allocated_place_holder_param(::PlaceHolderParam* plac
     
   }
   // @@protoc_insertion_point(field_set_allocated:NodeParam.place_holder_param)
+}
+
+// .PhaseplexerParam phaseplexer_param = 32;
+inline bool NodeParam::has_phaseplexer_param() const {
+  return this != internal_default_instance() && phaseplexer_param_ != NULL;
+}
+inline void NodeParam::clear_phaseplexer_param() {
+  if (GetArenaNoVirtual() == NULL && phaseplexer_param_ != NULL) delete phaseplexer_param_;
+  phaseplexer_param_ = NULL;
+}
+inline const ::PhaseplexerParam& NodeParam::phaseplexer_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.phaseplexer_param)
+  return phaseplexer_param_ != NULL ? *phaseplexer_param_
+                         : *::PhaseplexerParam::internal_default_instance();
+}
+inline ::PhaseplexerParam* NodeParam::mutable_phaseplexer_param() {
+  
+  if (phaseplexer_param_ == NULL) {
+    phaseplexer_param_ = new ::PhaseplexerParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.phaseplexer_param)
+  return phaseplexer_param_;
+}
+inline ::PhaseplexerParam* NodeParam::release_phaseplexer_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.phaseplexer_param)
+  
+  ::PhaseplexerParam* temp = phaseplexer_param_;
+  phaseplexer_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_phaseplexer_param(::PhaseplexerParam* phaseplexer_param) {
+  delete phaseplexer_param_;
+  phaseplexer_param_ = phaseplexer_param;
+  if (phaseplexer_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.phaseplexer_param)
 }
 
 // .BlockParam block_param = 40;
@@ -5762,6 +6122,76 @@ inline void SolverParam::set_allocated_gain_solver(::GainSolverParam* gain_solve
 
 // -------------------------------------------------------------------
 
+// PhaseParam
+
+// string phase = 1;
+inline void PhaseParam::clear_phase() {
+  phase_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PhaseParam::phase() const {
+  // @@protoc_insertion_point(field_get:PhaseParam.phase)
+  return phase_.GetNoArena();
+}
+inline void PhaseParam::set_phase(const ::std::string& value) {
+  
+  phase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:PhaseParam.phase)
+}
+#if LANG_CXX11
+inline void PhaseParam::set_phase(::std::string&& value) {
+  
+  phase_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:PhaseParam.phase)
+}
+#endif
+inline void PhaseParam::set_phase(const char* value) {
+  
+  phase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:PhaseParam.phase)
+}
+inline void PhaseParam::set_phase(const char* value, size_t size) {
+  
+  phase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:PhaseParam.phase)
+}
+inline ::std::string* PhaseParam::mutable_phase() {
+  
+  // @@protoc_insertion_point(field_mutable:PhaseParam.phase)
+  return phase_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PhaseParam::release_phase() {
+  // @@protoc_insertion_point(field_release:PhaseParam.phase)
+  
+  return phase_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PhaseParam::set_allocated_phase(::std::string* phase) {
+  if (phase != NULL) {
+    
+  } else {
+    
+  }
+  phase_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), phase);
+  // @@protoc_insertion_point(field_set_allocated:PhaseParam.phase)
+}
+
+// .PhaseParam.PhaseBehaviour behaviour = 2;
+inline void PhaseParam::clear_behaviour() {
+  behaviour_ = 0;
+}
+inline ::PhaseParam_PhaseBehaviour PhaseParam::behaviour() const {
+  // @@protoc_insertion_point(field_get:PhaseParam.behaviour)
+  return static_cast< ::PhaseParam_PhaseBehaviour >(behaviour_);
+}
+inline void PhaseParam::set_behaviour(::PhaseParam_PhaseBehaviour value) {
+  
+  behaviour_ = value;
+  // @@protoc_insertion_point(field_set:PhaseParam.behaviour)
+}
+
+// -------------------------------------------------------------------
+
 // NetworkParam
 
 // repeated .NodeParam node = 1;
@@ -5824,74 +6254,41 @@ NetworkParam::solver() const {
   return solver_;
 }
 
-// repeated string phase = 3;
+// repeated .PhaseParam phase = 3;
 inline int NetworkParam::phase_size() const {
   return phase_.size();
 }
 inline void NetworkParam::clear_phase() {
   phase_.Clear();
 }
-inline const ::std::string& NetworkParam::phase(int index) const {
+inline const ::PhaseParam& NetworkParam::phase(int index) const {
   // @@protoc_insertion_point(field_get:NetworkParam.phase)
   return phase_.Get(index);
 }
-inline ::std::string* NetworkParam::mutable_phase(int index) {
+inline ::PhaseParam* NetworkParam::mutable_phase(int index) {
   // @@protoc_insertion_point(field_mutable:NetworkParam.phase)
   return phase_.Mutable(index);
 }
-inline void NetworkParam::set_phase(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:NetworkParam.phase)
-  phase_.Mutable(index)->assign(value);
-}
-#if LANG_CXX11
-inline void NetworkParam::set_phase(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:NetworkParam.phase)
-  phase_.Mutable(index)->assign(std::move(value));
-}
-#endif
-inline void NetworkParam::set_phase(int index, const char* value) {
-  phase_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:NetworkParam.phase)
-}
-inline void NetworkParam::set_phase(int index, const char* value, size_t size) {
-  phase_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:NetworkParam.phase)
-}
-inline ::std::string* NetworkParam::add_phase() {
-  // @@protoc_insertion_point(field_add_mutable:NetworkParam.phase)
+inline ::PhaseParam* NetworkParam::add_phase() {
+  // @@protoc_insertion_point(field_add:NetworkParam.phase)
   return phase_.Add();
 }
-inline void NetworkParam::add_phase(const ::std::string& value) {
-  phase_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:NetworkParam.phase)
-}
-#if LANG_CXX11
-inline void NetworkParam::add_phase(::std::string&& value) {
-  phase_.Add()->assign(std::move(value));
-  // @@protoc_insertion_point(field_add:NetworkParam.phase)
-}
-#endif
-inline void NetworkParam::add_phase(const char* value) {
-  phase_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:NetworkParam.phase)
-}
-inline void NetworkParam::add_phase(const char* value, size_t size) {
-  phase_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:NetworkParam.phase)
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-NetworkParam::phase() const {
-  // @@protoc_insertion_point(field_list:NetworkParam.phase)
-  return phase_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+inline ::google::protobuf::RepeatedPtrField< ::PhaseParam >*
 NetworkParam::mutable_phase() {
   // @@protoc_insertion_point(field_mutable_list:NetworkParam.phase)
   return &phase_;
 }
+inline const ::google::protobuf::RepeatedPtrField< ::PhaseParam >&
+NetworkParam::phase() const {
+  // @@protoc_insertion_point(field_list:NetworkParam.phase)
+  return phase_;
+}
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -5974,6 +6371,11 @@ template <> struct is_proto_enum< ::MnistReaderParam_ReaderType> : ::google::pro
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::MnistReaderParam_ReaderType>() {
   return ::MnistReaderParam_ReaderType_descriptor();
+}
+template <> struct is_proto_enum< ::PhaseParam_PhaseBehaviour> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::PhaseParam_PhaseBehaviour>() {
+  return ::PhaseParam_PhaseBehaviour_descriptor();
 }
 
 }  // namespace protobuf

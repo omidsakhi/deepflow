@@ -48,19 +48,19 @@ std::string Node::name() const {
 	return _name;	
 }
 
-std::vector<std::shared_ptr<NodeInput>> & Node::inputs() {
+std::vector<NodeInputPtr> & Node::inputs() {
 	return _inputs;
 }
 
-std::vector<std::shared_ptr<NodeOutput>> &Node::outputs() {
+std::vector<NodeOutputPtr> &Node::outputs() {
 	return _outputs;
 }
 
-std::shared_ptr<NodeInput> Node::input(int index) {
+NodeInputPtr Node::input(int index) {
 	return _inputs[index];
 }
 
-std::shared_ptr<NodeOutput> Node::output(int index) {
+NodeOutputPtr Node::output(int index) {
 	return _outputs[index];
 }
 
@@ -81,4 +81,8 @@ bool Node::includePhase(const std::string &phase) {
 		if (_param.phase(i) == phase)
 			return true;
 	return false;
+}
+
+void Node::setExecutionPhase(std::string phase) {
+	_executionPhase = phase;
 }

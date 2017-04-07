@@ -4,7 +4,7 @@
 
 #include <glog/logging.h>
 
-Block::Block(std::initializer_list<std::shared_ptr<NodeInput>> inputs, std::initializer_list<std::shared_ptr<NodeOutput>> outputs, NodeParam param) : Node(param) {
+Block::Block(std::initializer_list<NodeInputPtr> inputs, std::initializer_list<NodeOutputPtr> outputs, NodeParam param) : Node(param) {
 	LOG_IF(FATAL, param.has_block_param() == false) << "param.has_block_param() [FAILED]";	
 	for (auto NodeInput : inputs)
 		_inputs.push_back(NodeInput);		

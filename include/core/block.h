@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport Block : public Node {
 public :
-	Block(std::initializer_list<std::shared_ptr<NodeInput>> inputs, std::initializer_list<std::shared_ptr<NodeOutput>> outputs, NodeParam param);
+	Block(std::initializer_list<NodeInputPtr> inputs, std::initializer_list<NodeOutputPtr> outputs, NodeParam param);
 	void initForward();
 	void initBackward();
 	int minNumInputs() { return 0; }

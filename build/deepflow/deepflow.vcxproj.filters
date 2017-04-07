@@ -111,6 +111,9 @@
     <ClCompile Include="..\..\src\core\loss.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\core\phaseplexer.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -228,6 +231,9 @@
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\core\loss.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\phaseplexer.h">
       <Filter>include\core</Filter>
     </ClInclude>
   </ItemGroup>

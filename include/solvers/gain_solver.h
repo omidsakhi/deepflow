@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport GainSolver : public Solver {
 public:
-	GainSolver(std::shared_ptr<NodeOutput> loss, const SolverParam &param);
+	GainSolver(NodeOutputPtr loss, const SolverParam &param);
 	void train_step();	
 	void init();
 private:	
