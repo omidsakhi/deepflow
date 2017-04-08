@@ -27,7 +27,7 @@ void PlaceHolder::initForward() {
 	}
 	Tensor::TensorType type = (Tensor::TensorType) tensorParam.type();
 	_outputs[0]->initValue(dims,type);
-	LOG(INFO) << "Initialize PlaceHolder (name: " << _name << ") - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Initializing Placeholder " << _name << " - " << _outputs[0]->value()->shape();
 
 }
 

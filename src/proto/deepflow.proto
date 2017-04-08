@@ -187,10 +187,11 @@ message InitStepParam {
 
 message InitParam {
   TensorParam tensor_param = 1;
-  InitFillParam fill_param = 2;
-  InitIndexFillParam index_fill_param = 3;
-  InitRandomUniformParam random_uniform_param = 4;
-  InitStepParam step_param = 5;
+  TensorData init_data = 2;
+  InitFillParam fill_param = 3;
+  InitIndexFillParam index_fill_param = 4;
+  InitRandomUniformParam random_uniform_param = 5;
+  InitStepParam step_param = 6;
 }
 
 message SGDSolverParam {

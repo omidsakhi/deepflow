@@ -15,6 +15,7 @@ public:
 	virtual void apply(Variable *variable) = 0;	
 	std::array<int, 4> dims() const;
 	const InitParam &param() const;
+	InitParam *mutableParam();
 protected:	
 	InitParam _param;
 	std::array<int, 4> _dims;

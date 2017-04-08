@@ -17,7 +17,7 @@ RandomUniform::RandomUniform(const InitParam &param) : Initializer(param) {
 
 void RandomUniform::apply(Variable *variable) {	
 	auto size = variable->output(0)->value()->size();
-	LOG(INFO) << "Applying random uniform to variable " << variable->name() << " of shape " << variable->output(0)->value()->shape();
+	LOG(INFO) << "Random uniform filling " << variable->name() << " - " << variable->output(0)->value()->shape();
 	float min = _param.random_uniform_param().min();
 	float max = _param.random_uniform_param().max();
 	RandKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (min, max, size, (float*)variable->output(0)->value()->mutableData());

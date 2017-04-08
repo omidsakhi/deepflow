@@ -10,7 +10,9 @@ void Phaseplexer::initForward()
 	for (int i = 0; i < param.phase_size(); ++i)
 		_map.insert(std::pair<std::string, NodeInputPtr>(param.phase(i), _inputs[i]));
 	LOG_IF(FATAL, _map.size() < 2);
+	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size());
 	_outputs[0]->initValue(_inputs[0]->dims());
+	LOG(INFO) << "Initializing Phaseplexer " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Phaseplexer::initBackward()

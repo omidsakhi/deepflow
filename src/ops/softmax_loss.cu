@@ -17,7 +17,7 @@ SoftmaxLoss::SoftmaxLoss(const NodeParam &param) : Loss(param) {
 }
 
 void SoftmaxLoss::initForward() {		
-	LOG(INFO) << "Initializing SoftmaxLoss (name: " << _name << " ) | Shape : " << _inputs[0]->value()->shape();
+	LOG(INFO) << "Initializing SoftmaxLoss " << _name << " - " << _inputs[0]->value()->shape();
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input size != target size";
 	LOG_IF(FATAL, cudnnCreate(&_cudnnHandle) != 0);	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());

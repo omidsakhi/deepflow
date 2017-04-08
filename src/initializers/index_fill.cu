@@ -17,7 +17,7 @@ IndexFill::IndexFill(const InitParam &param) : Initializer(param) {
 void IndexFill::apply(Variable *variable) {
 	float offset = _param.index_fill_param().offset();
 	auto size = variable->output(0)->value()->size();
-	LOG(INFO) << "Filling variable " << variable->name() << " with " << offset;
+	LOG(INFO) << "Index filling " << variable->name() << " with " << offset;
 	IndexFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)variable->output(0)->value()->mutableData(), offset);
 	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
 }

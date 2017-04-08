@@ -307,8 +307,7 @@ std::shared_ptr<SGDSolver> DeepFlow::sgd_solver(NodeOutputPtr loss, int max_iter
 	SGDSolverParam *sp = param.mutable_sgd_solver();
 	sp->set_learning_rate(learning_rate);
 	sp->set_momentum(momentum);
-	auto solver = std::make_shared<SGDSolver>(loss, param);
-	_solvers.push_back(solver);
+	auto solver = std::make_shared<SGDSolver>(loss, param);	
 	return solver;
 }
 
@@ -322,8 +321,7 @@ std::shared_ptr<GainSolver> DeepFlow::gain_solver(NodeOutputPtr loss, int max_it
 	gsp->set_min_gain(min_gain);
 	gsp->set_gain_plus(gain_plus);
 	gsp->set_gain_mult(gain_mult);    
-	auto solver = std::make_shared<GainSolver>(loss, param);
-	_solvers.push_back(solver);
+	auto solver = std::make_shared<GainSolver>(loss, param);	
 	return solver;
 }
 
@@ -593,7 +591,7 @@ std::tuple<float, float,int> DeepFlow::run(NodeOutputPtr loss, NodeOutputPtr acc
 	return std::make_tuple(totalLoss, totalAccuracy, totalBatch);
 }
 
-std::shared_ptr<NetworkParam> DeepFlow::createNetworkParam(bool include_weights) {
+std::shared_ptr<NetworkParam> DeepFlow::createNetworkParam(bool include_weights, bool include_inits) {
 	auto param = std::make_shared<NetworkParam>();
 	for (auto phase : _phases) {
 		PhaseParam *phaseParam = param->add_phase();
@@ -605,28 +603,28 @@ std::shared_ptr<NetworkParam> DeepFlow::createNetworkParam(bool include_weights)
 			var->transferDataToParam();
 		else
 			var->param().mutable_variable_param()->clear_weights();
+		if (!include_inits)
+			var->param().mutable_variable_param()->mutable_init_param()->clear_init_data();
 	}
 	for (auto node : _nodes) {
 		NodeParam *nodeParam = param->add_node();
 		nodeParam->CopyFrom(node->param());
-	}
-	for (auto solver : _solvers) {
-		SolverParam *solverParam = param->add_solver();
-		solverParam->CopyFrom(solver->param());
-	}
+	}	
+	SolverParam *solverParam = param->add_solver();
+	solverParam->CopyFrom(_solver->param());	
 	return param;
 }
 
-void DeepFlow::save_as_binary(std::string filePath) {
-	auto param = createNetworkParam(true);
+void DeepFlow::save_as_binary(std::string filePath, bool include_inits) {
+	auto param = createNetworkParam(true, include_inits);
 	std::fstream output(filePath, std::ios::out | std::ios::trunc | std::ios::binary);
 	LOG_IF(FATAL, !param->SerializeToOstream(&output)) << "Failed to write network.";
 }
 
 #include <google/protobuf/text_format.h>
 
-void DeepFlow::save_as_text(std::string filePath, bool include_weights) {
-	auto param = createNetworkParam(include_weights);
+void DeepFlow::save_as_text(std::string filePath, bool include_weights, bool include_inits) {
+	auto param = createNetworkParam(include_weights,include_inits);
 	std::string text;
 	google::protobuf::TextFormat::PrintToString(*param,&text);	
 	std::ofstream out(filePath);
@@ -636,4 +634,8 @@ void DeepFlow::save_as_text(std::string filePath, bool include_weights) {
 
 void DeepFlow::define_phase(std::string phase, PhaseParam_PhaseBehaviour behaviour) {
 	_phases.insert(std::pair<std::string, PhaseParam_PhaseBehaviour>(phase,behaviour));
+}
+
+void DeepFlow::set_solver(std::shared_ptr<Solver> solver) {
+	_solver = solver;
 }

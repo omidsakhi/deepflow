@@ -34,9 +34,9 @@ void Add::initForward() {
 	_alpha = _param.add_param().alpha();
 	_beta = _param.add_param().beta();
 
-	LOG_IF(FATAL, a->value()->size() != b->value()->size()) << "Different input sizes";	
-	LOG(INFO) << "Initializing Add (name: " << _name << " ) for " << a->node()->name() << " and " << b->node()->name();	
+	LOG_IF(FATAL, a->value()->size() != b->value()->size()) << "Different input sizes";		
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
+	LOG(INFO) << "Initializing Add " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Add::initBackward() {

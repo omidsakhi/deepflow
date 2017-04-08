@@ -36,3 +36,7 @@ std::array<int, 4> Initializer::dims() const {
 const InitParam &Initializer::param() const {
 	return _param;
 }
+
+InitParam *Initializer::mutableParam() {
+	return &_param;
+}

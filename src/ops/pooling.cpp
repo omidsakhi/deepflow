@@ -20,7 +20,7 @@ void Pooling::initForward() {
 	h = floor((float)dims[2] / param.v_stride());
 	w = floor((float)dims[3] / param.h_stride());	
 	_outputs[0]->initValue({ n, c, h, w }, Tensor::Float);	
-	LOG(INFO) << "Initializing Pooling (name: " << _name << ") | Shape : " << _outputs[0]->value()->shape();	
+	LOG(INFO) << "Initializing Pooling " << _name << " - " << _outputs[0]->value()->shape();	
 }
 
 void Pooling::initBackward() {

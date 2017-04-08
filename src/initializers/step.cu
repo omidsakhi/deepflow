@@ -22,7 +22,7 @@ void Step::apply(Variable *variable) {
 	int size = variable->output(0)->value()->size();
 	float min = _param.step_param().min();
 	float max = _param.step_param().max();
-	LOG(INFO) << "Step fill variable " << variable->name() << " of shape " << variable->output(0)->value()->shape();
+	LOG(INFO) << "Step fill " << variable->name() << " - " << variable->output(0)->value()->shape();
 	StepFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)variable->output(0)->value()->mutableData(), min, (max-min)/size);
 	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
 }

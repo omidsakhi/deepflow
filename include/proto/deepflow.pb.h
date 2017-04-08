@@ -3110,37 +3110,46 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::TensorParam* release_tensor_param();
   void set_allocated_tensor_param(::TensorParam* tensor_param);
 
-  // .InitFillParam fill_param = 2;
+  // .TensorData init_data = 2;
+  bool has_init_data() const;
+  void clear_init_data();
+  static const int kInitDataFieldNumber = 2;
+  const ::TensorData& init_data() const;
+  ::TensorData* mutable_init_data();
+  ::TensorData* release_init_data();
+  void set_allocated_init_data(::TensorData* init_data);
+
+  // .InitFillParam fill_param = 3;
   bool has_fill_param() const;
   void clear_fill_param();
-  static const int kFillParamFieldNumber = 2;
+  static const int kFillParamFieldNumber = 3;
   const ::InitFillParam& fill_param() const;
   ::InitFillParam* mutable_fill_param();
   ::InitFillParam* release_fill_param();
   void set_allocated_fill_param(::InitFillParam* fill_param);
 
-  // .InitIndexFillParam index_fill_param = 3;
+  // .InitIndexFillParam index_fill_param = 4;
   bool has_index_fill_param() const;
   void clear_index_fill_param();
-  static const int kIndexFillParamFieldNumber = 3;
+  static const int kIndexFillParamFieldNumber = 4;
   const ::InitIndexFillParam& index_fill_param() const;
   ::InitIndexFillParam* mutable_index_fill_param();
   ::InitIndexFillParam* release_index_fill_param();
   void set_allocated_index_fill_param(::InitIndexFillParam* index_fill_param);
 
-  // .InitRandomUniformParam random_uniform_param = 4;
+  // .InitRandomUniformParam random_uniform_param = 5;
   bool has_random_uniform_param() const;
   void clear_random_uniform_param();
-  static const int kRandomUniformParamFieldNumber = 4;
+  static const int kRandomUniformParamFieldNumber = 5;
   const ::InitRandomUniformParam& random_uniform_param() const;
   ::InitRandomUniformParam* mutable_random_uniform_param();
   ::InitRandomUniformParam* release_random_uniform_param();
   void set_allocated_random_uniform_param(::InitRandomUniformParam* random_uniform_param);
 
-  // .InitStepParam step_param = 5;
+  // .InitStepParam step_param = 6;
   bool has_step_param() const;
   void clear_step_param();
-  static const int kStepParamFieldNumber = 5;
+  static const int kStepParamFieldNumber = 6;
   const ::InitStepParam& step_param() const;
   ::InitStepParam* mutable_step_param();
   ::InitStepParam* release_step_param();
@@ -3151,6 +3160,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::TensorParam* tensor_param_;
+  ::TensorData* init_data_;
   ::InitFillParam* fill_param_;
   ::InitIndexFillParam* index_fill_param_;
   ::InitRandomUniformParam* random_uniform_param_;
@@ -5748,7 +5758,46 @@ inline void InitParam::set_allocated_tensor_param(::TensorParam* tensor_param) {
   // @@protoc_insertion_point(field_set_allocated:InitParam.tensor_param)
 }
 
-// .InitFillParam fill_param = 2;
+// .TensorData init_data = 2;
+inline bool InitParam::has_init_data() const {
+  return this != internal_default_instance() && init_data_ != NULL;
+}
+inline void InitParam::clear_init_data() {
+  if (GetArenaNoVirtual() == NULL && init_data_ != NULL) delete init_data_;
+  init_data_ = NULL;
+}
+inline const ::TensorData& InitParam::init_data() const {
+  // @@protoc_insertion_point(field_get:InitParam.init_data)
+  return init_data_ != NULL ? *init_data_
+                         : *::TensorData::internal_default_instance();
+}
+inline ::TensorData* InitParam::mutable_init_data() {
+  
+  if (init_data_ == NULL) {
+    init_data_ = new ::TensorData;
+  }
+  // @@protoc_insertion_point(field_mutable:InitParam.init_data)
+  return init_data_;
+}
+inline ::TensorData* InitParam::release_init_data() {
+  // @@protoc_insertion_point(field_release:InitParam.init_data)
+  
+  ::TensorData* temp = init_data_;
+  init_data_ = NULL;
+  return temp;
+}
+inline void InitParam::set_allocated_init_data(::TensorData* init_data) {
+  delete init_data_;
+  init_data_ = init_data;
+  if (init_data) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:InitParam.init_data)
+}
+
+// .InitFillParam fill_param = 3;
 inline bool InitParam::has_fill_param() const {
   return this != internal_default_instance() && fill_param_ != NULL;
 }
@@ -5787,7 +5836,7 @@ inline void InitParam::set_allocated_fill_param(::InitFillParam* fill_param) {
   // @@protoc_insertion_point(field_set_allocated:InitParam.fill_param)
 }
 
-// .InitIndexFillParam index_fill_param = 3;
+// .InitIndexFillParam index_fill_param = 4;
 inline bool InitParam::has_index_fill_param() const {
   return this != internal_default_instance() && index_fill_param_ != NULL;
 }
@@ -5826,7 +5875,7 @@ inline void InitParam::set_allocated_index_fill_param(::InitIndexFillParam* inde
   // @@protoc_insertion_point(field_set_allocated:InitParam.index_fill_param)
 }
 
-// .InitRandomUniformParam random_uniform_param = 4;
+// .InitRandomUniformParam random_uniform_param = 5;
 inline bool InitParam::has_random_uniform_param() const {
   return this != internal_default_instance() && random_uniform_param_ != NULL;
 }
@@ -5865,7 +5914,7 @@ inline void InitParam::set_allocated_random_uniform_param(::InitRandomUniformPar
   // @@protoc_insertion_point(field_set_allocated:InitParam.random_uniform_param)
 }
 
-// .InitStepParam step_param = 5;
+// .InitStepParam step_param = 6;
 inline bool InitParam::has_step_param() const {
   return this != internal_default_instance() && step_param_ != NULL;
 }

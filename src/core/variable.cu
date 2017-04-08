@@ -19,8 +19,23 @@ Variable::Variable(std::shared_ptr<Initializer> initializer, const NodeParam &pa
 void Variable::initForward() {	
 	_initializer->init();
 	_outputs[0]->initValue(_initializer->dims());	
-	LOG(INFO) << "Initialize Variable (name: " << _name << ") - " << _outputs[0]->value()->shape();
-	_initializer->apply(this);
+	LOG(INFO) << "Initializing Variable " << _name << " - " << _outputs[0]->value()->shape();	
+	if (_initializer->param().has_init_data())
+		LOG_IF(FATAL,cudaMemcpy(
+			_outputs[0]->value()->mutableData(),
+			_initializer->param().init_data().weight().data(),
+			_outputs[0]->value()->sizeInBytes()
+			,cudaMemcpyHostToDevice) != 0) << "cudaMemcpy [FAILED]";		
+	else {
+		_initializer->apply(this);
+		for (int i = 0; i < _outputs[0]->value()->size(); ++i)
+			_param.mutable_variable_param()->mutable_init_param()->mutable_init_data()->add_weight(0);
+		LOG_IF(FATAL, cudaMemcpy(			
+			_param.mutable_variable_param()->mutable_init_param()->mutable_init_data()->mutable_weight()->mutable_data(),
+			_outputs[0]->value()->data(),
+			_outputs[0]->value()->sizeInBytes()
+			, cudaMemcpyDeviceToHost) != 0) << "cudaMemcpy [FAILED]";
+	}
 }
 
 void Variable::forward() {

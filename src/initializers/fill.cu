@@ -17,7 +17,7 @@ Fill::Fill(const InitParam &param) : Initializer(param) {
 void Fill::apply(Variable *variable) {
 	float value = _param.fill_param().value();
 	auto size = variable->output(0)->value()->size();
-	LOG(INFO) << "Filling variable " << variable->name() << " with " << value;
+	LOG(INFO) << "Filling " << variable->name() << " with " << value;
 	FillKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*)variable->output(0)->value()->mutableData(), value);
 	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
 }

@@ -68,14 +68,15 @@ public:
 	std::tuple<float, float, int> run(NodeOutputPtr loss, NodeOutputPtr accuracy, std::map<NodeOutputPtr, NodeOutputPtr> feed);
 	std::shared_ptr<Node> findNodeByName(const std::string &name) const;
 	std::string getUniqueNodeName(const std::string &prefix) const;
-	void save_as_binary(std::string filePath);
-	void save_as_text(std::string filePath, bool include_weights = false);
+	void save_as_binary(std::string filePath, bool include_inits);
+	void save_as_text(std::string filePath, bool include_weights = false, bool include_inits = false);
 	void define_phase(std::string phase, PhaseParam_PhaseBehaviour behaviour);
-	std::shared_ptr<NetworkParam> createNetworkParam(bool include_weights);
+	std::shared_ptr<NetworkParam> createNetworkParam(bool include_weights, bool include_inits);
+	void set_solver(std::shared_ptr<Solver> solver);
 private:
 	std::list<std::shared_ptr<Node>> _nodes;
 	std::list<std::shared_ptr<Variable>> _variables;
-	std::list<std::shared_ptr<Solver>> _solvers;
+	std::shared_ptr<Solver> _solver;
 	std::map<std::string, PhaseParam_PhaseBehaviour> _phases;
 };
 

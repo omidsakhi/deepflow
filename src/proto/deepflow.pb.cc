@@ -275,6 +275,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, tensor_param_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, init_data_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, fill_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, index_fill_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, random_uniform_param_),
@@ -346,11 +347,11 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 164, -1, sizeof(InitRandomUniformParam)},
   { 170, -1, sizeof(InitStepParam)},
   { 176, -1, sizeof(InitParam)},
-  { 185, -1, sizeof(SGDSolverParam)},
-  { 191, -1, sizeof(GainSolverParam)},
-  { 201, -1, sizeof(SolverParam)},
-  { 208, -1, sizeof(PhaseParam)},
-  { 214, -1, sizeof(NetworkParam)},
+  { 186, -1, sizeof(SGDSolverParam)},
+  { 192, -1, sizeof(GainSolverParam)},
+  { 202, -1, sizeof(SolverParam)},
+  { 209, -1, sizeof(PhaseParam)},
+  { 215, -1, sizeof(NetworkParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -566,6 +567,8 @@ void TableStruct::InitDefaultsImpl() {
       ::EqualParam::internal_default_instance());
   _InitParam_default_instance_.get_mutable()->tensor_param_ = const_cast< ::TensorParam*>(
       ::TensorParam::internal_default_instance());
+  _InitParam_default_instance_.get_mutable()->init_data_ = const_cast< ::TensorData*>(
+      ::TensorData::internal_default_instance());
   _InitParam_default_instance_.get_mutable()->fill_param_ = const_cast< ::InitFillParam*>(
       ::InitFillParam::internal_default_instance());
   _InitParam_default_instance_.get_mutable()->index_fill_param_ = const_cast< ::InitIndexFillParam*>(
@@ -645,29 +648,30 @@ void AddDescriptorsImpl() {
       "illParam\022\r\n\005value\030\001 \001(\002\"$\n\022InitIndexFill"
       "Param\022\016\n\006offset\030\001 \001(\002\"2\n\026InitRandomUnifo"
       "rmParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\")\n\rIni"
-      "tStepParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"\335\001\n"
+      "tStepParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"\375\001\n"
       "\tInitParam\022\"\n\014tensor_param\030\001 \001(\0132\014.Tenso"
-      "rParam\022\"\n\nfill_param\030\002 \001(\0132\016.InitFillPar"
-      "am\022-\n\020index_fill_param\030\003 \001(\0132\023.InitIndex"
-      "FillParam\0225\n\024random_uniform_param\030\004 \001(\0132"
-      "\027.InitRandomUniformParam\022\"\n\nstep_param\030\005"
-      " \001(\0132\016.InitStepParam\"9\n\016SGDSolverParam\022\020"
-      "\n\010momentum\030\001 \001(\002\022\025\n\rlearning_rate\030\002 \001(\002\""
-      "\204\001\n\017GainSolverParam\022\020\n\010momentum\030\001 \001(\002\022\025\n"
-      "\rlearning_rate\030\002 \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020"
-      "\n\010min_gain\030\004 \001(\002\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tg"
-      "ain_mult\030\006 \001(\002\"p\n\013SolverParam\022\025\n\rmax_ite"
-      "ration\030\001 \001(\005\022#\n\nsgd_solver\030\002 \001(\0132\017.SGDSo"
-      "lverParam\022%\n\013gain_solver\030\003 \001(\0132\020.GainSol"
-      "verParam\"q\n\nPhaseParam\022\r\n\005phase\030\001 \001(\t\022-\n"
-      "\tbehaviour\030\002 \001(\0162\032.PhaseParam.PhaseBehav"
-      "iour\"%\n\016PhaseBehaviour\022\t\n\005TRAIN\020\000\022\010\n\004TES"
-      "T\020\001\"b\n\014NetworkParam\022\030\n\004node\030\001 \003(\0132\n.Node"
-      "Param\022\034\n\006solver\030\002 \003(\0132\014.SolverParam\022\032\n\005p"
-      "hase\030\003 \003(\0132\013.PhaseParamb\006proto3"
+      "rParam\022\036\n\tinit_data\030\002 \001(\0132\013.TensorData\022\""
+      "\n\nfill_param\030\003 \001(\0132\016.InitFillParam\022-\n\020in"
+      "dex_fill_param\030\004 \001(\0132\023.InitIndexFillPara"
+      "m\0225\n\024random_uniform_param\030\005 \001(\0132\027.InitRa"
+      "ndomUniformParam\022\"\n\nstep_param\030\006 \001(\0132\016.I"
+      "nitStepParam\"9\n\016SGDSolverParam\022\020\n\010moment"
+      "um\030\001 \001(\002\022\025\n\rlearning_rate\030\002 \001(\002\"\204\001\n\017Gain"
+      "SolverParam\022\020\n\010momentum\030\001 \001(\002\022\025\n\rlearnin"
+      "g_rate\030\002 \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020\n\010min_ga"
+      "in\030\004 \001(\002\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tgain_mult"
+      "\030\006 \001(\002\"p\n\013SolverParam\022\025\n\rmax_iteration\030\001"
+      " \001(\005\022#\n\nsgd_solver\030\002 \001(\0132\017.SGDSolverPara"
+      "m\022%\n\013gain_solver\030\003 \001(\0132\020.GainSolverParam"
+      "\"q\n\nPhaseParam\022\r\n\005phase\030\001 \001(\t\022-\n\tbehavio"
+      "ur\030\002 \001(\0162\032.PhaseParam.PhaseBehaviour\"%\n\016"
+      "PhaseBehaviour\022\t\n\005TRAIN\020\000\022\010\n\004TEST\020\001\"b\n\014N"
+      "etworkParam\022\030\n\004node\030\001 \003(\0132\n.NodeParam\022\034\n"
+      "\006solver\030\002 \003(\0132\014.SolverParam\022\032\n\005phase\030\003 \003"
+      "(\0132\013.PhaseParamb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 3111);
+      descriptor, 3143);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -10314,6 +10318,7 @@ void InitStepParam::set_max(float value) {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int InitParam::kTensorParamFieldNumber;
+const int InitParam::kInitDataFieldNumber;
 const int InitParam::kFillParamFieldNumber;
 const int InitParam::kIndexFillParamFieldNumber;
 const int InitParam::kRandomUniformParamFieldNumber;
@@ -10337,6 +10342,11 @@ InitParam::InitParam(const InitParam& from)
     tensor_param_ = new ::TensorParam(*from.tensor_param_);
   } else {
     tensor_param_ = NULL;
+  }
+  if (from.has_init_data()) {
+    init_data_ = new ::TensorData(*from.init_data_);
+  } else {
+    init_data_ = NULL;
   }
   if (from.has_fill_param()) {
     fill_param_ = new ::InitFillParam(*from.fill_param_);
@@ -10375,6 +10385,9 @@ InitParam::~InitParam() {
 void InitParam::SharedDtor() {
   if (this != internal_default_instance()) {
     delete tensor_param_;
+  }
+  if (this != internal_default_instance()) {
+    delete init_data_;
   }
   if (this != internal_default_instance()) {
     delete fill_param_;
@@ -10419,6 +10432,10 @@ void InitParam::Clear() {
     delete tensor_param_;
   }
   tensor_param_ = NULL;
+  if (GetArenaNoVirtual() == NULL && init_data_ != NULL) {
+    delete init_data_;
+  }
+  init_data_ = NULL;
   if (GetArenaNoVirtual() == NULL && fill_param_ != NULL) {
     delete fill_param_;
   }
@@ -10459,10 +10476,22 @@ bool InitParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .InitFillParam fill_param = 2;
+      // .TensorData init_data = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_init_data()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .InitFillParam fill_param = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_fill_param()));
         } else {
@@ -10471,10 +10500,10 @@ bool InitParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .InitIndexFillParam index_fill_param = 3;
-      case 3: {
+      // .InitIndexFillParam index_fill_param = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u)) {
+            static_cast< ::google::protobuf::uint8>(34u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_index_fill_param()));
         } else {
@@ -10483,10 +10512,10 @@ bool InitParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .InitRandomUniformParam random_uniform_param = 4;
-      case 4: {
+      // .InitRandomUniformParam random_uniform_param = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u)) {
+            static_cast< ::google::protobuf::uint8>(42u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_random_uniform_param()));
         } else {
@@ -10495,10 +10524,10 @@ bool InitParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .InitStepParam step_param = 5;
-      case 5: {
+      // .InitStepParam step_param = 6;
+      case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u)) {
+            static_cast< ::google::protobuf::uint8>(50u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_step_param()));
         } else {
@@ -10537,28 +10566,34 @@ void InitParam::SerializeWithCachedSizes(
       1, *this->tensor_param_, output);
   }
 
-  // .InitFillParam fill_param = 2;
+  // .TensorData init_data = 2;
+  if (this->has_init_data()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, *this->init_data_, output);
+  }
+
+  // .InitFillParam fill_param = 3;
   if (this->has_fill_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, *this->fill_param_, output);
+      3, *this->fill_param_, output);
   }
 
-  // .InitIndexFillParam index_fill_param = 3;
+  // .InitIndexFillParam index_fill_param = 4;
   if (this->has_index_fill_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, *this->index_fill_param_, output);
+      4, *this->index_fill_param_, output);
   }
 
-  // .InitRandomUniformParam random_uniform_param = 4;
+  // .InitRandomUniformParam random_uniform_param = 5;
   if (this->has_random_uniform_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, *this->random_uniform_param_, output);
+      5, *this->random_uniform_param_, output);
   }
 
-  // .InitStepParam step_param = 5;
+  // .InitStepParam step_param = 6;
   if (this->has_step_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, *this->step_param_, output);
+      6, *this->step_param_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:InitParam)
@@ -10575,32 +10610,39 @@ void InitParam::SerializeWithCachedSizes(
         1, *this->tensor_param_, false, target);
   }
 
-  // .InitFillParam fill_param = 2;
+  // .TensorData init_data = 2;
+  if (this->has_init_data()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        2, *this->init_data_, false, target);
+  }
+
+  // .InitFillParam fill_param = 3;
   if (this->has_fill_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        2, *this->fill_param_, false, target);
+        3, *this->fill_param_, false, target);
   }
 
-  // .InitIndexFillParam index_fill_param = 3;
+  // .InitIndexFillParam index_fill_param = 4;
   if (this->has_index_fill_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        3, *this->index_fill_param_, false, target);
+        4, *this->index_fill_param_, false, target);
   }
 
-  // .InitRandomUniformParam random_uniform_param = 4;
+  // .InitRandomUniformParam random_uniform_param = 5;
   if (this->has_random_uniform_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        4, *this->random_uniform_param_, false, target);
+        5, *this->random_uniform_param_, false, target);
   }
 
-  // .InitStepParam step_param = 5;
+  // .InitStepParam step_param = 6;
   if (this->has_step_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        5, *this->step_param_, false, target);
+        6, *this->step_param_, false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:InitParam)
@@ -10618,28 +10660,35 @@ size_t InitParam::ByteSizeLong() const {
         *this->tensor_param_);
   }
 
-  // .InitFillParam fill_param = 2;
+  // .TensorData init_data = 2;
+  if (this->has_init_data()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->init_data_);
+  }
+
+  // .InitFillParam fill_param = 3;
   if (this->has_fill_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->fill_param_);
   }
 
-  // .InitIndexFillParam index_fill_param = 3;
+  // .InitIndexFillParam index_fill_param = 4;
   if (this->has_index_fill_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->index_fill_param_);
   }
 
-  // .InitRandomUniformParam random_uniform_param = 4;
+  // .InitRandomUniformParam random_uniform_param = 5;
   if (this->has_random_uniform_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->random_uniform_param_);
   }
 
-  // .InitStepParam step_param = 5;
+  // .InitStepParam step_param = 6;
   if (this->has_step_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -10674,6 +10723,9 @@ void InitParam::MergeFrom(const InitParam& from) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_tensor_param()) {
     mutable_tensor_param()->::TensorParam::MergeFrom(from.tensor_param());
+  }
+  if (from.has_init_data()) {
+    mutable_init_data()->::TensorData::MergeFrom(from.init_data());
   }
   if (from.has_fill_param()) {
     mutable_fill_param()->::InitFillParam::MergeFrom(from.fill_param());
@@ -10713,6 +10765,7 @@ void InitParam::Swap(InitParam* other) {
 }
 void InitParam::InternalSwap(InitParam* other) {
   std::swap(tensor_param_, other->tensor_param_);
+  std::swap(init_data_, other->init_data_);
   std::swap(fill_param_, other->fill_param_);
   std::swap(index_fill_param_, other->index_fill_param_);
   std::swap(random_uniform_param_, other->random_uniform_param_);
@@ -10767,7 +10820,46 @@ void InitParam::set_allocated_tensor_param(::TensorParam* tensor_param) {
   // @@protoc_insertion_point(field_set_allocated:InitParam.tensor_param)
 }
 
-// .InitFillParam fill_param = 2;
+// .TensorData init_data = 2;
+bool InitParam::has_init_data() const {
+  return this != internal_default_instance() && init_data_ != NULL;
+}
+void InitParam::clear_init_data() {
+  if (GetArenaNoVirtual() == NULL && init_data_ != NULL) delete init_data_;
+  init_data_ = NULL;
+}
+const ::TensorData& InitParam::init_data() const {
+  // @@protoc_insertion_point(field_get:InitParam.init_data)
+  return init_data_ != NULL ? *init_data_
+                         : *::TensorData::internal_default_instance();
+}
+::TensorData* InitParam::mutable_init_data() {
+  
+  if (init_data_ == NULL) {
+    init_data_ = new ::TensorData;
+  }
+  // @@protoc_insertion_point(field_mutable:InitParam.init_data)
+  return init_data_;
+}
+::TensorData* InitParam::release_init_data() {
+  // @@protoc_insertion_point(field_release:InitParam.init_data)
+  
+  ::TensorData* temp = init_data_;
+  init_data_ = NULL;
+  return temp;
+}
+void InitParam::set_allocated_init_data(::TensorData* init_data) {
+  delete init_data_;
+  init_data_ = init_data;
+  if (init_data) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:InitParam.init_data)
+}
+
+// .InitFillParam fill_param = 3;
 bool InitParam::has_fill_param() const {
   return this != internal_default_instance() && fill_param_ != NULL;
 }
@@ -10806,7 +10898,7 @@ void InitParam::set_allocated_fill_param(::InitFillParam* fill_param) {
   // @@protoc_insertion_point(field_set_allocated:InitParam.fill_param)
 }
 
-// .InitIndexFillParam index_fill_param = 3;
+// .InitIndexFillParam index_fill_param = 4;
 bool InitParam::has_index_fill_param() const {
   return this != internal_default_instance() && index_fill_param_ != NULL;
 }
@@ -10845,7 +10937,7 @@ void InitParam::set_allocated_index_fill_param(::InitIndexFillParam* index_fill_
   // @@protoc_insertion_point(field_set_allocated:InitParam.index_fill_param)
 }
 
-// .InitRandomUniformParam random_uniform_param = 4;
+// .InitRandomUniformParam random_uniform_param = 5;
 bool InitParam::has_random_uniform_param() const {
   return this != internal_default_instance() && random_uniform_param_ != NULL;
 }
@@ -10884,7 +10976,7 @@ void InitParam::set_allocated_random_uniform_param(::InitRandomUniformParam* ran
   // @@protoc_insertion_point(field_set_allocated:InitParam.random_uniform_param)
 }
 
-// .InitStepParam step_param = 5;
+// .InitStepParam step_param = 6;
 bool InitParam::has_step_param() const {
   return this != internal_default_instance() && step_param_ != NULL;
 }
