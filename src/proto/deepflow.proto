@@ -22,6 +22,11 @@ message PhaseplexerParam {
 	repeated string phase = 1;
 }
 
+message PrintParam {
+	int32 num_inputs = 1;
+	string message = 2;	
+}
+
 message AddParam {
 	float alpha = 1;
 	float beta = 2;	
@@ -146,7 +151,7 @@ message NodeParam {
   ArgmaxParam argmax_param = 69;
   ReduceParam reduce_param = 70;
   EqualParam equal_param = 71;
-
+  PrintParam print_param = 72;
 }
 
 message ArgmaxParam {

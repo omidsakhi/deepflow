@@ -11,7 +11,7 @@ void FillKernel(const int n, float *a, const float v)
 }
 
 Fill::Fill(const InitParam &param) : Initializer(param) {
-	LOG_IF(FATAL, param.has_fill_param() == false);		
+	LOG_IF(FATAL, param.has_fill_param() == false) << "param.has_fill_param() == false";		
 }
 
 void Fill::apply(Variable *variable) {

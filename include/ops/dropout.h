@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport Dropout : public Node {
 public:
-	Dropout(const NodeParam &param);
+	Dropout(const NodeParam &param);	
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();

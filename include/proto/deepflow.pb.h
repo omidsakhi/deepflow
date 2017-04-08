@@ -96,6 +96,9 @@ extern PlaceHolderParamDefaultTypeInternal _PlaceHolderParam_default_instance_;
 class PoolingParam;
 class PoolingParamDefaultTypeInternal;
 extern PoolingParamDefaultTypeInternal _PoolingParam_default_instance_;
+class PrintParam;
+class PrintParamDefaultTypeInternal;
+extern PrintParamDefaultTypeInternal _PrintParam_default_instance_;
 class ReduceParam;
 class ReduceParamDefaultTypeInternal;
 extern ReduceParamDefaultTypeInternal _ReduceParam_default_instance_;
@@ -552,6 +555,104 @@ class PhaseplexerParam : public ::google::protobuf::Message /* @@protoc_insertio
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class PrintParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:PrintParam) */ {
+ public:
+  PrintParam();
+  virtual ~PrintParam();
+
+  PrintParam(const PrintParam& from);
+
+  inline PrintParam& operator=(const PrintParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PrintParam& default_instance();
+
+  static inline const PrintParam* internal_default_instance() {
+    return reinterpret_cast<const PrintParam*>(
+               &_PrintParam_default_instance_);
+  }
+
+  void Swap(PrintParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PrintParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PrintParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PrintParam& from);
+  void MergeFrom(const PrintParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PrintParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string message = 2;
+  void clear_message();
+  static const int kMessageFieldNumber = 2;
+  const ::std::string& message() const;
+  void set_message(const ::std::string& value);
+  #if LANG_CXX11
+  void set_message(::std::string&& value);
+  #endif
+  void set_message(const char* value);
+  void set_message(const char* value, size_t size);
+  ::std::string* mutable_message();
+  ::std::string* release_message();
+  void set_allocated_message(::std::string* message);
+
+  // int32 num_inputs = 1;
+  void clear_num_inputs();
+  static const int kNumInputsFieldNumber = 1;
+  ::google::protobuf::int32 num_inputs() const;
+  void set_num_inputs(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:PrintParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr message_;
+  ::google::protobuf::int32 num_inputs_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2325,6 +2426,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::EqualParam* release_equal_param();
   void set_allocated_equal_param(::EqualParam* equal_param);
 
+  // .PrintParam print_param = 72;
+  bool has_print_param() const;
+  void clear_print_param();
+  static const int kPrintParamFieldNumber = 72;
+  const ::PrintParam& print_param() const;
+  ::PrintParam* mutable_print_param();
+  ::PrintParam* release_print_param();
+  void set_allocated_print_param(::PrintParam* print_param);
+
   // @@protoc_insertion_point(class_scope:NodeParam)
  private:
 
@@ -2351,6 +2461,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::ArgmaxParam* argmax_param_;
   ::ReduceParam* reduce_param_;
   ::EqualParam* equal_param_;
+  ::PrintParam* print_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3873,6 +3984,76 @@ inline ::google::protobuf::RepeatedPtrField< ::std::string>*
 PhaseplexerParam::mutable_phase() {
   // @@protoc_insertion_point(field_mutable_list:PhaseplexerParam.phase)
   return &phase_;
+}
+
+// -------------------------------------------------------------------
+
+// PrintParam
+
+// int32 num_inputs = 1;
+inline void PrintParam::clear_num_inputs() {
+  num_inputs_ = 0;
+}
+inline ::google::protobuf::int32 PrintParam::num_inputs() const {
+  // @@protoc_insertion_point(field_get:PrintParam.num_inputs)
+  return num_inputs_;
+}
+inline void PrintParam::set_num_inputs(::google::protobuf::int32 value) {
+  
+  num_inputs_ = value;
+  // @@protoc_insertion_point(field_set:PrintParam.num_inputs)
+}
+
+// string message = 2;
+inline void PrintParam::clear_message() {
+  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PrintParam::message() const {
+  // @@protoc_insertion_point(field_get:PrintParam.message)
+  return message_.GetNoArena();
+}
+inline void PrintParam::set_message(const ::std::string& value) {
+  
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:PrintParam.message)
+}
+#if LANG_CXX11
+inline void PrintParam::set_message(::std::string&& value) {
+  
+  message_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:PrintParam.message)
+}
+#endif
+inline void PrintParam::set_message(const char* value) {
+  
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:PrintParam.message)
+}
+inline void PrintParam::set_message(const char* value, size_t size) {
+  
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:PrintParam.message)
+}
+inline ::std::string* PrintParam::mutable_message() {
+  
+  // @@protoc_insertion_point(field_mutable:PrintParam.message)
+  return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PrintParam::release_message() {
+  // @@protoc_insertion_point(field_release:PrintParam.message)
+  
+  return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PrintParam::set_allocated_message(::std::string* message) {
+  if (message != NULL) {
+    
+  } else {
+    
+  }
+  message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
+  // @@protoc_insertion_point(field_set_allocated:PrintParam.message)
 }
 
 // -------------------------------------------------------------------
@@ -5543,6 +5724,45 @@ inline void NodeParam::set_allocated_equal_param(::EqualParam* equal_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.equal_param)
 }
 
+// .PrintParam print_param = 72;
+inline bool NodeParam::has_print_param() const {
+  return this != internal_default_instance() && print_param_ != NULL;
+}
+inline void NodeParam::clear_print_param() {
+  if (GetArenaNoVirtual() == NULL && print_param_ != NULL) delete print_param_;
+  print_param_ = NULL;
+}
+inline const ::PrintParam& NodeParam::print_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.print_param)
+  return print_param_ != NULL ? *print_param_
+                         : *::PrintParam::internal_default_instance();
+}
+inline ::PrintParam* NodeParam::mutable_print_param() {
+  
+  if (print_param_ == NULL) {
+    print_param_ = new ::PrintParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.print_param)
+  return print_param_;
+}
+inline ::PrintParam* NodeParam::release_print_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.print_param)
+  
+  ::PrintParam* temp = print_param_;
+  print_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_print_param(::PrintParam* print_param) {
+  delete print_param_;
+  print_param_ = print_param;
+  if (print_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.print_param)
+}
+
 // -------------------------------------------------------------------
 
 // ArgmaxParam
@@ -6334,6 +6554,8 @@ NetworkParam::phase() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

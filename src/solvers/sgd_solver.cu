@@ -16,7 +16,7 @@ void ApplyGradientKernel(const int n, const float momentum, const float learning
 }
 
 SGDSolver::SGDSolver(NodeOutputPtr loss, const SolverParam &param) : Solver(loss, param) {
-	LOG_IF(FATAL, param.has_sgd_solver() == false);
+	LOG_IF(FATAL, param.has_sgd_solver() == false) << "param.has_sgd_solver() == false";
 }
 
 void SGDSolver::train_step() {

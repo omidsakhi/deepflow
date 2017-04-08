@@ -20,7 +20,7 @@ void AddKernelBackward(const int n, const float *diff, const float alpha, float 
 }
 
 Add::Add(const NodeParam &param) : Node(param) {	
-	LOG_IF(FATAL, param.has_add_param() == false);	
+	LOG_IF(FATAL, param.has_add_param() == false) << "param.has_add_param() == false";	
 }
 
 void Add::initForward() {

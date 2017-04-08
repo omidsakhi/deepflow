@@ -11,7 +11,7 @@ void StepFillKernel(const int n, float *out, const float min, const float step)
 }
 
 Step::Step(const InitParam &param) : Initializer(param) {
-	LOG_IF(FATAL, param.has_step_param() == false);
+	LOG_IF(FATAL, param.has_step_param() == false) << "param.has_step_param() == false";
 }
 
 void Step::init() {

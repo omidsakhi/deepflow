@@ -22,7 +22,7 @@ void BiasAddKernelBackward(const int n, const float *diff, const int num_samples
 }
 
 BiasAdd::BiasAdd(const NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_bias_add_param() == false);
+	LOG_IF(FATAL, param.has_bias_add_param() == false) << "param.has_bias_add_param() == false";
 }
 
 void BiasAdd::initForward() {

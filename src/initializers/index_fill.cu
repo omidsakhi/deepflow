@@ -11,7 +11,7 @@ void IndexFillKernel(const int n, float *a,const float offset)
 }
 
 IndexFill::IndexFill(const InitParam &param) : Initializer(param) {
-	LOG_IF(FATAL, param.has_index_fill_param() == false);	
+	LOG_IF(FATAL, param.has_index_fill_param() == false) << "param.has_index_fill_param() == false";	
 }
 
 void IndexFill::apply(Variable *variable) {

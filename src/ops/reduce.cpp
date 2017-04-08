@@ -1,7 +1,7 @@
 #include "ops/reduce.h"
 
 Reduce::Reduce(const NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_reduce_param() == false) << "param.has_op_reduce_param() == false [FAILED]";
+	LOG_IF(FATAL, param.has_reduce_param() == false) << "param.has_reduce_param() == false [FAILED]";
 }
 
 void Reduce::initForward() {

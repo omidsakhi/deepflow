@@ -1,7 +1,7 @@
 #include "ops/pooling.h"
 
 Pooling::Pooling(const NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_pooling_param() == false) << "param.has_op_pooling_param() == false";
+	LOG_IF(FATAL, param.has_pooling_param() == false) << "param.has_pooling_param() == false";
 }
 
 void Pooling::initForward() {

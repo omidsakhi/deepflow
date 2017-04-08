@@ -50,6 +50,7 @@
     <ClInclude Include="..\..\include\ops\equal.h" />
     <ClInclude Include="..\..\include\ops\matmul.h" />
     <ClInclude Include="..\..\include\ops\pooling.h" />
+    <ClInclude Include="..\..\include\ops\print.h" />
     <ClInclude Include="..\..\include\ops\reduce.h" />
     <ClInclude Include="..\..\include\ops\relu.h" />
     <ClInclude Include="..\..\include\ops\softmax.h" />
@@ -98,6 +99,7 @@
     </CudaCompile>
     <ClCompile Include="..\..\src\ops\convolution_2d.cpp" />
     <ClCompile Include="..\..\src\ops\dropout.cpp" />
+    <ClCompile Include="..\..\src\ops\print.cpp" />
     <ClCompile Include="..\..\src\ops\reduce.cpp" />
     <ClCompile Include="..\..\src\proto\deepflow.pb.cc" />
     <ClCompile Include="..\..\src\readers\mnist_reader.cpp" />

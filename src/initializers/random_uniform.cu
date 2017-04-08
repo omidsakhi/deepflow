@@ -12,7 +12,7 @@ __global__ void RandKernel(const float min, const float max,const int n, float* 
 }
 
 RandomUniform::RandomUniform(const InitParam &param) : Initializer(param) {
-	LOG_IF(FATAL, param.has_random_uniform_param() == false);
+	LOG_IF(FATAL, param.has_random_uniform_param() == false) << "param.has_random_uniform_param() == false";
 }
 
 void RandomUniform::apply(Variable *variable) {	

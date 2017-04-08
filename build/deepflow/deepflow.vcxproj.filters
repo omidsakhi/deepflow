@@ -114,6 +114,9 @@
     <ClCompile Include="..\..\src\core\phaseplexer.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\ops\print.cpp">
+      <Filter>source\ops</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -235,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\core\phaseplexer.h">
       <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\print.h">
+      <Filter>include\ops</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
