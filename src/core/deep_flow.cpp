@@ -283,6 +283,23 @@ std::shared_ptr<Block> DeepFlow::block(std::initializer_list<NodeInputPtr> input
 	_nodes.push_back(node);
 	return node;
 }
+std::shared_ptr<Print> DeepFlow::print(std::initializer_list<NodeOutputPtr> inputs, std::string message, std::string name, std::initializer_list<std::string> phases) {
+	NodeParam nodeParam;
+	nodeParam.set_name(getUniqueNodeName(name));
+	for (auto phase : phases)
+		nodeParam.add_phase(phase);
+	PrintParam *printParam = nodeParam.mutable_print_param();
+	printParam->set_message(message);
+	printParam->set_num_inputs(inputs.size());
+	auto node = std::make_shared<Print>(nodeParam);
+	node->createIO();
+	std::vector<NodeOutputPtr> inputsVec(inputs.size());
+	std::copy(inputs.begin(), inputs.end(), inputsVec.begin());	
+	for (int i=0; i < inputsVec.size();++i)
+		node->input(i)->connect(inputsVec[i]);	
+	_nodes.push_back(node);
+	return node;
+}
 
 NodeOutputPtr DeepFlow::softmax_loss(NodeOutputPtr a, NodeOutputPtr b, std::string name, std::initializer_list<std::string> phases) {
 	NodeParam nodeParam;

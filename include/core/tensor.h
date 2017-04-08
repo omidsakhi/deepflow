@@ -51,13 +51,15 @@ public:
 	std::shared_ptr<std::vector<T>> cpyToHost() const;
 
 	float toFloat() const;
+
+	std::string toString() const;
 protected:
 	std::array<int, 4> _dims;
 	size_t _size;
 	size_t _sizeInBytes;
 	cudnnTensorDescriptor_t _desc = 0;
 	TensorType _type;
-	std::string _string;
+	std::string _shapeString;
 	void *d_data;
 };
 

@@ -12,6 +12,7 @@ DEFINE_bool(text, false, "Save model as text");
 DEFINE_bool(includeweights, false, "Save weights in text mode");
 DEFINE_bool(includeinits, false, "Save initial values in text mode");
 DEFINE_int32(batch, 100, "Batch size");
+DEFINE_string(run,"", "Phase to run");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -23,14 +24,12 @@ void main(int argc, char** argv) {
 	DeepFlow df;
 		
 	if (FLAGS_i.empty()) {
-		df.define_phase("test", PhaseParam_PhaseBehaviour_TRAIN);
-		df.define_phase("train", PhaseParam_PhaseBehaviour_TEST);
-		auto mnist_trainset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Train, "trainset", { "train" });
-		auto mnist_testset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Test, "testset", { "test" });
-		auto px = df.phaseplexer(mnist_trainset->output(0), "train", mnist_testset->output(0), "test", "px");		
-		auto py = df.phaseplexer(mnist_trainset->output(1), "train", mnist_testset->output(1), "test", "py");
-		//auto x = df.place_holder({ batch_size, 1, 28, 28 }, Tensor::TensorType::Float, "x");
-		//auto y = df.place_holder({ batch_size, 10, 1, 1 }, Tensor::TensorType::Float, "y");
+		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);
+		df.define_phase("Test", PhaseParam_PhaseBehaviour_TEST);
+		auto mnist_trainset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Train, "trainset", { "Train" });
+		auto mnist_testset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Test, "testset", { "Test" });
+		auto px = df.phaseplexer(mnist_trainset->output(0), "Train", mnist_testset->output(0), "Test", "px");		
+		auto py = df.phaseplexer(mnist_trainset->output(1), "Train", mnist_testset->output(1), "Test", "py");
 		auto f1 = df.variable(df.random_uniform({ 20, 1 , 5, 5 }, -0.1f, 0.1f), "f1");
 		auto conv1 = df.conv2d(px, f1, 2, 2, 1, 1, 1, 1, "conv1");
 		auto pool1 = df.pooling(conv1, 2, 2, 0, 0, 2, 2, "pool1");
@@ -49,14 +48,18 @@ void main(int argc, char** argv) {
 		auto bias2 = df.bias_add(m2, b2,"bias2");
 		auto relu2 = df.relu(bias2, -0.01f, "relu2");
 		auto loss = df.softmax_loss(relu2, py, "loss");
-		auto mse = df.reduce_mean(df.reduce_mean(df.square(loss), 1), 0, "mse", {"train"});
-		auto correct_class = df.argmax(py, 1, "correct_class", {"train"});
+		auto mse = df.reduce_mean(df.reduce_mean(df.square(loss), 1), 0, "mse", {"Train"});
+		auto correct_class = df.argmax(py, 1, "correct_class", {"Train"});
 		auto predict_class = df.argmax(loss->node()->output(1), 1, "predict_class");
-		auto accuracy = df.reduce_mean(df.equal(predict_class, correct_class), 0, "accuracy", {"train"});
+		auto accuracy = df.reduce_mean(df.equal(predict_class, correct_class), 0, "accuracy", {"Train"});
+		auto print = df.print({ mse, accuracy }, "  MSE: {0} - ACCURACY: {1}\n","print");
 		df.set_solver(df.gain_solver(loss, 2000, 0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f));
-	}		
+		df.global_node_initializer();
+	}			
 
-	df.global_node_initializer();
+	if (!FLAGS_run.empty()) {
+		
+	}
 
 	if (!FLAGS_o.empty())
 	{

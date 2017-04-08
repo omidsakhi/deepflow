@@ -58,11 +58,11 @@ Tensor::Tensor(std::array<int, 4> dims, TensorType type) {
 
 void Tensor::init() {
 	_size = _dims[0] * _dims[1] * _dims[2] * _dims[3];	
-	_string = std::to_string(_dims[0]);
+	_shapeString = std::to_string(_dims[0]);
 	for (int i = 1; i < 4; ++i)
-		_string += "x" + std::to_string(_dims[i]);
+		_shapeString += "x" + std::to_string(_dims[i]);
 	LOG_IF(FATAL, cudnnCreateTensorDescriptor(&_desc) != 0) << "cudnnCreateTensorDescriptor [FAILED]";
-	LOG_IF(FATAL, cudnnSetTensor4dDescriptor(_desc, CUDNN_TENSOR_NCHW, (cudnnDataType_t) _type, _dims[0], _dims[1], _dims[2], _dims[3]) != 0) << "cudnnSetTensor4dDescriptor [FAILED] " << _string;
+	LOG_IF(FATAL, cudnnSetTensor4dDescriptor(_desc, CUDNN_TENSOR_NCHW, (cudnnDataType_t) _type, _dims[0], _dims[1], _dims[2], _dims[3]) != 0) << "cudnnSetTensor4dDescriptor [FAILED] " << _shapeString;
 	LOG_IF(FATAL, cudnnGetTensorSizeInBytes(_desc, &_sizeInBytes) != 0) << "cudnnGetTensorSizeInBytes [FAILED]";
 	LOG_IF(FATAL, cudaMalloc(&d_data, _sizeInBytes) != 0) << "cudaMalloc [FAILED]";
 }
@@ -76,7 +76,7 @@ Tensor::TensorType Tensor::type() const {
 }
 
 std::string Tensor::shape() const {
-	return _string;
+	return _shapeString;
 }
 
 int Tensor::size() const {
@@ -140,4 +140,27 @@ float Tensor::toFloat() const {
 	LOG_IF(FATAL, _size != 1) << "toFloat() - _size != 1 [FAILED]";
 	auto h_data = cpyToHost<float>();
 	return h_data->at(0);
+}
+
+std::string Tensor::toString() const {
+	std::string output;
+	switch (_type) {
+		case TensorType::Int32:
+		{
+			auto h_data = cpyToHost<int>();
+			for (int i = 0; i < h_data->size(); ++i)
+				output += std::to_string(h_data->at(i)) + " ";
+		}
+		break;
+		case TensorType::Float:
+		{
+			auto h_data = cpyToHost<float>();
+			for (int i = 0; i < h_data->size(); ++i)
+				output += std::to_string(h_data->at(i));
+		}
+		break;
+		default:
+			LOG(FATAL) << "Unsupported type for toString() function";
+	};
+	return output;
 }

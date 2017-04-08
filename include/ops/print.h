@@ -14,4 +14,5 @@ public:
 	void backward();
 private:
 	int _num_inputs = 0;
+	std::string _raw_message;
 };
