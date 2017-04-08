@@ -19,6 +19,7 @@
 #include "ops/pooling.h"
 #include "ops/reduce.h"
 #include "ops/equal.h"
+#include "ops/cast_float.h"
 
 #include <unordered_map>
 #include <map>
@@ -164,6 +165,19 @@ std::shared_ptr<RandomUniform> DeepFlow::random_uniform(std::initializer_list<in
 	param->set_max(max);
 	param->set_min(min);
 	return std::make_shared<RandomUniform>(initParam);
+}
+
+NodeOutputPtr DeepFlow::cast_float(NodeOutputPtr input, std::string name, std::initializer_list<std::string> phases) {
+	NodeParam nodeParam;
+	nodeParam.set_name(getUniqueNodeName(name));
+	for (auto phase : phases)
+		nodeParam.add_phase(phase);
+	nodeParam.mutable_cast_float_param();
+	auto node = std::make_shared<CastFloat>(nodeParam);
+	node->createIO();
+	node->input(0)->connect(input);
+	_nodes.push_back(node);
+	return node->output(0);
 }
 
 NodeOutputPtr DeepFlow::softmax(NodeOutputPtr a, std::string name, std::initializer_list<std::string> phases) {
@@ -613,12 +627,14 @@ void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
 			auto epoch_start = std::chrono::high_resolution_clock::now();			
 			bool any_last_batch = false;
 			context->last_batch = false;
+			int iteration_per_epoch = 1;
 			do {				
 				for (auto reader : readers) {
 					if (reader->isLastBatch())
 						any_last_batch = true;					
 				}
 				context->current_iteration = iteration;
+				context->current_iteration_per_epoch = iteration_per_epoch;
 				context->current_epoch = epoch;
 				context->last_batch = any_last_batch;
 				if (print_iteration)
@@ -631,6 +647,7 @@ void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
 				for (auto reader : readers)
 					reader->nextBatch();
 				iteration++;
+				iteration_per_epoch++;
 			} while (any_last_batch == false);
 			auto epoch_end = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;

@@ -29,6 +29,7 @@ public:
 	Tensor(std::array<int, 4> dims, TensorType type);	
 	cudnnDataType_t cudnnType() const;
 	TensorType type() const;
+	std::string typeString() const;
 	void init();
 	std::string shape() const;
 	int size() const;

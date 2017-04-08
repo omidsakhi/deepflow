@@ -57,6 +57,7 @@
     <ClInclude Include="..\..\include\ops\softmax.h" />
     <ClInclude Include="..\..\include\ops\softmax_loss.h" />
     <ClInclude Include="..\..\include\ops\square.h" />
+    <ClInclude Include="..\..\include\ops\cast_float.h" />
     <ClInclude Include="..\..\include\proto\deepflow.pb.h" />
     <ClInclude Include="..\..\include\readers\mnist_reader.h" />
     <ClInclude Include="..\..\include\solvers\gain_solver.h" />
@@ -102,6 +103,9 @@
     <ClCompile Include="..\..\src\ops\dropout.cpp" />
     <ClCompile Include="..\..\src\ops\print.cpp" />
     <ClCompile Include="..\..\src\ops\reduce.cpp" />
+    <CudaCompile Include="..\..\src\ops\cast_float.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
     <ClCompile Include="..\..\src\proto\deepflow.pb.cc" />
     <ClCompile Include="..\..\src\readers\mnist_reader.cpp" />
   </ItemGroup>

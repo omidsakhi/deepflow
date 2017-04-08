@@ -54,6 +54,8 @@ class LossParamDefaultTypeInternal : public ::google::protobuf::internal::Explic
 } _LossParam_default_instance_;
 class MnistReaderParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<MnistReaderParam> {
 } _MnistReaderParam_default_instance_;
+class CastFloatParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<CastFloatParam> {
+} _CastFloatParam_default_instance_;
 class NodeParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<NodeParam> {
 } _NodeParam_default_instance_;
 class ArgmaxParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<ArgmaxParam> {
@@ -90,7 +92,7 @@ namespace protobuf_deepflow_2eproto {
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[34];
+::google::protobuf::Metadata file_level_metadata[35];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[5];
 
 }  // namespace
@@ -212,6 +214,10 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MnistReaderParam, batch_size_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MnistReaderParam, type_),
   ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CastFloatParam, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -238,6 +244,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, reduce_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, equal_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, print_param_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, cast_float_param_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArgmaxParam, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -348,21 +355,22 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 99, -1, sizeof(BlockParam)},
   { 103, -1, sizeof(LossParam)},
   { 108, -1, sizeof(MnistReaderParam)},
-  { 115, -1, sizeof(NodeParam)},
-  { 142, -1, sizeof(ArgmaxParam)},
-  { 146, -1, sizeof(SquareParam)},
-  { 150, -1, sizeof(SoftmaxLossParam)},
-  { 156, -1, sizeof(SoftmaxParam)},
-  { 162, -1, sizeof(InitFillParam)},
-  { 167, -1, sizeof(InitIndexFillParam)},
-  { 172, -1, sizeof(InitRandomUniformParam)},
-  { 178, -1, sizeof(InitStepParam)},
-  { 184, -1, sizeof(InitParam)},
-  { 194, -1, sizeof(SGDSolverParam)},
-  { 200, -1, sizeof(GainSolverParam)},
-  { 210, -1, sizeof(SolverParam)},
-  { 217, -1, sizeof(PhaseParam)},
-  { 223, -1, sizeof(NetworkParam)},
+  { 115, -1, sizeof(CastFloatParam)},
+  { 119, -1, sizeof(NodeParam)},
+  { 147, -1, sizeof(ArgmaxParam)},
+  { 151, -1, sizeof(SquareParam)},
+  { 155, -1, sizeof(SoftmaxLossParam)},
+  { 161, -1, sizeof(SoftmaxParam)},
+  { 167, -1, sizeof(InitFillParam)},
+  { 172, -1, sizeof(InitIndexFillParam)},
+  { 177, -1, sizeof(InitRandomUniformParam)},
+  { 183, -1, sizeof(InitStepParam)},
+  { 189, -1, sizeof(InitParam)},
+  { 199, -1, sizeof(SGDSolverParam)},
+  { 205, -1, sizeof(GainSolverParam)},
+  { 215, -1, sizeof(SolverParam)},
+  { 222, -1, sizeof(PhaseParam)},
+  { 228, -1, sizeof(NetworkParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -385,6 +393,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_BlockParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_LossParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_MnistReaderParam_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_CastFloatParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_NodeParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_ArgmaxParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_SquareParam_default_instance_),
@@ -420,7 +429,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 34);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 35);
 }
 
 }  // namespace
@@ -464,36 +473,38 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[17].reflection;
   _MnistReaderParam_default_instance_.Shutdown();
   delete file_level_metadata[18].reflection;
-  _NodeParam_default_instance_.Shutdown();
+  _CastFloatParam_default_instance_.Shutdown();
   delete file_level_metadata[19].reflection;
-  _ArgmaxParam_default_instance_.Shutdown();
+  _NodeParam_default_instance_.Shutdown();
   delete file_level_metadata[20].reflection;
-  _SquareParam_default_instance_.Shutdown();
+  _ArgmaxParam_default_instance_.Shutdown();
   delete file_level_metadata[21].reflection;
-  _SoftmaxLossParam_default_instance_.Shutdown();
+  _SquareParam_default_instance_.Shutdown();
   delete file_level_metadata[22].reflection;
-  _SoftmaxParam_default_instance_.Shutdown();
+  _SoftmaxLossParam_default_instance_.Shutdown();
   delete file_level_metadata[23].reflection;
-  _InitFillParam_default_instance_.Shutdown();
+  _SoftmaxParam_default_instance_.Shutdown();
   delete file_level_metadata[24].reflection;
-  _InitIndexFillParam_default_instance_.Shutdown();
+  _InitFillParam_default_instance_.Shutdown();
   delete file_level_metadata[25].reflection;
-  _InitRandomUniformParam_default_instance_.Shutdown();
+  _InitIndexFillParam_default_instance_.Shutdown();
   delete file_level_metadata[26].reflection;
-  _InitStepParam_default_instance_.Shutdown();
+  _InitRandomUniformParam_default_instance_.Shutdown();
   delete file_level_metadata[27].reflection;
-  _InitParam_default_instance_.Shutdown();
+  _InitStepParam_default_instance_.Shutdown();
   delete file_level_metadata[28].reflection;
-  _SGDSolverParam_default_instance_.Shutdown();
+  _InitParam_default_instance_.Shutdown();
   delete file_level_metadata[29].reflection;
-  _GainSolverParam_default_instance_.Shutdown();
+  _SGDSolverParam_default_instance_.Shutdown();
   delete file_level_metadata[30].reflection;
-  _SolverParam_default_instance_.Shutdown();
+  _GainSolverParam_default_instance_.Shutdown();
   delete file_level_metadata[31].reflection;
-  _PhaseParam_default_instance_.Shutdown();
+  _SolverParam_default_instance_.Shutdown();
   delete file_level_metadata[32].reflection;
-  _NetworkParam_default_instance_.Shutdown();
+  _PhaseParam_default_instance_.Shutdown();
   delete file_level_metadata[33].reflection;
+  _NetworkParam_default_instance_.Shutdown();
+  delete file_level_metadata[34].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -519,6 +530,7 @@ void TableStruct::InitDefaultsImpl() {
   _BlockParam_default_instance_.DefaultConstruct();
   _LossParam_default_instance_.DefaultConstruct();
   _MnistReaderParam_default_instance_.DefaultConstruct();
+  _CastFloatParam_default_instance_.DefaultConstruct();
   _NodeParam_default_instance_.DefaultConstruct();
   _ArgmaxParam_default_instance_.DefaultConstruct();
   _SquareParam_default_instance_.DefaultConstruct();
@@ -582,6 +594,8 @@ void TableStruct::InitDefaultsImpl() {
       ::EqualParam::internal_default_instance());
   _NodeParam_default_instance_.get_mutable()->print_param_ = const_cast< ::PrintParam*>(
       ::PrintParam::internal_default_instance());
+  _NodeParam_default_instance_.get_mutable()->cast_float_param_ = const_cast< ::CastFloatParam*>(
+      ::CastFloatParam::internal_default_instance());
   _InitParam_default_instance_.get_mutable()->tensor_param_ = const_cast< ::TensorParam*>(
       ::TensorParam::internal_default_instance());
   _InitParam_default_instance_.get_mutable()->init_data_ = const_cast< ::TensorData*>(
@@ -643,56 +657,58 @@ void AddDescriptorsImpl() {
       "\001\n\020MnistReaderParam\022\023\n\013folder_path\030\001 \001(\t"
       "\022\022\n\nbatch_size\030\002 \001(\005\022*\n\004type\030\003 \001(\0162\034.Mni"
       "stReaderParam.ReaderType\"!\n\nReaderType\022\t"
-      "\n\005TRAIN\020\000\022\010\n\004TEST\020\001\"\215\006\n\tNodeParam\022\014\n\004nam"
-      "e\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022\016\n\006output\030\003 \003(\t\022\r"
-      "\n\005phase\030\004 \003(\t\022-\n\022mnist_reader_param\030\024 \001("
-      "\0132\021.MnistReaderParam\022&\n\016variable_param\030\036"
-      " \001(\0132\016.VariableParam\022-\n\022place_holder_par"
-      "am\030\037 \001(\0132\021.PlaceHolderParam\022,\n\021phaseplex"
-      "er_param\030  \001(\0132\021.PhaseplexerParam\022 \n\013blo"
-      "ck_param\030( \001(\0132\013.BlockParam\022\036\n\nloss_para"
-      "m\0302 \001(\0132\n.LossParam\022\034\n\tadd_param\030< \001(\0132\t"
-      ".AddParam\022%\n\016bias_add_param\030= \001(\0132\r.Bias"
-      "AddParam\022#\n\rconv_2d_param\030> \001(\0132\014.Conv2d"
-      "Param\022$\n\rdropout_param\030\? \001(\0132\r.DropoutPa"
-      "ram\022\036\n\nrelu_param\030@ \001(\0132\n.ReluParam\022$\n\rs"
-      "oftmax_param\030A \001(\0132\r.SoftmaxParam\022\"\n\014squ"
-      "are_param\030B \001(\0132\014.SquareParam\022\"\n\014matmul_"
-      "param\030C \001(\0132\014.MatMulParam\022$\n\rpooling_par"
-      "am\030D \001(\0132\r.PoolingParam\022\"\n\014argmax_param\030"
-      "E \001(\0132\014.ArgmaxParam\022\"\n\014reduce_param\030F \001("
-      "\0132\014.ReduceParam\022 \n\013equal_param\030G \001(\0132\013.E"
-      "qualParam\022 \n\013print_param\030H \001(\0132\013.PrintPa"
-      "ram\"\r\n\013ArgmaxParam\"\r\n\013SquareParam\"/\n\020Sof"
-      "tmaxLossParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001"
-      "(\002\"+\n\014SoftmaxParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004bet"
-      "a\030\002 \001(\002\"\036\n\rInitFillParam\022\r\n\005value\030\001 \001(\002\""
-      "$\n\022InitIndexFillParam\022\016\n\006offset\030\001 \001(\002\"2\n"
-      "\026InitRandomUniformParam\022\013\n\003min\030\001 \001(\002\022\013\n\003"
-      "max\030\002 \001(\002\")\n\rInitStepParam\022\013\n\003min\030\001 \001(\002\022"
-      "\013\n\003max\030\002 \001(\002\"\375\001\n\tInitParam\022\"\n\014tensor_par"
-      "am\030\001 \001(\0132\014.TensorParam\022\036\n\tinit_data\030\002 \001("
-      "\0132\013.TensorData\022\"\n\nfill_param\030\003 \001(\0132\016.Ini"
-      "tFillParam\022-\n\020index_fill_param\030\004 \001(\0132\023.I"
-      "nitIndexFillParam\0225\n\024random_uniform_para"
-      "m\030\005 \001(\0132\027.InitRandomUniformParam\022\"\n\nstep"
-      "_param\030\006 \001(\0132\016.InitStepParam\"9\n\016SGDSolve"
-      "rParam\022\020\n\010momentum\030\001 \001(\002\022\025\n\rlearning_rat"
-      "e\030\002 \001(\002\"\204\001\n\017GainSolverParam\022\020\n\010momentum\030"
-      "\001 \001(\002\022\025\n\rlearning_rate\030\002 \001(\002\022\020\n\010max_gain"
-      "\030\003 \001(\002\022\020\n\010min_gain\030\004 \001(\002\022\021\n\tgain_plus\030\005 "
-      "\001(\002\022\021\n\tgain_mult\030\006 \001(\002\"l\n\013SolverParam\022\021\n"
-      "\tmax_epoch\030\001 \001(\005\022#\n\nsgd_solver\030\002 \001(\0132\017.S"
-      "GDSolverParam\022%\n\013gain_solver\030\003 \001(\0132\020.Gai"
-      "nSolverParam\"q\n\nPhaseParam\022\r\n\005phase\030\001 \001("
-      "\t\022-\n\tbehaviour\030\002 \001(\0162\032.PhaseParam.PhaseB"
-      "ehaviour\"%\n\016PhaseBehaviour\022\t\n\005TRAIN\020\000\022\010\n"
-      "\004TEST\020\001\"b\n\014NetworkParam\022\030\n\004node\030\001 \003(\0132\n."
-      "NodeParam\022\034\n\006solver\030\002 \003(\0132\014.SolverParam\022"
-      "\032\n\005phase\030\003 \003(\0132\013.PhaseParamb\006proto3"
+      "\n\005TRAIN\020\000\022\010\n\004TEST\020\001\"\020\n\016CastFloatParam\"\270\006"
+      "\n\tNodeParam\022\014\n\004name\030\001 \001(\t\022\r\n\005input\030\002 \003(\t"
+      "\022\016\n\006output\030\003 \003(\t\022\r\n\005phase\030\004 \003(\t\022-\n\022mnist"
+      "_reader_param\030\024 \001(\0132\021.MnistReaderParam\022&"
+      "\n\016variable_param\030\036 \001(\0132\016.VariableParam\022-"
+      "\n\022place_holder_param\030\037 \001(\0132\021.PlaceHolder"
+      "Param\022,\n\021phaseplexer_param\030  \001(\0132\021.Phase"
+      "plexerParam\022 \n\013block_param\030( \001(\0132\013.Block"
+      "Param\022\036\n\nloss_param\0302 \001(\0132\n.LossParam\022\034\n"
+      "\tadd_param\030< \001(\0132\t.AddParam\022%\n\016bias_add_"
+      "param\030= \001(\0132\r.BiasAddParam\022#\n\rconv_2d_pa"
+      "ram\030> \001(\0132\014.Conv2dParam\022$\n\rdropout_param"
+      "\030\? \001(\0132\r.DropoutParam\022\036\n\nrelu_param\030@ \001("
+      "\0132\n.ReluParam\022$\n\rsoftmax_param\030A \001(\0132\r.S"
+      "oftmaxParam\022\"\n\014square_param\030B \001(\0132\014.Squa"
+      "reParam\022\"\n\014matmul_param\030C \001(\0132\014.MatMulPa"
+      "ram\022$\n\rpooling_param\030D \001(\0132\r.PoolingPara"
+      "m\022\"\n\014argmax_param\030E \001(\0132\014.ArgmaxParam\022\"\n"
+      "\014reduce_param\030F \001(\0132\014.ReduceParam\022 \n\013equ"
+      "al_param\030G \001(\0132\013.EqualParam\022 \n\013print_par"
+      "am\030H \001(\0132\013.PrintParam\022)\n\020cast_float_para"
+      "m\030I \001(\0132\017.CastFloatParam\"\r\n\013ArgmaxParam\""
+      "\r\n\013SquareParam\"/\n\020SoftmaxLossParam\022\r\n\005al"
+      "pha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"+\n\014SoftmaxParam\022"
+      "\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"\036\n\rInitFill"
+      "Param\022\r\n\005value\030\001 \001(\002\"$\n\022InitIndexFillPar"
+      "am\022\016\n\006offset\030\001 \001(\002\"2\n\026InitRandomUniformP"
+      "aram\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\")\n\rInitSt"
+      "epParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"\375\001\n\tIn"
+      "itParam\022\"\n\014tensor_param\030\001 \001(\0132\014.TensorPa"
+      "ram\022\036\n\tinit_data\030\002 \001(\0132\013.TensorData\022\"\n\nf"
+      "ill_param\030\003 \001(\0132\016.InitFillParam\022-\n\020index"
+      "_fill_param\030\004 \001(\0132\023.InitIndexFillParam\0225"
+      "\n\024random_uniform_param\030\005 \001(\0132\027.InitRando"
+      "mUniformParam\022\"\n\nstep_param\030\006 \001(\0132\016.Init"
+      "StepParam\"9\n\016SGDSolverParam\022\020\n\010momentum\030"
+      "\001 \001(\002\022\025\n\rlearning_rate\030\002 \001(\002\"\204\001\n\017GainSol"
+      "verParam\022\020\n\010momentum\030\001 \001(\002\022\025\n\rlearning_r"
+      "ate\030\002 \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020\n\010min_gain\030"
+      "\004 \001(\002\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tgain_mult\030\006 "
+      "\001(\002\"l\n\013SolverParam\022\021\n\tmax_epoch\030\001 \001(\005\022#\n"
+      "\nsgd_solver\030\002 \001(\0132\017.SGDSolverParam\022%\n\013ga"
+      "in_solver\030\003 \001(\0132\020.GainSolverParam\"q\n\nPha"
+      "seParam\022\r\n\005phase\030\001 \001(\t\022-\n\tbehaviour\030\002 \001("
+      "\0162\032.PhaseParam.PhaseBehaviour\"%\n\016PhaseBe"
+      "haviour\022\t\n\005TRAIN\020\000\022\010\n\004TEST\020\001\"b\n\014NetworkP"
+      "aram\022\030\n\004node\030\001 \003(\0132\n.NodeParam\022\034\n\006solver"
+      "\030\002 \003(\0132\014.SolverParam\022\032\n\005phase\030\003 \003(\0132\013.Ph"
+      "aseParamb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 3315);
+      descriptor, 3376);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -6643,6 +6659,174 @@ void MnistReaderParam::set_type(::MnistReaderParam_ReaderType value) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+CastFloatParam::CastFloatParam()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_deepflow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CastFloatParam)
+}
+CastFloatParam::CastFloatParam(const CastFloatParam& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:CastFloatParam)
+}
+
+void CastFloatParam::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+CastFloatParam::~CastFloatParam() {
+  // @@protoc_insertion_point(destructor:CastFloatParam)
+  SharedDtor();
+}
+
+void CastFloatParam::SharedDtor() {
+}
+
+void CastFloatParam::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* CastFloatParam::descriptor() {
+  protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_deepflow_2eproto::file_level_metadata[19].descriptor;
+}
+
+const CastFloatParam& CastFloatParam::default_instance() {
+  protobuf_deepflow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+CastFloatParam* CastFloatParam::New(::google::protobuf::Arena* arena) const {
+  CastFloatParam* n = new CastFloatParam;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void CastFloatParam::Clear() {
+// @@protoc_insertion_point(message_clear_start:CastFloatParam)
+}
+
+bool CastFloatParam::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CastFloatParam)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+  handle_unusual:
+    if (tag == 0 ||
+        ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      goto success;
+    }
+    DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CastFloatParam)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CastFloatParam)
+  return false;
+#undef DO_
+}
+
+void CastFloatParam::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CastFloatParam)
+  // @@protoc_insertion_point(serialize_end:CastFloatParam)
+}
+
+::google::protobuf::uint8* CastFloatParam::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CastFloatParam)
+  // @@protoc_insertion_point(serialize_to_array_end:CastFloatParam)
+  return target;
+}
+
+size_t CastFloatParam::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CastFloatParam)
+  size_t total_size = 0;
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void CastFloatParam::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CastFloatParam)
+  GOOGLE_DCHECK_NE(&from, this);
+  const CastFloatParam* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const CastFloatParam>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CastFloatParam)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CastFloatParam)
+    MergeFrom(*source);
+  }
+}
+
+void CastFloatParam::MergeFrom(const CastFloatParam& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CastFloatParam)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+}
+
+void CastFloatParam::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CastFloatParam)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void CastFloatParam::CopyFrom(const CastFloatParam& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CastFloatParam)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CastFloatParam::IsInitialized() const {
+  return true;
+}
+
+void CastFloatParam::Swap(CastFloatParam* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void CastFloatParam::InternalSwap(CastFloatParam* other) {
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata CastFloatParam::GetMetadata() const {
+  protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_deepflow_2eproto::file_level_metadata[19];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// CastFloatParam
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int NodeParam::kNameFieldNumber;
 const int NodeParam::kInputFieldNumber;
 const int NodeParam::kOutputFieldNumber;
@@ -6666,6 +6850,7 @@ const int NodeParam::kArgmaxParamFieldNumber;
 const int NodeParam::kReduceParamFieldNumber;
 const int NodeParam::kEqualParamFieldNumber;
 const int NodeParam::kPrintParamFieldNumber;
+const int NodeParam::kCastFloatParamFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 NodeParam::NodeParam()
@@ -6783,13 +6968,18 @@ NodeParam::NodeParam(const NodeParam& from)
   } else {
     print_param_ = NULL;
   }
+  if (from.has_cast_float_param()) {
+    cast_float_param_ = new ::CastFloatParam(*from.cast_float_param_);
+  } else {
+    cast_float_param_ = NULL;
+  }
   // @@protoc_insertion_point(copy_constructor:NodeParam)
 }
 
 void NodeParam::SharedCtor() {
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&mnist_reader_param_, 0, reinterpret_cast<char*>(&print_param_) -
-    reinterpret_cast<char*>(&mnist_reader_param_) + sizeof(print_param_));
+  ::memset(&mnist_reader_param_, 0, reinterpret_cast<char*>(&cast_float_param_) -
+    reinterpret_cast<char*>(&mnist_reader_param_) + sizeof(cast_float_param_));
   _cached_size_ = 0;
 }
 
@@ -6857,6 +7047,9 @@ void NodeParam::SharedDtor() {
   if (this != internal_default_instance()) {
     delete print_param_;
   }
+  if (this != internal_default_instance()) {
+    delete cast_float_param_;
+  }
 }
 
 void NodeParam::SetCachedSize(int size) const {
@@ -6866,7 +7059,7 @@ void NodeParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* NodeParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[19].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[20].descriptor;
 }
 
 const NodeParam& NodeParam::default_instance() {
@@ -6964,6 +7157,10 @@ void NodeParam::Clear() {
     delete print_param_;
   }
   print_param_ = NULL;
+  if (GetArenaNoVirtual() == NULL && cast_float_param_ != NULL) {
+    delete cast_float_param_;
+  }
+  cast_float_param_ = NULL;
 }
 
 bool NodeParam::MergePartialFromCodedStream(
@@ -7271,6 +7468,18 @@ bool NodeParam::MergePartialFromCodedStream(
         break;
       }
 
+      // .CastFloatParam cast_float_param = 73;
+      case 73: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(586u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_cast_float_param()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -7447,6 +7656,12 @@ void NodeParam::SerializeWithCachedSizes(
   if (this->has_print_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       72, *this->print_param_, output);
+  }
+
+  // .CastFloatParam cast_float_param = 73;
+  if (this->has_cast_float_param()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      73, *this->cast_float_param_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:NodeParam)
@@ -7630,6 +7845,13 @@ void NodeParam::SerializeWithCachedSizes(
         72, *this->print_param_, false, target);
   }
 
+  // .CastFloatParam cast_float_param = 73;
+  if (this->has_cast_float_param()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        73, *this->cast_float_param_, false, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:NodeParam)
   return target;
 }
@@ -7802,6 +8024,13 @@ size_t NodeParam::ByteSizeLong() const {
         *this->print_param_);
   }
 
+  // .CastFloatParam cast_float_param = 73;
+  if (this->has_cast_float_param()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->cast_float_param_);
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -7892,6 +8121,9 @@ void NodeParam::MergeFrom(const NodeParam& from) {
   if (from.has_print_param()) {
     mutable_print_param()->::PrintParam::MergeFrom(from.print_param());
   }
+  if (from.has_cast_float_param()) {
+    mutable_cast_float_param()->::CastFloatParam::MergeFrom(from.cast_float_param());
+  }
 }
 
 void NodeParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -7940,12 +8172,13 @@ void NodeParam::InternalSwap(NodeParam* other) {
   std::swap(reduce_param_, other->reduce_param_);
   std::swap(equal_param_, other->equal_param_);
   std::swap(print_param_, other->print_param_);
+  std::swap(cast_float_param_, other->cast_float_param_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata NodeParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[19];
+  return protobuf_deepflow_2eproto::file_level_metadata[20];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -8945,6 +9178,45 @@ void NodeParam::set_allocated_print_param(::PrintParam* print_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.print_param)
 }
 
+// .CastFloatParam cast_float_param = 73;
+bool NodeParam::has_cast_float_param() const {
+  return this != internal_default_instance() && cast_float_param_ != NULL;
+}
+void NodeParam::clear_cast_float_param() {
+  if (GetArenaNoVirtual() == NULL && cast_float_param_ != NULL) delete cast_float_param_;
+  cast_float_param_ = NULL;
+}
+const ::CastFloatParam& NodeParam::cast_float_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.cast_float_param)
+  return cast_float_param_ != NULL ? *cast_float_param_
+                         : *::CastFloatParam::internal_default_instance();
+}
+::CastFloatParam* NodeParam::mutable_cast_float_param() {
+  
+  if (cast_float_param_ == NULL) {
+    cast_float_param_ = new ::CastFloatParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.cast_float_param)
+  return cast_float_param_;
+}
+::CastFloatParam* NodeParam::release_cast_float_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.cast_float_param)
+  
+  ::CastFloatParam* temp = cast_float_param_;
+  cast_float_param_ = NULL;
+  return temp;
+}
+void NodeParam::set_allocated_cast_float_param(::CastFloatParam* cast_float_param) {
+  delete cast_float_param_;
+  cast_float_param_ = cast_float_param;
+  if (cast_float_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.cast_float_param)
+}
+
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
@@ -8987,7 +9259,7 @@ void ArgmaxParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ArgmaxParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[20].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[21].descriptor;
 }
 
 const ArgmaxParam& ArgmaxParam::default_instance() {
@@ -9107,7 +9379,7 @@ void ArgmaxParam::InternalSwap(ArgmaxParam* other) {
 
 ::google::protobuf::Metadata ArgmaxParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[20];
+  return protobuf_deepflow_2eproto::file_level_metadata[21];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -9155,7 +9427,7 @@ void SquareParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SquareParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[21].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[22].descriptor;
 }
 
 const SquareParam& SquareParam::default_instance() {
@@ -9275,7 +9547,7 @@ void SquareParam::InternalSwap(SquareParam* other) {
 
 ::google::protobuf::Metadata SquareParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[21];
+  return protobuf_deepflow_2eproto::file_level_metadata[22];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -9330,7 +9602,7 @@ void SoftmaxLossParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SoftmaxLossParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[22].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[23].descriptor;
 }
 
 const SoftmaxLossParam& SoftmaxLossParam::default_instance() {
@@ -9523,7 +9795,7 @@ void SoftmaxLossParam::InternalSwap(SoftmaxLossParam* other) {
 
 ::google::protobuf::Metadata SoftmaxLossParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[22];
+  return protobuf_deepflow_2eproto::file_level_metadata[23];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -9606,7 +9878,7 @@ void SoftmaxParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SoftmaxParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[23].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[24].descriptor;
 }
 
 const SoftmaxParam& SoftmaxParam::default_instance() {
@@ -9799,7 +10071,7 @@ void SoftmaxParam::InternalSwap(SoftmaxParam* other) {
 
 ::google::protobuf::Metadata SoftmaxParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[23];
+  return protobuf_deepflow_2eproto::file_level_metadata[24];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -9878,7 +10150,7 @@ void InitFillParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InitFillParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[24].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[25].descriptor;
 }
 
 const InitFillParam& InitFillParam::default_instance() {
@@ -10037,7 +10309,7 @@ void InitFillParam::InternalSwap(InitFillParam* other) {
 
 ::google::protobuf::Metadata InitFillParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[24];
+  return protobuf_deepflow_2eproto::file_level_metadata[25];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -10102,7 +10374,7 @@ void InitIndexFillParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InitIndexFillParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[25].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[26].descriptor;
 }
 
 const InitIndexFillParam& InitIndexFillParam::default_instance() {
@@ -10261,7 +10533,7 @@ void InitIndexFillParam::InternalSwap(InitIndexFillParam* other) {
 
 ::google::protobuf::Metadata InitIndexFillParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[25];
+  return protobuf_deepflow_2eproto::file_level_metadata[26];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -10330,7 +10602,7 @@ void InitRandomUniformParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InitRandomUniformParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[26].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[27].descriptor;
 }
 
 const InitRandomUniformParam& InitRandomUniformParam::default_instance() {
@@ -10523,7 +10795,7 @@ void InitRandomUniformParam::InternalSwap(InitRandomUniformParam* other) {
 
 ::google::protobuf::Metadata InitRandomUniformParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[26];
+  return protobuf_deepflow_2eproto::file_level_metadata[27];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -10606,7 +10878,7 @@ void InitStepParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InitStepParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[27].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[28].descriptor;
 }
 
 const InitStepParam& InitStepParam::default_instance() {
@@ -10799,7 +11071,7 @@ void InitStepParam::InternalSwap(InitStepParam* other) {
 
 ::google::protobuf::Metadata InitStepParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[27];
+  return protobuf_deepflow_2eproto::file_level_metadata[28];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -10931,7 +11203,7 @@ void InitParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InitParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[28].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[29].descriptor;
 }
 
 const InitParam& InitParam::default_instance() {
@@ -11296,7 +11568,7 @@ void InitParam::InternalSwap(InitParam* other) {
 
 ::google::protobuf::Metadata InitParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[28];
+  return protobuf_deepflow_2eproto::file_level_metadata[29];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -11585,7 +11857,7 @@ void SGDSolverParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SGDSolverParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[29].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[30].descriptor;
 }
 
 const SGDSolverParam& SGDSolverParam::default_instance() {
@@ -11778,7 +12050,7 @@ void SGDSolverParam::InternalSwap(SGDSolverParam* other) {
 
 ::google::protobuf::Metadata SGDSolverParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[29];
+  return protobuf_deepflow_2eproto::file_level_metadata[30];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -11865,7 +12137,7 @@ void GainSolverParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GainSolverParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[30].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[31].descriptor;
 }
 
 const GainSolverParam& GainSolverParam::default_instance() {
@@ -12190,7 +12462,7 @@ void GainSolverParam::InternalSwap(GainSolverParam* other) {
 
 ::google::protobuf::Metadata GainSolverParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[30];
+  return protobuf_deepflow_2eproto::file_level_metadata[31];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -12344,7 +12616,7 @@ void SolverParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SolverParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[31].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[32].descriptor;
 }
 
 const SolverParam& SolverParam::default_instance() {
@@ -12585,7 +12857,7 @@ void SolverParam::InternalSwap(SolverParam* other) {
 
 ::google::protobuf::Metadata SolverParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[31];
+  return protobuf_deepflow_2eproto::file_level_metadata[32];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -12735,7 +13007,7 @@ void PhaseParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* PhaseParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[32].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[33].descriptor;
 }
 
 const PhaseParam& PhaseParam::default_instance() {
@@ -12948,7 +13220,7 @@ void PhaseParam::InternalSwap(PhaseParam* other) {
 
 ::google::protobuf::Metadata PhaseParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[32];
+  return protobuf_deepflow_2eproto::file_level_metadata[33];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -13068,7 +13340,7 @@ void NetworkParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* NetworkParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[33].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[34].descriptor;
 }
 
 const NetworkParam& NetworkParam::default_instance() {
@@ -13316,7 +13588,7 @@ void NetworkParam::InternalSwap(NetworkParam* other) {
 
 ::google::protobuf::Metadata NetworkParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[33];
+  return protobuf_deepflow_2eproto::file_level_metadata[34];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS

@@ -50,8 +50,10 @@ void main(int argc, char** argv) {
 		auto relu2 = df.relu(bias2, -0.01f, "relu2");
 		auto loss = df.softmax_loss(relu2, py, "loss");
 		auto mse = df.reduce_mean(df.reduce_mean(df.square(loss), 1), 0, "mse", {"Train"});
-		auto correct_class = df.argmax(py, 1, "correct_class", {"Train"});
-		auto predict_class = df.argmax(loss->node()->output(1), 1, "predict_class");
+		auto correct_class_int32 = df.argmax(py, 1, "correct_class_int32", {"Train"});
+		auto correct_class = df.cast_float(correct_class_int32);
+		auto predict_class_int32 = df.argmax(loss->node()->output(1), 1, "predict_class");
+		auto predict_class = df.cast_float(predict_class_int32);
 		auto accuracy = df.reduce_mean(df.equal(predict_class, correct_class), 0, "accuracy", {"Train"});
 		auto print = df.print({ mse, accuracy }, "    MSE: {0} - ACCURACY: {1}\n", Print::EndOfEpoch, "print");
 		df.set_solver(df.gain_solver(loss, 2000, 0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f));

@@ -42,6 +42,9 @@ extern BiasAddParamDefaultTypeInternal _BiasAddParam_default_instance_;
 class BlockParam;
 class BlockParamDefaultTypeInternal;
 extern BlockParamDefaultTypeInternal _BlockParam_default_instance_;
+class CastFloatParam;
+class CastFloatParamDefaultTypeInternal;
+extern CastFloatParamDefaultTypeInternal _CastFloatParam_default_instance_;
 class Conv2dParam;
 class Conv2dParamDefaultTypeInternal;
 extern Conv2dParamDefaultTypeInternal _Conv2dParam_default_instance_;
@@ -2171,6 +2174,82 @@ class MnistReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
 };
 // -------------------------------------------------------------------
 
+class CastFloatParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CastFloatParam) */ {
+ public:
+  CastFloatParam();
+  virtual ~CastFloatParam();
+
+  CastFloatParam(const CastFloatParam& from);
+
+  inline CastFloatParam& operator=(const CastFloatParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const CastFloatParam& default_instance();
+
+  static inline const CastFloatParam* internal_default_instance() {
+    return reinterpret_cast<const CastFloatParam*>(
+               &_CastFloatParam_default_instance_);
+  }
+
+  void Swap(CastFloatParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline CastFloatParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  CastFloatParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const CastFloatParam& from);
+  void MergeFrom(const CastFloatParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(CastFloatParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:CastFloatParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:NodeParam) */ {
  public:
   NodeParam();
@@ -2489,6 +2568,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::PrintParam* release_print_param();
   void set_allocated_print_param(::PrintParam* print_param);
 
+  // .CastFloatParam cast_float_param = 73;
+  bool has_cast_float_param() const;
+  void clear_cast_float_param();
+  static const int kCastFloatParamFieldNumber = 73;
+  const ::CastFloatParam& cast_float_param() const;
+  ::CastFloatParam* mutable_cast_float_param();
+  ::CastFloatParam* release_cast_float_param();
+  void set_allocated_cast_float_param(::CastFloatParam* cast_float_param);
+
   // @@protoc_insertion_point(class_scope:NodeParam)
  private:
 
@@ -2516,6 +2604,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::ReduceParam* reduce_param_;
   ::EqualParam* equal_param_;
   ::PrintParam* print_param_;
+  ::CastFloatParam* cast_float_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4835,6 +4924,10 @@ inline void MnistReaderParam::set_type(::MnistReaderParam_ReaderType value) {
 
 // -------------------------------------------------------------------
 
+// CastFloatParam
+
+// -------------------------------------------------------------------
+
 // NodeParam
 
 // string name = 1;
@@ -5831,6 +5924,45 @@ inline void NodeParam::set_allocated_print_param(::PrintParam* print_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.print_param)
 }
 
+// .CastFloatParam cast_float_param = 73;
+inline bool NodeParam::has_cast_float_param() const {
+  return this != internal_default_instance() && cast_float_param_ != NULL;
+}
+inline void NodeParam::clear_cast_float_param() {
+  if (GetArenaNoVirtual() == NULL && cast_float_param_ != NULL) delete cast_float_param_;
+  cast_float_param_ = NULL;
+}
+inline const ::CastFloatParam& NodeParam::cast_float_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.cast_float_param)
+  return cast_float_param_ != NULL ? *cast_float_param_
+                         : *::CastFloatParam::internal_default_instance();
+}
+inline ::CastFloatParam* NodeParam::mutable_cast_float_param() {
+  
+  if (cast_float_param_ == NULL) {
+    cast_float_param_ = new ::CastFloatParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.cast_float_param)
+  return cast_float_param_;
+}
+inline ::CastFloatParam* NodeParam::release_cast_float_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.cast_float_param)
+  
+  ::CastFloatParam* temp = cast_float_param_;
+  cast_float_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_cast_float_param(::CastFloatParam* cast_float_param) {
+  delete cast_float_param_;
+  cast_float_param_ = cast_float_param;
+  if (cast_float_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.cast_float_param)
+}
+
 // -------------------------------------------------------------------
 
 // ArgmaxParam
@@ -6622,6 +6754,8 @@ NetworkParam::phase() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

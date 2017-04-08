@@ -127,6 +127,10 @@ message MnistReaderParam {
 	ReaderType type = 3;
 }
 
+message CastFloatParam {
+	
+}
+
 message NodeParam {
   string name = 1;
   repeated string input = 2;
@@ -157,6 +161,7 @@ message NodeParam {
   ReduceParam reduce_param = 70;
   EqualParam equal_param = 71;
   PrintParam print_param = 72;
+  CastFloatParam cast_float_param = 73;
 }
 
 message ArgmaxParam {

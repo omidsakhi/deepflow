@@ -164,3 +164,28 @@ std::string Tensor::toString() const {
 	};
 	return output;
 }
+
+std::string Tensor::typeString() const {
+	switch (_type) {
+	case Float:
+		return "Float";
+		break;
+	case Double:
+		return "Double";
+		break;
+	case Half:
+		return "Half";
+		break;
+	case Int8:
+		return "Int8";
+		break;
+	case Int32:
+		return "Int32";
+		break;
+	case Int8x4:
+		return "Int8x4";
+		break;
+	default:
+		LOG(FATAL) << "Unsupported type";
+	};
+}

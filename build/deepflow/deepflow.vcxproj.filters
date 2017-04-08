@@ -117,6 +117,9 @@
     <ClCompile Include="..\..\src\ops\print.cpp">
       <Filter>source\ops</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\ops\cast_float.cu">
+      <Filter>source\ops</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\core\execution_context.h">
       <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\cast_float.h">
+      <Filter>include\ops</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
