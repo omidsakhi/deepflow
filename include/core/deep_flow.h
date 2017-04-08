@@ -60,11 +60,11 @@ public:
 	NodeOutputPtr softmax_loss(NodeOutputPtr a, NodeOutputPtr b, std::string name = "softmaxloss", std::initializer_list<std::string> phases = {});
 		
 	// SOLVERS
-	std::shared_ptr<SGDSolver> sgd_solver(NodeOutputPtr loss, int max_iteration, float momentum, float learning_rate);
-	std::shared_ptr<GainSolver> gain_solver(NodeOutputPtr loss, int max_iteration = 1000, float momentum = 0.99999, float learning_rate = 0.0001, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f);
+	std::shared_ptr<SGDSolver> sgd_solver(NodeOutputPtr loss, int max_epoch, float momentum, float learning_rate);
+	std::shared_ptr<GainSolver> gain_solver(NodeOutputPtr loss, int max_epoch = 1000, float momentum = 0.99999, float learning_rate = 0.0001, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f);
 	
 	// PRINTERS
-	std::shared_ptr<Print> print(std::initializer_list<NodeOutputPtr> inputs, std::string message, std::string name = "print", std::initializer_list<std::string> phases = {});
+	std::shared_ptr<Print> print(std::initializer_list<NodeOutputPtr> inputs, std::string message, Print::PrintTime = Print::PrintTime::EndOfEpoch, std::string name = "print", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES
 	void global_node_initializer();

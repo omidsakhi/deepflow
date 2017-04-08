@@ -11,7 +11,7 @@ public:
 	virtual void train_step() = 0;
 	virtual void init() = 0;
 	const SolverParam& param() const;
-	int maxIteration();
+	int maxEpoch();
 protected:
 	int _current_step = 0;
 	NodeOutputPtr _loss_terminal;

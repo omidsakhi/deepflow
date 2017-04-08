@@ -23,8 +23,13 @@ message PhaseplexerParam {
 }
 
 message PrintParam {
+	enum PrintTime {
+		EVERY_PASS = 0;
+		END_OF_EPOCH = 1;
+	}
 	int32 num_inputs = 1;
-	string message = 2;	
+	string message = 2;
+	PrintTime print_time = 3;
 }
 
 message AddParam {
@@ -214,7 +219,7 @@ message GainSolverParam {
 }
 
 message SolverParam {
-	int32 max_iteration = 1;
+	int32 max_epoch = 1;
 	SGDSolverParam sgd_solver = 2;
 	GainSolverParam gain_solver = 3;
 }

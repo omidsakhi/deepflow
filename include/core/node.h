@@ -9,6 +9,7 @@
 
 #include "core/tensor.h"
 #include "core/cuda_helper.h"
+#include "core/execution_context.h"
 
 #include <list>
 
@@ -55,7 +56,7 @@ public:
 	void setInitialized(bool status);
 	NodeParam &param();
 	bool includePhase(const std::string &phase);
-	void setExecutionPhase(std::string phase);
+	void setExecutionContext(ExecutionContextPtr context);
 protected:	
 	std::vector<NodeInputPtr> _inputs;
 	std::vector<NodeOutputPtr> _outputs;
@@ -63,7 +64,7 @@ protected:
 	bool _visited = false;
 	bool _initialized = false;	
 	NodeParam _param;	
-	std::string _executionPhase;
+	ExecutionContextPtr _context;	
 };
 
 using NodePtr = std::shared_ptr<Node>;

@@ -285,14 +285,15 @@ std::shared_ptr<Block> DeepFlow::block(std::initializer_list<NodeInputPtr> input
 	_nodes.push_back(node);
 	return node;
 }
-std::shared_ptr<Print> DeepFlow::print(std::initializer_list<NodeOutputPtr> inputs, std::string message, std::string name, std::initializer_list<std::string> phases) {
+std::shared_ptr<Print> DeepFlow::print(std::initializer_list<NodeOutputPtr> inputs, std::string message, Print::PrintTime printTime, std::string name, std::initializer_list<std::string> phases) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
 	for (auto phase : phases)
 		nodeParam.add_phase(phase);
 	PrintParam *printParam = nodeParam.mutable_print_param();
 	printParam->set_message(message);
-	printParam->set_num_inputs(inputs.size());
+	printParam->set_num_inputs(inputs.size());	
+	printParam->set_print_time((PrintParam_PrintTime)printTime);
 	auto node = std::make_shared<Print>(nodeParam);
 	node->createIO();
 	std::vector<NodeOutputPtr> inputsVec(inputs.size());
@@ -320,9 +321,9 @@ NodeOutputPtr DeepFlow::softmax_loss(NodeOutputPtr a, NodeOutputPtr b, std::stri
 	return node->output(0);
 }
 
-std::shared_ptr<SGDSolver> DeepFlow::sgd_solver(NodeOutputPtr loss, int max_iteration, float momentum, float learning_rate) {
+std::shared_ptr<SGDSolver> DeepFlow::sgd_solver(NodeOutputPtr loss, int max_epoch, float momentum, float learning_rate) {
 	SolverParam param;
-	param.set_max_iteration(max_iteration);
+	param.set_max_epoch(max_epoch);
 	SGDSolverParam *sp = param.mutable_sgd_solver();
 	sp->set_learning_rate(learning_rate);
 	sp->set_momentum(momentum);
@@ -330,9 +331,9 @@ std::shared_ptr<SGDSolver> DeepFlow::sgd_solver(NodeOutputPtr loss, int max_iter
 	return solver;
 }
 
-std::shared_ptr<GainSolver> DeepFlow::gain_solver(NodeOutputPtr loss, int max_iteration, float momentum, float learning_rate, float max_gain, float min_gain, float gain_plus, float gain_mult) {
+std::shared_ptr<GainSolver> DeepFlow::gain_solver(NodeOutputPtr loss, int max_epoch, float momentum, float learning_rate, float max_gain, float min_gain, float gain_plus, float gain_mult) {
 	SolverParam param;
-	param.set_max_iteration(max_iteration);
+	param.set_max_epoch(max_epoch);
 	GainSolverParam *gsp = param.mutable_gain_solver();
 	gsp->set_momentum(momentum);
 	gsp->set_learning_rate(learning_rate);
@@ -570,8 +571,10 @@ void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
 	PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
 	std::list<std::shared_ptr<Reader>> readers;
 	std::list<std::shared_ptr<Node>> end_nodes;
+	auto context = std::make_shared<ExecutionContext>();
+	context->phase = phase;
 	for (auto node : _nodes) {
-		node->setExecutionPhase(phase);
+		node->setExecutionContext(context);
 		if (node->includePhase(phase)) {
 			auto reader = std::dynamic_pointer_cast<Reader>(node);
 			if (reader) {
@@ -600,35 +603,39 @@ void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
 		}
 		LOG_IF(FATAL, loss_nodes = 0) << "No loss node is defined for phase " << phase;
 		LOG_IF(WARNING, count > 1) << "More than one loss node is defined for phase " << phase;
-		
-		int iteration = 0;		
+				
 		ForwardObserver forwardObserver;
 		ResetObserver resetObserver;
-		for (int iteration = 1; iteration <= _solver->maxIteration(); ++iteration) {
-			if (print_iteration)
-				std::cout << "Iteration " << iteration << " -->" << std::endl;
-			auto iteration_start = std::chrono::high_resolution_clock::now();
-			int epoch = 1;
+		int iteration = 1;
+		for (int epoch = 1; epoch <= _solver->maxEpoch(); ++epoch) {			
+			if (print_epoch)
+				std::cout << "Epoch " << epoch << " -->" << std::endl;
+			auto epoch_start = std::chrono::high_resolution_clock::now();			
 			bool any_last_batch = false;
+			context->last_batch = false;
 			do {				
-				if (print_epoch)
-					std::cout << "  Epoch " << epoch << std::endl;
+				for (auto reader : readers) {
+					if (reader->isLastBatch())
+						any_last_batch = true;					
+				}
+				context->current_iteration = iteration;
+				context->current_epoch = epoch;
+				context->last_batch = any_last_batch;
+				if (print_iteration)
+					std::cout << "  Iteration " << iteration << std::endl;
 				for (auto node : end_nodes)
 					node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
 				_solver->train_step();
 				for (auto node : end_nodes)
 					node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);				
-				for (auto reader : readers) {
-					if (reader->isLastBatch())
-						any_last_batch = true;
+				for (auto reader : readers)
 					reader->nextBatch();
-				}				
-				epoch++;
+				iteration++;
 			} while (any_last_batch == false);
-			auto iteration_end = std::chrono::high_resolution_clock::now();
-			std::chrono::duration<double> elapsed_iteration = iteration_end - iteration_start;
-			if (print_iteration)
-				std::cout << "<-- Iteration " << iteration << " Elapsed time: " << elapsed_iteration.count() << " seconds" << std::endl;		
+			auto epoch_end = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
+			if (print_epoch)
+				std::cout << "<-- Epoch " << epoch << " Elapsed time: " << elapsed_epoch.count() << " seconds" << std::endl;		
 		}
 	}
 }

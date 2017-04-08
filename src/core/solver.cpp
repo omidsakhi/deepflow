@@ -28,6 +28,6 @@ const SolverParam& Solver::param() const {
 	return _param;
 }
 
-int Solver::maxIteration() {
-	return _param.max_iteration();
+int Solver::maxEpoch() {
+	return _param.max_epoch();
 }

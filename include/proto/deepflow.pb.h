@@ -169,6 +169,27 @@ inline bool TensorParam_TensorType_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<TensorParam_TensorType>(
     TensorParam_TensorType_descriptor(), name, value);
 }
+enum PrintParam_PrintTime {
+  PrintParam_PrintTime_EVERY_PASS = 0,
+  PrintParam_PrintTime_END_OF_EPOCH = 1,
+  PrintParam_PrintTime_PrintParam_PrintTime_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  PrintParam_PrintTime_PrintParam_PrintTime_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool PrintParam_PrintTime_IsValid(int value);
+const PrintParam_PrintTime PrintParam_PrintTime_PrintTime_MIN = PrintParam_PrintTime_EVERY_PASS;
+const PrintParam_PrintTime PrintParam_PrintTime_PrintTime_MAX = PrintParam_PrintTime_END_OF_EPOCH;
+const int PrintParam_PrintTime_PrintTime_ARRAYSIZE = PrintParam_PrintTime_PrintTime_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* PrintParam_PrintTime_descriptor();
+inline const ::std::string& PrintParam_PrintTime_Name(PrintParam_PrintTime value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    PrintParam_PrintTime_descriptor(), value);
+}
+inline bool PrintParam_PrintTime_Parse(
+    const ::std::string& name, PrintParam_PrintTime* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PrintParam_PrintTime>(
+    PrintParam_PrintTime_descriptor(), name, value);
+}
 enum ReduceParam_ReduceOp {
   ReduceParam_ReduceOp_ADD = 0,
   ReduceParam_ReduceOp_MUL = 1,
@@ -625,6 +646,32 @@ class PrintParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   // nested types ----------------------------------------------------
 
+  typedef PrintParam_PrintTime PrintTime;
+  static const PrintTime EVERY_PASS =
+    PrintParam_PrintTime_EVERY_PASS;
+  static const PrintTime END_OF_EPOCH =
+    PrintParam_PrintTime_END_OF_EPOCH;
+  static inline bool PrintTime_IsValid(int value) {
+    return PrintParam_PrintTime_IsValid(value);
+  }
+  static const PrintTime PrintTime_MIN =
+    PrintParam_PrintTime_PrintTime_MIN;
+  static const PrintTime PrintTime_MAX =
+    PrintParam_PrintTime_PrintTime_MAX;
+  static const int PrintTime_ARRAYSIZE =
+    PrintParam_PrintTime_PrintTime_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  PrintTime_descriptor() {
+    return PrintParam_PrintTime_descriptor();
+  }
+  static inline const ::std::string& PrintTime_Name(PrintTime value) {
+    return PrintParam_PrintTime_Name(value);
+  }
+  static inline bool PrintTime_Parse(const ::std::string& name,
+      PrintTime* value) {
+    return PrintParam_PrintTime_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   // string message = 2;
@@ -647,12 +694,19 @@ class PrintParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::int32 num_inputs() const;
   void set_num_inputs(::google::protobuf::int32 value);
 
+  // .PrintParam.PrintTime print_time = 3;
+  void clear_print_time();
+  static const int kPrintTimeFieldNumber = 3;
+  ::PrintParam_PrintTime print_time() const;
+  void set_print_time(::PrintParam_PrintTime value);
+
   // @@protoc_insertion_point(class_scope:PrintParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr message_;
   ::google::protobuf::int32 num_inputs_;
+  int print_time_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3574,11 +3628,11 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::GainSolverParam* release_gain_solver();
   void set_allocated_gain_solver(::GainSolverParam* gain_solver);
 
-  // int32 max_iteration = 1;
-  void clear_max_iteration();
-  static const int kMaxIterationFieldNumber = 1;
-  ::google::protobuf::int32 max_iteration() const;
-  void set_max_iteration(::google::protobuf::int32 value);
+  // int32 max_epoch = 1;
+  void clear_max_epoch();
+  static const int kMaxEpochFieldNumber = 1;
+  ::google::protobuf::int32 max_epoch() const;
+  void set_max_epoch(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:SolverParam)
  private:
@@ -3586,7 +3640,7 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::SGDSolverParam* sgd_solver_;
   ::GainSolverParam* gain_solver_;
-  ::google::protobuf::int32 max_iteration_;
+  ::google::protobuf::int32 max_epoch_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4054,6 +4108,20 @@ inline void PrintParam::set_allocated_message(::std::string* message) {
   }
   message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
   // @@protoc_insertion_point(field_set_allocated:PrintParam.message)
+}
+
+// .PrintParam.PrintTime print_time = 3;
+inline void PrintParam::clear_print_time() {
+  print_time_ = 0;
+}
+inline ::PrintParam_PrintTime PrintParam::print_time() const {
+  // @@protoc_insertion_point(field_get:PrintParam.print_time)
+  return static_cast< ::PrintParam_PrintTime >(print_time_);
+}
+inline void PrintParam::set_print_time(::PrintParam_PrintTime value) {
+  
+  print_time_ = value;
+  // @@protoc_insertion_point(field_set:PrintParam.print_time)
 }
 
 // -------------------------------------------------------------------
@@ -6297,18 +6365,18 @@ inline void GainSolverParam::set_gain_mult(float value) {
 
 // SolverParam
 
-// int32 max_iteration = 1;
-inline void SolverParam::clear_max_iteration() {
-  max_iteration_ = 0;
+// int32 max_epoch = 1;
+inline void SolverParam::clear_max_epoch() {
+  max_epoch_ = 0;
 }
-inline ::google::protobuf::int32 SolverParam::max_iteration() const {
-  // @@protoc_insertion_point(field_get:SolverParam.max_iteration)
-  return max_iteration_;
+inline ::google::protobuf::int32 SolverParam::max_epoch() const {
+  // @@protoc_insertion_point(field_get:SolverParam.max_epoch)
+  return max_epoch_;
 }
-inline void SolverParam::set_max_iteration(::google::protobuf::int32 value) {
+inline void SolverParam::set_max_epoch(::google::protobuf::int32 value) {
   
-  max_iteration_ = value;
-  // @@protoc_insertion_point(field_set:SolverParam.max_iteration)
+  max_epoch_ = value;
+  // @@protoc_insertion_point(field_set:SolverParam.max_epoch)
 }
 
 // .SGDSolverParam sgd_solver = 2;
@@ -6632,6 +6700,11 @@ template <> struct is_proto_enum< ::TensorParam_TensorType> : ::google::protobuf
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::TensorParam_TensorType>() {
   return ::TensorParam_TensorType_descriptor();
+}
+template <> struct is_proto_enum< ::PrintParam_PrintTime> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::PrintParam_PrintTime>() {
+  return ::PrintParam_PrintTime_descriptor();
 }
 template <> struct is_proto_enum< ::ReduceParam_ReduceOp> : ::google::protobuf::internal::true_type {};
 template <>

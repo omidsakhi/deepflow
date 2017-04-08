@@ -4,6 +4,7 @@ Print::Print(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_print_param() == false) << "param.has_print_param() == false";
 	const PrintParam &printParam = _param.print_param();
 	_num_inputs = printParam.num_inputs();
+	_print_time = (PrintTime) printParam.print_time();
 }
 
 int Print::minNumInputs() {	
@@ -20,6 +21,8 @@ void Print::initBackward() {
 }
 
 void Print::forward() {
+	if (_print_time == EndOfEpoch && _context->last_batch == false)
+		return;
 	std::string message = _raw_message;
 	for (int i = 0; i < _inputs.size(); ++i) {
 		size_t start_pos = message.find("{" + std::to_string(i) + "}");

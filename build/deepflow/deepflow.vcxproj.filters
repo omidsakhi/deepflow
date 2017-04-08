@@ -242,6 +242,9 @@
     <ClInclude Include="..\..\include\ops\print.h">
       <Filter>include\ops</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\core\execution_context.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
