@@ -27,6 +27,8 @@ void Node::setVisited(bool state) {
 void Node::traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition) {
 	if (_visited == visit_condition)
 		return;
+	if (includePhase(_executionPhase) == false)
+		return;
 	if (order == TraverseOrder::PreOrder)
 		observer->apply(shared_from_this());
 	for (int i = 0; i < _inputs.size(); ++i)
@@ -77,6 +79,8 @@ NodeParam &Node::param() {
 }
 
 bool Node::includePhase(const std::string &phase) {
+	if (_param.phase_size() == 0)
+		return true;
 	for (int i = 0; i < _param.phase_size(); ++i)
 		if (_param.phase(i) == phase)
 			return true;

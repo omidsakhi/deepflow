@@ -569,13 +569,23 @@ void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
 	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";
 	PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
 	std::list<std::shared_ptr<Reader>> readers;
+	std::list<std::shared_ptr<Node>> end_nodes;
 	for (auto node : _nodes) {
 		node->setExecutionPhase(phase);
-		auto reader = std::dynamic_pointer_cast<Reader>(node);
-		if (reader && reader->includePhase(phase)) {
-			readers.push_back(reader);
+		if (node->includePhase(phase)) {
+			auto reader = std::dynamic_pointer_cast<Reader>(node);
+			if (reader) {
+				readers.push_back(reader);
+			}		
+			int num_connected_outputs = 0;
+			for (auto output : node->outputs()) {
+				if (output->connectedNode())
+					num_connected_outputs++;
+			}
+			if (num_connected_outputs == 0)
+				end_nodes.push_back(node);
 		}
-	}
+	}		
 	LOG_IF(FATAL, readers.size() == 0) << "No reader is defined for phase " << phase;
 	if (behaviour == PhaseParam_PhaseBehaviour_TRAIN) {
 		LOG_IF(FATAL, _solver == 0) << "No solver is defined for the graph.";
@@ -592,31 +602,33 @@ void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
 		LOG_IF(WARNING, count > 1) << "More than one loss node is defined for phase " << phase;
 		
 		int iteration = 0;		
+		ForwardObserver forwardObserver;
+		ResetObserver resetObserver;
 		for (int iteration = 1; iteration <= _solver->maxIteration(); ++iteration) {
+			if (print_iteration)
+				std::cout << "Iteration " << iteration << " -->" << std::endl;
 			auto iteration_start = std::chrono::high_resolution_clock::now();
-			bool exit = false;
 			int epoch = 1;
 			bool any_last_batch = false;
-			while (!exit) {
-				auto epoch_start = std::chrono::high_resolution_clock::now();
+			do {				
+				if (print_epoch)
+					std::cout << "  Epoch " << epoch << std::endl;
+				for (auto node : end_nodes)
+					node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
 				_solver->train_step();
+				for (auto node : end_nodes)
+					node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);				
 				for (auto reader : readers) {
 					if (reader->isLastBatch())
 						any_last_batch = true;
 					reader->nextBatch();
 				}				
-				auto epoch_end = std::chrono::high_resolution_clock::now();
-				std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
-				if (print_epoch) {
-					std::cout << "  Epoch " << epoch << " Elapsed time: " << elapsed_epoch.count() << " seconds" << std::endl;
-				}
 				epoch++;
-			}
+			} while (any_last_batch == false);
 			auto iteration_end = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<double> elapsed_iteration = iteration_end - iteration_start;
-			if (print_iteration) {
-				std::cout << "Iteration " << iteration << " Elapsed time: " << elapsed_iteration.count() << " seconds" << std::endl;
-			}
+			if (print_iteration)
+				std::cout << "<-- Iteration " << iteration << " Elapsed time: " << elapsed_iteration.count() << " seconds" << std::endl;		
 		}
 	}
 }

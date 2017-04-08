@@ -27,7 +27,12 @@ const int& Terminal::index() const {
 void NodeInput::connect(std::shared_ptr<NodeOutput> terminal) {
 	_terminal = terminal;
 	_parentNode->param().set_input(_index, terminal->name());
-	_terminal->node()->param().set_output(_terminal->index(), terminal->name());
+	_terminal->node()->param().set_output(_terminal->index(), terminal->name());	
+	terminal->setTerminal(shared_from_this());
+}
+
+void Terminal::setTerminal(std::shared_ptr<Terminal> terminal) {
+	_terminal = terminal;
 }
 
 std::shared_ptr<Node> Terminal::node() const {

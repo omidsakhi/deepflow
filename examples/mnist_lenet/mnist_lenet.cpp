@@ -8,12 +8,12 @@ DEFINE_string(mnist, "./data/mnist", "Path to MNIST data folder");
 DEFINE_string(i, "", "Trained network model to load");
 DEFINE_string(o, "", "Trained network model to save");
 DEFINE_bool(text, false, "Save model as text");
-DEFINE_bool(includeweights, false, "Save weights in text mode");
-DEFINE_bool(includeinits, false, "Save initial values in text mode");
+DEFINE_bool(includeweights, false, "Also save weights in text mode");
+DEFINE_bool(includeinits, false, "Also save initial values");
 DEFINE_int32(batch, 100, "Batch size");
-DEFINE_string(run,"", "Phase to run");
-DEFINE_bool(printiter, true, "Should print iteration counter");
-DEFINE_bool(printepoch, true, "Should print epoch counter");
+DEFINE_string(run,"", "Phase to execute graph");
+DEFINE_bool(printiter, true, "Print iteration message");
+DEFINE_bool(printepoch, false, "Print epoch message");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -53,7 +53,7 @@ void main(int argc, char** argv) {
 		auto correct_class = df.argmax(py, 1, "correct_class", {"Train"});
 		auto predict_class = df.argmax(loss->node()->output(1), 1, "predict_class");
 		auto accuracy = df.reduce_mean(df.equal(predict_class, correct_class), 0, "accuracy", {"Train"});
-		auto print = df.print({ mse, accuracy }, "  MSE: {0} - ACCURACY: {1}\n","print");
+		auto print = df.print({ mse, accuracy }, "    MSE: {0} - ACCURACY: {1}\n","print");
 		df.set_solver(df.gain_solver(loss, 2000, 0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f));
 		df.global_node_initializer();
 	}			
