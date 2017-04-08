@@ -11,8 +11,7 @@
 Solver::Solver(NodeOutputPtr loss,const SolverParam &param) {
 	_param = param;
 	_loss_terminal = loss;	
-	_loss_node = loss->node();
-	_current_iteration = 0;
+	_loss_node = loss->node();	
 
 	ResetObserver resetObserver;
 	_loss_node->traverse(&resetObserver, TraverseOrder::PostOrder, true);
@@ -27,4 +26,8 @@ Solver::Solver(NodeOutputPtr loss,const SolverParam &param) {
 
 const SolverParam& Solver::param() const {
 	return _param;
+}
+
+int Solver::maxIteration() {
+	return _param.max_iteration();
 }

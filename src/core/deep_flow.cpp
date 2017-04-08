@@ -29,6 +29,8 @@
 
 #include <fstream>
 
+#include <chrono>
+
 std::shared_ptr<MNISTReader> DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNISTReaderType type, std::string name, std::initializer_list<std::string> phases) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
@@ -561,6 +563,62 @@ std::string DeepFlow::getUniqueNodeName(const std::string &prefix) const {
 		nodeName = prefix + "_" + std::to_string(index);
 	}
 	return nodeName;
+}
+
+void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
+	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";
+	PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
+	std::list<std::shared_ptr<Reader>> readers;
+	for (auto node : _nodes) {
+		node->setExecutionPhase(phase);
+		auto reader = std::dynamic_pointer_cast<Reader>(node);
+		if (reader && reader->includePhase(phase)) {
+			readers.push_back(reader);
+		}
+	}
+	LOG_IF(FATAL, readers.size() == 0) << "No reader is defined for phase " << phase;
+	if (behaviour == PhaseParam_PhaseBehaviour_TRAIN) {
+		LOG_IF(FATAL, _solver == 0) << "No solver is defined for the graph.";
+		NodePtr loss_nodes;
+		int count = 0;
+		for (auto node : _nodes) {
+			auto loss = std::dynamic_pointer_cast<Loss>(node);
+			if (loss && loss->includePhase(phase)) {
+				count = 0;
+				loss_nodes = node;
+			}				
+		}
+		LOG_IF(FATAL, loss_nodes = 0) << "No loss node is defined for phase " << phase;
+		LOG_IF(WARNING, count > 1) << "More than one loss node is defined for phase " << phase;
+		
+		int iteration = 0;		
+		for (int iteration = 1; iteration <= _solver->maxIteration(); ++iteration) {
+			auto iteration_start = std::chrono::high_resolution_clock::now();
+			bool exit = false;
+			int epoch = 1;
+			bool any_last_batch = false;
+			while (!exit) {
+				auto epoch_start = std::chrono::high_resolution_clock::now();
+				_solver->train_step();
+				for (auto reader : readers) {
+					if (reader->isLastBatch())
+						any_last_batch = true;
+					reader->nextBatch();
+				}				
+				auto epoch_end = std::chrono::high_resolution_clock::now();
+				std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
+				if (print_epoch) {
+					std::cout << "  Epoch " << epoch << " Elapsed time: " << elapsed_epoch.count() << " seconds" << std::endl;
+				}
+				epoch++;
+			}
+			auto iteration_end = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<double> elapsed_iteration = iteration_end - iteration_start;
+			if (print_iteration) {
+				std::cout << "Iteration " << iteration << " Elapsed time: " << elapsed_iteration.count() << " seconds" << std::endl;
+			}
+		}
+	}
 }
 
 std::tuple<float, float,int> DeepFlow::run(NodeOutputPtr loss, NodeOutputPtr accuracy, std::map<NodeOutputPtr, NodeOutputPtr> feed) {

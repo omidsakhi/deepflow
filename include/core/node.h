@@ -43,7 +43,7 @@ public:
 	virtual int minNumInputs() = 0;
 	virtual int minNumOutputs() = 0;	
 	virtual void forward();
-	virtual void backward();	
+	virtual void backward();
 	std::string name() const;		
 	virtual void traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition);
 	void setVisited(bool state);
@@ -66,3 +66,4 @@ protected:
 	std::string _executionPhase;
 };
 
+using NodePtr = std::shared_ptr<Node>;

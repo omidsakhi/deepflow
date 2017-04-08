@@ -17,13 +17,13 @@ void ApplyGradientKernel(const int n, const float momentum, const float learning
 
 SGDSolver::SGDSolver(NodeOutputPtr loss, const SolverParam &param) : Solver(loss, param) {
 	LOG_IF(FATAL, param.has_sgd_solver() == false) << "param.has_sgd_solver() == false";
+	_my_param = _param.sgd_solver();
 }
 
 void SGDSolver::train_step() {
 	if (_initialized == false) {
 		init();
-	}
-	const SGDSolverParam &param = _param.sgd_solver();
+	}	
 	ResetObserver resetObserver;
 	ForwardObserver forwardObserver;
 	BackwardObserver backwardObserver;
@@ -34,12 +34,12 @@ void SGDSolver::train_step() {
 	for(auto var : _variables) {
 		auto output = var->output(0);
 		auto size = output->value()->size();						
-		ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, param.momentum(), param.learning_rate(), (float*) output->value()->mutableData(), (float*) output->diff()->data());
+		ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, _my_param.momentum(), _my_param.learning_rate(), (float*) output->value()->mutableData(), (float*) output->diff()->data());
 		LOG_IF(FATAL, cudaPeekAtLastError() != 0);		
-		if (var->snapshot() && _current_iteration % var->snapshotInterval() == 0)
-			var->toImage(_current_iteration);		
+		if (var->snapshot() && _current_step % var->snapshotInterval() == 0)
+			var->toImage(_current_step);		
 	}
-	_current_iteration++;
+	_current_step++;
 }
 
 void SGDSolver::init() {

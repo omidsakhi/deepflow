@@ -37,13 +37,13 @@ void GainStepKernel(const int n, float *current_weight, float *current_gradient,
 
 GainSolver::GainSolver(NodeOutputPtr loss, const SolverParam &param) : Solver(loss,param) {
 	LOG_IF(FATAL, param.has_gain_solver() == false) << "param.has_gain_solver() == false";
+	_my_param = param.gain_solver();
 }
 
 void GainSolver::train_step() {
 	if (_initialized == false) {
 		init();
-	}
-	const GainSolverParam &param = _param.gain_solver();
+	}	
 	ResetObserver resetObserver;
 	ForwardObserver forwardObserver;
 	BackwardObserver backwardObserver;
@@ -56,20 +56,20 @@ void GainSolver::train_step() {
 	{		
 		auto output = var->output(0);
 		auto size = output->value()->size();
-		GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock, 0 , _streams[index]>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->mutableData(), _previous_gradients[index], _gains[index], param.max_gain(), param.min_gain(), param.gain_plus(), param.gain_mult(), param.momentum(), param.learning_rate());
+		GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock, 0 , _streams[index]>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->mutableData(), _previous_gradients[index], _gains[index], _my_param.max_gain(), _my_param.min_gain(), _my_param.gain_plus(), _my_param.gain_mult(), _my_param.momentum(), _my_param.learning_rate());
 		LOG_IF(FATAL, cudaPeekAtLastError() != 0);		
 		index++;
 	}
 
-	cudaDeviceSynchronize();	
+	cudaDeviceSynchronize();
 	
 	for (auto var : _variables)
 	{		
-		if (var->snapshot() && _current_iteration % var->snapshotInterval() == 0)
-			var->toImage(_current_iteration);
+		if (var->snapshot() && _current_step % var->snapshotInterval() == 0)
+			var->toImage(_current_step);
 	}
 
-	_current_iteration++;
+	_current_step++;
 }
 
 void GainSolver::init() {

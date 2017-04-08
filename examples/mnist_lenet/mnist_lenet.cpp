@@ -1,6 +1,5 @@
 
 #include "core/deep_flow.h"
-#include <chrono>
 
 #include <gflags/gflags.h>
 #include <glog/logging.h>
@@ -13,6 +12,8 @@ DEFINE_bool(includeweights, false, "Save weights in text mode");
 DEFINE_bool(includeinits, false, "Save initial values in text mode");
 DEFINE_int32(batch, 100, "Batch size");
 DEFINE_string(run,"", "Phase to run");
+DEFINE_bool(printiter, true, "Should print iteration counter");
+DEFINE_bool(printepoch, true, "Should print epoch counter");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -58,7 +59,7 @@ void main(int argc, char** argv) {
 	}			
 
 	if (!FLAGS_run.empty()) {
-		
+		df.run(FLAGS_run, FLAGS_printiter, FLAGS_printepoch);
 	}
 
 	if (!FLAGS_o.empty())
@@ -69,29 +70,5 @@ void main(int argc, char** argv) {
 			df.save_as_binary(FLAGS_o, FLAGS_includeinits);
 	}
 
-	/*
-	int iteration = 0;
-	for (int epoch = 1; epoch <= 5; ++epoch) {
-		bool exit = false;
-		auto start = std::chrono::high_resolution_clock::now();
-		while (!exit) {
-			x->feed(mnist_trainset->output(0));
-			y->feed(mnist_trainset->output(1));
-			trainer->train_step();
-			iteration++;
-			if (mnist_trainset->isLastBatch())
-				exit = true;
-			mnist_trainset->nextBatch();
-		}
-		auto finish = std::chrono::high_resolution_clock::now();
-		std::chrono::duration<double> elapsed = finish - start;
-		std::cout << "Epoch " << epoch << " ( Iteration: " << iteration << " )" << " Elapsed time: " << elapsed.count() << " seconds" << std::endl;
-		//auto train_result = df.run(mse, accuracy, { { x,mnist_trainset->output(0) },{ y,mnist_trainset->output(1) } });
-		//std::cout << "  Total Train Batches: " << std::get<2>(train_result) << " Train  MSE: " << std::get<0>(train_result) << " Train Accuracy: " << std::get<1>(train_result) * 100 << "%" << std::endl;
-		auto test_result = df.run(mse, accuracy, { {x,mnist_testset->output(0)},{y,mnist_testset->output(1) } });						
-		std::cout << "  Total  Test Batches: " << std::get<2>(test_result)  << "  Test  MSE: " << std::get<0>(test_result)  << "  Test Accuracy: " << std::get<1>(test_result)  * 100 << "%" << std::endl;
-	}
-
-	*/
 }
 
