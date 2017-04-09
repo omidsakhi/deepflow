@@ -58,9 +58,13 @@ void main(int argc, char** argv) {
 		auto correct = df.reduce_sum(acc, 0, "correct");
 		auto train_print = df.print({ correct }, "    TRAIN CORRECT COUNT: {0}\n", Print::EndOfEpoch, "print", { "Train" });
 		auto valid_print = df.print({ correct }, "    VALID CORRECT COUNT: {0}\n", Print::EndOfEpoch, "print", { "Validation" });
-		df.set_solver(df.gain_solver(loss, 1000, 0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f));
-		df.global_node_initializer();
-	}			
+		df.set_solver(df.gain_solver(loss, 2, 0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f));		
+	}
+	else {
+		df.load_from_binary(FLAGS_i);		
+	}
+
+	df.global_node_initializer();
 
 	if (!FLAGS_run.empty()) {
 		df.run(FLAGS_run, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);

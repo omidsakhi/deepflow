@@ -153,17 +153,12 @@ message NodeParam {
   SoftmaxParam softmax_param = 110;  
   SquareParam square_param = 111;
   MatMulParam matmul_param = 112;
-  PoolingParam pooling_param = 113;
-  ArgmaxParam argmax_param = 114;
-  ReduceParam reduce_param = 115;
-  EqualParam equal_param = 116;
-  PrintParam print_param = 117;
-  CastFloatParam cast_float_param = 118;
-  AccumulatorParam accumulator_param = 119;
-}
-
-message ArgmaxParam {
-	
+  PoolingParam pooling_param = 113;  
+  ReduceParam reduce_param = 114;
+  EqualParam equal_param = 115;
+  PrintParam print_param = 116;
+  CastFloatParam cast_float_param = 117;
+  AccumulatorParam accumulator_param = 118;
 }
 
 message SquareParam {
@@ -223,8 +218,9 @@ message GainSolverParam {
 
 message SolverParam {
 	int32 max_epoch = 1;
-	SGDSolverParam sgd_solver = 2;
-	GainSolverParam gain_solver = 3;
+	string loss_terminal = 2;
+	SGDSolverParam sgd_solver = 3;
+	GainSolverParam gain_solver = 4;
 }
 
 message PhaseParam {

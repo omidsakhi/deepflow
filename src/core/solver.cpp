@@ -12,7 +12,6 @@ Solver::Solver(NodeOutputPtr loss,const SolverParam &param) {
 	_param = param;
 	_loss_terminal = loss;	
 	_loss_node = loss->node();	
-
 	ResetObserver resetObserver;
 	_loss_node->traverse(&resetObserver, TraverseOrder::PostOrder, true);
 

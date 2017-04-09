@@ -1,5 +1,7 @@
 #include "core/deep_flow.h"
 
+#include <google/protobuf/text_format.h>
+
 #include "observers/reset.h"
 #include "observers/forward.h"
 
@@ -343,6 +345,7 @@ NodeOutputPtr DeepFlow::softmax_loss(NodeOutputPtr a, NodeOutputPtr b, std::stri
 std::shared_ptr<SGDSolver> DeepFlow::sgd_solver(NodeOutputPtr loss, int max_epoch, float momentum, float learning_rate) {
 	SolverParam param;
 	param.set_max_epoch(max_epoch);
+	param.set_loss_terminal(loss->name());
 	SGDSolverParam *sp = param.mutable_sgd_solver();
 	sp->set_learning_rate(learning_rate);
 	sp->set_momentum(momentum);
@@ -353,6 +356,7 @@ std::shared_ptr<SGDSolver> DeepFlow::sgd_solver(NodeOutputPtr loss, int max_epoc
 std::shared_ptr<GainSolver> DeepFlow::gain_solver(NodeOutputPtr loss, int max_epoch, float momentum, float learning_rate, float max_gain, float min_gain, float gain_plus, float gain_mult) {
 	SolverParam param;
 	param.set_max_epoch(max_epoch);
+	param.set_loss_terminal(loss->name());
 	GainSolverParam *gsp = param.mutable_gain_solver();
 	gsp->set_momentum(momentum);
 	gsp->set_learning_rate(learning_rate);
@@ -747,9 +751,121 @@ void DeepFlow::save_as_binary(std::string filePath, bool include_inits) {
 	auto param = createNetworkParam(true, include_inits);
 	std::fstream output(filePath, std::ios::out | std::ios::trunc | std::ios::binary);
 	LOG_IF(FATAL, !param->SerializeToOstream(&output)) << "Failed to write network.";
+	output.close();
 }
 
-#include <google/protobuf/text_format.h>
+void DeepFlow::load_from_binary(std::string filePath) {
+	NetworkParam param;
+	std::fstream input(filePath, std::ios::in | std::ios::binary);
+	LOG_IF(FATAL,!param.ParseFromIstream(&input)) << "Failed to write network.";
+	input.close();
+	for (auto phase_param : param.phase())
+		define_phase(phase_param.phase(), phase_param.behaviour());
+	for (auto node : param.node()) {
+		if (node.has_accumulator_param())
+			_nodes.push_back(std::make_shared<Accumulator>(node));
+		else if (node.has_add_param())
+			_nodes.push_back(std::make_shared<Add>(node));
+		else if (node.has_bias_add_param())
+			_nodes.push_back(std::make_shared<BiasAdd>(node));
+		else if (node.has_cast_float_param())
+			_nodes.push_back(std::make_shared<CastFloat>(node));
+		else if (node.has_conv_2d_param())
+			_nodes.push_back(std::make_shared<Convolution2D>(node));
+		else if (node.has_dropout_param())
+			_nodes.push_back(std::make_shared<Dropout>(node));
+		else if (node.has_equal_param())
+			_nodes.push_back(std::make_shared<Equal>(node));
+		else if (node.has_loss_param()) {
+			if (node.loss_param().has_softmax_loss_param())
+				_nodes.push_back(std::make_shared<SoftmaxLoss>(node));
+		}
+		else if (node.has_matmul_param()) {
+			_nodes.push_back(std::make_shared<MatMul>(node));
+		}
+		else if (node.has_mnist_reader_param()) {
+			_nodes.push_back(std::make_shared<MNISTReader>(node));
+		}
+		else if (node.has_phaseplexer_param()) {
+			_nodes.push_back(std::make_shared<Phaseplexer>(node));
+		}
+		else if (node.has_place_holder_param()) {
+			_nodes.push_back(std::make_shared<PlaceHolder>(node));
+		}
+		else if (node.has_pooling_param()) {
+			_nodes.push_back(std::make_shared<Pooling>(node));
+		}
+		else if (node.has_print_param()) {
+			_nodes.push_back(std::make_shared<Print>(node));
+		}
+		else if (node.has_reduce_param()) {
+			_nodes.push_back(std::make_shared<Reduce>(node));
+		}
+		else if (node.has_relu_param()) {
+			_nodes.push_back(std::make_shared<Relu>(node));
+		}
+		else if (node.has_softmax_param()) {
+			_nodes.push_back(std::make_shared<Softmax>(node));
+		}
+		else if (node.has_square_param()) {
+			_nodes.push_back(std::make_shared<Square>(node));
+		}
+		else if (node.has_variable_param()) {
+			std::shared_ptr<Initializer> initializer;
+			const InitParam &initParam = node.variable_param().init_param();
+			if (initParam.has_fill_param()) {
+				initializer = std::make_shared<Fill>(initParam);
+			}
+			else if (initParam.has_index_fill_param()) {
+				initializer = std::make_shared<IndexFill>(initParam);
+			}
+			else if (initParam.has_random_uniform_param()) {
+				initializer = std::make_shared<RandomUniform>(initParam);
+			}
+			else if (initParam.has_step_param()) {
+				initializer = std::make_shared<Step>(initParam);
+			}
+			_nodes.push_back(std::make_shared<Variable>(initializer,node));
+		}
+		else {
+			LOG(FATAL) << "Unsupported Node";
+		}
+	}
+	for (auto node : _nodes) {
+		node->createIO();
+	}
+	for (auto node : _nodes) {
+		LOG_IF(FATAL, node->inputs().size() != node->param().input_size()) << "Node " << node->name() << "'s input size " << node->inputs().size() << " does not match the one specified in proto (" << node->param().input_size() << ")";
+		for (int i = 0; i < node->param().input_size(); ++i) {
+			const std::string terminal_name = node->param().input(i);
+			auto terminal = findNodeOutputByName(terminal_name);
+			LOG_IF(FATAL, terminal == 0) << "Failed to find " << terminal_name;
+			node->input(i)->connect(terminal);
+		}
+	}
+	for (auto solver : param.solver()) {
+		auto terminal_name = solver.loss_terminal();
+		auto terminal = findNodeOutputByName(terminal_name);
+		LOG_IF(FATAL, terminal == 0) << "Failed to find loss terminal " << terminal_name;
+		if (solver.has_gain_solver()) {
+			set_solver(std::make_shared<GainSolver>(terminal,solver));
+		}
+		else if (solver.has_sgd_solver()) {
+			set_solver(std::make_shared<SGDSolver>(terminal, solver));
+		}
+	}
+
+}
+
+std::shared_ptr<NodeOutput> DeepFlow::findNodeOutputByName(const std::string &name) const {
+	for (auto node : _nodes) {
+		for (auto terminal : node->outputs()) {
+			if (terminal->name() == name)
+				return terminal;
+		}
+	}
+	return 0;
+}
 
 void DeepFlow::save_as_text(std::string filePath, bool include_weights, bool include_inits) {
 	auto param = createNetworkParam(include_weights,include_inits);

@@ -36,9 +36,6 @@ extern AccumulatorParamDefaultTypeInternal _AccumulatorParam_default_instance_;
 class AddParam;
 class AddParamDefaultTypeInternal;
 extern AddParamDefaultTypeInternal _AddParam_default_instance_;
-class ArgmaxParam;
-class ArgmaxParamDefaultTypeInternal;
-extern ArgmaxParamDefaultTypeInternal _ArgmaxParam_default_instance_;
 class BiasAddParam;
 class BiasAddParamDefaultTypeInternal;
 extern BiasAddParamDefaultTypeInternal _BiasAddParam_default_instance_;
@@ -2578,55 +2575,46 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::PoolingParam* release_pooling_param();
   void set_allocated_pooling_param(::PoolingParam* pooling_param);
 
-  // .ArgmaxParam argmax_param = 114;
-  bool has_argmax_param() const;
-  void clear_argmax_param();
-  static const int kArgmaxParamFieldNumber = 114;
-  const ::ArgmaxParam& argmax_param() const;
-  ::ArgmaxParam* mutable_argmax_param();
-  ::ArgmaxParam* release_argmax_param();
-  void set_allocated_argmax_param(::ArgmaxParam* argmax_param);
-
-  // .ReduceParam reduce_param = 115;
+  // .ReduceParam reduce_param = 114;
   bool has_reduce_param() const;
   void clear_reduce_param();
-  static const int kReduceParamFieldNumber = 115;
+  static const int kReduceParamFieldNumber = 114;
   const ::ReduceParam& reduce_param() const;
   ::ReduceParam* mutable_reduce_param();
   ::ReduceParam* release_reduce_param();
   void set_allocated_reduce_param(::ReduceParam* reduce_param);
 
-  // .EqualParam equal_param = 116;
+  // .EqualParam equal_param = 115;
   bool has_equal_param() const;
   void clear_equal_param();
-  static const int kEqualParamFieldNumber = 116;
+  static const int kEqualParamFieldNumber = 115;
   const ::EqualParam& equal_param() const;
   ::EqualParam* mutable_equal_param();
   ::EqualParam* release_equal_param();
   void set_allocated_equal_param(::EqualParam* equal_param);
 
-  // .PrintParam print_param = 117;
+  // .PrintParam print_param = 116;
   bool has_print_param() const;
   void clear_print_param();
-  static const int kPrintParamFieldNumber = 117;
+  static const int kPrintParamFieldNumber = 116;
   const ::PrintParam& print_param() const;
   ::PrintParam* mutable_print_param();
   ::PrintParam* release_print_param();
   void set_allocated_print_param(::PrintParam* print_param);
 
-  // .CastFloatParam cast_float_param = 118;
+  // .CastFloatParam cast_float_param = 117;
   bool has_cast_float_param() const;
   void clear_cast_float_param();
-  static const int kCastFloatParamFieldNumber = 118;
+  static const int kCastFloatParamFieldNumber = 117;
   const ::CastFloatParam& cast_float_param() const;
   ::CastFloatParam* mutable_cast_float_param();
   ::CastFloatParam* release_cast_float_param();
   void set_allocated_cast_float_param(::CastFloatParam* cast_float_param);
 
-  // .AccumulatorParam accumulator_param = 119;
+  // .AccumulatorParam accumulator_param = 118;
   bool has_accumulator_param() const;
   void clear_accumulator_param();
-  static const int kAccumulatorParamFieldNumber = 119;
+  static const int kAccumulatorParamFieldNumber = 118;
   const ::AccumulatorParam& accumulator_param() const;
   ::AccumulatorParam* mutable_accumulator_param();
   ::AccumulatorParam* release_accumulator_param();
@@ -2654,88 +2642,11 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::SquareParam* square_param_;
   ::MatMulParam* matmul_param_;
   ::PoolingParam* pooling_param_;
-  ::ArgmaxParam* argmax_param_;
   ::ReduceParam* reduce_param_;
   ::EqualParam* equal_param_;
   ::PrintParam* print_param_;
   ::CastFloatParam* cast_float_param_;
   ::AccumulatorParam* accumulator_param_;
-  mutable int _cached_size_;
-  friend struct  protobuf_deepflow_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
-class ArgmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ArgmaxParam) */ {
- public:
-  ArgmaxParam();
-  virtual ~ArgmaxParam();
-
-  ArgmaxParam(const ArgmaxParam& from);
-
-  inline ArgmaxParam& operator=(const ArgmaxParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const ArgmaxParam& default_instance();
-
-  static inline const ArgmaxParam* internal_default_instance() {
-    return reinterpret_cast<const ArgmaxParam*>(
-               &_ArgmaxParam_default_instance_);
-  }
-
-  void Swap(ArgmaxParam* other);
-
-  // implements Message ----------------------------------------------
-
-  inline ArgmaxParam* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  ArgmaxParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const ArgmaxParam& from);
-  void MergeFrom(const ArgmaxParam& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
-      const PROTOBUF_FINAL {
-    return InternalSerializeWithCachedSizesToArray(
-        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
-  }
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(ArgmaxParam* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:ArgmaxParam)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3754,19 +3665,33 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 
   // accessors -------------------------------------------------------
 
-  // .SGDSolverParam sgd_solver = 2;
+  // string loss_terminal = 2;
+  void clear_loss_terminal();
+  static const int kLossTerminalFieldNumber = 2;
+  const ::std::string& loss_terminal() const;
+  void set_loss_terminal(const ::std::string& value);
+  #if LANG_CXX11
+  void set_loss_terminal(::std::string&& value);
+  #endif
+  void set_loss_terminal(const char* value);
+  void set_loss_terminal(const char* value, size_t size);
+  ::std::string* mutable_loss_terminal();
+  ::std::string* release_loss_terminal();
+  void set_allocated_loss_terminal(::std::string* loss_terminal);
+
+  // .SGDSolverParam sgd_solver = 3;
   bool has_sgd_solver() const;
   void clear_sgd_solver();
-  static const int kSgdSolverFieldNumber = 2;
+  static const int kSgdSolverFieldNumber = 3;
   const ::SGDSolverParam& sgd_solver() const;
   ::SGDSolverParam* mutable_sgd_solver();
   ::SGDSolverParam* release_sgd_solver();
   void set_allocated_sgd_solver(::SGDSolverParam* sgd_solver);
 
-  // .GainSolverParam gain_solver = 3;
+  // .GainSolverParam gain_solver = 4;
   bool has_gain_solver() const;
   void clear_gain_solver();
-  static const int kGainSolverFieldNumber = 3;
+  static const int kGainSolverFieldNumber = 4;
   const ::GainSolverParam& gain_solver() const;
   ::GainSolverParam* mutable_gain_solver();
   ::GainSolverParam* release_gain_solver();
@@ -3782,6 +3707,7 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr loss_terminal_;
   ::SGDSolverParam* sgd_solver_;
   ::GainSolverParam* gain_solver_;
   ::google::protobuf::int32 max_epoch_;
@@ -5800,46 +5726,7 @@ inline void NodeParam::set_allocated_pooling_param(::PoolingParam* pooling_param
   // @@protoc_insertion_point(field_set_allocated:NodeParam.pooling_param)
 }
 
-// .ArgmaxParam argmax_param = 114;
-inline bool NodeParam::has_argmax_param() const {
-  return this != internal_default_instance() && argmax_param_ != NULL;
-}
-inline void NodeParam::clear_argmax_param() {
-  if (GetArenaNoVirtual() == NULL && argmax_param_ != NULL) delete argmax_param_;
-  argmax_param_ = NULL;
-}
-inline const ::ArgmaxParam& NodeParam::argmax_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.argmax_param)
-  return argmax_param_ != NULL ? *argmax_param_
-                         : *::ArgmaxParam::internal_default_instance();
-}
-inline ::ArgmaxParam* NodeParam::mutable_argmax_param() {
-  
-  if (argmax_param_ == NULL) {
-    argmax_param_ = new ::ArgmaxParam;
-  }
-  // @@protoc_insertion_point(field_mutable:NodeParam.argmax_param)
-  return argmax_param_;
-}
-inline ::ArgmaxParam* NodeParam::release_argmax_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.argmax_param)
-  
-  ::ArgmaxParam* temp = argmax_param_;
-  argmax_param_ = NULL;
-  return temp;
-}
-inline void NodeParam::set_allocated_argmax_param(::ArgmaxParam* argmax_param) {
-  delete argmax_param_;
-  argmax_param_ = argmax_param;
-  if (argmax_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.argmax_param)
-}
-
-// .ReduceParam reduce_param = 115;
+// .ReduceParam reduce_param = 114;
 inline bool NodeParam::has_reduce_param() const {
   return this != internal_default_instance() && reduce_param_ != NULL;
 }
@@ -5878,7 +5765,7 @@ inline void NodeParam::set_allocated_reduce_param(::ReduceParam* reduce_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.reduce_param)
 }
 
-// .EqualParam equal_param = 116;
+// .EqualParam equal_param = 115;
 inline bool NodeParam::has_equal_param() const {
   return this != internal_default_instance() && equal_param_ != NULL;
 }
@@ -5917,7 +5804,7 @@ inline void NodeParam::set_allocated_equal_param(::EqualParam* equal_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.equal_param)
 }
 
-// .PrintParam print_param = 117;
+// .PrintParam print_param = 116;
 inline bool NodeParam::has_print_param() const {
   return this != internal_default_instance() && print_param_ != NULL;
 }
@@ -5956,7 +5843,7 @@ inline void NodeParam::set_allocated_print_param(::PrintParam* print_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.print_param)
 }
 
-// .CastFloatParam cast_float_param = 118;
+// .CastFloatParam cast_float_param = 117;
 inline bool NodeParam::has_cast_float_param() const {
   return this != internal_default_instance() && cast_float_param_ != NULL;
 }
@@ -5995,7 +5882,7 @@ inline void NodeParam::set_allocated_cast_float_param(::CastFloatParam* cast_flo
   // @@protoc_insertion_point(field_set_allocated:NodeParam.cast_float_param)
 }
 
-// .AccumulatorParam accumulator_param = 119;
+// .AccumulatorParam accumulator_param = 118;
 inline bool NodeParam::has_accumulator_param() const {
   return this != internal_default_instance() && accumulator_param_ != NULL;
 }
@@ -6033,10 +5920,6 @@ inline void NodeParam::set_allocated_accumulator_param(::AccumulatorParam* accum
   }
   // @@protoc_insertion_point(field_set_allocated:NodeParam.accumulator_param)
 }
-
-// -------------------------------------------------------------------
-
-// ArgmaxParam
 
 // -------------------------------------------------------------------
 
@@ -6582,7 +6465,59 @@ inline void SolverParam::set_max_epoch(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:SolverParam.max_epoch)
 }
 
-// .SGDSolverParam sgd_solver = 2;
+// string loss_terminal = 2;
+inline void SolverParam::clear_loss_terminal() {
+  loss_terminal_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& SolverParam::loss_terminal() const {
+  // @@protoc_insertion_point(field_get:SolverParam.loss_terminal)
+  return loss_terminal_.GetNoArena();
+}
+inline void SolverParam::set_loss_terminal(const ::std::string& value) {
+  
+  loss_terminal_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:SolverParam.loss_terminal)
+}
+#if LANG_CXX11
+inline void SolverParam::set_loss_terminal(::std::string&& value) {
+  
+  loss_terminal_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:SolverParam.loss_terminal)
+}
+#endif
+inline void SolverParam::set_loss_terminal(const char* value) {
+  
+  loss_terminal_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:SolverParam.loss_terminal)
+}
+inline void SolverParam::set_loss_terminal(const char* value, size_t size) {
+  
+  loss_terminal_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:SolverParam.loss_terminal)
+}
+inline ::std::string* SolverParam::mutable_loss_terminal() {
+  
+  // @@protoc_insertion_point(field_mutable:SolverParam.loss_terminal)
+  return loss_terminal_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* SolverParam::release_loss_terminal() {
+  // @@protoc_insertion_point(field_release:SolverParam.loss_terminal)
+  
+  return loss_terminal_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void SolverParam::set_allocated_loss_terminal(::std::string* loss_terminal) {
+  if (loss_terminal != NULL) {
+    
+  } else {
+    
+  }
+  loss_terminal_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), loss_terminal);
+  // @@protoc_insertion_point(field_set_allocated:SolverParam.loss_terminal)
+}
+
+// .SGDSolverParam sgd_solver = 3;
 inline bool SolverParam::has_sgd_solver() const {
   return this != internal_default_instance() && sgd_solver_ != NULL;
 }
@@ -6621,7 +6556,7 @@ inline void SolverParam::set_allocated_sgd_solver(::SGDSolverParam* sgd_solver) 
   // @@protoc_insertion_point(field_set_allocated:SolverParam.sgd_solver)
 }
 
-// .GainSolverParam gain_solver = 3;
+// .GainSolverParam gain_solver = 4;
 inline bool SolverParam::has_gain_solver() const {
   return this != internal_default_instance() && gain_solver_ != NULL;
 }
@@ -6825,8 +6760,6 @@ NetworkParam::phase() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
