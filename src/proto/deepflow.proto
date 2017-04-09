@@ -116,11 +116,6 @@ message VariableParam {
 	TensorData weights = 3;
 }
 
-
-message BlockParam {
-	
-}
-
 message LossParam {
 	SoftmaxLossParam softmax_loss_param = 1;
 }
@@ -145,32 +140,26 @@ message NodeParam {
   repeated string output = 3;  
   repeated string phase = 4;
 
-  MnistReaderParam mnist_reader_param = 20;
-
-  VariableParam variable_param = 30;  
-  PlaceHolderParam place_holder_param = 31;
-  
-  PhaseplexerParam phaseplexer_param = 32;
-
-  BlockParam block_param = 40;  
-
-  LossParam loss_param = 50;
-
-  AddParam add_param = 60;
-  BiasAddParam bias_add_param = 61;
-  Conv2dParam conv_2d_param = 62;
-  DropoutParam dropout_param = 63;
-  ReluParam relu_param = 64;
-  SoftmaxParam softmax_param = 65;  
-  SquareParam square_param = 66;
-  MatMulParam matmul_param = 67;
-  PoolingParam pooling_param = 68;
-  ArgmaxParam argmax_param = 69;
-  ReduceParam reduce_param = 70;
-  EqualParam equal_param = 71;
-  PrintParam print_param = 72;
-  CastFloatParam cast_float_param = 73;
-  AccumulatorParam accumulator_param = 74;
+  MnistReaderParam mnist_reader_param = 100;
+  VariableParam variable_param = 101;  
+  PlaceHolderParam place_holder_param = 102;  
+  PhaseplexerParam phaseplexer_param = 103;  
+  LossParam loss_param = 104;
+  AddParam add_param = 105;
+  BiasAddParam bias_add_param = 106;
+  Conv2dParam conv_2d_param = 107;
+  DropoutParam dropout_param = 108;
+  ReluParam relu_param = 109;
+  SoftmaxParam softmax_param = 110;  
+  SquareParam square_param = 111;
+  MatMulParam matmul_param = 112;
+  PoolingParam pooling_param = 113;
+  ArgmaxParam argmax_param = 114;
+  ReduceParam reduce_param = 115;
+  EqualParam equal_param = 116;
+  PrintParam print_param = 117;
+  CastFloatParam cast_float_param = 118;
+  AccumulatorParam accumulator_param = 119;
 }
 
 message ArgmaxParam {
@@ -241,7 +230,8 @@ message SolverParam {
 message PhaseParam {
 	enum PhaseBehaviour {
 		TRAIN = 0;
-		TEST = 1;
+		VALIDATION = 1;
+		INFERENCE = 2;
 	}
 	string phase = 1;	
 	PhaseBehaviour behaviour = 2;

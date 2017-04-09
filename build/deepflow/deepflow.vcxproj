@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\core\block.h" />
     <ClInclude Include="..\..\include\core\common_cu.h" />
     <ClInclude Include="..\..\include\core\cuda_helper.h" />
     <ClInclude Include="..\..\include\core\deep_flow.h" />
@@ -68,7 +67,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\core\block.cpp" />
     <ClCompile Include="..\..\src\core\deep_flow.cpp" />
     <ClCompile Include="..\..\src\core\initializer.cpp" />
     <ClCompile Include="..\..\src\core\loss.cpp" />

@@ -19,15 +19,14 @@ enum DeepFlowDllExport MNISTReaderType {
 
 class DeepFlowDllExport MNISTReader : public Reader {
 public:
-	MNISTReader(const NodeParam &param);
-	bool verifyParam(const NodeParam &param) const;
+	MNISTReader(const NodeParam &param);	
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 2; }
 	void nextBatch();
 	void initForward();
 	void initBackward();
 	void deinit();
-	bool isLastBatch();
+	bool isLastBatch();	
 private:
 	MNISTReaderType _type;
 	std::string _folder_path;

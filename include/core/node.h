@@ -45,7 +45,7 @@ public:
 	virtual int minNumOutputs() = 0;	
 	virtual void forward();
 	virtual void backward();
-	std::string name() const;		
+	std::string name() const;	
 	virtual void traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition);
 	void setVisited(bool state);
 	std::vector<NodeInputPtr> &inputs();
@@ -56,7 +56,7 @@ public:
 	void setInitialized(bool status);
 	NodeParam &param();
 	bool includePhase(const std::string &phase);
-	void setExecutionContext(ExecutionContextPtr context);
+	void setExecutionContext(ExecutionContextPtr context);	
 protected:	
 	std::vector<NodeInputPtr> _inputs;
 	std::vector<NodeOutputPtr> _outputs;

@@ -42,9 +42,6 @@ extern ArgmaxParamDefaultTypeInternal _ArgmaxParam_default_instance_;
 class BiasAddParam;
 class BiasAddParamDefaultTypeInternal;
 extern BiasAddParamDefaultTypeInternal _BiasAddParam_default_instance_;
-class BlockParam;
-class BlockParamDefaultTypeInternal;
-extern BlockParamDefaultTypeInternal _BlockParam_default_instance_;
 class CastFloatParam;
 class CastFloatParamDefaultTypeInternal;
 extern CastFloatParamDefaultTypeInternal _CastFloatParam_default_instance_;
@@ -267,13 +264,14 @@ inline bool MnistReaderParam_ReaderType_Parse(
 }
 enum PhaseParam_PhaseBehaviour {
   PhaseParam_PhaseBehaviour_TRAIN = 0,
-  PhaseParam_PhaseBehaviour_TEST = 1,
+  PhaseParam_PhaseBehaviour_VALIDATION = 1,
+  PhaseParam_PhaseBehaviour_INFERENCE = 2,
   PhaseParam_PhaseBehaviour_PhaseParam_PhaseBehaviour_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   PhaseParam_PhaseBehaviour_PhaseParam_PhaseBehaviour_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool PhaseParam_PhaseBehaviour_IsValid(int value);
 const PhaseParam_PhaseBehaviour PhaseParam_PhaseBehaviour_PhaseBehaviour_MIN = PhaseParam_PhaseBehaviour_TRAIN;
-const PhaseParam_PhaseBehaviour PhaseParam_PhaseBehaviour_PhaseBehaviour_MAX = PhaseParam_PhaseBehaviour_TEST;
+const PhaseParam_PhaseBehaviour PhaseParam_PhaseBehaviour_PhaseBehaviour_MAX = PhaseParam_PhaseBehaviour_INFERENCE;
 const int PhaseParam_PhaseBehaviour_PhaseBehaviour_ARRAYSIZE = PhaseParam_PhaseBehaviour_PhaseBehaviour_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* PhaseParam_PhaseBehaviour_descriptor();
@@ -2014,82 +2012,6 @@ class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
-class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:BlockParam) */ {
- public:
-  BlockParam();
-  virtual ~BlockParam();
-
-  BlockParam(const BlockParam& from);
-
-  inline BlockParam& operator=(const BlockParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const BlockParam& default_instance();
-
-  static inline const BlockParam* internal_default_instance() {
-    return reinterpret_cast<const BlockParam*>(
-               &_BlockParam_default_instance_);
-  }
-
-  void Swap(BlockParam* other);
-
-  // implements Message ----------------------------------------------
-
-  inline BlockParam* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  BlockParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const BlockParam& from);
-  void MergeFrom(const BlockParam& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
-      const PROTOBUF_FINAL {
-    return InternalSerializeWithCachedSizesToArray(
-        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
-  }
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(BlockParam* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:BlockParam)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  mutable int _cached_size_;
-  friend struct  protobuf_deepflow_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
 class LossParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:LossParam) */ {
  public:
   LossParam();
@@ -2530,190 +2452,181 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
 
-  // .MnistReaderParam mnist_reader_param = 20;
+  // .MnistReaderParam mnist_reader_param = 100;
   bool has_mnist_reader_param() const;
   void clear_mnist_reader_param();
-  static const int kMnistReaderParamFieldNumber = 20;
+  static const int kMnistReaderParamFieldNumber = 100;
   const ::MnistReaderParam& mnist_reader_param() const;
   ::MnistReaderParam* mutable_mnist_reader_param();
   ::MnistReaderParam* release_mnist_reader_param();
   void set_allocated_mnist_reader_param(::MnistReaderParam* mnist_reader_param);
 
-  // .VariableParam variable_param = 30;
+  // .VariableParam variable_param = 101;
   bool has_variable_param() const;
   void clear_variable_param();
-  static const int kVariableParamFieldNumber = 30;
+  static const int kVariableParamFieldNumber = 101;
   const ::VariableParam& variable_param() const;
   ::VariableParam* mutable_variable_param();
   ::VariableParam* release_variable_param();
   void set_allocated_variable_param(::VariableParam* variable_param);
 
-  // .PlaceHolderParam place_holder_param = 31;
+  // .PlaceHolderParam place_holder_param = 102;
   bool has_place_holder_param() const;
   void clear_place_holder_param();
-  static const int kPlaceHolderParamFieldNumber = 31;
+  static const int kPlaceHolderParamFieldNumber = 102;
   const ::PlaceHolderParam& place_holder_param() const;
   ::PlaceHolderParam* mutable_place_holder_param();
   ::PlaceHolderParam* release_place_holder_param();
   void set_allocated_place_holder_param(::PlaceHolderParam* place_holder_param);
 
-  // .PhaseplexerParam phaseplexer_param = 32;
+  // .PhaseplexerParam phaseplexer_param = 103;
   bool has_phaseplexer_param() const;
   void clear_phaseplexer_param();
-  static const int kPhaseplexerParamFieldNumber = 32;
+  static const int kPhaseplexerParamFieldNumber = 103;
   const ::PhaseplexerParam& phaseplexer_param() const;
   ::PhaseplexerParam* mutable_phaseplexer_param();
   ::PhaseplexerParam* release_phaseplexer_param();
   void set_allocated_phaseplexer_param(::PhaseplexerParam* phaseplexer_param);
 
-  // .BlockParam block_param = 40;
-  bool has_block_param() const;
-  void clear_block_param();
-  static const int kBlockParamFieldNumber = 40;
-  const ::BlockParam& block_param() const;
-  ::BlockParam* mutable_block_param();
-  ::BlockParam* release_block_param();
-  void set_allocated_block_param(::BlockParam* block_param);
-
-  // .LossParam loss_param = 50;
+  // .LossParam loss_param = 104;
   bool has_loss_param() const;
   void clear_loss_param();
-  static const int kLossParamFieldNumber = 50;
+  static const int kLossParamFieldNumber = 104;
   const ::LossParam& loss_param() const;
   ::LossParam* mutable_loss_param();
   ::LossParam* release_loss_param();
   void set_allocated_loss_param(::LossParam* loss_param);
 
-  // .AddParam add_param = 60;
+  // .AddParam add_param = 105;
   bool has_add_param() const;
   void clear_add_param();
-  static const int kAddParamFieldNumber = 60;
+  static const int kAddParamFieldNumber = 105;
   const ::AddParam& add_param() const;
   ::AddParam* mutable_add_param();
   ::AddParam* release_add_param();
   void set_allocated_add_param(::AddParam* add_param);
 
-  // .BiasAddParam bias_add_param = 61;
+  // .BiasAddParam bias_add_param = 106;
   bool has_bias_add_param() const;
   void clear_bias_add_param();
-  static const int kBiasAddParamFieldNumber = 61;
+  static const int kBiasAddParamFieldNumber = 106;
   const ::BiasAddParam& bias_add_param() const;
   ::BiasAddParam* mutable_bias_add_param();
   ::BiasAddParam* release_bias_add_param();
   void set_allocated_bias_add_param(::BiasAddParam* bias_add_param);
 
-  // .Conv2dParam conv_2d_param = 62;
+  // .Conv2dParam conv_2d_param = 107;
   bool has_conv_2d_param() const;
   void clear_conv_2d_param();
-  static const int kConv2DParamFieldNumber = 62;
+  static const int kConv2DParamFieldNumber = 107;
   const ::Conv2dParam& conv_2d_param() const;
   ::Conv2dParam* mutable_conv_2d_param();
   ::Conv2dParam* release_conv_2d_param();
   void set_allocated_conv_2d_param(::Conv2dParam* conv_2d_param);
 
-  // .DropoutParam dropout_param = 63;
+  // .DropoutParam dropout_param = 108;
   bool has_dropout_param() const;
   void clear_dropout_param();
-  static const int kDropoutParamFieldNumber = 63;
+  static const int kDropoutParamFieldNumber = 108;
   const ::DropoutParam& dropout_param() const;
   ::DropoutParam* mutable_dropout_param();
   ::DropoutParam* release_dropout_param();
   void set_allocated_dropout_param(::DropoutParam* dropout_param);
 
-  // .ReluParam relu_param = 64;
+  // .ReluParam relu_param = 109;
   bool has_relu_param() const;
   void clear_relu_param();
-  static const int kReluParamFieldNumber = 64;
+  static const int kReluParamFieldNumber = 109;
   const ::ReluParam& relu_param() const;
   ::ReluParam* mutable_relu_param();
   ::ReluParam* release_relu_param();
   void set_allocated_relu_param(::ReluParam* relu_param);
 
-  // .SoftmaxParam softmax_param = 65;
+  // .SoftmaxParam softmax_param = 110;
   bool has_softmax_param() const;
   void clear_softmax_param();
-  static const int kSoftmaxParamFieldNumber = 65;
+  static const int kSoftmaxParamFieldNumber = 110;
   const ::SoftmaxParam& softmax_param() const;
   ::SoftmaxParam* mutable_softmax_param();
   ::SoftmaxParam* release_softmax_param();
   void set_allocated_softmax_param(::SoftmaxParam* softmax_param);
 
-  // .SquareParam square_param = 66;
+  // .SquareParam square_param = 111;
   bool has_square_param() const;
   void clear_square_param();
-  static const int kSquareParamFieldNumber = 66;
+  static const int kSquareParamFieldNumber = 111;
   const ::SquareParam& square_param() const;
   ::SquareParam* mutable_square_param();
   ::SquareParam* release_square_param();
   void set_allocated_square_param(::SquareParam* square_param);
 
-  // .MatMulParam matmul_param = 67;
+  // .MatMulParam matmul_param = 112;
   bool has_matmul_param() const;
   void clear_matmul_param();
-  static const int kMatmulParamFieldNumber = 67;
+  static const int kMatmulParamFieldNumber = 112;
   const ::MatMulParam& matmul_param() const;
   ::MatMulParam* mutable_matmul_param();
   ::MatMulParam* release_matmul_param();
   void set_allocated_matmul_param(::MatMulParam* matmul_param);
 
-  // .PoolingParam pooling_param = 68;
+  // .PoolingParam pooling_param = 113;
   bool has_pooling_param() const;
   void clear_pooling_param();
-  static const int kPoolingParamFieldNumber = 68;
+  static const int kPoolingParamFieldNumber = 113;
   const ::PoolingParam& pooling_param() const;
   ::PoolingParam* mutable_pooling_param();
   ::PoolingParam* release_pooling_param();
   void set_allocated_pooling_param(::PoolingParam* pooling_param);
 
-  // .ArgmaxParam argmax_param = 69;
+  // .ArgmaxParam argmax_param = 114;
   bool has_argmax_param() const;
   void clear_argmax_param();
-  static const int kArgmaxParamFieldNumber = 69;
+  static const int kArgmaxParamFieldNumber = 114;
   const ::ArgmaxParam& argmax_param() const;
   ::ArgmaxParam* mutable_argmax_param();
   ::ArgmaxParam* release_argmax_param();
   void set_allocated_argmax_param(::ArgmaxParam* argmax_param);
 
-  // .ReduceParam reduce_param = 70;
+  // .ReduceParam reduce_param = 115;
   bool has_reduce_param() const;
   void clear_reduce_param();
-  static const int kReduceParamFieldNumber = 70;
+  static const int kReduceParamFieldNumber = 115;
   const ::ReduceParam& reduce_param() const;
   ::ReduceParam* mutable_reduce_param();
   ::ReduceParam* release_reduce_param();
   void set_allocated_reduce_param(::ReduceParam* reduce_param);
 
-  // .EqualParam equal_param = 71;
+  // .EqualParam equal_param = 116;
   bool has_equal_param() const;
   void clear_equal_param();
-  static const int kEqualParamFieldNumber = 71;
+  static const int kEqualParamFieldNumber = 116;
   const ::EqualParam& equal_param() const;
   ::EqualParam* mutable_equal_param();
   ::EqualParam* release_equal_param();
   void set_allocated_equal_param(::EqualParam* equal_param);
 
-  // .PrintParam print_param = 72;
+  // .PrintParam print_param = 117;
   bool has_print_param() const;
   void clear_print_param();
-  static const int kPrintParamFieldNumber = 72;
+  static const int kPrintParamFieldNumber = 117;
   const ::PrintParam& print_param() const;
   ::PrintParam* mutable_print_param();
   ::PrintParam* release_print_param();
   void set_allocated_print_param(::PrintParam* print_param);
 
-  // .CastFloatParam cast_float_param = 73;
+  // .CastFloatParam cast_float_param = 118;
   bool has_cast_float_param() const;
   void clear_cast_float_param();
-  static const int kCastFloatParamFieldNumber = 73;
+  static const int kCastFloatParamFieldNumber = 118;
   const ::CastFloatParam& cast_float_param() const;
   ::CastFloatParam* mutable_cast_float_param();
   ::CastFloatParam* release_cast_float_param();
   void set_allocated_cast_float_param(::CastFloatParam* cast_float_param);
 
-  // .AccumulatorParam accumulator_param = 74;
+  // .AccumulatorParam accumulator_param = 119;
   bool has_accumulator_param() const;
   void clear_accumulator_param();
-  static const int kAccumulatorParamFieldNumber = 74;
+  static const int kAccumulatorParamFieldNumber = 119;
   const ::AccumulatorParam& accumulator_param() const;
   ::AccumulatorParam* mutable_accumulator_param();
   ::AccumulatorParam* release_accumulator_param();
@@ -2731,7 +2644,6 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::VariableParam* variable_param_;
   ::PlaceHolderParam* place_holder_param_;
   ::PhaseplexerParam* phaseplexer_param_;
-  ::BlockParam* block_param_;
   ::LossParam* loss_param_;
   ::AddParam* add_param_;
   ::BiasAddParam* bias_add_param_;
@@ -3946,8 +3858,10 @@ class PhaseParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   typedef PhaseParam_PhaseBehaviour PhaseBehaviour;
   static const PhaseBehaviour TRAIN =
     PhaseParam_PhaseBehaviour_TRAIN;
-  static const PhaseBehaviour TEST =
-    PhaseParam_PhaseBehaviour_TEST;
+  static const PhaseBehaviour VALIDATION =
+    PhaseParam_PhaseBehaviour_VALIDATION;
+  static const PhaseBehaviour INFERENCE =
+    PhaseParam_PhaseBehaviour_INFERENCE;
   static inline bool PhaseBehaviour_IsValid(int value) {
     return PhaseParam_PhaseBehaviour_IsValid(value);
   }
@@ -4954,10 +4868,6 @@ inline void VariableParam::set_allocated_weights(::TensorData* weights) {
 
 // -------------------------------------------------------------------
 
-// BlockParam
-
-// -------------------------------------------------------------------
-
 // LossParam
 
 // .SoftmaxLossParam softmax_loss_param = 1;
@@ -5344,7 +5254,7 @@ NodeParam::mutable_phase() {
   return &phase_;
 }
 
-// .MnistReaderParam mnist_reader_param = 20;
+// .MnistReaderParam mnist_reader_param = 100;
 inline bool NodeParam::has_mnist_reader_param() const {
   return this != internal_default_instance() && mnist_reader_param_ != NULL;
 }
@@ -5383,7 +5293,7 @@ inline void NodeParam::set_allocated_mnist_reader_param(::MnistReaderParam* mnis
   // @@protoc_insertion_point(field_set_allocated:NodeParam.mnist_reader_param)
 }
 
-// .VariableParam variable_param = 30;
+// .VariableParam variable_param = 101;
 inline bool NodeParam::has_variable_param() const {
   return this != internal_default_instance() && variable_param_ != NULL;
 }
@@ -5422,7 +5332,7 @@ inline void NodeParam::set_allocated_variable_param(::VariableParam* variable_pa
   // @@protoc_insertion_point(field_set_allocated:NodeParam.variable_param)
 }
 
-// .PlaceHolderParam place_holder_param = 31;
+// .PlaceHolderParam place_holder_param = 102;
 inline bool NodeParam::has_place_holder_param() const {
   return this != internal_default_instance() && place_holder_param_ != NULL;
 }
@@ -5461,7 +5371,7 @@ inline void NodeParam::set_allocated_place_holder_param(::PlaceHolderParam* plac
   // @@protoc_insertion_point(field_set_allocated:NodeParam.place_holder_param)
 }
 
-// .PhaseplexerParam phaseplexer_param = 32;
+// .PhaseplexerParam phaseplexer_param = 103;
 inline bool NodeParam::has_phaseplexer_param() const {
   return this != internal_default_instance() && phaseplexer_param_ != NULL;
 }
@@ -5500,46 +5410,7 @@ inline void NodeParam::set_allocated_phaseplexer_param(::PhaseplexerParam* phase
   // @@protoc_insertion_point(field_set_allocated:NodeParam.phaseplexer_param)
 }
 
-// .BlockParam block_param = 40;
-inline bool NodeParam::has_block_param() const {
-  return this != internal_default_instance() && block_param_ != NULL;
-}
-inline void NodeParam::clear_block_param() {
-  if (GetArenaNoVirtual() == NULL && block_param_ != NULL) delete block_param_;
-  block_param_ = NULL;
-}
-inline const ::BlockParam& NodeParam::block_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.block_param)
-  return block_param_ != NULL ? *block_param_
-                         : *::BlockParam::internal_default_instance();
-}
-inline ::BlockParam* NodeParam::mutable_block_param() {
-  
-  if (block_param_ == NULL) {
-    block_param_ = new ::BlockParam;
-  }
-  // @@protoc_insertion_point(field_mutable:NodeParam.block_param)
-  return block_param_;
-}
-inline ::BlockParam* NodeParam::release_block_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.block_param)
-  
-  ::BlockParam* temp = block_param_;
-  block_param_ = NULL;
-  return temp;
-}
-inline void NodeParam::set_allocated_block_param(::BlockParam* block_param) {
-  delete block_param_;
-  block_param_ = block_param;
-  if (block_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.block_param)
-}
-
-// .LossParam loss_param = 50;
+// .LossParam loss_param = 104;
 inline bool NodeParam::has_loss_param() const {
   return this != internal_default_instance() && loss_param_ != NULL;
 }
@@ -5578,7 +5449,7 @@ inline void NodeParam::set_allocated_loss_param(::LossParam* loss_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.loss_param)
 }
 
-// .AddParam add_param = 60;
+// .AddParam add_param = 105;
 inline bool NodeParam::has_add_param() const {
   return this != internal_default_instance() && add_param_ != NULL;
 }
@@ -5617,7 +5488,7 @@ inline void NodeParam::set_allocated_add_param(::AddParam* add_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.add_param)
 }
 
-// .BiasAddParam bias_add_param = 61;
+// .BiasAddParam bias_add_param = 106;
 inline bool NodeParam::has_bias_add_param() const {
   return this != internal_default_instance() && bias_add_param_ != NULL;
 }
@@ -5656,7 +5527,7 @@ inline void NodeParam::set_allocated_bias_add_param(::BiasAddParam* bias_add_par
   // @@protoc_insertion_point(field_set_allocated:NodeParam.bias_add_param)
 }
 
-// .Conv2dParam conv_2d_param = 62;
+// .Conv2dParam conv_2d_param = 107;
 inline bool NodeParam::has_conv_2d_param() const {
   return this != internal_default_instance() && conv_2d_param_ != NULL;
 }
@@ -5695,7 +5566,7 @@ inline void NodeParam::set_allocated_conv_2d_param(::Conv2dParam* conv_2d_param)
   // @@protoc_insertion_point(field_set_allocated:NodeParam.conv_2d_param)
 }
 
-// .DropoutParam dropout_param = 63;
+// .DropoutParam dropout_param = 108;
 inline bool NodeParam::has_dropout_param() const {
   return this != internal_default_instance() && dropout_param_ != NULL;
 }
@@ -5734,7 +5605,7 @@ inline void NodeParam::set_allocated_dropout_param(::DropoutParam* dropout_param
   // @@protoc_insertion_point(field_set_allocated:NodeParam.dropout_param)
 }
 
-// .ReluParam relu_param = 64;
+// .ReluParam relu_param = 109;
 inline bool NodeParam::has_relu_param() const {
   return this != internal_default_instance() && relu_param_ != NULL;
 }
@@ -5773,7 +5644,7 @@ inline void NodeParam::set_allocated_relu_param(::ReluParam* relu_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.relu_param)
 }
 
-// .SoftmaxParam softmax_param = 65;
+// .SoftmaxParam softmax_param = 110;
 inline bool NodeParam::has_softmax_param() const {
   return this != internal_default_instance() && softmax_param_ != NULL;
 }
@@ -5812,7 +5683,7 @@ inline void NodeParam::set_allocated_softmax_param(::SoftmaxParam* softmax_param
   // @@protoc_insertion_point(field_set_allocated:NodeParam.softmax_param)
 }
 
-// .SquareParam square_param = 66;
+// .SquareParam square_param = 111;
 inline bool NodeParam::has_square_param() const {
   return this != internal_default_instance() && square_param_ != NULL;
 }
@@ -5851,7 +5722,7 @@ inline void NodeParam::set_allocated_square_param(::SquareParam* square_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.square_param)
 }
 
-// .MatMulParam matmul_param = 67;
+// .MatMulParam matmul_param = 112;
 inline bool NodeParam::has_matmul_param() const {
   return this != internal_default_instance() && matmul_param_ != NULL;
 }
@@ -5890,7 +5761,7 @@ inline void NodeParam::set_allocated_matmul_param(::MatMulParam* matmul_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.matmul_param)
 }
 
-// .PoolingParam pooling_param = 68;
+// .PoolingParam pooling_param = 113;
 inline bool NodeParam::has_pooling_param() const {
   return this != internal_default_instance() && pooling_param_ != NULL;
 }
@@ -5929,7 +5800,7 @@ inline void NodeParam::set_allocated_pooling_param(::PoolingParam* pooling_param
   // @@protoc_insertion_point(field_set_allocated:NodeParam.pooling_param)
 }
 
-// .ArgmaxParam argmax_param = 69;
+// .ArgmaxParam argmax_param = 114;
 inline bool NodeParam::has_argmax_param() const {
   return this != internal_default_instance() && argmax_param_ != NULL;
 }
@@ -5968,7 +5839,7 @@ inline void NodeParam::set_allocated_argmax_param(::ArgmaxParam* argmax_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.argmax_param)
 }
 
-// .ReduceParam reduce_param = 70;
+// .ReduceParam reduce_param = 115;
 inline bool NodeParam::has_reduce_param() const {
   return this != internal_default_instance() && reduce_param_ != NULL;
 }
@@ -6007,7 +5878,7 @@ inline void NodeParam::set_allocated_reduce_param(::ReduceParam* reduce_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.reduce_param)
 }
 
-// .EqualParam equal_param = 71;
+// .EqualParam equal_param = 116;
 inline bool NodeParam::has_equal_param() const {
   return this != internal_default_instance() && equal_param_ != NULL;
 }
@@ -6046,7 +5917,7 @@ inline void NodeParam::set_allocated_equal_param(::EqualParam* equal_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.equal_param)
 }
 
-// .PrintParam print_param = 72;
+// .PrintParam print_param = 117;
 inline bool NodeParam::has_print_param() const {
   return this != internal_default_instance() && print_param_ != NULL;
 }
@@ -6085,7 +5956,7 @@ inline void NodeParam::set_allocated_print_param(::PrintParam* print_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.print_param)
 }
 
-// .CastFloatParam cast_float_param = 73;
+// .CastFloatParam cast_float_param = 118;
 inline bool NodeParam::has_cast_float_param() const {
   return this != internal_default_instance() && cast_float_param_ != NULL;
 }
@@ -6124,7 +5995,7 @@ inline void NodeParam::set_allocated_cast_float_param(::CastFloatParam* cast_flo
   // @@protoc_insertion_point(field_set_allocated:NodeParam.cast_float_param)
 }
 
-// .AccumulatorParam accumulator_param = 74;
+// .AccumulatorParam accumulator_param = 119;
 inline bool NodeParam::has_accumulator_param() const {
   return this != internal_default_instance() && accumulator_param_ != NULL;
 }
@@ -6954,8 +6825,6 @@ NetworkParam::phase() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

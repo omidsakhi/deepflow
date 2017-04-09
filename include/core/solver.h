@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/block.h"
 #include "core/variable.h"
 
 #include "proto/deepflow.pb.h"

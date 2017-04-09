@@ -10,7 +10,6 @@
 #include "ops/print.h"
 #include "ops/accumulator.h"
 
-#include "core/block.h"
 #include "solvers/sgd_solver.h"
 #include "solvers/gain_solver.h"
 
@@ -55,9 +54,6 @@ public:
 
 	// PHASE
 	NodeOutputPtr phaseplexer(NodeOutputPtr input_1, std::string phase_1, NodeOutputPtr input_2, std::string phase_2, std::string name = "plex", std::initializer_list<std::string> phases = {});
-
-	// BLOCK
-	std::shared_ptr<Block> block(std::initializer_list<NodeInputPtr> inputs, std::initializer_list<NodeOutputPtr> outputs, std::string name = "block", std::initializer_list<std::string> phases = {});
 
 	// LOSS
 	NodeOutputPtr softmax_loss(NodeOutputPtr a, NodeOutputPtr b, std::string name = "softmaxloss", std::initializer_list<std::string> phases = {});

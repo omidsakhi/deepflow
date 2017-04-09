@@ -26,13 +26,13 @@ void main(int argc, char** argv) {
 		
 	if (FLAGS_i.empty()) {
 		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);
-		df.define_phase("Test", PhaseParam_PhaseBehaviour_TEST);
+		df.define_phase("Validation", PhaseParam_PhaseBehaviour_VALIDATION);		
 		auto mnist_trainset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Train, "trainset", { "Train" });
-		auto mnist_testset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Test, "testset", { "Test" });
-		auto px = df.phaseplexer(mnist_trainset->output(0), "Train", mnist_testset->output(0), "Test", "px");		
-		auto py = df.phaseplexer(mnist_trainset->output(1), "Train", mnist_testset->output(1), "Test", "py");
+		auto mnist_testset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Test, "testset", { "Validation" });
+		auto data_selector = df.phaseplexer(mnist_trainset->output(0), "Train", mnist_testset->output(0), "Validation", "data_selector");		
+		auto label_selector = df.phaseplexer(mnist_trainset->output(1), "Train", mnist_testset->output(1), "Validation", "label_selector");
 		auto f1 = df.variable(df.random_uniform({ 20, 1 , 5, 5 }, -0.1f, 0.1f), "f1");
-		auto conv1 = df.conv2d(px, f1, 2, 2, 1, 1, 1, 1, "conv1");
+		auto conv1 = df.conv2d(data_selector, f1, 2, 2, 1, 1, 1, 1, "conv1");
 		auto pool1 = df.pooling(conv1, 2, 2, 0, 0, 2, 2, "pool1");
 		auto f2 = df.variable(df.random_uniform({ 50, 20 , 5, 5 }, -0.1f, 0.1f), "f2");
 		auto conv2 = df.conv2d(pool1, f2, "conv2");
@@ -43,18 +43,20 @@ void main(int argc, char** argv) {
 		auto bias1 = df.bias_add(m1, b1,"bias1");
 		auto relu1 = df.relu(bias1, -0.01f, "relu1");
 		auto dropout = df.dropout(relu1, 0.5f, "dropout");
+		//auto dropout_bypass = df.phaseplexer(relu1, "Validation", dropout, "Train", "dropout_bypass");
 		auto w2 = df.variable(df.random_uniform({ 500, 10, 1 , 1 }, -0.1f, 0.1f), "w2");
 		auto b2 = df.variable(df.step({ 1, 10, 1, 1 }, -1.0f, 1.0f), "b2");
 		auto m2 = df.matmul(dropout, w2,"m2");
 		auto bias2 = df.bias_add(m2, b2,"bias2");
 		auto relu2 = df.relu(bias2, -0.01f, "relu2");
-		auto loss = df.softmax_loss(relu2, py, "loss");		
-		auto target = df.argmax(py, 1, "target", {"Train"});
+		auto loss = df.softmax_loss(relu2, label_selector, "loss");
+		auto target = df.argmax(label_selector, 1, "target");
 		auto predict = df.argmax(loss->node()->output(1), 1, "predict");
-		auto equal = df.equal(predict, target);
-		auto acc = df.accumulator(equal);
-		auto correct = df.reduce_sum(acc, 0, "correct", {"Train"});
-		auto print = df.print({ correct }, "    CORRECT: {0}\n", Print::EndOfEpoch, "print");
+		auto equal = df.equal(predict, target,"equal");
+		auto acc = df.accumulator(equal, Accumulator::EndOfEpoch, "acc");
+		auto correct = df.reduce_sum(acc, 0, "correct");
+		auto train_print = df.print({ correct }, "    TRAIN CORRECT COUNT: {0}\n", Print::EndOfEpoch, "print", { "Train" });
+		auto valid_print = df.print({ correct }, "    VALID CORRECT COUNT: {0}\n", Print::EndOfEpoch, "print", { "Validation" });
 		df.set_solver(df.gain_solver(loss, 2000, 0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f));
 		df.global_node_initializer();
 	}			

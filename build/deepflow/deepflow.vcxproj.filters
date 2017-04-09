@@ -46,6 +46,9 @@
     <CudaCompile Include="..\..\src\ops\accumulator.cu">
       <Filter>source\ops</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\ops\cast_float.cu">
+      <Filter>source\ops</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -65,9 +68,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\observers\forward.cpp">
       <Filter>source\observers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\core\block.cpp">
-      <Filter>source\core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\core\solver.cpp">
       <Filter>source\core</Filter>
@@ -118,9 +118,6 @@
       <Filter>source\core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\ops\print.cpp">
-      <Filter>source\ops</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ops\cast_float.cu">
       <Filter>source\ops</Filter>
     </ClCompile>
   </ItemGroup>
@@ -181,9 +178,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\initializers\index_fill.h">
       <Filter>include\initializers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\core\block.h">
-      <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ops\softmax_loss.h">
       <Filter>include\ops</Filter>
