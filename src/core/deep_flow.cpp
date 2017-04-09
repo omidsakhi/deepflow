@@ -299,6 +299,21 @@ std::shared_ptr<Block> DeepFlow::block(std::initializer_list<NodeInputPtr> input
 	_nodes.push_back(node);
 	return node;
 }
+NodeOutputPtr DeepFlow::accumulator(NodeOutputPtr input, Accumulator::ResetTime resetTime, std::string name, std::initializer_list<std::string> phases) {
+	NodeParam nodeParam;
+	nodeParam.set_name(getUniqueNodeName(name));
+	for (auto phase : phases)
+		nodeParam.add_phase(phase);
+	AccumulatorParam *accParam = nodeParam.mutable_accumulator_param();
+	accParam->set_reset_time((AccumulatorParam_ResetTime)resetTime);
+	auto node = std::make_shared<Accumulator>(nodeParam);
+	node->createIO();
+	node->input(0)->connect(input);
+	_nodes.push_back(node);
+	return node->output(0);
+
+}
+
 std::shared_ptr<Print> DeepFlow::print(std::initializer_list<NodeOutputPtr> inputs, std::string message, Print::PrintTime printTime, std::string name, std::initializer_list<std::string> phases) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
@@ -581,6 +596,7 @@ std::string DeepFlow::getUniqueNodeName(const std::string &prefix) const {
 }
 
 void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
+	LOG(INFO) << "Executing graph for phase " << phase;
 	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";
 	PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
 	std::list<std::shared_ptr<Reader>> readers;

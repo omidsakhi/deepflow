@@ -8,6 +8,7 @@
 #include "initializers/random_uniform.h"
 #include "initializers/step.h"
 #include "ops/print.h"
+#include "ops/accumulator.h"
 
 #include "core/block.h"
 #include "solvers/sgd_solver.h"
@@ -50,6 +51,7 @@ public:
 	NodeOutputPtr reduce_mean(NodeOutputPtr input, int reduceDimension, std::string name = "mean", std::initializer_list<std::string> phases = {});
 	NodeOutputPtr reduce_sum(NodeOutputPtr input, int reduceDimension, std::string name = "sum", std::initializer_list<std::string> phases = {});
 	NodeOutputPtr cast_float(NodeOutputPtr input, std::string name = "float", std::initializer_list<std::string> phases = {});
+	NodeOutputPtr accumulator(NodeOutputPtr input, Accumulator::ResetTime resetTime = Accumulator::ResetTime::EndOfEpoch, std::string name = "acc", std::initializer_list<std::string> phases = {});
 
 	// PHASE
 	NodeOutputPtr phaseplexer(NodeOutputPtr input_1, std::string phase_1, NodeOutputPtr input_2, std::string phase_2, std::string name = "plex", std::initializer_list<std::string> phases = {});

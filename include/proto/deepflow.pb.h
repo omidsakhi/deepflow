@@ -30,6 +30,9 @@
 #include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
+class AccumulatorParam;
+class AccumulatorParamDefaultTypeInternal;
+extern AccumulatorParamDefaultTypeInternal _AccumulatorParam_default_instance_;
 class AddParam;
 class AddParamDefaultTypeInternal;
 extern AddParamDefaultTypeInternal _AddParam_default_instance_;
@@ -171,6 +174,27 @@ inline bool TensorParam_TensorType_Parse(
     const ::std::string& name, TensorParam_TensorType* value) {
   return ::google::protobuf::internal::ParseNamedEnum<TensorParam_TensorType>(
     TensorParam_TensorType_descriptor(), name, value);
+}
+enum AccumulatorParam_ResetTime {
+  AccumulatorParam_ResetTime_END_OF_EPOCH = 0,
+  AccumulatorParam_ResetTime_NEVER = 1,
+  AccumulatorParam_ResetTime_AccumulatorParam_ResetTime_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  AccumulatorParam_ResetTime_AccumulatorParam_ResetTime_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool AccumulatorParam_ResetTime_IsValid(int value);
+const AccumulatorParam_ResetTime AccumulatorParam_ResetTime_ResetTime_MIN = AccumulatorParam_ResetTime_END_OF_EPOCH;
+const AccumulatorParam_ResetTime AccumulatorParam_ResetTime_ResetTime_MAX = AccumulatorParam_ResetTime_NEVER;
+const int AccumulatorParam_ResetTime_ResetTime_ARRAYSIZE = AccumulatorParam_ResetTime_ResetTime_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* AccumulatorParam_ResetTime_descriptor();
+inline const ::std::string& AccumulatorParam_ResetTime_Name(AccumulatorParam_ResetTime value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    AccumulatorParam_ResetTime_descriptor(), value);
+}
+inline bool AccumulatorParam_ResetTime_Parse(
+    const ::std::string& name, AccumulatorParam_ResetTime* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<AccumulatorParam_ResetTime>(
+    AccumulatorParam_ResetTime_descriptor(), name, value);
 }
 enum PrintParam_PrintTime {
   PrintParam_PrintTime_EVERY_PASS = 0,
@@ -579,6 +603,115 @@ class PhaseplexerParam : public ::google::protobuf::Message /* @@protoc_insertio
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AccumulatorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:AccumulatorParam) */ {
+ public:
+  AccumulatorParam();
+  virtual ~AccumulatorParam();
+
+  AccumulatorParam(const AccumulatorParam& from);
+
+  inline AccumulatorParam& operator=(const AccumulatorParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AccumulatorParam& default_instance();
+
+  static inline const AccumulatorParam* internal_default_instance() {
+    return reinterpret_cast<const AccumulatorParam*>(
+               &_AccumulatorParam_default_instance_);
+  }
+
+  void Swap(AccumulatorParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AccumulatorParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AccumulatorParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AccumulatorParam& from);
+  void MergeFrom(const AccumulatorParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AccumulatorParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef AccumulatorParam_ResetTime ResetTime;
+  static const ResetTime END_OF_EPOCH =
+    AccumulatorParam_ResetTime_END_OF_EPOCH;
+  static const ResetTime NEVER =
+    AccumulatorParam_ResetTime_NEVER;
+  static inline bool ResetTime_IsValid(int value) {
+    return AccumulatorParam_ResetTime_IsValid(value);
+  }
+  static const ResetTime ResetTime_MIN =
+    AccumulatorParam_ResetTime_ResetTime_MIN;
+  static const ResetTime ResetTime_MAX =
+    AccumulatorParam_ResetTime_ResetTime_MAX;
+  static const int ResetTime_ARRAYSIZE =
+    AccumulatorParam_ResetTime_ResetTime_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  ResetTime_descriptor() {
+    return AccumulatorParam_ResetTime_descriptor();
+  }
+  static inline const ::std::string& ResetTime_Name(ResetTime value) {
+    return AccumulatorParam_ResetTime_Name(value);
+  }
+  static inline bool ResetTime_Parse(const ::std::string& name,
+      ResetTime* value) {
+    return AccumulatorParam_ResetTime_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // .AccumulatorParam.ResetTime reset_time = 1;
+  void clear_reset_time();
+  static const int kResetTimeFieldNumber = 1;
+  ::AccumulatorParam_ResetTime reset_time() const;
+  void set_reset_time(::AccumulatorParam_ResetTime value);
+
+  // @@protoc_insertion_point(class_scope:AccumulatorParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  int reset_time_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2577,6 +2710,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::CastFloatParam* release_cast_float_param();
   void set_allocated_cast_float_param(::CastFloatParam* cast_float_param);
 
+  // .AccumulatorParam accumulator_param = 74;
+  bool has_accumulator_param() const;
+  void clear_accumulator_param();
+  static const int kAccumulatorParamFieldNumber = 74;
+  const ::AccumulatorParam& accumulator_param() const;
+  ::AccumulatorParam* mutable_accumulator_param();
+  ::AccumulatorParam* release_accumulator_param();
+  void set_allocated_accumulator_param(::AccumulatorParam* accumulator_param);
+
   // @@protoc_insertion_point(class_scope:NodeParam)
  private:
 
@@ -2605,6 +2747,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::EqualParam* equal_param_;
   ::PrintParam* print_param_;
   ::CastFloatParam* cast_float_param_;
+  ::AccumulatorParam* accumulator_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4127,6 +4270,24 @@ inline ::google::protobuf::RepeatedPtrField< ::std::string>*
 PhaseplexerParam::mutable_phase() {
   // @@protoc_insertion_point(field_mutable_list:PhaseplexerParam.phase)
   return &phase_;
+}
+
+// -------------------------------------------------------------------
+
+// AccumulatorParam
+
+// .AccumulatorParam.ResetTime reset_time = 1;
+inline void AccumulatorParam::clear_reset_time() {
+  reset_time_ = 0;
+}
+inline ::AccumulatorParam_ResetTime AccumulatorParam::reset_time() const {
+  // @@protoc_insertion_point(field_get:AccumulatorParam.reset_time)
+  return static_cast< ::AccumulatorParam_ResetTime >(reset_time_);
+}
+inline void AccumulatorParam::set_reset_time(::AccumulatorParam_ResetTime value) {
+  
+  reset_time_ = value;
+  // @@protoc_insertion_point(field_set:AccumulatorParam.reset_time)
 }
 
 // -------------------------------------------------------------------
@@ -5963,6 +6124,45 @@ inline void NodeParam::set_allocated_cast_float_param(::CastFloatParam* cast_flo
   // @@protoc_insertion_point(field_set_allocated:NodeParam.cast_float_param)
 }
 
+// .AccumulatorParam accumulator_param = 74;
+inline bool NodeParam::has_accumulator_param() const {
+  return this != internal_default_instance() && accumulator_param_ != NULL;
+}
+inline void NodeParam::clear_accumulator_param() {
+  if (GetArenaNoVirtual() == NULL && accumulator_param_ != NULL) delete accumulator_param_;
+  accumulator_param_ = NULL;
+}
+inline const ::AccumulatorParam& NodeParam::accumulator_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.accumulator_param)
+  return accumulator_param_ != NULL ? *accumulator_param_
+                         : *::AccumulatorParam::internal_default_instance();
+}
+inline ::AccumulatorParam* NodeParam::mutable_accumulator_param() {
+  
+  if (accumulator_param_ == NULL) {
+    accumulator_param_ = new ::AccumulatorParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.accumulator_param)
+  return accumulator_param_;
+}
+inline ::AccumulatorParam* NodeParam::release_accumulator_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.accumulator_param)
+  
+  ::AccumulatorParam* temp = accumulator_param_;
+  accumulator_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_accumulator_param(::AccumulatorParam* accumulator_param) {
+  delete accumulator_param_;
+  accumulator_param_ = accumulator_param;
+  if (accumulator_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.accumulator_param)
+}
+
 // -------------------------------------------------------------------
 
 // ArgmaxParam
@@ -6822,6 +7022,8 @@ NetworkParam::phase() const {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -6834,6 +7036,11 @@ template <> struct is_proto_enum< ::TensorParam_TensorType> : ::google::protobuf
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::TensorParam_TensorType>() {
   return ::TensorParam_TensorType_descriptor();
+}
+template <> struct is_proto_enum< ::AccumulatorParam_ResetTime> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::AccumulatorParam_ResetTime>() {
+  return ::AccumulatorParam_ResetTime_descriptor();
 }
 template <> struct is_proto_enum< ::PrintParam_PrintTime> : ::google::protobuf::internal::true_type {};
 template <>

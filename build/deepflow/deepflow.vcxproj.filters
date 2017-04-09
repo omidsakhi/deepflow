@@ -43,6 +43,9 @@
     <CudaCompile Include="..\..\src\ops\equal.cu">
       <Filter>source\ops</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\ops\accumulator.cu">
+      <Filter>source\ops</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -249,6 +252,9 @@
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ops\cast_float.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\accumulator.h">
       <Filter>include\ops</Filter>
     </ClInclude>
   </ItemGroup>

@@ -22,6 +22,14 @@ message PhaseplexerParam {
 	repeated string phase = 1;
 }
 
+message AccumulatorParam {
+	enum ResetTime {		
+		END_OF_EPOCH = 0;
+		NEVER = 1;
+	}
+	ResetTime reset_time = 1;
+}
+
 message PrintParam {
 	enum PrintTime {
 		EVERY_PASS = 0;
@@ -162,6 +170,7 @@ message NodeParam {
   EqualParam equal_param = 71;
   PrintParam print_param = 72;
   CastFloatParam cast_float_param = 73;
+  AccumulatorParam accumulator_param = 74;
 }
 
 message ArgmaxParam {

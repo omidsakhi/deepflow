@@ -44,6 +44,7 @@
     <ClInclude Include="..\..\include\observers\forward.h" />
     <ClInclude Include="..\..\include\observers\node_finder.h" />
     <ClInclude Include="..\..\include\observers\reset.h" />
+    <ClInclude Include="..\..\include\ops\accumulator.h" />
     <ClInclude Include="..\..\include\ops\add.h" />
     <ClInclude Include="..\..\include\ops\bias_add.h" />
     <ClInclude Include="..\..\include\ops\convolution_2d.h" />
@@ -79,6 +80,7 @@
     <ClCompile Include="..\..\src\ops\pooling.cpp">
       <FileType>Document</FileType>
     </ClCompile>
+    <CudaCompile Include="..\..\src\ops\accumulator.cu" />
     <CudaCompile Include="..\..\src\ops\equal.cu" />
     <CudaCompile Include="..\..\src\solvers\gain_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\sgd_solver.cu">
