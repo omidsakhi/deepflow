@@ -69,7 +69,7 @@ public:
 	void global_node_initializer();
 	void eval(NodeOutputPtr terminal, bool restart = true);
 	std::tuple<float, float, int> run(NodeOutputPtr loss, NodeOutputPtr accuracy, std::map<NodeOutputPtr, NodeOutputPtr> feed);
-	void run(std::string phase, bool print_iteration, bool print_epoch);
+	void run(std::string phase, bool print_iteration, bool print_epoch, int debug_level);
 	std::shared_ptr<Node> findNodeByName(const std::string &name) const;
 	std::string getUniqueNodeName(const std::string &prefix) const;
 	void save_as_binary(std::string filePath, bool include_inits);

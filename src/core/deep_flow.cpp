@@ -585,20 +585,21 @@ std::string DeepFlow::getUniqueNodeName(const std::string &prefix) const {
 	return nodeName;
 }
 
-void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
+void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch, int debug_level) {
 	LOG(INFO) << "Executing graph for phase " << phase;
 	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";
 	PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
-	std::list<std::shared_ptr<Reader>> train_readers;
-	std::list<std::shared_ptr<Node>> train_end_nodes;
-	auto train_context = std::make_shared<ExecutionContext>();
-	train_context->phase = phase;
+	std::list<std::shared_ptr<Reader>> execution_phase_readers;
+	std::list<std::shared_ptr<Node>> execution_end_nodes;
+	auto execution_context = std::make_shared<ExecutionContext>();
+	execution_context->phase = phase;
+	execution_context->debug_level = debug_level;
 	for (auto node : _nodes) {
-		node->setExecutionContext(train_context);
+		node->setExecutionContext(execution_context);
 		if (node->includePhase(phase)) {
 			auto reader = std::dynamic_pointer_cast<Reader>(node);
 			if (reader) {
-				train_readers.push_back(reader);
+				execution_phase_readers.push_back(reader);
 			}		
 			int num_connected_outputs = 0;
 			for (auto output : node->outputs()) {
@@ -606,10 +607,10 @@ void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
 					num_connected_outputs++;
 			}
 			if (num_connected_outputs == 0)
-				train_end_nodes.push_back(node);
+				execution_end_nodes.push_back(node);
 		}
 	}		
-	LOG_IF(FATAL, train_readers.size() == 0) << "No reader is defined for phase " << phase;
+	LOG_IF(FATAL, execution_phase_readers.size() == 0) << "No reader is defined for phase " << phase;
 	if (behaviour == PhaseParam_PhaseBehaviour_TRAIN) {
 		LOG_IF(FATAL, _solver == 0) << "No solver is defined for the graph.";
 		NodePtr loss_nodes;
@@ -633,8 +634,12 @@ void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
 		}
 		std::list<std::shared_ptr<Reader>> validation_readers;
 		std::list<std::shared_ptr<Node>> validation_end_nodes;
+		std::shared_ptr<ExecutionContext> validation_context;
 		if (!validation_phase.empty()) {
 			LOG(INFO) << "Graph has validation phase " << validation_phase;
+			validation_context = std::make_shared<ExecutionContext>();
+			validation_context->current_epoch = 1;
+			validation_context->debug_level = debug_level;
 			for (auto node : _nodes) {				
 				if (node->includePhase(validation_phase)) {
 					auto reader = std::dynamic_pointer_cast<Reader>(node);
@@ -659,35 +664,33 @@ void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
 				std::cout << "Epoch " << epoch << " -->" << std::endl;
 			auto epoch_start = std::chrono::high_resolution_clock::now();
 			bool any_last_batch = false;
-			train_context->last_batch = false;
+			execution_context->last_batch = false;
 			int iteration_per_epoch = 1;
 			do { // TRAINING LOOP
-				for (auto reader : train_readers) {
+				for (auto reader : execution_phase_readers) {
 					if (reader->isLastBatch())
 						any_last_batch = true;					
 				}
-				train_context->current_iteration = iteration;
-				train_context->current_iteration_per_epoch = iteration_per_epoch;
-				train_context->current_epoch = epoch;
-				train_context->last_batch = any_last_batch;
+				execution_context->current_iteration = iteration;
+				execution_context->current_iteration_per_epoch = iteration_per_epoch;
+				execution_context->current_epoch = epoch;
+				execution_context->last_batch = any_last_batch;
 				if (print_iteration)
 					std::cout << "  Iteration " << iteration << std::endl;
-				for (auto node : train_end_nodes)
+				for (auto node : execution_end_nodes)
 					node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
 				_solver->train_step();
-				for (auto node : train_end_nodes)
+				for (auto node : execution_end_nodes)
 					node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);				
-				for (auto reader : train_readers)
+				for (auto reader : execution_phase_readers)
 					reader->nextBatch();
 				iteration++;
 				iteration_per_epoch++;
 			} while (any_last_batch == false);
-			if (!validation_phase.empty()) {
-				auto validation_context = std::make_shared<ExecutionContext>();
+			if (!validation_phase.empty()) {				
 				validation_context->phase = validation_phase;
-				validation_context->current_epoch = 1;
 				validation_context->current_iteration = 1;
-				validation_context->current_iteration_per_epoch = 1;
+				validation_context->current_iteration_per_epoch = 1;				
 				for (auto node : _nodes)
 					node->setExecutionContext(validation_context);
 				bool any_last_batch = false;
@@ -698,6 +701,7 @@ void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
 							any_last_batch = true;
 					}
 					validation_context->current_iteration_per_epoch = iteration_per_epoch;
+					validation_context->current_iteration = iteration_per_epoch;
 					validation_context->last_batch = any_last_batch;
 					for (auto node : validation_end_nodes)
 						node->traverse(&resetObserver, TraverseOrder::PreOrder, true);					
@@ -708,7 +712,7 @@ void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch) {
 					iteration_per_epoch++;
 				} while (any_last_batch == false);
 				for (auto node : _nodes)
-					node->setExecutionContext(train_context);
+					node->setExecutionContext(execution_context);
 			}
 			auto epoch_end = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;

@@ -18,6 +18,7 @@ public :
 	Terminal(std::shared_ptr<Node> parentNode, int index, TerminalType type);	
 	std::shared_ptr<Node> node() const;
 	std::shared_ptr<Node> connectedNode() const;
+	std::shared_ptr<Terminal> connectedTerminal() const;
 	void setTerminal(std::shared_ptr<Terminal> terminal);
 	const TerminalType& type() const;
 	virtual std::array<int, 4> dims() = 0;

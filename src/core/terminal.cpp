@@ -38,6 +38,12 @@ void Terminal::setTerminal(std::shared_ptr<Terminal> terminal) {
 std::shared_ptr<Node> Terminal::node() const {
 	return _parentNode;
 }
+std::shared_ptr<Terminal> Terminal::connectedTerminal() const {
+	if (_terminal)
+		return _terminal;
+	return 0;
+}
+
 std::shared_ptr<Node> Terminal::connectedNode() const {
 	if (_terminal)
 		return _terminal->node();

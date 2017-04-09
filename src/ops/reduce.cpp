@@ -25,10 +25,41 @@ void Reduce::initForward() {
 	else
 		_reduceTensorIndices = CUDNN_REDUCE_TENSOR_NO_INDICES;
 	
+	std::string opString;
+	switch (reduceParam.reduce_op()) {
+	case ReduceParam_ReduceOp_ADD:
+		opString = "reduce_sum";
+		break;
+	case ReduceParam_ReduceOp_MUL:
+		opString = "reduce_mul";
+		break;
+	case ReduceParam_ReduceOp_MIN:
+		opString = "reduce_min";
+		break;
+	case ReduceParam_ReduceOp_MAX:
+		opString = "reduce_max";
+		break;
+	case ReduceParam_ReduceOp_AMAX:
+		opString = "reduce_max_abs";
+		break;
+	case ReduceParam_ReduceOp_AVG:
+		opString = "reduce_avg";
+		break;
+	case ReduceParam_ReduceOp_NORM1:
+		opString = "reduce_sum_abs";
+		break;
+	case ReduceParam_ReduceOp_NORM2:
+		opString = "reduce_hypot";
+		break;
+	};
+
 	LOG_IF(FATAL, cudnnCreateReduceTensorDescriptor(&_reduceTensorDesciptor) != 0) << "cudnnCreateReduceTensorDescriptor [FAILED]";
 	LOG_IF(FATAL, cudnnSetReduceTensorDescriptor(_reduceTensorDesciptor, _reduceTensorOp, CUDNN_DATA_FLOAT, CUDNN_PROPAGATE_NAN, _reduceTensorIndices, CUDNN_32BIT_INDICES) != 0) << "cudnnSetReduceTensorDescriptor [FAILED]";
 	LOG_IF(FATAL, cudnnGetReductionWorkspaceSize(_cudnnHandle, _reduceTensorDesciptor, _inputs[0]->value()->descriptor(), _outputs[0]->value()->descriptor(), &_workspaceSizeInBytes) != 0) << "cudnnGetReductionWorkspaceSize [FAILED]" ;
 	LOG_IF(FATAL, cudaMalloc(&_d_workspace, _workspaceSizeInBytes) != 0) << " cudaMalloc(&_d_workspace, ... [FAILED]";
+
+
+	LOG(INFO) << "Initializing " << opString << " " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape();
 }
 
 bool Reduce::requiresIndices() {

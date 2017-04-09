@@ -23,11 +23,15 @@ void Phaseplexer::initBackward()
 void Phaseplexer::forward()
 {	
 	auto input = _map[_context->phase];
+	if (_context->debug_level == 4)
+		LOG(INFO) << "FWRD - input: " << input->connectedTerminal()->name();
 	LOG_IF(FATAL, cudaMemcpy(_outputs[0]->value()->mutableData(), input->value()->data(), input->value()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0);
 }
 
 void Phaseplexer::backward()
 {	
 	auto input = _map[_context->phase];
+	if (_context->debug_level == 4)
+		LOG(INFO) << "BWRD: input: " << input->connectedTerminal()->name();
 	LOG_IF(FATAL, cudaMemcpy(input->diff()->mutableData(), _outputs[0]->diff()->data(), _outputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0);
 }
