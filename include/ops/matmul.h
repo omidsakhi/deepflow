@@ -17,6 +17,5 @@ private:
 	float _alpha;
 	float _beta;
 	cublasHandle_t _handle;
-	int _col_A, _row_A, _col_B, _row_B;
-	cudaStream_t _stream[2];
+	int _col_A, _row_A, _col_B, _row_B;	
 };

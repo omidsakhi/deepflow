@@ -56,12 +56,10 @@ void GainSolver::train_step() {
 	{		
 		auto output = var->output(0);
 		auto size = output->value()->size();
-		GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock, 0 , _streams[index]>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->mutableData(), _previous_gradients[index], _gains[index], _my_param.max_gain(), _my_param.min_gain(), _my_param.gain_plus(), _my_param.gain_mult(), _my_param.momentum(), _my_param.learning_rate());
+		GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->mutableData(), _previous_gradients[index], _gains[index], _my_param.max_gain(), _my_param.min_gain(), _my_param.gain_plus(), _my_param.gain_mult(), _my_param.momentum(), _my_param.learning_rate());
 		LOG_IF(FATAL, cudaPeekAtLastError() != 0);		
 		index++;
 	}
-
-	cudaDeviceSynchronize();
 	
 	for (auto var : _variables)
 	{		
@@ -74,9 +72,7 @@ void GainSolver::train_step() {
 
 void GainSolver::init() {
 	for (auto var : _variables)
-	{
-		_streams.push_back(cudaStream_t());
-		cudaStreamCreate(&_streams.back());
+	{				
 		auto size = var->output(0)->value()->size();
 		auto sizeInBytes = var->output(0)->value()->sizeInBytes();
 		_previous_gradients.push_back(NULL);

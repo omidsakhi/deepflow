@@ -10,7 +10,6 @@ public:
 	void init();	
 private:	
 	std::vector<float *> _gains;
-	std::vector<float *> _previous_gradients;
-	std::vector<cudaStream_t> _streams;
+	std::vector<float *> _previous_gradients;	
 	GainSolverParam _my_param;
 };
