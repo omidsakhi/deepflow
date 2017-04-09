@@ -77,6 +77,12 @@ public:
 	void define_phase(std::string phase, PhaseParam_PhaseBehaviour behaviour);
 	std::shared_ptr<NetworkParam> createNetworkParam(bool include_weights, bool include_inits);
 	void set_solver(std::shared_ptr<Solver> solver);
+
+	template <class T>
+	std::list<std::shared_ptr<T>> getNodes(std::string execution_phase);
+	
+	std::list<std::shared_ptr<Node>> getEndNodes(std::string execution_phase);
+
 private:
 	std::list<std::shared_ptr<Node>> _nodes;
 	std::list<std::shared_ptr<Variable>> _variables;
@@ -85,3 +91,16 @@ private:
 	std::map<std::string, PhaseParam_PhaseBehaviour> _phases;
 };
 
+template<class T>
+inline std::list<std::shared_ptr<T>> DeepFlow::getNodes(std::string execution_phase)
+{
+	std::list<std::shared_ptr<T>> list;
+	for (auto node : _nodes) {
+		if (node->includePhase(execution_phase)) {
+			auto node_after_cast = std::dynamic_pointer_cast<T>(node);
+			if (node_after_cast)
+				list.push_back(node_after_cast);
+		}
+	}
+	return list;
+}

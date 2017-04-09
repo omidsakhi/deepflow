@@ -585,46 +585,53 @@ std::string DeepFlow::getUniqueNodeName(const std::string &prefix) const {
 	return nodeName;
 }
 
-void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch, int debug_level) {
+void execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Reader>> *readers, std::list<std::shared_ptr<Node>> *end_nodes, std::shared_ptr<Solver> solver, bool print_iteration) {
+	ForwardObserver forwardObserver;
+	ResetObserver resetObserver;
+	int iteration_per_epoch = 1;
+	bool any_last_batch = false;	
+	for (auto node : *nodes)
+		node->setExecutionContext(context);
+	do {
+		for (auto reader : *readers) {
+			if (reader->isLastBatch())
+				any_last_batch = true;
+		}
+		LOG_IF(FATAL, any_last_batch == true && iteration_per_epoch == 1);
+		if (iteration)
+			context->current_iteration = *iteration;
+		context->current_iteration_per_epoch = iteration_per_epoch;
+		context->last_batch = any_last_batch;
+		if (iteration && print_iteration)
+			std::cout << "  Iteration " << *iteration << std::endl;
+		for (auto node : *end_nodes)
+			node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
+		if (solver) solver->train_step();
+		for (auto node : *end_nodes)
+			node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);
+		for (auto reader : *readers)
+			reader->nextBatch();
+		if (iteration)
+			(*iteration)++;
+		iteration_per_epoch++;
+	} while (any_last_batch == false);
+}
+
+void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch, int debug_level) {	
 	LOG(INFO) << "Executing graph for phase " << phase;
 	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";
 	PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
-	std::list<std::shared_ptr<Reader>> execution_phase_readers;
-	std::list<std::shared_ptr<Node>> execution_end_nodes;
+	std::list<std::shared_ptr<Reader>> execution_phase_readers = getNodes<Reader>(phase);
+	LOG_IF(FATAL, execution_phase_readers.size() == 0) << "No reader is defined for phase " << phase;
+	std::list<std::shared_ptr<Node>> execution_end_nodes = getEndNodes(phase);
 	auto execution_context = std::make_shared<ExecutionContext>();
 	execution_context->phase = phase;
-	execution_context->debug_level = debug_level;
-	for (auto node : _nodes) {
-		node->setExecutionContext(execution_context);
-		if (node->includePhase(phase)) {
-			auto reader = std::dynamic_pointer_cast<Reader>(node);
-			if (reader) {
-				execution_phase_readers.push_back(reader);
-			}		
-			int num_connected_outputs = 0;
-			for (auto output : node->outputs()) {
-				if (output->connectedNode())
-					num_connected_outputs++;
-			}
-			if (num_connected_outputs == 0)
-				execution_end_nodes.push_back(node);
-		}
-	}		
-	LOG_IF(FATAL, execution_phase_readers.size() == 0) << "No reader is defined for phase " << phase;
+	execution_context->debug_level = debug_level;		
 	if (behaviour == PhaseParam_PhaseBehaviour_TRAIN) {
 		LOG_IF(FATAL, _solver == 0) << "No solver is defined for the graph.";
-		NodePtr loss_nodes;
-		int count = 0;
-		for (auto node : _nodes) {
-			auto loss = std::dynamic_pointer_cast<Loss>(node);
-			if (loss && loss->includePhase(phase)) {
-				count = 0;
-				loss_nodes = node;
-			}				
-		}
-		LOG_IF(FATAL, loss_nodes = 0) << "No loss node is defined for phase " << phase;
-		LOG_IF(WARNING, count > 1) << "More than one loss node is defined for phase " << phase;
-		
+		std::list<std::shared_ptr<Loss>> execution_phase_loss_nodes = getNodes<Loss>(phase);
+		LOG_IF(FATAL, execution_phase_loss_nodes.size() == 0) << "No loss node is defined for phase " << phase;
+		LOG_IF(WARNING, execution_phase_loss_nodes.size() > 1) << "More than one loss node is defined for phase " << phase;		
 		std::string validation_phase;
 		for (auto phase : _phases) {
 			if (phase.second == PhaseParam_PhaseBehaviour_VALIDATION) {
@@ -636,89 +643,34 @@ void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch, in
 		std::list<std::shared_ptr<Node>> validation_end_nodes;
 		std::shared_ptr<ExecutionContext> validation_context;
 		if (!validation_phase.empty()) {
-			LOG(INFO) << "Graph has validation phase " << validation_phase;
+			LOG(INFO) << "Graph has validation phase (name: " << validation_phase << ")";
 			validation_context = std::make_shared<ExecutionContext>();
 			validation_context->current_epoch = 1;
 			validation_context->debug_level = debug_level;
-			for (auto node : _nodes) {				
-				if (node->includePhase(validation_phase)) {
-					auto reader = std::dynamic_pointer_cast<Reader>(node);
-					if (reader) {
-						validation_readers.push_back(reader);
-					}
-					int num_connected_outputs = 0;
-					for (auto output : node->outputs()) {
-						if (output->connectedNode())
-							num_connected_outputs++;
-					}
-					if (num_connected_outputs == 0)
-						validation_end_nodes.push_back(node);
-				}
-			}
+			validation_readers = getNodes<Reader>(validation_phase);
+			validation_end_nodes = getEndNodes(validation_phase);
 		}
-		ForwardObserver forwardObserver;
-		ResetObserver resetObserver;
 		int iteration = 1;
 		for (int epoch = 1; epoch <= _solver->maxEpoch(); ++epoch) {			
 			if (print_epoch)
 				std::cout << "Epoch " << epoch << " -->" << std::endl;
 			auto epoch_start = std::chrono::high_resolution_clock::now();
-			bool any_last_batch = false;
-			execution_context->last_batch = false;
-			int iteration_per_epoch = 1;
-			do { // TRAINING LOOP
-				for (auto reader : execution_phase_readers) {
-					if (reader->isLastBatch())
-						any_last_batch = true;					
-				}
-				execution_context->current_iteration = iteration;
-				execution_context->current_iteration_per_epoch = iteration_per_epoch;
-				execution_context->current_epoch = epoch;
-				execution_context->last_batch = any_last_batch;
-				if (print_iteration)
-					std::cout << "  Iteration " << iteration << std::endl;
-				for (auto node : execution_end_nodes)
-					node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
-				_solver->train_step();
-				for (auto node : execution_end_nodes)
-					node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);				
-				for (auto reader : execution_phase_readers)
-					reader->nextBatch();
-				iteration++;
-				iteration_per_epoch++;
-			} while (any_last_batch == false);
-			if (!validation_phase.empty()) {				
+			execution_context->current_epoch = epoch;
+			execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_readers, &execution_end_nodes, _solver, print_iteration);
+			if (!validation_phase.empty()) {			
 				validation_context->phase = validation_phase;
-				validation_context->current_iteration = 1;
-				validation_context->current_iteration_per_epoch = 1;				
-				for (auto node : _nodes)
-					node->setExecutionContext(validation_context);
-				bool any_last_batch = false;
-				int iteration_per_epoch = 1;
-				do { // VALIDATION LOOP
-					for (auto reader : validation_readers) {
-						if (reader->isLastBatch())
-							any_last_batch = true;
-					}
-					validation_context->current_iteration_per_epoch = iteration_per_epoch;
-					validation_context->current_iteration = iteration_per_epoch;
-					validation_context->last_batch = any_last_batch;
-					for (auto node : validation_end_nodes)
-						node->traverse(&resetObserver, TraverseOrder::PreOrder, true);					
-					for (auto node : validation_end_nodes)
-						node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);
-					for (auto reader : validation_readers)
-						reader->nextBatch();					
-					iteration_per_epoch++;
-				} while (any_last_batch == false);
-				for (auto node : _nodes)
-					node->setExecutionContext(execution_context);
+				validation_context->current_iteration = 1;				
+				validation_context->current_epoch = epoch;
+				execute_one_pass(validation_context, 0, &_nodes, &validation_readers, &validation_end_nodes, 0, false);
 			}
 			auto epoch_end = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
 			if (print_epoch)
 				std::cout << "<-- Epoch " << epoch << " Elapsed time: " << elapsed_epoch.count() << " seconds" << std::endl;		
 		}
+	}
+	else {
+		execute_one_pass(execution_context, 0, &_nodes, &execution_phase_readers, &execution_end_nodes, 0, false);
 	}
 }
 
@@ -814,4 +766,21 @@ void DeepFlow::define_phase(std::string phase, PhaseParam_PhaseBehaviour behavio
 
 void DeepFlow::set_solver(std::shared_ptr<Solver> solver) {
 	_solver = solver;
+}
+
+std::list<std::shared_ptr<Node>> DeepFlow::getEndNodes(std::string execution_phase)
+{
+	std::list<std::shared_ptr<Node>> list;
+	for (auto node : _nodes) {
+		if (node->includePhase(execution_phase)) {
+			int num_connected_outputs = 0;
+			for (auto output : node->outputs()) {
+				if (output->connectedNode())
+					num_connected_outputs++;
+			}
+			if (num_connected_outputs == 0)
+				list.push_back(node);
+		}
+	}
+	return list;
 }
