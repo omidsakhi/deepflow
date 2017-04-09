@@ -64,7 +64,7 @@ protected:
 	bool _visited = false;
 	bool _initialized = false;	
 	NodeParam _param;	
-	ExecutionContextPtr _context;	
+	ExecutionContextPtr _context;
 };
 
 using NodePtr = std::shared_ptr<Node>;

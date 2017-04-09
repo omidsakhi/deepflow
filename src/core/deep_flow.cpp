@@ -34,6 +34,8 @@
 
 #include <chrono>
 
+#include <ctime>
+
 std::shared_ptr<MNISTReader> DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNISTReaderType type, std::string name, std::initializer_list<std::string> phases) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
@@ -306,7 +308,7 @@ NodeOutputPtr DeepFlow::accumulator(NodeOutputPtr input, Accumulator::ResetTime 
 
 }
 
-std::shared_ptr<Print> DeepFlow::print(std::initializer_list<NodeOutputPtr> inputs, std::string message, Print::PrintTime printTime, std::string name, std::initializer_list<std::string> phases) {
+std::shared_ptr<Print> DeepFlow::print(std::initializer_list<NodeOutputPtr> inputs, std::string message, Print::PrintTime printTime, Print::PrintType printType, std::string name, std::initializer_list<std::string> phases) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
 	for (auto phase : phases)
@@ -315,6 +317,7 @@ std::shared_ptr<Print> DeepFlow::print(std::initializer_list<NodeOutputPtr> inpu
 	printParam->set_message(message);
 	printParam->set_num_inputs(inputs.size());	
 	printParam->set_print_time((PrintParam_PrintTime)printTime);
+	printParam->set_print_type((PrintParam_PrintType)printType);
 	auto node = std::make_shared<Print>(nodeParam);
 	node->createIO();
 	std::vector<NodeOutputPtr> inputsVec(inputs.size());
@@ -532,6 +535,7 @@ NodeOutputPtr DeepFlow::equal(NodeOutputPtr a, NodeOutputPtr b, std::string name
 }
 
 void DeepFlow::global_node_initializer() {
+	std::srand(std::time(0));
 	std::list<std::shared_ptr<Node>> queue = _nodes;
 	while (!queue.empty()) {
 		auto node = queue.front();		

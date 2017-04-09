@@ -211,6 +211,27 @@ inline bool PrintParam_PrintTime_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<PrintParam_PrintTime>(
     PrintParam_PrintTime_descriptor(), name, value);
 }
+enum PrintParam_PrintType {
+  PrintParam_PrintType_VALUES = 0,
+  PrintParam_PrintType_DIFFS = 1,
+  PrintParam_PrintType_PrintParam_PrintType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  PrintParam_PrintType_PrintParam_PrintType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool PrintParam_PrintType_IsValid(int value);
+const PrintParam_PrintType PrintParam_PrintType_PrintType_MIN = PrintParam_PrintType_VALUES;
+const PrintParam_PrintType PrintParam_PrintType_PrintType_MAX = PrintParam_PrintType_DIFFS;
+const int PrintParam_PrintType_PrintType_ARRAYSIZE = PrintParam_PrintType_PrintType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* PrintParam_PrintType_descriptor();
+inline const ::std::string& PrintParam_PrintType_Name(PrintParam_PrintType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    PrintParam_PrintType_descriptor(), value);
+}
+inline bool PrintParam_PrintType_Parse(
+    const ::std::string& name, PrintParam_PrintType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PrintParam_PrintType>(
+    PrintParam_PrintType_descriptor(), name, value);
+}
 enum ReduceParam_ReduceOp {
   ReduceParam_ReduceOp_ADD = 0,
   ReduceParam_ReduceOp_MUL = 1,
@@ -803,6 +824,32 @@ class PrintParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
     return PrintParam_PrintTime_Parse(name, value);
   }
 
+  typedef PrintParam_PrintType PrintType;
+  static const PrintType VALUES =
+    PrintParam_PrintType_VALUES;
+  static const PrintType DIFFS =
+    PrintParam_PrintType_DIFFS;
+  static inline bool PrintType_IsValid(int value) {
+    return PrintParam_PrintType_IsValid(value);
+  }
+  static const PrintType PrintType_MIN =
+    PrintParam_PrintType_PrintType_MIN;
+  static const PrintType PrintType_MAX =
+    PrintParam_PrintType_PrintType_MAX;
+  static const int PrintType_ARRAYSIZE =
+    PrintParam_PrintType_PrintType_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  PrintType_descriptor() {
+    return PrintParam_PrintType_descriptor();
+  }
+  static inline const ::std::string& PrintType_Name(PrintType value) {
+    return PrintParam_PrintType_Name(value);
+  }
+  static inline bool PrintType_Parse(const ::std::string& name,
+      PrintType* value) {
+    return PrintParam_PrintType_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   // string message = 2;
@@ -831,6 +878,12 @@ class PrintParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::PrintParam_PrintTime print_time() const;
   void set_print_time(::PrintParam_PrintTime value);
 
+  // .PrintParam.PrintType print_type = 4;
+  void clear_print_type();
+  static const int kPrintTypeFieldNumber = 4;
+  ::PrintParam_PrintType print_type() const;
+  void set_print_type(::PrintParam_PrintType value);
+
   // @@protoc_insertion_point(class_scope:PrintParam)
  private:
 
@@ -838,6 +891,7 @@ class PrintParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::internal::ArenaStringPtr message_;
   ::google::protobuf::int32 num_inputs_;
   int print_time_;
+  int print_type_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4214,6 +4268,20 @@ inline void PrintParam::set_print_time(::PrintParam_PrintTime value) {
   // @@protoc_insertion_point(field_set:PrintParam.print_time)
 }
 
+// .PrintParam.PrintType print_type = 4;
+inline void PrintParam::clear_print_type() {
+  print_type_ = 0;
+}
+inline ::PrintParam_PrintType PrintParam::print_type() const {
+  // @@protoc_insertion_point(field_get:PrintParam.print_type)
+  return static_cast< ::PrintParam_PrintType >(print_type_);
+}
+inline void PrintParam::set_print_type(::PrintParam_PrintType value) {
+  
+  print_type_ = value;
+  // @@protoc_insertion_point(field_set:PrintParam.print_type)
+}
+
 // -------------------------------------------------------------------
 
 // AddParam
@@ -6848,6 +6916,11 @@ template <> struct is_proto_enum< ::PrintParam_PrintTime> : ::google::protobuf::
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::PrintParam_PrintTime>() {
   return ::PrintParam_PrintTime_descriptor();
+}
+template <> struct is_proto_enum< ::PrintParam_PrintType> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::PrintParam_PrintType>() {
+  return ::PrintParam_PrintType_descriptor();
 }
 template <> struct is_proto_enum< ::ReduceParam_ReduceOp> : ::google::protobuf::internal::true_type {};
 template <>

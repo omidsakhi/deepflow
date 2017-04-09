@@ -35,9 +35,14 @@ message PrintParam {
 		EVERY_PASS = 0;
 		END_OF_EPOCH = 1;
 	}
+	enum PrintType {
+		VALUES = 0;
+		DIFFS = 1;
+	}
 	int32 num_inputs = 1;
 	string message = 2;
 	PrintTime print_time = 3;
+	PrintType print_type = 4;
 }
 
 message AddParam {

@@ -44,7 +44,7 @@ void main(int argc, char** argv) {
 		auto m1 = df.matmul(pool2, w1,"m1");
 		auto bias1 = df.bias_add(m1, b1,"bias1");
 		auto relu1 = df.relu(bias1, -0.01f, "relu1");
-		auto dropout = df.dropout(relu1, 0.5f, "dropout");
+		auto dropout = df.dropout(relu1, 0.0f, "dropout", {"Train"} );
 		//auto dropout_bypass = df.phaseplexer(relu1, "Validation", dropout, "Train", "dropout_bypass");
 		auto w2 = df.variable(df.random_uniform({ 500, 10, 1 , 1 }, -0.1f, 0.1f), "w2");
 		auto b2 = df.variable(df.step({ 1, 10, 1, 1 }, -1.0f, 1.0f), "b2");
@@ -57,8 +57,8 @@ void main(int argc, char** argv) {
 		auto equal = df.equal(predict, target,"equal");
 		auto acc = df.accumulator(equal, Accumulator::EndOfEpoch, "acc");
 		auto correct = df.reduce_sum(acc, 0, "correct");
-		auto train_print = df.print({ correct }, "    TRAIN CORRECT COUNT: {0}\n", Print::EndOfEpoch, "print", { "Train" });
-		auto valid_print = df.print({ correct }, "    VALID CORRECT COUNT: {0}\n", Print::EndOfEpoch, "print", { "Validation" });
+		auto train_print = df.print({ correct }, "    TRAINSET   CORRECT COUNT : {0}\n", Print::END_OF_EPOCH, Print::VALUES, "print", { "Train" });
+		auto valid_print = df.print({ correct }, "    VALIDATION CORRECT COUNT : {0}\n", Print::END_OF_EPOCH, Print::VALUES, "print", { "Validation" });
 		df.set_solver(df.gain_solver(loss, FLAGS_epoch, 0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f));		
 	}
 	else {
