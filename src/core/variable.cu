@@ -18,9 +18,16 @@ Variable::Variable(std::shared_ptr<Initializer> initializer, const NodeParam &pa
 
 void Variable::initForward() {	
 	_initializer->init();
-	_outputs[0]->initValue(_initializer->dims());	
-	LOG(INFO) << "Initializing Variable " << _name << " - " << _outputs[0]->value()->shape();	
-	if (_initializer->param().has_init_data())
+	_outputs[0]->initValue(_initializer->dims());
+	LOG(INFO) << "Initializing Variable " << _name << " - " << _outputs[0]->value()->shape();
+	if (_param.variable_param().has_weights()) {
+		LOG_IF(FATAL, cudaMemcpy(
+			_outputs[0]->value()->mutableData(),
+			_param.variable_param().weights().weight().data(),
+			_outputs[0]->value()->sizeInBytes()
+			, cudaMemcpyHostToDevice) != 0) << "cudaMemcpy [FAILED]";
+	}
+	else if (_initializer->param().has_init_data())
 		LOG_IF(FATAL,cudaMemcpy(
 			_outputs[0]->value()->mutableData(),
 			_initializer->param().init_data().weight().data(),
