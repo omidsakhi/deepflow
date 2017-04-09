@@ -10,14 +10,17 @@ Node::Node(const NodeParam &param) : CudaHelper() {
 }
 
 void Node::createIO() {
-	for (int i = 0; i < minNumInputs(); ++i) {
+	for (int i = 0; i < minNumInputs(); ++i)
 		_inputs.push_back(std::make_shared<NodeInput>(shared_from_this(), i));		
-	}
-	for (int i = 0; i < minNumOutputs(); ++i) {
+	for (int i = _param.input_size(); i < minNumInputs(); ++i)
+		_param.add_input();
+	LOG_IF(FATAL, _param.input_size() != _inputs.size()) << name() << " _param.input_size() != minNumInputs()";
+
+	for (int i = 0; i < minNumOutputs(); ++i)
 		_outputs.push_back(std::make_shared<NodeOutput>(shared_from_this(), i, name() + std::string("_output_") + std::to_string(i)));		
-	}
-	LOG_IF(FATAL, _param.input_size() != minNumInputs()) << name() << " _param.input_size() != minNumInputs()";
-	LOG_IF(FATAL, _param.output_size() != minNumOutputs()) << name() << " _param.output_size() != minNumOutputs()";
+	for (int i = _param.output_size(); i < minNumOutputs(); ++i)
+		_param.add_output();
+	LOG_IF(FATAL, _param.output_size() != _outputs.size()) << name() << " _param.output_size() != minNumOutputs()";
 }
 
 void Node::setVisited(bool state) {

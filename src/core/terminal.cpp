@@ -29,6 +29,8 @@ void NodeInput::connect(std::shared_ptr<NodeOutput> terminal) {
 	_parentNode->param().set_input(_index, terminal->name());
 	_terminal->node()->param().set_output(_terminal->index(), terminal->name());	
 	terminal->setTerminal(shared_from_this());
+	LOG_IF(FATAL, _terminal->node()->param().input_size() != _terminal->node()->inputs().size()) << _terminal->node()->name() << " _param.input_size() != minNumInputs()";
+	LOG_IF(FATAL, _terminal->node()->param().output_size() != _terminal->node()->outputs().size()) << _terminal->node()->name() << " _param.output_size() != minNumOutputs()";
 }
 
 void Terminal::setTerminal(std::shared_ptr<Terminal> terminal) {
