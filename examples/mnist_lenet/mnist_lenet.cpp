@@ -31,7 +31,8 @@ void main(int argc, char** argv) {
 		df.define_phase("Validation", PhaseParam_PhaseBehaviour_VALIDATION);		
 		auto mnist_trainset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Train, "trainset", { "Train" });
 		auto mnist_testset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Test, "testset", { "Validation" });
-		auto data_selector = df.phaseplexer(mnist_trainset->output(0), "Train", mnist_testset->output(0), "Validation", "data_selector");		
+		auto data_selector = df.phaseplexer(mnist_trainset->output(0), "Train", mnist_testset->output(0), "Validation", "data_selector");	
+		//auto disp = df.display(data_selector);
 		auto label_selector = df.phaseplexer(mnist_trainset->output(1), "Train", mnist_testset->output(1), "Validation", "label_selector");
 		auto f1 = df.variable(df.random_uniform({ 20, 1 , 5, 5 }, -0.1f, 0.1f), "f1");
 		auto conv1 = df.conv2d(data_selector, f1, 2, 2, 1, 1, 1, 1, "conv1");

@@ -50,6 +50,10 @@ message AddParam {
 	float beta = 2;	
 }
 
+message DisplayParam {
+
+}
+
 message EqualParam {
 
 }
@@ -164,6 +168,7 @@ message NodeParam {
   PrintParam print_param = 116;
   CastFloatParam cast_float_param = 117;
   AccumulatorParam accumulator_param = 118;
+  DisplayParam display_param = 119;
 }
 
 message SquareParam {

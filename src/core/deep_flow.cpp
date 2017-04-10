@@ -22,6 +22,7 @@
 #include "ops/reduce.h"
 #include "ops/equal.h"
 #include "ops/cast_float.h"
+#include "ops/display.h"
 
 #include <unordered_map>
 #include <map>
@@ -421,6 +422,19 @@ NodeOutputPtr DeepFlow::conv2d(NodeOutputPtr input, NodeOutputPtr filter, std::s
 	node->createIO();
 	node->input(0)->connect(input);
 	node->input(1)->connect(filter);
+	_nodes.push_back(node);
+	return node->output(0);
+}
+
+NodeOutputPtr DeepFlow::display(NodeOutputPtr input, std::string name, std::initializer_list<std::string> phases) {
+	NodeParam nodeParam;
+	nodeParam.set_name(getUniqueNodeName(name));
+	for (auto phase : phases)
+		nodeParam.add_phase(phase);
+	DisplayParam *param = nodeParam.mutable_display_param();
+	auto node = std::make_shared<Display>(nodeParam);
+	node->createIO();
+	node->input(0)->connect(input);
 	_nodes.push_back(node);
 	return node->output(0);
 }

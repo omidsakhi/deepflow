@@ -47,6 +47,7 @@
     <ClInclude Include="..\..\include\ops\add.h" />
     <ClInclude Include="..\..\include\ops\bias_add.h" />
     <ClInclude Include="..\..\include\ops\convolution_2d.h" />
+    <ClInclude Include="..\..\include\ops\display.h" />
     <ClInclude Include="..\..\include\ops\dropout.h" />
     <ClInclude Include="..\..\include\ops\equal.h" />
     <ClInclude Include="..\..\include\ops\matmul.h" />
@@ -79,6 +80,7 @@
       <FileType>Document</FileType>
     </ClCompile>
     <CudaCompile Include="..\..\src\ops\accumulator.cu" />
+    <CudaCompile Include="..\..\src\ops\display.cu" />
     <CudaCompile Include="..\..\src\ops\equal.cu" />
     <CudaCompile Include="..\..\src\solvers\gain_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\sgd_solver.cu">
@@ -262,7 +264,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>libprotobuf.lib;opencv_imgcodecs320.lib;opencv_imgproc320.lib;opencv_core320.lib;shlwapi.lib;gflags_static.lib;glog.lib;curand.lib;cublas.lib;cudnn.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libprotobuf.lib;opencv_imgcodecs320.lib;opencv_imgproc320.lib;opencv_core320.lib;opencv_highgui320.lib;shlwapi.lib;gflags_static.lib;glog.lib;curand.lib;cublas.lib;cudnn.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\third-party\protobuf\src;..\..\third-party\protobuf\build\Release;..\..\third-party\opencv\build\lib\Release;..\..\third-party\glog\build\Release;..\..\third-party\gflags\build\lib\Release;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>

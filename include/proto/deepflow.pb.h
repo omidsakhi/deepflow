@@ -45,6 +45,9 @@ extern CastFloatParamDefaultTypeInternal _CastFloatParam_default_instance_;
 class Conv2dParam;
 class Conv2dParamDefaultTypeInternal;
 extern Conv2dParamDefaultTypeInternal _Conv2dParam_default_instance_;
+class DisplayParam;
+class DisplayParamDefaultTypeInternal;
+extern DisplayParamDefaultTypeInternal _DisplayParam_default_instance_;
 class DropoutParam;
 class DropoutParamDefaultTypeInternal;
 extern DropoutParamDefaultTypeInternal _DropoutParam_default_instance_;
@@ -982,6 +985,82 @@ class AddParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   float alpha_;
   float beta_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:DisplayParam) */ {
+ public:
+  DisplayParam();
+  virtual ~DisplayParam();
+
+  DisplayParam(const DisplayParam& from);
+
+  inline DisplayParam& operator=(const DisplayParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DisplayParam& default_instance();
+
+  static inline const DisplayParam* internal_default_instance() {
+    return reinterpret_cast<const DisplayParam*>(
+               &_DisplayParam_default_instance_);
+  }
+
+  void Swap(DisplayParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DisplayParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DisplayParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DisplayParam& from);
+  void MergeFrom(const DisplayParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DisplayParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:DisplayParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2674,6 +2753,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::AccumulatorParam* release_accumulator_param();
   void set_allocated_accumulator_param(::AccumulatorParam* accumulator_param);
 
+  // .DisplayParam display_param = 119;
+  bool has_display_param() const;
+  void clear_display_param();
+  static const int kDisplayParamFieldNumber = 119;
+  const ::DisplayParam& display_param() const;
+  ::DisplayParam* mutable_display_param();
+  ::DisplayParam* release_display_param();
+  void set_allocated_display_param(::DisplayParam* display_param);
+
   // @@protoc_insertion_point(class_scope:NodeParam)
  private:
 
@@ -2701,6 +2789,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::PrintParam* print_param_;
   ::CastFloatParam* cast_float_param_;
   ::AccumulatorParam* accumulator_param_;
+  ::DisplayParam* display_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4313,6 +4402,10 @@ inline void AddParam::set_beta(float value) {
   beta_ = value;
   // @@protoc_insertion_point(field_set:AddParam.beta)
 }
+
+// -------------------------------------------------------------------
+
+// DisplayParam
 
 // -------------------------------------------------------------------
 
@@ -5989,6 +6082,45 @@ inline void NodeParam::set_allocated_accumulator_param(::AccumulatorParam* accum
   // @@protoc_insertion_point(field_set_allocated:NodeParam.accumulator_param)
 }
 
+// .DisplayParam display_param = 119;
+inline bool NodeParam::has_display_param() const {
+  return this != internal_default_instance() && display_param_ != NULL;
+}
+inline void NodeParam::clear_display_param() {
+  if (GetArenaNoVirtual() == NULL && display_param_ != NULL) delete display_param_;
+  display_param_ = NULL;
+}
+inline const ::DisplayParam& NodeParam::display_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.display_param)
+  return display_param_ != NULL ? *display_param_
+                         : *::DisplayParam::internal_default_instance();
+}
+inline ::DisplayParam* NodeParam::mutable_display_param() {
+  
+  if (display_param_ == NULL) {
+    display_param_ = new ::DisplayParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.display_param)
+  return display_param_;
+}
+inline ::DisplayParam* NodeParam::release_display_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.display_param)
+  
+  ::DisplayParam* temp = display_param_;
+  display_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_display_param(::DisplayParam* display_param) {
+  delete display_param_;
+  display_param_ = display_param;
+  if (display_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.display_param)
+}
+
 // -------------------------------------------------------------------
 
 // SquareParam
@@ -6828,6 +6960,8 @@ NetworkParam::phase() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
