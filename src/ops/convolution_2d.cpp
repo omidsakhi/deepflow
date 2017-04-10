@@ -37,17 +37,20 @@ void Convolution2D::initBackward() {
 	LOG_IF(FATAL, cudnnGetConvolutionBackwardDataAlgorithm(_cudnnHandle, _filterDesc, _outputs[0]->diff()->descriptor(), _convDesc, _inputs[0]->diff()->descriptor(), CUDNN_CONVOLUTION_BWD_DATA_PREFER_FASTEST, 0, &_bwdDataAlgo) != 0) << "cudnnGetConvolutionBackwardDataAlgorithm [FAILED]";
 	LOG_IF(FATAL, cudnnGetConvolutionBackwardDataWorkspaceSize(_cudnnHandle, _filterDesc, _outputs[0]->diff()->descriptor(), _convDesc, _inputs[0]->diff()->descriptor(), _bwdDataAlgo, &_bwdDataWorkspaceSize) != 0) << "cudnnGetConvolutionBackwardDataWorkspaceSize [FAILED]";
 	LOG_IF(FATAL, cudnnGetConvolutionBackwardFilterAlgorithm(_cudnnHandle, _inputs[0]->value()->descriptor(), _outputs[0]->diff()->descriptor(), _convDesc, _filterDesc, CUDNN_CONVOLUTION_BWD_FILTER_PREFER_FASTEST, 0, &_bwdFilterAlgo) != 0) << "cudnnGetConvolutionBackwardFilterAlgorithm [FAILED]";
-	LOG_IF(FATAL, cudnnGetConvolutionBackwardFilterWorkspaceSize(_cudnnHandle, _inputs[0]->value()->descriptor(), _outputs[0]->diff()->descriptor(), _convDesc, _filterDesc, _bwdFilterAlgo, &_bwdFilterWorkspaceSize) != 0) << "cudnnGetConvolutionBackwardFilterWorkspaceSize [FAILED]";
+	LOG_IF(FATAL, cudnnGetConvolutionBackwardFilterWorkspaceSize(_cudnnHandle, _inputs[0]->value()->descriptor(), _outputs[0]->diff()->descriptor(), _convDesc, _filterDesc, _bwdFilterAlgo, &_bwdFilterWorkspaceSize) != 0) << "cudnnGetConvolutionBackwardFilterWorkspaceSize [FAILED]";	
 	_maxWorkspaceSize = std::max({ _maxWorkspaceSize, _bwdDataWorkspaceSize, _bwdFilterWorkspaceSize });
 }
 
 void Convolution2D::forward() {
 	if (d_workspace == 0 && _maxWorkspaceSize != 0)
 		LOG_IF(FATAL, cudaMalloc(&d_workspace, _maxWorkspaceSize) != 0) << "cudaMalloc(&d_workspace ... [FAILED]";
-	LOG_IF(FATAL, cudnnConvolutionForward(_cudnnHandle, &alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), _filterDesc, _inputs[1]->value()->data(), _convDesc, _fwdAlgo, d_workspace, _maxWorkspaceSize, &beta, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()) != 0) << "cudnnConvolutionForward [FAILED]";
+	LOG_IF(FATAL, cudnnConvolutionForward(_cudnnHandle, &alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), _filterDesc, _inputs[1]->value()->data(), _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &beta, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()) != 0) << "cudnnConvolutionForward [FAILED]";
 }
 
-void Convolution2D::backward() {
-	LOG_IF(FATAL, cudnnConvolutionBackwardData(_cudnnHandle, &alpha, _filterDesc, _inputs[1]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _convDesc, _bwdDataAlgo, d_workspace, _maxWorkspaceSize, &beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()) != 0) << "cudnnConvolutionBackwardData [FAILED]";
-	LOG_IF(FATAL,cudnnConvolutionBackwardFilter(_cudnnHandle, &alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _convDesc, _bwdFilterAlgo, d_workspace, _maxWorkspaceSize, &beta, _filterDesc, _inputs[1]->diff()->mutableData()) != 0) << "cudnnConvolutionBackwardFilter [FAILED]";
+void Convolution2D::backward() {	
+	cudnnStatus_t t;
+	t = cudnnConvolutionBackwardFilter(_cudnnHandle, &alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &beta, _filterDesc, _inputs[1]->diff()->mutableData());
+	LOG_IF(FATAL, t != 0) << "cudnnConvolutionBackwardFilter [FAILED] - " << cudnnGetErrorString(t);
+	t = cudnnConvolutionBackwardData(_cudnnHandle, &alpha, _filterDesc, _inputs[1]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData());
+	LOG_IF(FATAL, t != 0) << "cudnnConvolutionBackwardData [FAILED] - " << cudnnGetErrorString(t);
 }
