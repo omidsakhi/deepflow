@@ -39,7 +39,7 @@ public:
 	NodeOutputPtr softmax(NodeOutputPtr a, std::string name = "softmax", std::initializer_list<std::string> phases = {});
 	NodeOutputPtr square(NodeOutputPtr a, std::string name = "square", std::initializer_list<std::string> phases = {});
 	NodeOutputPtr matmul(NodeOutputPtr a, NodeOutputPtr b, std::string name = "ip", std::initializer_list<std::string> phases = {});
-	NodeOutputPtr relu(NodeOutputPtr a, float negative_slope = -0.01f, std::string name = "relu", std::initializer_list<std::string> phases = {});
+	NodeOutputPtr relu(NodeOutputPtr a, float negative_slope = 0.01f, std::string name = "relu", std::initializer_list<std::string> phases = {});
 	NodeOutputPtr dropout(NodeOutputPtr a, float dropout = 0.5f, std::string name = "dropout", std::initializer_list<std::string> phases = {});
 	NodeOutputPtr conv2d(NodeOutputPtr input, NodeOutputPtr filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation , std::string name = "conv", std::initializer_list<std::string> phases = {});
 	NodeOutputPtr conv2d(NodeOutputPtr input, NodeOutputPtr filter, std::string name = "conv", std::initializer_list<std::string> phases = {});

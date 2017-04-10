@@ -12,6 +12,7 @@ public:
 	void initBackward();
 	void forward();
 	void backward();
+	std::list<std::shared_ptr<Node>> sourceNodes() const;
 protected:
 	std::map<std::string, NodeInputPtr> _map;
 };

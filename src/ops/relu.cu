@@ -21,7 +21,7 @@ Relu::Relu(const NodeParam &param) : Node(param) {
 
 void Relu::initForward() {	
 	_negative_slope = _param.relu_param().negative_slope();
-	LOG_IF(FATAL, _negative_slope > 0) << " negative_slope > 0";
+	LOG_IF(FATAL, _negative_slope < 0) << " negative_slope < 0";
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
 	LOG(INFO) << "Initializing Relu " << _name << " - " << _outputs[0]->value()->shape();
 }

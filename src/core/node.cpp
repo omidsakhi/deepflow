@@ -27,6 +27,17 @@ void Node::setVisited(bool state) {
 	_visited = state;
 }
 
+std::list<std::shared_ptr<Node>> Node::sourceNodes() const {
+	std::list<std::shared_ptr<Node>> list;
+	for (int i = 0; i < _inputs.size(); ++i)
+		if (_inputs[i]) {
+			auto connectedNode = _inputs[i]->connectedNode();
+			if (connectedNode)
+				list.push_back(connectedNode);
+		}
+	return list;
+}
+
 void Node::traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition) {
 	if (_visited == visit_condition)
 		return;
@@ -34,12 +45,8 @@ void Node::traverse(NodeObserver *observer, TraverseOrder order, bool visit_cond
 		return;
 	if (order == TraverseOrder::PreOrder)
 		observer->apply(shared_from_this());
-	for (int i = 0; i < _inputs.size(); ++i)
-		if (_inputs[i]) {
-			auto connectedNode = _inputs[i]->connectedNode();
-			if (connectedNode)
-				connectedNode->traverse(observer, order, visit_condition);
-		}			
+	for (auto node : sourceNodes())
+		node->traverse(observer, order, visit_condition);
 	if (order == TraverseOrder::PostOrder)
 		observer->apply(shared_from_this());
 	_visited = visit_condition;

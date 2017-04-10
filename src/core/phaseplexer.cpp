@@ -20,18 +20,30 @@ void Phaseplexer::initBackward()
 	_outputs[0]->initDiff();
 }
 
+std::list<std::shared_ptr<Node>> Phaseplexer::sourceNodes() const {
+	std::list<std::shared_ptr<Node>> list;
+	if (_context) {
+		auto input = _map.find(_context->phase);
+		list.push_back(input->second->connectedTerminal()->node());
+		return list;
+	}
+	else {
+		return Node::sourceNodes();
+	}	
+}
+
 void Phaseplexer::forward()
 {	
-	auto input = _map[_context->phase];
+	auto input = _map.find(_context->phase);
 	if (_context->debug_level == 4)
-		LOG(INFO) << "FWRD - input: " << input->connectedTerminal()->name();
-	LOG_IF(FATAL, cudaMemcpy(_outputs[0]->value()->mutableData(), input->value()->data(), input->value()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0);
+		LOG(INFO) << "FWRD - input: " << input->second->connectedTerminal()->name();
+	LOG_IF(FATAL, cudaMemcpy(_outputs[0]->value()->mutableData(), input->second->value()->data(), input->second->value()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0);
 }
 
 void Phaseplexer::backward()
 {	
-	auto input = _map[_context->phase];
+	auto input = _map.find(_context->phase);
 	if (_context->debug_level == 4)
-		LOG(INFO) << "BWRD: input: " << input->connectedTerminal()->name();
-	LOG_IF(FATAL, cudaMemcpy(input->diff()->mutableData(), _outputs[0]->diff()->data(), _outputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0);
+		LOG(INFO) << "BWRD: input: " << input->second->connectedTerminal()->name();
+	LOG_IF(FATAL, cudaMemcpy(input->second->diff()->mutableData(), _outputs[0]->diff()->data(), _outputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0);
 }

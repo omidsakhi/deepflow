@@ -56,7 +56,8 @@ public:
 	void setInitialized(bool status);
 	NodeParam &param();
 	bool includePhase(const std::string &phase);
-	void setExecutionContext(ExecutionContextPtr context);	
+	void setExecutionContext(ExecutionContextPtr context);
+	virtual std::list<std::shared_ptr<Node>> sourceNodes() const;
 protected:	
 	std::vector<NodeInputPtr> _inputs;
 	std::vector<NodeOutputPtr> _outputs;
