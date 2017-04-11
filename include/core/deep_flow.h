@@ -51,7 +51,7 @@ public:
 	NodeOutputPtr reduce_sum(NodeOutputPtr input, int reduceDimension, std::string name = "sum", std::initializer_list<std::string> phases = {});
 	NodeOutputPtr cast_float(NodeOutputPtr input, std::string name = "float", std::initializer_list<std::string> phases = {});
 	NodeOutputPtr accumulator(NodeOutputPtr input, Accumulator::ResetTime resetTime = Accumulator::ResetTime::EndOfEpoch, std::string name = "acc", std::initializer_list<std::string> phases = {});
-	NodeOutputPtr display(NodeOutputPtr input, std::string name = "disp", std::initializer_list<std::string> phases = {});
+	NodePtr display(NodeOutputPtr input, int delay_msec = 100, std::string name = "disp", std::initializer_list<std::string> phases = {});
 
 	// PHASE
 	NodeOutputPtr phaseplexer(NodeOutputPtr input_1, std::string phase_1, NodeOutputPtr input_2, std::string phase_2, std::string name = "plex", std::initializer_list<std::string> phases = {});

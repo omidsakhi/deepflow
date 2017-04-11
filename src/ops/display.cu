@@ -6,7 +6,7 @@
 //#include <opencv2/gpu/gpumat.hpp>
 
 __global__
-void PictureGeneratorKernel(const int n, const float *in, int *out, const int picWidth, const int sq, const int numImages, const int perImageWidth, const int perImageHeight)
+void PictureGeneratorKernel(const int n, const float *in, unsigned char *out, const int picWidth, const int sq, const int numImages, const int perImageWidth, const int perImageHeight)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
@@ -27,6 +27,7 @@ Display::Display(const NodeParam &param) : Node(param) {
 }
 
 void Display::initForward() {
+	_delay_msec = _param.display_param().delay_msec();
 	auto dims = _inputs[0]->value()->dims();	
 	input_size = _inputs[0]->value()->size();
 	input_size_in_bytes = _inputs[0]->value()->sizeInBytes();
@@ -38,33 +39,25 @@ void Display::initForward() {
 	pic_height = per_image_height * ((int)ceil(((float)num_images / num_image_per_row_and_col)));
 	num_pic_pixels = pic_width * pic_height;	
 
-	LOG_IF(FATAL, cudaMalloc(&d_pic, sizeof(int) * num_pic_pixels) != 0);
-	LOG_IF(FATAL, cudaMemset(d_pic, 0, sizeof(int) * num_pic_pixels) != 0);
-		
-	//cv::gpu::GpuMat picMat(pic_height, pic_width, CV_32SC1, img);
-
-	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Initializing Display " << _name << " - " << pic_width << "x" << pic_height;
-	h_pic = new int[num_pic_pixels];
-	disp = cv::Mat(pic_height, pic_width, CV_8U, h_pic);	
+	LOG_IF(FATAL, cudaMalloc(&d_pic, sizeof(unsigned char) * num_pic_pixels) != 0);
+	LOG_IF(FATAL, cudaMemset(d_pic, 0, sizeof(unsigned char) * num_pic_pixels) != 0);
+			
+	LOG(INFO) << "Initializing Display " << _name << " - " << _inputs[0]->value()->shape() << " -> " << pic_width << "x" << pic_height;
+	disp = cv::Mat(pic_height, pic_width, CV_8U);	
 }
 
 void Display::initBackward() {
-	_outputs[0]->initDiff();
+	
 }
 
 void Display::forward() {	
 	PictureGeneratorKernel << < numOfBlocks(input_size), maxThreadsPerBlock >> >(input_size, (float*) _inputs[0]->value()->data(), d_pic, pic_width, num_image_per_row_and_col, num_images, per_image_width, per_image_height);
 	LOG_IF(FATAL, cudaPeekAtLastError() != 0);	
-	LOG_IF(FATAL, cudaMemcpy(h_pic, d_pic, sizeof(int) *num_pic_pixels, cudaMemcpyDeviceToHost) != 0);
-	for (int r = 0; r < pic_height; r++)
-		for (int c = 0; c < pic_width; c++)
-			disp.at<char>(r, c) = h_pic[r * pic_width + c];	
+	LOG_IF(FATAL, cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) *num_pic_pixels, cudaMemcpyDeviceToHost) != 0);
 	cv::imshow(name(), disp);
-	cv::waitKey(100);
-	LOG_IF(FATAL,cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[0]->value()->data(), input_size_in_bytes, cudaMemcpyDeviceToDevice));
+	cv::waitKey(_delay_msec);
 }
 
 void Display::backward() {
-	LOG_IF(FATAL, cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), input_size_in_bytes, cudaMemcpyDeviceToDevice));
+	
 }

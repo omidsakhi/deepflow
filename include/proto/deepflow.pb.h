@@ -1057,10 +1057,17 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
+  // int32 delay_msec = 1;
+  void clear_delay_msec();
+  static const int kDelayMsecFieldNumber = 1;
+  ::google::protobuf::int32 delay_msec() const;
+  void set_delay_msec(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:DisplayParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 delay_msec_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4406,6 +4413,20 @@ inline void AddParam::set_beta(float value) {
 // -------------------------------------------------------------------
 
 // DisplayParam
+
+// int32 delay_msec = 1;
+inline void DisplayParam::clear_delay_msec() {
+  delay_msec_ = 0;
+}
+inline ::google::protobuf::int32 DisplayParam::delay_msec() const {
+  // @@protoc_insertion_point(field_get:DisplayParam.delay_msec)
+  return delay_msec_;
+}
+inline void DisplayParam::set_delay_msec(::google::protobuf::int32 value) {
+  
+  delay_msec_ = value;
+  // @@protoc_insertion_point(field_set:DisplayParam.delay_msec)
+}
 
 // -------------------------------------------------------------------
 

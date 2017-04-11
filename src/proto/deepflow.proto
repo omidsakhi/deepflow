@@ -51,7 +51,7 @@ message AddParam {
 }
 
 message DisplayParam {
-
+	int32 delay_msec = 1;
 }
 
 message EqualParam {

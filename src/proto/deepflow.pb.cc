@@ -137,6 +137,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DisplayParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DisplayParam, delay_msec_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EqualParam, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -346,34 +347,34 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 21, -1, sizeof(PrintParam)},
   { 29, -1, sizeof(AddParam)},
   { 35, -1, sizeof(DisplayParam)},
-  { 39, -1, sizeof(EqualParam)},
-  { 43, -1, sizeof(BiasAddParam)},
-  { 47, -1, sizeof(PoolingParam)},
-  { 57, -1, sizeof(Conv2dParam)},
-  { 67, -1, sizeof(DropoutParam)},
-  { 72, -1, sizeof(MatMulParam)},
-  { 78, -1, sizeof(ReluParam)},
-  { 83, -1, sizeof(ReduceParam)},
-  { 89, -1, sizeof(SnapshotParam)},
-  { 97, -1, sizeof(PlaceHolderParam)},
-  { 102, -1, sizeof(VariableParam)},
-  { 109, -1, sizeof(LossParam)},
-  { 114, -1, sizeof(MnistReaderParam)},
-  { 121, -1, sizeof(CastFloatParam)},
-  { 125, -1, sizeof(NodeParam)},
-  { 153, -1, sizeof(SquareParam)},
-  { 157, -1, sizeof(SoftmaxLossParam)},
-  { 163, -1, sizeof(SoftmaxParam)},
-  { 169, -1, sizeof(InitFillParam)},
-  { 174, -1, sizeof(InitIndexFillParam)},
-  { 179, -1, sizeof(InitRandomUniformParam)},
-  { 185, -1, sizeof(InitStepParam)},
-  { 191, -1, sizeof(InitParam)},
-  { 201, -1, sizeof(SGDSolverParam)},
-  { 207, -1, sizeof(GainSolverParam)},
-  { 217, -1, sizeof(SolverParam)},
-  { 225, -1, sizeof(PhaseParam)},
-  { 231, -1, sizeof(NetworkParam)},
+  { 40, -1, sizeof(EqualParam)},
+  { 44, -1, sizeof(BiasAddParam)},
+  { 48, -1, sizeof(PoolingParam)},
+  { 58, -1, sizeof(Conv2dParam)},
+  { 68, -1, sizeof(DropoutParam)},
+  { 73, -1, sizeof(MatMulParam)},
+  { 79, -1, sizeof(ReluParam)},
+  { 84, -1, sizeof(ReduceParam)},
+  { 90, -1, sizeof(SnapshotParam)},
+  { 98, -1, sizeof(PlaceHolderParam)},
+  { 103, -1, sizeof(VariableParam)},
+  { 110, -1, sizeof(LossParam)},
+  { 115, -1, sizeof(MnistReaderParam)},
+  { 122, -1, sizeof(CastFloatParam)},
+  { 126, -1, sizeof(NodeParam)},
+  { 154, -1, sizeof(SquareParam)},
+  { 158, -1, sizeof(SoftmaxLossParam)},
+  { 164, -1, sizeof(SoftmaxParam)},
+  { 170, -1, sizeof(InitFillParam)},
+  { 175, -1, sizeof(InitIndexFillParam)},
+  { 180, -1, sizeof(InitRandomUniformParam)},
+  { 186, -1, sizeof(InitStepParam)},
+  { 192, -1, sizeof(InitParam)},
+  { 202, -1, sizeof(SGDSolverParam)},
+  { 208, -1, sizeof(GainSolverParam)},
+  { 218, -1, sizeof(SolverParam)},
+  { 226, -1, sizeof(PhaseParam)},
+  { 232, -1, sizeof(NetworkParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -639,85 +640,85 @@ void AddDescriptorsImpl() {
       "-\n\tPrintTime\022\016\n\nEVERY_PASS\020\000\022\020\n\014END_OF_E"
       "POCH\020\001\"\"\n\tPrintType\022\n\n\006VALUES\020\000\022\t\n\005DIFFS"
       "\020\001\"\'\n\010AddParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 "
-      "\001(\002\"\016\n\014DisplayParam\"\014\n\nEqualParam\"\016\n\014Bia"
-      "sAddParam\"t\n\014PoolingParam\022\020\n\010window_h\030\001 "
-      "\001(\005\022\020\n\010window_w\030\002 \001(\005\022\r\n\005h_pad\030\003 \001(\005\022\r\n\005"
-      "v_pad\030\004 \001(\005\022\020\n\010h_stride\030\005 \001(\005\022\020\n\010v_strid"
-      "e\030\006 \001(\005\"i\n\013Conv2dParam\022\r\n\005pad_h\030\001 \001(\005\022\r\n"
-      "\005pad_w\030\002 \001(\005\022\t\n\001u\030\003 \001(\005\022\t\n\001v\030\004 \001(\005\022\022\n\ndi"
-      "lation_h\030\005 \001(\005\022\022\n\ndilation_w\030\006 \001(\005\"\037\n\014Dr"
-      "opoutParam\022\017\n\007dropout\030\001 \001(\002\"*\n\013MatMulPar"
-      "am\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"#\n\tReluP"
-      "aram\022\026\n\016negative_slope\030\001 \001(\002\"\244\001\n\013ReduceP"
-      "aram\022(\n\treduce_op\030\001 \001(\0162\025.ReduceParam.Re"
-      "duceOp\022\022\n\nreduce_dim\030\002 \001(\005\"W\n\010ReduceOp\022\007"
-      "\n\003ADD\020\000\022\007\n\003MUL\020\001\022\007\n\003MIN\020\002\022\007\n\003MAX\020\003\022\010\n\004AM"
-      "AX\020\004\022\007\n\003AVG\020\005\022\t\n\005NORM1\020\006\022\t\n\005NORM2\020\007\"v\n\rS"
-      "napshotParam\022\031\n\021snapshot_interval\030\001 \001(\005\022"
-      "\027\n\017snapshot_prefix\030\002 \001(\t\022\030\n\020per_image_he"
-      "ight\030\003 \001(\005\022\027\n\017per_image_width\030\004 \001(\005\"6\n\020P"
-      "laceHolderParam\022\"\n\014tensor_param\030\001 \001(\0132\014."
-      "TensorParam\"u\n\rVariableParam\022\036\n\ninit_par"
-      "am\030\001 \001(\0132\n.InitParam\022&\n\016snapshot_param\030\002"
-      " \001(\0132\016.SnapshotParam\022\034\n\007weights\030\003 \001(\0132\013."
-      "TensorData\":\n\tLossParam\022-\n\022softmax_loss_"
-      "param\030\001 \001(\0132\021.SoftmaxLossParam\"\212\001\n\020Mnist"
-      "ReaderParam\022\023\n\013folder_path\030\001 \001(\t\022\022\n\nbatc"
-      "h_size\030\002 \001(\005\022*\n\004type\030\003 \001(\0162\034.MnistReader"
-      "Param.ReaderType\"!\n\nReaderType\022\t\n\005TRAIN\020"
-      "\000\022\010\n\004TEST\020\001\"\020\n\016CastFloatParam\"\306\006\n\tNodePa"
-      "ram\022\014\n\004name\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022\016\n\006outp"
-      "ut\030\003 \003(\t\022\r\n\005phase\030\004 \003(\t\022-\n\022mnist_reader_"
-      "param\030d \001(\0132\021.MnistReaderParam\022&\n\016variab"
-      "le_param\030e \001(\0132\016.VariableParam\022-\n\022place_"
-      "holder_param\030f \001(\0132\021.PlaceHolderParam\022,\n"
-      "\021phaseplexer_param\030g \001(\0132\021.PhaseplexerPa"
-      "ram\022\036\n\nloss_param\030h \001(\0132\n.LossParam\022\034\n\ta"
-      "dd_param\030i \001(\0132\t.AddParam\022%\n\016bias_add_pa"
-      "ram\030j \001(\0132\r.BiasAddParam\022#\n\rconv_2d_para"
-      "m\030k \001(\0132\014.Conv2dParam\022$\n\rdropout_param\030l"
-      " \001(\0132\r.DropoutParam\022\036\n\nrelu_param\030m \001(\0132"
-      "\n.ReluParam\022$\n\rsoftmax_param\030n \001(\0132\r.Sof"
-      "tmaxParam\022\"\n\014square_param\030o \001(\0132\014.Square"
-      "Param\022\"\n\014matmul_param\030p \001(\0132\014.MatMulPara"
-      "m\022$\n\rpooling_param\030q \001(\0132\r.PoolingParam\022"
-      "\"\n\014reduce_param\030r \001(\0132\014.ReduceParam\022 \n\013e"
-      "qual_param\030s \001(\0132\013.EqualParam\022 \n\013print_p"
-      "aram\030t \001(\0132\013.PrintParam\022)\n\020cast_float_pa"
-      "ram\030u \001(\0132\017.CastFloatParam\022,\n\021accumulato"
-      "r_param\030v \001(\0132\021.AccumulatorParam\022$\n\rdisp"
-      "lay_param\030w \001(\0132\r.DisplayParam\"\r\n\013Square"
-      "Param\"/\n\020SoftmaxLossParam\022\r\n\005alpha\030\001 \001(\002"
-      "\022\014\n\004beta\030\002 \001(\002\"+\n\014SoftmaxParam\022\r\n\005alpha\030"
-      "\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"\036\n\rInitFillParam\022\r\n\005"
-      "value\030\001 \001(\002\"$\n\022InitIndexFillParam\022\016\n\006off"
-      "set\030\001 \001(\002\"2\n\026InitRandomUniformParam\022\013\n\003m"
-      "in\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\")\n\rInitStepParam\022\013"
-      "\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"\375\001\n\tInitParam\022\""
-      "\n\014tensor_param\030\001 \001(\0132\014.TensorParam\022\036\n\tin"
-      "it_data\030\002 \001(\0132\013.TensorData\022\"\n\nfill_param"
-      "\030\003 \001(\0132\016.InitFillParam\022-\n\020index_fill_par"
-      "am\030\004 \001(\0132\023.InitIndexFillParam\0225\n\024random_"
-      "uniform_param\030\005 \001(\0132\027.InitRandomUniformP"
-      "aram\022\"\n\nstep_param\030\006 \001(\0132\016.InitStepParam"
-      "\"9\n\016SGDSolverParam\022\020\n\010momentum\030\001 \001(\002\022\025\n\r"
-      "learning_rate\030\002 \001(\002\"\204\001\n\017GainSolverParam\022"
-      "\020\n\010momentum\030\001 \001(\002\022\025\n\rlearning_rate\030\002 \001(\002"
-      "\022\020\n\010max_gain\030\003 \001(\002\022\020\n\010min_gain\030\004 \001(\002\022\021\n\t"
-      "gain_plus\030\005 \001(\002\022\021\n\tgain_mult\030\006 \001(\002\"\203\001\n\013S"
-      "olverParam\022\021\n\tmax_epoch\030\001 \001(\005\022\025\n\rloss_te"
-      "rminal\030\002 \001(\t\022#\n\nsgd_solver\030\003 \001(\0132\017.SGDSo"
-      "lverParam\022%\n\013gain_solver\030\004 \001(\0132\020.GainSol"
-      "verParam\"\206\001\n\nPhaseParam\022\r\n\005phase\030\001 \001(\t\022-"
-      "\n\tbehaviour\030\002 \001(\0162\032.PhaseParam.PhaseBeha"
-      "viour\":\n\016PhaseBehaviour\022\t\n\005TRAIN\020\000\022\016\n\nVA"
-      "LIDATION\020\001\022\r\n\tINFERENCE\020\002\"b\n\014NetworkPara"
-      "m\022\030\n\004node\030\001 \003(\0132\n.NodeParam\022\034\n\006solver\030\002 "
-      "\003(\0132\014.SolverParam\022\032\n\005phase\030\003 \003(\0132\013.Phase"
-      "Paramb\006proto3"
+      "\001(\002\"\"\n\014DisplayParam\022\022\n\ndelay_msec\030\001 \001(\005\""
+      "\014\n\nEqualParam\"\016\n\014BiasAddParam\"t\n\014Pooling"
+      "Param\022\020\n\010window_h\030\001 \001(\005\022\020\n\010window_w\030\002 \001("
+      "\005\022\r\n\005h_pad\030\003 \001(\005\022\r\n\005v_pad\030\004 \001(\005\022\020\n\010h_str"
+      "ide\030\005 \001(\005\022\020\n\010v_stride\030\006 \001(\005\"i\n\013Conv2dPar"
+      "am\022\r\n\005pad_h\030\001 \001(\005\022\r\n\005pad_w\030\002 \001(\005\022\t\n\001u\030\003 "
+      "\001(\005\022\t\n\001v\030\004 \001(\005\022\022\n\ndilation_h\030\005 \001(\005\022\022\n\ndi"
+      "lation_w\030\006 \001(\005\"\037\n\014DropoutParam\022\017\n\007dropou"
+      "t\030\001 \001(\002\"*\n\013MatMulParam\022\r\n\005alpha\030\001 \001(\002\022\014\n"
+      "\004beta\030\002 \001(\002\"#\n\tReluParam\022\026\n\016negative_slo"
+      "pe\030\001 \001(\002\"\244\001\n\013ReduceParam\022(\n\treduce_op\030\001 "
+      "\001(\0162\025.ReduceParam.ReduceOp\022\022\n\nreduce_dim"
+      "\030\002 \001(\005\"W\n\010ReduceOp\022\007\n\003ADD\020\000\022\007\n\003MUL\020\001\022\007\n\003"
+      "MIN\020\002\022\007\n\003MAX\020\003\022\010\n\004AMAX\020\004\022\007\n\003AVG\020\005\022\t\n\005NOR"
+      "M1\020\006\022\t\n\005NORM2\020\007\"v\n\rSnapshotParam\022\031\n\021snap"
+      "shot_interval\030\001 \001(\005\022\027\n\017snapshot_prefix\030\002"
+      " \001(\t\022\030\n\020per_image_height\030\003 \001(\005\022\027\n\017per_im"
+      "age_width\030\004 \001(\005\"6\n\020PlaceHolderParam\022\"\n\014t"
+      "ensor_param\030\001 \001(\0132\014.TensorParam\"u\n\rVaria"
+      "bleParam\022\036\n\ninit_param\030\001 \001(\0132\n.InitParam"
+      "\022&\n\016snapshot_param\030\002 \001(\0132\016.SnapshotParam"
+      "\022\034\n\007weights\030\003 \001(\0132\013.TensorData\":\n\tLossPa"
+      "ram\022-\n\022softmax_loss_param\030\001 \001(\0132\021.Softma"
+      "xLossParam\"\212\001\n\020MnistReaderParam\022\023\n\013folde"
+      "r_path\030\001 \001(\t\022\022\n\nbatch_size\030\002 \001(\005\022*\n\004type"
+      "\030\003 \001(\0162\034.MnistReaderParam.ReaderType\"!\n\n"
+      "ReaderType\022\t\n\005TRAIN\020\000\022\010\n\004TEST\020\001\"\020\n\016CastF"
+      "loatParam\"\306\006\n\tNodeParam\022\014\n\004name\030\001 \001(\t\022\r\n"
+      "\005input\030\002 \003(\t\022\016\n\006output\030\003 \003(\t\022\r\n\005phase\030\004 "
+      "\003(\t\022-\n\022mnist_reader_param\030d \001(\0132\021.MnistR"
+      "eaderParam\022&\n\016variable_param\030e \001(\0132\016.Var"
+      "iableParam\022-\n\022place_holder_param\030f \001(\0132\021"
+      ".PlaceHolderParam\022,\n\021phaseplexer_param\030g"
+      " \001(\0132\021.PhaseplexerParam\022\036\n\nloss_param\030h "
+      "\001(\0132\n.LossParam\022\034\n\tadd_param\030i \001(\0132\t.Add"
+      "Param\022%\n\016bias_add_param\030j \001(\0132\r.BiasAddP"
+      "aram\022#\n\rconv_2d_param\030k \001(\0132\014.Conv2dPara"
+      "m\022$\n\rdropout_param\030l \001(\0132\r.DropoutParam\022"
+      "\036\n\nrelu_param\030m \001(\0132\n.ReluParam\022$\n\rsoftm"
+      "ax_param\030n \001(\0132\r.SoftmaxParam\022\"\n\014square_"
+      "param\030o \001(\0132\014.SquareParam\022\"\n\014matmul_para"
+      "m\030p \001(\0132\014.MatMulParam\022$\n\rpooling_param\030q"
+      " \001(\0132\r.PoolingParam\022\"\n\014reduce_param\030r \001("
+      "\0132\014.ReduceParam\022 \n\013equal_param\030s \001(\0132\013.E"
+      "qualParam\022 \n\013print_param\030t \001(\0132\013.PrintPa"
+      "ram\022)\n\020cast_float_param\030u \001(\0132\017.CastFloa"
+      "tParam\022,\n\021accumulator_param\030v \001(\0132\021.Accu"
+      "mulatorParam\022$\n\rdisplay_param\030w \001(\0132\r.Di"
+      "splayParam\"\r\n\013SquareParam\"/\n\020SoftmaxLoss"
+      "Param\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"+\n\014So"
+      "ftmaxParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\""
+      "\036\n\rInitFillParam\022\r\n\005value\030\001 \001(\002\"$\n\022InitI"
+      "ndexFillParam\022\016\n\006offset\030\001 \001(\002\"2\n\026InitRan"
+      "domUniformParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001("
+      "\002\")\n\rInitStepParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002"
+      " \001(\002\"\375\001\n\tInitParam\022\"\n\014tensor_param\030\001 \001(\013"
+      "2\014.TensorParam\022\036\n\tinit_data\030\002 \001(\0132\013.Tens"
+      "orData\022\"\n\nfill_param\030\003 \001(\0132\016.InitFillPar"
+      "am\022-\n\020index_fill_param\030\004 \001(\0132\023.InitIndex"
+      "FillParam\0225\n\024random_uniform_param\030\005 \001(\0132"
+      "\027.InitRandomUniformParam\022\"\n\nstep_param\030\006"
+      " \001(\0132\016.InitStepParam\"9\n\016SGDSolverParam\022\020"
+      "\n\010momentum\030\001 \001(\002\022\025\n\rlearning_rate\030\002 \001(\002\""
+      "\204\001\n\017GainSolverParam\022\020\n\010momentum\030\001 \001(\002\022\025\n"
+      "\rlearning_rate\030\002 \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020"
+      "\n\010min_gain\030\004 \001(\002\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tg"
+      "ain_mult\030\006 \001(\002\"\203\001\n\013SolverParam\022\021\n\tmax_ep"
+      "och\030\001 \001(\005\022\025\n\rloss_terminal\030\002 \001(\t\022#\n\nsgd_"
+      "solver\030\003 \001(\0132\017.SGDSolverParam\022%\n\013gain_so"
+      "lver\030\004 \001(\0132\020.GainSolverParam\"\206\001\n\nPhasePa"
+      "ram\022\r\n\005phase\030\001 \001(\t\022-\n\tbehaviour\030\002 \001(\0162\032."
+      "PhaseParam.PhaseBehaviour\":\n\016PhaseBehavi"
+      "our\022\t\n\005TRAIN\020\000\022\016\n\nVALIDATION\020\001\022\r\n\tINFERE"
+      "NCE\020\002\"b\n\014NetworkParam\022\030\n\004node\030\001 \003(\0132\n.No"
+      "deParam\022\034\n\006solver\030\002 \003(\0132\014.SolverParam\022\032\n"
+      "\005phase\030\003 \003(\0132\013.PhaseParamb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 3613);
+      descriptor, 3633);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -2729,6 +2730,7 @@ void AddParam::set_beta(float value) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DisplayParam::kDelayMsecFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 DisplayParam::DisplayParam()
@@ -2744,10 +2746,12 @@ DisplayParam::DisplayParam(const DisplayParam& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  delay_msec_ = from.delay_msec_;
   // @@protoc_insertion_point(copy_constructor:DisplayParam)
 }
 
 void DisplayParam::SharedCtor() {
+  delay_msec_ = 0;
   _cached_size_ = 0;
 }
 
@@ -2784,6 +2788,7 @@ DisplayParam* DisplayParam::New(::google::protobuf::Arena* arena) const {
 
 void DisplayParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:DisplayParam)
+  delay_msec_ = 0;
 }
 
 bool DisplayParam::MergePartialFromCodedStream(
@@ -2795,13 +2800,32 @@ bool DisplayParam::MergePartialFromCodedStream(
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0 ||
-        ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      goto success;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int32 delay_msec = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &delay_msec_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
   }
 success:
   // @@protoc_insertion_point(parse_success:DisplayParam)
@@ -2815,6 +2839,11 @@ failure:
 void DisplayParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:DisplayParam)
+  // int32 delay_msec = 1;
+  if (this->delay_msec() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->delay_msec(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:DisplayParam)
 }
 
@@ -2822,6 +2851,11 @@ void DisplayParam::SerializeWithCachedSizes(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:DisplayParam)
+  // int32 delay_msec = 1;
+  if (this->delay_msec() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->delay_msec(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:DisplayParam)
   return target;
 }
@@ -2829,6 +2863,13 @@ void DisplayParam::SerializeWithCachedSizes(
 size_t DisplayParam::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:DisplayParam)
   size_t total_size = 0;
+
+  // int32 delay_msec = 1;
+  if (this->delay_msec() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->delay_msec());
+  }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -2856,6 +2897,9 @@ void DisplayParam::MergeFrom(const DisplayParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:DisplayParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.delay_msec() != 0) {
+    set_delay_msec(from.delay_msec());
+  }
 }
 
 void DisplayParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2881,6 +2925,7 @@ void DisplayParam::Swap(DisplayParam* other) {
   InternalSwap(other);
 }
 void DisplayParam::InternalSwap(DisplayParam* other) {
+  std::swap(delay_msec_, other->delay_msec_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -2891,6 +2936,20 @@ void DisplayParam::InternalSwap(DisplayParam* other) {
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // DisplayParam
+
+// int32 delay_msec = 1;
+void DisplayParam::clear_delay_msec() {
+  delay_msec_ = 0;
+}
+::google::protobuf::int32 DisplayParam::delay_msec() const {
+  // @@protoc_insertion_point(field_get:DisplayParam.delay_msec)
+  return delay_msec_;
+}
+void DisplayParam::set_delay_msec(::google::protobuf::int32 value) {
+  
+  delay_msec_ = value;
+  // @@protoc_insertion_point(field_set:DisplayParam.delay_msec)
+}
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 

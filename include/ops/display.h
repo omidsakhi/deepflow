@@ -8,7 +8,7 @@ class DeepFlowDllExport Display : public Node {
 public:
 	Display(const NodeParam &param);
 	int minNumInputs() { return 1; }
-	int minNumOutputs() { return 1; }
+	int minNumOutputs() { return 0; }
 	void initForward();
 	void initBackward();
 	void forward();
@@ -23,7 +23,7 @@ protected:
 	int pic_width;
 	int pic_height;
 	int num_pic_pixels;
-	int *d_pic;
-	int *h_pic;
+	unsigned char *d_pic;	
 	cv::Mat disp;
+	int _delay_msec = 100;
 };

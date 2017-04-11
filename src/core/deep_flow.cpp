@@ -426,17 +426,18 @@ NodeOutputPtr DeepFlow::conv2d(NodeOutputPtr input, NodeOutputPtr filter, std::s
 	return node->output(0);
 }
 
-NodeOutputPtr DeepFlow::display(NodeOutputPtr input, std::string name, std::initializer_list<std::string> phases) {
+NodePtr DeepFlow::display(NodeOutputPtr input,int delay_msec, std::string name, std::initializer_list<std::string> phases) {
 	NodeParam nodeParam;
 	nodeParam.set_name(getUniqueNodeName(name));
 	for (auto phase : phases)
 		nodeParam.add_phase(phase);
 	DisplayParam *param = nodeParam.mutable_display_param();
+	param->set_delay_msec(delay_msec);
 	auto node = std::make_shared<Display>(nodeParam);
 	node->createIO();
 	node->input(0)->connect(input);
 	_nodes.push_back(node);
-	return node->output(0);
+	return node;
 }
 
 NodeOutputPtr DeepFlow::pooling(NodeOutputPtr input, int windowHeight, int windowWidth, int verticalPadding, int horizontalPadding, int verticalStride, int horizontalStride, std::string name, std::initializer_list<std::string> phases) {
