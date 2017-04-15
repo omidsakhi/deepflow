@@ -2,11 +2,6 @@
 #include "core/common_cu.h"
 #include "core/variable.h"
 
-#include "core/reader.h"
-#include "observers/forward.h"
-#include "observers/backward.h"
-#include "observers/reset.h"
-
 #include <glog/logging.h>
 
 __global__
@@ -17,21 +12,23 @@ void GainFillKernel(int n, float *a)
 }
 
 __global__
-void GainStepKernel(const int n, float *current_weight, float *current_gradient, float *previous_gradient, float *gain, const float max_gain, const float min_gain, const float gain_plus, const float gain_mult, const float momentum, const float learning_rate)
+void GainStepKernel(const int n, float *w, const float *g, float *m, float *gain, const float max_gain, const float min_gain, const float gain_plus, const float gain_mult, const float momentum, const float learning_rate)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
-		if (previous_gradient[i] * current_gradient[i] > 0)
-			gain[i] += gain_plus;
+		float _gain = gain[i];
+		float _g = g[i];		
+		if (_g * m[i] > 0)
+			_gain += gain_plus;
 		else
-			gain[i] *= gain_mult;
-		if (gain[i] > max_gain)
-			gain[i] = max_gain;
-		if (gain[i] < min_gain)
-			gain[i] = min_gain;
-		previous_gradient[i] = current_gradient[i];
-		current_gradient[i] *= gain[i];
-		current_weight[i] = momentum * current_weight[i] + learning_rate * current_gradient[i];
+			_gain *= gain_mult;
+		if (_gain > max_gain)
+			_gain = max_gain;
+		if (_gain < min_gain)
+			_gain = min_gain;
+		gain[i] = _gain;
+		m[i] = _g;
+		w[i] = momentum * w[i] + learning_rate * _g * _gain;
 	}
 }
 
@@ -45,7 +42,7 @@ void GainSolver::apply(std::shared_ptr<Variable> var) {
 		init(var);
 	auto output = var->output(0);
 	auto size = output->value()->size();
-	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->mutableData(), _previous_gradient, _gain, _my_param.max_gain(), _my_param.min_gain(), _my_param.gain_plus(), _my_param.gain_mult(), _my_param.momentum(), _my_param.learning_rate());
+	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->data(), _previous_gradient, _gain, _my_param.max_gain(), _my_param.min_gain(), _my_param.gain_plus(), _my_param.gain_mult(), _my_param.momentum(), _my_param.learning_rate());
 	LOG_IF(FATAL, cudaPeekAtLastError() != 0);		
 }
 

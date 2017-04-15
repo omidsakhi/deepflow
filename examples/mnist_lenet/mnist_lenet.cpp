@@ -30,7 +30,7 @@ void main(int argc, char** argv) {
 		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);
 		df.define_phase("Validation", PhaseParam_PhaseBehaviour_VALIDATION);		
 		//auto solver = df.gain_solver(0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f);
-		auto solver = df.adam_solver(0.01f,0.99f,0.999f,10E-8);
+		auto solver = df.adadelta_solver(0.1f, 0.9f, 0.00001f); 
 		auto mnist_trainset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Train, "trainset", { "Train" });
 		auto mnist_testset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Test, "testset", { "Validation" });
 		auto data_selector = df.phaseplexer(mnist_trainset->output(0), "Train", mnist_testset->output(0), "Validation", "data_selector");	

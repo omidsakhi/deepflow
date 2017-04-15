@@ -231,6 +231,12 @@ message GainSolverParam {
 	float gain_mult = 6;
 }
 
+message AdaDeltaSolverParam {
+	float learning_rate = 1;
+	float momentum = 2;	
+	float delta = 3;
+}
+
 message AdamSolverParam {
 	float learning_rate = 1;
 	float beta1 = 2;
@@ -243,6 +249,7 @@ message SolverParam {
 	SGDSolverParam sgd_solver = 2;
 	GainSolverParam gain_solver = 3;
 	AdamSolverParam adam_solver = 4;
+	AdaDeltaSolverParam adadelta_solver = 5;
 }
 
 message PhaseParam {

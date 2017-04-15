@@ -55,6 +55,9 @@
     <CudaCompile Include="..\..\src\solvers\adam_solver.cu">
       <Filter>source\solver</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\solvers\adadelta_solver.cu">
+      <Filter>source\solver</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -267,6 +270,9 @@
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\solvers\adam_solver.h">
+      <Filter>include\solver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\solvers\adadelta_solver.h">
       <Filter>include\solver</Filter>
     </ClInclude>
   </ItemGroup>

@@ -13,6 +13,7 @@
 #include "solvers/gain_solver.h"
 #include "solvers/sgd_solver.h"
 #include "solvers/adam_solver.h"
+#include "solvers/adadelta_solver.h"
 
 #include "ops/add.h"
 #include "ops/matmul.h"
@@ -129,6 +130,12 @@ std::shared_ptr<Solver> Session::_create_solver(const SolverParam &solver_param)
 	}
 	else if (solver_param.has_adam_solver()) {
 		return std::make_shared<AdamSolver>(solver_param);
+	}
+	else if (solver_param.has_adadelta_solver()) {
+		return std::make_shared<AdaDeltaSolver>(solver_param);
+	}
+	else {
+		LOG(FATAL) << "Unsupported Solver";
 	}
 }
 

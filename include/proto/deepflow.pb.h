@@ -33,6 +33,9 @@
 class AccumulatorParam;
 class AccumulatorParamDefaultTypeInternal;
 extern AccumulatorParamDefaultTypeInternal _AccumulatorParam_default_instance_;
+class AdaDeltaSolverParam;
+class AdaDeltaSolverParamDefaultTypeInternal;
+extern AdaDeltaSolverParamDefaultTypeInternal _AdaDeltaSolverParam_default_instance_;
 class AdamSolverParam;
 class AdamSolverParamDefaultTypeInternal;
 extern AdamSolverParamDefaultTypeInternal _AdamSolverParam_default_instance_;
@@ -3845,6 +3848,103 @@ class GainSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
 };
 // -------------------------------------------------------------------
 
+class AdaDeltaSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:AdaDeltaSolverParam) */ {
+ public:
+  AdaDeltaSolverParam();
+  virtual ~AdaDeltaSolverParam();
+
+  AdaDeltaSolverParam(const AdaDeltaSolverParam& from);
+
+  inline AdaDeltaSolverParam& operator=(const AdaDeltaSolverParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AdaDeltaSolverParam& default_instance();
+
+  static inline const AdaDeltaSolverParam* internal_default_instance() {
+    return reinterpret_cast<const AdaDeltaSolverParam*>(
+               &_AdaDeltaSolverParam_default_instance_);
+  }
+
+  void Swap(AdaDeltaSolverParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AdaDeltaSolverParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AdaDeltaSolverParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AdaDeltaSolverParam& from);
+  void MergeFrom(const AdaDeltaSolverParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AdaDeltaSolverParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float learning_rate = 1;
+  void clear_learning_rate();
+  static const int kLearningRateFieldNumber = 1;
+  float learning_rate() const;
+  void set_learning_rate(float value);
+
+  // float momentum = 2;
+  void clear_momentum();
+  static const int kMomentumFieldNumber = 2;
+  float momentum() const;
+  void set_momentum(float value);
+
+  // float delta = 3;
+  void clear_delta();
+  static const int kDeltaFieldNumber = 3;
+  float delta() const;
+  void set_delta(float value);
+
+  // @@protoc_insertion_point(class_scope:AdaDeltaSolverParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float learning_rate_;
+  float momentum_;
+  float delta_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class AdamSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:AdamSolverParam) */ {
  public:
   AdamSolverParam();
@@ -4057,6 +4157,15 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::AdamSolverParam* release_adam_solver();
   void set_allocated_adam_solver(::AdamSolverParam* adam_solver);
 
+  // .AdaDeltaSolverParam adadelta_solver = 5;
+  bool has_adadelta_solver() const;
+  void clear_adadelta_solver();
+  static const int kAdadeltaSolverFieldNumber = 5;
+  const ::AdaDeltaSolverParam& adadelta_solver() const;
+  ::AdaDeltaSolverParam* mutable_adadelta_solver();
+  ::AdaDeltaSolverParam* release_adadelta_solver();
+  void set_allocated_adadelta_solver(::AdaDeltaSolverParam* adadelta_solver);
+
   // @@protoc_insertion_point(class_scope:SolverParam)
  private:
 
@@ -4065,6 +4174,7 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::SGDSolverParam* sgd_solver_;
   ::GainSolverParam* gain_solver_;
   ::AdamSolverParam* adam_solver_;
+  ::AdaDeltaSolverParam* adadelta_solver_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -6930,6 +7040,52 @@ inline void GainSolverParam::set_gain_mult(float value) {
 
 // -------------------------------------------------------------------
 
+// AdaDeltaSolverParam
+
+// float learning_rate = 1;
+inline void AdaDeltaSolverParam::clear_learning_rate() {
+  learning_rate_ = 0;
+}
+inline float AdaDeltaSolverParam::learning_rate() const {
+  // @@protoc_insertion_point(field_get:AdaDeltaSolverParam.learning_rate)
+  return learning_rate_;
+}
+inline void AdaDeltaSolverParam::set_learning_rate(float value) {
+  
+  learning_rate_ = value;
+  // @@protoc_insertion_point(field_set:AdaDeltaSolverParam.learning_rate)
+}
+
+// float momentum = 2;
+inline void AdaDeltaSolverParam::clear_momentum() {
+  momentum_ = 0;
+}
+inline float AdaDeltaSolverParam::momentum() const {
+  // @@protoc_insertion_point(field_get:AdaDeltaSolverParam.momentum)
+  return momentum_;
+}
+inline void AdaDeltaSolverParam::set_momentum(float value) {
+  
+  momentum_ = value;
+  // @@protoc_insertion_point(field_set:AdaDeltaSolverParam.momentum)
+}
+
+// float delta = 3;
+inline void AdaDeltaSolverParam::clear_delta() {
+  delta_ = 0;
+}
+inline float AdaDeltaSolverParam::delta() const {
+  // @@protoc_insertion_point(field_get:AdaDeltaSolverParam.delta)
+  return delta_;
+}
+inline void AdaDeltaSolverParam::set_delta(float value) {
+  
+  delta_ = value;
+  // @@protoc_insertion_point(field_set:AdaDeltaSolverParam.delta)
+}
+
+// -------------------------------------------------------------------
+
 // AdamSolverParam
 
 // float learning_rate = 1;
@@ -7161,6 +7317,45 @@ inline void SolverParam::set_allocated_adam_solver(::AdamSolverParam* adam_solve
   // @@protoc_insertion_point(field_set_allocated:SolverParam.adam_solver)
 }
 
+// .AdaDeltaSolverParam adadelta_solver = 5;
+inline bool SolverParam::has_adadelta_solver() const {
+  return this != internal_default_instance() && adadelta_solver_ != NULL;
+}
+inline void SolverParam::clear_adadelta_solver() {
+  if (GetArenaNoVirtual() == NULL && adadelta_solver_ != NULL) delete adadelta_solver_;
+  adadelta_solver_ = NULL;
+}
+inline const ::AdaDeltaSolverParam& SolverParam::adadelta_solver() const {
+  // @@protoc_insertion_point(field_get:SolverParam.adadelta_solver)
+  return adadelta_solver_ != NULL ? *adadelta_solver_
+                         : *::AdaDeltaSolverParam::internal_default_instance();
+}
+inline ::AdaDeltaSolverParam* SolverParam::mutable_adadelta_solver() {
+  
+  if (adadelta_solver_ == NULL) {
+    adadelta_solver_ = new ::AdaDeltaSolverParam;
+  }
+  // @@protoc_insertion_point(field_mutable:SolverParam.adadelta_solver)
+  return adadelta_solver_;
+}
+inline ::AdaDeltaSolverParam* SolverParam::release_adadelta_solver() {
+  // @@protoc_insertion_point(field_release:SolverParam.adadelta_solver)
+  
+  ::AdaDeltaSolverParam* temp = adadelta_solver_;
+  adadelta_solver_ = NULL;
+  return temp;
+}
+inline void SolverParam::set_allocated_adadelta_solver(::AdaDeltaSolverParam* adadelta_solver) {
+  delete adadelta_solver_;
+  adadelta_solver_ = adadelta_solver;
+  if (adadelta_solver) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:SolverParam.adadelta_solver)
+}
+
 // -------------------------------------------------------------------
 
 // PhaseParam
@@ -7326,6 +7521,8 @@ GraphParam::phase() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

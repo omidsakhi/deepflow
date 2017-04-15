@@ -296,6 +296,17 @@ std::shared_ptr<SolverParam> DeepFlow::adam_solver(float learning_rate, float be
 	return solver_param;
 }
 
+std::shared_ptr<SolverParam> DeepFlow::adadelta_solver(float learning_rate, float momentum, float delta, std::string name) {
+	auto solver_param = std::make_shared<SolverParam>();
+	solver_param->set_name(_get_unique_solver_name(name));
+	auto adadelta_solver = solver_param->mutable_adadelta_solver();
+	adadelta_solver->set_learning_rate(learning_rate);
+	adadelta_solver->set_momentum(momentum);
+	adadelta_solver->set_delta(delta);
+	_solvers.push_back(solver_param);
+	return solver_param;
+}
+
 std::string DeepFlow::dropout(std::string a, float dropout, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = std::make_shared<NodeParam>();
 	node_param->set_name(_get_unique_node_name(name));

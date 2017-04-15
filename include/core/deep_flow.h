@@ -67,7 +67,8 @@ public:
 	// SOLVERS
 	std::shared_ptr<SolverParam> sgd_solver(float momentum, float learning_rate, std::string name = "sgd");
 	std::shared_ptr<SolverParam> gain_solver(float momentum = 0.99999, float learning_rate = 10E-3f, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f, std::string name = "gain");
-	std::shared_ptr<SolverParam> adam_solver(float learning_rate = 10E-3f, float beta1 = 0.9f, float beta2 = 0.999f, float eps = 10E-8f, std::string name = "adam");
+	std::shared_ptr<SolverParam> adam_solver(float learning_rate = 10E-2f, float beta1 = 0.99f, float beta2 = 0.999f, float eps = 10E-8f, std::string name = "adam");
+	std::shared_ptr<SolverParam> adadelta_solver(float learning_rate = 10E-2f, float momentum = 0.9f, float delta = 1e-8f, std::string name = "adadelta");
 	
 	// PRINTERS
 	void print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime = Print::PrintTime::END_OF_EPOCH, Print::PrintType = Print::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});

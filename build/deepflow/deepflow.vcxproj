@@ -62,6 +62,7 @@
     <ClInclude Include="..\..\include\ops\cast_float.h" />
     <ClInclude Include="..\..\include\proto\deepflow.pb.h" />
     <ClInclude Include="..\..\include\readers\mnist_reader.h" />
+    <ClInclude Include="..\..\include\solvers\adadelta_solver.h" />
     <ClInclude Include="..\..\include\solvers\adam_solver.h" />
     <ClInclude Include="..\..\include\solvers\gain_solver.h" />
     <ClInclude Include="..\..\include\solvers\sgd_solver.h" />
@@ -85,6 +86,7 @@
     <CudaCompile Include="..\..\src\ops\accumulator.cu" />
     <CudaCompile Include="..\..\src\ops\display.cu" />
     <CudaCompile Include="..\..\src\ops\equal.cu" />
+    <CudaCompile Include="..\..\src\solvers\adadelta_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\adam_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\gain_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\sgd_solver.cu">
