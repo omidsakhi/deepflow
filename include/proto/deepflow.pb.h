@@ -33,6 +33,9 @@
 class AccumulatorParam;
 class AccumulatorParamDefaultTypeInternal;
 extern AccumulatorParamDefaultTypeInternal _AccumulatorParam_default_instance_;
+class AdamSolverParam;
+class AdamSolverParamDefaultTypeInternal;
+extern AdamSolverParamDefaultTypeInternal _AdamSolverParam_default_instance_;
 class AddParam;
 class AddParamDefaultTypeInternal;
 extern AddParamDefaultTypeInternal _AddParam_default_instance_;
@@ -57,6 +60,9 @@ extern EqualParamDefaultTypeInternal _EqualParam_default_instance_;
 class GainSolverParam;
 class GainSolverParamDefaultTypeInternal;
 extern GainSolverParamDefaultTypeInternal _GainSolverParam_default_instance_;
+class GraphParam;
+class GraphParamDefaultTypeInternal;
+extern GraphParamDefaultTypeInternal _GraphParam_default_instance_;
 class InitFillParam;
 class InitFillParamDefaultTypeInternal;
 extern InitFillParamDefaultTypeInternal _InitFillParam_default_instance_;
@@ -81,9 +87,6 @@ extern MatMulParamDefaultTypeInternal _MatMulParam_default_instance_;
 class MnistReaderParam;
 class MnistReaderParamDefaultTypeInternal;
 extern MnistReaderParamDefaultTypeInternal _MnistReaderParam_default_instance_;
-class NetworkParam;
-class NetworkParamDefaultTypeInternal;
-extern NetworkParamDefaultTypeInternal _NetworkParam_default_instance_;
 class NodeParam;
 class NodeParamDefaultTypeInternal;
 extern NodeParamDefaultTypeInternal _NodeParam_default_instance_;
@@ -102,6 +105,9 @@ extern PoolingParamDefaultTypeInternal _PoolingParam_default_instance_;
 class PrintParam;
 class PrintParamDefaultTypeInternal;
 extern PrintParamDefaultTypeInternal _PrintParam_default_instance_;
+class ReaderParam;
+class ReaderParamDefaultTypeInternal;
+extern ReaderParamDefaultTypeInternal _ReaderParam_default_instance_;
 class ReduceParam;
 class ReduceParamDefaultTypeInternal;
 extern ReduceParamDefaultTypeInternal _ReduceParam_default_instance_;
@@ -2110,6 +2116,20 @@ class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_p
 
   // accessors -------------------------------------------------------
 
+  // string solver_name = 2;
+  void clear_solver_name();
+  static const int kSolverNameFieldNumber = 2;
+  const ::std::string& solver_name() const;
+  void set_solver_name(const ::std::string& value);
+  #if LANG_CXX11
+  void set_solver_name(::std::string&& value);
+  #endif
+  void set_solver_name(const char* value);
+  void set_solver_name(const char* value, size_t size);
+  ::std::string* mutable_solver_name();
+  ::std::string* release_solver_name();
+  void set_allocated_solver_name(::std::string* solver_name);
+
   // .InitParam init_param = 1;
   bool has_init_param() const;
   void clear_init_param();
@@ -2118,15 +2138,6 @@ class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::InitParam* mutable_init_param();
   ::InitParam* release_init_param();
   void set_allocated_init_param(::InitParam* init_param);
-
-  // .SnapshotParam snapshot_param = 2;
-  bool has_snapshot_param() const;
-  void clear_snapshot_param();
-  static const int kSnapshotParamFieldNumber = 2;
-  const ::SnapshotParam& snapshot_param() const;
-  ::SnapshotParam* mutable_snapshot_param();
-  ::SnapshotParam* release_snapshot_param();
-  void set_allocated_snapshot_param(::SnapshotParam* snapshot_param);
 
   // .TensorData weights = 3;
   bool has_weights() const;
@@ -2141,8 +2152,8 @@ class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_p
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr solver_name_;
   ::InitParam* init_param_;
-  ::SnapshotParam* snapshot_param_;
   ::TensorData* weights_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
@@ -2230,6 +2241,92 @@ class LossParam : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::SoftmaxLossParam* softmax_loss_param_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ReaderParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ReaderParam) */ {
+ public:
+  ReaderParam();
+  virtual ~ReaderParam();
+
+  ReaderParam(const ReaderParam& from);
+
+  inline ReaderParam& operator=(const ReaderParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ReaderParam& default_instance();
+
+  static inline const ReaderParam* internal_default_instance() {
+    return reinterpret_cast<const ReaderParam*>(
+               &_ReaderParam_default_instance_);
+  }
+
+  void Swap(ReaderParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ReaderParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ReaderParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ReaderParam& from);
+  void MergeFrom(const ReaderParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ReaderParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .MnistReaderParam mnist_param = 1;
+  bool has_mnist_param() const;
+  void clear_mnist_param();
+  static const int kMnistParamFieldNumber = 1;
+  const ::MnistReaderParam& mnist_param() const;
+  ::MnistReaderParam* mutable_mnist_param();
+  ::MnistReaderParam* release_mnist_param();
+  void set_allocated_mnist_param(::MnistReaderParam* mnist_param);
+
+  // @@protoc_insertion_point(class_scope:ReaderParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::MnistReaderParam* mnist_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2589,181 +2686,181 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
 
-  // .MnistReaderParam mnist_reader_param = 100;
-  bool has_mnist_reader_param() const;
-  void clear_mnist_reader_param();
-  static const int kMnistReaderParamFieldNumber = 100;
-  const ::MnistReaderParam& mnist_reader_param() const;
-  ::MnistReaderParam* mutable_mnist_reader_param();
-  ::MnistReaderParam* release_mnist_reader_param();
-  void set_allocated_mnist_reader_param(::MnistReaderParam* mnist_reader_param);
-
-  // .VariableParam variable_param = 101;
-  bool has_variable_param() const;
-  void clear_variable_param();
-  static const int kVariableParamFieldNumber = 101;
-  const ::VariableParam& variable_param() const;
-  ::VariableParam* mutable_variable_param();
-  ::VariableParam* release_variable_param();
-  void set_allocated_variable_param(::VariableParam* variable_param);
-
-  // .PlaceHolderParam place_holder_param = 102;
-  bool has_place_holder_param() const;
-  void clear_place_holder_param();
-  static const int kPlaceHolderParamFieldNumber = 102;
-  const ::PlaceHolderParam& place_holder_param() const;
-  ::PlaceHolderParam* mutable_place_holder_param();
-  ::PlaceHolderParam* release_place_holder_param();
-  void set_allocated_place_holder_param(::PlaceHolderParam* place_holder_param);
-
-  // .PhaseplexerParam phaseplexer_param = 103;
-  bool has_phaseplexer_param() const;
-  void clear_phaseplexer_param();
-  static const int kPhaseplexerParamFieldNumber = 103;
-  const ::PhaseplexerParam& phaseplexer_param() const;
-  ::PhaseplexerParam* mutable_phaseplexer_param();
-  ::PhaseplexerParam* release_phaseplexer_param();
-  void set_allocated_phaseplexer_param(::PhaseplexerParam* phaseplexer_param);
-
-  // .LossParam loss_param = 104;
+  // .LossParam loss_param = 50;
   bool has_loss_param() const;
   void clear_loss_param();
-  static const int kLossParamFieldNumber = 104;
+  static const int kLossParamFieldNumber = 50;
   const ::LossParam& loss_param() const;
   ::LossParam* mutable_loss_param();
   ::LossParam* release_loss_param();
   void set_allocated_loss_param(::LossParam* loss_param);
 
-  // .AddParam add_param = 105;
+  // .ReaderParam reader_param = 51;
+  bool has_reader_param() const;
+  void clear_reader_param();
+  static const int kReaderParamFieldNumber = 51;
+  const ::ReaderParam& reader_param() const;
+  ::ReaderParam* mutable_reader_param();
+  ::ReaderParam* release_reader_param();
+  void set_allocated_reader_param(::ReaderParam* reader_param);
+
+  // .VariableParam variable_param = 100;
+  bool has_variable_param() const;
+  void clear_variable_param();
+  static const int kVariableParamFieldNumber = 100;
+  const ::VariableParam& variable_param() const;
+  ::VariableParam* mutable_variable_param();
+  ::VariableParam* release_variable_param();
+  void set_allocated_variable_param(::VariableParam* variable_param);
+
+  // .PlaceHolderParam place_holder_param = 101;
+  bool has_place_holder_param() const;
+  void clear_place_holder_param();
+  static const int kPlaceHolderParamFieldNumber = 101;
+  const ::PlaceHolderParam& place_holder_param() const;
+  ::PlaceHolderParam* mutable_place_holder_param();
+  ::PlaceHolderParam* release_place_holder_param();
+  void set_allocated_place_holder_param(::PlaceHolderParam* place_holder_param);
+
+  // .PhaseplexerParam phaseplexer_param = 102;
+  bool has_phaseplexer_param() const;
+  void clear_phaseplexer_param();
+  static const int kPhaseplexerParamFieldNumber = 102;
+  const ::PhaseplexerParam& phaseplexer_param() const;
+  ::PhaseplexerParam* mutable_phaseplexer_param();
+  ::PhaseplexerParam* release_phaseplexer_param();
+  void set_allocated_phaseplexer_param(::PhaseplexerParam* phaseplexer_param);
+
+  // .AddParam add_param = 103;
   bool has_add_param() const;
   void clear_add_param();
-  static const int kAddParamFieldNumber = 105;
+  static const int kAddParamFieldNumber = 103;
   const ::AddParam& add_param() const;
   ::AddParam* mutable_add_param();
   ::AddParam* release_add_param();
   void set_allocated_add_param(::AddParam* add_param);
 
-  // .BiasAddParam bias_add_param = 106;
+  // .BiasAddParam bias_add_param = 104;
   bool has_bias_add_param() const;
   void clear_bias_add_param();
-  static const int kBiasAddParamFieldNumber = 106;
+  static const int kBiasAddParamFieldNumber = 104;
   const ::BiasAddParam& bias_add_param() const;
   ::BiasAddParam* mutable_bias_add_param();
   ::BiasAddParam* release_bias_add_param();
   void set_allocated_bias_add_param(::BiasAddParam* bias_add_param);
 
-  // .Conv2dParam conv_2d_param = 107;
+  // .Conv2dParam conv_2d_param = 105;
   bool has_conv_2d_param() const;
   void clear_conv_2d_param();
-  static const int kConv2DParamFieldNumber = 107;
+  static const int kConv2DParamFieldNumber = 105;
   const ::Conv2dParam& conv_2d_param() const;
   ::Conv2dParam* mutable_conv_2d_param();
   ::Conv2dParam* release_conv_2d_param();
   void set_allocated_conv_2d_param(::Conv2dParam* conv_2d_param);
 
-  // .DropoutParam dropout_param = 108;
+  // .DropoutParam dropout_param = 106;
   bool has_dropout_param() const;
   void clear_dropout_param();
-  static const int kDropoutParamFieldNumber = 108;
+  static const int kDropoutParamFieldNumber = 106;
   const ::DropoutParam& dropout_param() const;
   ::DropoutParam* mutable_dropout_param();
   ::DropoutParam* release_dropout_param();
   void set_allocated_dropout_param(::DropoutParam* dropout_param);
 
-  // .ReluParam relu_param = 109;
+  // .ReluParam relu_param = 107;
   bool has_relu_param() const;
   void clear_relu_param();
-  static const int kReluParamFieldNumber = 109;
+  static const int kReluParamFieldNumber = 107;
   const ::ReluParam& relu_param() const;
   ::ReluParam* mutable_relu_param();
   ::ReluParam* release_relu_param();
   void set_allocated_relu_param(::ReluParam* relu_param);
 
-  // .SoftmaxParam softmax_param = 110;
+  // .SoftmaxParam softmax_param = 108;
   bool has_softmax_param() const;
   void clear_softmax_param();
-  static const int kSoftmaxParamFieldNumber = 110;
+  static const int kSoftmaxParamFieldNumber = 108;
   const ::SoftmaxParam& softmax_param() const;
   ::SoftmaxParam* mutable_softmax_param();
   ::SoftmaxParam* release_softmax_param();
   void set_allocated_softmax_param(::SoftmaxParam* softmax_param);
 
-  // .SquareParam square_param = 111;
+  // .SquareParam square_param = 109;
   bool has_square_param() const;
   void clear_square_param();
-  static const int kSquareParamFieldNumber = 111;
+  static const int kSquareParamFieldNumber = 109;
   const ::SquareParam& square_param() const;
   ::SquareParam* mutable_square_param();
   ::SquareParam* release_square_param();
   void set_allocated_square_param(::SquareParam* square_param);
 
-  // .MatMulParam matmul_param = 112;
+  // .MatMulParam matmul_param = 110;
   bool has_matmul_param() const;
   void clear_matmul_param();
-  static const int kMatmulParamFieldNumber = 112;
+  static const int kMatmulParamFieldNumber = 110;
   const ::MatMulParam& matmul_param() const;
   ::MatMulParam* mutable_matmul_param();
   ::MatMulParam* release_matmul_param();
   void set_allocated_matmul_param(::MatMulParam* matmul_param);
 
-  // .PoolingParam pooling_param = 113;
+  // .PoolingParam pooling_param = 111;
   bool has_pooling_param() const;
   void clear_pooling_param();
-  static const int kPoolingParamFieldNumber = 113;
+  static const int kPoolingParamFieldNumber = 111;
   const ::PoolingParam& pooling_param() const;
   ::PoolingParam* mutable_pooling_param();
   ::PoolingParam* release_pooling_param();
   void set_allocated_pooling_param(::PoolingParam* pooling_param);
 
-  // .ReduceParam reduce_param = 114;
+  // .ReduceParam reduce_param = 112;
   bool has_reduce_param() const;
   void clear_reduce_param();
-  static const int kReduceParamFieldNumber = 114;
+  static const int kReduceParamFieldNumber = 112;
   const ::ReduceParam& reduce_param() const;
   ::ReduceParam* mutable_reduce_param();
   ::ReduceParam* release_reduce_param();
   void set_allocated_reduce_param(::ReduceParam* reduce_param);
 
-  // .EqualParam equal_param = 115;
+  // .EqualParam equal_param = 113;
   bool has_equal_param() const;
   void clear_equal_param();
-  static const int kEqualParamFieldNumber = 115;
+  static const int kEqualParamFieldNumber = 113;
   const ::EqualParam& equal_param() const;
   ::EqualParam* mutable_equal_param();
   ::EqualParam* release_equal_param();
   void set_allocated_equal_param(::EqualParam* equal_param);
 
-  // .PrintParam print_param = 116;
+  // .PrintParam print_param = 114;
   bool has_print_param() const;
   void clear_print_param();
-  static const int kPrintParamFieldNumber = 116;
+  static const int kPrintParamFieldNumber = 114;
   const ::PrintParam& print_param() const;
   ::PrintParam* mutable_print_param();
   ::PrintParam* release_print_param();
   void set_allocated_print_param(::PrintParam* print_param);
 
-  // .CastFloatParam cast_float_param = 117;
+  // .CastFloatParam cast_float_param = 115;
   bool has_cast_float_param() const;
   void clear_cast_float_param();
-  static const int kCastFloatParamFieldNumber = 117;
+  static const int kCastFloatParamFieldNumber = 115;
   const ::CastFloatParam& cast_float_param() const;
   ::CastFloatParam* mutable_cast_float_param();
   ::CastFloatParam* release_cast_float_param();
   void set_allocated_cast_float_param(::CastFloatParam* cast_float_param);
 
-  // .AccumulatorParam accumulator_param = 118;
+  // .AccumulatorParam accumulator_param = 116;
   bool has_accumulator_param() const;
   void clear_accumulator_param();
-  static const int kAccumulatorParamFieldNumber = 118;
+  static const int kAccumulatorParamFieldNumber = 116;
   const ::AccumulatorParam& accumulator_param() const;
   ::AccumulatorParam* mutable_accumulator_param();
   ::AccumulatorParam* release_accumulator_param();
   void set_allocated_accumulator_param(::AccumulatorParam* accumulator_param);
 
-  // .DisplayParam display_param = 119;
+  // .DisplayParam display_param = 117;
   bool has_display_param() const;
   void clear_display_param();
-  static const int kDisplayParamFieldNumber = 119;
+  static const int kDisplayParamFieldNumber = 117;
   const ::DisplayParam& display_param() const;
   ::DisplayParam* mutable_display_param();
   ::DisplayParam* release_display_param();
@@ -2777,11 +2874,11 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::RepeatedPtrField< ::std::string> output_;
   ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
   ::google::protobuf::internal::ArenaStringPtr name_;
-  ::MnistReaderParam* mnist_reader_param_;
+  ::LossParam* loss_param_;
+  ::ReaderParam* reader_param_;
   ::VariableParam* variable_param_;
   ::PlaceHolderParam* place_holder_param_;
   ::PhaseplexerParam* phaseplexer_param_;
-  ::LossParam* loss_param_;
   ::AddParam* add_param_;
   ::BiasAddParam* bias_add_param_;
   ::Conv2dParam* conv_2d_param_;
@@ -3607,24 +3704,24 @@ class SGDSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
-  // float momentum = 1;
-  void clear_momentum();
-  static const int kMomentumFieldNumber = 1;
-  float momentum() const;
-  void set_momentum(float value);
-
-  // float learning_rate = 2;
+  // float learning_rate = 1;
   void clear_learning_rate();
-  static const int kLearningRateFieldNumber = 2;
+  static const int kLearningRateFieldNumber = 1;
   float learning_rate() const;
   void set_learning_rate(float value);
+
+  // float momentum = 2;
+  void clear_momentum();
+  static const int kMomentumFieldNumber = 2;
+  float momentum() const;
+  void set_momentum(float value);
 
   // @@protoc_insertion_point(class_scope:SGDSolverParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  float momentum_;
   float learning_rate_;
+  float momentum_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3697,17 +3794,17 @@ class GainSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
 
   // accessors -------------------------------------------------------
 
-  // float momentum = 1;
-  void clear_momentum();
-  static const int kMomentumFieldNumber = 1;
-  float momentum() const;
-  void set_momentum(float value);
-
-  // float learning_rate = 2;
+  // float learning_rate = 1;
   void clear_learning_rate();
-  static const int kLearningRateFieldNumber = 2;
+  static const int kLearningRateFieldNumber = 1;
   float learning_rate() const;
   void set_learning_rate(float value);
+
+  // float momentum = 2;
+  void clear_momentum();
+  static const int kMomentumFieldNumber = 2;
+  float momentum() const;
+  void set_momentum(float value);
 
   // float max_gain = 3;
   void clear_max_gain();
@@ -3737,12 +3834,116 @@ class GainSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  float momentum_;
   float learning_rate_;
+  float momentum_;
   float max_gain_;
   float min_gain_;
   float gain_plus_;
   float gain_mult_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AdamSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:AdamSolverParam) */ {
+ public:
+  AdamSolverParam();
+  virtual ~AdamSolverParam();
+
+  AdamSolverParam(const AdamSolverParam& from);
+
+  inline AdamSolverParam& operator=(const AdamSolverParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AdamSolverParam& default_instance();
+
+  static inline const AdamSolverParam* internal_default_instance() {
+    return reinterpret_cast<const AdamSolverParam*>(
+               &_AdamSolverParam_default_instance_);
+  }
+
+  void Swap(AdamSolverParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AdamSolverParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AdamSolverParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AdamSolverParam& from);
+  void MergeFrom(const AdamSolverParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AdamSolverParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float learning_rate = 1;
+  void clear_learning_rate();
+  static const int kLearningRateFieldNumber = 1;
+  float learning_rate() const;
+  void set_learning_rate(float value);
+
+  // float beta1 = 2;
+  void clear_beta1();
+  static const int kBeta1FieldNumber = 2;
+  float beta1() const;
+  void set_beta1(float value);
+
+  // float beta2 = 3;
+  void clear_beta2();
+  static const int kBeta2FieldNumber = 3;
+  float beta2() const;
+  void set_beta2(float value);
+
+  // float eps = 4;
+  void clear_eps();
+  static const int kEpsFieldNumber = 4;
+  float eps() const;
+  void set_eps(float value);
+
+  // @@protoc_insertion_point(class_scope:AdamSolverParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float learning_rate_;
+  float beta1_;
+  float beta2_;
+  float eps_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3815,52 +4016,55 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 
   // accessors -------------------------------------------------------
 
-  // string loss_terminal = 2;
-  void clear_loss_terminal();
-  static const int kLossTerminalFieldNumber = 2;
-  const ::std::string& loss_terminal() const;
-  void set_loss_terminal(const ::std::string& value);
+  // string name = 1;
+  void clear_name();
+  static const int kNameFieldNumber = 1;
+  const ::std::string& name() const;
+  void set_name(const ::std::string& value);
   #if LANG_CXX11
-  void set_loss_terminal(::std::string&& value);
+  void set_name(::std::string&& value);
   #endif
-  void set_loss_terminal(const char* value);
-  void set_loss_terminal(const char* value, size_t size);
-  ::std::string* mutable_loss_terminal();
-  ::std::string* release_loss_terminal();
-  void set_allocated_loss_terminal(::std::string* loss_terminal);
+  void set_name(const char* value);
+  void set_name(const char* value, size_t size);
+  ::std::string* mutable_name();
+  ::std::string* release_name();
+  void set_allocated_name(::std::string* name);
 
-  // .SGDSolverParam sgd_solver = 3;
+  // .SGDSolverParam sgd_solver = 2;
   bool has_sgd_solver() const;
   void clear_sgd_solver();
-  static const int kSgdSolverFieldNumber = 3;
+  static const int kSgdSolverFieldNumber = 2;
   const ::SGDSolverParam& sgd_solver() const;
   ::SGDSolverParam* mutable_sgd_solver();
   ::SGDSolverParam* release_sgd_solver();
   void set_allocated_sgd_solver(::SGDSolverParam* sgd_solver);
 
-  // .GainSolverParam gain_solver = 4;
+  // .GainSolverParam gain_solver = 3;
   bool has_gain_solver() const;
   void clear_gain_solver();
-  static const int kGainSolverFieldNumber = 4;
+  static const int kGainSolverFieldNumber = 3;
   const ::GainSolverParam& gain_solver() const;
   ::GainSolverParam* mutable_gain_solver();
   ::GainSolverParam* release_gain_solver();
   void set_allocated_gain_solver(::GainSolverParam* gain_solver);
 
-  // int32 max_epoch = 1;
-  void clear_max_epoch();
-  static const int kMaxEpochFieldNumber = 1;
-  ::google::protobuf::int32 max_epoch() const;
-  void set_max_epoch(::google::protobuf::int32 value);
+  // .AdamSolverParam adam_solver = 4;
+  bool has_adam_solver() const;
+  void clear_adam_solver();
+  static const int kAdamSolverFieldNumber = 4;
+  const ::AdamSolverParam& adam_solver() const;
+  ::AdamSolverParam* mutable_adam_solver();
+  ::AdamSolverParam* release_adam_solver();
+  void set_allocated_adam_solver(::AdamSolverParam* adam_solver);
 
   // @@protoc_insertion_point(class_scope:SolverParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr loss_terminal_;
+  ::google::protobuf::internal::ArenaStringPtr name_;
   ::SGDSolverParam* sgd_solver_;
   ::GainSolverParam* gain_solver_;
-  ::google::protobuf::int32 max_epoch_;
+  ::AdamSolverParam* adam_solver_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3992,37 +4196,37 @@ class PhaseParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
 };
 // -------------------------------------------------------------------
 
-class NetworkParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:NetworkParam) */ {
+class GraphParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:GraphParam) */ {
  public:
-  NetworkParam();
-  virtual ~NetworkParam();
+  GraphParam();
+  virtual ~GraphParam();
 
-  NetworkParam(const NetworkParam& from);
+  GraphParam(const GraphParam& from);
 
-  inline NetworkParam& operator=(const NetworkParam& from) {
+  inline GraphParam& operator=(const GraphParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const NetworkParam& default_instance();
+  static const GraphParam& default_instance();
 
-  static inline const NetworkParam* internal_default_instance() {
-    return reinterpret_cast<const NetworkParam*>(
-               &_NetworkParam_default_instance_);
+  static inline const GraphParam* internal_default_instance() {
+    return reinterpret_cast<const GraphParam*>(
+               &_GraphParam_default_instance_);
   }
 
-  void Swap(NetworkParam* other);
+  void Swap(GraphParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline NetworkParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline GraphParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  NetworkParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  GraphParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const NetworkParam& from);
-  void MergeFrom(const NetworkParam& from);
+  void CopyFrom(const GraphParam& from);
+  void MergeFrom(const GraphParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -4043,7 +4247,7 @@ class NetworkParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(NetworkParam* other);
+  void InternalSwap(GraphParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -4095,7 +4299,7 @@ class NetworkParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   const ::google::protobuf::RepeatedPtrField< ::PhaseParam >&
       phase() const;
 
-  // @@protoc_insertion_point(class_scope:NetworkParam)
+  // @@protoc_insertion_point(class_scope:GraphParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -4896,43 +5100,56 @@ inline void VariableParam::set_allocated_init_param(::InitParam* init_param) {
   // @@protoc_insertion_point(field_set_allocated:VariableParam.init_param)
 }
 
-// .SnapshotParam snapshot_param = 2;
-inline bool VariableParam::has_snapshot_param() const {
-  return this != internal_default_instance() && snapshot_param_ != NULL;
+// string solver_name = 2;
+inline void VariableParam::clear_solver_name() {
+  solver_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void VariableParam::clear_snapshot_param() {
-  if (GetArenaNoVirtual() == NULL && snapshot_param_ != NULL) delete snapshot_param_;
-  snapshot_param_ = NULL;
+inline const ::std::string& VariableParam::solver_name() const {
+  // @@protoc_insertion_point(field_get:VariableParam.solver_name)
+  return solver_name_.GetNoArena();
 }
-inline const ::SnapshotParam& VariableParam::snapshot_param() const {
-  // @@protoc_insertion_point(field_get:VariableParam.snapshot_param)
-  return snapshot_param_ != NULL ? *snapshot_param_
-                         : *::SnapshotParam::internal_default_instance();
-}
-inline ::SnapshotParam* VariableParam::mutable_snapshot_param() {
+inline void VariableParam::set_solver_name(const ::std::string& value) {
   
-  if (snapshot_param_ == NULL) {
-    snapshot_param_ = new ::SnapshotParam;
-  }
-  // @@protoc_insertion_point(field_mutable:VariableParam.snapshot_param)
-  return snapshot_param_;
+  solver_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:VariableParam.solver_name)
 }
-inline ::SnapshotParam* VariableParam::release_snapshot_param() {
-  // @@protoc_insertion_point(field_release:VariableParam.snapshot_param)
+#if LANG_CXX11
+inline void VariableParam::set_solver_name(::std::string&& value) {
   
-  ::SnapshotParam* temp = snapshot_param_;
-  snapshot_param_ = NULL;
-  return temp;
+  solver_name_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:VariableParam.solver_name)
 }
-inline void VariableParam::set_allocated_snapshot_param(::SnapshotParam* snapshot_param) {
-  delete snapshot_param_;
-  snapshot_param_ = snapshot_param;
-  if (snapshot_param) {
+#endif
+inline void VariableParam::set_solver_name(const char* value) {
+  
+  solver_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:VariableParam.solver_name)
+}
+inline void VariableParam::set_solver_name(const char* value, size_t size) {
+  
+  solver_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:VariableParam.solver_name)
+}
+inline ::std::string* VariableParam::mutable_solver_name() {
+  
+  // @@protoc_insertion_point(field_mutable:VariableParam.solver_name)
+  return solver_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* VariableParam::release_solver_name() {
+  // @@protoc_insertion_point(field_release:VariableParam.solver_name)
+  
+  return solver_name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void VariableParam::set_allocated_solver_name(::std::string* solver_name) {
+  if (solver_name != NULL) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:VariableParam.snapshot_param)
+  solver_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), solver_name);
+  // @@protoc_insertion_point(field_set_allocated:VariableParam.solver_name)
 }
 
 // .TensorData weights = 3;
@@ -5015,6 +5232,49 @@ inline void LossParam::set_allocated_softmax_loss_param(::SoftmaxLossParam* soft
     
   }
   // @@protoc_insertion_point(field_set_allocated:LossParam.softmax_loss_param)
+}
+
+// -------------------------------------------------------------------
+
+// ReaderParam
+
+// .MnistReaderParam mnist_param = 1;
+inline bool ReaderParam::has_mnist_param() const {
+  return this != internal_default_instance() && mnist_param_ != NULL;
+}
+inline void ReaderParam::clear_mnist_param() {
+  if (GetArenaNoVirtual() == NULL && mnist_param_ != NULL) delete mnist_param_;
+  mnist_param_ = NULL;
+}
+inline const ::MnistReaderParam& ReaderParam::mnist_param() const {
+  // @@protoc_insertion_point(field_get:ReaderParam.mnist_param)
+  return mnist_param_ != NULL ? *mnist_param_
+                         : *::MnistReaderParam::internal_default_instance();
+}
+inline ::MnistReaderParam* ReaderParam::mutable_mnist_param() {
+  
+  if (mnist_param_ == NULL) {
+    mnist_param_ = new ::MnistReaderParam;
+  }
+  // @@protoc_insertion_point(field_mutable:ReaderParam.mnist_param)
+  return mnist_param_;
+}
+inline ::MnistReaderParam* ReaderParam::release_mnist_param() {
+  // @@protoc_insertion_point(field_release:ReaderParam.mnist_param)
+  
+  ::MnistReaderParam* temp = mnist_param_;
+  mnist_param_ = NULL;
+  return temp;
+}
+inline void ReaderParam::set_allocated_mnist_param(::MnistReaderParam* mnist_param) {
+  delete mnist_param_;
+  mnist_param_ = mnist_param;
+  if (mnist_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:ReaderParam.mnist_param)
 }
 
 // -------------------------------------------------------------------
@@ -5362,163 +5622,7 @@ NodeParam::mutable_phase() {
   return &phase_;
 }
 
-// .MnistReaderParam mnist_reader_param = 100;
-inline bool NodeParam::has_mnist_reader_param() const {
-  return this != internal_default_instance() && mnist_reader_param_ != NULL;
-}
-inline void NodeParam::clear_mnist_reader_param() {
-  if (GetArenaNoVirtual() == NULL && mnist_reader_param_ != NULL) delete mnist_reader_param_;
-  mnist_reader_param_ = NULL;
-}
-inline const ::MnistReaderParam& NodeParam::mnist_reader_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.mnist_reader_param)
-  return mnist_reader_param_ != NULL ? *mnist_reader_param_
-                         : *::MnistReaderParam::internal_default_instance();
-}
-inline ::MnistReaderParam* NodeParam::mutable_mnist_reader_param() {
-  
-  if (mnist_reader_param_ == NULL) {
-    mnist_reader_param_ = new ::MnistReaderParam;
-  }
-  // @@protoc_insertion_point(field_mutable:NodeParam.mnist_reader_param)
-  return mnist_reader_param_;
-}
-inline ::MnistReaderParam* NodeParam::release_mnist_reader_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.mnist_reader_param)
-  
-  ::MnistReaderParam* temp = mnist_reader_param_;
-  mnist_reader_param_ = NULL;
-  return temp;
-}
-inline void NodeParam::set_allocated_mnist_reader_param(::MnistReaderParam* mnist_reader_param) {
-  delete mnist_reader_param_;
-  mnist_reader_param_ = mnist_reader_param;
-  if (mnist_reader_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.mnist_reader_param)
-}
-
-// .VariableParam variable_param = 101;
-inline bool NodeParam::has_variable_param() const {
-  return this != internal_default_instance() && variable_param_ != NULL;
-}
-inline void NodeParam::clear_variable_param() {
-  if (GetArenaNoVirtual() == NULL && variable_param_ != NULL) delete variable_param_;
-  variable_param_ = NULL;
-}
-inline const ::VariableParam& NodeParam::variable_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.variable_param)
-  return variable_param_ != NULL ? *variable_param_
-                         : *::VariableParam::internal_default_instance();
-}
-inline ::VariableParam* NodeParam::mutable_variable_param() {
-  
-  if (variable_param_ == NULL) {
-    variable_param_ = new ::VariableParam;
-  }
-  // @@protoc_insertion_point(field_mutable:NodeParam.variable_param)
-  return variable_param_;
-}
-inline ::VariableParam* NodeParam::release_variable_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.variable_param)
-  
-  ::VariableParam* temp = variable_param_;
-  variable_param_ = NULL;
-  return temp;
-}
-inline void NodeParam::set_allocated_variable_param(::VariableParam* variable_param) {
-  delete variable_param_;
-  variable_param_ = variable_param;
-  if (variable_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.variable_param)
-}
-
-// .PlaceHolderParam place_holder_param = 102;
-inline bool NodeParam::has_place_holder_param() const {
-  return this != internal_default_instance() && place_holder_param_ != NULL;
-}
-inline void NodeParam::clear_place_holder_param() {
-  if (GetArenaNoVirtual() == NULL && place_holder_param_ != NULL) delete place_holder_param_;
-  place_holder_param_ = NULL;
-}
-inline const ::PlaceHolderParam& NodeParam::place_holder_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.place_holder_param)
-  return place_holder_param_ != NULL ? *place_holder_param_
-                         : *::PlaceHolderParam::internal_default_instance();
-}
-inline ::PlaceHolderParam* NodeParam::mutable_place_holder_param() {
-  
-  if (place_holder_param_ == NULL) {
-    place_holder_param_ = new ::PlaceHolderParam;
-  }
-  // @@protoc_insertion_point(field_mutable:NodeParam.place_holder_param)
-  return place_holder_param_;
-}
-inline ::PlaceHolderParam* NodeParam::release_place_holder_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.place_holder_param)
-  
-  ::PlaceHolderParam* temp = place_holder_param_;
-  place_holder_param_ = NULL;
-  return temp;
-}
-inline void NodeParam::set_allocated_place_holder_param(::PlaceHolderParam* place_holder_param) {
-  delete place_holder_param_;
-  place_holder_param_ = place_holder_param;
-  if (place_holder_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.place_holder_param)
-}
-
-// .PhaseplexerParam phaseplexer_param = 103;
-inline bool NodeParam::has_phaseplexer_param() const {
-  return this != internal_default_instance() && phaseplexer_param_ != NULL;
-}
-inline void NodeParam::clear_phaseplexer_param() {
-  if (GetArenaNoVirtual() == NULL && phaseplexer_param_ != NULL) delete phaseplexer_param_;
-  phaseplexer_param_ = NULL;
-}
-inline const ::PhaseplexerParam& NodeParam::phaseplexer_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.phaseplexer_param)
-  return phaseplexer_param_ != NULL ? *phaseplexer_param_
-                         : *::PhaseplexerParam::internal_default_instance();
-}
-inline ::PhaseplexerParam* NodeParam::mutable_phaseplexer_param() {
-  
-  if (phaseplexer_param_ == NULL) {
-    phaseplexer_param_ = new ::PhaseplexerParam;
-  }
-  // @@protoc_insertion_point(field_mutable:NodeParam.phaseplexer_param)
-  return phaseplexer_param_;
-}
-inline ::PhaseplexerParam* NodeParam::release_phaseplexer_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.phaseplexer_param)
-  
-  ::PhaseplexerParam* temp = phaseplexer_param_;
-  phaseplexer_param_ = NULL;
-  return temp;
-}
-inline void NodeParam::set_allocated_phaseplexer_param(::PhaseplexerParam* phaseplexer_param) {
-  delete phaseplexer_param_;
-  phaseplexer_param_ = phaseplexer_param;
-  if (phaseplexer_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.phaseplexer_param)
-}
-
-// .LossParam loss_param = 104;
+// .LossParam loss_param = 50;
 inline bool NodeParam::has_loss_param() const {
   return this != internal_default_instance() && loss_param_ != NULL;
 }
@@ -5557,7 +5661,163 @@ inline void NodeParam::set_allocated_loss_param(::LossParam* loss_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.loss_param)
 }
 
-// .AddParam add_param = 105;
+// .ReaderParam reader_param = 51;
+inline bool NodeParam::has_reader_param() const {
+  return this != internal_default_instance() && reader_param_ != NULL;
+}
+inline void NodeParam::clear_reader_param() {
+  if (GetArenaNoVirtual() == NULL && reader_param_ != NULL) delete reader_param_;
+  reader_param_ = NULL;
+}
+inline const ::ReaderParam& NodeParam::reader_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.reader_param)
+  return reader_param_ != NULL ? *reader_param_
+                         : *::ReaderParam::internal_default_instance();
+}
+inline ::ReaderParam* NodeParam::mutable_reader_param() {
+  
+  if (reader_param_ == NULL) {
+    reader_param_ = new ::ReaderParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.reader_param)
+  return reader_param_;
+}
+inline ::ReaderParam* NodeParam::release_reader_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.reader_param)
+  
+  ::ReaderParam* temp = reader_param_;
+  reader_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_reader_param(::ReaderParam* reader_param) {
+  delete reader_param_;
+  reader_param_ = reader_param;
+  if (reader_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.reader_param)
+}
+
+// .VariableParam variable_param = 100;
+inline bool NodeParam::has_variable_param() const {
+  return this != internal_default_instance() && variable_param_ != NULL;
+}
+inline void NodeParam::clear_variable_param() {
+  if (GetArenaNoVirtual() == NULL && variable_param_ != NULL) delete variable_param_;
+  variable_param_ = NULL;
+}
+inline const ::VariableParam& NodeParam::variable_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.variable_param)
+  return variable_param_ != NULL ? *variable_param_
+                         : *::VariableParam::internal_default_instance();
+}
+inline ::VariableParam* NodeParam::mutable_variable_param() {
+  
+  if (variable_param_ == NULL) {
+    variable_param_ = new ::VariableParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.variable_param)
+  return variable_param_;
+}
+inline ::VariableParam* NodeParam::release_variable_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.variable_param)
+  
+  ::VariableParam* temp = variable_param_;
+  variable_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_variable_param(::VariableParam* variable_param) {
+  delete variable_param_;
+  variable_param_ = variable_param;
+  if (variable_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.variable_param)
+}
+
+// .PlaceHolderParam place_holder_param = 101;
+inline bool NodeParam::has_place_holder_param() const {
+  return this != internal_default_instance() && place_holder_param_ != NULL;
+}
+inline void NodeParam::clear_place_holder_param() {
+  if (GetArenaNoVirtual() == NULL && place_holder_param_ != NULL) delete place_holder_param_;
+  place_holder_param_ = NULL;
+}
+inline const ::PlaceHolderParam& NodeParam::place_holder_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.place_holder_param)
+  return place_holder_param_ != NULL ? *place_holder_param_
+                         : *::PlaceHolderParam::internal_default_instance();
+}
+inline ::PlaceHolderParam* NodeParam::mutable_place_holder_param() {
+  
+  if (place_holder_param_ == NULL) {
+    place_holder_param_ = new ::PlaceHolderParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.place_holder_param)
+  return place_holder_param_;
+}
+inline ::PlaceHolderParam* NodeParam::release_place_holder_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.place_holder_param)
+  
+  ::PlaceHolderParam* temp = place_holder_param_;
+  place_holder_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_place_holder_param(::PlaceHolderParam* place_holder_param) {
+  delete place_holder_param_;
+  place_holder_param_ = place_holder_param;
+  if (place_holder_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.place_holder_param)
+}
+
+// .PhaseplexerParam phaseplexer_param = 102;
+inline bool NodeParam::has_phaseplexer_param() const {
+  return this != internal_default_instance() && phaseplexer_param_ != NULL;
+}
+inline void NodeParam::clear_phaseplexer_param() {
+  if (GetArenaNoVirtual() == NULL && phaseplexer_param_ != NULL) delete phaseplexer_param_;
+  phaseplexer_param_ = NULL;
+}
+inline const ::PhaseplexerParam& NodeParam::phaseplexer_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.phaseplexer_param)
+  return phaseplexer_param_ != NULL ? *phaseplexer_param_
+                         : *::PhaseplexerParam::internal_default_instance();
+}
+inline ::PhaseplexerParam* NodeParam::mutable_phaseplexer_param() {
+  
+  if (phaseplexer_param_ == NULL) {
+    phaseplexer_param_ = new ::PhaseplexerParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.phaseplexer_param)
+  return phaseplexer_param_;
+}
+inline ::PhaseplexerParam* NodeParam::release_phaseplexer_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.phaseplexer_param)
+  
+  ::PhaseplexerParam* temp = phaseplexer_param_;
+  phaseplexer_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_phaseplexer_param(::PhaseplexerParam* phaseplexer_param) {
+  delete phaseplexer_param_;
+  phaseplexer_param_ = phaseplexer_param;
+  if (phaseplexer_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.phaseplexer_param)
+}
+
+// .AddParam add_param = 103;
 inline bool NodeParam::has_add_param() const {
   return this != internal_default_instance() && add_param_ != NULL;
 }
@@ -5596,7 +5856,7 @@ inline void NodeParam::set_allocated_add_param(::AddParam* add_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.add_param)
 }
 
-// .BiasAddParam bias_add_param = 106;
+// .BiasAddParam bias_add_param = 104;
 inline bool NodeParam::has_bias_add_param() const {
   return this != internal_default_instance() && bias_add_param_ != NULL;
 }
@@ -5635,7 +5895,7 @@ inline void NodeParam::set_allocated_bias_add_param(::BiasAddParam* bias_add_par
   // @@protoc_insertion_point(field_set_allocated:NodeParam.bias_add_param)
 }
 
-// .Conv2dParam conv_2d_param = 107;
+// .Conv2dParam conv_2d_param = 105;
 inline bool NodeParam::has_conv_2d_param() const {
   return this != internal_default_instance() && conv_2d_param_ != NULL;
 }
@@ -5674,7 +5934,7 @@ inline void NodeParam::set_allocated_conv_2d_param(::Conv2dParam* conv_2d_param)
   // @@protoc_insertion_point(field_set_allocated:NodeParam.conv_2d_param)
 }
 
-// .DropoutParam dropout_param = 108;
+// .DropoutParam dropout_param = 106;
 inline bool NodeParam::has_dropout_param() const {
   return this != internal_default_instance() && dropout_param_ != NULL;
 }
@@ -5713,7 +5973,7 @@ inline void NodeParam::set_allocated_dropout_param(::DropoutParam* dropout_param
   // @@protoc_insertion_point(field_set_allocated:NodeParam.dropout_param)
 }
 
-// .ReluParam relu_param = 109;
+// .ReluParam relu_param = 107;
 inline bool NodeParam::has_relu_param() const {
   return this != internal_default_instance() && relu_param_ != NULL;
 }
@@ -5752,7 +6012,7 @@ inline void NodeParam::set_allocated_relu_param(::ReluParam* relu_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.relu_param)
 }
 
-// .SoftmaxParam softmax_param = 110;
+// .SoftmaxParam softmax_param = 108;
 inline bool NodeParam::has_softmax_param() const {
   return this != internal_default_instance() && softmax_param_ != NULL;
 }
@@ -5791,7 +6051,7 @@ inline void NodeParam::set_allocated_softmax_param(::SoftmaxParam* softmax_param
   // @@protoc_insertion_point(field_set_allocated:NodeParam.softmax_param)
 }
 
-// .SquareParam square_param = 111;
+// .SquareParam square_param = 109;
 inline bool NodeParam::has_square_param() const {
   return this != internal_default_instance() && square_param_ != NULL;
 }
@@ -5830,7 +6090,7 @@ inline void NodeParam::set_allocated_square_param(::SquareParam* square_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.square_param)
 }
 
-// .MatMulParam matmul_param = 112;
+// .MatMulParam matmul_param = 110;
 inline bool NodeParam::has_matmul_param() const {
   return this != internal_default_instance() && matmul_param_ != NULL;
 }
@@ -5869,7 +6129,7 @@ inline void NodeParam::set_allocated_matmul_param(::MatMulParam* matmul_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.matmul_param)
 }
 
-// .PoolingParam pooling_param = 113;
+// .PoolingParam pooling_param = 111;
 inline bool NodeParam::has_pooling_param() const {
   return this != internal_default_instance() && pooling_param_ != NULL;
 }
@@ -5908,7 +6168,7 @@ inline void NodeParam::set_allocated_pooling_param(::PoolingParam* pooling_param
   // @@protoc_insertion_point(field_set_allocated:NodeParam.pooling_param)
 }
 
-// .ReduceParam reduce_param = 114;
+// .ReduceParam reduce_param = 112;
 inline bool NodeParam::has_reduce_param() const {
   return this != internal_default_instance() && reduce_param_ != NULL;
 }
@@ -5947,7 +6207,7 @@ inline void NodeParam::set_allocated_reduce_param(::ReduceParam* reduce_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.reduce_param)
 }
 
-// .EqualParam equal_param = 115;
+// .EqualParam equal_param = 113;
 inline bool NodeParam::has_equal_param() const {
   return this != internal_default_instance() && equal_param_ != NULL;
 }
@@ -5986,7 +6246,7 @@ inline void NodeParam::set_allocated_equal_param(::EqualParam* equal_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.equal_param)
 }
 
-// .PrintParam print_param = 116;
+// .PrintParam print_param = 114;
 inline bool NodeParam::has_print_param() const {
   return this != internal_default_instance() && print_param_ != NULL;
 }
@@ -6025,7 +6285,7 @@ inline void NodeParam::set_allocated_print_param(::PrintParam* print_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.print_param)
 }
 
-// .CastFloatParam cast_float_param = 117;
+// .CastFloatParam cast_float_param = 115;
 inline bool NodeParam::has_cast_float_param() const {
   return this != internal_default_instance() && cast_float_param_ != NULL;
 }
@@ -6064,7 +6324,7 @@ inline void NodeParam::set_allocated_cast_float_param(::CastFloatParam* cast_flo
   // @@protoc_insertion_point(field_set_allocated:NodeParam.cast_float_param)
 }
 
-// .AccumulatorParam accumulator_param = 118;
+// .AccumulatorParam accumulator_param = 116;
 inline bool NodeParam::has_accumulator_param() const {
   return this != internal_default_instance() && accumulator_param_ != NULL;
 }
@@ -6103,7 +6363,7 @@ inline void NodeParam::set_allocated_accumulator_param(::AccumulatorParam* accum
   // @@protoc_insertion_point(field_set_allocated:NodeParam.accumulator_param)
 }
 
-// .DisplayParam display_param = 119;
+// .DisplayParam display_param = 117;
 inline bool NodeParam::has_display_param() const {
   return this != internal_default_instance() && display_param_ != NULL;
 }
@@ -6552,21 +6812,7 @@ inline void InitParam::set_allocated_step_param(::InitStepParam* step_param) {
 
 // SGDSolverParam
 
-// float momentum = 1;
-inline void SGDSolverParam::clear_momentum() {
-  momentum_ = 0;
-}
-inline float SGDSolverParam::momentum() const {
-  // @@protoc_insertion_point(field_get:SGDSolverParam.momentum)
-  return momentum_;
-}
-inline void SGDSolverParam::set_momentum(float value) {
-  
-  momentum_ = value;
-  // @@protoc_insertion_point(field_set:SGDSolverParam.momentum)
-}
-
-// float learning_rate = 2;
+// float learning_rate = 1;
 inline void SGDSolverParam::clear_learning_rate() {
   learning_rate_ = 0;
 }
@@ -6580,25 +6826,25 @@ inline void SGDSolverParam::set_learning_rate(float value) {
   // @@protoc_insertion_point(field_set:SGDSolverParam.learning_rate)
 }
 
+// float momentum = 2;
+inline void SGDSolverParam::clear_momentum() {
+  momentum_ = 0;
+}
+inline float SGDSolverParam::momentum() const {
+  // @@protoc_insertion_point(field_get:SGDSolverParam.momentum)
+  return momentum_;
+}
+inline void SGDSolverParam::set_momentum(float value) {
+  
+  momentum_ = value;
+  // @@protoc_insertion_point(field_set:SGDSolverParam.momentum)
+}
+
 // -------------------------------------------------------------------
 
 // GainSolverParam
 
-// float momentum = 1;
-inline void GainSolverParam::clear_momentum() {
-  momentum_ = 0;
-}
-inline float GainSolverParam::momentum() const {
-  // @@protoc_insertion_point(field_get:GainSolverParam.momentum)
-  return momentum_;
-}
-inline void GainSolverParam::set_momentum(float value) {
-  
-  momentum_ = value;
-  // @@protoc_insertion_point(field_set:GainSolverParam.momentum)
-}
-
-// float learning_rate = 2;
+// float learning_rate = 1;
 inline void GainSolverParam::clear_learning_rate() {
   learning_rate_ = 0;
 }
@@ -6610,6 +6856,20 @@ inline void GainSolverParam::set_learning_rate(float value) {
   
   learning_rate_ = value;
   // @@protoc_insertion_point(field_set:GainSolverParam.learning_rate)
+}
+
+// float momentum = 2;
+inline void GainSolverParam::clear_momentum() {
+  momentum_ = 0;
+}
+inline float GainSolverParam::momentum() const {
+  // @@protoc_insertion_point(field_get:GainSolverParam.momentum)
+  return momentum_;
+}
+inline void GainSolverParam::set_momentum(float value) {
+  
+  momentum_ = value;
+  // @@protoc_insertion_point(field_set:GainSolverParam.momentum)
 }
 
 // float max_gain = 3;
@@ -6670,75 +6930,121 @@ inline void GainSolverParam::set_gain_mult(float value) {
 
 // -------------------------------------------------------------------
 
+// AdamSolverParam
+
+// float learning_rate = 1;
+inline void AdamSolverParam::clear_learning_rate() {
+  learning_rate_ = 0;
+}
+inline float AdamSolverParam::learning_rate() const {
+  // @@protoc_insertion_point(field_get:AdamSolverParam.learning_rate)
+  return learning_rate_;
+}
+inline void AdamSolverParam::set_learning_rate(float value) {
+  
+  learning_rate_ = value;
+  // @@protoc_insertion_point(field_set:AdamSolverParam.learning_rate)
+}
+
+// float beta1 = 2;
+inline void AdamSolverParam::clear_beta1() {
+  beta1_ = 0;
+}
+inline float AdamSolverParam::beta1() const {
+  // @@protoc_insertion_point(field_get:AdamSolverParam.beta1)
+  return beta1_;
+}
+inline void AdamSolverParam::set_beta1(float value) {
+  
+  beta1_ = value;
+  // @@protoc_insertion_point(field_set:AdamSolverParam.beta1)
+}
+
+// float beta2 = 3;
+inline void AdamSolverParam::clear_beta2() {
+  beta2_ = 0;
+}
+inline float AdamSolverParam::beta2() const {
+  // @@protoc_insertion_point(field_get:AdamSolverParam.beta2)
+  return beta2_;
+}
+inline void AdamSolverParam::set_beta2(float value) {
+  
+  beta2_ = value;
+  // @@protoc_insertion_point(field_set:AdamSolverParam.beta2)
+}
+
+// float eps = 4;
+inline void AdamSolverParam::clear_eps() {
+  eps_ = 0;
+}
+inline float AdamSolverParam::eps() const {
+  // @@protoc_insertion_point(field_get:AdamSolverParam.eps)
+  return eps_;
+}
+inline void AdamSolverParam::set_eps(float value) {
+  
+  eps_ = value;
+  // @@protoc_insertion_point(field_set:AdamSolverParam.eps)
+}
+
+// -------------------------------------------------------------------
+
 // SolverParam
 
-// int32 max_epoch = 1;
-inline void SolverParam::clear_max_epoch() {
-  max_epoch_ = 0;
+// string name = 1;
+inline void SolverParam::clear_name() {
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::google::protobuf::int32 SolverParam::max_epoch() const {
-  // @@protoc_insertion_point(field_get:SolverParam.max_epoch)
-  return max_epoch_;
+inline const ::std::string& SolverParam::name() const {
+  // @@protoc_insertion_point(field_get:SolverParam.name)
+  return name_.GetNoArena();
 }
-inline void SolverParam::set_max_epoch(::google::protobuf::int32 value) {
+inline void SolverParam::set_name(const ::std::string& value) {
   
-  max_epoch_ = value;
-  // @@protoc_insertion_point(field_set:SolverParam.max_epoch)
-}
-
-// string loss_terminal = 2;
-inline void SolverParam::clear_loss_terminal() {
-  loss_terminal_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& SolverParam::loss_terminal() const {
-  // @@protoc_insertion_point(field_get:SolverParam.loss_terminal)
-  return loss_terminal_.GetNoArena();
-}
-inline void SolverParam::set_loss_terminal(const ::std::string& value) {
-  
-  loss_terminal_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:SolverParam.loss_terminal)
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:SolverParam.name)
 }
 #if LANG_CXX11
-inline void SolverParam::set_loss_terminal(::std::string&& value) {
+inline void SolverParam::set_name(::std::string&& value) {
   
-  loss_terminal_.SetNoArena(
+  name_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:SolverParam.loss_terminal)
+  // @@protoc_insertion_point(field_set_rvalue:SolverParam.name)
 }
 #endif
-inline void SolverParam::set_loss_terminal(const char* value) {
+inline void SolverParam::set_name(const char* value) {
   
-  loss_terminal_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:SolverParam.loss_terminal)
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:SolverParam.name)
 }
-inline void SolverParam::set_loss_terminal(const char* value, size_t size) {
+inline void SolverParam::set_name(const char* value, size_t size) {
   
-  loss_terminal_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:SolverParam.loss_terminal)
+  // @@protoc_insertion_point(field_set_pointer:SolverParam.name)
 }
-inline ::std::string* SolverParam::mutable_loss_terminal() {
+inline ::std::string* SolverParam::mutable_name() {
   
-  // @@protoc_insertion_point(field_mutable:SolverParam.loss_terminal)
-  return loss_terminal_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:SolverParam.name)
+  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* SolverParam::release_loss_terminal() {
-  // @@protoc_insertion_point(field_release:SolverParam.loss_terminal)
+inline ::std::string* SolverParam::release_name() {
+  // @@protoc_insertion_point(field_release:SolverParam.name)
   
-  return loss_terminal_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void SolverParam::set_allocated_loss_terminal(::std::string* loss_terminal) {
-  if (loss_terminal != NULL) {
+inline void SolverParam::set_allocated_name(::std::string* name) {
+  if (name != NULL) {
     
   } else {
     
   }
-  loss_terminal_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), loss_terminal);
-  // @@protoc_insertion_point(field_set_allocated:SolverParam.loss_terminal)
+  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
+  // @@protoc_insertion_point(field_set_allocated:SolverParam.name)
 }
 
-// .SGDSolverParam sgd_solver = 3;
+// .SGDSolverParam sgd_solver = 2;
 inline bool SolverParam::has_sgd_solver() const {
   return this != internal_default_instance() && sgd_solver_ != NULL;
 }
@@ -6777,7 +7083,7 @@ inline void SolverParam::set_allocated_sgd_solver(::SGDSolverParam* sgd_solver) 
   // @@protoc_insertion_point(field_set_allocated:SolverParam.sgd_solver)
 }
 
-// .GainSolverParam gain_solver = 4;
+// .GainSolverParam gain_solver = 3;
 inline bool SolverParam::has_gain_solver() const {
   return this != internal_default_instance() && gain_solver_ != NULL;
 }
@@ -6814,6 +7120,45 @@ inline void SolverParam::set_allocated_gain_solver(::GainSolverParam* gain_solve
     
   }
   // @@protoc_insertion_point(field_set_allocated:SolverParam.gain_solver)
+}
+
+// .AdamSolverParam adam_solver = 4;
+inline bool SolverParam::has_adam_solver() const {
+  return this != internal_default_instance() && adam_solver_ != NULL;
+}
+inline void SolverParam::clear_adam_solver() {
+  if (GetArenaNoVirtual() == NULL && adam_solver_ != NULL) delete adam_solver_;
+  adam_solver_ = NULL;
+}
+inline const ::AdamSolverParam& SolverParam::adam_solver() const {
+  // @@protoc_insertion_point(field_get:SolverParam.adam_solver)
+  return adam_solver_ != NULL ? *adam_solver_
+                         : *::AdamSolverParam::internal_default_instance();
+}
+inline ::AdamSolverParam* SolverParam::mutable_adam_solver() {
+  
+  if (adam_solver_ == NULL) {
+    adam_solver_ = new ::AdamSolverParam;
+  }
+  // @@protoc_insertion_point(field_mutable:SolverParam.adam_solver)
+  return adam_solver_;
+}
+inline ::AdamSolverParam* SolverParam::release_adam_solver() {
+  // @@protoc_insertion_point(field_release:SolverParam.adam_solver)
+  
+  ::AdamSolverParam* temp = adam_solver_;
+  adam_solver_ = NULL;
+  return temp;
+}
+inline void SolverParam::set_allocated_adam_solver(::AdamSolverParam* adam_solver) {
+  delete adam_solver_;
+  adam_solver_ = adam_solver;
+  if (adam_solver) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:SolverParam.adam_solver)
 }
 
 // -------------------------------------------------------------------
@@ -6888,99 +7233,103 @@ inline void PhaseParam::set_behaviour(::PhaseParam_PhaseBehaviour value) {
 
 // -------------------------------------------------------------------
 
-// NetworkParam
+// GraphParam
 
 // repeated .NodeParam node = 1;
-inline int NetworkParam::node_size() const {
+inline int GraphParam::node_size() const {
   return node_.size();
 }
-inline void NetworkParam::clear_node() {
+inline void GraphParam::clear_node() {
   node_.Clear();
 }
-inline const ::NodeParam& NetworkParam::node(int index) const {
-  // @@protoc_insertion_point(field_get:NetworkParam.node)
+inline const ::NodeParam& GraphParam::node(int index) const {
+  // @@protoc_insertion_point(field_get:GraphParam.node)
   return node_.Get(index);
 }
-inline ::NodeParam* NetworkParam::mutable_node(int index) {
-  // @@protoc_insertion_point(field_mutable:NetworkParam.node)
+inline ::NodeParam* GraphParam::mutable_node(int index) {
+  // @@protoc_insertion_point(field_mutable:GraphParam.node)
   return node_.Mutable(index);
 }
-inline ::NodeParam* NetworkParam::add_node() {
-  // @@protoc_insertion_point(field_add:NetworkParam.node)
+inline ::NodeParam* GraphParam::add_node() {
+  // @@protoc_insertion_point(field_add:GraphParam.node)
   return node_.Add();
 }
 inline ::google::protobuf::RepeatedPtrField< ::NodeParam >*
-NetworkParam::mutable_node() {
-  // @@protoc_insertion_point(field_mutable_list:NetworkParam.node)
+GraphParam::mutable_node() {
+  // @@protoc_insertion_point(field_mutable_list:GraphParam.node)
   return &node_;
 }
 inline const ::google::protobuf::RepeatedPtrField< ::NodeParam >&
-NetworkParam::node() const {
-  // @@protoc_insertion_point(field_list:NetworkParam.node)
+GraphParam::node() const {
+  // @@protoc_insertion_point(field_list:GraphParam.node)
   return node_;
 }
 
 // repeated .SolverParam solver = 2;
-inline int NetworkParam::solver_size() const {
+inline int GraphParam::solver_size() const {
   return solver_.size();
 }
-inline void NetworkParam::clear_solver() {
+inline void GraphParam::clear_solver() {
   solver_.Clear();
 }
-inline const ::SolverParam& NetworkParam::solver(int index) const {
-  // @@protoc_insertion_point(field_get:NetworkParam.solver)
+inline const ::SolverParam& GraphParam::solver(int index) const {
+  // @@protoc_insertion_point(field_get:GraphParam.solver)
   return solver_.Get(index);
 }
-inline ::SolverParam* NetworkParam::mutable_solver(int index) {
-  // @@protoc_insertion_point(field_mutable:NetworkParam.solver)
+inline ::SolverParam* GraphParam::mutable_solver(int index) {
+  // @@protoc_insertion_point(field_mutable:GraphParam.solver)
   return solver_.Mutable(index);
 }
-inline ::SolverParam* NetworkParam::add_solver() {
-  // @@protoc_insertion_point(field_add:NetworkParam.solver)
+inline ::SolverParam* GraphParam::add_solver() {
+  // @@protoc_insertion_point(field_add:GraphParam.solver)
   return solver_.Add();
 }
 inline ::google::protobuf::RepeatedPtrField< ::SolverParam >*
-NetworkParam::mutable_solver() {
-  // @@protoc_insertion_point(field_mutable_list:NetworkParam.solver)
+GraphParam::mutable_solver() {
+  // @@protoc_insertion_point(field_mutable_list:GraphParam.solver)
   return &solver_;
 }
 inline const ::google::protobuf::RepeatedPtrField< ::SolverParam >&
-NetworkParam::solver() const {
-  // @@protoc_insertion_point(field_list:NetworkParam.solver)
+GraphParam::solver() const {
+  // @@protoc_insertion_point(field_list:GraphParam.solver)
   return solver_;
 }
 
 // repeated .PhaseParam phase = 3;
-inline int NetworkParam::phase_size() const {
+inline int GraphParam::phase_size() const {
   return phase_.size();
 }
-inline void NetworkParam::clear_phase() {
+inline void GraphParam::clear_phase() {
   phase_.Clear();
 }
-inline const ::PhaseParam& NetworkParam::phase(int index) const {
-  // @@protoc_insertion_point(field_get:NetworkParam.phase)
+inline const ::PhaseParam& GraphParam::phase(int index) const {
+  // @@protoc_insertion_point(field_get:GraphParam.phase)
   return phase_.Get(index);
 }
-inline ::PhaseParam* NetworkParam::mutable_phase(int index) {
-  // @@protoc_insertion_point(field_mutable:NetworkParam.phase)
+inline ::PhaseParam* GraphParam::mutable_phase(int index) {
+  // @@protoc_insertion_point(field_mutable:GraphParam.phase)
   return phase_.Mutable(index);
 }
-inline ::PhaseParam* NetworkParam::add_phase() {
-  // @@protoc_insertion_point(field_add:NetworkParam.phase)
+inline ::PhaseParam* GraphParam::add_phase() {
+  // @@protoc_insertion_point(field_add:GraphParam.phase)
   return phase_.Add();
 }
 inline ::google::protobuf::RepeatedPtrField< ::PhaseParam >*
-NetworkParam::mutable_phase() {
-  // @@protoc_insertion_point(field_mutable_list:NetworkParam.phase)
+GraphParam::mutable_phase() {
+  // @@protoc_insertion_point(field_mutable_list:GraphParam.phase)
   return &phase_;
 }
 inline const ::google::protobuf::RepeatedPtrField< ::PhaseParam >&
-NetworkParam::phase() const {
-  // @@protoc_insertion_point(field_list:NetworkParam.phase)
+GraphParam::phase() const {
+  // @@protoc_insertion_point(field_list:GraphParam.phase)
   return phase_;
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

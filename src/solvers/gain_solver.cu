@@ -35,53 +35,27 @@ void GainStepKernel(const int n, float *current_weight, float *current_gradient,
 	}
 }
 
-GainSolver::GainSolver(NodeOutputPtr loss, const SolverParam &param) : Solver(loss,param) {
+GainSolver::GainSolver(const SolverParam &param): Solver(param) {
 	LOG_IF(FATAL, param.has_gain_solver() == false) << "param.has_gain_solver() == false";
 	_my_param = param.gain_solver();
 }
 
-void GainSolver::train_step() {
-	if (_initialized == false) {
-		init();
-	}	
-	ResetObserver resetObserver;
-	ForwardObserver forwardObserver;
-	BackwardObserver backwardObserver;
-	_loss_node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
-	_loss_node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);
-	_loss_node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
-	_loss_node->traverse(&backwardObserver, TraverseOrder::PreOrder, false);	
-	int index = 0;	
-	for( auto var : _variables)
-	{		
-		auto output = var->output(0);
-		auto size = output->value()->size();
-		GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->mutableData(), _previous_gradients[index], _gains[index], _my_param.max_gain(), _my_param.min_gain(), _my_param.gain_plus(), _my_param.gain_mult(), _my_param.momentum(), _my_param.learning_rate());
-		LOG_IF(FATAL, cudaPeekAtLastError() != 0);		
-		index++;
-	}
-	
-	for (auto var : _variables)
-	{		
-		if (var->snapshot() && _current_step % var->snapshotInterval() == 0)
-			var->toImage(_current_step);
-	}
-
-	_current_step++;
+void GainSolver::apply(std::shared_ptr<Variable> var) {
+	if (_initialized == false) 
+		init(var);
+	auto output = var->output(0);
+	auto size = output->value()->size();
+	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->mutableData(), _previous_gradient, _gain, _my_param.max_gain(), _my_param.min_gain(), _my_param.gain_plus(), _my_param.gain_mult(), _my_param.momentum(), _my_param.learning_rate());
+	LOG_IF(FATAL, cudaPeekAtLastError() != 0);		
 }
 
-void GainSolver::init() {
-	for (auto var : _variables)
-	{				
-		auto size = var->output(0)->value()->size();
-		auto sizeInBytes = var->output(0)->value()->sizeInBytes();
-		_previous_gradients.push_back(NULL);
-		LOG_IF(FATAL, cudaMalloc(&_previous_gradients.back(), sizeInBytes) != 0);
-		LOG_IF(FATAL, cudaMemset(_previous_gradients.back(), 0, sizeInBytes) != 0);
-		_gains.push_back(NULL);
-		LOG_IF(FATAL, cudaMalloc(&_gains.back(), sizeof(float) * size) != 0);
-		GainFillKernel <<<numOfBlocks(size), maxThreadsPerBlock>>>(size, _gains.back());
-		LOG_IF(FATAL, cudaPeekAtLastError() != 0);
-	}
+void GainSolver::init(std::shared_ptr<Variable> var) {
+	auto size = var->output(0)->value()->size();
+	auto sizeInBytes = var->output(0)->value()->sizeInBytes();		
+	LOG_IF(FATAL, cudaMalloc(&_previous_gradient, sizeInBytes) != 0);
+	LOG_IF(FATAL, cudaMemset(_previous_gradient, 0, sizeInBytes) != 0);
+	LOG_IF(FATAL, cudaMalloc(&_gain, sizeInBytes) != 0);
+	GainFillKernel <<<numOfBlocks(size), maxThreadsPerBlock>>>(size, _gain);
+	LOG_IF(FATAL, cudaPeekAtLastError() != 0);	
 	_initialized = true;
 }

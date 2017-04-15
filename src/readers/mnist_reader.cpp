@@ -3,8 +3,8 @@
 #include <glog/logging.h>
 
 MNISTReader::MNISTReader(const NodeParam &param) : Reader(param) {
-	LOG_IF(FATAL, param.has_mnist_reader_param() == false) << "param.has_mnist_reader_param() == false";
-	const MnistReaderParam &mnist_param = param.mnist_reader_param();
+	LOG_IF(FATAL, param.reader_param().has_mnist_param() == false) << "param.has_mnist_reader_param() == false";
+	const MnistReaderParam &mnist_param = param.reader_param().mnist_param();
 	_folder_path = mnist_param.folder_path();
 	_batch_size = mnist_param.batch_size();
 	_type = (MNISTReaderType)mnist_param.type();	

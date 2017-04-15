@@ -31,6 +31,7 @@
     <ClInclude Include="..\..\include\core\phaseplexer.h" />
     <ClInclude Include="..\..\include\core\place_holder.h" />
     <ClInclude Include="..\..\include\core\reader.h" />
+    <ClInclude Include="..\..\include\core\session.h" />
     <ClInclude Include="..\..\include\core\solver.h" />
     <ClInclude Include="..\..\include\core\tensor.h" />
     <ClInclude Include="..\..\include\core\terminal.h" />
@@ -61,6 +62,7 @@
     <ClInclude Include="..\..\include\ops\cast_float.h" />
     <ClInclude Include="..\..\include\proto\deepflow.pb.h" />
     <ClInclude Include="..\..\include\readers\mnist_reader.h" />
+    <ClInclude Include="..\..\include\solvers\adam_solver.h" />
     <ClInclude Include="..\..\include\solvers\gain_solver.h" />
     <ClInclude Include="..\..\include\solvers\sgd_solver.h" />
     <ClCompile Include="..\..\src\core\cuda_helper.cpp">
@@ -74,6 +76,7 @@
     <ClCompile Include="..\..\src\core\node.cpp" />
     <ClCompile Include="..\..\src\core\phaseplexer.cpp" />
     <ClCompile Include="..\..\src\core\place_holder.cpp" />
+    <ClCompile Include="..\..\src\core\session.cpp" />
     <ClCompile Include="..\..\src\core\tensor.cpp" />
     <ClCompile Include="..\..\src\observers\reset.cpp" />
     <ClCompile Include="..\..\src\ops\pooling.cpp">
@@ -82,6 +85,7 @@
     <CudaCompile Include="..\..\src\ops\accumulator.cu" />
     <CudaCompile Include="..\..\src\ops\display.cu" />
     <CudaCompile Include="..\..\src\ops\equal.cu" />
+    <CudaCompile Include="..\..\src\solvers\adam_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\gain_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\sgd_solver.cu">
       <FileType>CppCode</FileType>

@@ -15,9 +15,6 @@ public:
 	void forward();
 	int minNumInputs() { return 0;  }
 	int minNumOutputs() { return 1; }	
-	void toImage(int iteration);
-	bool snapshot();
-	int snapshotInterval();
 	void transferDataToParam();
 protected:		
 	std::shared_ptr<Initializer> _initializer;	

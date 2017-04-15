@@ -4,9 +4,9 @@
 
 class DeepFlowDllExport SGDSolver : public Solver {
 public:
-	SGDSolver(NodeOutputPtr loss, const SolverParam &param);
-	void train_step();
-	void init();	
+	SGDSolver(const SolverParam &param);
+	void apply(std::shared_ptr<Variable> var);
+	void init(std::shared_ptr<Variable> var);
 protected:
 	SGDSolverParam _my_param;
 };

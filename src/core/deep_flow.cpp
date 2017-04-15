@@ -2,593 +2,445 @@
 
 #include <google/protobuf/text_format.h>
 
-#include "observers/reset.h"
-#include "observers/forward.h"
+#include "core/session.h"
 
-#include "core/variable.h"
-#include "core/place_holder.h"
-#include "core/phaseplexer.h"
 
-#include "ops/add.h"
-#include "ops/matmul.h"
-#include "ops/relu.h"
-#include "ops/softmax.h"
-#include "ops/square.h"
-#include "ops/bias_add.h"
-#include "ops/softmax_loss.h"
-#include "ops/dropout.h"
-#include "ops/convolution_2d.h"
-#include "ops/pooling.h"
-#include "ops/reduce.h"
-#include "ops/equal.h"
-#include "ops/cast_float.h"
-#include "ops/display.h"
-
-#include <unordered_map>
-#include <map>
-
-#include<memory>
-
-#include <vector>
-
-#include <fstream>
-
-#include <chrono>
-
-#include <ctime>
-
-std::shared_ptr<MNISTReader> DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNISTReaderType type, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
-	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	MnistReaderParam *param = nodeParam.mutable_mnist_reader_param();
-	param->set_folder_path(folder_path);
-	param->set_type((MnistReaderParam::ReaderType) type);
-	param->set_batch_size(batch_size);
-	auto node = std::make_shared<MNISTReader>(nodeParam);
-	node->createIO();
-	_nodes.push_back(node);
-	return node;
-
-}
-NodeOutputPtr DeepFlow::add(NodeOutputPtr a, NodeOutputPtr b, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));	
-	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	AddParam *param = nodeParam.mutable_add_param();
-	param->set_alpha(1.0f);
-	param->set_beta(1.0f);
-	auto node = std::make_shared<Add>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(a);
-	node->input(1)->connect(b);
-	_nodes.push_back(node);
-	return node->output(0);
+void add_outputs(std::shared_ptr<NodeParam> node_param, int num_outputs) {
+	for (int i = 0; i < num_outputs; ++i)
+		node_param->add_output(node_param->name() + "_output_" + std::to_string(i));
 }
 
-NodeOutputPtr DeepFlow::bias_add(NodeOutputPtr a, NodeOutputPtr b, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::shared_ptr<NodeParam> DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNISTReaderType type, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 2);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	BiasAddParam *param = nodeParam.mutable_bias_add_param();
-	auto node = std::make_shared<BiasAdd>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(a);
-	node->input(1)->connect(b);
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	auto readerParam = node_param->mutable_reader_param();
+	auto mnistParam = readerParam->mutable_mnist_param();	
+	mnistParam->set_folder_path(folder_path);
+	mnistParam->set_type((MnistReaderParam::ReaderType) type);
+	mnistParam->set_batch_size(batch_size);
+	_nodes.push_back(node_param);
+	return node_param;
+
 }
 
-NodeOutputPtr DeepFlow::subtract(NodeOutputPtr a, NodeOutputPtr b, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::add(std::string a, std::string b, float alpha, float beta, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	AddParam *param = nodeParam.mutable_add_param();
-	param->set_alpha(1.0f);
-	param->set_beta(-1.0f);
-	auto node = std::make_shared<Add>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(a);
-	node->input(1)->connect(b);
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	node_param->add_input(b);
+	auto add_param = node_param->mutable_add_param();
+	add_param->set_alpha(alpha);
+	add_param->set_beta(beta);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-std::shared_ptr<IndexFill> DeepFlow::index_fill(std::initializer_list<int> dims, float offset, Tensor::TensorType type) {
-	InitParam initParam;
+std::string DeepFlow::add(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
+	return add(a, b, 1.0f, 1.0f, name, phases);
+}
+
+std::string DeepFlow::subtract(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
+	return add(a, b, 1.0f, -1.0f, name, phases);
+}
+
+std::string DeepFlow::bias_add(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	node_param->add_input(b);
+	auto bias_add_param = node_param->mutable_bias_add_param();
+	_nodes.push_back(node_param);
+	return node_param->output(0);
+}
+
+std::shared_ptr<InitParam> DeepFlow::index_fill(std::initializer_list<int> dims, float offset, Tensor::TensorType type) {
+	auto init_param = std::make_shared<InitParam>();	
 	std::vector<int> values(dims);
-	TensorParam *tParam = initParam.mutable_tensor_param();
+	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
-		tParam->add_dims(values[i]);
-	tParam->set_type((TensorParam_TensorType)type);
-	InitIndexFillParam *param = initParam.mutable_index_fill_param();
-	param->set_offset(offset);
-	return std::make_shared<IndexFill>(initParam);
+		tensor_param->add_dims(values[i]);
+	tensor_param->set_type((TensorParam_TensorType)type);
+	auto index_fill_param = init_param->mutable_index_fill_param();
+	index_fill_param->set_offset(offset);
+	return init_param;
 }
 
-std::shared_ptr<Step> DeepFlow::step(std::initializer_list<int> dims, float min, float max, Tensor::TensorType type) {
-	InitParam initParam;
+std::shared_ptr<InitParam> DeepFlow::step(std::initializer_list<int> dims, float min, float max, Tensor::TensorType type) {
+	auto init_param = std::make_shared<InitParam>();
 	std::vector<int> values(dims);
-	TensorParam *tParam = initParam.mutable_tensor_param();
+	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
-		tParam->add_dims(values[i]);
-	tParam->set_type((TensorParam_TensorType)type);
-	InitStepParam *param = initParam.mutable_step_param();
-	param->set_max(max);
-	param->set_min(min);
-	return std::make_shared<Step>(initParam);
+		tensor_param->add_dims(values[i]);
+	tensor_param->set_type((TensorParam_TensorType)type);
+	auto step_param = init_param->mutable_step_param();
+	step_param->set_max(max);
+	step_param->set_min(min);
+	return init_param;
 }
 
-std::shared_ptr<Fill> DeepFlow::fill(std::initializer_list<int> dims, float value, Tensor::TensorType type) {
-	InitParam initParam;
+std::shared_ptr<InitParam> DeepFlow::fill(std::initializer_list<int> dims, float value, Tensor::TensorType type) {
+	auto init_param = std::make_shared<InitParam>();
 	std::vector<int> values(dims);
-	TensorParam *tParam = initParam.mutable_tensor_param();
+	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
-		tParam->add_dims(values[i]);
-	tParam->set_type((TensorParam_TensorType)type);
-	InitFillParam *param = initParam.mutable_fill_param();
-	param->set_value(value);
-	return std::make_shared<Fill>(initParam);
+		tensor_param->add_dims(values[i]);
+	tensor_param->set_type((TensorParam_TensorType)type);
+	auto fill_param = init_param->mutable_fill_param();
+	fill_param->set_value(value);
+	return init_param;
 }
 
-std::shared_ptr<Fill> DeepFlow::zeros(std::initializer_list<int> dims, Tensor::TensorType type) {
-	InitParam initParam;
+std::shared_ptr<InitParam> DeepFlow::zeros(std::initializer_list<int> dims, Tensor::TensorType type) {
+	return fill(dims, 0.0f, type);
+}
+
+std::shared_ptr<InitParam> DeepFlow::ones(std::initializer_list<int> dims, Tensor::TensorType type) {
+	return fill(dims, 1.0f, type);
+}
+
+std::shared_ptr<InitParam> DeepFlow::random_uniform(std::initializer_list<int> dims,  float min, float max, Tensor::TensorType type) {
+	auto init_param = std::make_shared<InitParam>();
 	std::vector<int> values(dims);
-	TensorParam *tParam = initParam.mutable_tensor_param();
+	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
-		tParam->add_dims(values[i]);
-	tParam->set_type((TensorParam_TensorType)type);
-	InitFillParam *param = initParam.mutable_fill_param();
-	param->set_value(0.0f);
-	return std::make_shared<Fill>(initParam);
+		tensor_param->add_dims(values[i]);
+	tensor_param->set_type((TensorParam_TensorType)type);
+	auto random_uniform_param = init_param->mutable_random_uniform_param();
+	random_uniform_param->set_max(max);
+	random_uniform_param->set_min(min);
+	return init_param;
 }
 
-std::shared_ptr<Fill> DeepFlow::ones(std::initializer_list<int> dims, Tensor::TensorType type) {
-	InitParam initParam;
-	std::vector<int> values(dims);
-	TensorParam *tParam = initParam.mutable_tensor_param();
-	for (int i = 0; i < values.size(); ++i)
-		tParam->add_dims(values[i]);
-	tParam->set_type((TensorParam_TensorType)type);
-	InitFillParam *param = initParam.mutable_fill_param();
-	param->set_value(1.0f);
-	return std::make_shared<Fill>(initParam);
-}
-
-std::shared_ptr<RandomUniform> DeepFlow::random_uniform(std::initializer_list<int> dims,  float min, float max, Tensor::TensorType type) {
-	InitParam initParam;
-	std::vector<int> values(dims);
-	TensorParam *tParam = initParam.mutable_tensor_param();
-	for (int i = 0; i < values.size(); ++i)
-		tParam->add_dims(values[i]);
-	tParam->set_type((TensorParam_TensorType)type);
-	InitRandomUniformParam *param = initParam.mutable_random_uniform_param();
-	param->set_max(max);
-	param->set_min(min);
-	return std::make_shared<RandomUniform>(initParam);
-}
-
-NodeOutputPtr DeepFlow::cast_float(NodeOutputPtr input, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::cast_float(std::string input, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	nodeParam.mutable_cast_float_param();
-	auto node = std::make_shared<CastFloat>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(input);
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	node_param->add_input(input);	
+	auto bias_add_param = node_param->mutable_bias_add_param();
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-NodeOutputPtr DeepFlow::softmax(NodeOutputPtr a, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::softmax(std::string a, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	SoftmaxParam *param = nodeParam.mutable_softmax_param();
-	param->set_alpha(1.0f);
-	param->set_beta(0.0f);
-	auto node = std::make_shared<Softmax>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(a);
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	auto softmax_param = node_param->mutable_softmax_param();
+	softmax_param->set_alpha(1.0f);
+	softmax_param->set_beta(0.0f);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-NodeOutputPtr DeepFlow::square(NodeOutputPtr a, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::square(std::string a, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	SquareParam *param = nodeParam.mutable_square_param();	
-	auto node = std::make_shared<Square>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(a);
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	auto square_param = node_param->mutable_square_param();
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-NodeOutputPtr DeepFlow::place_holder(std::array<int, 4> dims, Tensor::TensorType type, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::place_holder(std::array<int, 4> dims, Tensor::TensorType type, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	PlaceHolderParam *param = nodeParam.mutable_place_holder_param();
-	TensorParam *tParam = param->mutable_tensor_param();
-	tParam->set_type((TensorParam_TensorType)type);
-	for (int i=0; i<4; ++i)
-		tParam->add_dims(dims[i]);
-	auto node = std::make_shared<PlaceHolder>(nodeParam);
-	node->createIO();
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	auto place_holder_param = node_param->mutable_place_holder_param();
+	auto tensor_param = place_holder_param->mutable_tensor_param();
+	tensor_param->set_type((TensorParam_TensorType)type);
+	for (int i = 0; i < 4; ++i)
+		tensor_param->add_dims(dims[i]);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-NodeOutputPtr DeepFlow::variable(std::shared_ptr<Initializer> initializer, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::variable(std::shared_ptr<InitParam> initializer, std::shared_ptr<SolverParam> solver, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	VariableParam *varParam = nodeParam.mutable_variable_param();
-	InitParam *initParam = varParam->mutable_init_param();
-	initParam->CopyFrom(initializer->param());
-	auto node = std::make_shared<Variable>(initializer, nodeParam);
-	node->createIO();
-	_nodes.push_back(node);
-	_variables.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	auto variable_param = node_param->mutable_variable_param();
+	variable_param->set_solver_name(solver->name());
+	auto init_param = variable_param->mutable_init_param();
+	init_param->CopyFrom(*initializer.get());
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-NodeOutputPtr DeepFlow::variable(std::shared_ptr<Initializer> initializer, int interval, std::string prefix, int perImageHeight, int perImageWidth, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::matmul(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	VariableParam *varParam = nodeParam.mutable_variable_param();
-	InitParam *initParam = varParam->mutable_init_param();
-	initParam->CopyFrom(initializer->param());
-	SnapshotParam *snapshot = varParam->mutable_snapshot_param();
-	snapshot->set_snapshot_interval(interval);
-	snapshot->set_per_image_height(perImageHeight);
-	snapshot->set_per_image_width(perImageWidth);
-	snapshot->set_snapshot_prefix(prefix);
-	auto node = std::make_shared<Variable>(initializer, nodeParam);
-	node->createIO();
-	_nodes.push_back(node);
-	_variables.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	node_param->add_input(b);
+	auto matmul_param = node_param->mutable_matmul_param();
+	matmul_param->set_alpha(1.0f);
+	matmul_param->set_beta(0.0f);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-NodeOutputPtr DeepFlow::matmul(NodeOutputPtr a, NodeOutputPtr b, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::relu(std::string a, float negative_slope, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	MatMulParam *param = nodeParam.mutable_matmul_param();
-	param->set_alpha(1.0f);
-	param->set_beta(0.0f);
-	auto node = std::make_shared<MatMul>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(a);
-	node->input(1)->connect(b);
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	node_param->add_input(a);	
+	auto relu_param = node_param->mutable_relu_param();
+	relu_param->set_negative_slope(negative_slope);	
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-NodeOutputPtr DeepFlow::relu(NodeOutputPtr a, float negative_slope, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::accumulator(std::string input, Accumulator::ResetTime resetTime, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	ReluParam *param = nodeParam.mutable_relu_param();
-	param->set_negative_slope(negative_slope);
-	auto node = std::make_shared<Relu>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(a);
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	node_param->add_input(input);	
+	auto accumulator_param = node_param->mutable_accumulator_param();
+	accumulator_param->set_reset_time((AccumulatorParam_ResetTime)resetTime);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-NodeOutputPtr DeepFlow::accumulator(NodeOutputPtr input, Accumulator::ResetTime resetTime, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+void DeepFlow::print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime printTime, Print::PrintType printType, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	AccumulatorParam *accParam = nodeParam.mutable_accumulator_param();
-	accParam->set_reset_time((AccumulatorParam_ResetTime)resetTime);
-	auto node = std::make_shared<Accumulator>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(input);
-	_nodes.push_back(node);
-	return node->output(0);
-
+		node_param->add_phase(phase);
+	std::vector<std::string> inputsVec(inputs.size());
+	std::copy(inputs.begin(), inputs.end(), inputsVec.begin());
+	for (int i = 0; i < inputsVec.size(); ++i)
+		node_param->add_input(inputsVec[i]);	
+	auto print_param = node_param->mutable_print_param();	
+	print_param->set_message(message);
+	print_param->set_num_inputs(inputs.size());
+	print_param->set_print_time((PrintParam_PrintTime)printTime);
+	print_param->set_print_type((PrintParam_PrintType)printType);
+	_nodes.push_back(node_param);	
 }
 
-std::shared_ptr<Print> DeepFlow::print(std::initializer_list<NodeOutputPtr> inputs, std::string message, Print::PrintTime printTime, Print::PrintType printType, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::shared_ptr<NodeParam> DeepFlow::softmax_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 2);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	PrintParam *printParam = nodeParam.mutable_print_param();
-	printParam->set_message(message);
-	printParam->set_num_inputs(inputs.size());	
-	printParam->set_print_time((PrintParam_PrintTime)printTime);
-	printParam->set_print_type((PrintParam_PrintType)printType);
-	auto node = std::make_shared<Print>(nodeParam);
-	node->createIO();
-	std::vector<NodeOutputPtr> inputsVec(inputs.size());
-	std::copy(inputs.begin(), inputs.end(), inputsVec.begin());	
-	for (int i=0; i < inputsVec.size();++i)
-		node->input(i)->connect(inputsVec[i]);	
-	_nodes.push_back(node);
-	return node;
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	node_param->add_input(b);
+	auto loss_param = node_param->mutable_loss_param();
+	auto softmax_loss_param = loss_param->mutable_softmax_loss_param();
+	softmax_loss_param->set_alpha(1.0f);
+	softmax_loss_param->set_beta(0.0f);
+	_nodes.push_back(node_param);
+	return node_param;
 }
 
-NodeOutputPtr DeepFlow::softmax_loss(NodeOutputPtr a, NodeOutputPtr b, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::shared_ptr<SolverParam> DeepFlow::sgd_solver(float momentum, float learning_rate, std::string name) {
+	auto solver_param = std::make_shared<SolverParam>();
+	solver_param->set_name(_get_unique_solver_name(name));
+	auto sgd_solver = solver_param->mutable_sgd_solver();
+	sgd_solver->set_learning_rate(learning_rate);
+	sgd_solver->set_momentum(momentum);
+	_solvers.push_back(solver_param);
+	return solver_param;
+}
+
+std::shared_ptr<SolverParam> DeepFlow::gain_solver(float momentum, float learning_rate, float max_gain, float min_gain, float gain_plus, float gain_mult, std::string name) {
+	auto solver_param = std::make_shared<SolverParam>();
+	solver_param->set_name(_get_unique_solver_name(name));
+	auto gain_solver = solver_param->mutable_gain_solver();
+	gain_solver->set_momentum(momentum);
+	gain_solver->set_learning_rate(learning_rate);
+	gain_solver->set_max_gain(max_gain);
+	gain_solver->set_min_gain(min_gain);
+	gain_solver->set_gain_plus(gain_plus);
+	gain_solver->set_gain_mult(gain_mult);
+	_solvers.push_back(solver_param);
+	return solver_param;
+}
+std::shared_ptr<SolverParam> DeepFlow::adam_solver(float learning_rate, float beta1, float beta2, float eps, std::string name) {
+	auto solver_param = std::make_shared<SolverParam>();
+	solver_param->set_name(_get_unique_solver_name(name));
+	auto adam_solver = solver_param->mutable_adam_solver();	
+	adam_solver->set_learning_rate(learning_rate);
+	adam_solver->set_beta1(beta1);
+	adam_solver->set_beta2(beta2);
+	adam_solver->set_eps(eps);
+	_solvers.push_back(solver_param);
+	return solver_param;
+}
+
+std::string DeepFlow::dropout(std::string a, float dropout, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	LossParam *lossParam = nodeParam.mutable_loss_param();
-	SoftmaxLossParam *param = lossParam->mutable_softmax_loss_param();
-	param->set_alpha(1.0f);
-	param->set_beta(0.0f);
-	auto node = std::make_shared<SoftmaxLoss>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(a);
-	node->input(1)->connect(b);
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	auto dropout_param = node_param->mutable_dropout_param();	
+	dropout_param->set_dropout(dropout);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-std::shared_ptr<SGDSolver> DeepFlow::sgd_solver(NodeOutputPtr loss, int max_epoch, float momentum, float learning_rate) {
-	SolverParam param;
-	param.set_max_epoch(max_epoch);
-	param.set_loss_terminal(loss->name());
-	SGDSolverParam *sp = param.mutable_sgd_solver();
-	sp->set_learning_rate(learning_rate);
-	sp->set_momentum(momentum);
-	auto solver = std::make_shared<SGDSolver>(loss, param);	
-	return solver;
-}
-
-std::shared_ptr<GainSolver> DeepFlow::gain_solver(NodeOutputPtr loss, int max_epoch, float momentum, float learning_rate, float max_gain, float min_gain, float gain_plus, float gain_mult) {
-	SolverParam param;
-	param.set_max_epoch(max_epoch);
-	param.set_loss_terminal(loss->name());
-	GainSolverParam *gsp = param.mutable_gain_solver();
-	gsp->set_momentum(momentum);
-	gsp->set_learning_rate(learning_rate);
-	gsp->set_max_gain(max_gain);
-	gsp->set_min_gain(min_gain);
-	gsp->set_gain_plus(gain_plus);
-	gsp->set_gain_mult(gain_mult);    
-	auto solver = std::make_shared<GainSolver>(loss, param);	
-	return solver;
-}
-
-NodeOutputPtr DeepFlow::dropout(NodeOutputPtr a, float dropout, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	DropoutParam *param = nodeParam.mutable_dropout_param();
-	param->set_dropout(dropout);
-	auto node = std::make_shared<Dropout>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(a);
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	node_param->add_input(filter);
+	auto conv_2d_param = node_param->mutable_conv_2d_param();
+	conv_2d_param->set_pad_h(pad_top_bottom);
+	conv_2d_param->set_pad_w(pad_left_right);
+	conv_2d_param->set_u(vertical_filter_stride);
+	conv_2d_param->set_v(horizontal_filter_stride);
+	conv_2d_param->set_dilation_h(filter_height_dilation);
+	conv_2d_param->set_dilation_w(filter_width_dialation);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-NodeOutputPtr DeepFlow::conv2d(NodeOutputPtr input, NodeOutputPtr filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::conv2d(std::string input, std::string filter, std::string name, std::initializer_list<std::string> phases) {
+	return conv2d(input, filter, 0, 0, 1, 1, 1, 1, name, phases);
+}
+
+void DeepFlow::display(std::string input,int delay_msec, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	Conv2dParam *param = nodeParam.mutable_conv_2d_param();
-	param->set_pad_h(pad_top_bottom);
-	param->set_pad_w(pad_left_right);
-	param->set_u(vertical_filter_stride);
-	param->set_v(horizontal_filter_stride);
-	param->set_dilation_h(filter_height_dilation);
-	param->set_dilation_w(filter_width_dialation);
-	auto node = std::make_shared<Convolution2D>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(input);
-	node->input(1)->connect(filter);
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto display_param = node_param->mutable_display_param();
+	display_param->set_delay_msec(delay_msec);
+	_nodes.push_back(node_param);	
 }
 
-NodeOutputPtr DeepFlow::conv2d(NodeOutputPtr input, NodeOutputPtr filter, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::pooling(std::string input, int windowHeight, int windowWidth, int verticalPadding, int horizontalPadding, int verticalStride, int horizontalStride, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	Conv2dParam *param = nodeParam.mutable_conv_2d_param();
-	param->set_pad_h(0);
-	param->set_pad_w(0);
-	param->set_u(1);
-	param->set_v(1);
-	param->set_dilation_h(1);
-	param->set_dilation_w(1);
-	auto node = std::make_shared<Convolution2D>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(input);
-	node->input(1)->connect(filter);
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto pooling_param = node_param->mutable_pooling_param();
+	pooling_param->set_h_pad(horizontalPadding);
+	pooling_param->set_v_pad(verticalPadding);
+	pooling_param->set_h_stride(horizontalStride);
+	pooling_param->set_v_stride(verticalStride);
+	pooling_param->set_window_h(windowHeight);
+	pooling_param->set_window_w(windowWidth);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-NodePtr DeepFlow::display(NodeOutputPtr input,int delay_msec, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::_reduce(std::string input, int reduce_dimention, ReduceParam_ReduceOp op, int output, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 2);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	DisplayParam *param = nodeParam.mutable_display_param();
-	param->set_delay_msec(delay_msec);
-	auto node = std::make_shared<Display>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(input);
-	_nodes.push_back(node);
-	return node;
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto reduce_param = node_param->mutable_reduce_param();
+	reduce_param->set_reduce_dim(reduce_dimention);
+	reduce_param->set_reduce_op(op);
+	_nodes.push_back(node_param);
+	return node_param->output(output);
 }
 
-NodeOutputPtr DeepFlow::pooling(NodeOutputPtr input, int windowHeight, int windowWidth, int verticalPadding, int horizontalPadding, int verticalStride, int horizontalStride, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::argmax(std::string input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
+	return _reduce(input, reduceDimension, ReduceParam_ReduceOp_MAX, 1, name, phases);
+}
+
+std::string DeepFlow::argmin(std::string input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
+	return _reduce(input, reduceDimension, ReduceParam_ReduceOp_MIN, 1, name, phases);
+}
+
+std::string DeepFlow::reduce_max(std::string input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
+	return _reduce(input, reduceDimension, ReduceParam_ReduceOp_MAX, 0, name, phases);
+}
+
+std::string DeepFlow::reduce_absmax(std::string input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
+	return _reduce(input, reduceDimension, ReduceParam_ReduceOp_AMAX, 0, name, phases);
+}
+
+std::string DeepFlow::reduce_min(std::string input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
+	return _reduce(input, reduceDimension, ReduceParam_ReduceOp_MIN, 0, name, phases);
+}
+
+std::string DeepFlow::reduce_norm1(std::string input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
+	return _reduce(input, reduceDimension, ReduceParam_ReduceOp_NORM1, 0, name, phases);
+}
+
+std::string DeepFlow::reduce_norm2(std::string input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
+	return _reduce(input, reduceDimension, ReduceParam_ReduceOp_NORM2, 0, name, phases);
+}
+
+std::string DeepFlow::reduce_sum(std::string input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
+	return _reduce(input, reduceDimension, ReduceParam_ReduceOp_ADD, 0, name, phases);
+}
+
+std::string DeepFlow::reduce_mean(std::string input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
+	return _reduce(input, reduceDimension, ReduceParam_ReduceOp_AVG, 0, name, phases);	
+}
+
+
+std::string DeepFlow::phaseplexer(std::string input_1, std::string phase_1, std::string input_2, std::string phase_2, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	PoolingParam *param = nodeParam.mutable_pooling_param();
-	param->set_h_pad(horizontalPadding);
-	param->set_v_pad(verticalPadding);
-	param->set_h_stride(horizontalStride);
-	param->set_v_stride(verticalStride);
-	param->set_window_h(windowHeight);
-	param->set_window_w(windowWidth);
-	auto node = std::make_shared<Pooling>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(input);
-	_nodes.push_back(node);
-	return node->output(0);
+		node_param->add_phase(phase);
+	node_param->add_input(input_1);
+	node_param->add_input(input_2);
+	auto phaseplexer_param = node_param->mutable_phaseplexer_param();
+	phaseplexer_param->add_phase(phase_1);
+	phaseplexer_param->add_phase(phase_2);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-NodeOutputPtr DeepFlow::argmax(NodeOutputPtr input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
+std::string DeepFlow::equal(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	ReduceParam *param = nodeParam.mutable_reduce_param();
-	param->set_reduce_dim(reduceDimension);
-	param->set_reduce_op(ReduceParam_ReduceOp_MAX);
-	auto node = std::make_shared<Reduce>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(input);
-	_nodes.push_back(node);
-	return node->output(1);
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	node_param->add_input(b);
+	auto equal_param = node_param->mutable_equal_param();
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
-NodeOutputPtr DeepFlow::reduce_max(NodeOutputPtr input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
-	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	ReduceParam *param = nodeParam.mutable_reduce_param();
-	param->set_reduce_dim(reduceDimension);
-	param->set_reduce_op(ReduceParam_ReduceOp_MAX);
-	auto node = std::make_shared<Reduce>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(input);
-	_nodes.push_back(node);
-	return node->output(0);
-}
-
-NodeOutputPtr DeepFlow::phaseplexer(NodeOutputPtr input_1, std::string phase_1, NodeOutputPtr input_2, std::string phase_2, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
-	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	PhaseplexerParam *param = nodeParam.mutable_phaseplexer_param();
-	param->add_phase(phase_1);
-	param->add_phase(phase_2);
-	auto node = std::make_shared<Phaseplexer>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(input_1);
-	node->input(1)->connect(input_2);
-	_nodes.push_back(node);
-	return node->output(0);
-}
-
-NodeOutputPtr DeepFlow::reduce_sum(NodeOutputPtr input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
-	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	ReduceParam *param = nodeParam.mutable_reduce_param();
-	param->set_reduce_dim(reduceDimension);
-	param->set_reduce_op(ReduceParam_ReduceOp_ADD);
-	auto node = std::make_shared<Reduce>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(input);
-	_nodes.push_back(node);
-	return node->output(0);
-}
-
-NodeOutputPtr DeepFlow::reduce_mean(NodeOutputPtr input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
-	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	ReduceParam *param = nodeParam.mutable_reduce_param();
-	param->set_reduce_dim(reduceDimension);
-	param->set_reduce_op(ReduceParam_ReduceOp_AVG);
-	auto node = std::make_shared<Reduce>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(input);
-	_nodes.push_back(node);
-	return node->output(0);
-}
-
-NodeOutputPtr DeepFlow::equal(NodeOutputPtr a, NodeOutputPtr b, std::string name, std::initializer_list<std::string> phases) {
-	NodeParam nodeParam;
-	nodeParam.set_name(getUniqueNodeName(name));
-	for (auto phase : phases)
-		nodeParam.add_phase(phase);
-	EqualParam *equalParam = nodeParam.mutable_equal_param();
-	auto node = std::make_shared<Equal>(nodeParam);
-	node->createIO();
-	node->input(0)->connect(a);
-	node->input(1)->connect(b);
-	_nodes.push_back(node);
-	return node->output(0);
-}
-
-void DeepFlow::global_node_initializer() {
-	std::srand(std::time(0));
-	std::list<std::shared_ptr<Node>> queue = _nodes;
-	while (!queue.empty()) {
-		auto node = queue.front();		
-		queue.pop_front();
-		if (node->isInitialized())
-			continue;
-		bool resolved = true;
-		for(auto input : node->inputs()) {
-			auto connectedNode = input->connectedNode();
-			if (connectedNode) {
-				if (connectedNode->isInitialized() == false) {
-					resolved = false;
-					break;
-				}
-			}
-		}
-		if (resolved) {
-			node->initForward();
-			node->initBackward();
-			node->setInitialized(true);
-		}
-		else {
-			queue.push_back(node);
-		}
-	}
-}
-
-void DeepFlow::eval(NodeOutputPtr terminal, bool restart) {		
-	auto node = terminal->node();
-	if (restart) {
-		ResetObserver resetObserver;
-		node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
-	}
-	ForwardObserver forwardObserver;
-	node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);
-}
-
-std::shared_ptr<Node> DeepFlow::findNodeByName(const std::string &name) const {
+std::shared_ptr<NodeParam> DeepFlow::_find_node_by_name(const std::string &name) const {
 	for (auto node : _nodes) {
 		if (node->name() == name)
 			return node;
@@ -596,326 +448,92 @@ std::shared_ptr<Node> DeepFlow::findNodeByName(const std::string &name) const {
 	return 0;
 }
 
-std::string DeepFlow::getUniqueNodeName(const std::string &prefix) const {
-	if (findNodeByName(prefix) == 0)
+std::string DeepFlow::_get_unique_node_name(const std::string &prefix) const {
+	if (_find_node_by_name(prefix) == 0)
 		return prefix;
 	int index = 1;
 	std::string nodeName = prefix + "_" + std::to_string(index);
-	while (findNodeByName(nodeName) != 0) {
+	while (_find_node_by_name(nodeName) != 0) {
 		index++;
 		nodeName = prefix + "_" + std::to_string(index);
 	}
 	return nodeName;
 }
 
-void execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Reader>> *readers, std::list<std::shared_ptr<Node>> *end_nodes, std::shared_ptr<Solver> solver, bool print_iteration) {
-	ForwardObserver forwardObserver;
-	ResetObserver resetObserver;
-	int iteration_per_epoch = 1;
-	bool any_last_batch = false;	
-	for (auto node : *nodes)
-		node->setExecutionContext(context);
-	do {
-		for (auto reader : *readers) {
-			if (reader->isLastBatch())
-				any_last_batch = true;
-		}
-		LOG_IF(FATAL, any_last_batch == true && iteration_per_epoch == 1);
-		if (iteration)
-			context->current_iteration = *iteration;
-		context->current_iteration_per_epoch = iteration_per_epoch;
-		context->last_batch = any_last_batch;
-		if (iteration && print_iteration)
-			std::cout << "  Iteration " << *iteration << std::endl;
-		for (auto node : *end_nodes)
-			node->traverse(&resetObserver, TraverseOrder::PreOrder, true);
-		if (solver) solver->train_step();
-		for (auto node : *end_nodes)
-			node->traverse(&forwardObserver, TraverseOrder::PostOrder, false);
-		for (auto reader : *readers)
-			reader->nextBatch();
-		if (iteration)
-			(*iteration)++;
-		iteration_per_epoch++;
-	} while (any_last_batch == false);
+std::string DeepFlow::_get_unique_solver_name(const std::string &prefix) const {
+	if (_find_node_by_name(prefix) == 0)
+		return prefix;
+	int index = 1;
+	std::string nodeName = prefix + "_" + std::to_string(index);
+	while (_find_node_by_name(nodeName) != 0) {
+		index++;
+		nodeName = prefix + "_" + std::to_string(index);
+	}
+	return nodeName;
 }
 
-void DeepFlow::run(std::string phase, bool print_iteration, bool print_epoch, int debug_level) {	
-	LOG(INFO) << "Executing graph for phase " << phase;
-	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";
-	PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
-	std::list<std::shared_ptr<Reader>> execution_phase_readers = getNodes<Reader>(phase);
-	LOG_IF(FATAL, execution_phase_readers.size() == 0) << "No reader is defined for phase " << phase;
-	std::list<std::shared_ptr<Node>> execution_end_nodes = getEndNodes(phase);
-	auto execution_context = std::make_shared<ExecutionContext>();
-	execution_context->phase = phase;
-	execution_context->debug_level = debug_level;		
-	if (behaviour == PhaseParam_PhaseBehaviour_TRAIN) {
-		LOG_IF(FATAL, _solver == 0) << "No solver is defined for the graph.";
-		std::list<std::shared_ptr<Loss>> execution_phase_loss_nodes = getNodes<Loss>(phase);
-		LOG_IF(FATAL, execution_phase_loss_nodes.size() == 0) << "No loss node is defined for phase " << phase;
-		LOG_IF(WARNING, execution_phase_loss_nodes.size() > 1) << "More than one loss node is defined for phase " << phase;		
-		std::string validation_phase;
-		for (auto phase : _phases) {
-			if (phase.second == PhaseParam_PhaseBehaviour_VALIDATION) {
-				validation_phase = phase.first;
-				break;
-			}
-		}
-		std::list<std::shared_ptr<Reader>> validation_readers;
-		std::list<std::shared_ptr<Node>> validation_end_nodes;
-		std::shared_ptr<ExecutionContext> validation_context;
-		if (!validation_phase.empty()) {
-			LOG(INFO) << "Graph has validation phase (name: " << validation_phase << ")";
-			validation_context = std::make_shared<ExecutionContext>();
-			validation_context->current_epoch = 1;
-			validation_context->debug_level = debug_level;
-			validation_readers = getNodes<Reader>(validation_phase);
-			validation_end_nodes = getEndNodes(validation_phase);
-		}
-		int iteration = 1;
-		for (int epoch = 1; epoch <= _solver->maxEpoch(); ++epoch) {			
-			if (print_epoch)
-				std::cout << "Epoch " << epoch << " -->" << std::endl;
-			auto epoch_start = std::chrono::high_resolution_clock::now();
-			execution_context->current_epoch = epoch;
-			execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_readers, &execution_end_nodes, _solver, print_iteration);
-			if (!validation_phase.empty()) {			
-				validation_context->phase = validation_phase;
-				validation_context->current_iteration = 1;				
-				validation_context->current_epoch = epoch;
-				execute_one_pass(validation_context, 0, &_nodes, &validation_readers, &validation_end_nodes, 0, false);
-			}
-			auto epoch_end = std::chrono::high_resolution_clock::now();
-			std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
-			if (print_epoch)
-				std::cout << "<-- Epoch " << epoch << " Elapsed time: " << elapsed_epoch.count() << " seconds" << std::endl;		
-		}
-	}
-	else {
-		execute_one_pass(execution_context, 0, &_nodes, &execution_phase_readers, &execution_end_nodes, 0, false);
-	}
-}
-
-std::tuple<float, float,int> DeepFlow::run(NodeOutputPtr loss, NodeOutputPtr accuracy, std::map<NodeOutputPtr, NodeOutputPtr> feed) {
-	
-	std::set<std::shared_ptr<Reader>> readers;	
-
-	for (auto item : feed) {
-		auto readerNode = item.second->node();
-		auto reader = std::dynamic_pointer_cast<Reader>(readerNode);
-		LOG_IF(FATAL, reader == 0) << readerNode->name() << " is not a reader.";
-		readers.insert(reader);		
-		auto placeHolderNode = item.first->node();		
-		auto placeHolder = std::dynamic_pointer_cast<PlaceHolder>(placeHolderNode);
-		LOG_IF(FATAL, placeHolder == 0) << placeHolderNode->name() << " is not a placeholder.";		
-	}
-		
-	ResetObserver resetObserver;
-	loss->node()->traverse(&resetObserver, TraverseOrder::PreOrder, true);
-	accuracy->node()->traverse(&resetObserver, TraverseOrder::PreOrder, true);
-
-	float totalAccuracy = 0;
-	float totalLoss = 0;
-	int totalBatch = 0;
-	bool any_last_batch = false;
-	do {
-		for (auto item : feed)
-			item.first->feed(item.second);
-		if (loss) {
-			eval(loss);
-			totalLoss += loss->value()->toFloat();
-		}		
-		if (accuracy) {
-			eval(accuracy, loss? false: true);
-			totalAccuracy += accuracy->value()->toFloat();
-		}				
-		totalBatch++;
-		for (auto reader : readers) {
-			if (reader->isLastBatch())
-				any_last_batch = true;
-			reader->nextBatch();
-		}
-	} while (any_last_batch == false);
-	totalAccuracy /= totalBatch;
-	totalLoss /= totalBatch;	
-	return std::make_tuple(totalLoss, totalAccuracy, totalBatch);
-}
-
-std::shared_ptr<NetworkParam> DeepFlow::createNetworkParam(bool include_weights, bool include_inits) {
-	auto param = std::make_shared<NetworkParam>();
+std::shared_ptr<GraphParam> DeepFlow::graph() {
+	auto graph_param = std::make_shared<GraphParam>();
 	for (auto phase : _phases) {
-		PhaseParam *phaseParam = param->add_phase();
-		phaseParam->set_phase(phase.first);
-		phaseParam->set_behaviour(phase.second);		
-	}
-	for (auto var : _variables) {
-		if (include_weights)
-			var->transferDataToParam();
-		else
-			var->param().mutable_variable_param()->clear_weights();
-		if (!include_inits)
-			var->param().mutable_variable_param()->mutable_init_param()->clear_init_data();
+		PhaseParam *phase_param = graph_param->add_phase();
+		phase_param->CopyFrom(*phase.get());
 	}
 	for (auto node : _nodes) {
-		NodeParam *nodeParam = param->add_node();
-		nodeParam->CopyFrom(node->param());
-	}	
-	SolverParam *solverParam = param->add_solver();
-	solverParam->CopyFrom(_solver->param());	
-	return param;
+		NodeParam *node_param = graph_param->add_node();
+		node_param->CopyFrom(*node.get());
+	}
+	for (auto solver : _solvers) {
+		SolverParam *solver_param = graph_param->add_solver();
+		solver_param->CopyFrom(*solver.get());
+	}
+	return graph_param;
 }
 
-void DeepFlow::save_as_binary(std::string filePath, bool include_inits) {
-	auto param = createNetworkParam(true, include_inits);
+std::shared_ptr<Session> DeepFlow::session()
+{	
+	auto session = std::make_shared<Session>();
+	session->setGraph(graph());
+	return session;
+}
+
+void DeepFlow::save_as_binary(std::string filePath) {
+	auto graph_param = graph();
 	std::fstream output(filePath, std::ios::out | std::ios::trunc | std::ios::binary);
-	LOG_IF(FATAL, !param->SerializeToOstream(&output)) << "Failed to write network.";
+	LOG_IF(FATAL, !graph_param->SerializeToOstream(&output)) << "Failed to write graph to " << filePath;
 	output.close();
 }
 
-void DeepFlow::load_from_binary(std::string filePath) {
-	NetworkParam param;
-	std::fstream input(filePath, std::ios::in | std::ios::binary);
-	LOG_IF(FATAL,!param.ParseFromIstream(&input)) << "Failed to write network.";
-	input.close();
-	for (auto phase_param : param.phase())
-		define_phase(phase_param.phase(), phase_param.behaviour());
-	for (auto node : param.node()) {
-		if (node.has_accumulator_param())
-			_nodes.push_back(std::make_shared<Accumulator>(node));
-		else if (node.has_add_param())
-			_nodes.push_back(std::make_shared<Add>(node));
-		else if (node.has_bias_add_param())
-			_nodes.push_back(std::make_shared<BiasAdd>(node));
-		else if (node.has_cast_float_param())
-			_nodes.push_back(std::make_shared<CastFloat>(node));
-		else if (node.has_conv_2d_param())
-			_nodes.push_back(std::make_shared<Convolution2D>(node));
-		else if (node.has_dropout_param())
-			_nodes.push_back(std::make_shared<Dropout>(node));
-		else if (node.has_equal_param())
-			_nodes.push_back(std::make_shared<Equal>(node));
-		else if (node.has_loss_param()) {
-			if (node.loss_param().has_softmax_loss_param())
-				_nodes.push_back(std::make_shared<SoftmaxLoss>(node));
-		}
-		else if (node.has_matmul_param()) {
-			_nodes.push_back(std::make_shared<MatMul>(node));
-		}
-		else if (node.has_mnist_reader_param()) {
-			_nodes.push_back(std::make_shared<MNISTReader>(node));
-		}
-		else if (node.has_phaseplexer_param()) {
-			_nodes.push_back(std::make_shared<Phaseplexer>(node));
-		}
-		else if (node.has_place_holder_param()) {
-			_nodes.push_back(std::make_shared<PlaceHolder>(node));
-		}
-		else if (node.has_pooling_param()) {
-			_nodes.push_back(std::make_shared<Pooling>(node));
-		}
-		else if (node.has_print_param()) {
-			_nodes.push_back(std::make_shared<Print>(node));
-		}
-		else if (node.has_reduce_param()) {
-			_nodes.push_back(std::make_shared<Reduce>(node));
-		}
-		else if (node.has_relu_param()) {
-			_nodes.push_back(std::make_shared<Relu>(node));
-		}
-		else if (node.has_softmax_param()) {
-			_nodes.push_back(std::make_shared<Softmax>(node));
-		}
-		else if (node.has_square_param()) {
-			_nodes.push_back(std::make_shared<Square>(node));
-		}
-		else if (node.has_variable_param()) {
-			std::shared_ptr<Initializer> initializer;
-			const InitParam &initParam = node.variable_param().init_param();
-			if (initParam.has_fill_param()) {
-				initializer = std::make_shared<Fill>(initParam);
-			}
-			else if (initParam.has_index_fill_param()) {
-				initializer = std::make_shared<IndexFill>(initParam);
-			}
-			else if (initParam.has_random_uniform_param()) {
-				initializer = std::make_shared<RandomUniform>(initParam);
-			}
-			else if (initParam.has_step_param()) {
-				initializer = std::make_shared<Step>(initParam);
-			}
-			_nodes.push_back(std::make_shared<Variable>(initializer,node));
-		}
-		else {
-			LOG(FATAL) << "Unsupported Node";
-		}
-	}
-	for (auto node : _nodes) {
-		node->createIO();
-	}
-	for (auto node : _nodes) {
-		LOG_IF(FATAL, node->inputs().size() != node->param().input_size()) << "Node " << node->name() << "'s input size " << node->inputs().size() << " does not match the one specified in proto (" << node->param().input_size() << ")";
-		for (int i = 0; i < node->param().input_size(); ++i) {
-			const std::string terminal_name = node->param().input(i);
-			auto terminal = findNodeOutputByName(terminal_name);
-			LOG_IF(FATAL, terminal == 0) << "Failed to find " << terminal_name;
-			node->input(i)->connect(terminal);
-		}
-	}
-	for (auto solver : param.solver()) {
-		auto terminal_name = solver.loss_terminal();
-		auto terminal = findNodeOutputByName(terminal_name);
-		LOG_IF(FATAL, terminal == 0) << "Failed to find loss terminal " << terminal_name;
-		if (solver.has_gain_solver()) {
-			set_solver(std::make_shared<GainSolver>(terminal,solver));
-		}
-		else if (solver.has_sgd_solver()) {
-			set_solver(std::make_shared<SGDSolver>(terminal, solver));
-		}
-	}
-
-}
-
-std::shared_ptr<NodeOutput> DeepFlow::findNodeOutputByName(const std::string &name) const {
-	for (auto node : _nodes) {
-		for (auto terminal : node->outputs()) {
-			if (terminal->name() == name)
-				return terminal;
-		}
-	}
-	return 0;
-}
-
-void DeepFlow::save_as_text(std::string filePath, bool include_weights, bool include_inits) {
-	auto param = createNetworkParam(include_weights,include_inits);
+void DeepFlow::save_as_text(std::string filePath) {
+	auto graph_param = graph();	
 	std::string text;
-	google::protobuf::TextFormat::PrintToString(*param,&text);	
+	google::protobuf::TextFormat::PrintToString(*graph_param, &text);
 	std::ofstream out(filePath);
 	out << text;
 	out.close();
 }
 
 void DeepFlow::define_phase(std::string phase, PhaseParam_PhaseBehaviour behaviour) {
-	_phases.insert(std::pair<std::string, PhaseParam_PhaseBehaviour>(phase,behaviour));
+	auto phase_param = std::make_shared<PhaseParam>();
+	phase_param->set_phase(phase);
+	phase_param->set_behaviour(behaviour);
+	_phases.push_back(phase_param);
 }
 
-void DeepFlow::set_solver(std::shared_ptr<Solver> solver) {
-	_solver = solver;
-}
-
-std::list<std::shared_ptr<Node>> DeepFlow::getEndNodes(std::string execution_phase)
-{
-	std::list<std::shared_ptr<Node>> list;
-	for (auto node : _nodes) {
-		if (node->includePhase(execution_phase)) {
-			int num_connected_outputs = 0;
-			for (auto output : node->outputs()) {
-				if (output->connectedNode())
-					num_connected_outputs++;
-			}
-			if (num_connected_outputs == 0)
-				list.push_back(node);
-		}
+void DeepFlow::load_from_binary(std::string file_path) {
+	auto graph = std::make_shared<GraphParam>();
+	std::fstream input(file_path, std::ios::in | std::ios::binary);
+	LOG_IF(FATAL, !graph->ParseFromIstream(&input)) << "Failed to read graph.";
+	input.close();
+	for (auto phase_param : graph->phase())
+		define_phase(phase_param.phase(), phase_param.behaviour());
+	for (auto _node_param : graph->node()) {
+		auto node_param = std::make_shared<NodeParam>();
+		node_param->CopyFrom(_node_param);
+		_nodes.push_back(node_param);
 	}
-	return list;
+	for (auto _solver_param : graph->solver()) {
+		auto solver_param = std::make_shared<SolverParam>();
+		solver_param->CopyFrom(_solver_param);
+		_solvers.push_back(solver_param);
+	}
 }

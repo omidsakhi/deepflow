@@ -4,18 +4,16 @@
 
 #include "proto/deepflow.pb.h"
 
+class Variable;
+
 class DeepFlowDllExport Solver : public CudaHelper {
 public:
-	Solver(NodeOutputPtr loss, const SolverParam &param);
-	virtual void train_step() = 0;
-	virtual void init() = 0;
+	Solver(const SolverParam &param);
+	virtual void apply(std::shared_ptr<Variable> var) = 0;
+	virtual void init(std::shared_ptr<Variable> var) = 0;
 	const SolverParam& param() const;
-	int maxEpoch();
-protected:
-	int _current_step = 0;
-	NodeOutputPtr _loss_terminal;
-	std::shared_ptr<Node> _loss_node;
-	std::list<std::shared_ptr<Variable>> _variables;
+	const std::string name() const;
+protected:	
 	SolverParam _param;
 	bool _initialized = false;
 };

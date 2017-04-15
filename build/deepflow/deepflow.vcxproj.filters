@@ -52,6 +52,9 @@
     <CudaCompile Include="..\..\src\ops\display.cu">
       <Filter>source\ops</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\solvers\adam_solver.cu">
+      <Filter>source\solver</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -122,6 +125,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\ops\print.cpp">
       <Filter>source\ops</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\session.cpp">
+      <Filter>source\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +262,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\ops\display.h">
       <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\session.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\solvers\adam_solver.h">
+      <Filter>include\solver</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

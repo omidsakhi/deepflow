@@ -8,25 +8,14 @@
 
 #include <memory>
 
-Solver::Solver(NodeOutputPtr loss,const SolverParam &param) {
+Solver::Solver(const SolverParam &param) {
 	_param = param;
-	_loss_terminal = loss;	
-	_loss_node = loss->node();	
-	ResetObserver resetObserver;
-	_loss_node->traverse(&resetObserver, TraverseOrder::PostOrder, true);
-
-	NodeFinder<Variable> varObserver(_variables);		
-	_loss_node->traverse(&varObserver, TraverseOrder::PostOrder, false);
-	
-	LOG_IF(FATAL, _variables.size() == 0) << "Network has no variables.";
-	LOG(INFO) << _variables.size() << " variables detected.";
-
 }
 
 const SolverParam& Solver::param() const {
 	return _param;
 }
 
-int Solver::maxEpoch() {
-	return _param.max_epoch();
+const std::string Solver::name() const {
+	return _param.name();
 }

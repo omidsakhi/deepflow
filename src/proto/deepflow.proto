@@ -120,13 +120,17 @@ message PlaceHolderParam {
 }
 
 message VariableParam {	
-	InitParam init_param = 1;
-	SnapshotParam snapshot_param = 2;	
-	TensorData weights = 3;
+	InitParam init_param = 1;	
+	string solver_name = 2;
+	TensorData weights = 3;	
 }
 
 message LossParam {
 	SoftmaxLossParam softmax_loss_param = 1;
+}
+
+message ReaderParam {
+	MnistReaderParam mnist_param = 1;
 }
 
 message MnistReaderParam {
@@ -148,27 +152,28 @@ message NodeParam {
   repeated string input = 2;
   repeated string output = 3;  
   repeated string phase = 4;
+  
+  LossParam loss_param = 50;
+  ReaderParam reader_param = 51;
 
-  MnistReaderParam mnist_reader_param = 100;
-  VariableParam variable_param = 101;  
-  PlaceHolderParam place_holder_param = 102;  
-  PhaseplexerParam phaseplexer_param = 103;  
-  LossParam loss_param = 104;
-  AddParam add_param = 105;
-  BiasAddParam bias_add_param = 106;
-  Conv2dParam conv_2d_param = 107;
-  DropoutParam dropout_param = 108;
-  ReluParam relu_param = 109;
-  SoftmaxParam softmax_param = 110;  
-  SquareParam square_param = 111;
-  MatMulParam matmul_param = 112;
-  PoolingParam pooling_param = 113;  
-  ReduceParam reduce_param = 114;
-  EqualParam equal_param = 115;
-  PrintParam print_param = 116;
-  CastFloatParam cast_float_param = 117;
-  AccumulatorParam accumulator_param = 118;
-  DisplayParam display_param = 119;
+  VariableParam variable_param = 100;  
+  PlaceHolderParam place_holder_param = 101;  
+  PhaseplexerParam phaseplexer_param = 102;    
+  AddParam add_param = 103;
+  BiasAddParam bias_add_param = 104;
+  Conv2dParam conv_2d_param = 105;
+  DropoutParam dropout_param = 106;
+  ReluParam relu_param = 107;
+  SoftmaxParam softmax_param = 108;  
+  SquareParam square_param = 109;
+  MatMulParam matmul_param = 110;
+  PoolingParam pooling_param = 111;  
+  ReduceParam reduce_param = 112;
+  EqualParam equal_param = 113;
+  PrintParam print_param = 114;
+  CastFloatParam cast_float_param = 115;
+  AccumulatorParam accumulator_param = 116;
+  DisplayParam display_param = 117;
 }
 
 message SquareParam {
@@ -213,24 +218,31 @@ message InitParam {
 }
 
 message SGDSolverParam {
-	float momentum = 1;
-	float learning_rate = 2;
+	float learning_rate = 1;
+	float momentum = 2;	
 }
 
 message GainSolverParam {
-	float momentum = 1;
-	float learning_rate = 2;
+	float learning_rate = 1;
+	float momentum = 2;	
 	float max_gain = 3;
 	float min_gain = 4;
 	float gain_plus = 5;
 	float gain_mult = 6;
 }
 
+message AdamSolverParam {
+	float learning_rate = 1;
+	float beta1 = 2;
+	float beta2 = 3;
+	float eps = 4;
+}
+
 message SolverParam {
-	int32 max_epoch = 1;
-	string loss_terminal = 2;
-	SGDSolverParam sgd_solver = 3;
-	GainSolverParam gain_solver = 4;
+	string name = 1;
+	SGDSolverParam sgd_solver = 2;
+	GainSolverParam gain_solver = 3;
+	AdamSolverParam adam_solver = 4;
 }
 
 message PhaseParam {
@@ -243,7 +255,7 @@ message PhaseParam {
 	PhaseBehaviour behaviour = 2;
 }
 
-message NetworkParam {
+message GraphParam {
 	repeated NodeParam node = 1;
 	repeated SolverParam solver = 2;
 	repeated PhaseParam phase = 3;

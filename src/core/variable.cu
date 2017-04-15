@@ -53,14 +53,6 @@ void Variable::initBackward() {
 	_outputs[0]->initDiff();
 }
 
-bool Variable::snapshot() {
-	return _param.variable_param().has_snapshot_param();
-}
-
-int Variable::snapshotInterval() {
-	return _param.variable_param().snapshot_param().snapshot_interval();
-}
-
 void Variable::transferDataToParam() {
 	auto dma = _param.mutable_variable_param()->mutable_weights();
 	for (int i = 0; i < _outputs[0]->value()->size(); ++i)
@@ -73,6 +65,7 @@ void Variable::transferDataToParam() {
 		) != 0) << "cudaMemcpy [FAILED]";
 }
 
+/*
 void Variable::toImage(int iteration) {	
 	LOG_IF(FATAL, _param.variable_param().has_snapshot_param() == false);
 	const SnapshotParam &param = _param.variable_param().snapshot_param();
@@ -123,6 +116,7 @@ void Variable::toImage(int iteration) {
 	}
 	cv::imwrite(imagePath, result);
 }
+*/
 
 /*
 __global__
