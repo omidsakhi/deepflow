@@ -71,6 +71,16 @@ message PoolingParam {
 	int32 v_stride = 6;
 }
 
+message TransposedConv2dParam {
+	TensorParam tensor_param = 1;
+	int32 pad_h = 2;
+	int32 pad_w = 3;
+	int32 u = 4;
+	int32 v = 5;
+	int32 dilation_h = 6;
+	int32 dilation_w = 7;
+}
+
 message Conv2dParam {
 	int32 pad_h = 1;
 	int32 pad_w = 2;
@@ -162,18 +172,19 @@ message NodeParam {
   AddParam add_param = 103;
   BiasAddParam bias_add_param = 104;
   Conv2dParam conv_2d_param = 105;
-  DropoutParam dropout_param = 106;
-  ReluParam relu_param = 107;
-  SoftmaxParam softmax_param = 108;  
-  SquareParam square_param = 109;
-  MatMulParam matmul_param = 110;
-  PoolingParam pooling_param = 111;  
-  ReduceParam reduce_param = 112;
-  EqualParam equal_param = 113;
-  PrintParam print_param = 114;
-  CastFloatParam cast_float_param = 115;
-  AccumulatorParam accumulator_param = 116;
-  DisplayParam display_param = 117;
+  TransposedConv2dParam transposed_conv_2d_param = 106;
+  DropoutParam dropout_param = 107;
+  ReluParam relu_param = 108;
+  SoftmaxParam softmax_param = 109;  
+  SquareParam square_param = 110;
+  MatMulParam matmul_param = 111;
+  PoolingParam pooling_param = 112;  
+  ReduceParam reduce_param = 113;
+  EqualParam equal_param = 114;
+  PrintParam print_param = 115;
+  CastFloatParam cast_float_param = 116;
+  AccumulatorParam accumulator_param = 117;
+  DisplayParam display_param = 118;
 }
 
 message SquareParam {

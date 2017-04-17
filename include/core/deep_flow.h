@@ -41,6 +41,7 @@ public:
 	std::string matmul(std::string a, std::string b, std::string name = "ip", std::initializer_list<std::string> phases = {});
 	std::string relu(std::string a, float negative_slope = 0.01f, std::string name = "relu", std::initializer_list<std::string> phases = {});
 	std::string dropout(std::string a, float dropout = 0.5f, std::string name = "dropout", std::initializer_list<std::string> phases = {});
+	std::string transposed_conv2d(std::string input, std::string filter, std::array<int, 4> dims, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
 	std::string conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation , std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string conv2d(std::string input, std::string filter, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string pooling(std::string input, int windowHeight = 3, int windowWidth = 3, int verticalPadding = 0, int horizontalPadding = 0, int verticalStride = 1, int horizontalStride = 1, std::string name = "maxpool", std::initializer_list<std::string> phases = {});
