@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\examples\test\test.cpp" />
+    <ClCompile Include="..\..\examples\mnist_lenet\mnist_lenet.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{59D11F15-EC2D-4F95-9F18-1715AD118E1A}</ProjectGuid>

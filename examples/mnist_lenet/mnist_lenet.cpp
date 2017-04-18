@@ -29,8 +29,8 @@ void main(int argc, char** argv) {
 	if (FLAGS_i.empty()) {
 		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);
 		df.define_phase("Validation", PhaseParam_PhaseBehaviour_VALIDATION);		
-		//auto solver = df.gain_solver(0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f);
-		auto solver = df.adadelta_solver(0.1f, 0.9f, 0.00001f); 
+		auto solver = df.gain_solver(0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f);
+		//auto solver = df.adadelta_solver(0.1f, 0.9f, 0.00001f); 
 		auto mnist_trainset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Train, "trainset", { "Train" });
 		auto mnist_testset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Test, "testset", { "Validation" });
 		auto data_selector = df.phaseplexer(mnist_trainset->output(0), "Train", mnist_testset->output(0), "Validation", "data_selector");	
