@@ -277,28 +277,6 @@ inline bool ReduceParam_ReduceOp_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<ReduceParam_ReduceOp>(
     ReduceParam_ReduceOp_descriptor(), name, value);
 }
-enum ImageGeneratorParam_OutputType {
-  ImageGeneratorParam_OutputType_BETWEEN_0_AND_255 = 0,
-  ImageGeneratorParam_OutputType_BETWEEN_0_AND_1 = 1,
-  ImageGeneratorParam_OutputType_BETWEEN_NEGATIVE_1_AND_1 = 2,
-  ImageGeneratorParam_OutputType_ImageGeneratorParam_OutputType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  ImageGeneratorParam_OutputType_ImageGeneratorParam_OutputType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
-};
-bool ImageGeneratorParam_OutputType_IsValid(int value);
-const ImageGeneratorParam_OutputType ImageGeneratorParam_OutputType_OutputType_MIN = ImageGeneratorParam_OutputType_BETWEEN_0_AND_255;
-const ImageGeneratorParam_OutputType ImageGeneratorParam_OutputType_OutputType_MAX = ImageGeneratorParam_OutputType_BETWEEN_NEGATIVE_1_AND_1;
-const int ImageGeneratorParam_OutputType_OutputType_ARRAYSIZE = ImageGeneratorParam_OutputType_OutputType_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* ImageGeneratorParam_OutputType_descriptor();
-inline const ::std::string& ImageGeneratorParam_OutputType_Name(ImageGeneratorParam_OutputType value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    ImageGeneratorParam_OutputType_descriptor(), value);
-}
-inline bool ImageGeneratorParam_OutputType_Parse(
-    const ::std::string& name, ImageGeneratorParam_OutputType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<ImageGeneratorParam_OutputType>(
-    ImageGeneratorParam_OutputType_descriptor(), name, value);
-}
 enum MnistParam_ReaderType {
   MnistParam_ReaderType_TRAIN = 0,
   MnistParam_ReaderType_TEST = 1,
@@ -2470,47 +2448,19 @@ class ImageGeneratorParam : public ::google::protobuf::Message /* @@protoc_inser
 
   // nested types ----------------------------------------------------
 
-  typedef ImageGeneratorParam_OutputType OutputType;
-  static const OutputType BETWEEN_0_AND_255 =
-    ImageGeneratorParam_OutputType_BETWEEN_0_AND_255;
-  static const OutputType BETWEEN_0_AND_1 =
-    ImageGeneratorParam_OutputType_BETWEEN_0_AND_1;
-  static const OutputType BETWEEN_NEGATIVE_1_AND_1 =
-    ImageGeneratorParam_OutputType_BETWEEN_NEGATIVE_1_AND_1;
-  static inline bool OutputType_IsValid(int value) {
-    return ImageGeneratorParam_OutputType_IsValid(value);
-  }
-  static const OutputType OutputType_MIN =
-    ImageGeneratorParam_OutputType_OutputType_MIN;
-  static const OutputType OutputType_MAX =
-    ImageGeneratorParam_OutputType_OutputType_MAX;
-  static const int OutputType_ARRAYSIZE =
-    ImageGeneratorParam_OutputType_OutputType_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  OutputType_descriptor() {
-    return ImageGeneratorParam_OutputType_descriptor();
-  }
-  static inline const ::std::string& OutputType_Name(OutputType value) {
-    return ImageGeneratorParam_OutputType_Name(value);
-  }
-  static inline bool OutputType_Parse(const ::std::string& name,
-      OutputType* value) {
-    return ImageGeneratorParam_OutputType_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
 
-  // .ImageGeneratorParam.OutputType output_type = 1;
-  void clear_output_type();
-  static const int kOutputTypeFieldNumber = 1;
-  ::ImageGeneratorParam_OutputType output_type() const;
-  void set_output_type(::ImageGeneratorParam_OutputType value);
+  // bool accumulate = 1;
+  void clear_accumulate();
+  static const int kAccumulateFieldNumber = 1;
+  bool accumulate() const;
+  void set_accumulate(bool value);
 
   // @@protoc_insertion_point(class_scope:ImageGeneratorParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  int output_type_;
+  bool accumulate_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -5769,18 +5719,18 @@ inline void LossParam::set_allocated_softmax_loss_param(::SoftmaxLossParam* soft
 
 // ImageGeneratorParam
 
-// .ImageGeneratorParam.OutputType output_type = 1;
-inline void ImageGeneratorParam::clear_output_type() {
-  output_type_ = 0;
+// bool accumulate = 1;
+inline void ImageGeneratorParam::clear_accumulate() {
+  accumulate_ = false;
 }
-inline ::ImageGeneratorParam_OutputType ImageGeneratorParam::output_type() const {
-  // @@protoc_insertion_point(field_get:ImageGeneratorParam.output_type)
-  return static_cast< ::ImageGeneratorParam_OutputType >(output_type_);
+inline bool ImageGeneratorParam::accumulate() const {
+  // @@protoc_insertion_point(field_get:ImageGeneratorParam.accumulate)
+  return accumulate_;
 }
-inline void ImageGeneratorParam::set_output_type(::ImageGeneratorParam_OutputType value) {
+inline void ImageGeneratorParam::set_accumulate(bool value) {
   
-  output_type_ = value;
-  // @@protoc_insertion_point(field_set:ImageGeneratorParam.output_type)
+  accumulate_ = value;
+  // @@protoc_insertion_point(field_set:ImageGeneratorParam.accumulate)
 }
 
 // -------------------------------------------------------------------
@@ -8162,11 +8112,6 @@ template <> struct is_proto_enum< ::ReduceParam_ReduceOp> : ::google::protobuf::
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::ReduceParam_ReduceOp>() {
   return ::ReduceParam_ReduceOp_descriptor();
-}
-template <> struct is_proto_enum< ::ImageGeneratorParam_OutputType> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::ImageGeneratorParam_OutputType>() {
-  return ::ImageGeneratorParam_OutputType_descriptor();
 }
 template <> struct is_proto_enum< ::MnistParam_ReaderType> : ::google::protobuf::internal::true_type {};
 template <>

@@ -17,7 +17,7 @@ enum DeepFlowDllExport MNISTReaderType {
 	Test
 };
 
-class DeepFlowDllExport MNISTReader : public Generator {
+class DeepFlowDllExport MNISTReader : public Generator, public Node {
 public:
 	MNISTReader(const NodeParam &param);	
 	int minNumInputs() { return 0; }

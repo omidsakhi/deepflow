@@ -135,6 +135,9 @@
     <ClCompile Include="..\..\src\generators\mnist_reader.cpp">
       <Filter>source\generators</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\generators\image_generator.cpp">
+      <Filter>source\generators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -279,6 +282,9 @@
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\generators\mnist_reader.h">
+      <Filter>include\generators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\generators\image_generator.h">
       <Filter>include\generators</Filter>
     </ClInclude>
   </ItemGroup>

@@ -140,12 +140,7 @@ message LossParam {
 }
 
 message ImageGeneratorParam {
-	 enum OutputType {
-		BETWEEN_0_AND_255 = 0;
-		BETWEEN_0_AND_1 = 1;
-		BETWEEN_NEGATIVE_1_AND_1 = 2;
-	 }
-	 OutputType output_type = 1;
+	bool accumulate = 1;
 }
 
 message GeneratorParam {	

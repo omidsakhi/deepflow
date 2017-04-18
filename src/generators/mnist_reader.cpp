@@ -2,7 +2,7 @@
 
 #include <glog/logging.h>
 
-MNISTReader::MNISTReader(const NodeParam &param) : Generator(param) {
+MNISTReader::MNISTReader(const NodeParam &param) : Generator(param), Node(param) {
 	LOG_IF(FATAL, param.generator_param().has_mnist_param() == false) << "param.generator_param().has_mnist_param() == false";
 	auto generator_param = param.generator_param();
 	auto mnist_param = generator_param.mnist_param();	

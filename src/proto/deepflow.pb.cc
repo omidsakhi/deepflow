@@ -103,7 +103,7 @@ namespace protobuf_deepflow_2eproto {
 namespace {
 
 ::google::protobuf::Metadata file_level_metadata[40];
-const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[8];
+const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[7];
 
 }  // namespace
 
@@ -238,7 +238,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageGeneratorParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageGeneratorParam, output_type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageGeneratorParam, accumulate_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -751,76 +751,73 @@ void AddDescriptorsImpl() {
       "am\022\036\n\ninit_param\030\001 \001(\0132\n.InitParam\022\023\n\013so"
       "lver_name\030\002 \001(\t\022\034\n\007weights\030\003 \001(\0132\013.Tenso"
       "rData\":\n\tLossParam\022-\n\022softmax_loss_param"
-      "\030\001 \001(\0132\021.SoftmaxLossParam\"\243\001\n\023ImageGener"
-      "atorParam\0224\n\013output_type\030\001 \001(\0162\037.ImageGe"
-      "neratorParam.OutputType\"V\n\nOutputType\022\025\n"
-      "\021BETWEEN_0_AND_255\020\000\022\023\n\017BETWEEN_0_AND_1\020"
-      "\001\022\034\n\030BETWEEN_NEGATIVE_1_AND_1\020\002\"\217\001\n\016Gene"
-      "ratorParam\022\022\n\nbatch_size\030\001 \001(\005\022\022\n\ntotal_"
-      "size\030\002 \001(\005\022 \n\013mnist_param\030\003 \001(\0132\013.MnistP"
-      "aram\0223\n\025image_generator_param\030\004 \001(\0132\024.Im"
-      "ageGeneratorParam\"j\n\nMnistParam\022\023\n\013folde"
-      "r_path\030\001 \001(\t\022$\n\004type\030\002 \001(\0162\026.MnistParam."
-      "ReaderType\"!\n\nReaderType\022\t\n\005TRAIN\020\000\022\010\n\004T"
-      "EST\020\001\"\020\n\016CastFloatParam\"\373\006\n\tNodeParam\022\014\n"
-      "\004name\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022\016\n\006output\030\003 \003"
-      "(\t\022\r\n\005phase\030\004 \003(\t\022\036\n\nloss_param\0302 \001(\0132\n."
-      "LossParam\022(\n\017generator_param\0303 \001(\0132\017.Gen"
-      "eratorParam\022&\n\016variable_param\030d \001(\0132\016.Va"
-      "riableParam\022-\n\022place_holder_param\030e \001(\0132"
-      "\021.PlaceHolderParam\022,\n\021phaseplexer_param\030"
-      "f \001(\0132\021.PhaseplexerParam\022\034\n\tadd_param\030g "
-      "\001(\0132\t.AddParam\022%\n\016bias_add_param\030h \001(\0132\r"
-      ".BiasAddParam\022#\n\rconv_2d_param\030i \001(\0132\014.C"
-      "onv2dParam\0228\n\030transposed_conv_2d_param\030j"
-      " \001(\0132\026.TransposedConv2dParam\022$\n\rdropout_"
-      "param\030k \001(\0132\r.DropoutParam\022\036\n\nrelu_param"
-      "\030l \001(\0132\n.ReluParam\022$\n\rsoftmax_param\030m \001("
-      "\0132\r.SoftmaxParam\022\"\n\014square_param\030n \001(\0132\014"
-      ".SquareParam\022\"\n\014matmul_param\030o \001(\0132\014.Mat"
-      "MulParam\022$\n\rpooling_param\030p \001(\0132\r.Poolin"
-      "gParam\022\"\n\014reduce_param\030q \001(\0132\014.ReducePar"
-      "am\022 \n\013equal_param\030r \001(\0132\013.EqualParam\022 \n\013"
-      "print_param\030s \001(\0132\013.PrintParam\022)\n\020cast_f"
-      "loat_param\030t \001(\0132\017.CastFloatParam\022,\n\021acc"
-      "umulator_param\030u \001(\0132\021.AccumulatorParam\022"
-      "$\n\rdisplay_param\030v \001(\0132\r.DisplayParam\"\r\n"
-      "\013SquareParam\"/\n\020SoftmaxLossParam\022\r\n\005alph"
-      "a\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"+\n\014SoftmaxParam\022\r\n"
-      "\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"\036\n\rInitFillPa"
-      "ram\022\r\n\005value\030\001 \001(\002\"$\n\022InitIndexFillParam"
-      "\022\016\n\006offset\030\001 \001(\002\"2\n\026InitRandomUniformPar"
-      "am\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\")\n\rInitStep"
-      "Param\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"\375\001\n\tInit"
-      "Param\022\"\n\014tensor_param\030\001 \001(\0132\014.TensorPara"
-      "m\022\036\n\tinit_data\030\002 \001(\0132\013.TensorData\022\"\n\nfil"
-      "l_param\030\003 \001(\0132\016.InitFillParam\022-\n\020index_f"
-      "ill_param\030\004 \001(\0132\023.InitIndexFillParam\0225\n\024"
-      "random_uniform_param\030\005 \001(\0132\027.InitRandomU"
-      "niformParam\022\"\n\nstep_param\030\006 \001(\0132\016.InitSt"
-      "epParam\"9\n\016SGDSolverParam\022\025\n\rlearning_ra"
-      "te\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\"\204\001\n\017GainSolve"
-      "rParam\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentu"
-      "m\030\002 \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020\n\010min_gain\030\004 "
-      "\001(\002\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tgain_mult\030\006 \001("
-      "\002\"M\n\023AdaDeltaSolverParam\022\025\n\rlearning_rat"
-      "e\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\022\r\n\005delta\030\003 \001(\002"
-      "\"S\n\017AdamSolverParam\022\025\n\rlearning_rate\030\001 \001"
-      "(\002\022\r\n\005beta1\030\002 \001(\002\022\r\n\005beta2\030\003 \001(\002\022\013\n\003eps\030"
-      "\004 \001(\002\"\275\001\n\013SolverParam\022\014\n\004name\030\001 \001(\t\022#\n\ns"
-      "gd_solver\030\002 \001(\0132\017.SGDSolverParam\022%\n\013gain"
-      "_solver\030\003 \001(\0132\020.GainSolverParam\022%\n\013adam_"
-      "solver\030\004 \001(\0132\020.AdamSolverParam\022-\n\017adadel"
-      "ta_solver\030\005 \001(\0132\024.AdaDeltaSolverParam\"\206\001"
-      "\n\nPhaseParam\022\r\n\005phase\030\001 \001(\t\022-\n\tbehaviour"
-      "\030\002 \001(\0162\032.PhaseParam.PhaseBehaviour\":\n\016Ph"
-      "aseBehaviour\022\t\n\005TRAIN\020\000\022\016\n\nVALIDATION\020\001\022"
-      "\r\n\tINFERENCE\020\002\"`\n\nGraphParam\022\030\n\004node\030\001 \003"
-      "(\0132\n.NodeParam\022\034\n\006solver\030\002 \003(\0132\014.SolverP"
-      "aram\022\032\n\005phase\030\003 \003(\0132\013.PhaseParamb\006proto3"
+      "\030\001 \001(\0132\021.SoftmaxLossParam\")\n\023ImageGenera"
+      "torParam\022\022\n\naccumulate\030\001 \001(\010\"\217\001\n\016Generat"
+      "orParam\022\022\n\nbatch_size\030\001 \001(\005\022\022\n\ntotal_siz"
+      "e\030\002 \001(\005\022 \n\013mnist_param\030\003 \001(\0132\013.MnistPara"
+      "m\0223\n\025image_generator_param\030\004 \001(\0132\024.Image"
+      "GeneratorParam\"j\n\nMnistParam\022\023\n\013folder_p"
+      "ath\030\001 \001(\t\022$\n\004type\030\002 \001(\0162\026.MnistParam.Rea"
+      "derType\"!\n\nReaderType\022\t\n\005TRAIN\020\000\022\010\n\004TEST"
+      "\020\001\"\020\n\016CastFloatParam\"\373\006\n\tNodeParam\022\014\n\004na"
+      "me\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022\016\n\006output\030\003 \003(\t\022"
+      "\r\n\005phase\030\004 \003(\t\022\036\n\nloss_param\0302 \001(\0132\n.Los"
+      "sParam\022(\n\017generator_param\0303 \001(\0132\017.Genera"
+      "torParam\022&\n\016variable_param\030d \001(\0132\016.Varia"
+      "bleParam\022-\n\022place_holder_param\030e \001(\0132\021.P"
+      "laceHolderParam\022,\n\021phaseplexer_param\030f \001"
+      "(\0132\021.PhaseplexerParam\022\034\n\tadd_param\030g \001(\013"
+      "2\t.AddParam\022%\n\016bias_add_param\030h \001(\0132\r.Bi"
+      "asAddParam\022#\n\rconv_2d_param\030i \001(\0132\014.Conv"
+      "2dParam\0228\n\030transposed_conv_2d_param\030j \001("
+      "\0132\026.TransposedConv2dParam\022$\n\rdropout_par"
+      "am\030k \001(\0132\r.DropoutParam\022\036\n\nrelu_param\030l "
+      "\001(\0132\n.ReluParam\022$\n\rsoftmax_param\030m \001(\0132\r"
+      ".SoftmaxParam\022\"\n\014square_param\030n \001(\0132\014.Sq"
+      "uareParam\022\"\n\014matmul_param\030o \001(\0132\014.MatMul"
+      "Param\022$\n\rpooling_param\030p \001(\0132\r.PoolingPa"
+      "ram\022\"\n\014reduce_param\030q \001(\0132\014.ReduceParam\022"
+      " \n\013equal_param\030r \001(\0132\013.EqualParam\022 \n\013pri"
+      "nt_param\030s \001(\0132\013.PrintParam\022)\n\020cast_floa"
+      "t_param\030t \001(\0132\017.CastFloatParam\022,\n\021accumu"
+      "lator_param\030u \001(\0132\021.AccumulatorParam\022$\n\r"
+      "display_param\030v \001(\0132\r.DisplayParam\"\r\n\013Sq"
+      "uareParam\"/\n\020SoftmaxLossParam\022\r\n\005alpha\030\001"
+      " \001(\002\022\014\n\004beta\030\002 \001(\002\"+\n\014SoftmaxParam\022\r\n\005al"
+      "pha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"\036\n\rInitFillParam"
+      "\022\r\n\005value\030\001 \001(\002\"$\n\022InitIndexFillParam\022\016\n"
+      "\006offset\030\001 \001(\002\"2\n\026InitRandomUniformParam\022"
+      "\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\")\n\rInitStepPar"
+      "am\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"\375\001\n\tInitPar"
+      "am\022\"\n\014tensor_param\030\001 \001(\0132\014.TensorParam\022\036"
+      "\n\tinit_data\030\002 \001(\0132\013.TensorData\022\"\n\nfill_p"
+      "aram\030\003 \001(\0132\016.InitFillParam\022-\n\020index_fill"
+      "_param\030\004 \001(\0132\023.InitIndexFillParam\0225\n\024ran"
+      "dom_uniform_param\030\005 \001(\0132\027.InitRandomUnif"
+      "ormParam\022\"\n\nstep_param\030\006 \001(\0132\016.InitStepP"
+      "aram\"9\n\016SGDSolverParam\022\025\n\rlearning_rate\030"
+      "\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\"\204\001\n\017GainSolverPa"
+      "ram\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030\002"
+      " \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020\n\010min_gain\030\004 \001(\002"
+      "\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tgain_mult\030\006 \001(\002\"M"
+      "\n\023AdaDeltaSolverParam\022\025\n\rlearning_rate\030\001"
+      " \001(\002\022\020\n\010momentum\030\002 \001(\002\022\r\n\005delta\030\003 \001(\002\"S\n"
+      "\017AdamSolverParam\022\025\n\rlearning_rate\030\001 \001(\002\022"
+      "\r\n\005beta1\030\002 \001(\002\022\r\n\005beta2\030\003 \001(\002\022\013\n\003eps\030\004 \001"
+      "(\002\"\275\001\n\013SolverParam\022\014\n\004name\030\001 \001(\t\022#\n\nsgd_"
+      "solver\030\002 \001(\0132\017.SGDSolverParam\022%\n\013gain_so"
+      "lver\030\003 \001(\0132\020.GainSolverParam\022%\n\013adam_sol"
+      "ver\030\004 \001(\0132\020.AdamSolverParam\022-\n\017adadelta_"
+      "solver\030\005 \001(\0132\024.AdaDeltaSolverParam\"\206\001\n\nP"
+      "haseParam\022\r\n\005phase\030\001 \001(\t\022-\n\tbehaviour\030\002 "
+      "\001(\0162\032.PhaseParam.PhaseBehaviour\":\n\016Phase"
+      "Behaviour\022\t\n\005TRAIN\020\000\022\016\n\nVALIDATION\020\001\022\r\n\t"
+      "INFERENCE\020\002\"`\n\nGraphParam\022\030\n\004node\030\001 \003(\0132"
+      "\n.NodeParam\022\034\n\006solver\030\002 \003(\0132\014.SolverPara"
+      "m\022\032\n\005phase\030\003 \003(\0132\013.PhaseParamb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 4320);
+      descriptor, 4197);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -964,32 +961,9 @@ const ReduceParam_ReduceOp ReduceParam::ReduceOp_MIN;
 const ReduceParam_ReduceOp ReduceParam::ReduceOp_MAX;
 const int ReduceParam::ReduceOp_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-const ::google::protobuf::EnumDescriptor* ImageGeneratorParam_OutputType_descriptor() {
-  protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_enum_descriptors[5];
-}
-bool ImageGeneratorParam_OutputType_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-      return true;
-    default:
-      return false;
-  }
-}
-
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const ImageGeneratorParam_OutputType ImageGeneratorParam::BETWEEN_0_AND_255;
-const ImageGeneratorParam_OutputType ImageGeneratorParam::BETWEEN_0_AND_1;
-const ImageGeneratorParam_OutputType ImageGeneratorParam::BETWEEN_NEGATIVE_1_AND_1;
-const ImageGeneratorParam_OutputType ImageGeneratorParam::OutputType_MIN;
-const ImageGeneratorParam_OutputType ImageGeneratorParam::OutputType_MAX;
-const int ImageGeneratorParam::OutputType_ARRAYSIZE;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 const ::google::protobuf::EnumDescriptor* MnistParam_ReaderType_descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_enum_descriptors[6];
+  return protobuf_deepflow_2eproto::file_level_enum_descriptors[5];
 }
 bool MnistParam_ReaderType_IsValid(int value) {
   switch (value) {
@@ -1010,7 +984,7 @@ const int MnistParam::ReaderType_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 const ::google::protobuf::EnumDescriptor* PhaseParam_PhaseBehaviour_descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_enum_descriptors[7];
+  return protobuf_deepflow_2eproto::file_level_enum_descriptors[6];
 }
 bool PhaseParam_PhaseBehaviour_IsValid(int value) {
   switch (value) {
@@ -7374,7 +7348,7 @@ void LossParam::set_allocated_softmax_loss_param(::SoftmaxLossParam* softmax_los
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ImageGeneratorParam::kOutputTypeFieldNumber;
+const int ImageGeneratorParam::kAccumulateFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ImageGeneratorParam::ImageGeneratorParam()
@@ -7390,12 +7364,12 @@ ImageGeneratorParam::ImageGeneratorParam(const ImageGeneratorParam& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  output_type_ = from.output_type_;
+  accumulate_ = from.accumulate_;
   // @@protoc_insertion_point(copy_constructor:ImageGeneratorParam)
 }
 
 void ImageGeneratorParam::SharedCtor() {
-  output_type_ = 0;
+  accumulate_ = false;
   _cached_size_ = 0;
 }
 
@@ -7432,7 +7406,7 @@ ImageGeneratorParam* ImageGeneratorParam::New(::google::protobuf::Arena* arena) 
 
 void ImageGeneratorParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:ImageGeneratorParam)
-  output_type_ = 0;
+  accumulate_ = false;
 }
 
 bool ImageGeneratorParam::MergePartialFromCodedStream(
@@ -7445,15 +7419,14 @@ bool ImageGeneratorParam::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .ImageGeneratorParam.OutputType output_type = 1;
+      // bool accumulate = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(8u)) {
-          int value;
+
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          set_output_type(static_cast< ::ImageGeneratorParam_OutputType >(value));
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &accumulate_)));
         } else {
           goto handle_unusual;
         }
@@ -7484,10 +7457,9 @@ failure:
 void ImageGeneratorParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:ImageGeneratorParam)
-  // .ImageGeneratorParam.OutputType output_type = 1;
-  if (this->output_type() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      1, this->output_type(), output);
+  // bool accumulate = 1;
+  if (this->accumulate() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->accumulate(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:ImageGeneratorParam)
@@ -7497,10 +7469,9 @@ void ImageGeneratorParam::SerializeWithCachedSizes(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:ImageGeneratorParam)
-  // .ImageGeneratorParam.OutputType output_type = 1;
-  if (this->output_type() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      1, this->output_type(), target);
+  // bool accumulate = 1;
+  if (this->accumulate() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->accumulate(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:ImageGeneratorParam)
@@ -7511,10 +7482,9 @@ size_t ImageGeneratorParam::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:ImageGeneratorParam)
   size_t total_size = 0;
 
-  // .ImageGeneratorParam.OutputType output_type = 1;
-  if (this->output_type() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->output_type());
+  // bool accumulate = 1;
+  if (this->accumulate() != 0) {
+    total_size += 1 + 1;
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -7543,8 +7513,8 @@ void ImageGeneratorParam::MergeFrom(const ImageGeneratorParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:ImageGeneratorParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.output_type() != 0) {
-    set_output_type(from.output_type());
+  if (from.accumulate() != 0) {
+    set_accumulate(from.accumulate());
   }
 }
 
@@ -7571,7 +7541,7 @@ void ImageGeneratorParam::Swap(ImageGeneratorParam* other) {
   InternalSwap(other);
 }
 void ImageGeneratorParam::InternalSwap(ImageGeneratorParam* other) {
-  std::swap(output_type_, other->output_type_);
+  std::swap(accumulate_, other->accumulate_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -7583,18 +7553,18 @@ void ImageGeneratorParam::InternalSwap(ImageGeneratorParam* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // ImageGeneratorParam
 
-// .ImageGeneratorParam.OutputType output_type = 1;
-void ImageGeneratorParam::clear_output_type() {
-  output_type_ = 0;
+// bool accumulate = 1;
+void ImageGeneratorParam::clear_accumulate() {
+  accumulate_ = false;
 }
-::ImageGeneratorParam_OutputType ImageGeneratorParam::output_type() const {
-  // @@protoc_insertion_point(field_get:ImageGeneratorParam.output_type)
-  return static_cast< ::ImageGeneratorParam_OutputType >(output_type_);
+bool ImageGeneratorParam::accumulate() const {
+  // @@protoc_insertion_point(field_get:ImageGeneratorParam.accumulate)
+  return accumulate_;
 }
-void ImageGeneratorParam::set_output_type(::ImageGeneratorParam_OutputType value) {
+void ImageGeneratorParam::set_accumulate(bool value) {
   
-  output_type_ = value;
-  // @@protoc_insertion_point(field_set:ImageGeneratorParam.output_type)
+  accumulate_ = value;
+  // @@protoc_insertion_point(field_set:ImageGeneratorParam.accumulate)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
