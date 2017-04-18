@@ -16,11 +16,11 @@ std::shared_ptr<NodeParam> DeepFlow::mnist_reader(std::string folder_path, int b
 	add_outputs(node_param, 2);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
-	auto readerParam = node_param->mutable_reader_param();
-	auto mnistParam = readerParam->mutable_mnist_param();	
+	auto generator_param = node_param->mutable_generator_param();
+	auto mnistParam = generator_param->mutable_mnist_param();
 	mnistParam->set_folder_path(folder_path);
-	mnistParam->set_type((MnistReaderParam::ReaderType) type);
-	mnistParam->set_batch_size(batch_size);
+	mnistParam->set_type((MnistParam::ReaderType) type);
+	generator_param->set_batch_size(batch_size);
 	_nodes.push_back(node_param);
 	return node_param;
 

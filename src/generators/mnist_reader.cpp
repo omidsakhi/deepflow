@@ -1,12 +1,13 @@
-#include "readers/mnist_reader.h"
+#include "generators/mnist_reader.h"
 
 #include <glog/logging.h>
 
-MNISTReader::MNISTReader(const NodeParam &param) : Reader(param) {
-	LOG_IF(FATAL, param.reader_param().has_mnist_param() == false) << "param.has_mnist_reader_param() == false";
-	const MnistReaderParam &mnist_param = param.reader_param().mnist_param();
+MNISTReader::MNISTReader(const NodeParam &param) : Generator(param) {
+	LOG_IF(FATAL, param.generator_param().has_mnist_param() == false) << "param.generator_param().has_mnist_param() == false";
+	auto generator_param = param.generator_param();
+	auto mnist_param = generator_param.mnist_param();	
 	_folder_path = mnist_param.folder_path();
-	_batch_size = mnist_param.batch_size();
+	_batch_size = generator_param.batch_size();
 	_type = (MNISTReaderType)mnist_param.type();	
 	_temp_d = 0;	
 	_init_backward = _init_backward = false;

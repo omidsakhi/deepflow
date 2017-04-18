@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/reader.h"
+#include "core/generator.h"
 
 #include <string>
 #include <iostream>
@@ -17,7 +17,7 @@ enum DeepFlowDllExport MNISTReaderType {
 	Test
 };
 
-class DeepFlowDllExport MNISTReader : public Reader {
+class DeepFlowDllExport MNISTReader : public Generator {
 public:
 	MNISTReader(const NodeParam &param);	
 	int minNumInputs() { return 0; }

@@ -63,9 +63,6 @@
     <ClCompile Include="..\..\src\core\deep_flow.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\readers\mnist_reader.cpp">
-      <Filter>source\readers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\core\node.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
@@ -91,9 +88,6 @@
       <Filter>source\ops</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\core\terminal.cpp">
-      <Filter>source\core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\core\reader.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\ops\matmul.cpp">
@@ -135,6 +129,12 @@
     <ClCompile Include="..\..\src\ops\softmax.cpp">
       <Filter>source\ops</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\core\generator.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\generators\mnist_reader.cpp">
+      <Filter>source\generators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -148,12 +148,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\core\initializer.h">
       <Filter>include\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\core\reader.h">
-      <Filter>include\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\readers\mnist_reader.h">
-      <Filter>include\readers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\core\node.h">
       <Filter>include\core</Filter>
@@ -281,6 +275,12 @@
     <ClInclude Include="..\..\include\ops\transposed_conv_2d.h">
       <Filter>include\ops</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\core\generator.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\generators\mnist_reader.h">
+      <Filter>include\generators</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -303,12 +303,6 @@
     </Filter>
     <Filter Include="source\core">
       <UniqueIdentifier>{7f3b6747-eeaf-4ad7-a9b6-d7fbabfa6457}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\readers">
-      <UniqueIdentifier>{4d3e3d24-1123-489d-8637-5a467fa1752c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\readers">
-      <UniqueIdentifier>{a6d53a81-f76f-4f15-a125-fadb1a510a66}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\ops">
       <UniqueIdentifier>{45b44a3f-2991-4a34-aefb-49aafcca691e}</UniqueIdentifier>
@@ -333,6 +327,12 @@
     </Filter>
     <Filter Include="source\proto">
       <UniqueIdentifier>{e921255b-235b-4a19-9181-f593aebbceab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\generators">
+      <UniqueIdentifier>{4d3e3d24-1123-489d-8637-5a467fa1752c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\generators">
+      <UniqueIdentifier>{a6d53a81-f76f-4f15-a125-fadb1a510a66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

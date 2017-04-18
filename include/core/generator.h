@@ -5,9 +5,9 @@
 
 class PlaceHolder;
 
-class DeepFlowDllExport Reader : public Node {
+class DeepFlowDllExport Generator : public Node {
 public:	
-	Reader(const NodeParam &param);
+	Generator(const NodeParam &param);
 	virtual void nextBatch() = 0;
 	virtual bool isLastBatch() = 0;
 };

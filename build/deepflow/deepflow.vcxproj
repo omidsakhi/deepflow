@@ -30,12 +30,13 @@
     <ClInclude Include="..\..\include\core\node_observer.h" />
     <ClInclude Include="..\..\include\core\phaseplexer.h" />
     <ClInclude Include="..\..\include\core\place_holder.h" />
-    <ClInclude Include="..\..\include\core\reader.h" />
+    <ClInclude Include="..\..\include\core\generator.h" />
     <ClInclude Include="..\..\include\core\session.h" />
     <ClInclude Include="..\..\include\core\solver.h" />
     <ClInclude Include="..\..\include\core\tensor.h" />
     <ClInclude Include="..\..\include\core\terminal.h" />
     <ClInclude Include="..\..\include\core\variable.h" />
+    <ClInclude Include="..\..\include\generators\mnist_reader.h" />
     <ClInclude Include="..\..\include\initializers\fill.h" />
     <ClInclude Include="..\..\include\initializers\index_fill.h" />
     <ClInclude Include="..\..\include\initializers\random_uniform.h" />
@@ -62,7 +63,6 @@
     <ClInclude Include="..\..\include\ops\cast_float.h" />
     <ClInclude Include="..\..\include\ops\transposed_conv_2d.h" />
     <ClInclude Include="..\..\include\proto\deepflow.pb.h" />
-    <ClInclude Include="..\..\include\readers\mnist_reader.h" />
     <ClInclude Include="..\..\include\solvers\adadelta_solver.h" />
     <ClInclude Include="..\..\include\solvers\adam_solver.h" />
     <ClInclude Include="..\..\include\solvers\gain_solver.h" />
@@ -80,6 +80,7 @@
     <ClCompile Include="..\..\src\core\place_holder.cpp" />
     <ClCompile Include="..\..\src\core\session.cpp" />
     <ClCompile Include="..\..\src\core\tensor.cpp" />
+    <ClCompile Include="..\..\src\generators\mnist_reader.cpp" />
     <ClCompile Include="..\..\src\observers\reset.cpp" />
     <ClCompile Include="..\..\src\ops\pooling.cpp">
       <FileType>Document</FileType>
@@ -93,7 +94,7 @@
     <CudaCompile Include="..\..\src\solvers\sgd_solver.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>
-    <ClCompile Include="..\..\src\core\reader.cpp" />
+    <ClCompile Include="..\..\src\core\generator.cpp" />
     <ClCompile Include="..\..\src\core\solver.cpp" />
     <CudaCompile Include="..\..\src\core\variable.cu">
       <FileType>Document</FileType>
@@ -117,7 +118,6 @@
     </CudaCompile>
     <ClCompile Include="..\..\src\ops\transposed_conv_2d.cpp" />
     <ClCompile Include="..\..\src\proto\deepflow.pb.cc" />
-    <ClCompile Include="..\..\src\readers\mnist_reader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="..\..\src\initializers\fill.cu" />

@@ -2,7 +2,6 @@
 
 
 #include "core/solver.h"
-#include "core/reader.h"
 
 class DeepFlowDllExport AdaDeltaSolver : public Solver {
 public:

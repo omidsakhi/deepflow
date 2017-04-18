@@ -3,7 +3,7 @@
 #include "core/export.h"
 
 #include "core/tensor.h"
-#include "readers/mnist_reader.h"
+#include "generators/mnist_reader.h"
 #include "ops/print.h"
 #include "ops/accumulator.h"
 

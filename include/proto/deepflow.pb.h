@@ -63,9 +63,15 @@ extern EqualParamDefaultTypeInternal _EqualParam_default_instance_;
 class GainSolverParam;
 class GainSolverParamDefaultTypeInternal;
 extern GainSolverParamDefaultTypeInternal _GainSolverParam_default_instance_;
+class GeneratorParam;
+class GeneratorParamDefaultTypeInternal;
+extern GeneratorParamDefaultTypeInternal _GeneratorParam_default_instance_;
 class GraphParam;
 class GraphParamDefaultTypeInternal;
 extern GraphParamDefaultTypeInternal _GraphParam_default_instance_;
+class ImageGeneratorParam;
+class ImageGeneratorParamDefaultTypeInternal;
+extern ImageGeneratorParamDefaultTypeInternal _ImageGeneratorParam_default_instance_;
 class InitFillParam;
 class InitFillParamDefaultTypeInternal;
 extern InitFillParamDefaultTypeInternal _InitFillParam_default_instance_;
@@ -87,9 +93,9 @@ extern LossParamDefaultTypeInternal _LossParam_default_instance_;
 class MatMulParam;
 class MatMulParamDefaultTypeInternal;
 extern MatMulParamDefaultTypeInternal _MatMulParam_default_instance_;
-class MnistReaderParam;
-class MnistReaderParamDefaultTypeInternal;
-extern MnistReaderParamDefaultTypeInternal _MnistReaderParam_default_instance_;
+class MnistParam;
+class MnistParamDefaultTypeInternal;
+extern MnistParamDefaultTypeInternal _MnistParam_default_instance_;
 class NodeParam;
 class NodeParamDefaultTypeInternal;
 extern NodeParamDefaultTypeInternal _NodeParam_default_instance_;
@@ -108,9 +114,6 @@ extern PoolingParamDefaultTypeInternal _PoolingParam_default_instance_;
 class PrintParam;
 class PrintParamDefaultTypeInternal;
 extern PrintParamDefaultTypeInternal _PrintParam_default_instance_;
-class ReaderParam;
-class ReaderParamDefaultTypeInternal;
-extern ReaderParamDefaultTypeInternal _ReaderParam_default_instance_;
 class ReduceParam;
 class ReduceParamDefaultTypeInternal;
 extern ReduceParamDefaultTypeInternal _ReduceParam_default_instance_;
@@ -274,26 +277,48 @@ inline bool ReduceParam_ReduceOp_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<ReduceParam_ReduceOp>(
     ReduceParam_ReduceOp_descriptor(), name, value);
 }
-enum MnistReaderParam_ReaderType {
-  MnistReaderParam_ReaderType_TRAIN = 0,
-  MnistReaderParam_ReaderType_TEST = 1,
-  MnistReaderParam_ReaderType_MnistReaderParam_ReaderType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  MnistReaderParam_ReaderType_MnistReaderParam_ReaderType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+enum ImageGeneratorParam_OutputType {
+  ImageGeneratorParam_OutputType_BETWEEN_0_AND_255 = 0,
+  ImageGeneratorParam_OutputType_BETWEEN_0_AND_1 = 1,
+  ImageGeneratorParam_OutputType_BETWEEN_NEGATIVE_1_AND_1 = 2,
+  ImageGeneratorParam_OutputType_ImageGeneratorParam_OutputType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  ImageGeneratorParam_OutputType_ImageGeneratorParam_OutputType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
-bool MnistReaderParam_ReaderType_IsValid(int value);
-const MnistReaderParam_ReaderType MnistReaderParam_ReaderType_ReaderType_MIN = MnistReaderParam_ReaderType_TRAIN;
-const MnistReaderParam_ReaderType MnistReaderParam_ReaderType_ReaderType_MAX = MnistReaderParam_ReaderType_TEST;
-const int MnistReaderParam_ReaderType_ReaderType_ARRAYSIZE = MnistReaderParam_ReaderType_ReaderType_MAX + 1;
+bool ImageGeneratorParam_OutputType_IsValid(int value);
+const ImageGeneratorParam_OutputType ImageGeneratorParam_OutputType_OutputType_MIN = ImageGeneratorParam_OutputType_BETWEEN_0_AND_255;
+const ImageGeneratorParam_OutputType ImageGeneratorParam_OutputType_OutputType_MAX = ImageGeneratorParam_OutputType_BETWEEN_NEGATIVE_1_AND_1;
+const int ImageGeneratorParam_OutputType_OutputType_ARRAYSIZE = ImageGeneratorParam_OutputType_OutputType_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* MnistReaderParam_ReaderType_descriptor();
-inline const ::std::string& MnistReaderParam_ReaderType_Name(MnistReaderParam_ReaderType value) {
+const ::google::protobuf::EnumDescriptor* ImageGeneratorParam_OutputType_descriptor();
+inline const ::std::string& ImageGeneratorParam_OutputType_Name(ImageGeneratorParam_OutputType value) {
   return ::google::protobuf::internal::NameOfEnum(
-    MnistReaderParam_ReaderType_descriptor(), value);
+    ImageGeneratorParam_OutputType_descriptor(), value);
 }
-inline bool MnistReaderParam_ReaderType_Parse(
-    const ::std::string& name, MnistReaderParam_ReaderType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<MnistReaderParam_ReaderType>(
-    MnistReaderParam_ReaderType_descriptor(), name, value);
+inline bool ImageGeneratorParam_OutputType_Parse(
+    const ::std::string& name, ImageGeneratorParam_OutputType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ImageGeneratorParam_OutputType>(
+    ImageGeneratorParam_OutputType_descriptor(), name, value);
+}
+enum MnistParam_ReaderType {
+  MnistParam_ReaderType_TRAIN = 0,
+  MnistParam_ReaderType_TEST = 1,
+  MnistParam_ReaderType_MnistParam_ReaderType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  MnistParam_ReaderType_MnistParam_ReaderType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool MnistParam_ReaderType_IsValid(int value);
+const MnistParam_ReaderType MnistParam_ReaderType_ReaderType_MIN = MnistParam_ReaderType_TRAIN;
+const MnistParam_ReaderType MnistParam_ReaderType_ReaderType_MAX = MnistParam_ReaderType_TEST;
+const int MnistParam_ReaderType_ReaderType_ARRAYSIZE = MnistParam_ReaderType_ReaderType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* MnistParam_ReaderType_descriptor();
+inline const ::std::string& MnistParam_ReaderType_Name(MnistParam_ReaderType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    MnistParam_ReaderType_descriptor(), value);
+}
+inline bool MnistParam_ReaderType_Parse(
+    const ::std::string& name, MnistParam_ReaderType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<MnistParam_ReaderType>(
+    MnistParam_ReaderType_descriptor(), name, value);
 }
 enum PhaseParam_PhaseBehaviour {
   PhaseParam_PhaseBehaviour_TRAIN = 0,
@@ -2380,37 +2405,37 @@ class LossParam : public ::google::protobuf::Message /* @@protoc_insertion_point
 };
 // -------------------------------------------------------------------
 
-class ReaderParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ReaderParam) */ {
+class ImageGeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ImageGeneratorParam) */ {
  public:
-  ReaderParam();
-  virtual ~ReaderParam();
+  ImageGeneratorParam();
+  virtual ~ImageGeneratorParam();
 
-  ReaderParam(const ReaderParam& from);
+  ImageGeneratorParam(const ImageGeneratorParam& from);
 
-  inline ReaderParam& operator=(const ReaderParam& from) {
+  inline ImageGeneratorParam& operator=(const ImageGeneratorParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ReaderParam& default_instance();
+  static const ImageGeneratorParam& default_instance();
 
-  static inline const ReaderParam* internal_default_instance() {
-    return reinterpret_cast<const ReaderParam*>(
-               &_ReaderParam_default_instance_);
+  static inline const ImageGeneratorParam* internal_default_instance() {
+    return reinterpret_cast<const ImageGeneratorParam*>(
+               &_ImageGeneratorParam_default_instance_);
   }
 
-  void Swap(ReaderParam* other);
+  void Swap(ImageGeneratorParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline ReaderParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline ImageGeneratorParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  ReaderParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  ImageGeneratorParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const ReaderParam& from);
-  void MergeFrom(const ReaderParam& from);
+  void CopyFrom(const ImageGeneratorParam& from);
+  void MergeFrom(const ImageGeneratorParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -2431,7 +2456,118 @@ class ReaderParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(ReaderParam* other);
+  void InternalSwap(ImageGeneratorParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef ImageGeneratorParam_OutputType OutputType;
+  static const OutputType BETWEEN_0_AND_255 =
+    ImageGeneratorParam_OutputType_BETWEEN_0_AND_255;
+  static const OutputType BETWEEN_0_AND_1 =
+    ImageGeneratorParam_OutputType_BETWEEN_0_AND_1;
+  static const OutputType BETWEEN_NEGATIVE_1_AND_1 =
+    ImageGeneratorParam_OutputType_BETWEEN_NEGATIVE_1_AND_1;
+  static inline bool OutputType_IsValid(int value) {
+    return ImageGeneratorParam_OutputType_IsValid(value);
+  }
+  static const OutputType OutputType_MIN =
+    ImageGeneratorParam_OutputType_OutputType_MIN;
+  static const OutputType OutputType_MAX =
+    ImageGeneratorParam_OutputType_OutputType_MAX;
+  static const int OutputType_ARRAYSIZE =
+    ImageGeneratorParam_OutputType_OutputType_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  OutputType_descriptor() {
+    return ImageGeneratorParam_OutputType_descriptor();
+  }
+  static inline const ::std::string& OutputType_Name(OutputType value) {
+    return ImageGeneratorParam_OutputType_Name(value);
+  }
+  static inline bool OutputType_Parse(const ::std::string& name,
+      OutputType* value) {
+    return ImageGeneratorParam_OutputType_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // .ImageGeneratorParam.OutputType output_type = 1;
+  void clear_output_type();
+  static const int kOutputTypeFieldNumber = 1;
+  ::ImageGeneratorParam_OutputType output_type() const;
+  void set_output_type(::ImageGeneratorParam_OutputType value);
+
+  // @@protoc_insertion_point(class_scope:ImageGeneratorParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  int output_type_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class GeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:GeneratorParam) */ {
+ public:
+  GeneratorParam();
+  virtual ~GeneratorParam();
+
+  GeneratorParam(const GeneratorParam& from);
+
+  inline GeneratorParam& operator=(const GeneratorParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GeneratorParam& default_instance();
+
+  static inline const GeneratorParam* internal_default_instance() {
+    return reinterpret_cast<const GeneratorParam*>(
+               &_GeneratorParam_default_instance_);
+  }
+
+  void Swap(GeneratorParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline GeneratorParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  GeneratorParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const GeneratorParam& from);
+  void MergeFrom(const GeneratorParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(GeneratorParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -2447,56 +2583,80 @@ class ReaderParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 
   // accessors -------------------------------------------------------
 
-  // .MnistReaderParam mnist_param = 1;
+  // .MnistParam mnist_param = 3;
   bool has_mnist_param() const;
   void clear_mnist_param();
-  static const int kMnistParamFieldNumber = 1;
-  const ::MnistReaderParam& mnist_param() const;
-  ::MnistReaderParam* mutable_mnist_param();
-  ::MnistReaderParam* release_mnist_param();
-  void set_allocated_mnist_param(::MnistReaderParam* mnist_param);
+  static const int kMnistParamFieldNumber = 3;
+  const ::MnistParam& mnist_param() const;
+  ::MnistParam* mutable_mnist_param();
+  ::MnistParam* release_mnist_param();
+  void set_allocated_mnist_param(::MnistParam* mnist_param);
 
-  // @@protoc_insertion_point(class_scope:ReaderParam)
+  // .ImageGeneratorParam image_generator_param = 4;
+  bool has_image_generator_param() const;
+  void clear_image_generator_param();
+  static const int kImageGeneratorParamFieldNumber = 4;
+  const ::ImageGeneratorParam& image_generator_param() const;
+  ::ImageGeneratorParam* mutable_image_generator_param();
+  ::ImageGeneratorParam* release_image_generator_param();
+  void set_allocated_image_generator_param(::ImageGeneratorParam* image_generator_param);
+
+  // int32 batch_size = 1;
+  void clear_batch_size();
+  static const int kBatchSizeFieldNumber = 1;
+  ::google::protobuf::int32 batch_size() const;
+  void set_batch_size(::google::protobuf::int32 value);
+
+  // int32 total_size = 2;
+  void clear_total_size();
+  static const int kTotalSizeFieldNumber = 2;
+  ::google::protobuf::int32 total_size() const;
+  void set_total_size(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:GeneratorParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::MnistReaderParam* mnist_param_;
+  ::MnistParam* mnist_param_;
+  ::ImageGeneratorParam* image_generator_param_;
+  ::google::protobuf::int32 batch_size_;
+  ::google::protobuf::int32 total_size_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class MnistReaderParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:MnistReaderParam) */ {
+class MnistParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:MnistParam) */ {
  public:
-  MnistReaderParam();
-  virtual ~MnistReaderParam();
+  MnistParam();
+  virtual ~MnistParam();
 
-  MnistReaderParam(const MnistReaderParam& from);
+  MnistParam(const MnistParam& from);
 
-  inline MnistReaderParam& operator=(const MnistReaderParam& from) {
+  inline MnistParam& operator=(const MnistParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const MnistReaderParam& default_instance();
+  static const MnistParam& default_instance();
 
-  static inline const MnistReaderParam* internal_default_instance() {
-    return reinterpret_cast<const MnistReaderParam*>(
-               &_MnistReaderParam_default_instance_);
+  static inline const MnistParam* internal_default_instance() {
+    return reinterpret_cast<const MnistParam*>(
+               &_MnistParam_default_instance_);
   }
 
-  void Swap(MnistReaderParam* other);
+  void Swap(MnistParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline MnistReaderParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline MnistParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  MnistReaderParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  MnistParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const MnistReaderParam& from);
-  void MergeFrom(const MnistReaderParam& from);
+  void CopyFrom(const MnistParam& from);
+  void MergeFrom(const MnistParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -2517,7 +2677,7 @@ class MnistReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(MnistReaderParam* other);
+  void InternalSwap(MnistParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -2531,30 +2691,30 @@ class MnistReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
 
   // nested types ----------------------------------------------------
 
-  typedef MnistReaderParam_ReaderType ReaderType;
+  typedef MnistParam_ReaderType ReaderType;
   static const ReaderType TRAIN =
-    MnistReaderParam_ReaderType_TRAIN;
+    MnistParam_ReaderType_TRAIN;
   static const ReaderType TEST =
-    MnistReaderParam_ReaderType_TEST;
+    MnistParam_ReaderType_TEST;
   static inline bool ReaderType_IsValid(int value) {
-    return MnistReaderParam_ReaderType_IsValid(value);
+    return MnistParam_ReaderType_IsValid(value);
   }
   static const ReaderType ReaderType_MIN =
-    MnistReaderParam_ReaderType_ReaderType_MIN;
+    MnistParam_ReaderType_ReaderType_MIN;
   static const ReaderType ReaderType_MAX =
-    MnistReaderParam_ReaderType_ReaderType_MAX;
+    MnistParam_ReaderType_ReaderType_MAX;
   static const int ReaderType_ARRAYSIZE =
-    MnistReaderParam_ReaderType_ReaderType_ARRAYSIZE;
+    MnistParam_ReaderType_ReaderType_ARRAYSIZE;
   static inline const ::google::protobuf::EnumDescriptor*
   ReaderType_descriptor() {
-    return MnistReaderParam_ReaderType_descriptor();
+    return MnistParam_ReaderType_descriptor();
   }
   static inline const ::std::string& ReaderType_Name(ReaderType value) {
-    return MnistReaderParam_ReaderType_Name(value);
+    return MnistParam_ReaderType_Name(value);
   }
   static inline bool ReaderType_Parse(const ::std::string& name,
       ReaderType* value) {
-    return MnistReaderParam_ReaderType_Parse(name, value);
+    return MnistParam_ReaderType_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
@@ -2573,24 +2733,17 @@ class MnistReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
   ::std::string* release_folder_path();
   void set_allocated_folder_path(::std::string* folder_path);
 
-  // int32 batch_size = 2;
-  void clear_batch_size();
-  static const int kBatchSizeFieldNumber = 2;
-  ::google::protobuf::int32 batch_size() const;
-  void set_batch_size(::google::protobuf::int32 value);
-
-  // .MnistReaderParam.ReaderType type = 3;
+  // .MnistParam.ReaderType type = 2;
   void clear_type();
-  static const int kTypeFieldNumber = 3;
-  ::MnistReaderParam_ReaderType type() const;
-  void set_type(::MnistReaderParam_ReaderType value);
+  static const int kTypeFieldNumber = 2;
+  ::MnistParam_ReaderType type() const;
+  void set_type(::MnistParam_ReaderType value);
 
-  // @@protoc_insertion_point(class_scope:MnistReaderParam)
+  // @@protoc_insertion_point(class_scope:MnistParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr folder_path_;
-  ::google::protobuf::int32 batch_size_;
   int type_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
@@ -2829,14 +2982,14 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::LossParam* release_loss_param();
   void set_allocated_loss_param(::LossParam* loss_param);
 
-  // .ReaderParam reader_param = 51;
-  bool has_reader_param() const;
-  void clear_reader_param();
-  static const int kReaderParamFieldNumber = 51;
-  const ::ReaderParam& reader_param() const;
-  ::ReaderParam* mutable_reader_param();
-  ::ReaderParam* release_reader_param();
-  void set_allocated_reader_param(::ReaderParam* reader_param);
+  // .GeneratorParam generator_param = 51;
+  bool has_generator_param() const;
+  void clear_generator_param();
+  static const int kGeneratorParamFieldNumber = 51;
+  const ::GeneratorParam& generator_param() const;
+  ::GeneratorParam* mutable_generator_param();
+  ::GeneratorParam* release_generator_param();
+  void set_allocated_generator_param(::GeneratorParam* generator_param);
 
   // .VariableParam variable_param = 100;
   bool has_variable_param() const;
@@ -3018,7 +3171,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::LossParam* loss_param_;
-  ::ReaderParam* reader_param_;
+  ::GeneratorParam* generator_param_;
   ::VariableParam* variable_param_;
   ::PlaceHolderParam* place_holder_param_;
   ::PhaseplexerParam* phaseplexer_param_;
@@ -5614,37 +5767,83 @@ inline void LossParam::set_allocated_softmax_loss_param(::SoftmaxLossParam* soft
 
 // -------------------------------------------------------------------
 
-// ReaderParam
+// ImageGeneratorParam
 
-// .MnistReaderParam mnist_param = 1;
-inline bool ReaderParam::has_mnist_param() const {
+// .ImageGeneratorParam.OutputType output_type = 1;
+inline void ImageGeneratorParam::clear_output_type() {
+  output_type_ = 0;
+}
+inline ::ImageGeneratorParam_OutputType ImageGeneratorParam::output_type() const {
+  // @@protoc_insertion_point(field_get:ImageGeneratorParam.output_type)
+  return static_cast< ::ImageGeneratorParam_OutputType >(output_type_);
+}
+inline void ImageGeneratorParam::set_output_type(::ImageGeneratorParam_OutputType value) {
+  
+  output_type_ = value;
+  // @@protoc_insertion_point(field_set:ImageGeneratorParam.output_type)
+}
+
+// -------------------------------------------------------------------
+
+// GeneratorParam
+
+// int32 batch_size = 1;
+inline void GeneratorParam::clear_batch_size() {
+  batch_size_ = 0;
+}
+inline ::google::protobuf::int32 GeneratorParam::batch_size() const {
+  // @@protoc_insertion_point(field_get:GeneratorParam.batch_size)
+  return batch_size_;
+}
+inline void GeneratorParam::set_batch_size(::google::protobuf::int32 value) {
+  
+  batch_size_ = value;
+  // @@protoc_insertion_point(field_set:GeneratorParam.batch_size)
+}
+
+// int32 total_size = 2;
+inline void GeneratorParam::clear_total_size() {
+  total_size_ = 0;
+}
+inline ::google::protobuf::int32 GeneratorParam::total_size() const {
+  // @@protoc_insertion_point(field_get:GeneratorParam.total_size)
+  return total_size_;
+}
+inline void GeneratorParam::set_total_size(::google::protobuf::int32 value) {
+  
+  total_size_ = value;
+  // @@protoc_insertion_point(field_set:GeneratorParam.total_size)
+}
+
+// .MnistParam mnist_param = 3;
+inline bool GeneratorParam::has_mnist_param() const {
   return this != internal_default_instance() && mnist_param_ != NULL;
 }
-inline void ReaderParam::clear_mnist_param() {
+inline void GeneratorParam::clear_mnist_param() {
   if (GetArenaNoVirtual() == NULL && mnist_param_ != NULL) delete mnist_param_;
   mnist_param_ = NULL;
 }
-inline const ::MnistReaderParam& ReaderParam::mnist_param() const {
-  // @@protoc_insertion_point(field_get:ReaderParam.mnist_param)
+inline const ::MnistParam& GeneratorParam::mnist_param() const {
+  // @@protoc_insertion_point(field_get:GeneratorParam.mnist_param)
   return mnist_param_ != NULL ? *mnist_param_
-                         : *::MnistReaderParam::internal_default_instance();
+                         : *::MnistParam::internal_default_instance();
 }
-inline ::MnistReaderParam* ReaderParam::mutable_mnist_param() {
+inline ::MnistParam* GeneratorParam::mutable_mnist_param() {
   
   if (mnist_param_ == NULL) {
-    mnist_param_ = new ::MnistReaderParam;
+    mnist_param_ = new ::MnistParam;
   }
-  // @@protoc_insertion_point(field_mutable:ReaderParam.mnist_param)
+  // @@protoc_insertion_point(field_mutable:GeneratorParam.mnist_param)
   return mnist_param_;
 }
-inline ::MnistReaderParam* ReaderParam::release_mnist_param() {
-  // @@protoc_insertion_point(field_release:ReaderParam.mnist_param)
+inline ::MnistParam* GeneratorParam::release_mnist_param() {
+  // @@protoc_insertion_point(field_release:GeneratorParam.mnist_param)
   
-  ::MnistReaderParam* temp = mnist_param_;
+  ::MnistParam* temp = mnist_param_;
   mnist_param_ = NULL;
   return temp;
 }
-inline void ReaderParam::set_allocated_mnist_param(::MnistReaderParam* mnist_param) {
+inline void GeneratorParam::set_allocated_mnist_param(::MnistParam* mnist_param) {
   delete mnist_param_;
   mnist_param_ = mnist_param;
   if (mnist_param) {
@@ -5652,91 +5851,116 @@ inline void ReaderParam::set_allocated_mnist_param(::MnistReaderParam* mnist_par
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:ReaderParam.mnist_param)
+  // @@protoc_insertion_point(field_set_allocated:GeneratorParam.mnist_param)
+}
+
+// .ImageGeneratorParam image_generator_param = 4;
+inline bool GeneratorParam::has_image_generator_param() const {
+  return this != internal_default_instance() && image_generator_param_ != NULL;
+}
+inline void GeneratorParam::clear_image_generator_param() {
+  if (GetArenaNoVirtual() == NULL && image_generator_param_ != NULL) delete image_generator_param_;
+  image_generator_param_ = NULL;
+}
+inline const ::ImageGeneratorParam& GeneratorParam::image_generator_param() const {
+  // @@protoc_insertion_point(field_get:GeneratorParam.image_generator_param)
+  return image_generator_param_ != NULL ? *image_generator_param_
+                         : *::ImageGeneratorParam::internal_default_instance();
+}
+inline ::ImageGeneratorParam* GeneratorParam::mutable_image_generator_param() {
+  
+  if (image_generator_param_ == NULL) {
+    image_generator_param_ = new ::ImageGeneratorParam;
+  }
+  // @@protoc_insertion_point(field_mutable:GeneratorParam.image_generator_param)
+  return image_generator_param_;
+}
+inline ::ImageGeneratorParam* GeneratorParam::release_image_generator_param() {
+  // @@protoc_insertion_point(field_release:GeneratorParam.image_generator_param)
+  
+  ::ImageGeneratorParam* temp = image_generator_param_;
+  image_generator_param_ = NULL;
+  return temp;
+}
+inline void GeneratorParam::set_allocated_image_generator_param(::ImageGeneratorParam* image_generator_param) {
+  delete image_generator_param_;
+  image_generator_param_ = image_generator_param;
+  if (image_generator_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:GeneratorParam.image_generator_param)
 }
 
 // -------------------------------------------------------------------
 
-// MnistReaderParam
+// MnistParam
 
 // string folder_path = 1;
-inline void MnistReaderParam::clear_folder_path() {
+inline void MnistParam::clear_folder_path() {
   folder_path_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& MnistReaderParam::folder_path() const {
-  // @@protoc_insertion_point(field_get:MnistReaderParam.folder_path)
+inline const ::std::string& MnistParam::folder_path() const {
+  // @@protoc_insertion_point(field_get:MnistParam.folder_path)
   return folder_path_.GetNoArena();
 }
-inline void MnistReaderParam::set_folder_path(const ::std::string& value) {
+inline void MnistParam::set_folder_path(const ::std::string& value) {
   
   folder_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:MnistReaderParam.folder_path)
+  // @@protoc_insertion_point(field_set:MnistParam.folder_path)
 }
 #if LANG_CXX11
-inline void MnistReaderParam::set_folder_path(::std::string&& value) {
+inline void MnistParam::set_folder_path(::std::string&& value) {
   
   folder_path_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:MnistReaderParam.folder_path)
+  // @@protoc_insertion_point(field_set_rvalue:MnistParam.folder_path)
 }
 #endif
-inline void MnistReaderParam::set_folder_path(const char* value) {
+inline void MnistParam::set_folder_path(const char* value) {
   
   folder_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:MnistReaderParam.folder_path)
+  // @@protoc_insertion_point(field_set_char:MnistParam.folder_path)
 }
-inline void MnistReaderParam::set_folder_path(const char* value, size_t size) {
+inline void MnistParam::set_folder_path(const char* value, size_t size) {
   
   folder_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:MnistReaderParam.folder_path)
+  // @@protoc_insertion_point(field_set_pointer:MnistParam.folder_path)
 }
-inline ::std::string* MnistReaderParam::mutable_folder_path() {
+inline ::std::string* MnistParam::mutable_folder_path() {
   
-  // @@protoc_insertion_point(field_mutable:MnistReaderParam.folder_path)
+  // @@protoc_insertion_point(field_mutable:MnistParam.folder_path)
   return folder_path_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* MnistReaderParam::release_folder_path() {
-  // @@protoc_insertion_point(field_release:MnistReaderParam.folder_path)
+inline ::std::string* MnistParam::release_folder_path() {
+  // @@protoc_insertion_point(field_release:MnistParam.folder_path)
   
   return folder_path_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void MnistReaderParam::set_allocated_folder_path(::std::string* folder_path) {
+inline void MnistParam::set_allocated_folder_path(::std::string* folder_path) {
   if (folder_path != NULL) {
     
   } else {
     
   }
   folder_path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), folder_path);
-  // @@protoc_insertion_point(field_set_allocated:MnistReaderParam.folder_path)
+  // @@protoc_insertion_point(field_set_allocated:MnistParam.folder_path)
 }
 
-// int32 batch_size = 2;
-inline void MnistReaderParam::clear_batch_size() {
-  batch_size_ = 0;
-}
-inline ::google::protobuf::int32 MnistReaderParam::batch_size() const {
-  // @@protoc_insertion_point(field_get:MnistReaderParam.batch_size)
-  return batch_size_;
-}
-inline void MnistReaderParam::set_batch_size(::google::protobuf::int32 value) {
-  
-  batch_size_ = value;
-  // @@protoc_insertion_point(field_set:MnistReaderParam.batch_size)
-}
-
-// .MnistReaderParam.ReaderType type = 3;
-inline void MnistReaderParam::clear_type() {
+// .MnistParam.ReaderType type = 2;
+inline void MnistParam::clear_type() {
   type_ = 0;
 }
-inline ::MnistReaderParam_ReaderType MnistReaderParam::type() const {
-  // @@protoc_insertion_point(field_get:MnistReaderParam.type)
-  return static_cast< ::MnistReaderParam_ReaderType >(type_);
+inline ::MnistParam_ReaderType MnistParam::type() const {
+  // @@protoc_insertion_point(field_get:MnistParam.type)
+  return static_cast< ::MnistParam_ReaderType >(type_);
 }
-inline void MnistReaderParam::set_type(::MnistReaderParam_ReaderType value) {
+inline void MnistParam::set_type(::MnistParam_ReaderType value) {
   
   type_ = value;
-  // @@protoc_insertion_point(field_set:MnistReaderParam.type)
+  // @@protoc_insertion_point(field_set:MnistParam.type)
 }
 
 // -------------------------------------------------------------------
@@ -6039,43 +6263,43 @@ inline void NodeParam::set_allocated_loss_param(::LossParam* loss_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.loss_param)
 }
 
-// .ReaderParam reader_param = 51;
-inline bool NodeParam::has_reader_param() const {
-  return this != internal_default_instance() && reader_param_ != NULL;
+// .GeneratorParam generator_param = 51;
+inline bool NodeParam::has_generator_param() const {
+  return this != internal_default_instance() && generator_param_ != NULL;
 }
-inline void NodeParam::clear_reader_param() {
-  if (GetArenaNoVirtual() == NULL && reader_param_ != NULL) delete reader_param_;
-  reader_param_ = NULL;
+inline void NodeParam::clear_generator_param() {
+  if (GetArenaNoVirtual() == NULL && generator_param_ != NULL) delete generator_param_;
+  generator_param_ = NULL;
 }
-inline const ::ReaderParam& NodeParam::reader_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.reader_param)
-  return reader_param_ != NULL ? *reader_param_
-                         : *::ReaderParam::internal_default_instance();
+inline const ::GeneratorParam& NodeParam::generator_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.generator_param)
+  return generator_param_ != NULL ? *generator_param_
+                         : *::GeneratorParam::internal_default_instance();
 }
-inline ::ReaderParam* NodeParam::mutable_reader_param() {
+inline ::GeneratorParam* NodeParam::mutable_generator_param() {
   
-  if (reader_param_ == NULL) {
-    reader_param_ = new ::ReaderParam;
+  if (generator_param_ == NULL) {
+    generator_param_ = new ::GeneratorParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.reader_param)
-  return reader_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.generator_param)
+  return generator_param_;
 }
-inline ::ReaderParam* NodeParam::release_reader_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.reader_param)
+inline ::GeneratorParam* NodeParam::release_generator_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.generator_param)
   
-  ::ReaderParam* temp = reader_param_;
-  reader_param_ = NULL;
+  ::GeneratorParam* temp = generator_param_;
+  generator_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_reader_param(::ReaderParam* reader_param) {
-  delete reader_param_;
-  reader_param_ = reader_param;
-  if (reader_param) {
+inline void NodeParam::set_allocated_generator_param(::GeneratorParam* generator_param) {
+  delete generator_param_;
+  generator_param_ = generator_param;
+  if (generator_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.reader_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.generator_param)
 }
 
 // .VariableParam variable_param = 100;
@@ -7904,6 +8128,8 @@ GraphParam::phase() const {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -7937,10 +8163,15 @@ template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::ReduceParam_ReduceOp>() {
   return ::ReduceParam_ReduceOp_descriptor();
 }
-template <> struct is_proto_enum< ::MnistReaderParam_ReaderType> : ::google::protobuf::internal::true_type {};
+template <> struct is_proto_enum< ::ImageGeneratorParam_OutputType> : ::google::protobuf::internal::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::MnistReaderParam_ReaderType>() {
-  return ::MnistReaderParam_ReaderType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::ImageGeneratorParam_OutputType>() {
+  return ::ImageGeneratorParam_OutputType_descriptor();
+}
+template <> struct is_proto_enum< ::MnistParam_ReaderType> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::MnistParam_ReaderType>() {
+  return ::MnistParam_ReaderType_descriptor();
 }
 template <> struct is_proto_enum< ::PhaseParam_PhaseBehaviour> : ::google::protobuf::internal::true_type {};
 template <>

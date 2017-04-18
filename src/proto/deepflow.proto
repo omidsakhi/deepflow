@@ -139,18 +139,29 @@ message LossParam {
 	SoftmaxLossParam softmax_loss_param = 1;
 }
 
-message ReaderParam {
-	MnistReaderParam mnist_param = 1;
+message ImageGeneratorParam {
+	 enum OutputType {
+		BETWEEN_0_AND_255 = 0;
+		BETWEEN_0_AND_1 = 1;
+		BETWEEN_NEGATIVE_1_AND_1 = 2;
+	 }
+	 OutputType output_type = 1;
 }
 
-message MnistReaderParam {
+message GeneratorParam {	
+	int32 batch_size = 1;
+	int32 total_size = 2;
+	MnistParam mnist_param = 3;
+	ImageGeneratorParam image_generator_param = 4;
+}
+
+message MnistParam {
 	enum ReaderType {
 		TRAIN = 0;
 		TEST = 1;
 	}	
-	string folder_path = 1;
-	int32 batch_size = 2;
-	ReaderType type = 3;
+	string folder_path = 1;	
+	ReaderType type = 2;
 }
 
 message CastFloatParam {
@@ -164,7 +175,7 @@ message NodeParam {
   repeated string phase = 4;
   
   LossParam loss_param = 50;
-  ReaderParam reader_param = 51;
+  GeneratorParam generator_param = 51;
 
   VariableParam variable_param = 100;  
   PlaceHolderParam place_holder_param = 101;  

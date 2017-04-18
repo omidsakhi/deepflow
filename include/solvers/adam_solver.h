@@ -1,8 +1,6 @@
 #pragma once
 
-
 #include "core/solver.h"
-#include "core/reader.h"
 
 class DeepFlowDllExport AdamSolver : public Solver {
 public:

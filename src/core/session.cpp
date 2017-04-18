@@ -67,9 +67,9 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 	else if (node_param.has_matmul_param()) {
 		return std::make_shared<MatMul>(node_param);
 	}
-	else if (node_param.has_reader_param()) {
-		const ReaderParam &reader_param = node_param.reader_param();
-		if (reader_param.has_mnist_param()) {
+	else if (node_param.has_generator_param()) {
+		const GeneratorParam &generator_param = node_param.generator_param();
+		if (generator_param.has_mnist_param()) {
 			return std::make_shared<MNISTReader>(node_param);
 		}
 	}
@@ -250,14 +250,14 @@ std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string
 	return 0;
 }
 
-void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Reader>> *readers, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Loss>> *loss_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, bool train, bool print_iteration) {
+void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Loss>> *loss_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, bool train, bool print_iteration) {
 	int iteration_per_epoch = 1;
 	bool any_last_batch = false;
 	for (auto node : *nodes)
 		node->setExecutionContext(context);
 	do {
-		for (auto reader : *readers) {
-			if (reader->isLastBatch())
+		for (auto gen : *generators) {
+			if (gen->isLastBatch())
 				any_last_batch = true;
 		}
 		LOG_IF(FATAL, any_last_batch == true && iteration_per_epoch == 1);
@@ -281,8 +281,8 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 				solver->apply(var);
 			}
 		}
-		for (auto reader : *readers)
-			reader->nextBatch();
+		for (auto gen : *generators)
+			gen->nextBatch();
 		if (iteration)
 			(*iteration)++;
 		iteration_per_epoch++;
@@ -293,8 +293,8 @@ void Session::run(std::string phase, int max_epoch, bool print_iteration, bool p
 	LOG(INFO) << "Executing graph for phase " << phase;
 	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";
 	PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
-	std::list<std::shared_ptr<Reader>> execution_phase_readers = _get_nodes<Reader>(phase);
-	LOG_IF(FATAL, execution_phase_readers.size() == 0) << "No reader is defined for phase " << phase;
+	std::list<std::shared_ptr<Generator>> execution_phase_generators = _get_nodes<Generator>(phase);
+	LOG_IF(FATAL, execution_phase_generators.size() == 0) << "No reader is defined for phase " << phase;
 	std::list<std::shared_ptr<Node>> execution_end_nodes = _get_end_nodes(phase);
 	auto execution_context = std::make_shared<ExecutionContext>();
 	execution_context->phase = phase;
@@ -311,7 +311,7 @@ void Session::run(std::string phase, int max_epoch, bool print_iteration, bool p
 				break;
 			}
 		}
-		std::list<std::shared_ptr<Reader>> validation_readers;
+		std::list<std::shared_ptr<Generator>> validation_readers;
 		std::list<std::shared_ptr<Node>> validation_end_nodes;
 		std::shared_ptr<ExecutionContext> validation_context;
 		if (!validation_phase.empty()) {
@@ -319,7 +319,7 @@ void Session::run(std::string phase, int max_epoch, bool print_iteration, bool p
 			validation_context = std::make_shared<ExecutionContext>();
 			validation_context->current_epoch = 1;
 			validation_context->debug_level = debug_level;
-			validation_readers = _get_nodes<Reader>(validation_phase);
+			validation_readers = _get_nodes<Generator>(validation_phase);
 			validation_end_nodes = _get_end_nodes(validation_phase);
 		}
 		int iteration = 1;
@@ -328,7 +328,7 @@ void Session::run(std::string phase, int max_epoch, bool print_iteration, bool p
 				std::cout << "Epoch " << epoch << " -->" << std::endl;
 			auto epoch_start = std::chrono::high_resolution_clock::now();
 			execution_context->current_epoch = epoch;
-			_execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_readers, &execution_end_nodes, &execution_phase_loss_nodes, &execution_phase_variable_nodes, true, print_iteration);
+			_execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_phase_loss_nodes, &execution_phase_variable_nodes, true, print_iteration);
 			if (!validation_phase.empty()) {
 				validation_context->phase = validation_phase;
 				validation_context->current_iteration = 1;
@@ -342,7 +342,7 @@ void Session::run(std::string phase, int max_epoch, bool print_iteration, bool p
 		}
 	}
 	else {
-		_execute_one_pass(execution_context, 0, &_nodes, &execution_phase_readers, &execution_end_nodes,0,0, false, false);
+		_execute_one_pass(execution_context, 0, &_nodes, &execution_phase_generators, &execution_end_nodes,0,0, false, false);
 	}
 }
 

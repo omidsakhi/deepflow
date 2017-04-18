@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/solver.h"
-#include "core/reader.h"
 
 class DeepFlowDllExport GainSolver : public Solver {
 public:
