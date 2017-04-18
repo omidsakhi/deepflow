@@ -132,6 +132,9 @@
     <ClCompile Include="..\..\src\core\session.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\ops\transposed_conv_2d.cpp">
+      <Filter>source\ops</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\solvers\adadelta_solver.h">
       <Filter>include\solver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\transposed_conv_2d.h">
+      <Filter>include\ops</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

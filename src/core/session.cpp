@@ -29,6 +29,7 @@
 #include "ops/equal.h"
 #include "ops/cast_float.h"
 #include "ops/display.h"
+#include "ops/transposed_conv_2d.h"
 
 #include <unordered_map>
 #include <map>
@@ -98,6 +99,9 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 	}
 	else if (node_param.has_square_param()) {
 		return std::make_shared<Square>(node_param);
+	}
+	else if (node_param.has_transposed_conv_2d_param()) {
+		return std::make_shared<TransposedConvolution2D>(node_param);
 	}
 	else if (node_param.has_variable_param()) {
 		std::shared_ptr<Initializer> initializer;
