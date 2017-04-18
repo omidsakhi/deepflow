@@ -52,8 +52,8 @@ void Display::initBackward() {
 
 void Display::forward() {	
 	PictureGeneratorKernel << < numOfBlocks(input_size), maxThreadsPerBlock >> >(input_size, (float*) _inputs[0]->value()->data(), d_pic, pic_width, num_image_per_row_and_col, num_images, per_image_width, per_image_height);
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);	
-	LOG_IF(FATAL, cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) *num_pic_pixels, cudaMemcpyDeviceToHost) != 0);
+	DF_KERNEL_CHECK();
+	DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) *num_pic_pixels, cudaMemcpyDeviceToHost));	
 	cv::imshow(name(), disp);
 	cv::waitKey(_delay_msec);
 }

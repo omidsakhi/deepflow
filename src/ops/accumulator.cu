@@ -28,10 +28,10 @@ void Accumulator::initBackward() {
 
 void Accumulator::forward() {
 	if (_reset_time == EndOfEpoch && _context->current_iteration_per_epoch == 1)
-		LOG_IF(FATAL, cudaMemset(_outputs[0]->value()->mutableData(), 0, _outputs[0]->value()->sizeInBytes()) != 0) << "cudaMemset [FAILED]";
+		DF_CUDA_CHECK(cudaMemset(_outputs[0]->value()->mutableData(), 0, _outputs[0]->value()->sizeInBytes()));		
 	auto size = _inputs[0]->value()->size();
 	AccumulatorKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData());
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
+	DF_KERNEL_CHECK();
 }
 
 void Accumulator::backward() {

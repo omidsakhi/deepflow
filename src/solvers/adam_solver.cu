@@ -29,15 +29,15 @@ void AdamSolver::apply(std::shared_ptr<Variable> var) {
 	auto output = var->output(0);
 	auto size = output->value()->size();
 	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), (float*)output->diff()->data(), _m, _v, _my_param.beta1(), _my_param.beta2(), _my_param.eps(), _my_param.learning_rate());
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
+	DF_KERNEL_CHECK();	
 }
 
 void AdamSolver::init(std::shared_ptr<Variable> var) {
 	auto size = var->output(0)->value()->size();
 	auto sizeInBytes = var->output(0)->value()->sizeInBytes();
-	LOG_IF(FATAL, cudaMalloc(&_m, sizeInBytes) != 0);
-	LOG_IF(FATAL, cudaMemset(_m, 0, sizeInBytes) != 0);
-	LOG_IF(FATAL, cudaMalloc(&_v, sizeInBytes) != 0);
-	LOG_IF(FATAL, cudaMemset(_v, 0, sizeInBytes) != 0);
+	DF_CUDA_CHECK(cudaMalloc(&_m, sizeInBytes));	
+	DF_CUDA_CHECK(cudaMemset(_m, 0, sizeInBytes));
+	DF_CUDA_CHECK(cudaMalloc(&_v, sizeInBytes));
+	DF_CUDA_CHECK(cudaMemset(_v, 0, sizeInBytes));
 	_initialized = true;
 }

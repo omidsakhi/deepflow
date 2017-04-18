@@ -60,11 +60,11 @@ void Tensor::init() {
 	_size = _dims[0] * _dims[1] * _dims[2] * _dims[3];	
 	_shapeString = std::to_string(_dims[0]);
 	for (int i = 1; i < 4; ++i)
-		_shapeString += "x" + std::to_string(_dims[i]);
-	LOG_IF(FATAL, cudnnCreateTensorDescriptor(&_desc) != 0) << "cudnnCreateTensorDescriptor [FAILED]";
-	LOG_IF(FATAL, cudnnSetTensor4dDescriptor(_desc, CUDNN_TENSOR_NCHW, (cudnnDataType_t) _type, _dims[0], _dims[1], _dims[2], _dims[3]) != 0) << "cudnnSetTensor4dDescriptor [FAILED] " << _shapeString;
-	LOG_IF(FATAL, cudnnGetTensorSizeInBytes(_desc, &_sizeInBytes) != 0) << "cudnnGetTensorSizeInBytes [FAILED]";
-	LOG_IF(FATAL, cudaMalloc(&d_data, _sizeInBytes) != 0) << "cudaMalloc [FAILED]";
+		_shapeString += "x" + std::to_string(_dims[i]);	
+	DF_CUDNN_CHECK(cudnnCreateTensorDescriptor(&_desc));
+	DF_CUDNN_CHECK(cudnnSetTensor4dDescriptor(_desc, CUDNN_TENSOR_NCHW, (cudnnDataType_t)_type, _dims[0], _dims[1], _dims[2], _dims[3]));
+	DF_CUDNN_CHECK(cudnnGetTensorSizeInBytes(_desc, &_sizeInBytes));	
+	DF_CUDA_CHECK(cudaMalloc(&d_data, _sizeInBytes));	
 }
 
 cudnnDataType_t Tensor::cudnnType() const {
@@ -124,7 +124,7 @@ int Tensor::isValid() const {
 void Tensor::release() {
 	if (d_data)
 	{
-		LOG_IF(FATAL, cudaFree(d_data) != 0);
+		DF_CUDA_CHECK(cudaFree(d_data));		
 		d_data = 0;
 		_size = 0;
 		_sizeInBytes = 0;		
@@ -132,7 +132,7 @@ void Tensor::release() {
 }
 
 void Tensor::reset() {
-	LOG_IF(FATAL, cudaMemset(d_data, 0, _sizeInBytes) != 0) << "cudaMemset [FAILED]";
+	DF_CUDA_CHECK(cudaMemset(d_data, 0, _sizeInBytes));	
 }
 
 float Tensor::toFloat() const {

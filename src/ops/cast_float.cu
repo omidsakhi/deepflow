@@ -28,7 +28,7 @@ void CastFloat::initBackward() {
 void CastFloat::forward() {
 	auto size = _inputs[0]->value()->size();
 	CastFloatKernelForward << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (int*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData());
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
+	DF_KERNEL_CHECK();	
 }
 
 void CastFloat::backward() {

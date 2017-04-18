@@ -21,5 +21,5 @@ void RandomUniform::apply(Variable *variable) {
 	float min = _param.random_uniform_param().min();
 	float max = _param.random_uniform_param().max();
 	RandKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (min, max, size, (float*)variable->output(0)->value()->mutableData());
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0) << cudaGetErrorString(cudaPeekAtLastError());
+	DF_KERNEL_CHECK();
 }

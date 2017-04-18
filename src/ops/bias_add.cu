@@ -47,14 +47,14 @@ void BiasAdd::forward() {
 	auto size = _outputs[0]->value()->size();
 	auto bias_dim = outputDims[1];
 	BiasAddKernelForward <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*) _inputs[0]->value()->data(), bias_dim, (float*) _inputs[1]->value()->data(), (float*) _outputs[0]->value()->mutableData());
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);	
+	DF_KERNEL_CHECK();
 }
 
 void BiasAdd::backward() {
-	LOG_IF(FATAL, cudaMemcpy( _inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), _inputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0);
-	LOG_IF(FATAL, cudaMemset( _inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()) != 0);
+	DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), _inputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice));
+	DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));	
 	auto outputDims = _outputs[0]->diff()->dims();	
 	auto size = _outputs[0]->diff()->size();
 	BiasAddKernelBackward <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*)_outputs[0]->diff()->data(), outputDims[0], outputDims[1], (float*)_inputs[1]->diff()->mutableData());
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
+	DF_KERNEL_CHECK();
 }

@@ -129,7 +129,9 @@
       <FileType>Document</FileType>
     </ClCompile>
     <CudaCompile Include="..\..\src\ops\relu.cu" />
-    <CudaCompile Include="..\..\src\ops\softmax.cu" />
+    <ClCompile Include="..\..\src\ops\softmax.cpp">
+      <FileType>Document</FileType>
+    </ClCompile>
     <CudaCompile Include="..\..\src\ops\square.cu" />
   </ItemGroup>
   <ItemGroup>

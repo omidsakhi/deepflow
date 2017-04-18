@@ -4,9 +4,6 @@
     <CudaCompile Include="..\..\src\initializers\fill.cu">
       <Filter>source\initializers</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\softmax.cu">
-      <Filter>source\ops</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\ops\add.cu">
       <Filter>source\ops</Filter>
     </CudaCompile>
@@ -133,6 +130,9 @@
       <Filter>source\core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\ops\transposed_conv_2d.cpp">
+      <Filter>source\ops</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ops\softmax.cpp">
       <Filter>source\ops</Filter>
     </ClCompile>
   </ItemGroup>

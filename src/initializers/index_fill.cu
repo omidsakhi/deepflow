@@ -19,5 +19,5 @@ void IndexFill::apply(Variable *variable) {
 	auto size = variable->output(0)->value()->size();
 	LOG(INFO) << "Index filling " << variable->name() << " with " << offset;
 	IndexFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)variable->output(0)->value()->mutableData(), offset);
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
+	DF_KERNEL_CHECK();
 }

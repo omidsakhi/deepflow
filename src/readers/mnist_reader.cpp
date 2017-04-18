@@ -114,9 +114,9 @@ void MNISTReader::nextBatch() {
 		_labels_buf[i * 10 + _temp_l] = 1.0f;
 	}
 	if (_init_forward)
-		LOG_IF(FATAL, cudaMemcpy(_outputs[0]->value()->mutableData(), _data_buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice) != 0) << "cudaMemcpy [FAILED]";
+		DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _data_buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));		
 	if (_init_backward)
-		LOG_IF(FATAL, cudaMemcpy(_outputs[1]->value()->mutableData(), _labels_buf, _outputs[1]->value()->sizeInBytes(), cudaMemcpyHostToDevice) != 0) << "cudaMemcpy [FAILED]";
+		DF_CUDA_CHECK(cudaMemcpy(_outputs[1]->value()->mutableData(), _labels_buf, _outputs[1]->value()->sizeInBytes(), cudaMemcpyHostToDevice));		
 }
 
 void MNISTReader::deinit() {

@@ -35,17 +35,17 @@ void AdaDeltaSolver::apply(std::shared_ptr<Variable> var) {
 	auto output = var->output(0);
 	auto size = output->value()->size();
 	AdaDeltaKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), (float*)output->diff()->data(), _h1, _h2, _my_param.momentum(), _my_param.learning_rate(), _my_param.delta());
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
+	DF_KERNEL_CHECK();
 }
 
 void AdaDeltaSolver::init(std::shared_ptr<Variable> var) {
 	auto size = var->output(0)->value()->size();
 	auto sizeInBytes = var->output(0)->value()->sizeInBytes();
-	LOG_IF(FATAL, cudaMalloc(&_h1, sizeInBytes) != 0);
+	DF_CUDA_CHECK(cudaMalloc(&_h1, sizeInBytes));	
 	FillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, _h1);
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
-	LOG_IF(FATAL, cudaMalloc(&_h2, sizeInBytes) != 0);
+	DF_KERNEL_CHECK();
+	DF_CUDA_CHECK(cudaMalloc(&_h2, sizeInBytes));	
 	FillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, _h2);
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
+	DF_KERNEL_CHECK();
 	_initialized = true;
 }

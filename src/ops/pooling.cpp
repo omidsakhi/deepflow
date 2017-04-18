@@ -5,15 +5,15 @@ Pooling::Pooling(const NodeParam &param) : Node(param) {
 }
 
 void Pooling::initForward() {
-	LOG_IF(FATAL, cudnnCreate(&_cudnnHandle) != 0);
+	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 	const PoolingParam &param = _param.pooling_param();
 	LOG_IF(FATAL, param.window_w() < 1);
 	LOG_IF(FATAL, param.window_h() < 1);
 	LOG_IF(FATAL, param.v_pad() < 0);
 	LOG_IF(FATAL, param.h_pad() < 0);
-	LOG_IF(FATAL, cudnnCreatePoolingDescriptor(&_poolingDesc) != 0);
+	DF_CUDNN_CHECK(cudnnCreatePoolingDescriptor(&_poolingDesc));
 	int n, c, h, w;
-	LOG_IF(FATAL,cudnnSetPooling2dDescriptor(_poolingDesc, CUDNN_POOLING_MAX, CUDNN_PROPAGATE_NAN, param.window_h(), param.window_w(), param.v_pad(), param.h_pad(), param.v_stride(), param.h_stride()) != 0) << "cudnnSetPooling2dDescriptor [FAILED]";
+	DF_CUDNN_CHECK(cudnnSetPooling2dDescriptor(_poolingDesc, CUDNN_POOLING_MAX, CUDNN_PROPAGATE_NAN, param.window_h(), param.window_w(), param.v_pad(), param.h_pad(), param.v_stride(), param.h_stride()));
 	auto dims = _inputs[0]->dims();
 	n = dims[0];
 	c = dims[1];
@@ -28,9 +28,9 @@ void Pooling::initBackward() {
 }
 
 void Pooling::forward() {
-	LOG_IF(FATAL, cudnnPoolingForward(_cudnnHandle, _poolingDesc, &_alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &_beta, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()) != 0) << "cudnnPoolingForward [FAILED]";
+	DF_CUDNN_CHECK(cudnnPoolingForward(_cudnnHandle, _poolingDesc, &_alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &_beta, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
 }
 
 void Pooling::backward() {
-	LOG_IF(FATAL, cudnnPoolingBackward(_cudnnHandle, _poolingDesc, &_alpha, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &_beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()) != 0) << "cudnnPoolingBackward [FAILED]";
+	DF_CUDNN_CHECK(cudnnPoolingBackward(_cudnnHandle, _poolingDesc, &_alpha, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &_beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
 }

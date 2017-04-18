@@ -47,12 +47,12 @@ void Add::forward() {
 	// C(m,n) = A(m,n) + B(m,n)	
 	auto size = _outputs[0]->value()->size();
 	AddKernelForward << <numOfBlocks(size), maxThreadsPerBlock >> >(size , _alpha, (float*)_inputs[0]->value()->data(),_beta, (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->value()->mutableData());
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
+	DF_KERNEL_CHECK();
 }
 
 void Add::backward() {	
 	auto size = _outputs[0]->diff()->size();	
 	AddKernelBackward << <numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_outputs[0]->diff()->data(), _alpha, (float*)_inputs[0]->diff()->mutableData(), _beta, (float*)_inputs[1]->diff()->mutableData());
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
+	DF_KERNEL_CHECK();
 
 }

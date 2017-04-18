@@ -2,6 +2,7 @@
 
 
 #include "core/export.h"
+#include "core/cuda_helper.h"
 
 #include <string>
 #include <vector>
@@ -10,7 +11,7 @@
 #include "proto/deepflow.pb.h"
 #include "core/common_cu.h"
 
-class DeepFlowDllExport Tensor {
+class DeepFlowDllExport Tensor : public CudaHelper {
 public:
 	
 	enum TensorType

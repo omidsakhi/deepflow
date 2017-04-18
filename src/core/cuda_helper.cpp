@@ -2,6 +2,7 @@
 
 #include "core/cuda_helper.h"
 
+/*
 std::string CudaHelper::cudaStatusToString(cudnnStatus_t status) {	
 	switch (status) {
 	case CUDNN_STATUS_SUCCESS:
@@ -30,6 +31,7 @@ std::string CudaHelper::cudaStatusToString(cudnnStatus_t status) {
 		return std::string("<unknown cudnn status: ") + std::to_string(status) + ">";
 	}
 }
+*/
 
 void CudaHelper::setOptimalThreadsPerBlock() {
 	int nDevices;

@@ -38,13 +38,13 @@ void PlaceHolder::initBackward() {
 void PlaceHolder::forward() {
 	if (_inputs[0] && _inputs[0]->connectedNode()) {
 		LOG_IF(FATAL, _outputs[0]->value()->sizeInBytes() != _inputs[0]->value()->sizeInBytes()) << "Size mismatch.";
-		LOG_IF(FATAL, cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0) << "cudaMemcpy [FAILED]";
+		DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice));		
 	}
 }
 
 void PlaceHolder::backward() {
 	if (_inputs[0] && _inputs[0]->connectedNode()) {
 		LOG_IF(FATAL, _outputs[0]->diff()->sizeInBytes() != _inputs[0]->diff()->sizeInBytes()) << "Size mismatch.";
-		LOG_IF(FATAL, cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0) << "cudaMemcpy [FAILED]";
+		DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice));		
 	}
 }

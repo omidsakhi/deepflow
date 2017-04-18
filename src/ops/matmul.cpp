@@ -49,7 +49,7 @@ void MatMul::backward() {
 	auto c = _outputs[0];
 
 	// col_A = row_B
-	//A(row_A,col_A) = diff(row_A,col_B) * B(row_B,col_B).T	
+	//A(row_A,col_A) = diff(row_A,col_B) * B(row_B,col_B).T		
 	LOG_IF(FATAL, cublasSgemm(_handle, CUBLAS_OP_T, CUBLAS_OP_N, _row_B, _row_A, _col_B, &_alpha, (float*) b->value()->data(), _col_B, (float*) c->diff()->data(), _col_B, &_beta, (float*) a->diff()->mutableData(), _col_A) != 0);
 
 	//B(row_B,col_B) = A(row_A,col_A).T * diff(row_A,col_B)		

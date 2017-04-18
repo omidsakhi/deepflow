@@ -19,5 +19,5 @@ void Fill::apply(Variable *variable) {
 	auto size = variable->output(0)->value()->size();
 	LOG(INFO) << "Filling " << variable->name() << " with " << value;
 	FillKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*)variable->output(0)->value()->mutableData(), value);
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
+	DF_KERNEL_CHECK();
 }

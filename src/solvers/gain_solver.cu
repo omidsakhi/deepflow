@@ -43,16 +43,16 @@ void GainSolver::apply(std::shared_ptr<Variable> var) {
 	auto output = var->output(0);
 	auto size = output->value()->size();
 	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->data(), _previous_gradient, _gain, _my_param.max_gain(), _my_param.min_gain(), _my_param.gain_plus(), _my_param.gain_mult(), _my_param.momentum(), _my_param.learning_rate());
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);		
+	DF_KERNEL_CHECK();
 }
 
 void GainSolver::init(std::shared_ptr<Variable> var) {
 	auto size = var->output(0)->value()->size();
 	auto sizeInBytes = var->output(0)->value()->sizeInBytes();		
-	LOG_IF(FATAL, cudaMalloc(&_previous_gradient, sizeInBytes) != 0);
-	LOG_IF(FATAL, cudaMemset(_previous_gradient, 0, sizeInBytes) != 0);
-	LOG_IF(FATAL, cudaMalloc(&_gain, sizeInBytes) != 0);
+	DF_CUDA_CHECK(cudaMalloc(&_previous_gradient, sizeInBytes));
+	DF_CUDA_CHECK(cudaMemset(_previous_gradient, 0, sizeInBytes));
+	DF_CUDA_CHECK(cudaMalloc(&_gain, sizeInBytes));	
 	GainFillKernel <<<numOfBlocks(size), maxThreadsPerBlock>>>(size, _gain);
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);	
+	DF_KERNEL_CHECK();
 	_initialized = true;
 }

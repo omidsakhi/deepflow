@@ -83,7 +83,7 @@ void NodeOutput::initDiff() {
 }
 
 void NodeOutput::cpyValueToDiff() {
-	LOG_IF(FATAL, cudaMemcpy(_diff->mutableData(), _value->data(), _value->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0) << "cudaMemcpy [FAILED]";
+	DF_CUDA_CHECK(cudaMemcpy(_diff->mutableData(), _value->data(), _value->sizeInBytes(), cudaMemcpyDeviceToDevice));	
 }
 
 std::array<int, 4> NodeInput::dims() {
@@ -96,5 +96,5 @@ std::array<int, 4> NodeOutput::dims() {
 
 void NodeOutput::feed(std::shared_ptr<NodeOutput> t) {
 	LOG_IF(FATAL, t->value()->sizeInBytes() != value()->sizeInBytes()) << "Size mismatch between terminals: " << _name << " and " << t->name();
-	LOG_IF(FATAL, cudaMemcpy(value()->mutableData(), t->value()->data(), value()->sizeInBytes(), cudaMemcpyDeviceToDevice) != 0) << "cudaMemcpy [FAILED]";
+	DF_CUDA_CHECK(cudaMemcpy(value()->mutableData(), t->value()->data(), value()->sizeInBytes(), cudaMemcpyDeviceToDevice));	
 }

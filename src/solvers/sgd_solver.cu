@@ -27,7 +27,7 @@ void SGDSolver::apply(std::shared_ptr<Variable> var) {
 	auto output = var->output(0);
 	auto size = output->value()->size();						
 	ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, _my_param.momentum(), _my_param.learning_rate(), (float*) output->value()->mutableData(), (float*) output->diff()->data());
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);		
+	DF_KERNEL_CHECK();
 }
 
 void SGDSolver::init(std::shared_ptr<Variable> var) {

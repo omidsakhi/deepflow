@@ -28,7 +28,7 @@ void Equal::initBackward() {
 void Equal::forward() {
 	auto size = _inputs[0]->value()->size();
 	EqualKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (int*)_inputs[0]->value()->data(), (int*)_inputs[1]->value()->data(), (float*)_outputs[0]->value()->mutableData());
-	LOG_IF(FATAL, cudaPeekAtLastError() != 0);
+	DF_KERNEL_CHECK();
 }
 
 void Equal::backward() {
