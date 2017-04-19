@@ -20,10 +20,29 @@ std::shared_ptr<NodeParam> DeepFlow::mnist_reader(std::string folder_path, int b
 	auto mnistParam = generator_param->mutable_mnist_param();
 	mnistParam->set_folder_path(folder_path);
 	mnistParam->set_type((MnistParam::ReaderType) type);
-	generator_param->set_batch_size(batch_size);
+	mnistParam->set_batch_size(batch_size);
 	_nodes.push_back(node_param);
 	return node_param;
 
+}
+
+std::string DeepFlow::image_generator(std::shared_ptr<InitParam> initializer, int num_samples, std::shared_ptr<SolverParam> solver, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	auto variable_param = node_param->mutable_variable_param();	
+	auto generator_param = node_param->mutable_generator_param();
+	auto image_generator_param = generator_param->mutable_image_generator_param();
+	image_generator_param->set_num_samples(num_samples);
+	if (solver)
+		variable_param->set_solver_name(solver->name());
+	auto init_param = variable_param->mutable_init_param();
+	init_param->CopyFrom(*initializer.get());
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
 std::string DeepFlow::add(std::string a, std::string b, float alpha, float beta, std::string name, std::initializer_list<std::string> phases) {

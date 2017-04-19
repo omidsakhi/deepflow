@@ -18,6 +18,9 @@ public:
 	bool isLastBatch();
 private:
 	int _current_batch = 0;
+	int _num_total_samples = 0;
+	int _num_batches = 0;
 	int _batch_size = 0;
-	int _total_size = 0;
+	bool _no_solver = false;
+	bool _last_batch = false;
 };

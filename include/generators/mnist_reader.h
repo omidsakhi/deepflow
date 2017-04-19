@@ -42,6 +42,4 @@ private:
 	float *_labels_buf = NULL;
 	unsigned char *_temp_d;
 	unsigned char _temp_l;
-	bool _init_forward;
-	bool _init_backward;
 };

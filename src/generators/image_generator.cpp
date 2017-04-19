@@ -5,14 +5,30 @@
 
 ImageGenerator::ImageGenerator(std::shared_ptr<Initializer> initializer, const NodeParam &param) : Generator(param), Variable(initializer,param) {
 	LOG_IF(FATAL, param.generator_param().has_image_generator_param() == false) << "param.generator_param().has_image_generator_param() == false";
+	_no_solver = param.variable_param().solver_name().empty();
+	_num_total_samples = param.generator_param().image_generator_param().num_samples();
+	_batch_size = param.variable_param().init_param().tensor_param().dims(0);
+	LOG_IF(FATAL, _batch_size < 1) << "Image generator batch size must be more than 0";
+	LOG_IF(FATAL, _num_total_samples % _batch_size != 0) << "Number of total samples " << _num_total_samples << " must be dividable by the batch size " << _batch_size;
+	_num_batches = _num_total_samples / _batch_size;
 }
 
 void ImageGenerator::nextBatch() {
-
+	if (_no_solver) {
+		_initializer->apply(this);		
+		if (_current_batch >= _num_batches) {
+			_current_batch = 0;
+		}
+		else {
+			_current_batch++;
+		}
+		_last_batch = (_current_batch == (_num_batches - 1));
+	}
 }
 
 void ImageGenerator::initForward() {
 	_initializer->init();
+	
 	_outputs[0]->initValue(_initializer->dims());
 	LOG(INFO) << "Initializing Variable " << _name << " - " << _outputs[0]->value()->shape();
 	if (_param.variable_param().has_weights()) {
@@ -38,9 +54,9 @@ void ImageGenerator::forward() {
 }
 
 void ImageGenerator::backward() {
-
+	
 }
 
 bool ImageGenerator::isLastBatch() {
-	return false;
+	return _last_batch;
 }

@@ -10,6 +10,7 @@
 #include "initializers/step.h"
 
 #include "core/solver.h"
+
 #include "solvers/gain_solver.h"
 #include "solvers/sgd_solver.h"
 #include "solvers/adam_solver.h"
@@ -31,6 +32,8 @@
 #include "ops/display.h"
 #include "ops/transposed_conv_2d.h"
 
+#include "generators/image_generator.h"
+
 #include <unordered_map>
 #include <map>
 
@@ -48,6 +51,29 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 
 	if (node_param.has_accumulator_param())
 		return std::make_shared<Accumulator>(node_param);
+	else if (node_param.has_generator_param()) {
+		const GeneratorParam &generator_param = node_param.generator_param();
+		if (generator_param.has_mnist_param()) {
+			return std::make_shared<MNISTReader>(node_param);
+		}
+		else if (generator_param.has_image_generator_param()) {
+			std::shared_ptr<Initializer> initializer;
+			const InitParam &init_param = node_param.variable_param().init_param();
+			if (init_param.has_fill_param()) {
+				initializer = std::make_shared<Fill>(init_param);
+			}
+			else if (init_param.has_index_fill_param()) {
+				initializer = std::make_shared<IndexFill>(init_param);
+			}
+			else if (init_param.has_random_uniform_param()) {
+				initializer = std::make_shared<RandomUniform>(init_param);
+			}
+			else if (init_param.has_step_param()) {
+				initializer = std::make_shared<Step>(init_param);
+			}
+			return std::make_shared<ImageGenerator>(initializer,node_param);
+		}
+	}
 	else if (node_param.has_add_param())
 		return std::make_shared<Add>(node_param);
 	else if (node_param.has_bias_add_param())
@@ -66,12 +92,6 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 	}
 	else if (node_param.has_matmul_param()) {
 		return std::make_shared<MatMul>(node_param);
-	}
-	else if (node_param.has_generator_param()) {
-		const GeneratorParam &generator_param = node_param.generator_param();
-		if (generator_param.has_mnist_param()) {
-			return std::make_shared<MNISTReader>(node_param);
-		}
 	}
 	else if (node_param.has_phaseplexer_param()) {
 		return std::make_shared<Phaseplexer>(node_param);
@@ -181,9 +201,10 @@ void Session::initialize() {
 		}
 		if (solver) {
 			_solvers.insert(std::pair<std::shared_ptr<Variable>, std::shared_ptr<Solver>>(var, solver));
+			LOG(INFO) << "Variable " << var->name() << " <-> Solver " << solver->name();
 		}
 		else {
-			LOG(FATAL) << "Variable " << var->name() << " has a solver " << var_solver_name << " that couldn't be found.";
+			LOG(INFO) << "Variable " << var->name() << " NO SOLVER";
 		}
 	}
 
@@ -294,7 +315,7 @@ void Session::run(std::string phase, int max_epoch, bool print_iteration, bool p
 	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";
 	PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
 	std::list<std::shared_ptr<Generator>> execution_phase_generators = _get_nodes<Generator>(phase);
-	LOG_IF(FATAL, execution_phase_generators.size() == 0) << "No reader is defined for phase " << phase;
+	LOG_IF(FATAL, execution_phase_generators.size() == 0) << "No generator is defined for phase " << phase;
 	std::list<std::shared_ptr<Node>> execution_end_nodes = _get_end_nodes(phase);
 	auto execution_context = std::make_shared<ExecutionContext>();
 	execution_context->phase = phase;

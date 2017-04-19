@@ -16,8 +16,9 @@ class Session;
 class DeepFlowDllExport DeepFlow {	
 	friend class Session;
 public:
-	// READERS
+	// GENERATORS
 	std::shared_ptr<NodeParam> mnist_reader(std::string folder_path, int batch_size, MNISTReaderType type, std::string name = "mnist", std::initializer_list<std::string> phases = {});
+	std::string image_generator(std::shared_ptr<InitParam> initializer, int num_samples = 1, std::shared_ptr<SolverParam> solver = NULL, std::string name = "igen", std::initializer_list<std::string> phases = {});
 
 	// INITIALIZERS
 	std::shared_ptr<InitParam> fill(std::initializer_list<int> dims, float value, Tensor::TensorType type = Tensor::Float);
@@ -27,7 +28,7 @@ public:
 	std::shared_ptr<InitParam> random_uniform(std::initializer_list<int> dims, float min, float max, Tensor::TensorType type = Tensor::Float);
 	std::shared_ptr<InitParam> step(std::initializer_list<int> dims, float min, float max, Tensor::TensorType type = Tensor::Float);
 
-	// VARIABLES & PLACE HOLDERS
+	// VARIABLES & PLACE HOLDER
 	std::string variable(std::shared_ptr<InitParam> initializer, std::shared_ptr<SolverParam> solver, std::string name = "var", std::initializer_list<std::string> phases = {});	
 	std::string place_holder(std::array<int,4> dims, Tensor::TensorType type = Tensor::Float, std::string name = "ph", std::initializer_list<std::string> phases = {});
 

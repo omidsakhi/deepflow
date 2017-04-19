@@ -139,15 +139,13 @@ message LossParam {
 	SoftmaxLossParam softmax_loss_param = 1;
 }
 
-message ImageGeneratorParam {
-	bool accumulate = 1;
+message ImageGeneratorParam {	
+	int32 num_samples = 1;	
 }
 
 message GeneratorParam {	
-	int32 batch_size = 1;
-	int32 total_size = 2;
-	MnistParam mnist_param = 3;
-	ImageGeneratorParam image_generator_param = 4;
+	MnistParam mnist_param = 1;
+	ImageGeneratorParam image_generator_param = 2;
 }
 
 message MnistParam {
@@ -157,6 +155,7 @@ message MnistParam {
 	}	
 	string folder_path = 1;	
 	ReaderType type = 2;
+	int32 batch_size = 3;
 }
 
 message CastFloatParam {

@@ -2450,17 +2450,17 @@ class ImageGeneratorParam : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
-  // bool accumulate = 1;
-  void clear_accumulate();
-  static const int kAccumulateFieldNumber = 1;
-  bool accumulate() const;
-  void set_accumulate(bool value);
+  // int32 num_samples = 1;
+  void clear_num_samples();
+  static const int kNumSamplesFieldNumber = 1;
+  ::google::protobuf::int32 num_samples() const;
+  void set_num_samples(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:ImageGeneratorParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  bool accumulate_;
+  ::google::protobuf::int32 num_samples_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2533,35 +2533,23 @@ class GeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
-  // .MnistParam mnist_param = 3;
+  // .MnistParam mnist_param = 1;
   bool has_mnist_param() const;
   void clear_mnist_param();
-  static const int kMnistParamFieldNumber = 3;
+  static const int kMnistParamFieldNumber = 1;
   const ::MnistParam& mnist_param() const;
   ::MnistParam* mutable_mnist_param();
   ::MnistParam* release_mnist_param();
   void set_allocated_mnist_param(::MnistParam* mnist_param);
 
-  // .ImageGeneratorParam image_generator_param = 4;
+  // .ImageGeneratorParam image_generator_param = 2;
   bool has_image_generator_param() const;
   void clear_image_generator_param();
-  static const int kImageGeneratorParamFieldNumber = 4;
+  static const int kImageGeneratorParamFieldNumber = 2;
   const ::ImageGeneratorParam& image_generator_param() const;
   ::ImageGeneratorParam* mutable_image_generator_param();
   ::ImageGeneratorParam* release_image_generator_param();
   void set_allocated_image_generator_param(::ImageGeneratorParam* image_generator_param);
-
-  // int32 batch_size = 1;
-  void clear_batch_size();
-  static const int kBatchSizeFieldNumber = 1;
-  ::google::protobuf::int32 batch_size() const;
-  void set_batch_size(::google::protobuf::int32 value);
-
-  // int32 total_size = 2;
-  void clear_total_size();
-  static const int kTotalSizeFieldNumber = 2;
-  ::google::protobuf::int32 total_size() const;
-  void set_total_size(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:GeneratorParam)
  private:
@@ -2569,8 +2557,6 @@ class GeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::MnistParam* mnist_param_;
   ::ImageGeneratorParam* image_generator_param_;
-  ::google::protobuf::int32 batch_size_;
-  ::google::protobuf::int32 total_size_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2689,12 +2675,19 @@ class MnistParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::MnistParam_ReaderType type() const;
   void set_type(::MnistParam_ReaderType value);
 
+  // int32 batch_size = 3;
+  void clear_batch_size();
+  static const int kBatchSizeFieldNumber = 3;
+  ::google::protobuf::int32 batch_size() const;
+  void set_batch_size(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:MnistParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr folder_path_;
   int type_;
+  ::google::protobuf::int32 batch_size_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -5719,53 +5712,25 @@ inline void LossParam::set_allocated_softmax_loss_param(::SoftmaxLossParam* soft
 
 // ImageGeneratorParam
 
-// bool accumulate = 1;
-inline void ImageGeneratorParam::clear_accumulate() {
-  accumulate_ = false;
+// int32 num_samples = 1;
+inline void ImageGeneratorParam::clear_num_samples() {
+  num_samples_ = 0;
 }
-inline bool ImageGeneratorParam::accumulate() const {
-  // @@protoc_insertion_point(field_get:ImageGeneratorParam.accumulate)
-  return accumulate_;
+inline ::google::protobuf::int32 ImageGeneratorParam::num_samples() const {
+  // @@protoc_insertion_point(field_get:ImageGeneratorParam.num_samples)
+  return num_samples_;
 }
-inline void ImageGeneratorParam::set_accumulate(bool value) {
+inline void ImageGeneratorParam::set_num_samples(::google::protobuf::int32 value) {
   
-  accumulate_ = value;
-  // @@protoc_insertion_point(field_set:ImageGeneratorParam.accumulate)
+  num_samples_ = value;
+  // @@protoc_insertion_point(field_set:ImageGeneratorParam.num_samples)
 }
 
 // -------------------------------------------------------------------
 
 // GeneratorParam
 
-// int32 batch_size = 1;
-inline void GeneratorParam::clear_batch_size() {
-  batch_size_ = 0;
-}
-inline ::google::protobuf::int32 GeneratorParam::batch_size() const {
-  // @@protoc_insertion_point(field_get:GeneratorParam.batch_size)
-  return batch_size_;
-}
-inline void GeneratorParam::set_batch_size(::google::protobuf::int32 value) {
-  
-  batch_size_ = value;
-  // @@protoc_insertion_point(field_set:GeneratorParam.batch_size)
-}
-
-// int32 total_size = 2;
-inline void GeneratorParam::clear_total_size() {
-  total_size_ = 0;
-}
-inline ::google::protobuf::int32 GeneratorParam::total_size() const {
-  // @@protoc_insertion_point(field_get:GeneratorParam.total_size)
-  return total_size_;
-}
-inline void GeneratorParam::set_total_size(::google::protobuf::int32 value) {
-  
-  total_size_ = value;
-  // @@protoc_insertion_point(field_set:GeneratorParam.total_size)
-}
-
-// .MnistParam mnist_param = 3;
+// .MnistParam mnist_param = 1;
 inline bool GeneratorParam::has_mnist_param() const {
   return this != internal_default_instance() && mnist_param_ != NULL;
 }
@@ -5804,7 +5769,7 @@ inline void GeneratorParam::set_allocated_mnist_param(::MnistParam* mnist_param)
   // @@protoc_insertion_point(field_set_allocated:GeneratorParam.mnist_param)
 }
 
-// .ImageGeneratorParam image_generator_param = 4;
+// .ImageGeneratorParam image_generator_param = 2;
 inline bool GeneratorParam::has_image_generator_param() const {
   return this != internal_default_instance() && image_generator_param_ != NULL;
 }
@@ -5911,6 +5876,20 @@ inline void MnistParam::set_type(::MnistParam_ReaderType value) {
   
   type_ = value;
   // @@protoc_insertion_point(field_set:MnistParam.type)
+}
+
+// int32 batch_size = 3;
+inline void MnistParam::clear_batch_size() {
+  batch_size_ = 0;
+}
+inline ::google::protobuf::int32 MnistParam::batch_size() const {
+  // @@protoc_insertion_point(field_get:MnistParam.batch_size)
+  return batch_size_;
+}
+inline void MnistParam::set_batch_size(::google::protobuf::int32 value) {
+  
+  batch_size_ = value;
+  // @@protoc_insertion_point(field_set:MnistParam.batch_size)
 }
 
 // -------------------------------------------------------------------

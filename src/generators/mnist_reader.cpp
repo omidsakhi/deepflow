@@ -7,10 +7,9 @@ MNISTReader::MNISTReader(const NodeParam &param) : Generator(param), Node(param)
 	auto generator_param = param.generator_param();
 	auto mnist_param = generator_param.mnist_param();	
 	_folder_path = mnist_param.folder_path();
-	_batch_size = generator_param.batch_size();
+	_batch_size = mnist_param.batch_size();
 	_type = (MNISTReaderType)mnist_param.type();	
 	_temp_d = 0;	
-	_init_backward = _init_backward = false;
 	if (_type == MNISTReaderType::Train)
 		_num_total_samples = 60000;
 	else
@@ -52,8 +51,7 @@ void MNISTReader::initForward() {
 	_tx_start_pos = _tx.tellg();
 	_data_buf = new float[_batch_size * 28 * 28];
 	_temp_d = new unsigned char[28 * 28];	
-	_outputs[0]->initValue({ _batch_size, 1, 28, 28 });	
-	_init_forward = true;
+	_outputs[0]->initValue({ _batch_size, 1, 28, 28 });		
 
 	std::string label_file = _folder_path;
 	if (_type == MNISTReaderType::Train)
@@ -69,8 +67,7 @@ void MNISTReader::initForward() {
 	LOG_IF(FATAL, n != 60000 && n != 10000) << "TY error.";
 	_ty_start_pos = _ty.tellg();
 	_labels_buf = new float[_batch_size * 10];	
-	_outputs[1]->initValue({ _batch_size, 10, 1, 1});	
-	_init_backward = true;
+	_outputs[1]->initValue({ _batch_size, 10, 1, 1});		
 	nextBatch();
 }
 
@@ -114,10 +111,8 @@ void MNISTReader::nextBatch() {
 		_ty.read((char*)&_temp_l, sizeof(_temp_l));
 		_labels_buf[i * 10 + _temp_l] = 1.0f;
 	}
-	if (_init_forward)
-		DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _data_buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));		
-	if (_init_backward)
-		DF_CUDA_CHECK(cudaMemcpy(_outputs[1]->value()->mutableData(), _labels_buf, _outputs[1]->value()->sizeInBytes(), cudaMemcpyHostToDevice));		
+	DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _data_buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));		
+	DF_CUDA_CHECK(cudaMemcpy(_outputs[1]->value()->mutableData(), _labels_buf, _outputs[1]->value()->sizeInBytes(), cudaMemcpyHostToDevice));		
 }
 
 void MNISTReader::deinit() {

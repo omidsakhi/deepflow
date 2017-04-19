@@ -238,13 +238,11 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageGeneratorParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageGeneratorParam, accumulate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageGeneratorParam, num_samples_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, batch_size_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, total_size_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, mnist_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, image_generator_param_),
   ~0u,  // no _has_bits_
@@ -253,6 +251,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MnistParam, folder_path_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MnistParam, type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MnistParam, batch_size_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CastFloatParam, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -412,24 +411,24 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 121, -1, sizeof(LossParam)},
   { 126, -1, sizeof(ImageGeneratorParam)},
   { 131, -1, sizeof(GeneratorParam)},
-  { 139, -1, sizeof(MnistParam)},
-  { 145, -1, sizeof(CastFloatParam)},
-  { 149, -1, sizeof(NodeParam)},
-  { 178, -1, sizeof(SquareParam)},
-  { 182, -1, sizeof(SoftmaxLossParam)},
-  { 188, -1, sizeof(SoftmaxParam)},
-  { 194, -1, sizeof(InitFillParam)},
-  { 199, -1, sizeof(InitIndexFillParam)},
-  { 204, -1, sizeof(InitRandomUniformParam)},
-  { 210, -1, sizeof(InitStepParam)},
-  { 216, -1, sizeof(InitParam)},
-  { 226, -1, sizeof(SGDSolverParam)},
-  { 232, -1, sizeof(GainSolverParam)},
-  { 242, -1, sizeof(AdaDeltaSolverParam)},
-  { 249, -1, sizeof(AdamSolverParam)},
-  { 257, -1, sizeof(SolverParam)},
-  { 266, -1, sizeof(PhaseParam)},
-  { 272, -1, sizeof(GraphParam)},
+  { 137, -1, sizeof(MnistParam)},
+  { 144, -1, sizeof(CastFloatParam)},
+  { 148, -1, sizeof(NodeParam)},
+  { 177, -1, sizeof(SquareParam)},
+  { 181, -1, sizeof(SoftmaxLossParam)},
+  { 187, -1, sizeof(SoftmaxParam)},
+  { 193, -1, sizeof(InitFillParam)},
+  { 198, -1, sizeof(InitIndexFillParam)},
+  { 203, -1, sizeof(InitRandomUniformParam)},
+  { 209, -1, sizeof(InitStepParam)},
+  { 215, -1, sizeof(InitParam)},
+  { 225, -1, sizeof(SGDSolverParam)},
+  { 231, -1, sizeof(GainSolverParam)},
+  { 241, -1, sizeof(AdaDeltaSolverParam)},
+  { 248, -1, sizeof(AdamSolverParam)},
+  { 256, -1, sizeof(SolverParam)},
+  { 265, -1, sizeof(PhaseParam)},
+  { 271, -1, sizeof(GraphParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -751,73 +750,73 @@ void AddDescriptorsImpl() {
       "am\022\036\n\ninit_param\030\001 \001(\0132\n.InitParam\022\023\n\013so"
       "lver_name\030\002 \001(\t\022\034\n\007weights\030\003 \001(\0132\013.Tenso"
       "rData\":\n\tLossParam\022-\n\022softmax_loss_param"
-      "\030\001 \001(\0132\021.SoftmaxLossParam\")\n\023ImageGenera"
-      "torParam\022\022\n\naccumulate\030\001 \001(\010\"\217\001\n\016Generat"
-      "orParam\022\022\n\nbatch_size\030\001 \001(\005\022\022\n\ntotal_siz"
-      "e\030\002 \001(\005\022 \n\013mnist_param\030\003 \001(\0132\013.MnistPara"
-      "m\0223\n\025image_generator_param\030\004 \001(\0132\024.Image"
-      "GeneratorParam\"j\n\nMnistParam\022\023\n\013folder_p"
+      "\030\001 \001(\0132\021.SoftmaxLossParam\"*\n\023ImageGenera"
+      "torParam\022\023\n\013num_samples\030\001 \001(\005\"g\n\016Generat"
+      "orParam\022 \n\013mnist_param\030\001 \001(\0132\013.MnistPara"
+      "m\0223\n\025image_generator_param\030\002 \001(\0132\024.Image"
+      "GeneratorParam\"~\n\nMnistParam\022\023\n\013folder_p"
       "ath\030\001 \001(\t\022$\n\004type\030\002 \001(\0162\026.MnistParam.Rea"
-      "derType\"!\n\nReaderType\022\t\n\005TRAIN\020\000\022\010\n\004TEST"
-      "\020\001\"\020\n\016CastFloatParam\"\373\006\n\tNodeParam\022\014\n\004na"
-      "me\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022\016\n\006output\030\003 \003(\t\022"
-      "\r\n\005phase\030\004 \003(\t\022\036\n\nloss_param\0302 \001(\0132\n.Los"
-      "sParam\022(\n\017generator_param\0303 \001(\0132\017.Genera"
-      "torParam\022&\n\016variable_param\030d \001(\0132\016.Varia"
-      "bleParam\022-\n\022place_holder_param\030e \001(\0132\021.P"
-      "laceHolderParam\022,\n\021phaseplexer_param\030f \001"
-      "(\0132\021.PhaseplexerParam\022\034\n\tadd_param\030g \001(\013"
-      "2\t.AddParam\022%\n\016bias_add_param\030h \001(\0132\r.Bi"
-      "asAddParam\022#\n\rconv_2d_param\030i \001(\0132\014.Conv"
-      "2dParam\0228\n\030transposed_conv_2d_param\030j \001("
-      "\0132\026.TransposedConv2dParam\022$\n\rdropout_par"
-      "am\030k \001(\0132\r.DropoutParam\022\036\n\nrelu_param\030l "
-      "\001(\0132\n.ReluParam\022$\n\rsoftmax_param\030m \001(\0132\r"
-      ".SoftmaxParam\022\"\n\014square_param\030n \001(\0132\014.Sq"
-      "uareParam\022\"\n\014matmul_param\030o \001(\0132\014.MatMul"
-      "Param\022$\n\rpooling_param\030p \001(\0132\r.PoolingPa"
-      "ram\022\"\n\014reduce_param\030q \001(\0132\014.ReduceParam\022"
-      " \n\013equal_param\030r \001(\0132\013.EqualParam\022 \n\013pri"
-      "nt_param\030s \001(\0132\013.PrintParam\022)\n\020cast_floa"
-      "t_param\030t \001(\0132\017.CastFloatParam\022,\n\021accumu"
-      "lator_param\030u \001(\0132\021.AccumulatorParam\022$\n\r"
-      "display_param\030v \001(\0132\r.DisplayParam\"\r\n\013Sq"
-      "uareParam\"/\n\020SoftmaxLossParam\022\r\n\005alpha\030\001"
-      " \001(\002\022\014\n\004beta\030\002 \001(\002\"+\n\014SoftmaxParam\022\r\n\005al"
-      "pha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"\036\n\rInitFillParam"
-      "\022\r\n\005value\030\001 \001(\002\"$\n\022InitIndexFillParam\022\016\n"
-      "\006offset\030\001 \001(\002\"2\n\026InitRandomUniformParam\022"
-      "\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\")\n\rInitStepPar"
-      "am\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"\375\001\n\tInitPar"
-      "am\022\"\n\014tensor_param\030\001 \001(\0132\014.TensorParam\022\036"
-      "\n\tinit_data\030\002 \001(\0132\013.TensorData\022\"\n\nfill_p"
-      "aram\030\003 \001(\0132\016.InitFillParam\022-\n\020index_fill"
-      "_param\030\004 \001(\0132\023.InitIndexFillParam\0225\n\024ran"
-      "dom_uniform_param\030\005 \001(\0132\027.InitRandomUnif"
-      "ormParam\022\"\n\nstep_param\030\006 \001(\0132\016.InitStepP"
-      "aram\"9\n\016SGDSolverParam\022\025\n\rlearning_rate\030"
-      "\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\"\204\001\n\017GainSolverPa"
-      "ram\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030\002"
-      " \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020\n\010min_gain\030\004 \001(\002"
-      "\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tgain_mult\030\006 \001(\002\"M"
-      "\n\023AdaDeltaSolverParam\022\025\n\rlearning_rate\030\001"
-      " \001(\002\022\020\n\010momentum\030\002 \001(\002\022\r\n\005delta\030\003 \001(\002\"S\n"
-      "\017AdamSolverParam\022\025\n\rlearning_rate\030\001 \001(\002\022"
-      "\r\n\005beta1\030\002 \001(\002\022\r\n\005beta2\030\003 \001(\002\022\013\n\003eps\030\004 \001"
-      "(\002\"\275\001\n\013SolverParam\022\014\n\004name\030\001 \001(\t\022#\n\nsgd_"
-      "solver\030\002 \001(\0132\017.SGDSolverParam\022%\n\013gain_so"
-      "lver\030\003 \001(\0132\020.GainSolverParam\022%\n\013adam_sol"
-      "ver\030\004 \001(\0132\020.AdamSolverParam\022-\n\017adadelta_"
-      "solver\030\005 \001(\0132\024.AdaDeltaSolverParam\"\206\001\n\nP"
-      "haseParam\022\r\n\005phase\030\001 \001(\t\022-\n\tbehaviour\030\002 "
-      "\001(\0162\032.PhaseParam.PhaseBehaviour\":\n\016Phase"
-      "Behaviour\022\t\n\005TRAIN\020\000\022\016\n\nVALIDATION\020\001\022\r\n\t"
-      "INFERENCE\020\002\"`\n\nGraphParam\022\030\n\004node\030\001 \003(\0132"
-      "\n.NodeParam\022\034\n\006solver\030\002 \003(\0132\014.SolverPara"
-      "m\022\032\n\005phase\030\003 \003(\0132\013.PhaseParamb\006proto3"
+      "derType\022\022\n\nbatch_size\030\003 \001(\005\"!\n\nReaderTyp"
+      "e\022\t\n\005TRAIN\020\000\022\010\n\004TEST\020\001\"\020\n\016CastFloatParam"
+      "\"\373\006\n\tNodeParam\022\014\n\004name\030\001 \001(\t\022\r\n\005input\030\002 "
+      "\003(\t\022\016\n\006output\030\003 \003(\t\022\r\n\005phase\030\004 \003(\t\022\036\n\nlo"
+      "ss_param\0302 \001(\0132\n.LossParam\022(\n\017generator_"
+      "param\0303 \001(\0132\017.GeneratorParam\022&\n\016variable"
+      "_param\030d \001(\0132\016.VariableParam\022-\n\022place_ho"
+      "lder_param\030e \001(\0132\021.PlaceHolderParam\022,\n\021p"
+      "haseplexer_param\030f \001(\0132\021.PhaseplexerPara"
+      "m\022\034\n\tadd_param\030g \001(\0132\t.AddParam\022%\n\016bias_"
+      "add_param\030h \001(\0132\r.BiasAddParam\022#\n\rconv_2"
+      "d_param\030i \001(\0132\014.Conv2dParam\0228\n\030transpose"
+      "d_conv_2d_param\030j \001(\0132\026.TransposedConv2d"
+      "Param\022$\n\rdropout_param\030k \001(\0132\r.DropoutPa"
+      "ram\022\036\n\nrelu_param\030l \001(\0132\n.ReluParam\022$\n\rs"
+      "oftmax_param\030m \001(\0132\r.SoftmaxParam\022\"\n\014squ"
+      "are_param\030n \001(\0132\014.SquareParam\022\"\n\014matmul_"
+      "param\030o \001(\0132\014.MatMulParam\022$\n\rpooling_par"
+      "am\030p \001(\0132\r.PoolingParam\022\"\n\014reduce_param\030"
+      "q \001(\0132\014.ReduceParam\022 \n\013equal_param\030r \001(\013"
+      "2\013.EqualParam\022 \n\013print_param\030s \001(\0132\013.Pri"
+      "ntParam\022)\n\020cast_float_param\030t \001(\0132\017.Cast"
+      "FloatParam\022,\n\021accumulator_param\030u \001(\0132\021."
+      "AccumulatorParam\022$\n\rdisplay_param\030v \001(\0132"
+      "\r.DisplayParam\"\r\n\013SquareParam\"/\n\020Softmax"
+      "LossParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"+"
+      "\n\014SoftmaxParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 "
+      "\001(\002\"\036\n\rInitFillParam\022\r\n\005value\030\001 \001(\002\"$\n\022I"
+      "nitIndexFillParam\022\016\n\006offset\030\001 \001(\002\"2\n\026Ini"
+      "tRandomUniformParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030"
+      "\002 \001(\002\")\n\rInitStepParam\022\013\n\003min\030\001 \001(\002\022\013\n\003m"
+      "ax\030\002 \001(\002\"\375\001\n\tInitParam\022\"\n\014tensor_param\030\001"
+      " \001(\0132\014.TensorParam\022\036\n\tinit_data\030\002 \001(\0132\013."
+      "TensorData\022\"\n\nfill_param\030\003 \001(\0132\016.InitFil"
+      "lParam\022-\n\020index_fill_param\030\004 \001(\0132\023.InitI"
+      "ndexFillParam\0225\n\024random_uniform_param\030\005 "
+      "\001(\0132\027.InitRandomUniformParam\022\"\n\nstep_par"
+      "am\030\006 \001(\0132\016.InitStepParam\"9\n\016SGDSolverPar"
+      "am\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030\002 "
+      "\001(\002\"\204\001\n\017GainSolverParam\022\025\n\rlearning_rate"
+      "\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\022\020\n\010max_gain\030\003 \001"
+      "(\002\022\020\n\010min_gain\030\004 \001(\002\022\021\n\tgain_plus\030\005 \001(\002\022"
+      "\021\n\tgain_mult\030\006 \001(\002\"M\n\023AdaDeltaSolverPara"
+      "m\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030\002 \001"
+      "(\002\022\r\n\005delta\030\003 \001(\002\"S\n\017AdamSolverParam\022\025\n\r"
+      "learning_rate\030\001 \001(\002\022\r\n\005beta1\030\002 \001(\002\022\r\n\005be"
+      "ta2\030\003 \001(\002\022\013\n\003eps\030\004 \001(\002\"\275\001\n\013SolverParam\022\014"
+      "\n\004name\030\001 \001(\t\022#\n\nsgd_solver\030\002 \001(\0132\017.SGDSo"
+      "lverParam\022%\n\013gain_solver\030\003 \001(\0132\020.GainSol"
+      "verParam\022%\n\013adam_solver\030\004 \001(\0132\020.AdamSolv"
+      "erParam\022-\n\017adadelta_solver\030\005 \001(\0132\024.AdaDe"
+      "ltaSolverParam\"\206\001\n\nPhaseParam\022\r\n\005phase\030\001"
+      " \001(\t\022-\n\tbehaviour\030\002 \001(\0162\032.PhaseParam.Pha"
+      "seBehaviour\":\n\016PhaseBehaviour\022\t\n\005TRAIN\020\000"
+      "\022\016\n\nVALIDATION\020\001\022\r\n\tINFERENCE\020\002\"`\n\nGraph"
+      "Param\022\030\n\004node\030\001 \003(\0132\n.NodeParam\022\034\n\006solve"
+      "r\030\002 \003(\0132\014.SolverParam\022\032\n\005phase\030\003 \003(\0132\013.P"
+      "haseParamb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 4197);
+      descriptor, 4177);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -7348,7 +7347,7 @@ void LossParam::set_allocated_softmax_loss_param(::SoftmaxLossParam* softmax_los
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ImageGeneratorParam::kAccumulateFieldNumber;
+const int ImageGeneratorParam::kNumSamplesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ImageGeneratorParam::ImageGeneratorParam()
@@ -7364,12 +7363,12 @@ ImageGeneratorParam::ImageGeneratorParam(const ImageGeneratorParam& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  accumulate_ = from.accumulate_;
+  num_samples_ = from.num_samples_;
   // @@protoc_insertion_point(copy_constructor:ImageGeneratorParam)
 }
 
 void ImageGeneratorParam::SharedCtor() {
-  accumulate_ = false;
+  num_samples_ = 0;
   _cached_size_ = 0;
 }
 
@@ -7406,7 +7405,7 @@ ImageGeneratorParam* ImageGeneratorParam::New(::google::protobuf::Arena* arena) 
 
 void ImageGeneratorParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:ImageGeneratorParam)
-  accumulate_ = false;
+  num_samples_ = 0;
 }
 
 bool ImageGeneratorParam::MergePartialFromCodedStream(
@@ -7419,14 +7418,14 @@ bool ImageGeneratorParam::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bool accumulate = 1;
+      // int32 num_samples = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(8u)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &accumulate_)));
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &num_samples_)));
         } else {
           goto handle_unusual;
         }
@@ -7457,9 +7456,9 @@ failure:
 void ImageGeneratorParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:ImageGeneratorParam)
-  // bool accumulate = 1;
-  if (this->accumulate() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->accumulate(), output);
+  // int32 num_samples = 1;
+  if (this->num_samples() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->num_samples(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:ImageGeneratorParam)
@@ -7469,9 +7468,9 @@ void ImageGeneratorParam::SerializeWithCachedSizes(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:ImageGeneratorParam)
-  // bool accumulate = 1;
-  if (this->accumulate() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->accumulate(), target);
+  // int32 num_samples = 1;
+  if (this->num_samples() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->num_samples(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:ImageGeneratorParam)
@@ -7482,9 +7481,11 @@ size_t ImageGeneratorParam::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:ImageGeneratorParam)
   size_t total_size = 0;
 
-  // bool accumulate = 1;
-  if (this->accumulate() != 0) {
-    total_size += 1 + 1;
+  // int32 num_samples = 1;
+  if (this->num_samples() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->num_samples());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -7513,8 +7514,8 @@ void ImageGeneratorParam::MergeFrom(const ImageGeneratorParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:ImageGeneratorParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.accumulate() != 0) {
-    set_accumulate(from.accumulate());
+  if (from.num_samples() != 0) {
+    set_num_samples(from.num_samples());
   }
 }
 
@@ -7541,7 +7542,7 @@ void ImageGeneratorParam::Swap(ImageGeneratorParam* other) {
   InternalSwap(other);
 }
 void ImageGeneratorParam::InternalSwap(ImageGeneratorParam* other) {
-  std::swap(accumulate_, other->accumulate_);
+  std::swap(num_samples_, other->num_samples_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -7553,18 +7554,18 @@ void ImageGeneratorParam::InternalSwap(ImageGeneratorParam* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // ImageGeneratorParam
 
-// bool accumulate = 1;
-void ImageGeneratorParam::clear_accumulate() {
-  accumulate_ = false;
+// int32 num_samples = 1;
+void ImageGeneratorParam::clear_num_samples() {
+  num_samples_ = 0;
 }
-bool ImageGeneratorParam::accumulate() const {
-  // @@protoc_insertion_point(field_get:ImageGeneratorParam.accumulate)
-  return accumulate_;
+::google::protobuf::int32 ImageGeneratorParam::num_samples() const {
+  // @@protoc_insertion_point(field_get:ImageGeneratorParam.num_samples)
+  return num_samples_;
 }
-void ImageGeneratorParam::set_accumulate(bool value) {
+void ImageGeneratorParam::set_num_samples(::google::protobuf::int32 value) {
   
-  accumulate_ = value;
-  // @@protoc_insertion_point(field_set:ImageGeneratorParam.accumulate)
+  num_samples_ = value;
+  // @@protoc_insertion_point(field_set:ImageGeneratorParam.num_samples)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -7572,8 +7573,6 @@ void ImageGeneratorParam::set_accumulate(bool value) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int GeneratorParam::kBatchSizeFieldNumber;
-const int GeneratorParam::kTotalSizeFieldNumber;
 const int GeneratorParam::kMnistParamFieldNumber;
 const int GeneratorParam::kImageGeneratorParamFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -7601,15 +7600,12 @@ GeneratorParam::GeneratorParam(const GeneratorParam& from)
   } else {
     image_generator_param_ = NULL;
   }
-  ::memcpy(&batch_size_, &from.batch_size_,
-    reinterpret_cast<char*>(&total_size_) -
-    reinterpret_cast<char*>(&batch_size_) + sizeof(total_size_));
   // @@protoc_insertion_point(copy_constructor:GeneratorParam)
 }
 
 void GeneratorParam::SharedCtor() {
-  ::memset(&mnist_param_, 0, reinterpret_cast<char*>(&total_size_) -
-    reinterpret_cast<char*>(&mnist_param_) + sizeof(total_size_));
+  ::memset(&mnist_param_, 0, reinterpret_cast<char*>(&image_generator_param_) -
+    reinterpret_cast<char*>(&mnist_param_) + sizeof(image_generator_param_));
   _cached_size_ = 0;
 }
 
@@ -7660,8 +7656,6 @@ void GeneratorParam::Clear() {
     delete image_generator_param_;
   }
   image_generator_param_ = NULL;
-  ::memset(&batch_size_, 0, reinterpret_cast<char*>(&total_size_) -
-    reinterpret_cast<char*>(&batch_size_) + sizeof(total_size_));
 }
 
 bool GeneratorParam::MergePartialFromCodedStream(
@@ -7674,38 +7668,10 @@ bool GeneratorParam::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // int32 batch_size = 1;
+      // .MnistParam mnist_param = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &batch_size_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // int32 total_size = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &total_size_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .MnistParam mnist_param = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u)) {
+            static_cast< ::google::protobuf::uint8>(10u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_mnist_param()));
         } else {
@@ -7714,10 +7680,10 @@ bool GeneratorParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .ImageGeneratorParam image_generator_param = 4;
-      case 4: {
+      // .ImageGeneratorParam image_generator_param = 2;
+      case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u)) {
+            static_cast< ::google::protobuf::uint8>(18u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_image_generator_param()));
         } else {
@@ -7750,26 +7716,16 @@ failure:
 void GeneratorParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:GeneratorParam)
-  // int32 batch_size = 1;
-  if (this->batch_size() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->batch_size(), output);
-  }
-
-  // int32 total_size = 2;
-  if (this->total_size() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->total_size(), output);
-  }
-
-  // .MnistParam mnist_param = 3;
+  // .MnistParam mnist_param = 1;
   if (this->has_mnist_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, *this->mnist_param_, output);
+      1, *this->mnist_param_, output);
   }
 
-  // .ImageGeneratorParam image_generator_param = 4;
+  // .ImageGeneratorParam image_generator_param = 2;
   if (this->has_image_generator_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, *this->image_generator_param_, output);
+      2, *this->image_generator_param_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:GeneratorParam)
@@ -7779,28 +7735,18 @@ void GeneratorParam::SerializeWithCachedSizes(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:GeneratorParam)
-  // int32 batch_size = 1;
-  if (this->batch_size() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->batch_size(), target);
-  }
-
-  // int32 total_size = 2;
-  if (this->total_size() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->total_size(), target);
-  }
-
-  // .MnistParam mnist_param = 3;
+  // .MnistParam mnist_param = 1;
   if (this->has_mnist_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        3, *this->mnist_param_, false, target);
+        1, *this->mnist_param_, false, target);
   }
 
-  // .ImageGeneratorParam image_generator_param = 4;
+  // .ImageGeneratorParam image_generator_param = 2;
   if (this->has_image_generator_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        4, *this->image_generator_param_, false, target);
+        2, *this->image_generator_param_, false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:GeneratorParam)
@@ -7811,32 +7757,18 @@ size_t GeneratorParam::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:GeneratorParam)
   size_t total_size = 0;
 
-  // .MnistParam mnist_param = 3;
+  // .MnistParam mnist_param = 1;
   if (this->has_mnist_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->mnist_param_);
   }
 
-  // .ImageGeneratorParam image_generator_param = 4;
+  // .ImageGeneratorParam image_generator_param = 2;
   if (this->has_image_generator_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->image_generator_param_);
-  }
-
-  // int32 batch_size = 1;
-  if (this->batch_size() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->batch_size());
-  }
-
-  // int32 total_size = 2;
-  if (this->total_size() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->total_size());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -7871,12 +7803,6 @@ void GeneratorParam::MergeFrom(const GeneratorParam& from) {
   if (from.has_image_generator_param()) {
     mutable_image_generator_param()->::ImageGeneratorParam::MergeFrom(from.image_generator_param());
   }
-  if (from.batch_size() != 0) {
-    set_batch_size(from.batch_size());
-  }
-  if (from.total_size() != 0) {
-    set_total_size(from.total_size());
-  }
 }
 
 void GeneratorParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -7904,8 +7830,6 @@ void GeneratorParam::Swap(GeneratorParam* other) {
 void GeneratorParam::InternalSwap(GeneratorParam* other) {
   std::swap(mnist_param_, other->mnist_param_);
   std::swap(image_generator_param_, other->image_generator_param_);
-  std::swap(batch_size_, other->batch_size_);
-  std::swap(total_size_, other->total_size_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -7917,35 +7841,7 @@ void GeneratorParam::InternalSwap(GeneratorParam* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // GeneratorParam
 
-// int32 batch_size = 1;
-void GeneratorParam::clear_batch_size() {
-  batch_size_ = 0;
-}
-::google::protobuf::int32 GeneratorParam::batch_size() const {
-  // @@protoc_insertion_point(field_get:GeneratorParam.batch_size)
-  return batch_size_;
-}
-void GeneratorParam::set_batch_size(::google::protobuf::int32 value) {
-  
-  batch_size_ = value;
-  // @@protoc_insertion_point(field_set:GeneratorParam.batch_size)
-}
-
-// int32 total_size = 2;
-void GeneratorParam::clear_total_size() {
-  total_size_ = 0;
-}
-::google::protobuf::int32 GeneratorParam::total_size() const {
-  // @@protoc_insertion_point(field_get:GeneratorParam.total_size)
-  return total_size_;
-}
-void GeneratorParam::set_total_size(::google::protobuf::int32 value) {
-  
-  total_size_ = value;
-  // @@protoc_insertion_point(field_set:GeneratorParam.total_size)
-}
-
-// .MnistParam mnist_param = 3;
+// .MnistParam mnist_param = 1;
 bool GeneratorParam::has_mnist_param() const {
   return this != internal_default_instance() && mnist_param_ != NULL;
 }
@@ -7984,7 +7880,7 @@ void GeneratorParam::set_allocated_mnist_param(::MnistParam* mnist_param) {
   // @@protoc_insertion_point(field_set_allocated:GeneratorParam.mnist_param)
 }
 
-// .ImageGeneratorParam image_generator_param = 4;
+// .ImageGeneratorParam image_generator_param = 2;
 bool GeneratorParam::has_image_generator_param() const {
   return this != internal_default_instance() && image_generator_param_ != NULL;
 }
@@ -8030,6 +7926,7 @@ void GeneratorParam::set_allocated_image_generator_param(::ImageGeneratorParam* 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int MnistParam::kFolderPathFieldNumber;
 const int MnistParam::kTypeFieldNumber;
+const int MnistParam::kBatchSizeFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 MnistParam::MnistParam()
@@ -8049,13 +7946,16 @@ MnistParam::MnistParam(const MnistParam& from)
   if (from.folder_path().size() > 0) {
     folder_path_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.folder_path_);
   }
-  type_ = from.type_;
+  ::memcpy(&type_, &from.type_,
+    reinterpret_cast<char*>(&batch_size_) -
+    reinterpret_cast<char*>(&type_) + sizeof(batch_size_));
   // @@protoc_insertion_point(copy_constructor:MnistParam)
 }
 
 void MnistParam::SharedCtor() {
   folder_path_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  type_ = 0;
+  ::memset(&type_, 0, reinterpret_cast<char*>(&batch_size_) -
+    reinterpret_cast<char*>(&type_) + sizeof(batch_size_));
   _cached_size_ = 0;
 }
 
@@ -8094,7 +7994,8 @@ MnistParam* MnistParam::New(::google::protobuf::Arena* arena) const {
 void MnistParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:MnistParam)
   folder_path_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  type_ = 0;
+  ::memset(&type_, 0, reinterpret_cast<char*>(&batch_size_) -
+    reinterpret_cast<char*>(&type_) + sizeof(batch_size_));
 }
 
 bool MnistParam::MergePartialFromCodedStream(
@@ -8132,6 +8033,20 @@ bool MnistParam::MergePartialFromCodedStream(
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
           set_type(static_cast< ::MnistParam_ReaderType >(value));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 batch_size = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(24u)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &batch_size_)));
         } else {
           goto handle_unusual;
         }
@@ -8178,6 +8093,11 @@ void MnistParam::SerializeWithCachedSizes(
       2, this->type(), output);
   }
 
+  // int32 batch_size = 3;
+  if (this->batch_size() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->batch_size(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:MnistParam)
 }
 
@@ -8202,6 +8122,11 @@ void MnistParam::SerializeWithCachedSizes(
       2, this->type(), target);
   }
 
+  // int32 batch_size = 3;
+  if (this->batch_size() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->batch_size(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:MnistParam)
   return target;
 }
@@ -8221,6 +8146,13 @@ size_t MnistParam::ByteSizeLong() const {
   if (this->type() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
+  }
+
+  // int32 batch_size = 3;
+  if (this->batch_size() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->batch_size());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -8256,6 +8188,9 @@ void MnistParam::MergeFrom(const MnistParam& from) {
   if (from.type() != 0) {
     set_type(from.type());
   }
+  if (from.batch_size() != 0) {
+    set_batch_size(from.batch_size());
+  }
 }
 
 void MnistParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -8283,6 +8218,7 @@ void MnistParam::Swap(MnistParam* other) {
 void MnistParam::InternalSwap(MnistParam* other) {
   folder_path_.Swap(&other->folder_path_);
   std::swap(type_, other->type_);
+  std::swap(batch_size_, other->batch_size_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -8358,6 +8294,20 @@ void MnistParam::set_type(::MnistParam_ReaderType value) {
   
   type_ = value;
   // @@protoc_insertion_point(field_set:MnistParam.type)
+}
+
+// int32 batch_size = 3;
+void MnistParam::clear_batch_size() {
+  batch_size_ = 0;
+}
+::google::protobuf::int32 MnistParam::batch_size() const {
+  // @@protoc_insertion_point(field_get:MnistParam.batch_size)
+  return batch_size_;
+}
+void MnistParam::set_batch_size(::google::protobuf::int32 value) {
+  
+  batch_size_ = value;
+  // @@protoc_insertion_point(field_set:MnistParam.batch_size)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

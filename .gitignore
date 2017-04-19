@@ -49,3 +49,5 @@
 /third-party/protobuf
 /build/x64
 /build/deepflow.VC.VC.opendb
+/build/image_generator/*.user
+*.user
