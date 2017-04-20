@@ -124,7 +124,9 @@
   <ItemGroup>
     <CudaCompile Include="..\..\src\initializers\fill.cu" />
     <CudaCompile Include="..\..\src\initializers\index_fill.cu" />
-    <CudaCompile Include="..\..\src\initializers\random_uniform.cu" />
+    <ClCompile Include="..\..\src\initializers\random_uniform.cpp">
+      <FileType>Document</FileType>
+    </ClCompile>
     <CudaCompile Include="..\..\src\ops\add.cu" />
     <CudaCompile Include="..\..\src\ops\bias_add.cu" />
     <ClCompile Include="..\..\src\ops\matmul.cpp">
