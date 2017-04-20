@@ -23,16 +23,16 @@ void ImageReader::nextBatch() {
 void ImageReader::initForward() {
 	
 	auto file_name = _param.generator_param().image_reader_param().file_name();
-	cv::Mat img = cv::imread(file_name, 0);
+	img = cv::imread(file_name, 0);
 	LOG_IF(FATAL, img.empty()) << "Image " << file_name << "does not exist.";		
 	_outputs[0]->initValue({ 1, img.channels(), img.rows , img.cols });
 	LOG(INFO) << "Initializing Image " << _name << " - " << _outputs[0]->value()->shape();
 	size_t size = _outputs[0]->value()->size();
-	cudaStream_t stream;
-	DF_CUDA_CHECK(cudaStreamCreate(&stream));
- 	ImageReaderKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, img.ptr<uchar>(), (float*) _inputs[0]->value()->mutableData());
+	//cudaStream_t stream;
+	//DF_CUDA_CHECK(cudaStreamCreate(&stream));
+ 	ImageReaderKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, img.ptr<uchar>(), (float*) _outputs[0]->value()->mutableData());
 	DF_KERNEL_CHECK();
-	DF_CUDA_CHECK(cudaStreamSynchronize(stream));
+	//DF_CUDA_CHECK(cudaStreamSynchronize(stream));
 }
 
 void ImageReader::initBackward() {

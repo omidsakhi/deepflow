@@ -6,6 +6,8 @@
 
 class Initializer;
 
+#include <opencv2/opencv.hpp>
+
 class DeepFlowDllExport ImageReader : public Generator, public Node {
 public:
 	ImageReader(const NodeParam &param);
@@ -19,4 +21,5 @@ public:
 	bool isLastBatch();
 private:	
 	bool _last_batch = true;
+	cv::Mat img;
 };
