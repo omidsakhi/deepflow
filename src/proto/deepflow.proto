@@ -137,15 +137,21 @@ message VariableParam {
 
 message LossParam {
 	SoftmaxLossParam softmax_loss_param = 1;
+	EuclideanLossParam euclidean_loss_param = 2;
 }
 
 message ImageGeneratorParam {	
 	int32 num_samples = 1;	
 }
 
+message ImageReaderParam {
+	string file_name = 1;
+}
+
 message GeneratorParam {	
 	MnistParam mnist_param = 1;
 	ImageGeneratorParam image_generator_param = 2;
+	ImageReaderParam image_reader_param = 3;
 }
 
 message MnistParam {
@@ -194,6 +200,9 @@ message NodeParam {
 
 message SquareParam {
 	
+}
+
+message EuclideanLossParam {
 }
 
 message SoftmaxLossParam {

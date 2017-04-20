@@ -3,14 +3,6 @@
 #include "initializers/random_uniform.h"
 #include "core/variable.h"
 
-__global__ void RandKernel(const float min, const float max,const int n, float* dst) {
-	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	curandState_t state;
-	curand_init(i, 0, 0, &state);
-	if (i < n)
-		dst[i] = (curand_uniform(&state) * (max - min)) + min;
-}
-
 RandomUniform::RandomUniform(const InitParam &param) : Initializer(param) {
 	LOG_IF(FATAL, param.has_random_uniform_param() == false) << "param.has_random_uniform_param() == false";
 }
@@ -19,6 +11,8 @@ void RandomUniform::apply(Variable *variable) {
 	auto size = variable->output(0)->value()->size();
 	float min = _param.random_uniform_param().min();
 	float max = _param.random_uniform_param().max();
-	RandKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (min, max, size, (float*)variable->output(0)->value()->mutableData());
-	DF_KERNEL_CHECK();
+	float *h_rand = new float[size];
+	for (int i = 0; i < size; ++i)
+		h_rand[i] = ((float)rand() / RAND_MAX) * (max - min) + min;
+	DF_CUDA_CHECK(cudaMemcpy((float*)variable->output(0)->value()->mutableData(), h_rand, variable->output(0)->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 }

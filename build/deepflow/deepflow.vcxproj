@@ -37,6 +37,7 @@
     <ClInclude Include="..\..\include\core\terminal.h" />
     <ClInclude Include="..\..\include\core\variable.h" />
     <ClInclude Include="..\..\include\generators\image_generator.h" />
+    <ClInclude Include="..\..\include\generators\image_reader.h" />
     <ClInclude Include="..\..\include\generators\mnist_reader.h" />
     <ClInclude Include="..\..\include\initializers\fill.h" />
     <ClInclude Include="..\..\include\initializers\index_fill.h" />
@@ -53,6 +54,7 @@
     <ClInclude Include="..\..\include\ops\display.h" />
     <ClInclude Include="..\..\include\ops\dropout.h" />
     <ClInclude Include="..\..\include\ops\equal.h" />
+    <ClInclude Include="..\..\include\ops\euclidean_loss.h" />
     <ClInclude Include="..\..\include\ops\matmul.h" />
     <ClInclude Include="..\..\include\ops\pooling.h" />
     <ClInclude Include="..\..\include\ops\print.h" />
@@ -82,6 +84,9 @@
     <ClCompile Include="..\..\src\core\session.cpp" />
     <ClCompile Include="..\..\src\core\tensor.cpp" />
     <ClCompile Include="..\..\src\generators\image_generator.cpp" />
+    <CudaCompile Include="..\..\src\generators\image_reader.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
     <ClCompile Include="..\..\src\generators\mnist_reader.cpp" />
     <ClCompile Include="..\..\src\observers\reset.cpp" />
     <ClCompile Include="..\..\src\ops\pooling.cpp">
@@ -90,6 +95,7 @@
     <CudaCompile Include="..\..\src\ops\accumulator.cu" />
     <CudaCompile Include="..\..\src\ops\display.cu" />
     <CudaCompile Include="..\..\src\ops\equal.cu" />
+    <CudaCompile Include="..\..\src\ops\euclidean_loss.cu" />
     <CudaCompile Include="..\..\src\solvers\adadelta_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\adam_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\gain_solver.cu" />

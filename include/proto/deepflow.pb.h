@@ -60,6 +60,9 @@ extern DropoutParamDefaultTypeInternal _DropoutParam_default_instance_;
 class EqualParam;
 class EqualParamDefaultTypeInternal;
 extern EqualParamDefaultTypeInternal _EqualParam_default_instance_;
+class EuclideanLossParam;
+class EuclideanLossParamDefaultTypeInternal;
+extern EuclideanLossParamDefaultTypeInternal _EuclideanLossParam_default_instance_;
 class GainSolverParam;
 class GainSolverParamDefaultTypeInternal;
 extern GainSolverParamDefaultTypeInternal _GainSolverParam_default_instance_;
@@ -72,6 +75,9 @@ extern GraphParamDefaultTypeInternal _GraphParam_default_instance_;
 class ImageGeneratorParam;
 class ImageGeneratorParamDefaultTypeInternal;
 extern ImageGeneratorParamDefaultTypeInternal _ImageGeneratorParam_default_instance_;
+class ImageReaderParam;
+class ImageReaderParamDefaultTypeInternal;
+extern ImageReaderParamDefaultTypeInternal _ImageReaderParam_default_instance_;
 class InitFillParam;
 class InitFillParamDefaultTypeInternal;
 extern InitFillParamDefaultTypeInternal _InitFillParam_default_instance_;
@@ -2373,11 +2379,21 @@ class LossParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::SoftmaxLossParam* release_softmax_loss_param();
   void set_allocated_softmax_loss_param(::SoftmaxLossParam* softmax_loss_param);
 
+  // .EuclideanLossParam euclidean_loss_param = 2;
+  bool has_euclidean_loss_param() const;
+  void clear_euclidean_loss_param();
+  static const int kEuclideanLossParamFieldNumber = 2;
+  const ::EuclideanLossParam& euclidean_loss_param() const;
+  ::EuclideanLossParam* mutable_euclidean_loss_param();
+  ::EuclideanLossParam* release_euclidean_loss_param();
+  void set_allocated_euclidean_loss_param(::EuclideanLossParam* euclidean_loss_param);
+
   // @@protoc_insertion_point(class_scope:LossParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::SoftmaxLossParam* softmax_loss_param_;
+  ::EuclideanLossParam* euclidean_loss_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2461,6 +2477,97 @@ class ImageGeneratorParam : public ::google::protobuf::Message /* @@protoc_inser
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int32 num_samples_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ImageReaderParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ImageReaderParam) */ {
+ public:
+  ImageReaderParam();
+  virtual ~ImageReaderParam();
+
+  ImageReaderParam(const ImageReaderParam& from);
+
+  inline ImageReaderParam& operator=(const ImageReaderParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ImageReaderParam& default_instance();
+
+  static inline const ImageReaderParam* internal_default_instance() {
+    return reinterpret_cast<const ImageReaderParam*>(
+               &_ImageReaderParam_default_instance_);
+  }
+
+  void Swap(ImageReaderParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ImageReaderParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ImageReaderParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ImageReaderParam& from);
+  void MergeFrom(const ImageReaderParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ImageReaderParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string file_name = 1;
+  void clear_file_name();
+  static const int kFileNameFieldNumber = 1;
+  const ::std::string& file_name() const;
+  void set_file_name(const ::std::string& value);
+  #if LANG_CXX11
+  void set_file_name(::std::string&& value);
+  #endif
+  void set_file_name(const char* value);
+  void set_file_name(const char* value, size_t size);
+  ::std::string* mutable_file_name();
+  ::std::string* release_file_name();
+  void set_allocated_file_name(::std::string* file_name);
+
+  // @@protoc_insertion_point(class_scope:ImageReaderParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr file_name_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2551,12 +2658,22 @@ class GeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_
   ::ImageGeneratorParam* release_image_generator_param();
   void set_allocated_image_generator_param(::ImageGeneratorParam* image_generator_param);
 
+  // .ImageReaderParam image_reader_param = 3;
+  bool has_image_reader_param() const;
+  void clear_image_reader_param();
+  static const int kImageReaderParamFieldNumber = 3;
+  const ::ImageReaderParam& image_reader_param() const;
+  ::ImageReaderParam* mutable_image_reader_param();
+  ::ImageReaderParam* release_image_reader_param();
+  void set_allocated_image_reader_param(::ImageReaderParam* image_reader_param);
+
   // @@protoc_insertion_point(class_scope:GeneratorParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::MnistParam* mnist_param_;
   ::ImageGeneratorParam* image_generator_param_;
+  ::ImageReaderParam* image_reader_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3207,6 +3324,82 @@ class SquareParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   // accessors -------------------------------------------------------
 
   // @@protoc_insertion_point(class_scope:SquareParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class EuclideanLossParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:EuclideanLossParam) */ {
+ public:
+  EuclideanLossParam();
+  virtual ~EuclideanLossParam();
+
+  EuclideanLossParam(const EuclideanLossParam& from);
+
+  inline EuclideanLossParam& operator=(const EuclideanLossParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const EuclideanLossParam& default_instance();
+
+  static inline const EuclideanLossParam* internal_default_instance() {
+    return reinterpret_cast<const EuclideanLossParam*>(
+               &_EuclideanLossParam_default_instance_);
+  }
+
+  void Swap(EuclideanLossParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline EuclideanLossParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  EuclideanLossParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const EuclideanLossParam& from);
+  void MergeFrom(const EuclideanLossParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(EuclideanLossParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:EuclideanLossParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -5708,6 +5901,45 @@ inline void LossParam::set_allocated_softmax_loss_param(::SoftmaxLossParam* soft
   // @@protoc_insertion_point(field_set_allocated:LossParam.softmax_loss_param)
 }
 
+// .EuclideanLossParam euclidean_loss_param = 2;
+inline bool LossParam::has_euclidean_loss_param() const {
+  return this != internal_default_instance() && euclidean_loss_param_ != NULL;
+}
+inline void LossParam::clear_euclidean_loss_param() {
+  if (GetArenaNoVirtual() == NULL && euclidean_loss_param_ != NULL) delete euclidean_loss_param_;
+  euclidean_loss_param_ = NULL;
+}
+inline const ::EuclideanLossParam& LossParam::euclidean_loss_param() const {
+  // @@protoc_insertion_point(field_get:LossParam.euclidean_loss_param)
+  return euclidean_loss_param_ != NULL ? *euclidean_loss_param_
+                         : *::EuclideanLossParam::internal_default_instance();
+}
+inline ::EuclideanLossParam* LossParam::mutable_euclidean_loss_param() {
+  
+  if (euclidean_loss_param_ == NULL) {
+    euclidean_loss_param_ = new ::EuclideanLossParam;
+  }
+  // @@protoc_insertion_point(field_mutable:LossParam.euclidean_loss_param)
+  return euclidean_loss_param_;
+}
+inline ::EuclideanLossParam* LossParam::release_euclidean_loss_param() {
+  // @@protoc_insertion_point(field_release:LossParam.euclidean_loss_param)
+  
+  ::EuclideanLossParam* temp = euclidean_loss_param_;
+  euclidean_loss_param_ = NULL;
+  return temp;
+}
+inline void LossParam::set_allocated_euclidean_loss_param(::EuclideanLossParam* euclidean_loss_param) {
+  delete euclidean_loss_param_;
+  euclidean_loss_param_ = euclidean_loss_param;
+  if (euclidean_loss_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:LossParam.euclidean_loss_param)
+}
+
 // -------------------------------------------------------------------
 
 // ImageGeneratorParam
@@ -5724,6 +5956,62 @@ inline void ImageGeneratorParam::set_num_samples(::google::protobuf::int32 value
   
   num_samples_ = value;
   // @@protoc_insertion_point(field_set:ImageGeneratorParam.num_samples)
+}
+
+// -------------------------------------------------------------------
+
+// ImageReaderParam
+
+// string file_name = 1;
+inline void ImageReaderParam::clear_file_name() {
+  file_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ImageReaderParam::file_name() const {
+  // @@protoc_insertion_point(field_get:ImageReaderParam.file_name)
+  return file_name_.GetNoArena();
+}
+inline void ImageReaderParam::set_file_name(const ::std::string& value) {
+  
+  file_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:ImageReaderParam.file_name)
+}
+#if LANG_CXX11
+inline void ImageReaderParam::set_file_name(::std::string&& value) {
+  
+  file_name_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:ImageReaderParam.file_name)
+}
+#endif
+inline void ImageReaderParam::set_file_name(const char* value) {
+  
+  file_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:ImageReaderParam.file_name)
+}
+inline void ImageReaderParam::set_file_name(const char* value, size_t size) {
+  
+  file_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:ImageReaderParam.file_name)
+}
+inline ::std::string* ImageReaderParam::mutable_file_name() {
+  
+  // @@protoc_insertion_point(field_mutable:ImageReaderParam.file_name)
+  return file_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ImageReaderParam::release_file_name() {
+  // @@protoc_insertion_point(field_release:ImageReaderParam.file_name)
+  
+  return file_name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ImageReaderParam::set_allocated_file_name(::std::string* file_name) {
+  if (file_name != NULL) {
+    
+  } else {
+    
+  }
+  file_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), file_name);
+  // @@protoc_insertion_point(field_set_allocated:ImageReaderParam.file_name)
 }
 
 // -------------------------------------------------------------------
@@ -5806,6 +6094,45 @@ inline void GeneratorParam::set_allocated_image_generator_param(::ImageGenerator
     
   }
   // @@protoc_insertion_point(field_set_allocated:GeneratorParam.image_generator_param)
+}
+
+// .ImageReaderParam image_reader_param = 3;
+inline bool GeneratorParam::has_image_reader_param() const {
+  return this != internal_default_instance() && image_reader_param_ != NULL;
+}
+inline void GeneratorParam::clear_image_reader_param() {
+  if (GetArenaNoVirtual() == NULL && image_reader_param_ != NULL) delete image_reader_param_;
+  image_reader_param_ = NULL;
+}
+inline const ::ImageReaderParam& GeneratorParam::image_reader_param() const {
+  // @@protoc_insertion_point(field_get:GeneratorParam.image_reader_param)
+  return image_reader_param_ != NULL ? *image_reader_param_
+                         : *::ImageReaderParam::internal_default_instance();
+}
+inline ::ImageReaderParam* GeneratorParam::mutable_image_reader_param() {
+  
+  if (image_reader_param_ == NULL) {
+    image_reader_param_ = new ::ImageReaderParam;
+  }
+  // @@protoc_insertion_point(field_mutable:GeneratorParam.image_reader_param)
+  return image_reader_param_;
+}
+inline ::ImageReaderParam* GeneratorParam::release_image_reader_param() {
+  // @@protoc_insertion_point(field_release:GeneratorParam.image_reader_param)
+  
+  ::ImageReaderParam* temp = image_reader_param_;
+  image_reader_param_ = NULL;
+  return temp;
+}
+inline void GeneratorParam::set_allocated_image_reader_param(::ImageReaderParam* image_reader_param) {
+  delete image_reader_param_;
+  image_reader_param_ = image_reader_param;
+  if (image_reader_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:GeneratorParam.image_reader_param)
 }
 
 // -------------------------------------------------------------------
@@ -6978,6 +7305,10 @@ inline void NodeParam::set_allocated_display_param(::DisplayParam* display_param
 
 // -------------------------------------------------------------------
 
+// EuclideanLossParam
+
+// -------------------------------------------------------------------
+
 // SoftmaxLossParam
 
 // float alpha = 1;
@@ -7981,6 +8312,10 @@ GraphParam::phase() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

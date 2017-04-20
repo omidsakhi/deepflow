@@ -2,8 +2,6 @@
 #include "core/common_cu.h"
 
 #include <opencv2/opencv.hpp>
-//#include <opencv2/gpu/gpu.hpp>
-//#include <opencv2/gpu/gpumat.hpp>
 
 __global__
 void PictureGeneratorKernel(const int n, const float *in, unsigned char *out, const int picWidth, const int sq, const int numImages, const int perImageWidth, const int perImageHeight)

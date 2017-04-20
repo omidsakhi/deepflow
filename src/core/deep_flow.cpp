@@ -45,6 +45,20 @@ std::string DeepFlow::image_generator(std::shared_ptr<InitParam> initializer, in
 	return node_param->output(0);
 }
 
+std::string DeepFlow::imread(std::string file_path, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	auto generator_param = node_param->mutable_generator_param();
+	auto image_reader_param = generator_param->mutable_image_reader_param();
+	image_reader_param->set_file_name(file_path);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
+}
+
 std::string DeepFlow::add(std::string a, std::string b, float alpha, float beta, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = std::make_shared<NodeParam>();
 	node_param->set_name(_get_unique_node_name(name));
@@ -278,6 +292,21 @@ std::shared_ptr<NodeParam> DeepFlow::softmax_loss(std::string a, std::string b, 
 	softmax_loss_param->set_beta(0.0f);
 	_nodes.push_back(node_param);
 	return node_param;
+}
+
+std::string DeepFlow::euclidean_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	node_param->add_input(b);
+	auto loss_param = node_param->mutable_loss_param();
+	auto euclidean_loss_param = loss_param->mutable_euclidean_loss_param();
+	_nodes.push_back(node_param);
+	return node_param->output(0);
 }
 
 std::shared_ptr<SolverParam> DeepFlow::sgd_solver(float momentum, float learning_rate, std::string name) {

@@ -31,8 +31,10 @@
 #include "ops/cast_float.h"
 #include "ops/display.h"
 #include "ops/transposed_conv_2d.h"
+#include "ops/euclidean_loss.h"
 
 #include "generators/image_generator.h"
+#include "generators/image_reader.h"
 
 #include <unordered_map>
 #include <map>
@@ -50,7 +52,7 @@
 std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {	
 
 	if (node_param.has_accumulator_param())
-		return std::make_shared<Accumulator>(node_param);
+		return std::make_shared<Accumulator>(node_param);	
 	else if (node_param.has_generator_param()) {
 		const GeneratorParam &generator_param = node_param.generator_param();
 		if (generator_param.has_mnist_param()) {
@@ -73,6 +75,9 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 			}
 			return std::make_shared<ImageGenerator>(initializer,node_param);
 		}
+		else if (generator_param.has_image_reader_param()) {
+			return std::make_shared<ImageReader>(node_param);
+		}
 	}
 	else if (node_param.has_add_param())
 		return std::make_shared<Add>(node_param);
@@ -89,6 +94,8 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 	else if (node_param.has_loss_param()) {
 		if (node_param.loss_param().has_softmax_loss_param())
 			return std::make_shared<SoftmaxLoss>(node_param);
+		else if (node_param.loss_param().has_euclidean_loss_param())
+			return std::make_shared<EuclideanLoss>(node_param);
 	}
 	else if (node_param.has_matmul_param()) {
 		return std::make_shared<MatMul>(node_param);
@@ -298,8 +305,9 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 			for (auto node : *loss_nodes)
 				node->traverse(&_backward_observer, TraverseOrder::PreOrder, false);
 			for (auto var : *variable_nodes) {
-				auto solver = _solvers[var];
-				solver->apply(var);
+				auto map_var_to_solver = _solvers.find(var);
+				if (map_var_to_solver != _solvers.end())
+					map_var_to_solver->second->apply(var);
 			}
 		}
 		for (auto gen : *generators)

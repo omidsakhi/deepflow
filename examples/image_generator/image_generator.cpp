@@ -28,10 +28,12 @@ void main(int argc, char** argv) {
 		
 	if (FLAGS_i.empty()) {
 		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);
-		df.define_phase("Validation", PhaseParam_PhaseBehaviour_VALIDATION);		
+		//df.define_phase("Validation", PhaseParam_PhaseBehaviour_VALIDATION);		
 		auto solver = df.gain_solver(0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f);
-		auto generator = df.image_generator(df.random_uniform({ 100, 1, 28, 28 }, -1, 1), 10000);
-		df.display(generator, 100, "disp", { "Validation" });
+		auto image = df.imread("lena-256x256.jpg");		
+		auto generator = df.image_generator(df.random_uniform({ 1, 3, 28, 28 }, -1, 1), 1, solver, "gen", { "Train" });
+		auto euc = df.euclidean_loss(image, generator);
+		df.display(generator, 100, "disp", { "Train" });
 	}
 	else {
 		df.load_from_binary(FLAGS_i);	
@@ -54,4 +56,5 @@ void main(int argc, char** argv) {
 	}
 	
 }
+
 

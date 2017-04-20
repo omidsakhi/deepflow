@@ -19,7 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\examples\image_generator\image_generator.cpp" />
+    <ClCompile Include="..\..\examples\image_generator\image_generator.cpp">
+      <FileType>CppCode</FileType>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7903828E-E565-400D-AEE1-194E42654C84}</ProjectGuid>
