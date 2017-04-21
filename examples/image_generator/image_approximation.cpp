@@ -16,6 +16,7 @@ DEFINE_bool(printiter, false, "Print iteration message");
 DEFINE_bool(printepoch, true, "Print epoch message");
 DEFINE_int32(debug, 0, "Level of debug");
 DEFINE_int32(epoch, 1000, "Level of debug");
+DEFINE_string(image, "lena-256x256.jpg", "Input image to approximate");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -27,13 +28,18 @@ void main(int argc, char** argv) {
 	DeepFlow df;
 		
 	if (FLAGS_i.empty()) {
-		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);		
-		//auto solver = df.gain_solver(0.9999f, 0.001f, 100, 0.1f, 0.05f, 0.95f);
-		auto solver = df.adam_solver();
-		auto image = df.imread("lena-256x256.jpg", ImageReaderParam_Type_GRAY_ONLY);
+		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);	
+
+		//auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
+		auto solver = df.sgd_solver(1.0f, 0.01f);
+		//auto solver = df.adam_solver();
+		//auto solver = df.adadelta_solver();
+		
+		auto image = df.imread(FLAGS_image, ImageReaderParam_Type_GRAY_ONLY);
 		auto generator = df.image_generator(df.random_uniform({ 1, 1, 256, 256 }, -1, 1), 1, solver, "gen");
 		auto euc = df.euclidean_loss(generator, image);
-		df.display(generator, 100, "disp", { "Train" });		
+		df.display(image, 5, "input", { "Train" });
+		df.display(generator, 5, "approximation", { "Train" });		
 	}
 	else {
 		df.load_from_binary(FLAGS_i);	
