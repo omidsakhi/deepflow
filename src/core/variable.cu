@@ -34,10 +34,6 @@ void Variable::initForward() {
 	}
 }
 
-void Variable::forward() {
-	
-}
-
 void Variable::initBackward() {	
 	_outputs[0]->initDiff();
 }

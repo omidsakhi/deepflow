@@ -13,6 +13,7 @@ public:
 	int current_iteration = 0;
 	bool last_batch = false;
 	int debug_level = 0;
+	bool quit = false;
 };
 
 using ExecutionContextPtr = std::shared_ptr<ExecutionContext>;

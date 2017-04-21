@@ -11,8 +11,7 @@ class DeepFlowDllExport Variable : public Node {
 public:		
 	Variable(std::shared_ptr<Initializer> initializer, const NodeParam &param);	
 	virtual void initForward();
-	virtual void initBackward();	
-	virtual void forward();
+	virtual void initBackward();		
 	virtual int minNumInputs() { return 0;  }
 	virtual int minNumOutputs() { return 1; }	
 	void transferDataToParam();

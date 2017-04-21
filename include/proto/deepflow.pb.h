@@ -283,6 +283,27 @@ inline bool ReduceParam_ReduceOp_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<ReduceParam_ReduceOp>(
     ReduceParam_ReduceOp_descriptor(), name, value);
 }
+enum ImageReaderParam_Type {
+  ImageReaderParam_Type_GRAY_ONLY = 0,
+  ImageReaderParam_Type_COLOR_IF_AVAILABLE = 1,
+  ImageReaderParam_Type_ImageReaderParam_Type_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  ImageReaderParam_Type_ImageReaderParam_Type_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool ImageReaderParam_Type_IsValid(int value);
+const ImageReaderParam_Type ImageReaderParam_Type_Type_MIN = ImageReaderParam_Type_GRAY_ONLY;
+const ImageReaderParam_Type ImageReaderParam_Type_Type_MAX = ImageReaderParam_Type_COLOR_IF_AVAILABLE;
+const int ImageReaderParam_Type_Type_ARRAYSIZE = ImageReaderParam_Type_Type_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ImageReaderParam_Type_descriptor();
+inline const ::std::string& ImageReaderParam_Type_Name(ImageReaderParam_Type value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ImageReaderParam_Type_descriptor(), value);
+}
+inline bool ImageReaderParam_Type_Parse(
+    const ::std::string& name, ImageReaderParam_Type* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ImageReaderParam_Type>(
+    ImageReaderParam_Type_descriptor(), name, value);
+}
 enum MnistParam_ReaderType {
   MnistParam_ReaderType_TRAIN = 0,
   MnistParam_ReaderType_TEST = 1,
@@ -2547,6 +2568,32 @@ class ImageReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
 
   // nested types ----------------------------------------------------
 
+  typedef ImageReaderParam_Type Type;
+  static const Type GRAY_ONLY =
+    ImageReaderParam_Type_GRAY_ONLY;
+  static const Type COLOR_IF_AVAILABLE =
+    ImageReaderParam_Type_COLOR_IF_AVAILABLE;
+  static inline bool Type_IsValid(int value) {
+    return ImageReaderParam_Type_IsValid(value);
+  }
+  static const Type Type_MIN =
+    ImageReaderParam_Type_Type_MIN;
+  static const Type Type_MAX =
+    ImageReaderParam_Type_Type_MAX;
+  static const int Type_ARRAYSIZE =
+    ImageReaderParam_Type_Type_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  Type_descriptor() {
+    return ImageReaderParam_Type_descriptor();
+  }
+  static inline const ::std::string& Type_Name(Type value) {
+    return ImageReaderParam_Type_Name(value);
+  }
+  static inline bool Type_Parse(const ::std::string& name,
+      Type* value) {
+    return ImageReaderParam_Type_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   // string file_name = 1;
@@ -2563,11 +2610,18 @@ class ImageReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
   ::std::string* release_file_name();
   void set_allocated_file_name(::std::string* file_name);
 
+  // .ImageReaderParam.Type type = 2;
+  void clear_type();
+  static const int kTypeFieldNumber = 2;
+  ::ImageReaderParam_Type type() const;
+  void set_type(::ImageReaderParam_Type value);
+
   // @@protoc_insertion_point(class_scope:ImageReaderParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr file_name_;
+  int type_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -6014,6 +6068,20 @@ inline void ImageReaderParam::set_allocated_file_name(::std::string* file_name) 
   // @@protoc_insertion_point(field_set_allocated:ImageReaderParam.file_name)
 }
 
+// .ImageReaderParam.Type type = 2;
+inline void ImageReaderParam::clear_type() {
+  type_ = 0;
+}
+inline ::ImageReaderParam_Type ImageReaderParam::type() const {
+  // @@protoc_insertion_point(field_get:ImageReaderParam.type)
+  return static_cast< ::ImageReaderParam_Type >(type_);
+}
+inline void ImageReaderParam::set_type(::ImageReaderParam_Type value) {
+  
+  type_ = value;
+  // @@protoc_insertion_point(field_set:ImageReaderParam.type)
+}
+
 // -------------------------------------------------------------------
 
 // GeneratorParam
@@ -8426,6 +8494,11 @@ template <> struct is_proto_enum< ::ReduceParam_ReduceOp> : ::google::protobuf::
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::ReduceParam_ReduceOp>() {
   return ::ReduceParam_ReduceOp_descriptor();
+}
+template <> struct is_proto_enum< ::ImageReaderParam_Type> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::ImageReaderParam_Type>() {
+  return ::ImageReaderParam_Type_descriptor();
 }
 template <> struct is_proto_enum< ::MnistParam_ReaderType> : ::google::protobuf::internal::true_type {};
 template <>

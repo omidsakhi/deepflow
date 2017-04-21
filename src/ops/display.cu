@@ -53,7 +53,10 @@ void Display::forward() {
 	DF_KERNEL_CHECK();
 	DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) *num_pic_pixels, cudaMemcpyDeviceToHost));	
 	cv::imshow(name(), disp);
-	cv::waitKey(_delay_msec);
+	int key = cv::waitKey(_delay_msec);
+	if (key == 27) {
+		_context->quit = true;
+	}
 }
 
 void Display::backward() {

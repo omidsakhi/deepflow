@@ -27,13 +27,13 @@ void main(int argc, char** argv) {
 	DeepFlow df;
 		
 	if (FLAGS_i.empty()) {
-		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);
-		//df.define_phase("Validation", PhaseParam_PhaseBehaviour_VALIDATION);		
-		auto solver = df.gain_solver(0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f);
-		auto image = df.imread("lena-256x256.jpg");		
-		auto generator = df.image_generator(df.random_uniform({ 1, 3, 28, 28 }, -1, 1), 1, solver, "gen", { "Train" });
-		auto euc = df.euclidean_loss(image, generator);
-		df.display(generator, 100, "disp", { "Train" });
+		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);		
+		//auto solver = df.gain_solver(0.9999f, 0.001f, 100, 0.1f, 0.05f, 0.95f);
+		auto solver = df.adam_solver();
+		auto image = df.imread("lena-256x256.jpg", ImageReaderParam_Type_GRAY_ONLY);
+		auto generator = df.image_generator(df.random_uniform({ 1, 1, 256, 256 }, -1, 1), 1, solver, "gen");
+		auto euc = df.euclidean_loss(generator, image);
+		df.display(generator, 100, "disp", { "Train" });		
 	}
 	else {
 		df.load_from_binary(FLAGS_i);	

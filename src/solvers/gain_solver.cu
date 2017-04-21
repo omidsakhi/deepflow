@@ -41,7 +41,7 @@ void GainSolver::apply(std::shared_ptr<Variable> var) {
 	if (_initialized == false) 
 		init(var);
 	auto output = var->output(0);
-	auto size = output->value()->size();
+	auto size = output->value()->size();	
 	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->data(), _previous_gradient, _gain, _my_param.max_gain(), _my_param.min_gain(), _my_param.gain_plus(), _my_param.gain_mult(), _my_param.momentum(), _my_param.learning_rate());
 	DF_KERNEL_CHECK();
 }

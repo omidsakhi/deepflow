@@ -17,7 +17,7 @@ EuclideanLoss::EuclideanLoss(const NodeParam &param) : Loss(param) {
 
 void EuclideanLoss::initForward() {
 	LOG(INFO) << "Initializing EuclideanLoss " << _name << " - " << _inputs[0]->value()->shape();
-	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input size != target size";	
+	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input " << _inputs[0]->value()->shape() << " != " << " Target " << _inputs[1]->value()->shape();
 	_outputs[0]->initValue(_inputs[0]->value()->dims());	
 }
 
@@ -31,6 +31,6 @@ void EuclideanLoss::forward() {
 	DF_KERNEL_CHECK();
 }
 
-void EuclideanLoss::backward() {
+void EuclideanLoss::backward() {	
 	DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->value()->data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice));
 }

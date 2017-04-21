@@ -156,7 +156,7 @@ std::string Tensor::toString() const {
 		{
 			auto h_data = cpyToHost<float>();
 			for (int i = 0; i < h_data->size(); ++i)
-				output += std::to_string(h_data->at(i));
+				output += std::to_string(h_data->at(i)) + " ";
 		}
 		break;
 		default:

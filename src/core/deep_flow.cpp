@@ -45,7 +45,7 @@ std::string DeepFlow::image_generator(std::shared_ptr<InitParam> initializer, in
 	return node_param->output(0);
 }
 
-std::string DeepFlow::imread(std::string file_path, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::imread(std::string file_path, ImageReaderParam_Type type, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = std::make_shared<NodeParam>();
 	node_param->set_name(_get_unique_node_name(name));
@@ -55,6 +55,7 @@ std::string DeepFlow::imread(std::string file_path, std::string name, std::initi
 	auto generator_param = node_param->mutable_generator_param();
 	auto image_reader_param = generator_param->mutable_image_reader_param();
 	image_reader_param->set_file_name(file_path);
+	image_reader_param->set_type(type);
 	_nodes.push_back(node_param);
 	return node_param->output(0);
 }

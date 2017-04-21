@@ -10,6 +10,10 @@ class Initializer;
 
 class DeepFlowDllExport ImageReader : public Generator, public Node {
 public:
+	enum ColorType {
+		GRAY_ONLY,
+		COLOR_IF_AVAILABLE
+	};
 	ImageReader(const NodeParam &param);
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }

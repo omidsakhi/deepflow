@@ -21,18 +21,26 @@ void ImageReader::nextBatch() {
 }
 
 void ImageReader::initForward() {
-	
-	auto file_name = _param.generator_param().image_reader_param().file_name();
-	img = cv::imread(file_name, 0);
+	auto image_reader_param = _param.generator_param().image_reader_param();
+	auto file_name = image_reader_param.file_name();
+	auto type = image_reader_param.type();
+	if (type == ImageReaderParam_Type_GRAY_ONLY)
+		img = cv::imread(file_name, 0);
+	else
+		img = cv::imread(file_name);
 	LOG_IF(FATAL, img.empty()) << "Image " << file_name << "does not exist.";		
 	_outputs[0]->initValue({ 1, img.channels(), img.rows , img.cols });
 	LOG(INFO) << "Initializing Image " << _name << " - " << _outputs[0]->value()->shape();
-	size_t size = _outputs[0]->value()->size();
+	size_t size = _outputs[0]->value()->size();	
+	unsigned char *d_img;
+	DF_CUDA_CHECK(cudaMalloc(&d_img, size));
+	DF_CUDA_CHECK(cudaMemcpy(d_img, img.ptr<uchar>(), size, cudaMemcpyHostToDevice));
 	//cudaStream_t stream;
 	//DF_CUDA_CHECK(cudaStreamCreate(&stream));
- 	ImageReaderKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, img.ptr<uchar>(), (float*) _outputs[0]->value()->mutableData());
+ 	ImageReaderKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, d_img, (float*) _outputs[0]->value()->mutableData());
 	DF_KERNEL_CHECK();
 	//DF_CUDA_CHECK(cudaStreamSynchronize(stream));
+	DF_CUDA_CHECK(cudaFree(d_img));	
 }
 
 void ImageReader::initBackward() {

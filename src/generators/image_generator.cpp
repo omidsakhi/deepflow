@@ -50,7 +50,7 @@ void ImageGenerator::initBackward() {
 }
 
 void ImageGenerator::forward() {
-
+	
 }
 
 void ImageGenerator::backward() {

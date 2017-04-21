@@ -107,7 +107,7 @@ namespace protobuf_deepflow_2eproto {
 namespace {
 
 ::google::protobuf::Metadata file_level_metadata[42];
-const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[7];
+const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[8];
 
 }  // namespace
 
@@ -249,6 +249,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageReaderParam, file_name_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageReaderParam, type_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -426,26 +427,26 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 121, -1, sizeof(LossParam)},
   { 127, -1, sizeof(ImageGeneratorParam)},
   { 132, -1, sizeof(ImageReaderParam)},
-  { 137, -1, sizeof(GeneratorParam)},
-  { 144, -1, sizeof(MnistParam)},
-  { 151, -1, sizeof(CastFloatParam)},
-  { 155, -1, sizeof(NodeParam)},
-  { 184, -1, sizeof(SquareParam)},
-  { 188, -1, sizeof(EuclideanLossParam)},
-  { 192, -1, sizeof(SoftmaxLossParam)},
-  { 198, -1, sizeof(SoftmaxParam)},
-  { 204, -1, sizeof(InitFillParam)},
-  { 209, -1, sizeof(InitIndexFillParam)},
-  { 214, -1, sizeof(InitRandomUniformParam)},
-  { 220, -1, sizeof(InitStepParam)},
-  { 226, -1, sizeof(InitParam)},
-  { 236, -1, sizeof(SGDSolverParam)},
-  { 242, -1, sizeof(GainSolverParam)},
-  { 252, -1, sizeof(AdaDeltaSolverParam)},
-  { 259, -1, sizeof(AdamSolverParam)},
-  { 267, -1, sizeof(SolverParam)},
-  { 276, -1, sizeof(PhaseParam)},
-  { 282, -1, sizeof(GraphParam)},
+  { 138, -1, sizeof(GeneratorParam)},
+  { 145, -1, sizeof(MnistParam)},
+  { 152, -1, sizeof(CastFloatParam)},
+  { 156, -1, sizeof(NodeParam)},
+  { 185, -1, sizeof(SquareParam)},
+  { 189, -1, sizeof(EuclideanLossParam)},
+  { 193, -1, sizeof(SoftmaxLossParam)},
+  { 199, -1, sizeof(SoftmaxParam)},
+  { 205, -1, sizeof(InitFillParam)},
+  { 210, -1, sizeof(InitIndexFillParam)},
+  { 215, -1, sizeof(InitRandomUniformParam)},
+  { 221, -1, sizeof(InitStepParam)},
+  { 227, -1, sizeof(InitParam)},
+  { 237, -1, sizeof(SGDSolverParam)},
+  { 243, -1, sizeof(GainSolverParam)},
+  { 253, -1, sizeof(AdaDeltaSolverParam)},
+  { 260, -1, sizeof(AdamSolverParam)},
+  { 268, -1, sizeof(SolverParam)},
+  { 277, -1, sizeof(PhaseParam)},
+  { 283, -1, sizeof(GraphParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -782,74 +783,76 @@ void AddDescriptorsImpl() {
       "\030\001 \001(\0132\021.SoftmaxLossParam\0221\n\024euclidean_l"
       "oss_param\030\002 \001(\0132\023.EuclideanLossParam\"*\n\023"
       "ImageGeneratorParam\022\023\n\013num_samples\030\001 \001(\005"
-      "\"%\n\020ImageReaderParam\022\021\n\tfile_name\030\001 \001(\t\""
-      "\226\001\n\016GeneratorParam\022 \n\013mnist_param\030\001 \001(\0132"
-      "\013.MnistParam\0223\n\025image_generator_param\030\002 "
-      "\001(\0132\024.ImageGeneratorParam\022-\n\022image_reade"
-      "r_param\030\003 \001(\0132\021.ImageReaderParam\"~\n\nMnis"
-      "tParam\022\023\n\013folder_path\030\001 \001(\t\022$\n\004type\030\002 \001("
-      "\0162\026.MnistParam.ReaderType\022\022\n\nbatch_size\030"
-      "\003 \001(\005\"!\n\nReaderType\022\t\n\005TRAIN\020\000\022\010\n\004TEST\020\001"
-      "\"\020\n\016CastFloatParam\"\373\006\n\tNodeParam\022\014\n\004name"
-      "\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022\016\n\006output\030\003 \003(\t\022\r\n"
-      "\005phase\030\004 \003(\t\022\036\n\nloss_param\0302 \001(\0132\n.LossP"
-      "aram\022(\n\017generator_param\0303 \001(\0132\017.Generato"
-      "rParam\022&\n\016variable_param\030d \001(\0132\016.Variabl"
-      "eParam\022-\n\022place_holder_param\030e \001(\0132\021.Pla"
-      "ceHolderParam\022,\n\021phaseplexer_param\030f \001(\013"
-      "2\021.PhaseplexerParam\022\034\n\tadd_param\030g \001(\0132\t"
-      ".AddParam\022%\n\016bias_add_param\030h \001(\0132\r.Bias"
-      "AddParam\022#\n\rconv_2d_param\030i \001(\0132\014.Conv2d"
-      "Param\0228\n\030transposed_conv_2d_param\030j \001(\0132"
-      "\026.TransposedConv2dParam\022$\n\rdropout_param"
-      "\030k \001(\0132\r.DropoutParam\022\036\n\nrelu_param\030l \001("
-      "\0132\n.ReluParam\022$\n\rsoftmax_param\030m \001(\0132\r.S"
-      "oftmaxParam\022\"\n\014square_param\030n \001(\0132\014.Squa"
-      "reParam\022\"\n\014matmul_param\030o \001(\0132\014.MatMulPa"
-      "ram\022$\n\rpooling_param\030p \001(\0132\r.PoolingPara"
-      "m\022\"\n\014reduce_param\030q \001(\0132\014.ReduceParam\022 \n"
-      "\013equal_param\030r \001(\0132\013.EqualParam\022 \n\013print"
-      "_param\030s \001(\0132\013.PrintParam\022)\n\020cast_float_"
-      "param\030t \001(\0132\017.CastFloatParam\022,\n\021accumula"
-      "tor_param\030u \001(\0132\021.AccumulatorParam\022$\n\rdi"
-      "splay_param\030v \001(\0132\r.DisplayParam\"\r\n\013Squa"
-      "reParam\"\024\n\022EuclideanLossParam\"/\n\020Softmax"
-      "LossParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002\"+"
-      "\n\014SoftmaxParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 "
-      "\001(\002\"\036\n\rInitFillParam\022\r\n\005value\030\001 \001(\002\"$\n\022I"
-      "nitIndexFillParam\022\016\n\006offset\030\001 \001(\002\"2\n\026Ini"
-      "tRandomUniformParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030"
-      "\002 \001(\002\")\n\rInitStepParam\022\013\n\003min\030\001 \001(\002\022\013\n\003m"
-      "ax\030\002 \001(\002\"\375\001\n\tInitParam\022\"\n\014tensor_param\030\001"
-      " \001(\0132\014.TensorParam\022\036\n\tinit_data\030\002 \001(\0132\013."
-      "TensorData\022\"\n\nfill_param\030\003 \001(\0132\016.InitFil"
-      "lParam\022-\n\020index_fill_param\030\004 \001(\0132\023.InitI"
-      "ndexFillParam\0225\n\024random_uniform_param\030\005 "
-      "\001(\0132\027.InitRandomUniformParam\022\"\n\nstep_par"
-      "am\030\006 \001(\0132\016.InitStepParam\"9\n\016SGDSolverPar"
-      "am\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030\002 "
-      "\001(\002\"\204\001\n\017GainSolverParam\022\025\n\rlearning_rate"
-      "\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\022\020\n\010max_gain\030\003 \001"
-      "(\002\022\020\n\010min_gain\030\004 \001(\002\022\021\n\tgain_plus\030\005 \001(\002\022"
-      "\021\n\tgain_mult\030\006 \001(\002\"M\n\023AdaDeltaSolverPara"
-      "m\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030\002 \001"
-      "(\002\022\r\n\005delta\030\003 \001(\002\"S\n\017AdamSolverParam\022\025\n\r"
-      "learning_rate\030\001 \001(\002\022\r\n\005beta1\030\002 \001(\002\022\r\n\005be"
-      "ta2\030\003 \001(\002\022\013\n\003eps\030\004 \001(\002\"\275\001\n\013SolverParam\022\014"
-      "\n\004name\030\001 \001(\t\022#\n\nsgd_solver\030\002 \001(\0132\017.SGDSo"
-      "lverParam\022%\n\013gain_solver\030\003 \001(\0132\020.GainSol"
-      "verParam\022%\n\013adam_solver\030\004 \001(\0132\020.AdamSolv"
-      "erParam\022-\n\017adadelta_solver\030\005 \001(\0132\024.AdaDe"
-      "ltaSolverParam\"\206\001\n\nPhaseParam\022\r\n\005phase\030\001"
-      " \001(\t\022-\n\tbehaviour\030\002 \001(\0162\032.PhaseParam.Pha"
-      "seBehaviour\":\n\016PhaseBehaviour\022\t\n\005TRAIN\020\000"
-      "\022\016\n\nVALIDATION\020\001\022\r\n\tINFERENCE\020\002\"`\n\nGraph"
-      "Param\022\030\n\004node\030\001 \003(\0132\n.NodeParam\022\034\n\006solve"
-      "r\030\002 \003(\0132\014.SolverParam\022\032\n\005phase\030\003 \003(\0132\013.P"
-      "haseParamb\006proto3"
+      "\"z\n\020ImageReaderParam\022\021\n\tfile_name\030\001 \001(\t\022"
+      "$\n\004type\030\002 \001(\0162\026.ImageReaderParam.Type\"-\n"
+      "\004Type\022\r\n\tGRAY_ONLY\020\000\022\026\n\022COLOR_IF_AVAILAB"
+      "LE\020\001\"\226\001\n\016GeneratorParam\022 \n\013mnist_param\030\001"
+      " \001(\0132\013.MnistParam\0223\n\025image_generator_par"
+      "am\030\002 \001(\0132\024.ImageGeneratorParam\022-\n\022image_"
+      "reader_param\030\003 \001(\0132\021.ImageReaderParam\"~\n"
+      "\nMnistParam\022\023\n\013folder_path\030\001 \001(\t\022$\n\004type"
+      "\030\002 \001(\0162\026.MnistParam.ReaderType\022\022\n\nbatch_"
+      "size\030\003 \001(\005\"!\n\nReaderType\022\t\n\005TRAIN\020\000\022\010\n\004T"
+      "EST\020\001\"\020\n\016CastFloatParam\"\373\006\n\tNodeParam\022\014\n"
+      "\004name\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022\016\n\006output\030\003 \003"
+      "(\t\022\r\n\005phase\030\004 \003(\t\022\036\n\nloss_param\0302 \001(\0132\n."
+      "LossParam\022(\n\017generator_param\0303 \001(\0132\017.Gen"
+      "eratorParam\022&\n\016variable_param\030d \001(\0132\016.Va"
+      "riableParam\022-\n\022place_holder_param\030e \001(\0132"
+      "\021.PlaceHolderParam\022,\n\021phaseplexer_param\030"
+      "f \001(\0132\021.PhaseplexerParam\022\034\n\tadd_param\030g "
+      "\001(\0132\t.AddParam\022%\n\016bias_add_param\030h \001(\0132\r"
+      ".BiasAddParam\022#\n\rconv_2d_param\030i \001(\0132\014.C"
+      "onv2dParam\0228\n\030transposed_conv_2d_param\030j"
+      " \001(\0132\026.TransposedConv2dParam\022$\n\rdropout_"
+      "param\030k \001(\0132\r.DropoutParam\022\036\n\nrelu_param"
+      "\030l \001(\0132\n.ReluParam\022$\n\rsoftmax_param\030m \001("
+      "\0132\r.SoftmaxParam\022\"\n\014square_param\030n \001(\0132\014"
+      ".SquareParam\022\"\n\014matmul_param\030o \001(\0132\014.Mat"
+      "MulParam\022$\n\rpooling_param\030p \001(\0132\r.Poolin"
+      "gParam\022\"\n\014reduce_param\030q \001(\0132\014.ReducePar"
+      "am\022 \n\013equal_param\030r \001(\0132\013.EqualParam\022 \n\013"
+      "print_param\030s \001(\0132\013.PrintParam\022)\n\020cast_f"
+      "loat_param\030t \001(\0132\017.CastFloatParam\022,\n\021acc"
+      "umulator_param\030u \001(\0132\021.AccumulatorParam\022"
+      "$\n\rdisplay_param\030v \001(\0132\r.DisplayParam\"\r\n"
+      "\013SquareParam\"\024\n\022EuclideanLossParam\"/\n\020So"
+      "ftmaxLossParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 "
+      "\001(\002\"+\n\014SoftmaxParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004be"
+      "ta\030\002 \001(\002\"\036\n\rInitFillParam\022\r\n\005value\030\001 \001(\002"
+      "\"$\n\022InitIndexFillParam\022\016\n\006offset\030\001 \001(\002\"2"
+      "\n\026InitRandomUniformParam\022\013\n\003min\030\001 \001(\002\022\013\n"
+      "\003max\030\002 \001(\002\")\n\rInitStepParam\022\013\n\003min\030\001 \001(\002"
+      "\022\013\n\003max\030\002 \001(\002\"\375\001\n\tInitParam\022\"\n\014tensor_pa"
+      "ram\030\001 \001(\0132\014.TensorParam\022\036\n\tinit_data\030\002 \001"
+      "(\0132\013.TensorData\022\"\n\nfill_param\030\003 \001(\0132\016.In"
+      "itFillParam\022-\n\020index_fill_param\030\004 \001(\0132\023."
+      "InitIndexFillParam\0225\n\024random_uniform_par"
+      "am\030\005 \001(\0132\027.InitRandomUniformParam\022\"\n\nste"
+      "p_param\030\006 \001(\0132\016.InitStepParam\"9\n\016SGDSolv"
+      "erParam\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010moment"
+      "um\030\002 \001(\002\"\204\001\n\017GainSolverParam\022\025\n\rlearning"
+      "_rate\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\022\020\n\010max_gai"
+      "n\030\003 \001(\002\022\020\n\010min_gain\030\004 \001(\002\022\021\n\tgain_plus\030\005"
+      " \001(\002\022\021\n\tgain_mult\030\006 \001(\002\"M\n\023AdaDeltaSolve"
+      "rParam\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentu"
+      "m\030\002 \001(\002\022\r\n\005delta\030\003 \001(\002\"S\n\017AdamSolverPara"
+      "m\022\025\n\rlearning_rate\030\001 \001(\002\022\r\n\005beta1\030\002 \001(\002\022"
+      "\r\n\005beta2\030\003 \001(\002\022\013\n\003eps\030\004 \001(\002\"\275\001\n\013SolverPa"
+      "ram\022\014\n\004name\030\001 \001(\t\022#\n\nsgd_solver\030\002 \001(\0132\017."
+      "SGDSolverParam\022%\n\013gain_solver\030\003 \001(\0132\020.Ga"
+      "inSolverParam\022%\n\013adam_solver\030\004 \001(\0132\020.Ada"
+      "mSolverParam\022-\n\017adadelta_solver\030\005 \001(\0132\024."
+      "AdaDeltaSolverParam\"\206\001\n\nPhaseParam\022\r\n\005ph"
+      "ase\030\001 \001(\t\022-\n\tbehaviour\030\002 \001(\0162\032.PhasePara"
+      "m.PhaseBehaviour\":\n\016PhaseBehaviour\022\t\n\005TR"
+      "AIN\020\000\022\016\n\nVALIDATION\020\001\022\r\n\tINFERENCE\020\002\"`\n\n"
+      "GraphParam\022\030\n\004node\030\001 \003(\0132\n.NodeParam\022\034\n\006"
+      "solver\030\002 \003(\0132\014.SolverParam\022\032\n\005phase\030\003 \003("
+      "\0132\013.PhaseParamb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 4337);
+      descriptor, 4422);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -993,9 +996,30 @@ const ReduceParam_ReduceOp ReduceParam::ReduceOp_MIN;
 const ReduceParam_ReduceOp ReduceParam::ReduceOp_MAX;
 const int ReduceParam::ReduceOp_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-const ::google::protobuf::EnumDescriptor* MnistParam_ReaderType_descriptor() {
+const ::google::protobuf::EnumDescriptor* ImageReaderParam_Type_descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_deepflow_2eproto::file_level_enum_descriptors[5];
+}
+bool ImageReaderParam_Type_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const ImageReaderParam_Type ImageReaderParam::GRAY_ONLY;
+const ImageReaderParam_Type ImageReaderParam::COLOR_IF_AVAILABLE;
+const ImageReaderParam_Type ImageReaderParam::Type_MIN;
+const ImageReaderParam_Type ImageReaderParam::Type_MAX;
+const int ImageReaderParam::Type_ARRAYSIZE;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+const ::google::protobuf::EnumDescriptor* MnistParam_ReaderType_descriptor() {
+  protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_deepflow_2eproto::file_level_enum_descriptors[6];
 }
 bool MnistParam_ReaderType_IsValid(int value) {
   switch (value) {
@@ -1016,7 +1040,7 @@ const int MnistParam::ReaderType_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 const ::google::protobuf::EnumDescriptor* PhaseParam_PhaseBehaviour_descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_enum_descriptors[6];
+  return protobuf_deepflow_2eproto::file_level_enum_descriptors[7];
 }
 bool PhaseParam_PhaseBehaviour_IsValid(int value) {
   switch (value) {
@@ -7696,6 +7720,7 @@ void ImageGeneratorParam::set_num_samples(::google::protobuf::int32 value) {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int ImageReaderParam::kFileNameFieldNumber;
+const int ImageReaderParam::kTypeFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ImageReaderParam::ImageReaderParam()
@@ -7715,11 +7740,13 @@ ImageReaderParam::ImageReaderParam(const ImageReaderParam& from)
   if (from.file_name().size() > 0) {
     file_name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_name_);
   }
+  type_ = from.type_;
   // @@protoc_insertion_point(copy_constructor:ImageReaderParam)
 }
 
 void ImageReaderParam::SharedCtor() {
   file_name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  type_ = 0;
   _cached_size_ = 0;
 }
 
@@ -7758,6 +7785,7 @@ ImageReaderParam* ImageReaderParam::New(::google::protobuf::Arena* arena) const 
 void ImageReaderParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:ImageReaderParam)
   file_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  type_ = 0;
 }
 
 bool ImageReaderParam::MergePartialFromCodedStream(
@@ -7780,6 +7808,21 @@ bool ImageReaderParam::MergePartialFromCodedStream(
             this->file_name().data(), this->file_name().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "ImageReaderParam.file_name"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .ImageReaderParam.Type type = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          set_type(static_cast< ::ImageReaderParam_Type >(value));
         } else {
           goto handle_unusual;
         }
@@ -7820,6 +7863,12 @@ void ImageReaderParam::SerializeWithCachedSizes(
       1, this->file_name(), output);
   }
 
+  // .ImageReaderParam.Type type = 2;
+  if (this->type() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      2, this->type(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:ImageReaderParam)
 }
 
@@ -7838,6 +7887,12 @@ void ImageReaderParam::SerializeWithCachedSizes(
         1, this->file_name(), target);
   }
 
+  // .ImageReaderParam.Type type = 2;
+  if (this->type() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      2, this->type(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:ImageReaderParam)
   return target;
 }
@@ -7851,6 +7906,12 @@ size_t ImageReaderParam::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->file_name());
+  }
+
+  // .ImageReaderParam.Type type = 2;
+  if (this->type() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -7883,6 +7944,9 @@ void ImageReaderParam::MergeFrom(const ImageReaderParam& from) {
 
     file_name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_name_);
   }
+  if (from.type() != 0) {
+    set_type(from.type());
+  }
 }
 
 void ImageReaderParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -7909,6 +7973,7 @@ void ImageReaderParam::Swap(ImageReaderParam* other) {
 }
 void ImageReaderParam::InternalSwap(ImageReaderParam* other) {
   file_name_.Swap(&other->file_name_);
+  std::swap(type_, other->type_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -7970,6 +8035,20 @@ void ImageReaderParam::set_allocated_file_name(::std::string* file_name) {
   }
   file_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), file_name);
   // @@protoc_insertion_point(field_set_allocated:ImageReaderParam.file_name)
+}
+
+// .ImageReaderParam.Type type = 2;
+void ImageReaderParam::clear_type() {
+  type_ = 0;
+}
+::ImageReaderParam_Type ImageReaderParam::type() const {
+  // @@protoc_insertion_point(field_get:ImageReaderParam.type)
+  return static_cast< ::ImageReaderParam_Type >(type_);
+}
+void ImageReaderParam::set_type(::ImageReaderParam_Type value) {
+  
+  type_ = value;
+  // @@protoc_insertion_point(field_set:ImageReaderParam.type)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

@@ -287,8 +287,7 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 		for (auto gen : *generators) {
 			if (gen->isLastBatch())
 				any_last_batch = true;
-		}
-		LOG_IF(FATAL, any_last_batch == true && iteration_per_epoch == 1);
+		}		
 		if (iteration)
 			context->current_iteration = *iteration;
 		context->current_iteration_per_epoch = iteration_per_epoch;
@@ -306,8 +305,9 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 				node->traverse(&_backward_observer, TraverseOrder::PreOrder, false);
 			for (auto var : *variable_nodes) {
 				auto map_var_to_solver = _solvers.find(var);
-				if (map_var_to_solver != _solvers.end())
+				if (map_var_to_solver != _solvers.end()) {					
 					map_var_to_solver->second->apply(var);
+				}
 			}
 		}
 		for (auto gen : *generators)
@@ -315,7 +315,7 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 		if (iteration)
 			(*iteration)++;
 		iteration_per_epoch++;
-	} while (any_last_batch == false);
+	} while (any_last_batch == false && context->quit != true);
 }
 
 void Session::run(std::string phase, int max_epoch, bool print_iteration, bool print_epoch, int debug_level) {
@@ -368,6 +368,8 @@ void Session::run(std::string phase, int max_epoch, bool print_iteration, bool p
 			std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
 			if (print_epoch)
 				std::cout << "<-- Epoch " << epoch << " Elapsed time: " << elapsed_epoch.count() << " seconds" << std::endl;
+			if (execution_context->quit == true)
+				break;
 		}
 	}
 	else {

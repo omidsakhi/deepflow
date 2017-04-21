@@ -145,7 +145,12 @@ message ImageGeneratorParam {
 }
 
 message ImageReaderParam {
+	enum Type {
+		GRAY_ONLY = 0;
+		COLOR_IF_AVAILABLE = 1;
+	}
 	string file_name = 1;
+	Type type = 2;
 }
 
 message GeneratorParam {	
