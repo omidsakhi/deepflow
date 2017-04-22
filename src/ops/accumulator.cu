@@ -2,8 +2,6 @@
 
 #include "core/common_cu.h"
 
-#include "ops/relu.h"
-
 __global__
 void AccumulatorKernel(int n, const float * __restrict__ x, float * __restrict__ y)
 {

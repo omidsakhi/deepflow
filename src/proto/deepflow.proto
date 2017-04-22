@@ -99,7 +99,7 @@ message MatMulParam {
 	float beta = 2;
 }
 
-message ReluParam {
+message LeakyReluParam {
 	float negative_slope = 1;	
 }
 
@@ -142,6 +142,18 @@ message LossParam {
 
 message DataGeneratorParam {	
 	int32 num_samples = 1;	
+}
+
+message ActivationParam {
+	enum Type {
+		CUDNN_ACTIVATION_SIGMOID      = 0;
+		CUDNN_ACTIVATION_RELU         = 1;
+		CUDNN_ACTIVATION_TANH         = 2;
+		CUDNN_ACTIVATION_CLIPPED_RELU = 3;
+		CUDNN_ACTIVATION_ELU          = 4;
+	}
+	Type type = 1;
+	float coef = 2;
 }
 
 message ImageReaderParam {
@@ -190,7 +202,7 @@ message NodeParam {
   Conv2dParam conv_2d_param = 105;
   TransposedConv2dParam transposed_conv_2d_param = 106;
   DropoutParam dropout_param = 107;
-  ReluParam relu_param = 108;
+  LeakyReluParam leaky_relu_param = 108;
   SoftmaxParam softmax_param = 109;  
   SquareParam square_param = 110;
   MatMulParam matmul_param = 111;
@@ -201,6 +213,7 @@ message NodeParam {
   CastFloatParam cast_float_param = 116;
   AccumulatorParam accumulator_param = 117;
   DisplayParam display_param = 118;
+  ActivationParam activation_param = 119;
 }
 
 message SquareParam {

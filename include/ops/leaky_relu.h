@@ -2,9 +2,9 @@
 
 #include "core/node.h"
 
-class DeepFlowDllExport Relu : public Node {
+class DeepFlowDllExport LeakyRelu : public Node {
 public:
-	Relu(const NodeParam &param);	
+	LeakyRelu(const NodeParam &param);	
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();

@@ -10,9 +10,6 @@
     <CudaCompile Include="..\..\src\ops\bias_add.cu">
       <Filter>source\ops</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\relu.cu">
-      <Filter>source\ops</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\ops\square.cu">
       <Filter>source\ops</Filter>
     </CudaCompile>
@@ -56,6 +53,9 @@
       <Filter>source\generators</Filter>
     </CudaCompile>
     <CudaCompile Include="..\..\src\ops\euclidean_loss.cu">
+      <Filter>source\ops</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\ops\leaky_relu.cu">
       <Filter>source\ops</Filter>
     </CudaCompile>
   </ItemGroup>
@@ -144,6 +144,9 @@
     <ClCompile Include="..\..\src\generators\data_generator.cpp">
       <Filter>source\generators</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\ops\activation.cpp">
+      <Filter>source\ops</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -174,9 +177,6 @@
       <Filter>include\ops</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ops\matmul.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\relu.h">
       <Filter>include\ops</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\core\export.h">
@@ -298,6 +298,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\generators\data_generator.h">
       <Filter>include\generators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\activation.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\leaky_relu.h">
+      <Filter>include\ops</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -48,6 +48,7 @@
     <ClInclude Include="..\..\include\observers\node_finder.h" />
     <ClInclude Include="..\..\include\observers\reset.h" />
     <ClInclude Include="..\..\include\ops\accumulator.h" />
+    <ClInclude Include="..\..\include\ops\activation.h" />
     <ClInclude Include="..\..\include\ops\add.h" />
     <ClInclude Include="..\..\include\ops\bias_add.h" />
     <ClInclude Include="..\..\include\ops\convolution_2d.h" />
@@ -59,7 +60,7 @@
     <ClInclude Include="..\..\include\ops\pooling.h" />
     <ClInclude Include="..\..\include\ops\print.h" />
     <ClInclude Include="..\..\include\ops\reduce.h" />
-    <ClInclude Include="..\..\include\ops\relu.h" />
+    <ClInclude Include="..\..\include\ops\leaky_relu.h" />
     <ClInclude Include="..\..\include\ops\softmax.h" />
     <ClInclude Include="..\..\include\ops\softmax_loss.h" />
     <ClInclude Include="..\..\include\ops\square.h" />
@@ -89,6 +90,7 @@
     </CudaCompile>
     <ClCompile Include="..\..\src\generators\mnist_reader.cpp" />
     <ClCompile Include="..\..\src\observers\reset.cpp" />
+    <ClCompile Include="..\..\src\ops\activation.cpp" />
     <ClCompile Include="..\..\src\ops\pooling.cpp">
       <FileType>Document</FileType>
     </ClCompile>
@@ -138,7 +140,7 @@
     <ClCompile Include="..\..\src\ops\matmul.cpp">
       <FileType>Document</FileType>
     </ClCompile>
-    <CudaCompile Include="..\..\src\ops\relu.cu" />
+    <CudaCompile Include="..\..\src\ops\leaky_relu.cu" />
     <ClCompile Include="..\..\src\ops\softmax.cpp">
       <FileType>Document</FileType>
     </ClCompile>

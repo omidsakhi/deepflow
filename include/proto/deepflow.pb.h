@@ -33,6 +33,9 @@
 class AccumulatorParam;
 class AccumulatorParamDefaultTypeInternal;
 extern AccumulatorParamDefaultTypeInternal _AccumulatorParam_default_instance_;
+class ActivationParam;
+class ActivationParamDefaultTypeInternal;
+extern ActivationParamDefaultTypeInternal _ActivationParam_default_instance_;
 class AdaDeltaSolverParam;
 class AdaDeltaSolverParamDefaultTypeInternal;
 extern AdaDeltaSolverParamDefaultTypeInternal _AdaDeltaSolverParam_default_instance_;
@@ -93,6 +96,9 @@ extern InitRandomUniformParamDefaultTypeInternal _InitRandomUniformParam_default
 class InitStepParam;
 class InitStepParamDefaultTypeInternal;
 extern InitStepParamDefaultTypeInternal _InitStepParam_default_instance_;
+class LeakyReluParam;
+class LeakyReluParamDefaultTypeInternal;
+extern LeakyReluParamDefaultTypeInternal _LeakyReluParam_default_instance_;
 class LossParam;
 class LossParamDefaultTypeInternal;
 extern LossParamDefaultTypeInternal _LossParam_default_instance_;
@@ -123,9 +129,6 @@ extern PrintParamDefaultTypeInternal _PrintParam_default_instance_;
 class ReduceParam;
 class ReduceParamDefaultTypeInternal;
 extern ReduceParamDefaultTypeInternal _ReduceParam_default_instance_;
-class ReluParam;
-class ReluParamDefaultTypeInternal;
-extern ReluParamDefaultTypeInternal _ReluParam_default_instance_;
 class SGDSolverParam;
 class SGDSolverParamDefaultTypeInternal;
 extern SGDSolverParamDefaultTypeInternal _SGDSolverParam_default_instance_;
@@ -282,6 +285,30 @@ inline bool ReduceParam_ReduceOp_Parse(
     const ::std::string& name, ReduceParam_ReduceOp* value) {
   return ::google::protobuf::internal::ParseNamedEnum<ReduceParam_ReduceOp>(
     ReduceParam_ReduceOp_descriptor(), name, value);
+}
+enum ActivationParam_Type {
+  ActivationParam_Type_CUDNN_ACTIVATION_SIGMOID = 0,
+  ActivationParam_Type_CUDNN_ACTIVATION_RELU = 1,
+  ActivationParam_Type_CUDNN_ACTIVATION_TANH = 2,
+  ActivationParam_Type_CUDNN_ACTIVATION_CLIPPED_RELU = 3,
+  ActivationParam_Type_CUDNN_ACTIVATION_ELU = 4,
+  ActivationParam_Type_ActivationParam_Type_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  ActivationParam_Type_ActivationParam_Type_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool ActivationParam_Type_IsValid(int value);
+const ActivationParam_Type ActivationParam_Type_Type_MIN = ActivationParam_Type_CUDNN_ACTIVATION_SIGMOID;
+const ActivationParam_Type ActivationParam_Type_Type_MAX = ActivationParam_Type_CUDNN_ACTIVATION_ELU;
+const int ActivationParam_Type_Type_ARRAYSIZE = ActivationParam_Type_Type_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ActivationParam_Type_descriptor();
+inline const ::std::string& ActivationParam_Type_Name(ActivationParam_Type value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ActivationParam_Type_descriptor(), value);
+}
+inline bool ActivationParam_Type_Parse(
+    const ::std::string& name, ActivationParam_Type* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ActivationParam_Type>(
+    ActivationParam_Type_descriptor(), name, value);
 }
 enum ImageReaderParam_Type {
   ImageReaderParam_Type_GRAY_ONLY = 0,
@@ -1804,37 +1831,37 @@ class MatMulParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 };
 // -------------------------------------------------------------------
 
-class ReluParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ReluParam) */ {
+class LeakyReluParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:LeakyReluParam) */ {
  public:
-  ReluParam();
-  virtual ~ReluParam();
+  LeakyReluParam();
+  virtual ~LeakyReluParam();
 
-  ReluParam(const ReluParam& from);
+  LeakyReluParam(const LeakyReluParam& from);
 
-  inline ReluParam& operator=(const ReluParam& from) {
+  inline LeakyReluParam& operator=(const LeakyReluParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ReluParam& default_instance();
+  static const LeakyReluParam& default_instance();
 
-  static inline const ReluParam* internal_default_instance() {
-    return reinterpret_cast<const ReluParam*>(
-               &_ReluParam_default_instance_);
+  static inline const LeakyReluParam* internal_default_instance() {
+    return reinterpret_cast<const LeakyReluParam*>(
+               &_LeakyReluParam_default_instance_);
   }
 
-  void Swap(ReluParam* other);
+  void Swap(LeakyReluParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline ReluParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline LeakyReluParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  ReluParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  LeakyReluParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const ReluParam& from);
-  void MergeFrom(const ReluParam& from);
+  void CopyFrom(const LeakyReluParam& from);
+  void MergeFrom(const LeakyReluParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -1855,7 +1882,7 @@ class ReluParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(ReluParam* other);
+  void InternalSwap(LeakyReluParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1877,7 +1904,7 @@ class ReluParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   float negative_slope() const;
   void set_negative_slope(float value);
 
-  // @@protoc_insertion_point(class_scope:ReluParam)
+  // @@protoc_insertion_point(class_scope:LeakyReluParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -2498,6 +2525,128 @@ class DataGeneratorParam : public ::google::protobuf::Message /* @@protoc_insert
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int32 num_samples_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ActivationParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ActivationParam) */ {
+ public:
+  ActivationParam();
+  virtual ~ActivationParam();
+
+  ActivationParam(const ActivationParam& from);
+
+  inline ActivationParam& operator=(const ActivationParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ActivationParam& default_instance();
+
+  static inline const ActivationParam* internal_default_instance() {
+    return reinterpret_cast<const ActivationParam*>(
+               &_ActivationParam_default_instance_);
+  }
+
+  void Swap(ActivationParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ActivationParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ActivationParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ActivationParam& from);
+  void MergeFrom(const ActivationParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ActivationParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef ActivationParam_Type Type;
+  static const Type CUDNN_ACTIVATION_SIGMOID =
+    ActivationParam_Type_CUDNN_ACTIVATION_SIGMOID;
+  static const Type CUDNN_ACTIVATION_RELU =
+    ActivationParam_Type_CUDNN_ACTIVATION_RELU;
+  static const Type CUDNN_ACTIVATION_TANH =
+    ActivationParam_Type_CUDNN_ACTIVATION_TANH;
+  static const Type CUDNN_ACTIVATION_CLIPPED_RELU =
+    ActivationParam_Type_CUDNN_ACTIVATION_CLIPPED_RELU;
+  static const Type CUDNN_ACTIVATION_ELU =
+    ActivationParam_Type_CUDNN_ACTIVATION_ELU;
+  static inline bool Type_IsValid(int value) {
+    return ActivationParam_Type_IsValid(value);
+  }
+  static const Type Type_MIN =
+    ActivationParam_Type_Type_MIN;
+  static const Type Type_MAX =
+    ActivationParam_Type_Type_MAX;
+  static const int Type_ARRAYSIZE =
+    ActivationParam_Type_Type_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  Type_descriptor() {
+    return ActivationParam_Type_descriptor();
+  }
+  static inline const ::std::string& Type_Name(Type value) {
+    return ActivationParam_Type_Name(value);
+  }
+  static inline bool Type_Parse(const ::std::string& name,
+      Type* value) {
+    return ActivationParam_Type_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // .ActivationParam.Type type = 1;
+  void clear_type();
+  static const int kTypeFieldNumber = 1;
+  ::ActivationParam_Type type() const;
+  void set_type(::ActivationParam_Type value);
+
+  // float coef = 2;
+  void clear_coef();
+  static const int kCoefFieldNumber = 2;
+  float coef() const;
+  void set_coef(float value);
+
+  // @@protoc_insertion_point(class_scope:ActivationParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  int type_;
+  float coef_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3177,14 +3326,14 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::DropoutParam* release_dropout_param();
   void set_allocated_dropout_param(::DropoutParam* dropout_param);
 
-  // .ReluParam relu_param = 108;
-  bool has_relu_param() const;
-  void clear_relu_param();
-  static const int kReluParamFieldNumber = 108;
-  const ::ReluParam& relu_param() const;
-  ::ReluParam* mutable_relu_param();
-  ::ReluParam* release_relu_param();
-  void set_allocated_relu_param(::ReluParam* relu_param);
+  // .LeakyReluParam leaky_relu_param = 108;
+  bool has_leaky_relu_param() const;
+  void clear_leaky_relu_param();
+  static const int kLeakyReluParamFieldNumber = 108;
+  const ::LeakyReluParam& leaky_relu_param() const;
+  ::LeakyReluParam* mutable_leaky_relu_param();
+  ::LeakyReluParam* release_leaky_relu_param();
+  void set_allocated_leaky_relu_param(::LeakyReluParam* leaky_relu_param);
 
   // .SoftmaxParam softmax_param = 109;
   bool has_softmax_param() const;
@@ -3276,6 +3425,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::DisplayParam* release_display_param();
   void set_allocated_display_param(::DisplayParam* display_param);
 
+  // .ActivationParam activation_param = 119;
+  bool has_activation_param() const;
+  void clear_activation_param();
+  static const int kActivationParamFieldNumber = 119;
+  const ::ActivationParam& activation_param() const;
+  ::ActivationParam* mutable_activation_param();
+  ::ActivationParam* release_activation_param();
+  void set_allocated_activation_param(::ActivationParam* activation_param);
+
   // @@protoc_insertion_point(class_scope:NodeParam)
  private:
 
@@ -3294,7 +3452,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::Conv2dParam* conv_2d_param_;
   ::TransposedConv2dParam* transposed_conv_2d_param_;
   ::DropoutParam* dropout_param_;
-  ::ReluParam* relu_param_;
+  ::LeakyReluParam* leaky_relu_param_;
   ::SoftmaxParam* softmax_param_;
   ::SquareParam* square_param_;
   ::MatMulParam* matmul_param_;
@@ -3305,6 +3463,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::CastFloatParam* cast_float_param_;
   ::AccumulatorParam* accumulator_param_;
   ::DisplayParam* display_param_;
+  ::ActivationParam* activation_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -5589,20 +5748,20 @@ inline void MatMulParam::set_beta(float value) {
 
 // -------------------------------------------------------------------
 
-// ReluParam
+// LeakyReluParam
 
 // float negative_slope = 1;
-inline void ReluParam::clear_negative_slope() {
+inline void LeakyReluParam::clear_negative_slope() {
   negative_slope_ = 0;
 }
-inline float ReluParam::negative_slope() const {
-  // @@protoc_insertion_point(field_get:ReluParam.negative_slope)
+inline float LeakyReluParam::negative_slope() const {
+  // @@protoc_insertion_point(field_get:LeakyReluParam.negative_slope)
   return negative_slope_;
 }
-inline void ReluParam::set_negative_slope(float value) {
+inline void LeakyReluParam::set_negative_slope(float value) {
   
   negative_slope_ = value;
-  // @@protoc_insertion_point(field_set:ReluParam.negative_slope)
+  // @@protoc_insertion_point(field_set:LeakyReluParam.negative_slope)
 }
 
 // -------------------------------------------------------------------
@@ -6010,6 +6169,38 @@ inline void DataGeneratorParam::set_num_samples(::google::protobuf::int32 value)
   
   num_samples_ = value;
   // @@protoc_insertion_point(field_set:DataGeneratorParam.num_samples)
+}
+
+// -------------------------------------------------------------------
+
+// ActivationParam
+
+// .ActivationParam.Type type = 1;
+inline void ActivationParam::clear_type() {
+  type_ = 0;
+}
+inline ::ActivationParam_Type ActivationParam::type() const {
+  // @@protoc_insertion_point(field_get:ActivationParam.type)
+  return static_cast< ::ActivationParam_Type >(type_);
+}
+inline void ActivationParam::set_type(::ActivationParam_Type value) {
+  
+  type_ = value;
+  // @@protoc_insertion_point(field_set:ActivationParam.type)
+}
+
+// float coef = 2;
+inline void ActivationParam::clear_coef() {
+  coef_ = 0;
+}
+inline float ActivationParam::coef() const {
+  // @@protoc_insertion_point(field_get:ActivationParam.coef)
+  return coef_;
+}
+inline void ActivationParam::set_coef(float value) {
+  
+  coef_ = value;
+  // @@protoc_insertion_point(field_set:ActivationParam.coef)
 }
 
 // -------------------------------------------------------------------
@@ -6938,43 +7129,43 @@ inline void NodeParam::set_allocated_dropout_param(::DropoutParam* dropout_param
   // @@protoc_insertion_point(field_set_allocated:NodeParam.dropout_param)
 }
 
-// .ReluParam relu_param = 108;
-inline bool NodeParam::has_relu_param() const {
-  return this != internal_default_instance() && relu_param_ != NULL;
+// .LeakyReluParam leaky_relu_param = 108;
+inline bool NodeParam::has_leaky_relu_param() const {
+  return this != internal_default_instance() && leaky_relu_param_ != NULL;
 }
-inline void NodeParam::clear_relu_param() {
-  if (GetArenaNoVirtual() == NULL && relu_param_ != NULL) delete relu_param_;
-  relu_param_ = NULL;
+inline void NodeParam::clear_leaky_relu_param() {
+  if (GetArenaNoVirtual() == NULL && leaky_relu_param_ != NULL) delete leaky_relu_param_;
+  leaky_relu_param_ = NULL;
 }
-inline const ::ReluParam& NodeParam::relu_param() const {
-  // @@protoc_insertion_point(field_get:NodeParam.relu_param)
-  return relu_param_ != NULL ? *relu_param_
-                         : *::ReluParam::internal_default_instance();
+inline const ::LeakyReluParam& NodeParam::leaky_relu_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.leaky_relu_param)
+  return leaky_relu_param_ != NULL ? *leaky_relu_param_
+                         : *::LeakyReluParam::internal_default_instance();
 }
-inline ::ReluParam* NodeParam::mutable_relu_param() {
+inline ::LeakyReluParam* NodeParam::mutable_leaky_relu_param() {
   
-  if (relu_param_ == NULL) {
-    relu_param_ = new ::ReluParam;
+  if (leaky_relu_param_ == NULL) {
+    leaky_relu_param_ = new ::LeakyReluParam;
   }
-  // @@protoc_insertion_point(field_mutable:NodeParam.relu_param)
-  return relu_param_;
+  // @@protoc_insertion_point(field_mutable:NodeParam.leaky_relu_param)
+  return leaky_relu_param_;
 }
-inline ::ReluParam* NodeParam::release_relu_param() {
-  // @@protoc_insertion_point(field_release:NodeParam.relu_param)
+inline ::LeakyReluParam* NodeParam::release_leaky_relu_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.leaky_relu_param)
   
-  ::ReluParam* temp = relu_param_;
-  relu_param_ = NULL;
+  ::LeakyReluParam* temp = leaky_relu_param_;
+  leaky_relu_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_relu_param(::ReluParam* relu_param) {
-  delete relu_param_;
-  relu_param_ = relu_param;
-  if (relu_param) {
+inline void NodeParam::set_allocated_leaky_relu_param(::LeakyReluParam* leaky_relu_param) {
+  delete leaky_relu_param_;
+  leaky_relu_param_ = leaky_relu_param;
+  if (leaky_relu_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:NodeParam.relu_param)
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.leaky_relu_param)
 }
 
 // .SoftmaxParam softmax_param = 109;
@@ -7365,6 +7556,45 @@ inline void NodeParam::set_allocated_display_param(::DisplayParam* display_param
     
   }
   // @@protoc_insertion_point(field_set_allocated:NodeParam.display_param)
+}
+
+// .ActivationParam activation_param = 119;
+inline bool NodeParam::has_activation_param() const {
+  return this != internal_default_instance() && activation_param_ != NULL;
+}
+inline void NodeParam::clear_activation_param() {
+  if (GetArenaNoVirtual() == NULL && activation_param_ != NULL) delete activation_param_;
+  activation_param_ = NULL;
+}
+inline const ::ActivationParam& NodeParam::activation_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.activation_param)
+  return activation_param_ != NULL ? *activation_param_
+                         : *::ActivationParam::internal_default_instance();
+}
+inline ::ActivationParam* NodeParam::mutable_activation_param() {
+  
+  if (activation_param_ == NULL) {
+    activation_param_ = new ::ActivationParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.activation_param)
+  return activation_param_;
+}
+inline ::ActivationParam* NodeParam::release_activation_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.activation_param)
+  
+  ::ActivationParam* temp = activation_param_;
+  activation_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_activation_param(::ActivationParam* activation_param) {
+  delete activation_param_;
+  activation_param_ = activation_param;
+  if (activation_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.activation_param)
 }
 
 // -------------------------------------------------------------------
@@ -8462,6 +8692,8 @@ GraphParam::phase() const {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -8494,6 +8726,11 @@ template <> struct is_proto_enum< ::ReduceParam_ReduceOp> : ::google::protobuf::
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::ReduceParam_ReduceOp>() {
   return ::ReduceParam_ReduceOp_descriptor();
+}
+template <> struct is_proto_enum< ::ActivationParam_Type> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::ActivationParam_Type>() {
+  return ::ActivationParam_Type_descriptor();
 }
 template <> struct is_proto_enum< ::ImageReaderParam_Type> : ::google::protobuf::internal::true_type {};
 template <>

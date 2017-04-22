@@ -46,14 +46,14 @@ void main(int argc, char** argv) {
 		auto b1 = df.variable(df.step({ 1, 500, 1 , 1 }, -1.0f, 1.0f),solver, "b1");
 		auto m1 = df.matmul(pool2, w1,"m1");
 		auto bias1 = df.bias_add(m1, b1,"bias1");
-		auto relu1 = df.relu(bias1, 0.01f, "relu1");
+		auto relu1 = df.leaky_relu(bias1, 0.01f, "relu1");
 		auto dropout = df.dropout(relu1, 0.5f, "dropout" );
 		auto dropout_validation_bypass = df.phaseplexer(relu1, "Validation", dropout, "Train", "dropout_validation_bypass");
 		auto w2 = df.variable(df.random_uniform({ 500, 10, 1 , 1 }, -0.1f, 0.1f),solver, "w2");
 		auto b2 = df.variable(df.step({ 1, 10, 1, 1 }, -1.0f, 1.0f),solver, "b2");
 		auto m2 = df.matmul(dropout_validation_bypass, w2,"m2");
 		auto bias2 = df.bias_add(m2, b2,"bias2");
-		auto relu2 = df.relu(bias2, 0.01f, "relu2");
+		auto relu2 = df.leaky_relu(bias2, 0.01f, "relu2");
 		auto loss = df.softmax_loss(relu2, label_selector, "loss");
 		auto target = df.argmax(label_selector, 1, "target");
 		auto predict = df.argmax(loss->output(1), 1, "predict");

@@ -28,28 +28,28 @@ void Reduce::initForward() {
 	std::string opString;
 	switch (reduceParam.reduce_op()) {
 	case ReduceParam_ReduceOp_ADD:
-		opString = "reduce_sum";
+		opString = "ReduceSum";
 		break;
 	case ReduceParam_ReduceOp_MUL:
-		opString = "reduce_mul";
+		opString = "ReduceMul";
 		break;
 	case ReduceParam_ReduceOp_MIN:
-		opString = "reduce_min";
+		opString = "ReduceMin";
 		break;
 	case ReduceParam_ReduceOp_MAX:
-		opString = "reduce_max";
+		opString = "ReduceMax";
 		break;
 	case ReduceParam_ReduceOp_AMAX:
-		opString = "reduce_max_abs";
+		opString = "ReduceMaxAbs";
 		break;
 	case ReduceParam_ReduceOp_AVG:
-		opString = "reduce_avg";
+		opString = "ReduceMean";
 		break;
 	case ReduceParam_ReduceOp_NORM1:
-		opString = "reduce_sum_abs";
+		opString = "ReduceSumAbs";
 		break;
 	case ReduceParam_ReduceOp_NORM2:
-		opString = "reduce_hypot";
+		opString = "ReduceHypot";
 		break;
 	};
 

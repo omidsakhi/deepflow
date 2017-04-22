@@ -31,34 +31,42 @@ public:
 	// VARIABLES & PLACE HOLDER
 	std::string variable(std::shared_ptr<InitParam> initializer, std::shared_ptr<SolverParam> solver, std::string name = "var", std::initializer_list<std::string> phases = {});	
 	std::string place_holder(std::array<int,4> dims, Tensor::TensorType type = Tensor::Float, std::string name = "ph", std::initializer_list<std::string> phases = {});
-
-	// OPS
-	std::string add(std::string a, std::string b, float alpha, float beta, std::string name = "add", std::initializer_list<std::string> phases = {});
-	std::string add(std::string a, std::string b, std::string name = "add", std::initializer_list<std::string> phases = {});
-	std::string bias_add(std::string a, std::string b, std::string name = "bias", std::initializer_list<std::string> phases = {});
-	std::string subtract(std::string a, std::string b, std::string name = "sub", std::initializer_list<std::string> phases = {});
-	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});
-	std::string square(std::string a, std::string name = "square", std::initializer_list<std::string> phases = {});
-	std::string matmul(std::string a, std::string b, std::string name = "ip", std::initializer_list<std::string> phases = {});
-	std::string relu(std::string a, float negative_slope = 0.01f, std::string name = "relu", std::initializer_list<std::string> phases = {});
-	std::string dropout(std::string a, float dropout = 0.5f, std::string name = "dropout", std::initializer_list<std::string> phases = {});
-	std::string transposed_conv2d(std::string input, std::string filter, std::array<int, 4> dims, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
-	std::string conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation , std::string name = "conv", std::initializer_list<std::string> phases = {});
+	
+	//CONVOLUTION
+	std::string conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string conv2d(std::string input, std::string filter, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string pooling(std::string input, int windowHeight = 3, int windowWidth = 3, int verticalPadding = 0, int horizontalPadding = 0, int verticalStride = 1, int horizontalStride = 1, std::string name = "maxpool", std::initializer_list<std::string> phases = {});
+	std::string transposed_conv2d(std::string input, std::string filter, std::array<int, 4> dims, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
+
+	// MATH
+	std::string add(std::string a, std::string b, float alpha, float beta, std::string name = "add", std::initializer_list<std::string> phases = {});
+	std::string add(std::string a, std::string b, std::string name = "add", std::initializer_list<std::string> phases = {});
+	std::string square(std::string a, std::string name = "square", std::initializer_list<std::string> phases = {});
+	std::string matmul(std::string a, std::string b, std::string name = "ip", std::initializer_list<std::string> phases = {});
+	std::string subtract(std::string a, std::string b, std::string name = "sub", std::initializer_list<std::string> phases = {});
+
+	// NEURAL NETS
+	std::string bias_add(std::string a, std::string b, std::string name = "bias", std::initializer_list<std::string> phases = {});
+	std::string dropout(std::string a, float dropout = 0.5f, std::string name = "dropout", std::initializer_list<std::string> phases = {});
+
+	//REDUCTION
 	std::string argmax(std::string input, int reduceDimension, std::string name = "argmax", std::initializer_list<std::string> phases = {});
 	std::string argmin(std::string input, int reduceDimension, std::string name = "argmin", std::initializer_list<std::string> phases = {});
-	std::string reduce_max(std::string input, int reduceDimension, std::string name = "max", std::initializer_list<std::string> phases = {});	
+	std::string reduce_max(std::string input, int reduceDimension, std::string name = "max", std::initializer_list<std::string> phases = {});
 	std::string reduce_min(std::string input, int reduceDimension, std::string name = "min", std::initializer_list<std::string> phases = {});
-	std::string reduce_mean(std::string input, int reduceDimension, std::string name = "mean", std::initializer_list<std::string> phases = {});	
+	std::string reduce_mean(std::string input, int reduceDimension, std::string name = "mean", std::initializer_list<std::string> phases = {});
 	std::string reduce_sum(std::string input, int reduceDimension, std::string name = "sum", std::initializer_list<std::string> phases = {});
 	std::string reduce_absmax(std::string input, int reduceDimension, std::string name = "absmax", std::initializer_list<std::string> phases = {});
 	std::string reduce_norm1(std::string input, int reduceDimension, std::string name = "absmax", std::initializer_list<std::string> phases = {});
 	std::string reduce_norm2(std::string input, int reduceDimension, std::string name = "absmax", std::initializer_list<std::string> phases = {});
-	std::string equal(std::string a, std::string b, std::string name = "Equal", std::initializer_list<std::string> phases = {});
-	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});
-	std::string accumulator(std::string input, Accumulator::ResetTime resetTime = Accumulator::ResetTime::EndOfEpoch, std::string name = "acc", std::initializer_list<std::string> phases = {});
-	void display(std::string input, int delay_msec = 100, std::string name = "disp", std::initializer_list<std::string> phases = {});
+
+	//ACTIVATIONS
+	std::string leaky_relu(std::string a, float negative_slope = 0.01f, std::string name = "leaky_relu", std::initializer_list<std::string> phases = {});
+	std::string sigmoid(std::string a, std::string name = "sigmoid", std::initializer_list<std::string> phases = {});
+	std::string relu(std::string a, std::string name = "relu", std::initializer_list<std::string> phases = {});
+	std::string tanh(std::string a, std::string name = "tanh", std::initializer_list<std::string> phases = {});
+	std::string clipped_relu(std::string a, float threshold, std::string name = "clipped_relu", std::initializer_list<std::string> phases = {});
+	std::string elu(std::string a, float alpha, std::string name = "elu", std::initializer_list<std::string> phases = {});
 
 	// PHASE
 	std::string phaseplexer(std::string input_1, std::string phase_1, std::string input_2, std::string phase_2, std::string name = "plex", std::initializer_list<std::string> phases = {});
@@ -73,8 +81,15 @@ public:
 	std::shared_ptr<SolverParam> adam_solver(float learning_rate = 10e-2f, float beta1 = 0.99f, float beta2 = 0.999f, float eps = 10e-8f, std::string name = "adam");
 	std::shared_ptr<SolverParam> adadelta_solver(float learning_rate = 10e-1f, float momentum = 0.9f, float delta = 1e-6f, std::string name = "adadelta");
 	
-	// PRINTERS
+	// PRINTERS & DISPLAYS
 	void print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime = Print::PrintTime::END_OF_EPOCH, Print::PrintType = Print::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
+	void display(std::string input, int delay_msec = 100, std::string name = "disp", std::initializer_list<std::string> phases = {});
+
+	// OTHER
+	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});
+	std::string equal(std::string a, std::string b, std::string name = "Equal", std::initializer_list<std::string> phases = {});
+	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});
+	std::string accumulator(std::string input, Accumulator::ResetTime resetTime = Accumulator::ResetTime::EndOfEpoch, std::string name = "acc", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES
 	void save_as_binary(std::string filePath);

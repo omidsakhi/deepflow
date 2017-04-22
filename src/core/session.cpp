@@ -18,7 +18,7 @@
 
 #include "ops/add.h"
 #include "ops/matmul.h"
-#include "ops/relu.h"
+#include "ops/leaky_relu.h"
 #include "ops/softmax.h"
 #include "ops/square.h"
 #include "ops/bias_add.h"
@@ -32,6 +32,7 @@
 #include "ops/display.h"
 #include "ops/transposed_conv_2d.h"
 #include "ops/euclidean_loss.h"
+#include "ops/activation.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_reader.h"
@@ -97,6 +98,9 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 		else if (node_param.loss_param().has_euclidean_loss_param())
 			return std::make_shared<EuclideanLoss>(node_param);
 	}
+	else if (node_param.has_activation_param()) {
+		return std::make_shared<Activation>(node_param);
+	}
 	else if (node_param.has_matmul_param()) {
 		return std::make_shared<MatMul>(node_param);
 	}
@@ -118,8 +122,8 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 	else if (node_param.has_reduce_param()) {
 		return std::make_shared<Reduce>(node_param);
 	}
-	else if (node_param.has_relu_param()) {
-		return std::make_shared<Relu>(node_param);
+	else if (node_param.has_leaky_relu_param()) {
+		return std::make_shared<LeakyRelu>(node_param);
 	}
 	else if (node_param.has_softmax_param()) {
 		return std::make_shared<Softmax>(node_param);

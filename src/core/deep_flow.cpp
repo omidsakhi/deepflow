@@ -236,17 +236,97 @@ std::string DeepFlow::matmul(std::string a, std::string b, std::string name, std
 	return node_param->output(0);
 }
 
-std::string DeepFlow::relu(std::string a, float negative_slope, std::string name, std::initializer_list<std::string> phases) {
+std::string DeepFlow::leaky_relu(std::string a, float negative_slope, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = std::make_shared<NodeParam>();
 	node_param->set_name(_get_unique_node_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(a);	
-	auto relu_param = node_param->mutable_relu_param();
+	auto relu_param = node_param->mutable_leaky_relu_param();
 	relu_param->set_negative_slope(negative_slope);	
 	_nodes.push_back(node_param);
 	return node_param->output(0);
+}
+
+std::string DeepFlow::sigmoid(std::string a, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	auto activation_param = node_param->mutable_activation_param();
+	activation_param->set_coef(0);
+	activation_param->set_type(ActivationParam_Type_CUDNN_ACTIVATION_SIGMOID);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
+	return std::string();
+}
+
+std::string DeepFlow::relu(std::string a, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	auto activation_param = node_param->mutable_activation_param();
+	activation_param->set_coef(0);
+	activation_param->set_type(ActivationParam_Type_CUDNN_ACTIVATION_RELU);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
+	return std::string();
+}
+
+std::string DeepFlow::tanh(std::string a, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	auto activation_param = node_param->mutable_activation_param();
+	activation_param->set_coef(0);
+	activation_param->set_type(ActivationParam_Type_CUDNN_ACTIVATION_TANH);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
+	return std::string();
+}
+
+std::string DeepFlow::clipped_relu(std::string a, float threshold, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	auto activation_param = node_param->mutable_activation_param();
+	activation_param->set_coef(threshold);
+	activation_param->set_type(ActivationParam_Type_CUDNN_ACTIVATION_CLIPPED_RELU);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
+	return std::string();
+}
+
+std::string DeepFlow::elu(std::string a, float alpha, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	auto activation_param = node_param->mutable_activation_param();
+	activation_param->set_coef(alpha);
+	activation_param->set_type(ActivationParam_Type_CUDNN_ACTIVATION_ELU);
+	_nodes.push_back(node_param);
+	return node_param->output(0);
+	return std::string();
 }
 
 std::string DeepFlow::accumulator(std::string input, Accumulator::ResetTime resetTime, std::string name, std::initializer_list<std::string> phases) {
