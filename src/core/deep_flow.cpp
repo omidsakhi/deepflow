@@ -26,7 +26,7 @@ std::shared_ptr<NodeParam> DeepFlow::mnist_reader(std::string folder_path, int b
 
 }
 
-std::string DeepFlow::image_generator(std::shared_ptr<InitParam> initializer, int num_samples, std::shared_ptr<SolverParam> solver, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::data_generator(std::shared_ptr<InitParam> initializer, int num_samples, std::shared_ptr<SolverParam> solver, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = std::make_shared<NodeParam>();
 	node_param->set_name(_get_unique_node_name(name));
@@ -35,8 +35,8 @@ std::string DeepFlow::image_generator(std::shared_ptr<InitParam> initializer, in
 		node_param->add_phase(phase);
 	auto variable_param = node_param->mutable_variable_param();	
 	auto generator_param = node_param->mutable_generator_param();
-	auto image_generator_param = generator_param->mutable_image_generator_param();
-	image_generator_param->set_num_samples(num_samples);
+	auto data_generator_param = generator_param->mutable_data_generator_param();
+	data_generator_param->set_num_samples(num_samples);
 	if (solver)
 		variable_param->set_solver_name(solver->name());
 	auto init_param = variable_param->mutable_init_param();

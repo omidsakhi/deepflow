@@ -51,3 +51,6 @@
 /build/deepflow.VC.VC.opendb
 /build/image_generator/*.user
 *.user
+*.pdb
+/build/Debug
+/build/image_approximation/x64

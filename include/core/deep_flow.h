@@ -17,7 +17,7 @@ class DeepFlowDllExport DeepFlow {
 public:
 	// GENERATORS
 	std::shared_ptr<NodeParam> mnist_reader(std::string folder_path, int batch_size, MNISTReaderType type, std::string name = "mnist", std::initializer_list<std::string> phases = {});
-	std::string image_generator(std::shared_ptr<InitParam> initializer, int num_samples = 1, std::shared_ptr<SolverParam> solver = NULL, std::string name = "igen", std::initializer_list<std::string> phases = {});
+	std::string data_generator(std::shared_ptr<InitParam> initializer, int num_samples = 1, std::shared_ptr<SolverParam> solver = NULL, std::string name = "igen", std::initializer_list<std::string> phases = {});
 	std::string imread(std::string file_path, ImageReaderParam_Type type, std::string name = "imread", std::initializer_list<std::string> phases = {});
 
 	// INITIALIZERS

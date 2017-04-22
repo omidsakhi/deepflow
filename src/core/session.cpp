@@ -33,7 +33,7 @@
 #include "ops/transposed_conv_2d.h"
 #include "ops/euclidean_loss.h"
 
-#include "generators/image_generator.h"
+#include "generators/data_generator.h"
 #include "generators/image_reader.h"
 
 #include <unordered_map>
@@ -58,7 +58,7 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 		if (generator_param.has_mnist_param()) {
 			return std::make_shared<MNISTReader>(node_param);
 		}
-		else if (generator_param.has_image_generator_param()) {
+		else if (generator_param.has_data_generator_param()) {
 			std::shared_ptr<Initializer> initializer;
 			const InitParam &init_param = node_param.variable_param().init_param();
 			if (init_param.has_fill_param()) {
@@ -73,7 +73,7 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 			else if (init_param.has_step_param()) {
 				initializer = std::make_shared<Step>(init_param);
 			}
-			return std::make_shared<ImageGenerator>(initializer,node_param);
+			return std::make_shared<DataGenerator>(initializer,node_param);
 		}
 		else if (generator_param.has_image_reader_param()) {
 			return std::make_shared<ImageReader>(node_param);

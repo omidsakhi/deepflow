@@ -138,11 +138,11 @@
     <ClCompile Include="..\..\src\generators\mnist_reader.cpp">
       <Filter>source\generators</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\generators\image_generator.cpp">
-      <Filter>source\generators</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\initializers\random_uniform.cpp">
       <Filter>source\initializers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\generators\data_generator.cpp">
+      <Filter>source\generators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -290,14 +290,14 @@
     <ClInclude Include="..\..\include\generators\mnist_reader.h">
       <Filter>include\generators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\generators\image_generator.h">
-      <Filter>include\generators</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\generators\image_reader.h">
       <Filter>include\generators</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ops\euclidean_loss.h">
       <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\generators\data_generator.h">
+      <Filter>include\generators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

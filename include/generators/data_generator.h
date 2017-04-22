@@ -5,9 +5,9 @@
 
 class Initializer;
 
-class DeepFlowDllExport ImageGenerator : public Generator, public Variable {
+class DeepFlowDllExport DataGenerator : public Generator, public Variable {
 public:
-	ImageGenerator(std::shared_ptr<Initializer> initializer, const NodeParam &param);
+	DataGenerator(std::shared_ptr<Initializer> initializer, const NodeParam &param);
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
 	void nextBatch();

@@ -56,8 +56,8 @@ class VariableParamDefaultTypeInternal : public ::google::protobuf::internal::Ex
 } _VariableParam_default_instance_;
 class LossParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<LossParam> {
 } _LossParam_default_instance_;
-class ImageGeneratorParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<ImageGeneratorParam> {
-} _ImageGeneratorParam_default_instance_;
+class DataGeneratorParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<DataGeneratorParam> {
+} _DataGeneratorParam_default_instance_;
 class ImageReaderParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<ImageReaderParam> {
 } _ImageReaderParam_default_instance_;
 class GeneratorParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<GeneratorParam> {
@@ -240,10 +240,10 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LossParam, softmax_loss_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LossParam, euclidean_loss_param_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageGeneratorParam, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DataGeneratorParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageGeneratorParam, num_samples_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DataGeneratorParam, num_samples_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageReaderParam, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -255,7 +255,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, mnist_param_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, image_generator_param_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, data_generator_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, image_reader_param_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MnistParam, _internal_metadata_),
@@ -425,7 +425,7 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 109, -1, sizeof(PlaceHolderParam)},
   { 114, -1, sizeof(VariableParam)},
   { 121, -1, sizeof(LossParam)},
-  { 127, -1, sizeof(ImageGeneratorParam)},
+  { 127, -1, sizeof(DataGeneratorParam)},
   { 132, -1, sizeof(ImageReaderParam)},
   { 138, -1, sizeof(GeneratorParam)},
   { 145, -1, sizeof(MnistParam)},
@@ -470,7 +470,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_PlaceHolderParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_VariableParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_LossParam_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&_ImageGeneratorParam_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_DataGeneratorParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_ImageReaderParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_GeneratorParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_MnistParam_default_instance_),
@@ -558,7 +558,7 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[18].reflection;
   _LossParam_default_instance_.Shutdown();
   delete file_level_metadata[19].reflection;
-  _ImageGeneratorParam_default_instance_.Shutdown();
+  _DataGeneratorParam_default_instance_.Shutdown();
   delete file_level_metadata[20].reflection;
   _ImageReaderParam_default_instance_.Shutdown();
   delete file_level_metadata[21].reflection;
@@ -628,7 +628,7 @@ void TableStruct::InitDefaultsImpl() {
   _PlaceHolderParam_default_instance_.DefaultConstruct();
   _VariableParam_default_instance_.DefaultConstruct();
   _LossParam_default_instance_.DefaultConstruct();
-  _ImageGeneratorParam_default_instance_.DefaultConstruct();
+  _DataGeneratorParam_default_instance_.DefaultConstruct();
   _ImageReaderParam_default_instance_.DefaultConstruct();
   _GeneratorParam_default_instance_.DefaultConstruct();
   _MnistParam_default_instance_.DefaultConstruct();
@@ -664,8 +664,8 @@ void TableStruct::InitDefaultsImpl() {
       ::EuclideanLossParam::internal_default_instance());
   _GeneratorParam_default_instance_.get_mutable()->mnist_param_ = const_cast< ::MnistParam*>(
       ::MnistParam::internal_default_instance());
-  _GeneratorParam_default_instance_.get_mutable()->image_generator_param_ = const_cast< ::ImageGeneratorParam*>(
-      ::ImageGeneratorParam::internal_default_instance());
+  _GeneratorParam_default_instance_.get_mutable()->data_generator_param_ = const_cast< ::DataGeneratorParam*>(
+      ::DataGeneratorParam::internal_default_instance());
   _GeneratorParam_default_instance_.get_mutable()->image_reader_param_ = const_cast< ::ImageReaderParam*>(
       ::ImageReaderParam::internal_default_instance());
   _NodeParam_default_instance_.get_mutable()->loss_param_ = const_cast< ::LossParam*>(
@@ -781,78 +781,78 @@ void AddDescriptorsImpl() {
       "lver_name\030\002 \001(\t\022\034\n\007weights\030\003 \001(\0132\013.Tenso"
       "rData\"m\n\tLossParam\022-\n\022softmax_loss_param"
       "\030\001 \001(\0132\021.SoftmaxLossParam\0221\n\024euclidean_l"
-      "oss_param\030\002 \001(\0132\023.EuclideanLossParam\"*\n\023"
-      "ImageGeneratorParam\022\023\n\013num_samples\030\001 \001(\005"
-      "\"z\n\020ImageReaderParam\022\021\n\tfile_name\030\001 \001(\t\022"
-      "$\n\004type\030\002 \001(\0162\026.ImageReaderParam.Type\"-\n"
-      "\004Type\022\r\n\tGRAY_ONLY\020\000\022\026\n\022COLOR_IF_AVAILAB"
-      "LE\020\001\"\226\001\n\016GeneratorParam\022 \n\013mnist_param\030\001"
-      " \001(\0132\013.MnistParam\0223\n\025image_generator_par"
-      "am\030\002 \001(\0132\024.ImageGeneratorParam\022-\n\022image_"
-      "reader_param\030\003 \001(\0132\021.ImageReaderParam\"~\n"
-      "\nMnistParam\022\023\n\013folder_path\030\001 \001(\t\022$\n\004type"
-      "\030\002 \001(\0162\026.MnistParam.ReaderType\022\022\n\nbatch_"
-      "size\030\003 \001(\005\"!\n\nReaderType\022\t\n\005TRAIN\020\000\022\010\n\004T"
-      "EST\020\001\"\020\n\016CastFloatParam\"\373\006\n\tNodeParam\022\014\n"
-      "\004name\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022\016\n\006output\030\003 \003"
-      "(\t\022\r\n\005phase\030\004 \003(\t\022\036\n\nloss_param\0302 \001(\0132\n."
-      "LossParam\022(\n\017generator_param\0303 \001(\0132\017.Gen"
-      "eratorParam\022&\n\016variable_param\030d \001(\0132\016.Va"
-      "riableParam\022-\n\022place_holder_param\030e \001(\0132"
-      "\021.PlaceHolderParam\022,\n\021phaseplexer_param\030"
-      "f \001(\0132\021.PhaseplexerParam\022\034\n\tadd_param\030g "
-      "\001(\0132\t.AddParam\022%\n\016bias_add_param\030h \001(\0132\r"
-      ".BiasAddParam\022#\n\rconv_2d_param\030i \001(\0132\014.C"
-      "onv2dParam\0228\n\030transposed_conv_2d_param\030j"
-      " \001(\0132\026.TransposedConv2dParam\022$\n\rdropout_"
-      "param\030k \001(\0132\r.DropoutParam\022\036\n\nrelu_param"
-      "\030l \001(\0132\n.ReluParam\022$\n\rsoftmax_param\030m \001("
-      "\0132\r.SoftmaxParam\022\"\n\014square_param\030n \001(\0132\014"
-      ".SquareParam\022\"\n\014matmul_param\030o \001(\0132\014.Mat"
-      "MulParam\022$\n\rpooling_param\030p \001(\0132\r.Poolin"
-      "gParam\022\"\n\014reduce_param\030q \001(\0132\014.ReducePar"
-      "am\022 \n\013equal_param\030r \001(\0132\013.EqualParam\022 \n\013"
-      "print_param\030s \001(\0132\013.PrintParam\022)\n\020cast_f"
-      "loat_param\030t \001(\0132\017.CastFloatParam\022,\n\021acc"
-      "umulator_param\030u \001(\0132\021.AccumulatorParam\022"
-      "$\n\rdisplay_param\030v \001(\0132\r.DisplayParam\"\r\n"
-      "\013SquareParam\"\024\n\022EuclideanLossParam\"/\n\020So"
-      "ftmaxLossParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 "
-      "\001(\002\"+\n\014SoftmaxParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004be"
-      "ta\030\002 \001(\002\"\036\n\rInitFillParam\022\r\n\005value\030\001 \001(\002"
-      "\"$\n\022InitIndexFillParam\022\016\n\006offset\030\001 \001(\002\"2"
-      "\n\026InitRandomUniformParam\022\013\n\003min\030\001 \001(\002\022\013\n"
-      "\003max\030\002 \001(\002\")\n\rInitStepParam\022\013\n\003min\030\001 \001(\002"
-      "\022\013\n\003max\030\002 \001(\002\"\375\001\n\tInitParam\022\"\n\014tensor_pa"
-      "ram\030\001 \001(\0132\014.TensorParam\022\036\n\tinit_data\030\002 \001"
-      "(\0132\013.TensorData\022\"\n\nfill_param\030\003 \001(\0132\016.In"
-      "itFillParam\022-\n\020index_fill_param\030\004 \001(\0132\023."
-      "InitIndexFillParam\0225\n\024random_uniform_par"
-      "am\030\005 \001(\0132\027.InitRandomUniformParam\022\"\n\nste"
-      "p_param\030\006 \001(\0132\016.InitStepParam\"9\n\016SGDSolv"
-      "erParam\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010moment"
-      "um\030\002 \001(\002\"\204\001\n\017GainSolverParam\022\025\n\rlearning"
-      "_rate\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\022\020\n\010max_gai"
-      "n\030\003 \001(\002\022\020\n\010min_gain\030\004 \001(\002\022\021\n\tgain_plus\030\005"
-      " \001(\002\022\021\n\tgain_mult\030\006 \001(\002\"M\n\023AdaDeltaSolve"
-      "rParam\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentu"
-      "m\030\002 \001(\002\022\r\n\005delta\030\003 \001(\002\"S\n\017AdamSolverPara"
-      "m\022\025\n\rlearning_rate\030\001 \001(\002\022\r\n\005beta1\030\002 \001(\002\022"
-      "\r\n\005beta2\030\003 \001(\002\022\013\n\003eps\030\004 \001(\002\"\275\001\n\013SolverPa"
-      "ram\022\014\n\004name\030\001 \001(\t\022#\n\nsgd_solver\030\002 \001(\0132\017."
-      "SGDSolverParam\022%\n\013gain_solver\030\003 \001(\0132\020.Ga"
-      "inSolverParam\022%\n\013adam_solver\030\004 \001(\0132\020.Ada"
-      "mSolverParam\022-\n\017adadelta_solver\030\005 \001(\0132\024."
-      "AdaDeltaSolverParam\"\206\001\n\nPhaseParam\022\r\n\005ph"
-      "ase\030\001 \001(\t\022-\n\tbehaviour\030\002 \001(\0162\032.PhasePara"
-      "m.PhaseBehaviour\":\n\016PhaseBehaviour\022\t\n\005TR"
-      "AIN\020\000\022\016\n\nVALIDATION\020\001\022\r\n\tINFERENCE\020\002\"`\n\n"
-      "GraphParam\022\030\n\004node\030\001 \003(\0132\n.NodeParam\022\034\n\006"
-      "solver\030\002 \003(\0132\014.SolverParam\022\032\n\005phase\030\003 \003("
-      "\0132\013.PhaseParamb\006proto3"
+      "oss_param\030\002 \001(\0132\023.EuclideanLossParam\")\n\022"
+      "DataGeneratorParam\022\023\n\013num_samples\030\001 \001(\005\""
+      "z\n\020ImageReaderParam\022\021\n\tfile_name\030\001 \001(\t\022$"
+      "\n\004type\030\002 \001(\0162\026.ImageReaderParam.Type\"-\n\004"
+      "Type\022\r\n\tGRAY_ONLY\020\000\022\026\n\022COLOR_IF_AVAILABL"
+      "E\020\001\"\224\001\n\016GeneratorParam\022 \n\013mnist_param\030\001 "
+      "\001(\0132\013.MnistParam\0221\n\024data_generator_param"
+      "\030\002 \001(\0132\023.DataGeneratorParam\022-\n\022image_rea"
+      "der_param\030\003 \001(\0132\021.ImageReaderParam\"~\n\nMn"
+      "istParam\022\023\n\013folder_path\030\001 \001(\t\022$\n\004type\030\002 "
+      "\001(\0162\026.MnistParam.ReaderType\022\022\n\nbatch_siz"
+      "e\030\003 \001(\005\"!\n\nReaderType\022\t\n\005TRAIN\020\000\022\010\n\004TEST"
+      "\020\001\"\020\n\016CastFloatParam\"\373\006\n\tNodeParam\022\014\n\004na"
+      "me\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022\016\n\006output\030\003 \003(\t\022"
+      "\r\n\005phase\030\004 \003(\t\022\036\n\nloss_param\0302 \001(\0132\n.Los"
+      "sParam\022(\n\017generator_param\0303 \001(\0132\017.Genera"
+      "torParam\022&\n\016variable_param\030d \001(\0132\016.Varia"
+      "bleParam\022-\n\022place_holder_param\030e \001(\0132\021.P"
+      "laceHolderParam\022,\n\021phaseplexer_param\030f \001"
+      "(\0132\021.PhaseplexerParam\022\034\n\tadd_param\030g \001(\013"
+      "2\t.AddParam\022%\n\016bias_add_param\030h \001(\0132\r.Bi"
+      "asAddParam\022#\n\rconv_2d_param\030i \001(\0132\014.Conv"
+      "2dParam\0228\n\030transposed_conv_2d_param\030j \001("
+      "\0132\026.TransposedConv2dParam\022$\n\rdropout_par"
+      "am\030k \001(\0132\r.DropoutParam\022\036\n\nrelu_param\030l "
+      "\001(\0132\n.ReluParam\022$\n\rsoftmax_param\030m \001(\0132\r"
+      ".SoftmaxParam\022\"\n\014square_param\030n \001(\0132\014.Sq"
+      "uareParam\022\"\n\014matmul_param\030o \001(\0132\014.MatMul"
+      "Param\022$\n\rpooling_param\030p \001(\0132\r.PoolingPa"
+      "ram\022\"\n\014reduce_param\030q \001(\0132\014.ReduceParam\022"
+      " \n\013equal_param\030r \001(\0132\013.EqualParam\022 \n\013pri"
+      "nt_param\030s \001(\0132\013.PrintParam\022)\n\020cast_floa"
+      "t_param\030t \001(\0132\017.CastFloatParam\022,\n\021accumu"
+      "lator_param\030u \001(\0132\021.AccumulatorParam\022$\n\r"
+      "display_param\030v \001(\0132\r.DisplayParam\"\r\n\013Sq"
+      "uareParam\"\024\n\022EuclideanLossParam\"/\n\020Softm"
+      "axLossParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030\002 \001(\002"
+      "\"+\n\014SoftmaxParam\022\r\n\005alpha\030\001 \001(\002\022\014\n\004beta\030"
+      "\002 \001(\002\"\036\n\rInitFillParam\022\r\n\005value\030\001 \001(\002\"$\n"
+      "\022InitIndexFillParam\022\016\n\006offset\030\001 \001(\002\"2\n\026I"
+      "nitRandomUniformParam\022\013\n\003min\030\001 \001(\002\022\013\n\003ma"
+      "x\030\002 \001(\002\")\n\rInitStepParam\022\013\n\003min\030\001 \001(\002\022\013\n"
+      "\003max\030\002 \001(\002\"\375\001\n\tInitParam\022\"\n\014tensor_param"
+      "\030\001 \001(\0132\014.TensorParam\022\036\n\tinit_data\030\002 \001(\0132"
+      "\013.TensorData\022\"\n\nfill_param\030\003 \001(\0132\016.InitF"
+      "illParam\022-\n\020index_fill_param\030\004 \001(\0132\023.Ini"
+      "tIndexFillParam\0225\n\024random_uniform_param\030"
+      "\005 \001(\0132\027.InitRandomUniformParam\022\"\n\nstep_p"
+      "aram\030\006 \001(\0132\016.InitStepParam\"9\n\016SGDSolverP"
+      "aram\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030"
+      "\002 \001(\002\"\204\001\n\017GainSolverParam\022\025\n\rlearning_ra"
+      "te\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\022\020\n\010max_gain\030\003"
+      " \001(\002\022\020\n\010min_gain\030\004 \001(\002\022\021\n\tgain_plus\030\005 \001("
+      "\002\022\021\n\tgain_mult\030\006 \001(\002\"M\n\023AdaDeltaSolverPa"
+      "ram\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030\002"
+      " \001(\002\022\r\n\005delta\030\003 \001(\002\"S\n\017AdamSolverParam\022\025"
+      "\n\rlearning_rate\030\001 \001(\002\022\r\n\005beta1\030\002 \001(\002\022\r\n\005"
+      "beta2\030\003 \001(\002\022\013\n\003eps\030\004 \001(\002\"\275\001\n\013SolverParam"
+      "\022\014\n\004name\030\001 \001(\t\022#\n\nsgd_solver\030\002 \001(\0132\017.SGD"
+      "SolverParam\022%\n\013gain_solver\030\003 \001(\0132\020.GainS"
+      "olverParam\022%\n\013adam_solver\030\004 \001(\0132\020.AdamSo"
+      "lverParam\022-\n\017adadelta_solver\030\005 \001(\0132\024.Ada"
+      "DeltaSolverParam\"\206\001\n\nPhaseParam\022\r\n\005phase"
+      "\030\001 \001(\t\022-\n\tbehaviour\030\002 \001(\0162\032.PhaseParam.P"
+      "haseBehaviour\":\n\016PhaseBehaviour\022\t\n\005TRAIN"
+      "\020\000\022\016\n\nVALIDATION\020\001\022\r\n\tINFERENCE\020\002\"`\n\nGra"
+      "phParam\022\030\n\004node\030\001 \003(\0132\n.NodeParam\022\034\n\006sol"
+      "ver\030\002 \003(\0132\014.SolverParam\022\032\n\005phase\030\003 \003(\0132\013"
+      ".PhaseParamb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 4422);
+      descriptor, 4419);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -7493,72 +7493,72 @@ void LossParam::set_allocated_euclidean_loss_param(::EuclideanLossParam* euclide
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ImageGeneratorParam::kNumSamplesFieldNumber;
+const int DataGeneratorParam::kNumSamplesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-ImageGeneratorParam::ImageGeneratorParam()
+DataGeneratorParam::DataGeneratorParam()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     protobuf_deepflow_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:ImageGeneratorParam)
+  // @@protoc_insertion_point(constructor:DataGeneratorParam)
 }
-ImageGeneratorParam::ImageGeneratorParam(const ImageGeneratorParam& from)
+DataGeneratorParam::DataGeneratorParam(const DataGeneratorParam& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   num_samples_ = from.num_samples_;
-  // @@protoc_insertion_point(copy_constructor:ImageGeneratorParam)
+  // @@protoc_insertion_point(copy_constructor:DataGeneratorParam)
 }
 
-void ImageGeneratorParam::SharedCtor() {
+void DataGeneratorParam::SharedCtor() {
   num_samples_ = 0;
   _cached_size_ = 0;
 }
 
-ImageGeneratorParam::~ImageGeneratorParam() {
-  // @@protoc_insertion_point(destructor:ImageGeneratorParam)
+DataGeneratorParam::~DataGeneratorParam() {
+  // @@protoc_insertion_point(destructor:DataGeneratorParam)
   SharedDtor();
 }
 
-void ImageGeneratorParam::SharedDtor() {
+void DataGeneratorParam::SharedDtor() {
 }
 
-void ImageGeneratorParam::SetCachedSize(int size) const {
+void DataGeneratorParam::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* ImageGeneratorParam::descriptor() {
+const ::google::protobuf::Descriptor* DataGeneratorParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_deepflow_2eproto::file_level_metadata[20].descriptor;
 }
 
-const ImageGeneratorParam& ImageGeneratorParam::default_instance() {
+const DataGeneratorParam& DataGeneratorParam::default_instance() {
   protobuf_deepflow_2eproto::InitDefaults();
   return *internal_default_instance();
 }
 
-ImageGeneratorParam* ImageGeneratorParam::New(::google::protobuf::Arena* arena) const {
-  ImageGeneratorParam* n = new ImageGeneratorParam;
+DataGeneratorParam* DataGeneratorParam::New(::google::protobuf::Arena* arena) const {
+  DataGeneratorParam* n = new DataGeneratorParam;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void ImageGeneratorParam::Clear() {
-// @@protoc_insertion_point(message_clear_start:ImageGeneratorParam)
+void DataGeneratorParam::Clear() {
+// @@protoc_insertion_point(message_clear_start:DataGeneratorParam)
   num_samples_ = 0;
 }
 
-bool ImageGeneratorParam::MergePartialFromCodedStream(
+bool DataGeneratorParam::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:ImageGeneratorParam)
+  // @@protoc_insertion_point(parse_start:DataGeneratorParam)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -7591,40 +7591,40 @@ bool ImageGeneratorParam::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:ImageGeneratorParam)
+  // @@protoc_insertion_point(parse_success:DataGeneratorParam)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:ImageGeneratorParam)
+  // @@protoc_insertion_point(parse_failure:DataGeneratorParam)
   return false;
 #undef DO_
 }
 
-void ImageGeneratorParam::SerializeWithCachedSizes(
+void DataGeneratorParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:ImageGeneratorParam)
+  // @@protoc_insertion_point(serialize_start:DataGeneratorParam)
   // int32 num_samples = 1;
   if (this->num_samples() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->num_samples(), output);
   }
 
-  // @@protoc_insertion_point(serialize_end:ImageGeneratorParam)
+  // @@protoc_insertion_point(serialize_end:DataGeneratorParam)
 }
 
-::google::protobuf::uint8* ImageGeneratorParam::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* DataGeneratorParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:ImageGeneratorParam)
+  // @@protoc_insertion_point(serialize_to_array_start:DataGeneratorParam)
   // int32 num_samples = 1;
   if (this->num_samples() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->num_samples(), target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:ImageGeneratorParam)
+  // @@protoc_insertion_point(serialize_to_array_end:DataGeneratorParam)
   return target;
 }
 
-size_t ImageGeneratorParam::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:ImageGeneratorParam)
+size_t DataGeneratorParam::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:DataGeneratorParam)
   size_t total_size = 0;
 
   // int32 num_samples = 1;
@@ -7641,23 +7641,23 @@ size_t ImageGeneratorParam::ByteSizeLong() const {
   return total_size;
 }
 
-void ImageGeneratorParam::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:ImageGeneratorParam)
+void DataGeneratorParam::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:DataGeneratorParam)
   GOOGLE_DCHECK_NE(&from, this);
-  const ImageGeneratorParam* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const ImageGeneratorParam>(
+  const DataGeneratorParam* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DataGeneratorParam>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:ImageGeneratorParam)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:DataGeneratorParam)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:ImageGeneratorParam)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:DataGeneratorParam)
     MergeFrom(*source);
   }
 }
 
-void ImageGeneratorParam::MergeFrom(const ImageGeneratorParam& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:ImageGeneratorParam)
+void DataGeneratorParam::MergeFrom(const DataGeneratorParam& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:DataGeneratorParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.num_samples() != 0) {
@@ -7665,53 +7665,53 @@ void ImageGeneratorParam::MergeFrom(const ImageGeneratorParam& from) {
   }
 }
 
-void ImageGeneratorParam::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:ImageGeneratorParam)
+void DataGeneratorParam::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:DataGeneratorParam)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void ImageGeneratorParam::CopyFrom(const ImageGeneratorParam& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:ImageGeneratorParam)
+void DataGeneratorParam::CopyFrom(const DataGeneratorParam& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:DataGeneratorParam)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool ImageGeneratorParam::IsInitialized() const {
+bool DataGeneratorParam::IsInitialized() const {
   return true;
 }
 
-void ImageGeneratorParam::Swap(ImageGeneratorParam* other) {
+void DataGeneratorParam::Swap(DataGeneratorParam* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void ImageGeneratorParam::InternalSwap(ImageGeneratorParam* other) {
+void DataGeneratorParam::InternalSwap(DataGeneratorParam* other) {
   std::swap(num_samples_, other->num_samples_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata ImageGeneratorParam::GetMetadata() const {
+::google::protobuf::Metadata DataGeneratorParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_deepflow_2eproto::file_level_metadata[20];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
-// ImageGeneratorParam
+// DataGeneratorParam
 
 // int32 num_samples = 1;
-void ImageGeneratorParam::clear_num_samples() {
+void DataGeneratorParam::clear_num_samples() {
   num_samples_ = 0;
 }
-::google::protobuf::int32 ImageGeneratorParam::num_samples() const {
-  // @@protoc_insertion_point(field_get:ImageGeneratorParam.num_samples)
+::google::protobuf::int32 DataGeneratorParam::num_samples() const {
+  // @@protoc_insertion_point(field_get:DataGeneratorParam.num_samples)
   return num_samples_;
 }
-void ImageGeneratorParam::set_num_samples(::google::protobuf::int32 value) {
+void DataGeneratorParam::set_num_samples(::google::protobuf::int32 value) {
   
   num_samples_ = value;
-  // @@protoc_insertion_point(field_set:ImageGeneratorParam.num_samples)
+  // @@protoc_insertion_point(field_set:DataGeneratorParam.num_samples)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -8057,7 +8057,7 @@ void ImageReaderParam::set_type(::ImageReaderParam_Type value) {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int GeneratorParam::kMnistParamFieldNumber;
-const int GeneratorParam::kImageGeneratorParamFieldNumber;
+const int GeneratorParam::kDataGeneratorParamFieldNumber;
 const int GeneratorParam::kImageReaderParamFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -8079,10 +8079,10 @@ GeneratorParam::GeneratorParam(const GeneratorParam& from)
   } else {
     mnist_param_ = NULL;
   }
-  if (from.has_image_generator_param()) {
-    image_generator_param_ = new ::ImageGeneratorParam(*from.image_generator_param_);
+  if (from.has_data_generator_param()) {
+    data_generator_param_ = new ::DataGeneratorParam(*from.data_generator_param_);
   } else {
-    image_generator_param_ = NULL;
+    data_generator_param_ = NULL;
   }
   if (from.has_image_reader_param()) {
     image_reader_param_ = new ::ImageReaderParam(*from.image_reader_param_);
@@ -8108,7 +8108,7 @@ void GeneratorParam::SharedDtor() {
     delete mnist_param_;
   }
   if (this != internal_default_instance()) {
-    delete image_generator_param_;
+    delete data_generator_param_;
   }
   if (this != internal_default_instance()) {
     delete image_reader_param_;
@@ -8144,10 +8144,10 @@ void GeneratorParam::Clear() {
     delete mnist_param_;
   }
   mnist_param_ = NULL;
-  if (GetArenaNoVirtual() == NULL && image_generator_param_ != NULL) {
-    delete image_generator_param_;
+  if (GetArenaNoVirtual() == NULL && data_generator_param_ != NULL) {
+    delete data_generator_param_;
   }
-  image_generator_param_ = NULL;
+  data_generator_param_ = NULL;
   if (GetArenaNoVirtual() == NULL && image_reader_param_ != NULL) {
     delete image_reader_param_;
   }
@@ -8176,12 +8176,12 @@ bool GeneratorParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .ImageGeneratorParam image_generator_param = 2;
+      // .DataGeneratorParam data_generator_param = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_image_generator_param()));
+               input, mutable_data_generator_param()));
         } else {
           goto handle_unusual;
         }
@@ -8230,10 +8230,10 @@ void GeneratorParam::SerializeWithCachedSizes(
       1, *this->mnist_param_, output);
   }
 
-  // .ImageGeneratorParam image_generator_param = 2;
-  if (this->has_image_generator_param()) {
+  // .DataGeneratorParam data_generator_param = 2;
+  if (this->has_data_generator_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, *this->image_generator_param_, output);
+      2, *this->data_generator_param_, output);
   }
 
   // .ImageReaderParam image_reader_param = 3;
@@ -8256,11 +8256,11 @@ void GeneratorParam::SerializeWithCachedSizes(
         1, *this->mnist_param_, false, target);
   }
 
-  // .ImageGeneratorParam image_generator_param = 2;
-  if (this->has_image_generator_param()) {
+  // .DataGeneratorParam data_generator_param = 2;
+  if (this->has_data_generator_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        2, *this->image_generator_param_, false, target);
+        2, *this->data_generator_param_, false, target);
   }
 
   // .ImageReaderParam image_reader_param = 3;
@@ -8285,11 +8285,11 @@ size_t GeneratorParam::ByteSizeLong() const {
         *this->mnist_param_);
   }
 
-  // .ImageGeneratorParam image_generator_param = 2;
-  if (this->has_image_generator_param()) {
+  // .DataGeneratorParam data_generator_param = 2;
+  if (this->has_data_generator_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->image_generator_param_);
+        *this->data_generator_param_);
   }
 
   // .ImageReaderParam image_reader_param = 3;
@@ -8328,8 +8328,8 @@ void GeneratorParam::MergeFrom(const GeneratorParam& from) {
   if (from.has_mnist_param()) {
     mutable_mnist_param()->::MnistParam::MergeFrom(from.mnist_param());
   }
-  if (from.has_image_generator_param()) {
-    mutable_image_generator_param()->::ImageGeneratorParam::MergeFrom(from.image_generator_param());
+  if (from.has_data_generator_param()) {
+    mutable_data_generator_param()->::DataGeneratorParam::MergeFrom(from.data_generator_param());
   }
   if (from.has_image_reader_param()) {
     mutable_image_reader_param()->::ImageReaderParam::MergeFrom(from.image_reader_param());
@@ -8360,7 +8360,7 @@ void GeneratorParam::Swap(GeneratorParam* other) {
 }
 void GeneratorParam::InternalSwap(GeneratorParam* other) {
   std::swap(mnist_param_, other->mnist_param_);
-  std::swap(image_generator_param_, other->image_generator_param_);
+  std::swap(data_generator_param_, other->data_generator_param_);
   std::swap(image_reader_param_, other->image_reader_param_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -8412,43 +8412,43 @@ void GeneratorParam::set_allocated_mnist_param(::MnistParam* mnist_param) {
   // @@protoc_insertion_point(field_set_allocated:GeneratorParam.mnist_param)
 }
 
-// .ImageGeneratorParam image_generator_param = 2;
-bool GeneratorParam::has_image_generator_param() const {
-  return this != internal_default_instance() && image_generator_param_ != NULL;
+// .DataGeneratorParam data_generator_param = 2;
+bool GeneratorParam::has_data_generator_param() const {
+  return this != internal_default_instance() && data_generator_param_ != NULL;
 }
-void GeneratorParam::clear_image_generator_param() {
-  if (GetArenaNoVirtual() == NULL && image_generator_param_ != NULL) delete image_generator_param_;
-  image_generator_param_ = NULL;
+void GeneratorParam::clear_data_generator_param() {
+  if (GetArenaNoVirtual() == NULL && data_generator_param_ != NULL) delete data_generator_param_;
+  data_generator_param_ = NULL;
 }
-const ::ImageGeneratorParam& GeneratorParam::image_generator_param() const {
-  // @@protoc_insertion_point(field_get:GeneratorParam.image_generator_param)
-  return image_generator_param_ != NULL ? *image_generator_param_
-                         : *::ImageGeneratorParam::internal_default_instance();
+const ::DataGeneratorParam& GeneratorParam::data_generator_param() const {
+  // @@protoc_insertion_point(field_get:GeneratorParam.data_generator_param)
+  return data_generator_param_ != NULL ? *data_generator_param_
+                         : *::DataGeneratorParam::internal_default_instance();
 }
-::ImageGeneratorParam* GeneratorParam::mutable_image_generator_param() {
+::DataGeneratorParam* GeneratorParam::mutable_data_generator_param() {
   
-  if (image_generator_param_ == NULL) {
-    image_generator_param_ = new ::ImageGeneratorParam;
+  if (data_generator_param_ == NULL) {
+    data_generator_param_ = new ::DataGeneratorParam;
   }
-  // @@protoc_insertion_point(field_mutable:GeneratorParam.image_generator_param)
-  return image_generator_param_;
+  // @@protoc_insertion_point(field_mutable:GeneratorParam.data_generator_param)
+  return data_generator_param_;
 }
-::ImageGeneratorParam* GeneratorParam::release_image_generator_param() {
-  // @@protoc_insertion_point(field_release:GeneratorParam.image_generator_param)
+::DataGeneratorParam* GeneratorParam::release_data_generator_param() {
+  // @@protoc_insertion_point(field_release:GeneratorParam.data_generator_param)
   
-  ::ImageGeneratorParam* temp = image_generator_param_;
-  image_generator_param_ = NULL;
+  ::DataGeneratorParam* temp = data_generator_param_;
+  data_generator_param_ = NULL;
   return temp;
 }
-void GeneratorParam::set_allocated_image_generator_param(::ImageGeneratorParam* image_generator_param) {
-  delete image_generator_param_;
-  image_generator_param_ = image_generator_param;
-  if (image_generator_param) {
+void GeneratorParam::set_allocated_data_generator_param(::DataGeneratorParam* data_generator_param) {
+  delete data_generator_param_;
+  data_generator_param_ = data_generator_param;
+  if (data_generator_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:GeneratorParam.image_generator_param)
+  // @@protoc_insertion_point(field_set_allocated:GeneratorParam.data_generator_param)
 }
 
 // .ImageReaderParam image_reader_param = 3;

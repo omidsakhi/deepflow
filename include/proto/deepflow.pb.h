@@ -51,6 +51,9 @@ extern CastFloatParamDefaultTypeInternal _CastFloatParam_default_instance_;
 class Conv2dParam;
 class Conv2dParamDefaultTypeInternal;
 extern Conv2dParamDefaultTypeInternal _Conv2dParam_default_instance_;
+class DataGeneratorParam;
+class DataGeneratorParamDefaultTypeInternal;
+extern DataGeneratorParamDefaultTypeInternal _DataGeneratorParam_default_instance_;
 class DisplayParam;
 class DisplayParamDefaultTypeInternal;
 extern DisplayParamDefaultTypeInternal _DisplayParam_default_instance_;
@@ -72,9 +75,6 @@ extern GeneratorParamDefaultTypeInternal _GeneratorParam_default_instance_;
 class GraphParam;
 class GraphParamDefaultTypeInternal;
 extern GraphParamDefaultTypeInternal _GraphParam_default_instance_;
-class ImageGeneratorParam;
-class ImageGeneratorParamDefaultTypeInternal;
-extern ImageGeneratorParamDefaultTypeInternal _ImageGeneratorParam_default_instance_;
 class ImageReaderParam;
 class ImageReaderParamDefaultTypeInternal;
 extern ImageReaderParamDefaultTypeInternal _ImageReaderParam_default_instance_;
@@ -2420,37 +2420,37 @@ class LossParam : public ::google::protobuf::Message /* @@protoc_insertion_point
 };
 // -------------------------------------------------------------------
 
-class ImageGeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ImageGeneratorParam) */ {
+class DataGeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:DataGeneratorParam) */ {
  public:
-  ImageGeneratorParam();
-  virtual ~ImageGeneratorParam();
+  DataGeneratorParam();
+  virtual ~DataGeneratorParam();
 
-  ImageGeneratorParam(const ImageGeneratorParam& from);
+  DataGeneratorParam(const DataGeneratorParam& from);
 
-  inline ImageGeneratorParam& operator=(const ImageGeneratorParam& from) {
+  inline DataGeneratorParam& operator=(const DataGeneratorParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ImageGeneratorParam& default_instance();
+  static const DataGeneratorParam& default_instance();
 
-  static inline const ImageGeneratorParam* internal_default_instance() {
-    return reinterpret_cast<const ImageGeneratorParam*>(
-               &_ImageGeneratorParam_default_instance_);
+  static inline const DataGeneratorParam* internal_default_instance() {
+    return reinterpret_cast<const DataGeneratorParam*>(
+               &_DataGeneratorParam_default_instance_);
   }
 
-  void Swap(ImageGeneratorParam* other);
+  void Swap(DataGeneratorParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline ImageGeneratorParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline DataGeneratorParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  ImageGeneratorParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  DataGeneratorParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const ImageGeneratorParam& from);
-  void MergeFrom(const ImageGeneratorParam& from);
+  void CopyFrom(const DataGeneratorParam& from);
+  void MergeFrom(const DataGeneratorParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -2471,7 +2471,7 @@ class ImageGeneratorParam : public ::google::protobuf::Message /* @@protoc_inser
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(ImageGeneratorParam* other);
+  void InternalSwap(DataGeneratorParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -2493,7 +2493,7 @@ class ImageGeneratorParam : public ::google::protobuf::Message /* @@protoc_inser
   ::google::protobuf::int32 num_samples() const;
   void set_num_samples(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:ImageGeneratorParam)
+  // @@protoc_insertion_point(class_scope:DataGeneratorParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -2703,14 +2703,14 @@ class GeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_
   ::MnistParam* release_mnist_param();
   void set_allocated_mnist_param(::MnistParam* mnist_param);
 
-  // .ImageGeneratorParam image_generator_param = 2;
-  bool has_image_generator_param() const;
-  void clear_image_generator_param();
-  static const int kImageGeneratorParamFieldNumber = 2;
-  const ::ImageGeneratorParam& image_generator_param() const;
-  ::ImageGeneratorParam* mutable_image_generator_param();
-  ::ImageGeneratorParam* release_image_generator_param();
-  void set_allocated_image_generator_param(::ImageGeneratorParam* image_generator_param);
+  // .DataGeneratorParam data_generator_param = 2;
+  bool has_data_generator_param() const;
+  void clear_data_generator_param();
+  static const int kDataGeneratorParamFieldNumber = 2;
+  const ::DataGeneratorParam& data_generator_param() const;
+  ::DataGeneratorParam* mutable_data_generator_param();
+  ::DataGeneratorParam* release_data_generator_param();
+  void set_allocated_data_generator_param(::DataGeneratorParam* data_generator_param);
 
   // .ImageReaderParam image_reader_param = 3;
   bool has_image_reader_param() const;
@@ -2726,7 +2726,7 @@ class GeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::MnistParam* mnist_param_;
-  ::ImageGeneratorParam* image_generator_param_;
+  ::DataGeneratorParam* data_generator_param_;
   ::ImageReaderParam* image_reader_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
@@ -5996,20 +5996,20 @@ inline void LossParam::set_allocated_euclidean_loss_param(::EuclideanLossParam* 
 
 // -------------------------------------------------------------------
 
-// ImageGeneratorParam
+// DataGeneratorParam
 
 // int32 num_samples = 1;
-inline void ImageGeneratorParam::clear_num_samples() {
+inline void DataGeneratorParam::clear_num_samples() {
   num_samples_ = 0;
 }
-inline ::google::protobuf::int32 ImageGeneratorParam::num_samples() const {
-  // @@protoc_insertion_point(field_get:ImageGeneratorParam.num_samples)
+inline ::google::protobuf::int32 DataGeneratorParam::num_samples() const {
+  // @@protoc_insertion_point(field_get:DataGeneratorParam.num_samples)
   return num_samples_;
 }
-inline void ImageGeneratorParam::set_num_samples(::google::protobuf::int32 value) {
+inline void DataGeneratorParam::set_num_samples(::google::protobuf::int32 value) {
   
   num_samples_ = value;
-  // @@protoc_insertion_point(field_set:ImageGeneratorParam.num_samples)
+  // @@protoc_insertion_point(field_set:DataGeneratorParam.num_samples)
 }
 
 // -------------------------------------------------------------------
@@ -6125,43 +6125,43 @@ inline void GeneratorParam::set_allocated_mnist_param(::MnistParam* mnist_param)
   // @@protoc_insertion_point(field_set_allocated:GeneratorParam.mnist_param)
 }
 
-// .ImageGeneratorParam image_generator_param = 2;
-inline bool GeneratorParam::has_image_generator_param() const {
-  return this != internal_default_instance() && image_generator_param_ != NULL;
+// .DataGeneratorParam data_generator_param = 2;
+inline bool GeneratorParam::has_data_generator_param() const {
+  return this != internal_default_instance() && data_generator_param_ != NULL;
 }
-inline void GeneratorParam::clear_image_generator_param() {
-  if (GetArenaNoVirtual() == NULL && image_generator_param_ != NULL) delete image_generator_param_;
-  image_generator_param_ = NULL;
+inline void GeneratorParam::clear_data_generator_param() {
+  if (GetArenaNoVirtual() == NULL && data_generator_param_ != NULL) delete data_generator_param_;
+  data_generator_param_ = NULL;
 }
-inline const ::ImageGeneratorParam& GeneratorParam::image_generator_param() const {
-  // @@protoc_insertion_point(field_get:GeneratorParam.image_generator_param)
-  return image_generator_param_ != NULL ? *image_generator_param_
-                         : *::ImageGeneratorParam::internal_default_instance();
+inline const ::DataGeneratorParam& GeneratorParam::data_generator_param() const {
+  // @@protoc_insertion_point(field_get:GeneratorParam.data_generator_param)
+  return data_generator_param_ != NULL ? *data_generator_param_
+                         : *::DataGeneratorParam::internal_default_instance();
 }
-inline ::ImageGeneratorParam* GeneratorParam::mutable_image_generator_param() {
+inline ::DataGeneratorParam* GeneratorParam::mutable_data_generator_param() {
   
-  if (image_generator_param_ == NULL) {
-    image_generator_param_ = new ::ImageGeneratorParam;
+  if (data_generator_param_ == NULL) {
+    data_generator_param_ = new ::DataGeneratorParam;
   }
-  // @@protoc_insertion_point(field_mutable:GeneratorParam.image_generator_param)
-  return image_generator_param_;
+  // @@protoc_insertion_point(field_mutable:GeneratorParam.data_generator_param)
+  return data_generator_param_;
 }
-inline ::ImageGeneratorParam* GeneratorParam::release_image_generator_param() {
-  // @@protoc_insertion_point(field_release:GeneratorParam.image_generator_param)
+inline ::DataGeneratorParam* GeneratorParam::release_data_generator_param() {
+  // @@protoc_insertion_point(field_release:GeneratorParam.data_generator_param)
   
-  ::ImageGeneratorParam* temp = image_generator_param_;
-  image_generator_param_ = NULL;
+  ::DataGeneratorParam* temp = data_generator_param_;
+  data_generator_param_ = NULL;
   return temp;
 }
-inline void GeneratorParam::set_allocated_image_generator_param(::ImageGeneratorParam* image_generator_param) {
-  delete image_generator_param_;
-  image_generator_param_ = image_generator_param;
-  if (image_generator_param) {
+inline void GeneratorParam::set_allocated_data_generator_param(::DataGeneratorParam* data_generator_param) {
+  delete data_generator_param_;
+  data_generator_param_ = data_generator_param;
+  if (data_generator_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:GeneratorParam.image_generator_param)
+  // @@protoc_insertion_point(field_set_allocated:GeneratorParam.data_generator_param)
 }
 
 // .ImageReaderParam image_reader_param = 3;
