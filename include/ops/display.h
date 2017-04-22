@@ -26,4 +26,5 @@ protected:
 	unsigned char *d_pic;	
 	cv::Mat disp;
 	int _delay_msec = 100;
+	DisplayParam_DisplayType _display_type;
 };

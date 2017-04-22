@@ -17,9 +17,11 @@ protected:
 	cudnnConvolutionDescriptor_t _convDesc;
 	cudnnConvolutionFwdAlgo_t _fwdAlgo;	
 	cudnnConvolutionBwdDataAlgo_t _bwdDataAlgo;
+	cudnnConvolutionBwdFilterAlgo_t _bwdFilterAlgo;
 	size_t _fwdWorkspaceSize;
 	size_t _bwdDataWorkspaceSize;	
 	size_t _maxWorkspaceSize;
+	size_t _bwdFilterWorkspaceSize;
 	const float alpha = 1.0f;
 	const float beta = 0.0f;
 	float *d_workspace;

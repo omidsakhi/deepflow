@@ -26,6 +26,7 @@ Display::Display(const NodeParam &param) : Node(param) {
 
 void Display::initForward() {
 	_delay_msec = _param.display_param().delay_msec();
+	_display_type = _param.display_param().display_type();
 	auto dims = _inputs[0]->value()->dims();	
 	input_size = _inputs[0]->value()->size();
 	input_size_in_bytes = _inputs[0]->value()->sizeInBytes();
@@ -48,17 +49,28 @@ void Display::initBackward() {
 	
 }
 
-void Display::forward() {	
-	PictureGeneratorKernel << < numOfBlocks(input_size), maxThreadsPerBlock >> >(input_size, (float*) _inputs[0]->value()->data(), d_pic, pic_width, num_image_per_row_and_col, num_images, per_image_width, per_image_height);
-	DF_KERNEL_CHECK();
-	DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) *num_pic_pixels, cudaMemcpyDeviceToHost));	
-	cv::imshow(name(), disp);
-	int key = cv::waitKey(_delay_msec);
-	if (key == 27) {
-		_context->quit = true;
+void Display::forward() {
+	if (_display_type == DisplayParam_DisplayType_VALUES) {
+		PictureGeneratorKernel << < numOfBlocks(input_size), maxThreadsPerBlock >> >(input_size, (float*)_inputs[0]->value()->data(), d_pic, pic_width, num_image_per_row_and_col, num_images, per_image_width, per_image_height);
+		DF_KERNEL_CHECK();
+		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) *num_pic_pixels, cudaMemcpyDeviceToHost));
+		cv::imshow(name(), disp);
+		int key = cv::waitKey(_delay_msec);
+		if (key == 27) {
+			_context->quit = true;
+		}
+	}
+	if (_display_type == DisplayParam_DisplayType_DIFFS) {
+		PictureGeneratorKernel << < numOfBlocks(input_size), maxThreadsPerBlock >> >(input_size, (float*)_inputs[0]->diff()->data(), d_pic, pic_width, num_image_per_row_and_col, num_images, per_image_width, per_image_height);
+		DF_KERNEL_CHECK();
+		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) *num_pic_pixels, cudaMemcpyDeviceToHost));
+		cv::imshow(name(), disp);
+		int key = cv::waitKey(_delay_msec);
+		if (key == 27) {
+			_context->quit = true;
+		}
 	}
 }
 
 void Display::backward() {
-	
 }

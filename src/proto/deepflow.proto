@@ -51,7 +51,12 @@ message AddParam {
 }
 
 message DisplayParam {
+	enum DisplayType {
+		VALUES = 0;
+		DIFFS = 1;
+	}
 	int32 delay_msec = 1;
+	DisplayType display_type = 2;
 }
 
 message EqualParam {

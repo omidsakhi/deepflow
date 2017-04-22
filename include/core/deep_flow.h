@@ -83,7 +83,7 @@ public:
 	
 	// PRINTERS & DISPLAYS
 	void print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime = Print::PrintTime::END_OF_EPOCH, Print::PrintType = Print::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
-	void display(std::string input, int delay_msec = 100, std::string name = "disp", std::initializer_list<std::string> phases = {});
+	void display(std::string input, int delay_msec = 100, DisplayParam_DisplayType type = DisplayParam_DisplayType_VALUES , std::string name = "disp", std::initializer_list<std::string> phases = {});
 
 	// OTHER
 	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});

@@ -214,7 +214,8 @@ std::string DeepFlow::variable(std::shared_ptr<InitParam> initializer, std::shar
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	auto variable_param = node_param->mutable_variable_param();
-	variable_param->set_solver_name(solver->name());
+	if (solver)
+		variable_param->set_solver_name(solver->name());
 	auto init_param = variable_param->mutable_init_param();
 	init_param->CopyFrom(*initializer.get());
 	_nodes.push_back(node_param);
@@ -495,7 +496,7 @@ std::string DeepFlow::conv2d(std::string input, std::string filter, std::string 
 	return conv2d(input, filter, 0, 0, 1, 1, 1, 1, name, phases);
 }
 
-void DeepFlow::display(std::string input,int delay_msec, std::string name, std::initializer_list<std::string> phases) {
+void DeepFlow::display(std::string input,int delay_msec, DisplayParam_DisplayType type, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = std::make_shared<NodeParam>();
 	node_param->set_name(_get_unique_node_name(name));
 	for (auto phase : phases)
@@ -503,6 +504,7 @@ void DeepFlow::display(std::string input,int delay_msec, std::string name, std::
 	node_param->add_input(input);
 	auto display_param = node_param->mutable_display_param();
 	display_param->set_delay_msec(delay_msec);
+	display_param->set_display_type(type);
 	_nodes.push_back(node_param);	
 }
 

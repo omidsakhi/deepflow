@@ -215,7 +215,7 @@ void Session::initialize() {
 			LOG(INFO) << "Variable " << var->name() << " <-> Solver " << solver->name();
 		}
 		else {
-			LOG(INFO) << "Variable " << var->name() << " NO SOLVER";
+			LOG(INFO) << "Variable " << var->name() << " <-> Constant";
 		}
 	}
 

@@ -259,6 +259,27 @@ inline bool PrintParam_PrintType_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<PrintParam_PrintType>(
     PrintParam_PrintType_descriptor(), name, value);
 }
+enum DisplayParam_DisplayType {
+  DisplayParam_DisplayType_VALUES = 0,
+  DisplayParam_DisplayType_DIFFS = 1,
+  DisplayParam_DisplayType_DisplayParam_DisplayType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  DisplayParam_DisplayType_DisplayParam_DisplayType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool DisplayParam_DisplayType_IsValid(int value);
+const DisplayParam_DisplayType DisplayParam_DisplayType_DisplayType_MIN = DisplayParam_DisplayType_VALUES;
+const DisplayParam_DisplayType DisplayParam_DisplayType_DisplayType_MAX = DisplayParam_DisplayType_DIFFS;
+const int DisplayParam_DisplayType_DisplayType_ARRAYSIZE = DisplayParam_DisplayType_DisplayType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* DisplayParam_DisplayType_descriptor();
+inline const ::std::string& DisplayParam_DisplayType_Name(DisplayParam_DisplayType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    DisplayParam_DisplayType_descriptor(), value);
+}
+inline bool DisplayParam_DisplayType_Parse(
+    const ::std::string& name, DisplayParam_DisplayType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<DisplayParam_DisplayType>(
+    DisplayParam_DisplayType_descriptor(), name, value);
+}
 enum ReduceParam_ReduceOp {
   ReduceParam_ReduceOp_ADD = 0,
   ReduceParam_ReduceOp_MUL = 1,
@@ -1124,6 +1145,32 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // nested types ----------------------------------------------------
 
+  typedef DisplayParam_DisplayType DisplayType;
+  static const DisplayType VALUES =
+    DisplayParam_DisplayType_VALUES;
+  static const DisplayType DIFFS =
+    DisplayParam_DisplayType_DIFFS;
+  static inline bool DisplayType_IsValid(int value) {
+    return DisplayParam_DisplayType_IsValid(value);
+  }
+  static const DisplayType DisplayType_MIN =
+    DisplayParam_DisplayType_DisplayType_MIN;
+  static const DisplayType DisplayType_MAX =
+    DisplayParam_DisplayType_DisplayType_MAX;
+  static const int DisplayType_ARRAYSIZE =
+    DisplayParam_DisplayType_DisplayType_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  DisplayType_descriptor() {
+    return DisplayParam_DisplayType_descriptor();
+  }
+  static inline const ::std::string& DisplayType_Name(DisplayType value) {
+    return DisplayParam_DisplayType_Name(value);
+  }
+  static inline bool DisplayType_Parse(const ::std::string& name,
+      DisplayType* value) {
+    return DisplayParam_DisplayType_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   // int32 delay_msec = 1;
@@ -1132,11 +1179,18 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::int32 delay_msec() const;
   void set_delay_msec(::google::protobuf::int32 value);
 
+  // .DisplayParam.DisplayType display_type = 2;
+  void clear_display_type();
+  static const int kDisplayTypeFieldNumber = 2;
+  ::DisplayParam_DisplayType display_type() const;
+  void set_display_type(::DisplayParam_DisplayType value);
+
   // @@protoc_insertion_point(class_scope:DisplayParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int32 delay_msec_;
+  int display_type_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -5385,6 +5439,20 @@ inline void DisplayParam::set_delay_msec(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:DisplayParam.delay_msec)
 }
 
+// .DisplayParam.DisplayType display_type = 2;
+inline void DisplayParam::clear_display_type() {
+  display_type_ = 0;
+}
+inline ::DisplayParam_DisplayType DisplayParam::display_type() const {
+  // @@protoc_insertion_point(field_get:DisplayParam.display_type)
+  return static_cast< ::DisplayParam_DisplayType >(display_type_);
+}
+inline void DisplayParam::set_display_type(::DisplayParam_DisplayType value) {
+  
+  display_type_ = value;
+  // @@protoc_insertion_point(field_set:DisplayParam.display_type)
+}
+
 // -------------------------------------------------------------------
 
 // EqualParam
@@ -8721,6 +8789,11 @@ template <> struct is_proto_enum< ::PrintParam_PrintType> : ::google::protobuf::
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::PrintParam_PrintType>() {
   return ::PrintParam_PrintType_descriptor();
+}
+template <> struct is_proto_enum< ::DisplayParam_DisplayType> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::DisplayParam_DisplayType>() {
+  return ::DisplayParam_DisplayType_descriptor();
 }
 template <> struct is_proto_enum< ::ReduceParam_ReduceOp> : ::google::protobuf::internal::true_type {};
 template <>
