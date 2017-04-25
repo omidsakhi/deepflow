@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\examples\image_approximation\image_approximation.cpp" />
+    <ClCompile Include="..\..\examples\experimental\experimental.cpp">
+      <FileType>CppCode</FileType>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{7903828E-E565-400D-AEE1-194E42654C84}</ProjectGuid>
+    <ProjectGuid>{8777DFAE-3C57-49CD-8A9F-8B85649D34BE}</ProjectGuid>
     <RootNamespace>deepflow_mnist</RootNamespace>
-    <ProjectName>image_approximation</ProjectName>
+    <ProjectName>experimental</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
