@@ -12,6 +12,8 @@ public:
 	void initBackward();
 	void forward();
 	void backward();
+	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
+	virtual BackwardType backwardType() { return ALWAYS_BACKWARD; }
 private:
 	cudnnHandle_t _cudnnHandle;	
 	float alpha = 1.0f;

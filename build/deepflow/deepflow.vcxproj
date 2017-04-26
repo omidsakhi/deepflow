@@ -43,10 +43,6 @@
     <ClInclude Include="..\..\include\initializers\index_fill.h" />
     <ClInclude Include="..\..\include\initializers\random_uniform.h" />
     <ClInclude Include="..\..\include\initializers\step.h" />
-    <ClInclude Include="..\..\include\observers\backward.h" />
-    <ClInclude Include="..\..\include\observers\forward.h" />
-    <ClInclude Include="..\..\include\observers\node_finder.h" />
-    <ClInclude Include="..\..\include\observers\reset.h" />
     <ClInclude Include="..\..\include\ops\accumulator.h" />
     <ClInclude Include="..\..\include\ops\activation.h" />
     <ClInclude Include="..\..\include\ops\add.h" />
@@ -89,7 +85,6 @@
       <FileType>CppCode</FileType>
     </CudaCompile>
     <ClCompile Include="..\..\src\generators\mnist_reader.cpp" />
-    <ClCompile Include="..\..\src\observers\reset.cpp" />
     <ClCompile Include="..\..\src\ops\activation.cpp" />
     <ClCompile Include="..\..\src\ops\pooling.cpp">
       <FileType>Document</FileType>
@@ -113,9 +108,6 @@
       <FileType>CppCode</FileType>
     </CudaCompile>
     <ClCompile Include="..\..\src\core\terminal.cpp" />
-    <ClCompile Include="..\..\src\observers\backward.cpp" />
-    <ClCompile Include="..\..\src\observers\forward.cpp" />
-    <ClCompile Include="..\..\src\observers\node_finder.cpp" />
     <CudaCompile Include="..\..\src\ops\softmax_loss.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>

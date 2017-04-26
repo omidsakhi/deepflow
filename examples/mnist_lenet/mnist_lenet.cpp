@@ -15,7 +15,8 @@ DEFINE_string(run,"", "Phase to execute graph");
 DEFINE_bool(printiter, false, "Print iteration message");
 DEFINE_bool(printepoch, true, "Print epoch message");
 DEFINE_int32(debug, 0, "Level of debug");
-DEFINE_int32(epoch, 1000, "Level of debug");
+DEFINE_int32(epoch, 1000, "Maximum epochs");
+DEFINE_int32(iter, -1, "Maximum iterations");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -72,7 +73,7 @@ void main(int argc, char** argv) {
 
 	if (!FLAGS_run.empty()) {
 		session->initialize();
-		session->run(FLAGS_run, FLAGS_epoch, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
+		session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
 	}
 
 	

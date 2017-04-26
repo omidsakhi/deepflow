@@ -10,12 +10,11 @@ void AddKernelForward(const int n, const float alpha, const float *a, const floa
 }
 
 __global__
-void AddKernelBackward(const int n, const float *diff, const float alpha, float * __restrict__ a_diff, const float beta, float * __restrict__ b_diff)
+void AddKernelBackward(const int n, const float *dy, const float scale, float * __restrict__ dx)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
-		a_diff[i] = alpha * diff[i];
-		b_diff[i] = beta * diff[i];
+		dx[i] = scale * dy[i];		
 	}
 }
 
@@ -51,8 +50,13 @@ void Add::forward() {
 }
 
 void Add::backward() {	
-	auto size = _outputs[0]->diff()->size();	
-	AddKernelBackward << <numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_outputs[0]->diff()->data(), _alpha, (float*)_inputs[0]->diff()->mutableData(), _beta, (float*)_inputs[1]->diff()->mutableData());
-	DF_KERNEL_CHECK();
-
+	auto size = _outputs[0]->diff()->size();
+	if (_outputs[0]->node()->shouldBackward()) {
+		AddKernelBackward << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), _alpha, (float*)_inputs[0]->diff()->mutableData());
+		DF_KERNEL_CHECK();
+	}	
+	if (_outputs[1]->node()->shouldBackward()) {
+		AddKernelBackward << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), _beta, (float*)_inputs[1]->diff()->mutableData());
+		DF_KERNEL_CHECK();
+	}
 }

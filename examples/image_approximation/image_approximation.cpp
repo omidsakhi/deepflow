@@ -15,7 +15,8 @@ DEFINE_string(run,"", "Phase to execute graph");
 DEFINE_bool(printiter, false, "Print iteration message");
 DEFINE_bool(printepoch, true, "Print epoch message");
 DEFINE_int32(debug, 0, "Level of debug");
-DEFINE_int32(epoch, 1000, "Level of debug");
+DEFINE_int32(epoch, 1000, "Maximum epochs");
+DEFINE_int32(iter, -1, "Maximum iterations");
 DEFINE_string(image, "lena-256x256.jpg", "Input image to approximate");
 
 void main(int argc, char** argv) {
@@ -35,8 +36,8 @@ void main(int argc, char** argv) {
 		//auto solver = df.adam_solver();
 		//auto solver = df.adadelta_solver();
 		
-		auto image = df.imread(FLAGS_image, ImageReaderParam_Type_COLOR_IF_AVAILABLE);
-		auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
+		auto image = df.imread(FLAGS_image, ImageReaderParam_Type_GRAY_ONLY);
+		auto generator = df.data_generator(df.random_uniform({ 1, 1, 256, 256 }, -1, 1), 1, solver, "gen");
 		auto euc = df.euclidean_loss(generator, image);
 		df.display(image, 5, DisplayParam_DisplayType_VALUES, "input", { "Train" });
 		df.display(generator, 5, DisplayParam_DisplayType_VALUES, "approximation", { "Train" });
@@ -49,7 +50,7 @@ void main(int argc, char** argv) {
 
 	if (!FLAGS_run.empty()) {
 		session->initialize();
-		session->run(FLAGS_run, FLAGS_epoch, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
+		session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
 	}
 
 	

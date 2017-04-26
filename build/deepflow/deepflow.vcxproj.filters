@@ -69,12 +69,6 @@
     <ClCompile Include="..\..\src\core\node.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\observers\backward.cpp">
-      <Filter>source\observers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\observers\forward.cpp">
-      <Filter>source\observers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\core\solver.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
@@ -104,12 +98,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\core\tensor.cpp">
       <Filter>source\core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\observers\node_finder.cpp">
-      <Filter>source\observers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\observers\reset.cpp">
-      <Filter>source\observers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\core\place_holder.cpp">
       <Filter>source\core</Filter>
@@ -188,12 +176,6 @@
     <ClInclude Include="..\..\include\core\node_observer.h">
       <Filter>include\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\observers\backward.h">
-      <Filter>include\observers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\observers\forward.h">
-      <Filter>include\observers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\initializers\index_fill.h">
       <Filter>include\initializers</Filter>
     </ClInclude>
@@ -241,12 +223,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\ops\equal.h">
       <Filter>include\ops</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\observers\node_finder.h">
-      <Filter>include\observers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\observers\reset.h">
-      <Filter>include\observers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\core\place_holder.h">
       <Filter>include\core</Filter>
@@ -333,12 +309,6 @@
     </Filter>
     <Filter Include="include\ops">
       <UniqueIdentifier>{71b88af4-416c-4a35-928f-b004e8628554}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\observers">
-      <UniqueIdentifier>{96a6f4db-fec0-447c-afca-b21f24a5ade2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\observers">
-      <UniqueIdentifier>{a6504cf5-1340-42f8-8ecd-dec09cdfbb1c}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\solver">
       <UniqueIdentifier>{5b320c04-219a-464a-bd29-c3e099a90405}</UniqueIdentifier>

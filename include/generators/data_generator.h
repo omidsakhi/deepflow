@@ -16,6 +16,8 @@ public:
 	void forward();
 	void backward();
 	bool isLastBatch();
+	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
+	virtual BackwardType backwardType() { return ALWAYS_BACKWARD; }
 private:
 	int _current_batch = 0;
 	int _num_total_samples = 0;

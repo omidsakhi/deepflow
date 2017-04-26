@@ -20,6 +20,8 @@ public:
 	void initBackward();
 	void forward();
 	void backward();
+	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
+	virtual BackwardType backwardType() { return NEVER_BACKWARD; }
 private:
 	int _num_inputs = 0;
 	std::string _raw_message;

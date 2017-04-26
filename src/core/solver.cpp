@@ -1,9 +1,6 @@
 #include "core/solver.h"
 #include "core/variable.h"
 
-#include "observers/node_finder.h"
-#include "observers/reset.h"
-
 #include <glog/logging.h>
 
 #include <memory>

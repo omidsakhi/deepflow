@@ -261,10 +261,8 @@ std::list<std::shared_ptr<Node>> Session::_get_end_nodes(std::string execution_p
 	for (auto node : _nodes) {
 		if (node->includePhase(execution_phase)) {
 			int num_connected_outputs = 0;
-			for (auto output : node->outputs()) {
-				if (output->connectedNode())
-					num_connected_outputs++;
-			}
+			for (auto output : node->outputs())
+				num_connected_outputs += output->connectedNodes().size();
 			if (num_connected_outputs == 0)
 				list.push_back(node);
 		}
@@ -282,7 +280,7 @@ std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string
 	return 0;
 }
 
-void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Loss>> *loss_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, bool train, bool print_iteration) {
+void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Loss>> *loss_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool train, bool print_iteration) {
 	int iteration_per_epoch = 1;
 	bool any_last_batch = false;
 	for (auto node : *nodes)
@@ -298,15 +296,31 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 		context->last_batch = any_last_batch;
 		if (iteration && print_iteration)
 			std::cout << "  Iteration " << *iteration << std::endl;
-		for (auto node : *end_nodes)
-			node->traverse(&_reset_observer, TraverseOrder::PreOrder, true);
-		for (auto node : *end_nodes)
-			node->traverse(&_forward_observer, TraverseOrder::PostOrder, false);
+		for (auto node : *end_nodes) {			
+			node->_unvisit();
+		}
+		for (auto node : *end_nodes) {
+			node->_shouldForward();
+		}
+		for (auto node : *end_nodes) {
+			node->_unvisit();
+		}
+		for (auto node : *end_nodes) {
+			node->_forward();
+		}
 		if (train) {
-			for (auto node : *loss_nodes)
-				node->traverse(&_reset_observer, TraverseOrder::PreOrder, true);
-			for (auto node : *loss_nodes)
-				node->traverse(&_backward_observer, TraverseOrder::PreOrder, false);
+			for (auto node : *end_nodes) {
+				node->_unvisit();
+			}
+			for (auto node : *end_nodes) {
+				node->_shouldBackward();
+			}
+			for (auto node : *end_nodes) {
+				node->_unvisit();
+			}
+			for (auto node : *end_nodes) {
+				node->_backward();
+			}
 			for (auto var : *variable_nodes) {
 				auto map_var_to_solver = _solvers.find(var);
 				if (map_var_to_solver != _solvers.end()) {					
@@ -319,16 +333,23 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 		if (iteration)
 			(*iteration)++;
 		iteration_per_epoch++;
+		if (max_iter > 0 && iteration && (*iteration) >= max_iter)
+			break;
 	} while (any_last_batch == false && context->quit != true);
 }
 
-void Session::run(std::string phase, int max_epoch, bool print_iteration, bool print_epoch, int debug_level) {
+void Session::run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level) {
 	LOG(INFO) << "Executing graph for phase " << phase;
 	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";
 	PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
 	std::list<std::shared_ptr<Generator>> execution_phase_generators = _get_nodes<Generator>(phase);
 	LOG_IF(FATAL, execution_phase_generators.size() == 0) << "No generator is defined for phase " << phase;
 	std::list<std::shared_ptr<Node>> execution_end_nodes = _get_end_nodes(phase);
+	std::string end_node_names;
+	for (auto node : execution_end_nodes) {
+		end_node_names += node->name() + " ";
+	}
+	LOG(INFO) << "End nodes: " << end_node_names;
 	auto execution_context = std::make_shared<ExecutionContext>();
 	execution_context->phase = phase;
 	execution_context->debug_level = debug_level;
@@ -361,12 +382,12 @@ void Session::run(std::string phase, int max_epoch, bool print_iteration, bool p
 				std::cout << "Epoch " << epoch << " -->" << std::endl;
 			auto epoch_start = std::chrono::high_resolution_clock::now();
 			execution_context->current_epoch = epoch;
-			_execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_phase_loss_nodes, &execution_phase_variable_nodes, true, print_iteration);
+			_execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_phase_loss_nodes, &execution_phase_variable_nodes, max_iter, true, print_iteration);
 			if (!validation_phase.empty()) {
 				validation_context->phase = validation_phase;
 				validation_context->current_iteration = 1;
 				validation_context->current_epoch = epoch;
-				_execute_one_pass(validation_context, 0, &_nodes, &validation_readers, &validation_end_nodes, 0, 0, false, false);
+				_execute_one_pass(validation_context, 0, &_nodes, &validation_readers, &validation_end_nodes, 0, 0, max_iter, false, false);
 			}
 			auto epoch_end = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
@@ -374,10 +395,12 @@ void Session::run(std::string phase, int max_epoch, bool print_iteration, bool p
 				std::cout << "<-- Epoch " << epoch << " Elapsed time: " << elapsed_epoch.count() << " seconds" << std::endl;
 			if (execution_context->quit == true)
 				break;
+			if (max_iter > 0 && iteration >= max_iter)
+				break;
 		}
 	}
 	else {
-		_execute_one_pass(execution_context, 0, &_nodes, &execution_phase_generators, &execution_end_nodes,0,0, false, false);
+		_execute_one_pass(execution_context, 0, &_nodes, &execution_phase_generators, &execution_end_nodes,0,0, max_iter, false, false);
 	}
 }
 

@@ -12,7 +12,9 @@ public:
 	void initBackward();
 	void forward();
 	void backward();
-	std::list<std::shared_ptr<Node>> sourceNodes() const;
+	std::list<std::shared_ptr<Node>> inputNodes() const;
+	virtual ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
+	virtual BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 protected:
 	std::map<std::string, NodeInputPtr> _map;
 };

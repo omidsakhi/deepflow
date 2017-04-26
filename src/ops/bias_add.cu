@@ -16,8 +16,7 @@ void BiasAddKernelBackward(const int n, const float *diff, const int num_samples
 	if (i < n)
 	{
 		int j = i%bias_dim;		
-		atomicAdd(&bias_diff[j], diff[i] / num_samples);
-		//bias_diff[j] = bias_diff[j] + diff[i] / num_samples;
+		atomicAdd(&bias_diff[j], diff[i] / num_samples);		
 	}
 }
 
@@ -51,10 +50,14 @@ void BiasAdd::forward() {
 }
 
 void BiasAdd::backward() {
-	DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), _inputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice));
-	DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));	
-	auto outputDims = _outputs[0]->diff()->dims();	
-	auto size = _outputs[0]->diff()->size();
-	BiasAddKernelBackward <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*)_outputs[0]->diff()->data(), outputDims[0], outputDims[1], (float*)_inputs[1]->diff()->mutableData());
-	DF_KERNEL_CHECK();
+	if (_inputs[0]->node()->shouldBackward()) {
+		DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), _inputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice));
+	}
+	if (_inputs[1]->node()->shouldBackward()) {
+		DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
+		auto outputDims = _outputs[0]->diff()->dims();
+		auto size = _outputs[0]->diff()->size();
+		BiasAddKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), outputDims[0], outputDims[1], (float*)_inputs[1]->diff()->mutableData());
+		DF_KERNEL_CHECK();
+	}
 }

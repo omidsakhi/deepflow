@@ -15,7 +15,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_approximation", "imag
 		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB} = {DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_approximation", "experimental\experimental.vcxproj", "{8777DFAE-3C57-49CD-8A9F-8B85649D34BE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "experimental", "experimental\experimental.vcxproj", "{8777DFAE-3C57-49CD-8A9F-8B85649D34BE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB} = {DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

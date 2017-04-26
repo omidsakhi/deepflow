@@ -15,6 +15,8 @@ public:
 	virtual int minNumInputs() { return 0;  }
 	virtual int minNumOutputs() { return 1; }	
 	void transferDataToParam();
+	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
+	virtual BackwardType backwardType() { return ALWAYS_BACKWARD; }
 protected:		
 	std::shared_ptr<Initializer> _initializer;	
 };

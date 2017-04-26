@@ -13,11 +13,45 @@ const TerminalType& Terminal::type() const {
 }
 
 const std::string& NodeInput::name() const {
-	return _terminal->name();
+	return _connected_terminal->name();
+}
+
+void NodeInput::connectTerminal(std::shared_ptr<Terminal> terminal)
+{
+	LOG_IF(FATAL, _connected_terminal != NULL) << "Input node already has a terminal.";
+	_connected_terminal = terminal;
+}
+
+std::shared_ptr<Node> NodeInput::connectedNode() const
+{
+	return _connected_terminal->node();
+}
+
+std::shared_ptr<Terminal> NodeInput::connectedTerminal() const
+{
+	return _connected_terminal;
 }
 
 const std::string& NodeOutput::name() const {
 	return _name;
+}
+
+void NodeOutput::connectTerminal(std::shared_ptr<Terminal> terminal)
+{
+	_connected_terminals.insert(terminal);
+}
+
+std::set<std::shared_ptr<Node>> NodeOutput::connectedNodes() const
+{
+	std::set<std::shared_ptr<Node>> list;
+	for (auto t : _connected_terminals)
+		list.insert(t->node());
+	return list;
+}
+
+std::set<std::shared_ptr<Terminal>> NodeOutput::connectedTerminals() const
+{
+	return _connected_terminals;
 }
 
 const int& Terminal::index() const {
@@ -25,32 +59,18 @@ const int& Terminal::index() const {
 }
 
 void NodeInput::connect(std::shared_ptr<NodeOutput> terminal) {
-	_terminal = terminal;
+	_connected_terminal = terminal;
 	_parentNode->param().set_input(_index, terminal->name());
-	_terminal->node()->param().set_output(_terminal->index(), terminal->name());	
-	terminal->setTerminal(shared_from_this());
-	LOG_IF(FATAL, _terminal->node()->param().input_size() != _terminal->node()->inputs().size()) << _terminal->node()->name() << " _param.input_size() != minNumInputs()";
-	LOG_IF(FATAL, _terminal->node()->param().output_size() != _terminal->node()->outputs().size()) << _terminal->node()->name() << " _param.output_size() != minNumOutputs()";
-}
-
-void Terminal::setTerminal(std::shared_ptr<Terminal> terminal) {
-	_terminal = terminal;
+	_connected_terminal->node()->param().set_output(_connected_terminal->index(), terminal->name());
+	terminal->connectTerminal(shared_from_this());	
+	LOG_IF(FATAL, _connected_terminal->node()->param().input_size() != _connected_terminal->node()->inputs().size()) << _connected_terminal->node()->name() << " _param.input_size() != minNumInputs()";
+	LOG_IF(FATAL, _connected_terminal->node()->param().output_size() != _connected_terminal->node()->outputs().size()) << _connected_terminal->node()->name() << " _param.output_size() != minNumOutputs()";
 }
 
 std::shared_ptr<Node> Terminal::node() const {
 	return _parentNode;
 }
-std::shared_ptr<Terminal> Terminal::connectedTerminal() const {
-	if (_terminal)
-		return _terminal;
-	return 0;
-}
 
-std::shared_ptr<Node> Terminal::connectedNode() const {
-	if (_terminal)
-		return _terminal->node();
-	return 0;
-}
 NodeInput::NodeInput(std::shared_ptr<Node> parentNode, int index) : Terminal(parentNode, index, TerminalType::Input) {
 }
 
@@ -59,11 +79,11 @@ NodeOutput::NodeOutput(std::shared_ptr<Node> parentNode, int index, const std::s
 }
 
 std::shared_ptr<Tensor> NodeInput::value() {	
-	return _terminal->value();
+	return _connected_terminal->value();
 }
 
 std::shared_ptr<Tensor> NodeInput::diff() {	
-	return _terminal->diff();
+	return _connected_terminal->diff();
 }
 
 std::shared_ptr<Tensor> NodeOutput::value() {	
@@ -87,7 +107,7 @@ void NodeOutput::cpyValueToDiff() {
 }
 
 std::array<int, 4> NodeInput::dims() {
-	return _terminal->value()->dims();
+	return _connected_terminal->value()->dims();
 }
 
 std::array<int, 4> NodeOutput::dims() {

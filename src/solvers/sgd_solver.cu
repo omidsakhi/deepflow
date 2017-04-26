@@ -2,9 +2,6 @@
 #include "core/common_cu.h"
 
 #include <algorithm>
-#include "observers/forward.h"
-#include "observers/backward.h"
-#include "observers/reset.h"
 
 #include "core/variable.h"
 

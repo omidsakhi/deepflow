@@ -67,6 +67,8 @@ void TransposedConvolution2D::forward() {
 }
 
 void TransposedConvolution2D::backward() {
-	DF_CUDNN_CHECK(cudnnConvolutionForward(_cudnnHandle, &alpha, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _filterDesc, _inputs[1]->value()->data(), _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
-	DF_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &alpha, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->data(), _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &beta, _filterDesc, _inputs[1]->diff()->mutableData()));
+	if (_inputs[0]->node()->shouldBackward())
+		DF_CUDNN_CHECK(cudnnConvolutionForward(_cudnnHandle, &alpha, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _filterDesc, _inputs[1]->value()->data(), _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+	if (_inputs[1]->node()->shouldBackward())
+		DF_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &alpha, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->data(), _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &beta, _filterDesc, _inputs[1]->diff()->mutableData()));
 }
