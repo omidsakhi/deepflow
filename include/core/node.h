@@ -32,16 +32,33 @@ enum TraverseOrder {
 
 class DeepFlowDllExport Node : public std::enable_shared_from_this<Node>, public CudaHelper {
 public:
+	enum ForwardType {
+		ALWAYS_FORWARD,
+		DEPENDS_ON_OUTPUTS,
+		NEVER_FORWARD
+	};
+	enum BackwardType {
+		ALWAYS_BACKWARD,
+		DEPENDS_ON_INPUTS,
+		NEVER_BACKWARD
+	};
 	Node(const NodeParam &param);
-	void createIO();	
+	void createIO();
 	virtual void initForward() = 0;
 	virtual void initBackward() = 0;
 	virtual int minNumInputs() = 0;
-	virtual int minNumOutputs() = 0;	
-	virtual void forward();
-	virtual void backward();
+	virtual int minNumOutputs() = 0;
+	virtual void forward() {}
+	virtual void backward() {}
+	virtual ForwardType forwardType() = 0;
+	virtual BackwardType backwardType() = 0;
 	std::string name() const;	
-	virtual void traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition);
+	void _unvisit();
+	void _forward();
+	void _backward();
+	void _shouldForward();
+	void _shouldBackward();
+	void _traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition);
 	void setVisited(bool state);
 	std::vector<NodeInputPtr> &inputs();
 	std::vector<NodeOutputPtr> &outputs();
@@ -52,12 +69,15 @@ public:
 	NodeParam &param();
 	bool includePhase(const std::string &phase);
 	void setExecutionContext(ExecutionContextPtr context);
-	virtual std::list<std::shared_ptr<Node>> sourceNodes() const;
+	virtual std::list<std::shared_ptr<Node>> inputNodes() const;
+	virtual std::list<std::shared_ptr<Node>> outputNodes() const;
 protected:	
 	std::vector<NodeInputPtr> _inputs;
 	std::vector<NodeOutputPtr> _outputs;
 	std::string _name;	
 	bool _visited = false;
+	bool _should_forward = false;
+	bool _should_backward = false;
 	bool _initialized = false;	
 	NodeParam _param;	
 	ExecutionContextPtr _context;

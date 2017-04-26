@@ -13,6 +13,8 @@ public:
 	void initBackward();
 	void forward();
 	void backward();
+	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
+	virtual BackwardType backwardType() { return NEVER_BACKWARD; }
 protected:
 	int input_size;
 	int input_size_in_bytes;

@@ -11,4 +11,6 @@ public:
 	void initBackward();
 	void forward();
 	void backward();
+	virtual ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
+	virtual BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 };

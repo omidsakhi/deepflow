@@ -20,7 +20,7 @@ void Phaseplexer::initBackward()
 	_outputs[0]->initDiff();
 }
 
-std::list<std::shared_ptr<Node>> Phaseplexer::sourceNodes() const {
+std::list<std::shared_ptr<Node>> Phaseplexer::inputNodes() const {
 	std::list<std::shared_ptr<Node>> list;
 	if (_context) {
 		auto input = _map.find(_context->phase);
@@ -28,7 +28,7 @@ std::list<std::shared_ptr<Node>> Phaseplexer::sourceNodes() const {
 		return list;
 	}
 	else {
-		return Node::sourceNodes();
+		return Node::inputNodes();
 	}	
 }
 

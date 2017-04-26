@@ -12,6 +12,8 @@ public:
 	void forward();
 	void backward();
 	bool requiresIndices();
+	virtual ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
+	virtual BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 protected:
 	const float alpha = 1.0f;
 	const float beta = 0.0f;

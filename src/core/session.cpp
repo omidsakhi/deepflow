@@ -298,15 +298,31 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 		context->last_batch = any_last_batch;
 		if (iteration && print_iteration)
 			std::cout << "  Iteration " << *iteration << std::endl;
-		for (auto node : *end_nodes)
-			node->traverse(&_reset_observer, TraverseOrder::PreOrder, true);
-		for (auto node : *end_nodes)
-			node->traverse(&_forward_observer, TraverseOrder::PostOrder, false);
+		for (auto node : *end_nodes) {
+			node->_unvisit();
+		}
+		for (auto node : *end_nodes) {
+			node->_shouldForward();
+		}
+		for (auto node : *end_nodes) {
+			node->_unvisit();
+		}
+		for (auto node : *end_nodes) {
+			node->_forward();
+		}
 		if (train) {
-			for (auto node : *loss_nodes)
-				node->traverse(&_reset_observer, TraverseOrder::PreOrder, true);
-			for (auto node : *loss_nodes)
-				node->traverse(&_backward_observer, TraverseOrder::PreOrder, false);
+			for (auto node : *end_nodes) {
+				node->_unvisit();
+			}
+			for (auto node : *end_nodes) {
+				node->_shouldBackward();
+			}
+			for (auto node : *end_nodes) {
+				node->_unvisit();
+			}
+			for (auto node : *end_nodes) {
+				node->_backward();
+			}
 			for (auto var : *variable_nodes) {
 				auto map_var_to_solver = _solvers.find(var);
 				if (map_var_to_solver != _solvers.end()) {					

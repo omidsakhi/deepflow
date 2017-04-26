@@ -27,6 +27,8 @@ public:
 	void initBackward();
 	void deinit();
 	bool isLastBatch();	
+	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
+	virtual BackwardType backwardType() { return NEVER_BACKWARD; }
 private:
 	MNISTReaderType _type;
 	std::string _folder_path;
