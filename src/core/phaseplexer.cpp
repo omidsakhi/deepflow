@@ -24,7 +24,7 @@ std::list<std::shared_ptr<Node>> Phaseplexer::inputNodes() const {
 	std::list<std::shared_ptr<Node>> list;
 	if (_context) {
 		auto input = _map.find(_context->phase);
-		list.push_back(input->second->connectedTerminal()->node());
+		list.push_back(input->second->connectedNode());
 		return list;
 	}
 	else {

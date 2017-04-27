@@ -50,10 +50,10 @@ void BiasAdd::forward() {
 }
 
 void BiasAdd::backward() {
-	if (_inputs[0]->node()->shouldBackward()) {
+	if (_inputs[0]->connectedNode()->shouldBackward()) {
 		DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), _inputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice));
 	}
-	if (_inputs[1]->node()->shouldBackward()) {
+	if (_inputs[1]->connectedNode()->shouldBackward()) {
 		DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
 		auto outputDims = _outputs[0]->diff()->dims();
 		auto size = _outputs[0]->diff()->size();

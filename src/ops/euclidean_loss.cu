@@ -24,7 +24,7 @@ void EuclideanLoss::initBackward() {
 }
 
 void EuclideanLoss::forward() {
-	LOG(INFO) << " **** " << _inputs[0]->node()->name() << " : " << _inputs[0]->node()->shouldBackward() << " - " << _inputs[1]->node()->name() << " : " << _inputs[1]->node()->shouldBackward();
+	LOG(INFO) << " **** " << _inputs[0]->connectedNode()->name() << " : " << _inputs[0]->connectedNode()->shouldBackward() << " - " << _inputs[1]->connectedNode()->name() << " : " << _inputs[1]->connectedNode()->shouldBackward();
 }
 
 void EuclideanLoss::backward() {		

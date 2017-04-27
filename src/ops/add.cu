@@ -51,11 +51,11 @@ void Add::forward() {
 
 void Add::backward() {	
 	auto size = _outputs[0]->diff()->size();
-	if (_outputs[0]->node()->shouldBackward()) {
+	if (_inputs[0]->connectedNode()->shouldBackward()) {
 		AddKernelBackward << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), _alpha, (float*)_inputs[0]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}	
-	if (_outputs[1]->node()->shouldBackward()) {
+	if (_inputs[1]->connectedNode()->shouldBackward()) {
 		AddKernelBackward << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), _beta, (float*)_inputs[1]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}

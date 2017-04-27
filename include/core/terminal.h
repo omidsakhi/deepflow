@@ -16,7 +16,7 @@ enum TerminalType {
 class DeepFlowDllExport Terminal : public std::enable_shared_from_this<Terminal> {
 public :
 	Terminal(std::shared_ptr<Node> parentNode, int index, TerminalType type);	
-	std::shared_ptr<Node> node() const;		
+	std::shared_ptr<Node> parentNode() const;		
 	const TerminalType& type() const;
 	virtual void connectTerminal(std::shared_ptr<Terminal> terminal) = 0;
 	virtual std::array<int, 4> dims() = 0;

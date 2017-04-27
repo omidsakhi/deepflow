@@ -77,27 +77,27 @@ void Node::_shouldBackward() {
 	if (_visited == true)
 		return;
 	_visited = true;
-	LOG(INFO) << "VISITING " << _name;
+	//LOG(INFO) << "VISITING " << _name;
 	if (backwardType() == ALWAYS_BACKWARD) {				
-		LOG(INFO) << "ALWAYS BACKWARD " << _name;
+		//LOG(INFO) << "ALWAYS BACKWARD " << _name;
 		setShouldBackward(true);
 	}
 	else if (backwardType() == NEVER_BACKWARD) {		
-		LOG(INFO) << "NEVER BACKWARD " << _name;
+		//LOG(INFO) << "NEVER BACKWARD " << _name;
 		setShouldBackward(false);
 	}
 	else {
 		bool _should_backward = false;		
 		auto list = inputNodes();
 		for (auto node : list) {
-			LOG(INFO) << "INSPECTING INPUT " << node->name();
+			//LOG(INFO) << "INSPECTING INPUT " << node->name();
 			node->_shouldBackward();
 			if (node->__should_backward == true) {
 				_should_backward = true;				
 				break;
 			}
 		}				
-		LOG_IF(INFO, !_should_backward) << _name << " - NO BACKWARD DUE TO " << list.size() << " INPUTS ";
+		//LOG_IF(INFO, !_should_backward) << _name << " - NO BACKWARD DUE TO " << list.size() << " INPUTS ";
 		setShouldBackward(_should_backward);
 	}	
 	for (auto node : inputNodes()) {
@@ -123,7 +123,7 @@ void Node::setShouldForward(bool state)
 void Node::setShouldBackward(bool state)
 {
 	__should_backward = state;
-	LOG_IF(INFO, state) << _name << " BACKWARD -> true";
+	//LOG_IF(INFO, state) << _name << " BACKWARD -> true";
 }
 
 void Node::_forward() {

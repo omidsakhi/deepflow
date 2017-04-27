@@ -49,8 +49,8 @@ void Convolution2D::forward() {
 }
 
 void Convolution2D::backward() {
-	if (_inputs[0]->node()->shouldBackward())
+	if (_inputs[0]->connectedNode()->shouldBackward())
 		DF_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &beta, _filterDesc, _inputs[1]->diff()->mutableData()));
-	if (_inputs[1]->node()->shouldBackward())
+	if (_inputs[1]->connectedNode()->shouldBackward())
 		DF_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &alpha, _filterDesc, _inputs[1]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
 }

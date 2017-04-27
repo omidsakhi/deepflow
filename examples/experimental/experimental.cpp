@@ -39,8 +39,8 @@ void main(int argc, char** argv) {
 		auto f = df.variable(df.ones({ 1,1,5,5 }),0);
 		auto tconv = df.transposed_conv2d(stat, f, { 1,1,256,256 }, 0, 0, 1, 1, 1, 1);
 		df.euclidean_loss(tconv, image);
-		//df.display(tconv, 2, DisplayParam_DisplayType_VALUES, "input", { "Train" });			
-		df.print({ tconv }, "{0}\n", Print::EVERY_PASS, Print::VALUES, "print", { "Train" });
+		df.display(tconv, 2, DisplayParam_DisplayType_VALUES, "input", { "Train" });			
+		//df.print({ tconv }, "{0}\n", Print::EVERY_PASS, Print::VALUES, "print", { "Train" });
 	}
 	else {
 		df.load_from_binary(FLAGS_i);	

@@ -24,7 +24,7 @@ void NodeInput::connectTerminal(std::shared_ptr<Terminal> terminal)
 
 std::shared_ptr<Node> NodeInput::connectedNode() const
 {
-	return _connected_terminal->node();
+	return _connected_terminal->parentNode();
 }
 
 std::shared_ptr<Terminal> NodeInput::connectedTerminal() const
@@ -45,7 +45,7 @@ std::set<std::shared_ptr<Node>> NodeOutput::connectedNodes() const
 {
 	std::set<std::shared_ptr<Node>> list;
 	for (auto t : _connected_terminals)
-		list.insert(t->node());
+		list.insert(t->parentNode());
 	return list;
 }
 
@@ -61,13 +61,13 @@ const int& Terminal::index() const {
 void NodeInput::connect(std::shared_ptr<NodeOutput> terminal) {
 	_connected_terminal = terminal;
 	_parentNode->param().set_input(_index, terminal->name());
-	_connected_terminal->node()->param().set_output(_connected_terminal->index(), terminal->name());
+	_connected_terminal->parentNode()->param().set_output(_connected_terminal->index(), terminal->name());
 	terminal->connectTerminal(shared_from_this());	
-	LOG_IF(FATAL, _connected_terminal->node()->param().input_size() != _connected_terminal->node()->inputs().size()) << _connected_terminal->node()->name() << " _param.input_size() != minNumInputs()";
-	LOG_IF(FATAL, _connected_terminal->node()->param().output_size() != _connected_terminal->node()->outputs().size()) << _connected_terminal->node()->name() << " _param.output_size() != minNumOutputs()";
+	LOG_IF(FATAL, _connected_terminal->parentNode()->param().input_size() != _connected_terminal->parentNode()->inputs().size()) << _connected_terminal->parentNode()->name() << " _param.input_size() != minNumInputs()";
+	LOG_IF(FATAL, _connected_terminal->parentNode()->param().output_size() != _connected_terminal->parentNode()->outputs().size()) << _connected_terminal->parentNode()->name() << " _param.output_size() != minNumOutputs()";
 }
 
-std::shared_ptr<Node> Terminal::node() const {
+std::shared_ptr<Node> Terminal::parentNode() const {
 	return _parentNode;
 }
 
