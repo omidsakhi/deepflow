@@ -4,19 +4,35 @@
 #include <opencv2/opencv.hpp>
 
 __global__
-void PictureGeneratorKernel(const int n, const float *in, unsigned char *out, const int picWidth, const int sq, const int numImages, const int perImageWidth, const int perImageHeight)
+void PictureGeneratorKernel(const int num_images, const float *in, const int per_image_height, const int per_image_width, const int num_image_per_row_and_col, unsigned char *out)
 {
-	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	if (i < n) {
-		int flat_pixel = i % (perImageWidth * perImageHeight);
-		int num_image = (i - flat_pixel) / (perImageWidth * perImageHeight);
-		int csmall = flat_pixel % perImageWidth;
-		int rsmall = (flat_pixel - csmall) / perImageWidth;
-		int cbig = num_image % sq;
-		int rbig = (num_image - cbig) / sq;
-		int c = cbig*perImageWidth + csmall;
-		int r = rbig*perImageHeight + rsmall;
-		out[r*picWidth + c] = (in[i] + 1.0f) / 2.0f * 255;
+	int num_image = blockIdx.x*blockDim.x + threadIdx.x;
+	if (num_image < num_images) {
+		int input_width = per_image_height * per_image_width;
+
+		float max = -FLT_MAX;
+		float min = FLT_MIN;
+
+		float tmp;
+		for (int i = 0; i < input_width; i++) {
+			tmp = in[num_image*input_width + i];
+			if (max < tmp)
+				max = tmp;
+			if (min > tmp)
+				min = tmp;
+		}
+
+		int output_block_col = num_image % num_image_per_row_and_col;
+		int output_block_row = (num_image - output_block_col) / num_image_per_row_and_col;
+		int output_width = per_image_width * num_image_per_row_and_col;
+
+		for (int i = 0; i < input_width; i++) {
+			int input_image_col = i % per_image_width;
+			int input_image_row = (i - input_image_col) / per_image_width;
+			int output_col = output_block_col*per_image_width + input_image_col;
+			int output_row = output_block_row*per_image_height + input_image_row;
+			out[output_row*output_width + output_col] = (in[num_image*input_width + i] - min) / (max - min) * 255;
+		}
 	}
 }
 
@@ -30,7 +46,9 @@ void Display::initForward() {
 	auto dims = _inputs[0]->value()->dims();	
 	input_size = _inputs[0]->value()->size();
 	input_size_in_bytes = _inputs[0]->value()->sizeInBytes();
-	num_images = dims[0];
+	num_channels = dims[1];
+	num_samples = dims[0];
+	num_images = num_samples * num_channels;
 	per_image_height = dims[2];
 	per_image_width = dims[3];
 	num_image_per_row_and_col = (int)floor(sqrt((float)num_images));
@@ -41,7 +59,7 @@ void Display::initForward() {
 	LOG_IF(FATAL, cudaMalloc(&d_pic, sizeof(unsigned char) * num_pic_pixels) != 0);
 	LOG_IF(FATAL, cudaMemset(d_pic, 0, sizeof(unsigned char) * num_pic_pixels) != 0);
 			
-	LOG(INFO) << "Initializing Display " << _name << " - " << _inputs[0]->value()->shape() << " -> " << pic_width << "x" << pic_height;
+	LOG(INFO) << "Initializing Display " << _name << " - " << _inputs[0]->value()->shape() << " -> " << pic_height << "x" << pic_width;
 	disp = cv::Mat(pic_height, pic_width, CV_8U);	
 }
 
@@ -51,7 +69,7 @@ void Display::initBackward() {
 
 void Display::forward() {
 	if (_display_type == DisplayParam_DisplayType_VALUES) {
-		PictureGeneratorKernel << < numOfBlocks(input_size), maxThreadsPerBlock >> >(input_size, (float*)_inputs[0]->value()->data(), d_pic, pic_width, num_image_per_row_and_col, num_images, per_image_width, per_image_height);
+		PictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col, d_pic);
 		DF_KERNEL_CHECK();
 		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) *num_pic_pixels, cudaMemcpyDeviceToHost));
 		cv::imshow(name(), disp);
@@ -61,7 +79,7 @@ void Display::forward() {
 		}
 	}
 	if (_display_type == DisplayParam_DisplayType_DIFFS) {
-		PictureGeneratorKernel << < numOfBlocks(input_size), maxThreadsPerBlock >> >(input_size, (float*)_inputs[0]->diff()->data(), d_pic, pic_width, num_image_per_row_and_col, num_images, per_image_width, per_image_height);
+		PictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->diff()->data(), per_image_height, per_image_width, num_image_per_row_and_col, d_pic);
 		DF_KERNEL_CHECK();
 		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) *num_pic_pixels, cudaMemcpyDeviceToHost));
 		cv::imshow(name(), disp);

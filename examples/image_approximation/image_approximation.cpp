@@ -31,16 +31,16 @@ void main(int argc, char** argv) {
 	if (FLAGS_i.empty()) {
 		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);	
 
-		//auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
-		auto solver = df.sgd_solver(1.0f, 0.01f);
+		auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
+		//auto solver = df.sgd_solver(1.0f, 0.01f);
 		//auto solver = df.adam_solver();
 		//auto solver = df.adadelta_solver();
 		
-		auto image = df.imread(FLAGS_image, ImageReaderParam_Type_GRAY_ONLY);
-		auto generator = df.data_generator(df.random_uniform({ 1, 1, 256, 256 }, -1, 1), 1, solver, "gen");
+		auto image = df.imread(FLAGS_image, ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+		auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
 		auto euc = df.euclidean_loss(generator, image);
-		df.display(image, 5, DisplayParam_DisplayType_VALUES, "input", { "Train" });
-		df.display(generator, 5, DisplayParam_DisplayType_VALUES, "approximation", { "Train" });
+		df.display(image, 2, DisplayParam_DisplayType_VALUES, "input", { "Train" });
+		df.display(generator, 2, DisplayParam_DisplayType_VALUES, "approximation", { "Train" });
 	}
 	else {
 		df.load_from_binary(FLAGS_i);	

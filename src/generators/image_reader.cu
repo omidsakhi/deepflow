@@ -3,11 +3,24 @@
 #include <opencv2/opencv.hpp>
 
 __global__
-void ImageReaderKernel(const int n, const unsigned char *in, float *out)
+void NormalizeKernel(const int n, const unsigned char *in, float *out)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
 		out[i] = (((float)in[i] / 255.0f) - 0.5f) * 2;
+	}
+}
+
+__global__
+void ConvertOpenCV3ImageKernel(const int n, const unsigned char *in, const int width, const int height, float *out)
+{
+	int i = blockIdx.x*blockDim.x + threadIdx.x;
+	if (i < n) {
+		int ch = i % 3;
+		int i3 = (i - ch) / 3;
+		int i3c = i3 % width;
+		int i3r = (i3 - i3c) / height;
+		out[ (2 - ch) * width * height + i3r * width + i3c] = (((float)in[i] / 255.0f) - 0.5f) * 2;
 	}
 }
 
@@ -35,11 +48,17 @@ void ImageReader::initForward() {
 	unsigned char *d_img;
 	DF_CUDA_CHECK(cudaMalloc(&d_img, size));
 	DF_CUDA_CHECK(cudaMemcpy(d_img, img.ptr<uchar>(), size, cudaMemcpyHostToDevice));
-	//cudaStream_t stream;
-	//DF_CUDA_CHECK(cudaStreamCreate(&stream));
- 	ImageReaderKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, d_img, (float*) _outputs[0]->value()->mutableData());
-	DF_KERNEL_CHECK();
-	//DF_CUDA_CHECK(cudaStreamSynchronize(stream));
+	if (img.channels() == 1) {		
+		NormalizeKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, d_img, (float*)_outputs[0]->value()->mutableData());
+		DF_KERNEL_CHECK();
+	}
+	else if (img.channels() == 3) {
+		ConvertOpenCV3ImageKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, d_img, img.cols, img.rows, (float*)_outputs[0]->value()->mutableData());
+		DF_KERNEL_CHECK();
+	}
+	else {
+		LOG(FATAL) << "Unsupported image.";
+	}	
 	DF_CUDA_CHECK(cudaFree(d_img));	
 }
 
