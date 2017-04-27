@@ -154,6 +154,8 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 	else {
 		LOG(FATAL) << "Unsupported Node";
 	}
+
+	return 0;
 }
 
 std::shared_ptr<Solver> Session::_create_solver(const SolverParam &solver_param) {
@@ -172,6 +174,8 @@ std::shared_ptr<Solver> Session::_create_solver(const SolverParam &solver_param)
 	else {
 		LOG(FATAL) << "Unsupported Solver";
 	}
+
+	return 0;
 }
 
 void Session::setGraph(std::shared_ptr<GraphParam> graph) {
@@ -285,6 +289,14 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 	bool any_last_batch = false;
 	for (auto node : *nodes)
 		node->setExecutionContext(context);
+	for (auto node : *end_nodes) {
+		node->_unvisit();
+		node->_shouldForward();
+		if (train) {
+			node->_unvisit();
+			node->_shouldBackward();
+		}
+	}
 	do {
 		for (auto gen : *generators) {
 			if (gen->isLastBatch())
@@ -296,29 +308,13 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 		context->last_batch = any_last_batch;
 		if (iteration && print_iteration)
 			std::cout << "  Iteration " << *iteration << std::endl;
-		for (auto node : *end_nodes) {			
-			node->_unvisit();
-		}
-		for (auto node : *end_nodes) {
-			node->_shouldForward();
-		}
 		for (auto node : *end_nodes) {
 			node->_unvisit();
-		}
-		for (auto node : *end_nodes) {
 			node->_forward();
 		}
 		if (train) {
 			for (auto node : *end_nodes) {
 				node->_unvisit();
-			}
-			for (auto node : *end_nodes) {
-				node->_shouldBackward();
-			}
-			for (auto node : *end_nodes) {
-				node->_unvisit();
-			}
-			for (auto node : *end_nodes) {
 				node->_backward();
 			}
 			for (auto var : *variable_nodes) {
