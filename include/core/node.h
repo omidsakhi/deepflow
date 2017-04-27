@@ -60,6 +60,8 @@ public:
 	void _shouldBackward();
 	bool shouldForward() const;
 	bool shouldBackward() const;
+	void setShouldForward(bool state);
+	void setShouldBackward(bool state);
 	void _traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition);
 	void setVisited(bool state);
 	std::vector<NodeInputPtr> &inputs();
@@ -78,8 +80,8 @@ protected:
 	std::vector<NodeOutputPtr> _outputs;
 	std::string _name;	
 	bool _visited = false;
-	bool _should_forward = false;
-	bool _should_backward = false;
+	bool __should_forward = false;
+	bool __should_backward = false;
 	bool _initialized = false;	
 	NodeParam _param;	
 	ExecutionContextPtr _context;

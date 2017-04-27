@@ -73,7 +73,7 @@ public:
 
 	// LOSS
 	std::shared_ptr<NodeParam> softmax_loss(std::string a, std::string b, std::string name = "softmaxloss", std::initializer_list<std::string> phases = {});
-	std::string euclidean_loss(std::string a, std::string b, std::string name = "euclideanloss", std::initializer_list<std::string> phases = {});
+	void euclidean_loss(std::string a, std::string b, std::string name = "euclideanloss", std::initializer_list<std::string> phases = {});
 		
 	// SOLVERS
 	std::shared_ptr<SolverParam> sgd_solver(float momentum, float learning_rate, std::string name = "sgd");

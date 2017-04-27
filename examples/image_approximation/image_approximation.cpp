@@ -38,7 +38,7 @@ void main(int argc, char** argv) {
 		
 		auto image = df.imread(FLAGS_image, ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 		auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
-		auto euc = df.euclidean_loss(generator, image);
+		df.euclidean_loss(generator, image);
 		df.display(image, 2, DisplayParam_DisplayType_VALUES, "input", { "Train" });
 		df.display(generator, 2, DisplayParam_DisplayType_VALUES, "approximation", { "Train" });
 	}

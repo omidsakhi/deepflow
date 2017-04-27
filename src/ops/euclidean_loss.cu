@@ -17,20 +17,18 @@ EuclideanLoss::EuclideanLoss(const NodeParam &param) : Loss(param) {
 
 void EuclideanLoss::initForward() {
 	LOG(INFO) << "Initializing EuclideanLoss " << _name << " - " << _inputs[0]->value()->shape();
-	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input " << _inputs[0]->value()->shape() << " != " << " Target " << _inputs[1]->value()->shape();
-	_outputs[0]->initValue(_inputs[0]->value()->dims());	
+	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input " << _inputs[0]->value()->shape() << " != " << " Target " << _inputs[1]->value()->shape();	
 }
 
-void EuclideanLoss::initBackward() {	
-	_outputs[0]->initDiff();	
+void EuclideanLoss::initBackward() {
 }
 
 void EuclideanLoss::forward() {
-	auto size = _inputs[0]->value()->size();
-	EuclideanLossKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->value()->mutableData());
-	DF_KERNEL_CHECK();
+	LOG(INFO) << " **** " << _inputs[0]->node()->name() << " : " << _inputs[0]->node()->shouldBackward() << " - " << _inputs[1]->node()->name() << " : " << _inputs[1]->node()->shouldBackward();
 }
 
-void EuclideanLoss::backward() {	
-	DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->value()->data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice));
+void EuclideanLoss::backward() {		
+	auto size = _inputs[0]->value()->size();
+	EuclideanLossKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_inputs[0]->diff()->mutableData());
+	DF_KERNEL_CHECK();
 }

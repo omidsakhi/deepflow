@@ -376,19 +376,17 @@ std::shared_ptr<NodeParam> DeepFlow::softmax_loss(std::string a, std::string b, 
 	return node_param;
 }
 
-std::string DeepFlow::euclidean_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases)
+void DeepFlow::euclidean_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = std::make_shared<NodeParam>();
-	node_param->set_name(_get_unique_node_name(name));
-	add_outputs(node_param, 1);
+	node_param->set_name(_get_unique_node_name(name));	
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(a);
 	node_param->add_input(b);
 	auto loss_param = node_param->mutable_loss_param();
 	auto euclidean_loss_param = loss_param->mutable_euclidean_loss_param();
-	_nodes.push_back(node_param);
-	return node_param->output(0);
+	_nodes.push_back(node_param);	
 }
 
 std::shared_ptr<SolverParam> DeepFlow::sgd_solver(float momentum, float learning_rate, std::string name) {

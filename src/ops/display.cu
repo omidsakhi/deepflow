@@ -22,6 +22,10 @@ void PictureGeneratorKernel(const int num_images, const float *in, const int per
 				min = tmp;
 		}
 
+		float denom = (max - min);
+		if (denom == 0)
+			denom = 1;
+
 		int output_block_col = num_image % num_image_per_row_and_col;
 		int output_block_row = (num_image - output_block_col) / num_image_per_row_and_col;
 		int output_width = per_image_width * num_image_per_row_and_col;
@@ -31,7 +35,7 @@ void PictureGeneratorKernel(const int num_images, const float *in, const int per
 			int input_image_row = (i - input_image_col) / per_image_width;
 			int output_col = output_block_col*per_image_width + input_image_col;
 			int output_row = output_block_row*per_image_height + input_image_row;
-			out[output_row*output_width + output_col] = (in[num_image*input_width + i] - min) / (max - min) * 255;
+			out[output_row*output_width + output_col] = (in[num_image*input_width + i] - min) / denom * 255;
 		}
 	}
 }
@@ -72,7 +76,7 @@ void Display::forward() {
 		PictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col, d_pic);
 		DF_KERNEL_CHECK();
 		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) *num_pic_pixels, cudaMemcpyDeviceToHost));
-		cv::imshow(name(), disp);
+		cv::imshow(name(), disp);		
 		int key = cv::waitKey(_delay_msec);
 		if (key == 27) {
 			_context->quit = true;

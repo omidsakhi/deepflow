@@ -47,24 +47,25 @@ void Node::_shouldForward() {
 		return;
 	_visited = true;
 	//LOG(INFO) << "VISITING " << _name;
-	if (forwardType() == ALWAYS_FORWARD) {
-		_should_forward = true;
+	if (forwardType() == ALWAYS_FORWARD) {				
 		//LOG(INFO) << "ALWAYS FORWARD " << _name << " " <<  _should_forward;
+		setShouldForward(true);
 	}
-	else if (forwardType() == NEVER_FORWARD) {
-		_should_forward = false;	
+	else if (forwardType() == NEVER_FORWARD) {		
 		//LOG(INFO) << _name << " NEVER FORWARD";
+		setShouldForward(false);
 	}
 	else {
-		_should_forward = false;				
+		bool _should_forward = false;				
 		auto list = outputNodes();
 		for (auto node : list) {						
 			//LOG(INFO) << "INSPECTING OUTPUT " << node->name();
-			if (node->_should_forward == true) {
+			if (node->__should_forward == true) {
 				_should_forward = true;				
 				break;
 			}
-		}		
+		}	
+		setShouldForward(_should_forward);
 		//LOG_IF(INFO,!_should_forward) << _name << " NO FORWARD BASED ON " << list.size() << " OUTPUTS ";
 	}
 	for (auto node : inputNodes()) {
@@ -76,27 +77,28 @@ void Node::_shouldBackward() {
 	if (_visited == true)
 		return;
 	_visited = true;
-	//LOG(INFO) << "VISITING " << _name;
-	if (backwardType() == ALWAYS_BACKWARD) {
-		_should_backward = true;
-		//LOG(INFO) << "ALWAYS BACKWARD " << _name << " " <<  _should_forward;
+	LOG(INFO) << "VISITING " << _name;
+	if (backwardType() == ALWAYS_BACKWARD) {				
+		LOG(INFO) << "ALWAYS BACKWARD " << _name;
+		setShouldBackward(true);
 	}
-	else if (backwardType() == NEVER_BACKWARD) {
-		_should_backward = false;	
-		//LOG(INFO) << _name << " NEVER BACKWARD";
+	else if (backwardType() == NEVER_BACKWARD) {		
+		LOG(INFO) << "NEVER BACKWARD " << _name;
+		setShouldBackward(false);
 	}
 	else {
-		_should_backward = false;		
+		bool _should_backward = false;		
 		auto list = inputNodes();
 		for (auto node : list) {
-			//LOG(INFO) << "INSPECTING INPUT " << node->name();
+			LOG(INFO) << "INSPECTING INPUT " << node->name();
 			node->_shouldBackward();
-			if (node->_should_backward == true) {
+			if (node->__should_backward == true) {
 				_should_backward = true;				
 				break;
 			}
-		}		
-		//LOG_IF(INFO, !_should_backward) << _name << " NO BACKWARD DUE TO " << list.size() << " INPUTS ";
+		}				
+		LOG_IF(INFO, !_should_backward) << _name << " - NO BACKWARD DUE TO " << list.size() << " INPUTS ";
+		setShouldBackward(_should_backward);
 	}	
 	for (auto node : inputNodes()) {
 		node->_shouldBackward();
@@ -105,12 +107,23 @@ void Node::_shouldBackward() {
 
 bool Node::shouldForward() const
 {
-	return _should_forward;
+	return __should_forward;
 }
 
 bool Node::shouldBackward() const
 {
-	return _should_backward;
+	return __should_backward;
+}
+
+void Node::setShouldForward(bool state)
+{
+	__should_forward = state;
+}
+
+void Node::setShouldBackward(bool state)
+{
+	__should_backward = state;
+	LOG_IF(INFO, state) << _name << " BACKWARD -> true";
 }
 
 void Node::_forward() {
@@ -121,7 +134,7 @@ void Node::_forward() {
 	_visited = true;
 	for (auto node : inputNodes())
 		node->_forward();
-	if (_should_forward) {
+	if (__should_forward) {
 		//LOG(INFO) << "FORWARD " << _name;
 		forward();
 	}
@@ -133,7 +146,7 @@ void Node::_backward() {
 	if (_context && includePhase(_context->phase) == false)
 		return;
 	_visited = true;
-	if (_should_backward) {
+	if (__should_backward) {
 		//LOG(INFO) << "BACKWARD " << _name;
 		backward();
 	}		
