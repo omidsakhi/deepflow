@@ -56,6 +56,7 @@
     <ClInclude Include="..\..\include\ops\pooling.h" />
     <ClInclude Include="..\..\include\ops\print.h" />
     <ClInclude Include="..\..\include\ops\psnr.h" />
+    <ClInclude Include="..\..\include\ops\random_selector.h" />
     <ClInclude Include="..\..\include\ops\reduce.h" />
     <ClInclude Include="..\..\include\ops\leaky_relu.h" />
     <ClInclude Include="..\..\include\ops\softmax.h" />
@@ -116,6 +117,7 @@
     <ClCompile Include="..\..\src\ops\convolution_2d.cpp" />
     <ClCompile Include="..\..\src\ops\dropout.cpp" />
     <ClCompile Include="..\..\src\ops\print.cpp" />
+    <ClCompile Include="..\..\src\ops\random_selector.cpp" />
     <ClCompile Include="..\..\src\ops\reduce.cpp" />
     <CudaCompile Include="..\..\src\ops\cast_float.cu">
       <FileType>CppCode</FileType>

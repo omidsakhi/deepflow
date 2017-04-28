@@ -22,6 +22,10 @@ message PhaseplexerParam {
 	repeated string phase = 1;
 }
 
+message RandomSelectorParam {
+
+}
+
 message AccumulatorParam {
 	enum ResetTime {		
 		END_OF_EPOCH = 0;
@@ -228,6 +232,7 @@ message NodeParam {
   DisplayParam display_param = 118;
   ActivationParam activation_param = 119;
   PsnrParam psnr_param = 120;
+  RandomSelectorParam random_selector_param = 121;
 }
 
 message SquareParam {

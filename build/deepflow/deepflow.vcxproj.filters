@@ -138,6 +138,9 @@
     <ClCompile Include="..\..\src\ops\activation.cpp">
       <Filter>source\ops</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\ops\random_selector.cpp">
+      <Filter>source\ops</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -285,6 +288,9 @@
       <Filter>include\ops</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ops\psnr.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\random_selector.h">
       <Filter>include\ops</Filter>
     </ClInclude>
   </ItemGroup>

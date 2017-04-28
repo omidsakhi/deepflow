@@ -129,6 +129,9 @@ extern PrintParamDefaultTypeInternal _PrintParam_default_instance_;
 class PsnrParam;
 class PsnrParamDefaultTypeInternal;
 extern PsnrParamDefaultTypeInternal _PsnrParam_default_instance_;
+class RandomSelectorParam;
+class RandomSelectorParamDefaultTypeInternal;
+extern RandomSelectorParamDefaultTypeInternal _RandomSelectorParam_default_instance_;
 class ReduceParam;
 class ReduceParamDefaultTypeInternal;
 extern ReduceParamDefaultTypeInternal _ReduceParam_default_instance_;
@@ -736,6 +739,82 @@ class PhaseplexerParam : public ::google::protobuf::Message /* @@protoc_insertio
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class RandomSelectorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:RandomSelectorParam) */ {
+ public:
+  RandomSelectorParam();
+  virtual ~RandomSelectorParam();
+
+  RandomSelectorParam(const RandomSelectorParam& from);
+
+  inline RandomSelectorParam& operator=(const RandomSelectorParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RandomSelectorParam& default_instance();
+
+  static inline const RandomSelectorParam* internal_default_instance() {
+    return reinterpret_cast<const RandomSelectorParam*>(
+               &_RandomSelectorParam_default_instance_);
+  }
+
+  void Swap(RandomSelectorParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline RandomSelectorParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  RandomSelectorParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RandomSelectorParam& from);
+  void MergeFrom(const RandomSelectorParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RandomSelectorParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:RandomSelectorParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3630,6 +3709,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::PsnrParam* release_psnr_param();
   void set_allocated_psnr_param(::PsnrParam* psnr_param);
 
+  // .RandomSelectorParam random_selector_param = 121;
+  bool has_random_selector_param() const;
+  void clear_random_selector_param();
+  static const int kRandomSelectorParamFieldNumber = 121;
+  const ::RandomSelectorParam& random_selector_param() const;
+  ::RandomSelectorParam* mutable_random_selector_param();
+  ::RandomSelectorParam* release_random_selector_param();
+  void set_allocated_random_selector_param(::RandomSelectorParam* random_selector_param);
+
   // @@protoc_insertion_point(class_scope:NodeParam)
  private:
 
@@ -3661,6 +3749,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::DisplayParam* display_param_;
   ::ActivationParam* activation_param_;
   ::PsnrParam* psnr_param_;
+  ::RandomSelectorParam* random_selector_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -5415,6 +5504,10 @@ PhaseplexerParam::mutable_phase() {
   // @@protoc_insertion_point(field_mutable_list:PhaseplexerParam.phase)
   return &phase_;
 }
+
+// -------------------------------------------------------------------
+
+// RandomSelectorParam
 
 // -------------------------------------------------------------------
 
@@ -7865,6 +7958,45 @@ inline void NodeParam::set_allocated_psnr_param(::PsnrParam* psnr_param) {
   // @@protoc_insertion_point(field_set_allocated:NodeParam.psnr_param)
 }
 
+// .RandomSelectorParam random_selector_param = 121;
+inline bool NodeParam::has_random_selector_param() const {
+  return this != internal_default_instance() && random_selector_param_ != NULL;
+}
+inline void NodeParam::clear_random_selector_param() {
+  if (GetArenaNoVirtual() == NULL && random_selector_param_ != NULL) delete random_selector_param_;
+  random_selector_param_ = NULL;
+}
+inline const ::RandomSelectorParam& NodeParam::random_selector_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.random_selector_param)
+  return random_selector_param_ != NULL ? *random_selector_param_
+                         : *::RandomSelectorParam::internal_default_instance();
+}
+inline ::RandomSelectorParam* NodeParam::mutable_random_selector_param() {
+  
+  if (random_selector_param_ == NULL) {
+    random_selector_param_ = new ::RandomSelectorParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.random_selector_param)
+  return random_selector_param_;
+}
+inline ::RandomSelectorParam* NodeParam::release_random_selector_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.random_selector_param)
+  
+  ::RandomSelectorParam* temp = random_selector_param_;
+  random_selector_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_random_selector_param(::RandomSelectorParam* random_selector_param) {
+  delete random_selector_param_;
+  random_selector_param_ = random_selector_param;
+  if (random_selector_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.random_selector_param)
+}
+
 // -------------------------------------------------------------------
 
 // SquareParam
@@ -8878,6 +9010,8 @@ GraphParam::phase() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

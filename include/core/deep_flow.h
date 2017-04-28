@@ -69,8 +69,9 @@ public:
 	std::string clipped_relu(std::string a, float threshold, std::string name = "clipped_relu", std::initializer_list<std::string> phases = {});
 	std::string elu(std::string a, float alpha, std::string name = "elu", std::initializer_list<std::string> phases = {});
 
-	// PHASE
+	// SELECTORS
 	std::string phaseplexer(std::string input_1, std::string phase_1, std::string input_2, std::string phase_2, std::string name = "plex", std::initializer_list<std::string> phases = {});
+	std::string random_selector(std::string input_1, std::string input_2, std::string name = "selector", std::initializer_list<std::string> phases = {});
 
 	// LOSS
 	std::shared_ptr<NodeParam> softmax_loss(std::string a, std::string b, std::string name = "softmaxloss", std::initializer_list<std::string> phases = {});

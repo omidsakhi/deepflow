@@ -34,6 +34,7 @@
 #include "ops/euclidean_loss.h"
 #include "ops/activation.h"
 #include "ops/psnr.h"
+#include "ops/random_selector.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_reader.h"
@@ -137,6 +138,9 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 	}
 	else if (node_param.has_psnr_param()) {
 		return std::make_shared<Psnr>(node_param);
+	}
+	else if (node_param.has_random_selector_param()) {
+		return std::make_shared<RandomSelector>(node_param);
 	}
 	else if (node_param.has_variable_param()) {
 		std::shared_ptr<Initializer> initializer;

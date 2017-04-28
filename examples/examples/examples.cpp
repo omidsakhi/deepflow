@@ -19,7 +19,9 @@ DEFINE_int32(epoch, 1000, "Maximum epochs");
 DEFINE_int32(iter, -1, "Maximum iterations");
 DEFINE_string(image, "lena-256x256.jpg", "Input image");
 DEFINE_int32(examp1, 0, "Eucliean image reconstruction");
-DEFINE_int32(examp2, 0, "Transposed convolution image reconstruction test");
+DEFINE_int32(examp2, 0, "Transposed convolution image reconstruction");
+DEFINE_int32(examp3, 0, "Random selector double image reconstruction");
+
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -57,6 +59,20 @@ void main(int argc, char** argv) {
 			df.euclidean_loss(tconv, image);
 			df.display(tconv, 20, DisplayParam_DisplayType_VALUES, "input", { "Train" });
 			df.psnr(tconv, image, Psnr::EVERY_PASS, "psnr", { "Train" });
+		}
+		else if (FLAGS_examp3 == 1) {
+			df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);
+			auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
+			//auto solver = df.sgd_solver(1.0f, 0.01f);
+			//auto solver = df.adam_solver();
+			//auto solver = df.adadelta_solver();
+			auto image = df.imread(FLAGS_image, ImageReaderParam_Type_GRAY_ONLY);
+			auto generator1 = df.data_generator(df.random_uniform({ 1, 1, 256, 256 }, -1, 1), 1, solver, "gen1");
+			auto generator2 = df.data_generator(df.random_uniform({ 1, 1, 256, 256 }, 0, 1), 1, solver, "gen2");
+			auto selector = df.random_selector(generator1, generator2);
+			df.euclidean_loss(selector, image);
+			df.display(generator1, 2, DisplayParam_DisplayType_VALUES, "approx1", { "Train" });
+			df.display(generator2, 2, DisplayParam_DisplayType_VALUES, "approx2", { "Train" });			
 		}
 	}
 	else {

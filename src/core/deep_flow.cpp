@@ -603,6 +603,20 @@ std::string DeepFlow::phaseplexer(std::string input_1, std::string phase_1, std:
 	return node_param->output(0);
 }
 
+std::string DeepFlow::random_selector(std::string input_1, std::string input_2, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input_1);
+	node_param->add_input(input_2);
+	auto random_selector_param = node_param->mutable_random_selector_param();
+	_nodes.push_back(node_param);
+	return node_param->output(0);
+}
+
 std::string DeepFlow::equal(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = std::make_shared<NodeParam>();
 	node_param->set_name(_get_unique_node_name(name));
