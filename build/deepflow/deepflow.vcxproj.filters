@@ -58,6 +58,9 @@
     <CudaCompile Include="..\..\src\ops\leaky_relu.cu">
       <Filter>source\ops</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\ops\psnr.cu">
+      <Filter>source\ops</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -279,6 +282,9 @@
       <Filter>include\ops</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ops\leaky_relu.h">
+      <Filter>include\ops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ops\psnr.h">
       <Filter>include\ops</Filter>
     </ClInclude>
   </ItemGroup>

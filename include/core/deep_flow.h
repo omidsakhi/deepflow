@@ -5,6 +5,7 @@
 #include "core/tensor.h"
 #include "generators/mnist_reader.h"
 #include "ops/print.h"
+#include "ops/psnr.h"
 #include "ops/accumulator.h"
 #include <string>
 #include <memory>
@@ -82,8 +83,9 @@ public:
 	std::shared_ptr<SolverParam> adadelta_solver(float learning_rate = 10e-1f, float momentum = 0.9f, float delta = 1e-6f, std::string name = "adadelta");
 	
 	// PRINTERS & DISPLAYS
-	void print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime = Print::PrintTime::END_OF_EPOCH, Print::PrintType = Print::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
+	void print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime printTime = Print::PrintTime::END_OF_EPOCH, Print::PrintType = Print::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
 	void display(std::string input, int delay_msec = 100, DisplayParam_DisplayType type = DisplayParam_DisplayType_VALUES , std::string name = "disp", std::initializer_list<std::string> phases = {});
+	void psnr(std::string a, std::string b,  Psnr::PrintTime printTime = Psnr::PrintTime::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
 
 	// OTHER
 	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});

@@ -41,6 +41,7 @@ void main(int argc, char** argv) {
 		df.euclidean_loss(generator, image);
 		df.display(image, 2, DisplayParam_DisplayType_VALUES, "input", { "Train" });
 		df.display(generator, 2, DisplayParam_DisplayType_VALUES, "approximation", { "Train" });
+		df.psnr(image, generator, Psnr::EVERY_PASS);
 	}
 	else {
 		df.load_from_binary(FLAGS_i);	

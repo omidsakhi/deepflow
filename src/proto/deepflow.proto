@@ -30,6 +30,14 @@ message AccumulatorParam {
 	ResetTime reset_time = 1;
 }
 
+message PsnrParam {
+	enum PrintTime {
+		EVERY_PASS = 0;
+		END_OF_EPOCH = 1;
+	}
+	PrintTime print_time = 1;
+}
+
 message PrintParam {
 	enum PrintTime {
 		EVERY_PASS = 0;
@@ -219,6 +227,7 @@ message NodeParam {
   AccumulatorParam accumulator_param = 117;
   DisplayParam display_param = 118;
   ActivationParam activation_param = 119;
+  PsnrParam psnr_param = 120;
 }
 
 message SquareParam {

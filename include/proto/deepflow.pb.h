@@ -126,6 +126,9 @@ extern PoolingParamDefaultTypeInternal _PoolingParam_default_instance_;
 class PrintParam;
 class PrintParamDefaultTypeInternal;
 extern PrintParamDefaultTypeInternal _PrintParam_default_instance_;
+class PsnrParam;
+class PsnrParamDefaultTypeInternal;
+extern PsnrParamDefaultTypeInternal _PsnrParam_default_instance_;
 class ReduceParam;
 class ReduceParamDefaultTypeInternal;
 extern ReduceParamDefaultTypeInternal _ReduceParam_default_instance_;
@@ -216,6 +219,27 @@ inline bool AccumulatorParam_ResetTime_Parse(
     const ::std::string& name, AccumulatorParam_ResetTime* value) {
   return ::google::protobuf::internal::ParseNamedEnum<AccumulatorParam_ResetTime>(
     AccumulatorParam_ResetTime_descriptor(), name, value);
+}
+enum PsnrParam_PrintTime {
+  PsnrParam_PrintTime_EVERY_PASS = 0,
+  PsnrParam_PrintTime_END_OF_EPOCH = 1,
+  PsnrParam_PrintTime_PsnrParam_PrintTime_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  PsnrParam_PrintTime_PsnrParam_PrintTime_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool PsnrParam_PrintTime_IsValid(int value);
+const PsnrParam_PrintTime PsnrParam_PrintTime_PrintTime_MIN = PsnrParam_PrintTime_EVERY_PASS;
+const PsnrParam_PrintTime PsnrParam_PrintTime_PrintTime_MAX = PsnrParam_PrintTime_END_OF_EPOCH;
+const int PsnrParam_PrintTime_PrintTime_ARRAYSIZE = PsnrParam_PrintTime_PrintTime_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* PsnrParam_PrintTime_descriptor();
+inline const ::std::string& PsnrParam_PrintTime_Name(PsnrParam_PrintTime value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    PsnrParam_PrintTime_descriptor(), value);
+}
+inline bool PsnrParam_PrintTime_Parse(
+    const ::std::string& name, PsnrParam_PrintTime* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PsnrParam_PrintTime>(
+    PsnrParam_PrintTime_descriptor(), name, value);
 }
 enum PrintParam_PrintTime {
   PrintParam_PrintTime_EVERY_PASS = 0,
@@ -821,6 +845,115 @@ class AccumulatorParam : public ::google::protobuf::Message /* @@protoc_insertio
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   int reset_time_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class PsnrParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:PsnrParam) */ {
+ public:
+  PsnrParam();
+  virtual ~PsnrParam();
+
+  PsnrParam(const PsnrParam& from);
+
+  inline PsnrParam& operator=(const PsnrParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PsnrParam& default_instance();
+
+  static inline const PsnrParam* internal_default_instance() {
+    return reinterpret_cast<const PsnrParam*>(
+               &_PsnrParam_default_instance_);
+  }
+
+  void Swap(PsnrParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PsnrParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PsnrParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PsnrParam& from);
+  void MergeFrom(const PsnrParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PsnrParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef PsnrParam_PrintTime PrintTime;
+  static const PrintTime EVERY_PASS =
+    PsnrParam_PrintTime_EVERY_PASS;
+  static const PrintTime END_OF_EPOCH =
+    PsnrParam_PrintTime_END_OF_EPOCH;
+  static inline bool PrintTime_IsValid(int value) {
+    return PsnrParam_PrintTime_IsValid(value);
+  }
+  static const PrintTime PrintTime_MIN =
+    PsnrParam_PrintTime_PrintTime_MIN;
+  static const PrintTime PrintTime_MAX =
+    PsnrParam_PrintTime_PrintTime_MAX;
+  static const int PrintTime_ARRAYSIZE =
+    PsnrParam_PrintTime_PrintTime_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  PrintTime_descriptor() {
+    return PsnrParam_PrintTime_descriptor();
+  }
+  static inline const ::std::string& PrintTime_Name(PrintTime value) {
+    return PsnrParam_PrintTime_Name(value);
+  }
+  static inline bool PrintTime_Parse(const ::std::string& name,
+      PrintTime* value) {
+    return PsnrParam_PrintTime_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // .PsnrParam.PrintTime print_time = 1;
+  void clear_print_time();
+  static const int kPrintTimeFieldNumber = 1;
+  ::PsnrParam_PrintTime print_time() const;
+  void set_print_time(::PsnrParam_PrintTime value);
+
+  // @@protoc_insertion_point(class_scope:PsnrParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  int print_time_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3488,6 +3621,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::ActivationParam* release_activation_param();
   void set_allocated_activation_param(::ActivationParam* activation_param);
 
+  // .PsnrParam psnr_param = 120;
+  bool has_psnr_param() const;
+  void clear_psnr_param();
+  static const int kPsnrParamFieldNumber = 120;
+  const ::PsnrParam& psnr_param() const;
+  ::PsnrParam* mutable_psnr_param();
+  ::PsnrParam* release_psnr_param();
+  void set_allocated_psnr_param(::PsnrParam* psnr_param);
+
   // @@protoc_insertion_point(class_scope:NodeParam)
  private:
 
@@ -3518,6 +3660,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::AccumulatorParam* accumulator_param_;
   ::DisplayParam* display_param_;
   ::ActivationParam* activation_param_;
+  ::PsnrParam* psnr_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -5289,6 +5432,24 @@ inline void AccumulatorParam::set_reset_time(::AccumulatorParam_ResetTime value)
   
   reset_time_ = value;
   // @@protoc_insertion_point(field_set:AccumulatorParam.reset_time)
+}
+
+// -------------------------------------------------------------------
+
+// PsnrParam
+
+// .PsnrParam.PrintTime print_time = 1;
+inline void PsnrParam::clear_print_time() {
+  print_time_ = 0;
+}
+inline ::PsnrParam_PrintTime PsnrParam::print_time() const {
+  // @@protoc_insertion_point(field_get:PsnrParam.print_time)
+  return static_cast< ::PsnrParam_PrintTime >(print_time_);
+}
+inline void PsnrParam::set_print_time(::PsnrParam_PrintTime value) {
+  
+  print_time_ = value;
+  // @@protoc_insertion_point(field_set:PsnrParam.print_time)
 }
 
 // -------------------------------------------------------------------
@@ -7665,6 +7826,45 @@ inline void NodeParam::set_allocated_activation_param(::ActivationParam* activat
   // @@protoc_insertion_point(field_set_allocated:NodeParam.activation_param)
 }
 
+// .PsnrParam psnr_param = 120;
+inline bool NodeParam::has_psnr_param() const {
+  return this != internal_default_instance() && psnr_param_ != NULL;
+}
+inline void NodeParam::clear_psnr_param() {
+  if (GetArenaNoVirtual() == NULL && psnr_param_ != NULL) delete psnr_param_;
+  psnr_param_ = NULL;
+}
+inline const ::PsnrParam& NodeParam::psnr_param() const {
+  // @@protoc_insertion_point(field_get:NodeParam.psnr_param)
+  return psnr_param_ != NULL ? *psnr_param_
+                         : *::PsnrParam::internal_default_instance();
+}
+inline ::PsnrParam* NodeParam::mutable_psnr_param() {
+  
+  if (psnr_param_ == NULL) {
+    psnr_param_ = new ::PsnrParam;
+  }
+  // @@protoc_insertion_point(field_mutable:NodeParam.psnr_param)
+  return psnr_param_;
+}
+inline ::PsnrParam* NodeParam::release_psnr_param() {
+  // @@protoc_insertion_point(field_release:NodeParam.psnr_param)
+  
+  ::PsnrParam* temp = psnr_param_;
+  psnr_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_psnr_param(::PsnrParam* psnr_param) {
+  delete psnr_param_;
+  psnr_param_ = psnr_param;
+  if (psnr_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:NodeParam.psnr_param)
+}
+
 // -------------------------------------------------------------------
 
 // SquareParam
@@ -8762,6 +8962,8 @@ GraphParam::phase() const {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -8779,6 +8981,11 @@ template <> struct is_proto_enum< ::AccumulatorParam_ResetTime> : ::google::prot
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::AccumulatorParam_ResetTime>() {
   return ::AccumulatorParam_ResetTime_descriptor();
+}
+template <> struct is_proto_enum< ::PsnrParam_PrintTime> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::PsnrParam_PrintTime>() {
+  return ::PsnrParam_PrintTime_descriptor();
 }
 template <> struct is_proto_enum< ::PrintParam_PrintTime> : ::google::protobuf::internal::true_type {};
 template <>

@@ -506,6 +506,19 @@ void DeepFlow::display(std::string input,int delay_msec, DisplayParam_DisplayTyp
 	_nodes.push_back(node_param);	
 }
 
+void DeepFlow::psnr(std::string a, std::string b, Psnr::PrintTime printTime, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = std::make_shared<NodeParam>();
+	node_param->set_name(_get_unique_node_name(name));	
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	node_param->add_input(b);
+	auto psnr_param = node_param->mutable_psnr_param();
+	psnr_param->set_print_time((PsnrParam_PrintTime)printTime);
+	_nodes.push_back(node_param);	
+}
+
 std::string DeepFlow::pooling(std::string input, int windowHeight, int windowWidth, int verticalPadding, int horizontalPadding, int verticalStride, int horizontalStride, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = std::make_shared<NodeParam>();
 	node_param->set_name(_get_unique_node_name(name));

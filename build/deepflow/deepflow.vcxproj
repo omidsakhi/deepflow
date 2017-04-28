@@ -55,6 +55,7 @@
     <ClInclude Include="..\..\include\ops\matmul.h" />
     <ClInclude Include="..\..\include\ops\pooling.h" />
     <ClInclude Include="..\..\include\ops\print.h" />
+    <ClInclude Include="..\..\include\ops\psnr.h" />
     <ClInclude Include="..\..\include\ops\reduce.h" />
     <ClInclude Include="..\..\include\ops\leaky_relu.h" />
     <ClInclude Include="..\..\include\ops\softmax.h" />
@@ -93,6 +94,7 @@
     <CudaCompile Include="..\..\src\ops\display.cu" />
     <CudaCompile Include="..\..\src\ops\equal.cu" />
     <CudaCompile Include="..\..\src\ops\euclidean_loss.cu" />
+    <CudaCompile Include="..\..\src\ops\psnr.cu" />
     <CudaCompile Include="..\..\src\solvers\adadelta_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\adam_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\gain_solver.cu" />

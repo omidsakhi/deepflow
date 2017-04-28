@@ -30,17 +30,17 @@ void main(int argc, char** argv) {
 		
 	if (FLAGS_i.empty()) {
 		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);			
-		//auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
-		auto solver = df.sgd_solver(0.98f, 0.01f);
+		auto solver1 = df.gain_solver(0.999f, 0.0001f, 100, 0.000000001f, 0.05f, 0.95f);		
+		auto solver2 = df.sgd_solver(1.0f, 0.00000001f);
 		//auto solver = df.adam_solver();
 		//auto solver = df.adadelta_solver();		
 		auto image = df.imread(FLAGS_image, ImageReaderParam_Type_GRAY_ONLY);
-		auto stat = df.variable(df.random_uniform({ 1,1,252,252 }, -1, 1),solver);
-		auto f = df.variable(df.ones({ 1,1,5,5 }),0);
+		auto stat = df.variable(df.random_uniform({ 1,1,252,252 }, 0.8, 1),solver1);
+		auto f = df.variable(df.random_uniform({ 1,1,5,5 }, 0.9, 0.1),solver2);
 		auto tconv = df.transposed_conv2d(stat, f, { 1,1,256,256 }, 0, 0, 1, 1, 1, 1);
 		df.euclidean_loss(tconv, image);
-		df.display(tconv, 2, DisplayParam_DisplayType_VALUES, "input", { "Train" });			
-		//df.print({ tconv }, "{0}\n", Print::EVERY_PASS, Print::VALUES, "print", { "Train" });
+		df.display(tconv, 20, DisplayParam_DisplayType_VALUES, "input", { "Train" });			
+		df.psnr(tconv, image, Psnr::EVERY_PASS, "psnr", { "Train" });		
 	}
 	else {
 		df.load_from_binary(FLAGS_i);	
