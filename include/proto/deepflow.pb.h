@@ -90,6 +90,9 @@ extern InitIndexFillParamDefaultTypeInternal _InitIndexFillParam_default_instanc
 class InitParam;
 class InitParamDefaultTypeInternal;
 extern InitParamDefaultTypeInternal _InitParam_default_instance_;
+class InitRandomNormalParam;
+class InitRandomNormalParamDefaultTypeInternal;
+extern InitRandomNormalParamDefaultTypeInternal _InitRandomNormalParam_default_instance_;
 class InitRandomUniformParam;
 class InitRandomUniformParamDefaultTypeInternal;
 extern InitRandomUniformParamDefaultTypeInternal _InitRandomUniformParam_default_instance_;
@@ -4343,6 +4346,96 @@ class InitRandomUniformParam : public ::google::protobuf::Message /* @@protoc_in
 };
 // -------------------------------------------------------------------
 
+class InitRandomNormalParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:InitRandomNormalParam) */ {
+ public:
+  InitRandomNormalParam();
+  virtual ~InitRandomNormalParam();
+
+  InitRandomNormalParam(const InitRandomNormalParam& from);
+
+  inline InitRandomNormalParam& operator=(const InitRandomNormalParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const InitRandomNormalParam& default_instance();
+
+  static inline const InitRandomNormalParam* internal_default_instance() {
+    return reinterpret_cast<const InitRandomNormalParam*>(
+               &_InitRandomNormalParam_default_instance_);
+  }
+
+  void Swap(InitRandomNormalParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline InitRandomNormalParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  InitRandomNormalParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const InitRandomNormalParam& from);
+  void MergeFrom(const InitRandomNormalParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(InitRandomNormalParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float mean = 1;
+  void clear_mean();
+  static const int kMeanFieldNumber = 1;
+  float mean() const;
+  void set_mean(float value);
+
+  // float stddev = 2;
+  void clear_stddev();
+  static const int kStddevFieldNumber = 2;
+  float stddev() const;
+  void set_stddev(float value);
+
+  // @@protoc_insertion_point(class_scope:InitRandomNormalParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float mean_;
+  float stddev_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class InitStepParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:InitStepParam) */ {
  public:
   InitStepParam();
@@ -4554,6 +4647,15 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::InitStepParam* release_step_param();
   void set_allocated_step_param(::InitStepParam* step_param);
 
+  // .InitRandomNormalParam random_normal_param = 7;
+  bool has_random_normal_param() const;
+  void clear_random_normal_param();
+  static const int kRandomNormalParamFieldNumber = 7;
+  const ::InitRandomNormalParam& random_normal_param() const;
+  ::InitRandomNormalParam* mutable_random_normal_param();
+  ::InitRandomNormalParam* release_random_normal_param();
+  void set_allocated_random_normal_param(::InitRandomNormalParam* random_normal_param);
+
   // @@protoc_insertion_point(class_scope:InitParam)
  private:
 
@@ -4564,6 +4666,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::InitIndexFillParam* index_fill_param_;
   ::InitRandomUniformParam* random_uniform_param_;
   ::InitStepParam* step_param_;
+  ::InitRandomNormalParam* random_normal_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -8139,6 +8242,38 @@ inline void InitRandomUniformParam::set_max(float value) {
 
 // -------------------------------------------------------------------
 
+// InitRandomNormalParam
+
+// float mean = 1;
+inline void InitRandomNormalParam::clear_mean() {
+  mean_ = 0;
+}
+inline float InitRandomNormalParam::mean() const {
+  // @@protoc_insertion_point(field_get:InitRandomNormalParam.mean)
+  return mean_;
+}
+inline void InitRandomNormalParam::set_mean(float value) {
+  
+  mean_ = value;
+  // @@protoc_insertion_point(field_set:InitRandomNormalParam.mean)
+}
+
+// float stddev = 2;
+inline void InitRandomNormalParam::clear_stddev() {
+  stddev_ = 0;
+}
+inline float InitRandomNormalParam::stddev() const {
+  // @@protoc_insertion_point(field_get:InitRandomNormalParam.stddev)
+  return stddev_;
+}
+inline void InitRandomNormalParam::set_stddev(float value) {
+  
+  stddev_ = value;
+  // @@protoc_insertion_point(field_set:InitRandomNormalParam.stddev)
+}
+
+// -------------------------------------------------------------------
+
 // InitStepParam
 
 // float min = 1;
@@ -8405,6 +8540,45 @@ inline void InitParam::set_allocated_step_param(::InitStepParam* step_param) {
     
   }
   // @@protoc_insertion_point(field_set_allocated:InitParam.step_param)
+}
+
+// .InitRandomNormalParam random_normal_param = 7;
+inline bool InitParam::has_random_normal_param() const {
+  return this != internal_default_instance() && random_normal_param_ != NULL;
+}
+inline void InitParam::clear_random_normal_param() {
+  if (GetArenaNoVirtual() == NULL && random_normal_param_ != NULL) delete random_normal_param_;
+  random_normal_param_ = NULL;
+}
+inline const ::InitRandomNormalParam& InitParam::random_normal_param() const {
+  // @@protoc_insertion_point(field_get:InitParam.random_normal_param)
+  return random_normal_param_ != NULL ? *random_normal_param_
+                         : *::InitRandomNormalParam::internal_default_instance();
+}
+inline ::InitRandomNormalParam* InitParam::mutable_random_normal_param() {
+  
+  if (random_normal_param_ == NULL) {
+    random_normal_param_ = new ::InitRandomNormalParam;
+  }
+  // @@protoc_insertion_point(field_mutable:InitParam.random_normal_param)
+  return random_normal_param_;
+}
+inline ::InitRandomNormalParam* InitParam::release_random_normal_param() {
+  // @@protoc_insertion_point(field_release:InitParam.random_normal_param)
+  
+  ::InitRandomNormalParam* temp = random_normal_param_;
+  random_normal_param_ = NULL;
+  return temp;
+}
+inline void InitParam::set_allocated_random_normal_param(::InitRandomNormalParam* random_normal_param) {
+  delete random_normal_param_;
+  random_normal_param_ = random_normal_param;
+  if (random_normal_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:InitParam.random_normal_param)
 }
 
 // -------------------------------------------------------------------
@@ -9010,6 +9184,8 @@ GraphParam::phase() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

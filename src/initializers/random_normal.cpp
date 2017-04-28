@@ -1,21 +1,21 @@
 #include "core/common_cu.h"
 
-#include "initializers/random_uniform.h"
+#include "initializers/random_normal.h"
 #include "core/variable.h"
 
 #include <random>
 
-RandomUniform::RandomUniform(const InitParam &param) : Initializer(param) {
-	LOG_IF(FATAL, param.has_random_uniform_param() == false) << "param.has_random_uniform_param() == false";
+RandomNormal::RandomNormal(const InitParam &param) : Initializer(param) {
+	LOG_IF(FATAL, param.has_random_normal_param() == false) << "param.has_random_normal_param() == false";
 }
 
-void RandomUniform::apply(Variable *variable) {	
+void RandomNormal::apply(Variable *variable) {
 	auto size = variable->output(0)->value()->size();
-	float min = _param.random_uniform_param().min();
-	float max = _param.random_uniform_param().max();	
+	float mean = _param.random_normal_param().mean();
+	float stddev = _param.random_normal_param().stddev();
 	std::mt19937 generator;
 	generator.seed(std::random_device()());
-	std::uniform_real_distribution<float> distribution(min, max);
+	std::normal_distribution<float> distribution(mean, stddev);
 	float *h_rand = new float[size];
 	for (int i = 0; i < size; ++i)
 		h_rand[i] = distribution(generator);

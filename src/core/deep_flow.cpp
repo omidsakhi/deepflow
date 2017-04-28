@@ -154,6 +154,20 @@ std::shared_ptr<InitParam> DeepFlow::random_uniform(std::initializer_list<int> d
 	return init_param;
 }
 
+std::shared_ptr<InitParam> DeepFlow::random_normal(std::initializer_list<int> dims, float mean, float stddev, Tensor::TensorType type)
+{
+	auto init_param = std::make_shared<InitParam>();
+	std::vector<int> values(dims);
+	auto tensor_param = init_param->mutable_tensor_param();
+	for (int i = 0; i < values.size(); ++i)
+		tensor_param->add_dims(values[i]);
+	tensor_param->set_type((TensorParam_TensorType)type);
+	auto random_normal_param = init_param->mutable_random_normal_param();
+	random_normal_param->set_mean(mean);
+	random_normal_param->set_stddev(stddev);
+	return init_param;
+}
+
 std::string DeepFlow::cast_float(std::string input, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = std::make_shared<NodeParam>();
 	node_param->set_name(_get_unique_node_name(name));

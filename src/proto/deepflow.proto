@@ -265,6 +265,11 @@ message InitRandomUniformParam {
 	float max = 2;
 }
 
+message InitRandomNormalParam {
+	float mean = 1;
+	float stddev = 2;
+}
+
 message InitStepParam {
 	float min = 1;
 	float max = 2;	
@@ -277,6 +282,7 @@ message InitParam {
   InitIndexFillParam index_fill_param = 4;
   InitRandomUniformParam random_uniform_param = 5;
   InitStepParam step_param = 6;
+  InitRandomNormalParam random_normal_param = 7;
 }
 
 message SGDSolverParam {

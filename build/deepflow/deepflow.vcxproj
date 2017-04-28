@@ -41,6 +41,7 @@
     <ClInclude Include="..\..\include\generators\mnist_reader.h" />
     <ClInclude Include="..\..\include\initializers\fill.h" />
     <ClInclude Include="..\..\include\initializers\index_fill.h" />
+    <ClInclude Include="..\..\include\initializers\random_normal.h" />
     <ClInclude Include="..\..\include\initializers\random_uniform.h" />
     <ClInclude Include="..\..\include\initializers\step.h" />
     <ClInclude Include="..\..\include\ops\accumulator.h" />
@@ -87,6 +88,7 @@
       <FileType>CppCode</FileType>
     </CudaCompile>
     <ClCompile Include="..\..\src\generators\mnist_reader.cpp" />
+    <ClCompile Include="..\..\src\initializers\random_normal.cpp" />
     <ClCompile Include="..\..\src\ops\activation.cpp" />
     <ClCompile Include="..\..\src\ops\pooling.cpp">
       <FileType>Document</FileType>

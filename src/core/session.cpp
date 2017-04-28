@@ -7,6 +7,7 @@
 #include "initializers/fill.h"
 #include "initializers/index_fill.h"
 #include "initializers/random_uniform.h"
+#include "initializers/random_normal.h"
 #include "initializers/step.h"
 
 #include "core/solver.h"
@@ -52,6 +53,30 @@
 
 #include <ctime>
 
+std::shared_ptr<Initializer> _create_initializer(const InitParam &init_param) {
+	
+	if (init_param.has_fill_param()) {
+		return std::make_shared<Fill>(init_param);
+	}
+	else if (init_param.has_index_fill_param()) {
+		return std::make_shared<IndexFill>(init_param);
+	}
+	else if (init_param.has_random_uniform_param()) {
+		return std::make_shared<RandomUniform>(init_param);
+	}
+	else if (init_param.has_step_param()) {
+		return std::make_shared<Step>(init_param);
+	}
+	else if (init_param.has_random_normal_param()) {
+		return std::make_shared<RandomNormal>(init_param);
+	}
+	else {
+		LOG(FATAL) << "Unsupported Initializer";
+	}
+
+	return NULL;
+}
+
 std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {	
 
 	if (node_param.has_accumulator_param())
@@ -62,20 +87,8 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 			return std::make_shared<MNISTReader>(node_param);
 		}
 		else if (generator_param.has_data_generator_param()) {
-			std::shared_ptr<Initializer> initializer;
 			const InitParam &init_param = node_param.variable_param().init_param();
-			if (init_param.has_fill_param()) {
-				initializer = std::make_shared<Fill>(init_param);
-			}
-			else if (init_param.has_index_fill_param()) {
-				initializer = std::make_shared<IndexFill>(init_param);
-			}
-			else if (init_param.has_random_uniform_param()) {
-				initializer = std::make_shared<RandomUniform>(init_param);
-			}
-			else if (init_param.has_step_param()) {
-				initializer = std::make_shared<Step>(init_param);
-			}
+			std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
 			return std::make_shared<DataGenerator>(initializer,node_param);
 		}
 		else if (generator_param.has_image_reader_param()) {
@@ -143,20 +156,8 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 		return std::make_shared<RandomSelector>(node_param);
 	}
 	else if (node_param.has_variable_param()) {
-		std::shared_ptr<Initializer> initializer;
 		const InitParam &init_param = node_param.variable_param().init_param();
-		if (init_param.has_fill_param()) {
-			initializer = std::make_shared<Fill>(init_param);
-		}
-		else if (init_param.has_index_fill_param()) {
-			initializer = std::make_shared<IndexFill>(init_param);
-		}
-		else if (init_param.has_random_uniform_param()) {
-			initializer = std::make_shared<RandomUniform>(init_param);
-		}
-		else if (init_param.has_step_param()) {
-			initializer = std::make_shared<Step>(init_param);
-		}
+		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
 		return std::make_shared<Variable>(initializer, node_param);
 	}
 	else {

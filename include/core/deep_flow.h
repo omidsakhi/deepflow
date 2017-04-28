@@ -27,6 +27,7 @@ public:
 	std::shared_ptr<InitParam> zeros(std::initializer_list<int> dims, Tensor::TensorType type = Tensor::Float);
 	std::shared_ptr<InitParam> ones(std::initializer_list<int> dims, Tensor::TensorType type = Tensor::Float);
 	std::shared_ptr<InitParam> random_uniform(std::initializer_list<int> dims, float min, float max, Tensor::TensorType type = Tensor::Float);
+	std::shared_ptr<InitParam> random_normal(std::initializer_list<int> dims, float mean, float stddev, Tensor::TensorType type = Tensor::Float);
 	std::shared_ptr<InitParam> step(std::initializer_list<int> dims, float min, float max, Tensor::TensorType type = Tensor::Float);
 
 	// VARIABLES & PLACE HOLDER
