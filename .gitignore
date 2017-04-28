@@ -54,3 +54,5 @@
 *.pdb
 /build/Debug
 /build/image_approximation/x64
+/build/examples/x64
+/build/experimental/x64
