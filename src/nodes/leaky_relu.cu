@@ -1,6 +1,6 @@
 #include "core/common_cu.h"
 
-#include "ops/leaky_relu.h"
+#include "nodes/leaky_relu.h"
 
 __global__
 void ReluKernel(int n, const float * __restrict__ x, const float * __restrict__ y, float * __restrict__ z, const float slope)

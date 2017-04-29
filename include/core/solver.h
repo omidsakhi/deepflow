@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/variable.h"
+#include "nodes/variable.h"
 
 #include "proto/deepflow.pb.h"
 

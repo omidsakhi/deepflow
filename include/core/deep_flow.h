@@ -4,9 +4,9 @@
 
 #include "core/tensor.h"
 #include "generators/mnist_reader.h"
-#include "ops/print.h"
-#include "ops/psnr.h"
-#include "ops/accumulator.h"
+#include "nodes/print.h"
+#include "nodes/psnr.h"
+#include "nodes/accumulator.h"
 #include <string>
 #include <memory>
 #include <list>

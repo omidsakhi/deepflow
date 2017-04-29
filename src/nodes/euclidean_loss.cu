@@ -1,7 +1,7 @@
 
 #include "core/common_cu.h"
 
-#include "ops/euclidean_loss.h"
+#include "nodes/euclidean_loss.h"
 
 __global__
 void EuclideanLossKernel(const int n, const float * __restrict__ x1, const float * __restrict__ x2, float * __restrict__ y)

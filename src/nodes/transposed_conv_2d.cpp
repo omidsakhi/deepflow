@@ -1,4 +1,4 @@
-#include "ops/transposed_conv_2d.h"
+#include "nodes/transposed_conv_2d.h"
 
 
 TransposedConvolution2D::TransposedConvolution2D(const NodeParam &param) : Node(param) {

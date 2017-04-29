@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/generator.h"
-#include "core/variable.h"
+#include "nodes/variable.h"
 
 class Initializer;
 

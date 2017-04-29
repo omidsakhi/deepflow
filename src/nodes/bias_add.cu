@@ -1,6 +1,6 @@
 #include "core/common_cu.h"
 
-#include "ops/bias_add.h"
+#include "nodes/bias_add.h"
 
 __global__
 void BiasAddKernelForward(const int n, const float *a, const int bias_dim, const float *b, float *c)

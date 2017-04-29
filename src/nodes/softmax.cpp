@@ -1,4 +1,4 @@
-#include "ops/softmax.h"
+#include "nodes/softmax.h"
 
 #include <glog/logging.h>
 

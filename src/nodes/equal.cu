@@ -1,4 +1,4 @@
-#include "ops/equal.h"
+#include "nodes/equal.h"
 
 __global__
 void EqualKernel(int n, const int * __restrict__ a,  const int * __restrict__ b, float * __restrict__ c)

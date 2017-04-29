@@ -1,5 +1,5 @@
 #include "generators/data_generator.h"
-#include "core/variable.h"
+#include "nodes/variable.h"
 #include "core/initializer.h"
 #include "core/common_cu.h"
 

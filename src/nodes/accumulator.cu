@@ -1,4 +1,4 @@
-#include "ops/accumulator.h"
+#include "nodes/accumulator.h"
 
 #include "core/common_cu.h"
 

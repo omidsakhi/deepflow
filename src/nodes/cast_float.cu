@@ -1,4 +1,4 @@
-#include "ops/cast_float.h"
+#include "nodes/cast_float.h"
 
 #include "core/common_cu.h"
 

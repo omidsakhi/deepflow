@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-#include "core/variable.h"
+#include "nodes/variable.h"
 
 __global__
 void ApplyGradientKernel(const int n, const float momentum, const float learning_rate, float *var, const float *grad)

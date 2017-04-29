@@ -1,5 +1,5 @@
 
-#include "core/variable.h"
+#include "nodes/variable.h"
 #include "core/initializer.h"
 
 #include <string>

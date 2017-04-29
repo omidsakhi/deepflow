@@ -1,6 +1,6 @@
 #include "solvers/gain_solver.h"
 #include "core/common_cu.h"
-#include "core/variable.h"
+#include "nodes/variable.h"
 
 #include <glog/logging.h>
 

@@ -1,5 +1,5 @@
 #include "core/solver.h"
-#include "core/variable.h"
+#include "nodes/variable.h"
 
 #include <glog/logging.h>
 

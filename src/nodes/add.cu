@@ -1,6 +1,6 @@
 #include "core/common_cu.h"
 
-#include "ops/add.h"
+#include "nodes/add.h"
 
 __global__
 void AddKernelForward(const int n, const float alpha, const float *a, const float beta, const float *b, float *c)

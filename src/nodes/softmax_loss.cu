@@ -1,6 +1,6 @@
 #include "core/common_cu.h"
 
-#include "ops/softmax_loss.h"
+#include "nodes/softmax_loss.h"
 
 __global__
 void SoftmaxLossKernelBackward(const int n, const float *softmax_output,const float * __restrict__ target, float * __restrict__ diff)

@@ -1,4 +1,4 @@
-#include "core/phaseplexer.h"
+#include "nodes/phaseplexer.h"
 
 Phaseplexer::Phaseplexer(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_phaseplexer_param() == false) << "param.has_phaseplexer_param() == false";

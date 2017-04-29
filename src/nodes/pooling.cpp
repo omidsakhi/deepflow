@@ -1,4 +1,4 @@
-#include "ops/pooling.h"
+#include "nodes/pooling.h"
 
 Pooling::Pooling(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_pooling_param() == false) << "param.has_pooling_param() == false";

@@ -1,7 +1,7 @@
 #include "core/common_cu.h"
 
 #include "initializers/index_fill.h"
-#include "core/variable.h"
+#include "nodes/variable.h"
 
 __global__
 void IndexFillKernel(const int n, float *a,const float offset)

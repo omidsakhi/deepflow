@@ -28,14 +28,11 @@
     <ClInclude Include="..\..\include\core\loss.h" />
     <ClInclude Include="..\..\include\core\node.h" />
     <ClInclude Include="..\..\include\core\node_observer.h" />
-    <ClInclude Include="..\..\include\core\phaseplexer.h" />
-    <ClInclude Include="..\..\include\core\place_holder.h" />
     <ClInclude Include="..\..\include\core\generator.h" />
     <ClInclude Include="..\..\include\core\session.h" />
     <ClInclude Include="..\..\include\core\solver.h" />
     <ClInclude Include="..\..\include\core\tensor.h" />
     <ClInclude Include="..\..\include\core\terminal.h" />
-    <ClInclude Include="..\..\include\core\variable.h" />
     <ClInclude Include="..\..\include\generators\data_generator.h" />
     <ClInclude Include="..\..\include\generators\image_reader.h" />
     <ClInclude Include="..\..\include\generators\mnist_reader.h" />
@@ -44,27 +41,30 @@
     <ClInclude Include="..\..\include\initializers\random_normal.h" />
     <ClInclude Include="..\..\include\initializers\random_uniform.h" />
     <ClInclude Include="..\..\include\initializers\step.h" />
-    <ClInclude Include="..\..\include\ops\accumulator.h" />
-    <ClInclude Include="..\..\include\ops\activation.h" />
-    <ClInclude Include="..\..\include\ops\add.h" />
-    <ClInclude Include="..\..\include\ops\bias_add.h" />
-    <ClInclude Include="..\..\include\ops\convolution_2d.h" />
-    <ClInclude Include="..\..\include\ops\display.h" />
-    <ClInclude Include="..\..\include\ops\dropout.h" />
-    <ClInclude Include="..\..\include\ops\equal.h" />
-    <ClInclude Include="..\..\include\ops\euclidean_loss.h" />
-    <ClInclude Include="..\..\include\ops\matmul.h" />
-    <ClInclude Include="..\..\include\ops\pooling.h" />
-    <ClInclude Include="..\..\include\ops\print.h" />
-    <ClInclude Include="..\..\include\ops\psnr.h" />
-    <ClInclude Include="..\..\include\ops\random_selector.h" />
-    <ClInclude Include="..\..\include\ops\reduce.h" />
-    <ClInclude Include="..\..\include\ops\leaky_relu.h" />
-    <ClInclude Include="..\..\include\ops\softmax.h" />
-    <ClInclude Include="..\..\include\ops\softmax_loss.h" />
-    <ClInclude Include="..\..\include\ops\square.h" />
-    <ClInclude Include="..\..\include\ops\cast_float.h" />
-    <ClInclude Include="..\..\include\ops\transposed_conv_2d.h" />
+    <ClInclude Include="..\..\include\nodes\accumulator.h" />
+    <ClInclude Include="..\..\include\nodes\activation.h" />
+    <ClInclude Include="..\..\include\nodes\add.h" />
+    <ClInclude Include="..\..\include\nodes\bias_add.h" />
+    <ClInclude Include="..\..\include\nodes\cast_float.h" />
+    <ClInclude Include="..\..\include\nodes\convolution_2d.h" />
+    <ClInclude Include="..\..\include\nodes\display.h" />
+    <ClInclude Include="..\..\include\nodes\dropout.h" />
+    <ClInclude Include="..\..\include\nodes\equal.h" />
+    <ClInclude Include="..\..\include\nodes\euclidean_loss.h" />
+    <ClInclude Include="..\..\include\nodes\leaky_relu.h" />
+    <ClInclude Include="..\..\include\nodes\matmul.h" />
+    <ClInclude Include="..\..\include\nodes\phaseplexer.h" />
+    <ClInclude Include="..\..\include\nodes\place_holder.h" />
+    <ClInclude Include="..\..\include\nodes\pooling.h" />
+    <ClInclude Include="..\..\include\nodes\print.h" />
+    <ClInclude Include="..\..\include\nodes\psnr.h" />
+    <ClInclude Include="..\..\include\nodes\random_selector.h" />
+    <ClInclude Include="..\..\include\nodes\reduce.h" />
+    <ClInclude Include="..\..\include\nodes\softmax.h" />
+    <ClInclude Include="..\..\include\nodes\softmax_loss.h" />
+    <ClInclude Include="..\..\include\nodes\square.h" />
+    <ClInclude Include="..\..\include\nodes\transposed_conv_2d.h" />
+    <ClInclude Include="..\..\include\nodes\variable.h" />
     <ClInclude Include="..\..\include\proto\deepflow.pb.h" />
     <ClInclude Include="..\..\include\solvers\adadelta_solver.h" />
     <ClInclude Include="..\..\include\solvers\adam_solver.h" />
@@ -79,8 +79,6 @@
     <ClCompile Include="..\..\src\core\initializer.cpp" />
     <ClCompile Include="..\..\src\core\loss.cpp" />
     <ClCompile Include="..\..\src\core\node.cpp" />
-    <ClCompile Include="..\..\src\core\phaseplexer.cpp" />
-    <ClCompile Include="..\..\src\core\place_holder.cpp" />
     <ClCompile Include="..\..\src\core\session.cpp" />
     <ClCompile Include="..\..\src\core\tensor.cpp" />
     <ClCompile Include="..\..\src\generators\data_generator.cpp" />
@@ -89,15 +87,18 @@
     </CudaCompile>
     <ClCompile Include="..\..\src\generators\mnist_reader.cpp" />
     <ClCompile Include="..\..\src\initializers\random_normal.cpp" />
-    <ClCompile Include="..\..\src\ops\activation.cpp" />
-    <ClCompile Include="..\..\src\ops\pooling.cpp">
-      <FileType>Document</FileType>
-    </ClCompile>
-    <CudaCompile Include="..\..\src\ops\accumulator.cu" />
-    <CudaCompile Include="..\..\src\ops\display.cu" />
-    <CudaCompile Include="..\..\src\ops\equal.cu" />
-    <CudaCompile Include="..\..\src\ops\euclidean_loss.cu" />
-    <CudaCompile Include="..\..\src\ops\psnr.cu" />
+    <CudaCompile Include="..\..\src\nodes\accumulator.cu" />
+    <CudaCompile Include="..\..\src\nodes\add.cu" />
+    <CudaCompile Include="..\..\src\nodes\bias_add.cu" />
+    <CudaCompile Include="..\..\src\nodes\cast_float.cu" />
+    <CudaCompile Include="..\..\src\nodes\display.cu" />
+    <CudaCompile Include="..\..\src\nodes\equal.cu" />
+    <CudaCompile Include="..\..\src\nodes\euclidean_loss.cu" />
+    <CudaCompile Include="..\..\src\nodes\leaky_relu.cu" />
+    <CudaCompile Include="..\..\src\nodes\psnr.cu" />
+    <CudaCompile Include="..\..\src\nodes\softmax_loss.cu" />
+    <CudaCompile Include="..\..\src\nodes\square.cu" />
+    <CudaCompile Include="..\..\src\nodes\variable.cu" />
     <CudaCompile Include="..\..\src\solvers\adadelta_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\adam_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\gain_solver.cu" />
@@ -106,25 +107,22 @@
     </CudaCompile>
     <ClCompile Include="..\..\src\core\generator.cpp" />
     <ClCompile Include="..\..\src\core\solver.cpp" />
-    <CudaCompile Include="..\..\src\core\variable.cu">
-      <FileType>Document</FileType>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\initializers\step.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>
     <ClCompile Include="..\..\src\core\terminal.cpp" />
-    <CudaCompile Include="..\..\src\ops\softmax_loss.cu">
-      <FileType>CppCode</FileType>
-    </CudaCompile>
-    <ClCompile Include="..\..\src\ops\convolution_2d.cpp" />
-    <ClCompile Include="..\..\src\ops\dropout.cpp" />
-    <ClCompile Include="..\..\src\ops\print.cpp" />
-    <ClCompile Include="..\..\src\ops\random_selector.cpp" />
-    <ClCompile Include="..\..\src\ops\reduce.cpp" />
-    <CudaCompile Include="..\..\src\ops\cast_float.cu">
-      <FileType>CppCode</FileType>
-    </CudaCompile>
-    <ClCompile Include="..\..\src\ops\transposed_conv_2d.cpp" />
+    <ClCompile Include="..\..\src\nodes\activation.cpp" />
+    <ClCompile Include="..\..\src\nodes\convolution_2d.cpp" />
+    <ClCompile Include="..\..\src\nodes\dropout.cpp" />
+    <ClCompile Include="..\..\src\nodes\matmul.cpp" />
+    <ClCompile Include="..\..\src\nodes\phaseplexer.cpp" />
+    <ClCompile Include="..\..\src\nodes\place_holder.cpp" />
+    <ClCompile Include="..\..\src\nodes\pooling.cpp" />
+    <ClCompile Include="..\..\src\nodes\print.cpp" />
+    <ClCompile Include="..\..\src\nodes\random_selector.cpp" />
+    <ClCompile Include="..\..\src\nodes\reduce.cpp" />
+    <ClCompile Include="..\..\src\nodes\softmax.cpp" />
+    <ClCompile Include="..\..\src\nodes\transposed_conv_2d.cpp" />
     <ClCompile Include="..\..\src\proto\deepflow.pb.cc" />
   </ItemGroup>
   <ItemGroup>
@@ -133,16 +131,6 @@
     <ClCompile Include="..\..\src\initializers\random_uniform.cpp">
       <FileType>Document</FileType>
     </ClCompile>
-    <CudaCompile Include="..\..\src\ops\add.cu" />
-    <CudaCompile Include="..\..\src\ops\bias_add.cu" />
-    <ClCompile Include="..\..\src\ops\matmul.cpp">
-      <FileType>Document</FileType>
-    </ClCompile>
-    <CudaCompile Include="..\..\src\ops\leaky_relu.cu" />
-    <ClCompile Include="..\..\src\ops\softmax.cpp">
-      <FileType>Document</FileType>
-    </ClCompile>
-    <CudaCompile Include="..\..\src\ops\square.cu" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\proto\deepflow.proto" />

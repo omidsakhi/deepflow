@@ -1,4 +1,4 @@
-#include "ops/psnr.h"
+#include "nodes/psnr.h"
 #include "core/common_cu.h"
 
 __global__

@@ -1,7 +1,7 @@
 #include "core/common_cu.h"
 
 #include "initializers/fill.h"
-#include "core/variable.h"
+#include "nodes/variable.h"
 
 __global__
 void FillKernel(const int n, float *a, const float v)

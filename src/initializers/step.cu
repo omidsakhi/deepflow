@@ -1,7 +1,7 @@
 #include "core/common_cu.h"
 
 #include "initializers/step.h"
-#include "core/variable.h"
+#include "nodes/variable.h"
 
 __global__
 void StepFillKernel(const int n, float *out, const float min, const float step)

@@ -1,5 +1,5 @@
 #include "core/common_cu.h"
-#include "ops/activation.h"
+#include "nodes/activation.h"
 
 Activation::Activation(const NodeParam & param) : Node(param)
 {

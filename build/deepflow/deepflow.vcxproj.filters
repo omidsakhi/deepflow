@@ -4,23 +4,8 @@
     <CudaCompile Include="..\..\src\initializers\fill.cu">
       <Filter>source\initializers</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\add.cu">
-      <Filter>source\ops</Filter>
-    </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\bias_add.cu">
-      <Filter>source\ops</Filter>
-    </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\square.cu">
-      <Filter>source\ops</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\initializers\index_fill.cu">
       <Filter>source\initializers</Filter>
-    </CudaCompile>
-    <CudaCompile Include="..\..\src\core\variable.cu">
-      <Filter>source\core</Filter>
-    </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\softmax_loss.cu">
-      <Filter>source\ops</Filter>
     </CudaCompile>
     <CudaCompile Include="..\..\src\solvers\sgd_solver.cu">
       <Filter>source\solver</Filter>
@@ -31,18 +16,6 @@
     <CudaCompile Include="..\..\src\initializers\step.cu">
       <Filter>source\initializers</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\equal.cu">
-      <Filter>source\ops</Filter>
-    </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\accumulator.cu">
-      <Filter>source\ops</Filter>
-    </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\cast_float.cu">
-      <Filter>source\ops</Filter>
-    </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\display.cu">
-      <Filter>source\ops</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\solvers\adam_solver.cu">
       <Filter>source\solver</Filter>
     </CudaCompile>
@@ -52,14 +25,41 @@
     <CudaCompile Include="..\..\src\generators\image_reader.cu">
       <Filter>source\generators</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\euclidean_loss.cu">
-      <Filter>source\ops</Filter>
+    <CudaCompile Include="..\..\src\nodes\psnr.cu">
+      <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\leaky_relu.cu">
-      <Filter>source\ops</Filter>
+    <CudaCompile Include="..\..\src\nodes\softmax_loss.cu">
+      <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\ops\psnr.cu">
-      <Filter>source\ops</Filter>
+    <CudaCompile Include="..\..\src\nodes\square.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\variable.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\accumulator.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\add.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\bias_add.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\cast_float.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\display.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\equal.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\euclidean_loss.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\leaky_relu.cu">
+      <Filter>source\nodes</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -75,53 +75,23 @@
     <ClCompile Include="..\..\src\core\solver.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ops\dropout.cpp">
-      <Filter>source\ops</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\core\cuda_helper.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\proto\deepflow.pb.cc">
       <Filter>source\proto</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ops\convolution_2d.cpp">
-      <Filter>source\ops</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\core\terminal.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ops\matmul.cpp">
-      <Filter>source\ops</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ops\pooling.cpp">
-      <Filter>source\ops</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ops\reduce.cpp">
-      <Filter>source\ops</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\core\tensor.cpp">
-      <Filter>source\core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\core\place_holder.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\core\loss.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\core\phaseplexer.cpp">
-      <Filter>source\core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ops\print.cpp">
-      <Filter>source\ops</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\core\session.cpp">
       <Filter>source\core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ops\transposed_conv_2d.cpp">
-      <Filter>source\ops</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ops\softmax.cpp">
-      <Filter>source\ops</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\core\generator.cpp">
       <Filter>source\core</Filter>
@@ -135,14 +105,44 @@
     <ClCompile Include="..\..\src\generators\data_generator.cpp">
       <Filter>source\generators</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ops\activation.cpp">
-      <Filter>source\ops</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ops\random_selector.cpp">
-      <Filter>source\ops</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\initializers\random_normal.cpp">
       <Filter>source\initializers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\phaseplexer.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\place_holder.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\pooling.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\print.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\random_selector.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\reduce.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\softmax.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\transposed_conv_2d.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\activation.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\convolution_2d.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\dropout.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\matmul.cpp">
+      <Filter>source\nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,35 +161,14 @@
     <ClInclude Include="..\..\include\core\node.h">
       <Filter>include\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\core\variable.h">
-      <Filter>include\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\softmax.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\add.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\bias_add.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\matmul.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\core\export.h">
       <Filter>include\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\square.h">
-      <Filter>include\ops</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\core\node_observer.h">
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\initializers\index_fill.h">
       <Filter>include\initializers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\softmax_loss.h">
-      <Filter>include\ops</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\core\solver.h">
       <Filter>include\core</Filter>
@@ -200,17 +179,11 @@
     <ClInclude Include="..\..\include\solvers\gain_solver.h">
       <Filter>include\solver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ops\dropout.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\core\cuda_helper.h">
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\initializers\step.h">
       <Filter>include\initializers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\convolution_2d.h">
-      <Filter>include\ops</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\proto\deepflow.pb.h">
       <Filter>include\proto</Filter>
@@ -218,44 +191,17 @@
     <ClInclude Include="..\..\include\initializers\random_uniform.h">
       <Filter>include\initializers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ops\pooling.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\core\terminal.h">
       <Filter>include\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ops\reduce.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\core\tensor.h">
-      <Filter>include\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\equal.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\core\place_holder.h">
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\core\loss.h">
       <Filter>include\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\core\phaseplexer.h">
-      <Filter>include\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\print.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\core\execution_context.h">
       <Filter>include\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\cast_float.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\accumulator.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\display.h">
-      <Filter>include\ops</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\core\session.h">
       <Filter>include\core</Filter>
@@ -266,9 +212,6 @@
     <ClInclude Include="..\..\include\solvers\adadelta_solver.h">
       <Filter>include\solver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ops\transposed_conv_2d.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\core\generator.h">
       <Filter>include\core</Filter>
     </ClInclude>
@@ -278,26 +221,83 @@
     <ClInclude Include="..\..\include\generators\image_reader.h">
       <Filter>include\generators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ops\euclidean_loss.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\generators\data_generator.h">
       <Filter>include\generators</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ops\activation.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\leaky_relu.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\psnr.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ops\random_selector.h">
-      <Filter>include\ops</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\initializers\random_normal.h">
       <Filter>include\initializers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\dropout.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\equal.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\euclidean_loss.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\leaky_relu.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\matmul.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\phaseplexer.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\place_holder.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\pooling.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\print.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\psnr.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\random_selector.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\reduce.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\softmax.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\softmax_loss.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\square.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\transposed_conv_2d.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\variable.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\accumulator.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\activation.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\add.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\bias_add.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\cast_float.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\convolution_2d.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\display.h">
+      <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -322,12 +322,6 @@
     <Filter Include="source\core">
       <UniqueIdentifier>{7f3b6747-eeaf-4ad7-a9b6-d7fbabfa6457}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\ops">
-      <UniqueIdentifier>{45b44a3f-2991-4a34-aefb-49aafcca691e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\ops">
-      <UniqueIdentifier>{71b88af4-416c-4a35-928f-b004e8628554}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\solver">
       <UniqueIdentifier>{5b320c04-219a-464a-bd29-c3e099a90405}</UniqueIdentifier>
     </Filter>
@@ -345,6 +339,12 @@
     </Filter>
     <Filter Include="source\generators">
       <UniqueIdentifier>{a6d53a81-f76f-4f15-a125-fadb1a510a66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\nodes">
+      <UniqueIdentifier>{2e6aa8b4-ae06-49db-bf01-afa5b0329d48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\nodes">
+      <UniqueIdentifier>{e48513fd-5d23-4baa-b91a-e1ce019a9f1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

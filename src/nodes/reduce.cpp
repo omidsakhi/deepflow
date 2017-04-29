@@ -1,4 +1,4 @@
-#include "ops/reduce.h"
+#include "nodes/reduce.h"
 
 Reduce::Reduce(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_reduce_param() == false) << "param.has_reduce_param() == false [FAILED]";

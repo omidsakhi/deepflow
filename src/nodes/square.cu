@@ -1,4 +1,4 @@
-#include "ops/square.h"
+#include "nodes/square.h"
 #include "core/common_cu.h"
 
 __global__

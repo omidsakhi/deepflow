@@ -1,4 +1,4 @@
-#include "ops/print.h"
+#include "nodes/print.h"
 
 Print::Print(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_print_param() == false) << "param.has_print_param() == false";

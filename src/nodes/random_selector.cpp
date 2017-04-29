@@ -1,4 +1,4 @@
-#include "ops/random_selector.h"
+#include "nodes/random_selector.h"
 
 RandomSelector::RandomSelector(const NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_random_selector_param() == false) << "param.has_random_selector_param() == false";
