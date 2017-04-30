@@ -69,7 +69,7 @@ void main(int argc, char** argv) {
 			auto image = df.imread(FLAGS_image, ImageReaderParam_Type_GRAY_ONLY);
 			auto generator1 = df.data_generator(df.random_uniform({ 1, 1, 256, 256 }, -0.1, 0.1), 1, solver, "gen1");
 			auto generator2 = df.data_generator(df.random_normal({ 1, 1, 256, 256 }, 0, 0.1), 1, solver, "gen2");
-			auto selector = df.random_selector(generator1, generator2);
+			auto selector = df.random_selector(generator1, generator2, 0.8);
 			df.euclidean_loss(selector, image);
 			df.display(generator1, 2, DisplayParam_DisplayType_VALUES, "approx1", { "Train" });
 			df.display(generator2, 2, DisplayParam_DisplayType_VALUES, "approx2", { "Train" });			

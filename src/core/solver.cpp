@@ -16,3 +16,8 @@ const SolverParam& Solver::param() const {
 const std::string Solver::name() const {
 	return _param.name();
 }
+
+bool Solver::hasTheSameParam(std::shared_ptr<Solver> another) const
+{
+	return _param.name() == another->name();
+}

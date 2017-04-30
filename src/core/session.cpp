@@ -221,18 +221,10 @@ void Session::initialize() {
 	for (auto var : _variables) {
 		std::shared_ptr<Solver> solver;
 		std::string var_solver_name = var->param().variable_param().solver_name();
-		for (auto solver_in_map : _solvers) {
-			if (solver_in_map.second->name() == var_solver_name) {
-				solver = solver_in_map.second;
+		for (auto solver_param : _graph->solver()) {
+			if (var_solver_name == solver_param.name()) {
+				solver = _create_solver(solver_param);
 				break;
-			}
-		}
-		if (solver == NULL) {
-			for (auto solver_param : _graph->solver()) {
-				if (var_solver_name == solver_param.name()) {
-					solver = _create_solver(solver_param);
-					break;
-				}
 			}
 		}
 		if (solver) {
@@ -431,8 +423,18 @@ std::string Session::to_cpp() const
 	std::string code = "\n//--> BEGIN\nDeepFlow df;\n";
 	
 	std::set<std::shared_ptr<Solver>> solvers_set;
-	for (auto solver_map_item : _solvers)
-		solvers_set.insert(solver_map_item.second);
+	for (auto solver_map_item : _solvers) {
+		bool exist = false;
+		for (auto solver : solvers_set) {
+			if (solver->name() == solver_map_item.second->name())
+			{
+				exist = true;
+				break;
+			}
+		}
+		if (!exist)
+			solvers_set.insert(solver_map_item.second);
+	}		
 	for (auto solver : solvers_set)
 		code += solver->to_cpp() + "\n";
 

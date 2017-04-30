@@ -14,6 +14,7 @@ public:
 	virtual std::string to_cpp() const = 0;
 	const SolverParam& param() const;
 	const std::string name() const;
+	bool hasTheSameParam(std::shared_ptr<Solver> another) const;
 protected:	
 	SolverParam _param;
 	bool _initialized = false;

@@ -11,6 +11,7 @@ void Activation::initForward()
 	auto activation_param = _param.activation_param();
 	cudnnActivationMode_t _activation_mode =  (cudnnActivationMode_t) activation_param.type();
 	float coef = activation_param.coef();
+	DF_CUDNN_CHECK(cudnnCreateActivationDescriptor(&_activation_desc));
 	DF_CUDNN_CHECK(cudnnSetActivationDescriptor(_activation_desc, _activation_mode, CUDNN_PROPAGATE_NAN, coef));
 	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 

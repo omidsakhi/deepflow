@@ -48,6 +48,7 @@ std::string Print::to_cpp() const
 		inputs + ", " + _inputs[i]->connectedNode()->name();
 	}
 	std::string cpp = "df.print( {" + inputs + "} , ";
+	cpp += "\"" + _raw_message + "\", ";
 	if (_print_time == PrintParam_PrintTime_END_OF_EPOCH) {
 		cpp += "Print::END_OF_EPOCH, ";
 	}
