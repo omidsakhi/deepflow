@@ -96,3 +96,18 @@ void Display::forward() {
 
 void Display::backward() {
 }
+
+std::string Display::to_cpp() const
+{	
+	std::string cpp = "df.display(" + _inputs[0]->connectedNode()->name() + ", ";
+	cpp += std::to_string(_delay_msec) + ", ";
+	if (_display_type == DisplayParam_DisplayType_DIFFS) {
+		cpp += "DisplayParam_DisplayType_DIFFS, ";
+	}
+	else {
+		cpp += "DisplayParam_DisplayType_VALUES, ";
+	}	
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

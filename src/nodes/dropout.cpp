@@ -30,3 +30,12 @@ void Dropout::forward() {
 void Dropout::backward() {	
 	DF_CUDNN_CHECK(cudnnDropoutBackward(_cudnnHandle, _dropoutDesc, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData(), d_reserve, _reserve_sizes_in_bytes));	
 }
+
+std::string Dropout::to_cpp() const
+{
+	std::string cpp = "auto " + _name + " = df.dropout(" + _inputs[0]->connectedNode()->name() + ", ";
+	cpp += std::to_string(_dropout) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

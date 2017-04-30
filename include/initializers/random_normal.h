@@ -9,4 +9,5 @@ public:
 	RandomNormal(const InitParam &param);
 	void init() {}
 	void apply(Variable *variable);
+	std::string to_cpp() const;
 };

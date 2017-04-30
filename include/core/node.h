@@ -2,6 +2,7 @@
 
 #include "core/export.h"
 
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -25,13 +26,12 @@
 
 class NodeObserver;
 
-enum TraverseOrder {
-	PreOrder,
-	PostOrder
-};
-
 class DeepFlowDllExport Node : public std::enable_shared_from_this<Node>, public CudaHelper {
 public:
+	enum TraverseOrder {
+		PRE_ORDER,
+		POST_ORDER
+	};
 	enum ForwardType {
 		ALWAYS_FORWARD,
 		DEPENDS_ON_OUTPUTS,
@@ -52,7 +52,9 @@ public:
 	virtual void backward() {}
 	virtual ForwardType forwardType() = 0;
 	virtual BackwardType backwardType() = 0;
+	virtual std::string to_cpp() const = 0;
 	std::string name() const;	
+	std::string _to_cpp_phases() const;
 	void _unvisit();
 	void _forward();
 	void _backward();
@@ -62,7 +64,7 @@ public:
 	bool shouldBackward() const;
 	void setShouldForward(bool state);
 	void setShouldBackward(bool state);
-	void _traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition);
+	void _traverse(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
 	void setVisited(bool state);
 	std::vector<NodeInputPtr> &inputs();
 	std::vector<NodeOutputPtr> &outputs();

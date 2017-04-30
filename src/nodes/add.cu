@@ -60,3 +60,23 @@ void Add::backward() {
 		DF_KERNEL_CHECK();
 	}
 }
+
+std::string Add::to_cpp() const
+{
+	std::string op;
+	float print_alpha_beta = false;
+	if (_alpha == 1 && _beta == 1)
+		op = "add";
+	else if (_alpha == 1 && _beta == -1)
+		op = "subtract";
+	else {
+		op = "add";
+		print_alpha_beta = true;
+	}
+	std::string cpp = "auto " + _name + " = df." + op + "(" + _inputs[0]->connectedNode()->name() + ", " + _inputs[1]->connectedNode()->name() + ", ";
+	if (print_alpha_beta)
+		cpp += std::to_string(_alpha) + ", " + std::to_string(_beta);
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

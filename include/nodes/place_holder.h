@@ -15,6 +15,7 @@ public:
 	void backward();
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
-	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
-	virtual BackwardType backwardType() { return ALWAYS_BACKWARD; }
+	std::string to_cpp() const;
+	ForwardType forwardType() { return ALWAYS_FORWARD; }
+	BackwardType backwardType() { return ALWAYS_BACKWARD; }
 };

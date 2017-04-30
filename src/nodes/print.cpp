@@ -40,3 +40,27 @@ void Print::forward() {
 void Print::backward() {
 
 }
+
+std::string Print::to_cpp() const
+{
+	std::string inputs = _inputs[0]->connectedNode()->name();
+	for (int i = 1; i < _inputs.size(); ++i) {
+		inputs + ", " + _inputs[i]->connectedNode()->name();
+	}
+	std::string cpp = "df.print( {" + inputs + "} , ";
+	if (_print_time == PrintParam_PrintTime_END_OF_EPOCH) {
+		cpp += "Print::END_OF_EPOCH, ";
+	}
+	else {
+		cpp += "Print::EVERY_PASS, ";
+	}
+	if (_print_type == PrintParam_PrintType_DIFFS) {
+		cpp += "Print::DIFFS, ";
+	}
+	else {
+		cpp += "Print::VALUES, ";
+	}
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

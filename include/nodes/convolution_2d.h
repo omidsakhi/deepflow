@@ -13,6 +13,7 @@ public:
 	void backward();
 	virtual ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
 	virtual BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
+	std::string to_cpp() const;
 protected:
 	cudnnHandle_t _cudnnHandle;	
 	cudnnFilterDescriptor_t _filterDesc;

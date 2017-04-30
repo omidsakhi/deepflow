@@ -32,6 +32,16 @@ std::list<std::shared_ptr<Node>> Phaseplexer::inputNodes() const {
 	}	
 }
 
+std::string Phaseplexer::to_cpp() const
+{
+	const PhaseplexerParam &param = _param.phaseplexer_param();
+	std::string cpp = "auto " + _name + " = df.phaseplexer(" + _inputs[0]->connectedNode()->name() + ", " + param.phase(0) + ", ";
+	cpp += _inputs[1]->connectedNode()->name() + ", " + param.phase(1) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}
+
 void Phaseplexer::forward()
 {	
 	auto input = _map.find(_context->phase);

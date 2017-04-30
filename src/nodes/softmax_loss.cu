@@ -37,3 +37,11 @@ void SoftmaxLoss::backward() {
 	DF_KERNEL_CHECK();
 	DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->value()->data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice));	
 }
+
+std::string SoftmaxLoss::to_cpp() const
+{	
+	std::string cpp = "auto " + _name + " = df.softmax_loss(" + _inputs[0]->connectedNode()->name() + ", " + _inputs[1]->connectedNode()->name() + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

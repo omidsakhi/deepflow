@@ -54,3 +54,18 @@ void Convolution2D::backward() {
 	if (_inputs[1]->connectedNode()->shouldBackward())
 		DF_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &alpha, _filterDesc, _inputs[1]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
 }
+
+std::string Convolution2D::to_cpp() const
+{	
+	const Conv2dParam &param = _param.conv_2d_param();
+	std::string cpp = "auto " + _name + " = df.conv2d(" + _inputs[0]->connectedNode()->name() + ", " + _inputs[1]->connectedNode()->name() + ", ";
+	cpp += std::to_string(param.pad_h()) + ", ";
+	cpp += std::to_string(param.pad_w()) + ", ";
+	cpp += std::to_string(param.u()) + ", ";
+	cpp += std::to_string(param.v()) + ", ";
+	cpp += std::to_string(param.dilation_h()) + ", ";
+	cpp += std::to_string(param.dilation_w()) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

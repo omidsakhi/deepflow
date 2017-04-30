@@ -35,3 +35,15 @@ void Accumulator::forward() {
 void Accumulator::backward() {
 
 }
+
+std::string Accumulator::to_cpp() const
+{
+	std::string cpp = "auto " + _name + " = df.accumulator(" + _inputs[0]->connectedNode()->name() + ", ";
+	if (_reset_time == EndOfEpoch)
+		cpp += "Accumulator::EndOfEpoch, ";
+	else if (_reset_time == Never) 
+		cpp += "Accumulator::Never, ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

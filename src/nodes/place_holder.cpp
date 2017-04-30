@@ -48,3 +48,43 @@ void PlaceHolder::backward() {
 		DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice));		
 	}
 }
+
+std::string PlaceHolder::to_cpp() const
+{
+	const PlaceHolderParam &placeHolderParam = _param.place_holder_param();
+	const TensorParam &tensorParam = placeHolderParam.tensor_param();
+	std::string dims;
+	switch (tensorParam.dims_size()) {
+	case 1:
+		dims = "{1, " + std::to_string(tensorParam.dims(0)) + ", 1, 1}";
+		break;
+	case 2:
+		dims = "{" + std::to_string(tensorParam.dims(0)) + ", " + std::to_string(tensorParam.dims(1)) + ", 1, 1}";
+		break;
+	case 3:
+		dims = "{" + std::to_string(tensorParam.dims(0)) +", 1, " + std::to_string(tensorParam.dims(1)) + ", " + std::to_string(tensorParam.dims(2)) + "}";
+		break;
+	case 4:
+		dims = "{" + std::to_string(tensorParam.dims(0)) +", " + std::to_string(tensorParam.dims(1)) + ", " + std::to_string(tensorParam.dims(2)) + ", "+ std::to_string(tensorParam.dims(3)) + "}";
+		break;
+	default:
+		LOG(FATAL) << "Unsupported shape.";
+	}
+
+	std::string type;
+	switch (tensorParam.type())
+	{
+	case TensorParam_TensorType_FLOAT:
+		type = "Tensor::Float";
+		break;
+	case TensorParam_TensorType_INT32:
+		type = "Tensor::Int32";
+		break;
+	default:
+		LOG(FATAL) << "Unsupported type.";
+	}
+	std::string cpp = "auto " + _name + " = df.place_holder(" + dims + ", " + type + ", ";	
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

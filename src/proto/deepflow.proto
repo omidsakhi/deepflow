@@ -23,7 +23,7 @@ message PhaseplexerParam {
 }
 
 message RandomSelectorParam {
-
+	float probability = 1;
 }
 
 message AccumulatorParam {

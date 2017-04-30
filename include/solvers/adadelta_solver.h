@@ -8,6 +8,7 @@ public:
 	AdaDeltaSolver(const SolverParam &param);
 	void apply(std::shared_ptr<Variable> var);
 	void init(std::shared_ptr<Variable> var);
+	std::string to_cpp() const;
 private:
 	float * _h1 = NULL;
 	float * _h2 = NULL;	

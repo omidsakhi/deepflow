@@ -13,8 +13,9 @@ public:
 	void forward();
 	void backward();
 	std::list<std::shared_ptr<Node>> inputNodes() const;
-	virtual ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
-	virtual BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
-protected:
+	std::string to_cpp() const;
+	ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
+	BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
+private:
 	std::map<std::string, NodeInputPtr> _map;
 };

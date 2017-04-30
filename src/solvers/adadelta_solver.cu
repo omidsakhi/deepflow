@@ -49,3 +49,14 @@ void AdaDeltaSolver::init(std::shared_ptr<Variable> var) {
 	DF_KERNEL_CHECK();
 	_initialized = true;
 }
+
+std::string AdaDeltaSolver::to_cpp() const
+{	
+	std::string cpp = "auto " + name() + " = df.adadelta_solver(";
+	cpp += std::to_string(_my_param.learning_rate()) + ", ";
+	cpp += std::to_string(_my_param.momentum()) + ", ";
+	cpp += std::to_string(_my_param.delta()) + ", ";
+	cpp += "\"" + name() + "\"";
+	cpp += ");";
+	return cpp;
+}

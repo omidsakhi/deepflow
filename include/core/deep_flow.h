@@ -22,13 +22,13 @@ public:
 	std::string imread(std::string file_path, ImageReaderParam_Type type, std::string name = "imread", std::initializer_list<std::string> phases = {});
 
 	// INITIALIZERS
-	std::shared_ptr<InitParam> fill(std::initializer_list<int> dims, float value, Tensor::TensorType type = Tensor::Float);
-	std::shared_ptr<InitParam> index_fill(std::initializer_list<int> dims, float offset, Tensor::TensorType type = Tensor::Float);
-	std::shared_ptr<InitParam> zeros(std::initializer_list<int> dims, Tensor::TensorType type = Tensor::Float);
-	std::shared_ptr<InitParam> ones(std::initializer_list<int> dims, Tensor::TensorType type = Tensor::Float);
-	std::shared_ptr<InitParam> random_uniform(std::initializer_list<int> dims, float min, float max, Tensor::TensorType type = Tensor::Float);
-	std::shared_ptr<InitParam> random_normal(std::initializer_list<int> dims, float mean, float stddev, Tensor::TensorType type = Tensor::Float);
-	std::shared_ptr<InitParam> step(std::initializer_list<int> dims, float min, float max, Tensor::TensorType type = Tensor::Float);
+	std::shared_ptr<InitParam> fill(std::initializer_list<int> dims, float value);
+	std::shared_ptr<InitParam> index_fill(std::initializer_list<int> dims, float offset);
+	std::shared_ptr<InitParam> zeros(std::initializer_list<int> dims);
+	std::shared_ptr<InitParam> ones(std::initializer_list<int> dims);
+	std::shared_ptr<InitParam> random_uniform(std::initializer_list<int> dims, float min, float max);
+	std::shared_ptr<InitParam> random_normal(std::initializer_list<int> dims, float mean, float stddev);
+	std::shared_ptr<InitParam> step(std::initializer_list<int> dims, float min, float max);
 
 	// VARIABLES & PLACE HOLDER
 	std::string variable(std::shared_ptr<InitParam> initializer, std::shared_ptr<SolverParam> solver, std::string name = "var", std::initializer_list<std::string> phases = {});	
@@ -72,7 +72,7 @@ public:
 
 	// SELECTORS
 	std::string phaseplexer(std::string input_1, std::string phase_1, std::string input_2, std::string phase_2, std::string name = "plex", std::initializer_list<std::string> phases = {});
-	std::string random_selector(std::string input_1, std::string input_2, std::string name = "selector", std::initializer_list<std::string> phases = {});
+	std::string random_selector(std::string input_1, std::string input_2, float probability = 0.5f, std::string name = "selector", std::initializer_list<std::string> phases = {});
 
 	// LOSS
 	std::shared_ptr<NodeParam> softmax_loss(std::string a, std::string b, std::string name = "softmaxloss", std::initializer_list<std::string> phases = {});
@@ -85,9 +85,9 @@ public:
 	std::shared_ptr<SolverParam> adadelta_solver(float learning_rate = 10e-1f, float momentum = 0.9f, float delta = 1e-6f, std::string name = "adadelta");
 	
 	// PRINTERS & DISPLAYS
-	void print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime printTime = Print::PrintTime::END_OF_EPOCH, Print::PrintType = Print::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
+	void print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime printTime = Print::END_OF_EPOCH, Print::PrintType = Print::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
 	void display(std::string input, int delay_msec = 100, DisplayParam_DisplayType type = DisplayParam_DisplayType_VALUES , std::string name = "disp", std::initializer_list<std::string> phases = {});
-	void psnr(std::string a, std::string b,  Psnr::PrintTime printTime = Psnr::PrintTime::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
+	void psnr(std::string a, std::string b,  Psnr::PrintTime printTime = Psnr::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
 
 	// OTHER
 	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});

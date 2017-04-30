@@ -8,4 +8,5 @@ public:
 	IndexFill(const InitParam &param);
 	void apply(Variable *variable);
 	void init() {}
+	std::string to_cpp() const;
 };

@@ -21,3 +21,13 @@ void RandomNormal::apply(Variable *variable) {
 		h_rand[i] = distribution(generator);
 	DF_CUDA_CHECK(cudaMemcpy((float*)variable->output(0)->value()->mutableData(), h_rand, variable->output(0)->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 }
+
+std::string RandomNormal::to_cpp() const
+{
+	std::string cpp = "df.random_normal(";
+	cpp += "{" + std::to_string(_dims[0]) + ", " + std::to_string(_dims[1]) + ", " + std::to_string(_dims[2]) + ", " + std::to_string(_dims[3]) + "}, ";
+	float mean = _param.random_normal_param().mean();
+	float stddev = _param.random_normal_param().stddev();
+	cpp += std::to_string(mean) + ", " + std::to_string(stddev) + ")";
+	return cpp;
+}

@@ -20,3 +20,12 @@ void IndexFill::apply(Variable *variable) {
 	IndexFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)variable->output(0)->value()->mutableData(), offset);
 	DF_KERNEL_CHECK();
 }
+
+std::string IndexFill::to_cpp() const
+{
+	std::string cpp = "df.index_fill(";
+	cpp += "{" + std::to_string(_dims[0]) + ", " + std::to_string(_dims[1]) + ", " + std::to_string(_dims[2]) + ", " + std::to_string(_dims[3]) + "}, ";
+	float offset = _param.index_fill_param().offset();
+	cpp += std::to_string(offset) + ")";
+	return cpp;
+}

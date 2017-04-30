@@ -23,8 +23,9 @@ public:
 	void forward();
 	void backward();
 	bool isLastBatch();
-	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
-	virtual BackwardType backwardType() { return NEVER_BACKWARD; }
+	std::string to_cpp() const;
+	ForwardType forwardType() { return ALWAYS_FORWARD; }
+	BackwardType backwardType() { return NEVER_BACKWARD; }
 private:	
 	bool _last_batch = true;
 	cv::Mat img;

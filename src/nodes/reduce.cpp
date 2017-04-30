@@ -65,6 +65,45 @@ bool Reduce::requiresIndices() {
 	return (_reduceTensorOp == CUDNN_REDUCE_TENSOR_MAX || _reduceTensorOp == CUDNN_REDUCE_TENSOR_MIN);
 }
 
+std::string Reduce::to_cpp() const
+{
+	std::string op;
+	switch (_reduceTensorOp) {
+	case ReduceParam_ReduceOp_ADD:
+		op = "reduce_sum";
+		break;
+	case ReduceParam_ReduceOp_MUL:
+		op = "reduce_mul";
+		break;
+	case ReduceParam_ReduceOp_MIN:
+		op = "reduce_min";
+		break;
+	case ReduceParam_ReduceOp_MAX:
+		op = "reduce_max";
+		break;
+	case ReduceParam_ReduceOp_AMAX:
+		op = "reduce_absmax";
+		break;
+	case ReduceParam_ReduceOp_AVG:
+		op = "reduce_mean";
+		break;
+	case ReduceParam_ReduceOp_NORM1:
+		op = "reduce_norm1";
+		break;
+	case ReduceParam_ReduceOp_NORM2:
+		op = "reduce_norm2";
+		break;
+	};
+
+	const ReduceParam &reduceParam = _param.reduce_param();
+	int reduceDim = reduceParam.reduce_dim();
+
+	std::string cpp = "auto " + _name + " = df." + op + "(" + _inputs[0]->connectedNode()->name() + ", " + std::to_string(reduceDim) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}
+
 void Reduce::initBackward() {
 	
 }

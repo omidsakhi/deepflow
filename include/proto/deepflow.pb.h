@@ -814,10 +814,17 @@ class RandomSelectorParam : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
+  // float probability = 1;
+  void clear_probability();
+  static const int kProbabilityFieldNumber = 1;
+  float probability() const;
+  void set_probability(float value);
+
   // @@protoc_insertion_point(class_scope:RandomSelectorParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float probability_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -5611,6 +5618,20 @@ PhaseplexerParam::mutable_phase() {
 // -------------------------------------------------------------------
 
 // RandomSelectorParam
+
+// float probability = 1;
+inline void RandomSelectorParam::clear_probability() {
+  probability_ = 0;
+}
+inline float RandomSelectorParam::probability() const {
+  // @@protoc_insertion_point(field_get:RandomSelectorParam.probability)
+  return probability_;
+}
+inline void RandomSelectorParam::set_probability(float value) {
+  
+  probability_ = value;
+  // @@protoc_insertion_point(field_set:RandomSelectorParam.probability)
+}
 
 // -------------------------------------------------------------------
 

@@ -30,3 +30,13 @@ void SGDSolver::apply(std::shared_ptr<Variable> var) {
 void SGDSolver::init(std::shared_ptr<Variable> var) {
 	_initialized = true;
 }
+
+std::string SGDSolver::to_cpp() const
+{
+	std::string cpp = "auto " + name() + " = df.sgd_solver(";
+	cpp += std::to_string(_my_param.momentum()) + ", ";
+	cpp += std::to_string(_my_param.learning_rate()) + ", ";	
+	cpp += "\"" + name() + "\"";
+	cpp += ");";
+	return cpp;
+}

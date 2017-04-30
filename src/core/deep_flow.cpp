@@ -96,72 +96,72 @@ std::string DeepFlow::bias_add(std::string a, std::string b, std::string name, s
 	return node_param->output(0);
 }
 
-std::shared_ptr<InitParam> DeepFlow::index_fill(std::initializer_list<int> dims, float offset, Tensor::TensorType type) {
+std::shared_ptr<InitParam> DeepFlow::index_fill(std::initializer_list<int> dims, float offset) {
 	auto init_param = std::make_shared<InitParam>();	
 	std::vector<int> values(dims);
 	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
 		tensor_param->add_dims(values[i]);
-	tensor_param->set_type((TensorParam_TensorType)type);
+	tensor_param->set_type(TensorParam_TensorType_FLOAT);
 	auto index_fill_param = init_param->mutable_index_fill_param();
 	index_fill_param->set_offset(offset);
 	return init_param;
 }
 
-std::shared_ptr<InitParam> DeepFlow::step(std::initializer_list<int> dims, float min, float max, Tensor::TensorType type) {
+std::shared_ptr<InitParam> DeepFlow::step(std::initializer_list<int> dims, float min, float max) {
 	auto init_param = std::make_shared<InitParam>();
 	std::vector<int> values(dims);
 	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
 		tensor_param->add_dims(values[i]);
-	tensor_param->set_type((TensorParam_TensorType)type);
+	tensor_param->set_type(TensorParam_TensorType_FLOAT);	
 	auto step_param = init_param->mutable_step_param();
 	step_param->set_max(max);
 	step_param->set_min(min);
 	return init_param;
 }
 
-std::shared_ptr<InitParam> DeepFlow::fill(std::initializer_list<int> dims, float value, Tensor::TensorType type) {
+std::shared_ptr<InitParam> DeepFlow::fill(std::initializer_list<int> dims, float value) {
 	auto init_param = std::make_shared<InitParam>();
 	std::vector<int> values(dims);
 	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
 		tensor_param->add_dims(values[i]);
-	tensor_param->set_type((TensorParam_TensorType)type);
+	tensor_param->set_type(TensorParam_TensorType_FLOAT);	
 	auto fill_param = init_param->mutable_fill_param();
 	fill_param->set_value(value);
 	return init_param;
 }
 
-std::shared_ptr<InitParam> DeepFlow::zeros(std::initializer_list<int> dims, Tensor::TensorType type) {
-	return fill(dims, 0.0f, type);
+std::shared_ptr<InitParam> DeepFlow::zeros(std::initializer_list<int> dims) {
+	return fill(dims, 0.0f);
 }
 
-std::shared_ptr<InitParam> DeepFlow::ones(std::initializer_list<int> dims, Tensor::TensorType type) {
-	return fill(dims, 1.0f, type);
+std::shared_ptr<InitParam> DeepFlow::ones(std::initializer_list<int> dims) {
+	return fill(dims, 1.0f);
 }
 
-std::shared_ptr<InitParam> DeepFlow::random_uniform(std::initializer_list<int> dims,  float min, float max, Tensor::TensorType type) {
+std::shared_ptr<InitParam> DeepFlow::random_uniform(std::initializer_list<int> dims,  float min, float max) {
 	auto init_param = std::make_shared<InitParam>();
 	std::vector<int> values(dims);
 	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
-		tensor_param->add_dims(values[i]);
-	tensor_param->set_type((TensorParam_TensorType)type);
+		tensor_param->add_dims(values[i]);	
+	tensor_param->set_type(TensorParam_TensorType_FLOAT);
 	auto random_uniform_param = init_param->mutable_random_uniform_param();
 	random_uniform_param->set_max(max);
 	random_uniform_param->set_min(min);
 	return init_param;
 }
 
-std::shared_ptr<InitParam> DeepFlow::random_normal(std::initializer_list<int> dims, float mean, float stddev, Tensor::TensorType type)
+std::shared_ptr<InitParam> DeepFlow::random_normal(std::initializer_list<int> dims, float mean, float stddev)
 {
 	auto init_param = std::make_shared<InitParam>();
 	std::vector<int> values(dims);
 	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
-		tensor_param->add_dims(values[i]);
-	tensor_param->set_type((TensorParam_TensorType)type);
+		tensor_param->add_dims(values[i]);	
+	tensor_param->set_type(TensorParam_TensorType_FLOAT);
 	auto random_normal_param = init_param->mutable_random_normal_param();
 	random_normal_param->set_mean(mean);
 	random_normal_param->set_stddev(stddev);
@@ -617,7 +617,7 @@ std::string DeepFlow::phaseplexer(std::string input_1, std::string phase_1, std:
 	return node_param->output(0);
 }
 
-std::string DeepFlow::random_selector(std::string input_1, std::string input_2, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::random_selector(std::string input_1, std::string input_2, float probability, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = std::make_shared<NodeParam>();
 	node_param->set_name(_get_unique_node_name(name));
@@ -627,6 +627,7 @@ std::string DeepFlow::random_selector(std::string input_1, std::string input_2, 
 	node_param->add_input(input_1);
 	node_param->add_input(input_2);
 	auto random_selector_param = node_param->mutable_random_selector_param();
+	random_selector_param->set_probability(probability);
 	_nodes.push_back(node_param);
 	return node_param->output(0);
 }

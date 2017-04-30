@@ -34,3 +34,18 @@ void Pooling::forward() {
 void Pooling::backward() {
 	DF_CUDNN_CHECK(cudnnPoolingBackward(_cudnnHandle, _poolingDesc, &_alpha, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &_beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
 }
+
+std::string Pooling::to_cpp() const
+{
+	const PoolingParam &param = _param.pooling_param();	
+	std::string cpp = "auto " + _name + " = df.pooling(" + _inputs[0]->connectedNode()->name() + ", ";
+	cpp += std::to_string(param.window_h()) + ", ";
+	cpp += std::to_string(param.window_w()) + ", ";
+	cpp += std::to_string(param.v_pad()) + ", ";
+	cpp += std::to_string(param.h_pad()) + ", ";
+	cpp += std::to_string(param.v_stride()) + ", ";
+	cpp += std::to_string(param.h_stride()) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

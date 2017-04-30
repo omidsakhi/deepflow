@@ -16,6 +16,7 @@ public:
 	std::array<int, 4> dims() const;
 	const InitParam &param() const;
 	InitParam *mutableParam();
+	virtual std::string to_cpp() const = 0;
 protected:	
 	InitParam _param;
 	std::array<int, 4> _dims;

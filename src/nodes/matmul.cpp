@@ -60,3 +60,11 @@ void MatMul::backward() {
 	}
 	
 }
+
+std::string MatMul::to_cpp() const
+{
+	std::string cpp = "auto " + _name + " = df.matmul(" + _inputs[0]->connectedNode()->name() + ", " + _inputs[1]->connectedNode()->name() + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

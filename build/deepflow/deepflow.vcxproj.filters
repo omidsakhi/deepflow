@@ -164,9 +164,6 @@
     <ClInclude Include="..\..\include\core\export.h">
       <Filter>include\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\core\node_observer.h">
-      <Filter>include\core</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\initializers\index_fill.h">
       <Filter>include\initializers</Filter>
     </ClInclude>

@@ -26,3 +26,11 @@ void Softmax::backward() {
 	DF_CUDNN_CHECK(cudnnSoftmaxBackward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, CUDNN_SOFTMAX_MODE_CHANNEL, &_alpha, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), &_beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));	
 }
 
+std::string Softmax::to_cpp() const
+{
+	std::string cpp = "auto " + _name + " = df.softmax(" + _inputs[0]->connectedNode()->name() + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}
+

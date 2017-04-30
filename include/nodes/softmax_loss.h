@@ -12,8 +12,9 @@ public:
 	void initBackward();
 	void forward();
 	void backward();
-	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
-	virtual BackwardType backwardType() { return ALWAYS_BACKWARD; }
+	std::string to_cpp() const;
+	ForwardType forwardType() { return ALWAYS_FORWARD; }
+	BackwardType backwardType() { return ALWAYS_BACKWARD; }
 private:
 	cudnnHandle_t _cudnnHandle;	
 	float alpha = 1.0f;

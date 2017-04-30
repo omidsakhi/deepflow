@@ -34,3 +34,11 @@ void Equal::forward() {
 void Equal::backward() {
 
 }
+
+std::string Equal::to_cpp() const
+{
+	std::string cpp = "auto " + _name + " = df.equal(" + _inputs[0]->connectedNode()->name() + ", " + _inputs[1]->connectedNode()->name() + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

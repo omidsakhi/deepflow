@@ -51,3 +51,33 @@ void Activation::backward()
 {
 	DF_CUDNN_CHECK(cudnnActivationBackward(_cudnnHandle, _activation_desc, &alpha, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
 }
+
+std::string Activation::to_cpp() const
+{
+	auto activation_param = _param.activation_param();
+	cudnnActivationMode_t _activation_mode = (cudnnActivationMode_t)activation_param.type();
+	float coef = activation_param.coef();
+	std::string op;
+	switch (_activation_mode) {
+	case CUDNN_ACTIVATION_SIGMOID:
+		op = "sigmoid";
+		break;
+	case CUDNN_ACTIVATION_RELU:
+		op = "relu";
+		break;
+	case CUDNN_ACTIVATION_TANH:
+		op = "tanh";
+		break;
+	case CUDNN_ACTIVATION_CLIPPED_RELU:
+		op = "clipped_relu";
+		break;
+	case CUDNN_ACTIVATION_ELU:
+		op = "elu";
+	};
+	std::string cpp = "auto " + _name + " = df."+ op + "(" + _inputs[0]->connectedNode()->name() + ", ";
+	if (op == "clipped_relu" || op == "elu")
+		cpp += std::to_string(coef) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

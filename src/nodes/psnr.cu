@@ -67,3 +67,17 @@ void Psnr::backward() {
 	auto size = _inputs[0]->value()->size();
 	DF_KERNEL_CHECK();
 }
+
+std::string Psnr::to_cpp() const
+{	
+	std::string cpp = "df.psnr(" + _inputs[0]->connectedNode()->name() + ", " +_inputs[1]->connectedNode()->name() + ", ";	
+	if (_print_time == END_OF_EPOCH) {
+		cpp += "Psnr::END_OF_EPOCH, ";
+	}
+	else {
+		cpp += "Psnr::EVERY_PASS, ";
+	}
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

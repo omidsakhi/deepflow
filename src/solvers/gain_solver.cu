@@ -56,3 +56,17 @@ void GainSolver::init(std::shared_ptr<Variable> var) {
 	DF_KERNEL_CHECK();
 	_initialized = true;
 }
+
+std::string GainSolver::to_cpp() const
+{	
+	std::string cpp = "auto " + name() + " = df.gain_solver(";
+	cpp += std::to_string(_my_param.momentum()) + ", ";
+	cpp += std::to_string(_my_param.learning_rate()) + ", ";
+	cpp += std::to_string(_my_param.max_gain()) + ", ";
+	cpp += std::to_string(_my_param.min_gain()) + ", ";
+	cpp += std::to_string(_my_param.gain_plus()) + ", ";
+	cpp += std::to_string(_my_param.gain_mult()) + ", ";
+	cpp += "\"" + name() + "\"";
+	cpp += ");";
+	return cpp;
+}

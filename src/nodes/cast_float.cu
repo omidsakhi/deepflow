@@ -32,3 +32,11 @@ void CastFloat::forward() {
 void CastFloat::backward() {
 
 }
+
+std::string CastFloat::to_cpp() const
+{
+	std::string cpp = "auto " + _name + " = df.cast_float(" + _inputs[0]->connectedNode()->name() + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

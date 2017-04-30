@@ -12,9 +12,10 @@ public:
 	void forward();
 	void backward();
 	bool requiresIndices();
-	virtual ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
-	virtual BackwardType backwardType() { return NEVER_BACKWARD; }
-protected:
+	std::string to_cpp() const;
+	ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
+	BackwardType backwardType() { return NEVER_BACKWARD; }
+private:
 	const float alpha = 1.0f;
 	const float beta = 0.0f;
 	cudnnHandle_t _cudnnHandle;

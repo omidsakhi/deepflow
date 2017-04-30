@@ -16,8 +16,9 @@ public:
 	void initBackward();
 	void forward();
 	void backward();
+	std::string to_cpp() const;
 	virtual ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
 	virtual BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
-protected:
+private:
 	ResetTime _reset_time;
 };

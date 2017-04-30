@@ -17,6 +17,7 @@ public:
 	void transferDataToParam();
 	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
 	virtual BackwardType backwardType() { return ALWAYS_BACKWARD; }
+	virtual std::string to_cpp() const;
 protected:		
 	std::shared_ptr<Initializer> _initializer;	
 };

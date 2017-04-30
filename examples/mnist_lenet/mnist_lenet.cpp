@@ -17,6 +17,8 @@ DEFINE_bool(printepoch, true, "Print epoch message");
 DEFINE_int32(debug, 0, "Level of debug");
 DEFINE_int32(epoch, 1000, "Maximum epochs");
 DEFINE_int32(iter, -1, "Maximum iterations");
+DEFINE_bool(cpp, false, "Print C++ code");
+
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -61,8 +63,8 @@ void main(int argc, char** argv) {
 		auto equal = df.equal(predict, target,"equal");
 		auto acc = df.accumulator(equal, Accumulator::EndOfEpoch, "acc");
 		auto correct = df.reduce_sum(acc, 0, "correct");
-		df.print({ correct }, "    TRAINSET   CORRECT COUNT : {0}\n", Print::END_OF_EPOCH, Print::VALUES, "print", { "Train" });
-		df.print({ correct }, "    VALIDATION CORRECT COUNT : {0}\n", Print::END_OF_EPOCH, Print::VALUES, "print", { "Validation" });
+		df.print({ correct }, "    TRAINSET   CORRECT COUNT : {0}\n", Print::END_OF_EPOCH, Print::VALUES, "print1", { "Train" });
+		df.print({ correct }, "    VALIDATION CORRECT COUNT : {0}\n", Print::END_OF_EPOCH, Print::VALUES, "print2", { "Validation" });
 		
 	}
 	else {
@@ -74,6 +76,11 @@ void main(int argc, char** argv) {
 	if (!FLAGS_run.empty()) {
 		session->initialize();
 		session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
+	}
+
+	if (FLAGS_cpp) {
+		session->initialize();
+		std::cout << session->to_cpp() << std::endl;
 	}
 
 	

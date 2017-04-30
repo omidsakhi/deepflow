@@ -60,3 +60,13 @@ void DataGenerator::backward() {
 bool DataGenerator::isLastBatch() {
 	return _last_batch;
 }
+
+std::string DataGenerator::to_cpp() const
+{	
+	std::string cpp = "auto " + _name + " = df.data_generator(" + _initializer->to_cpp() + ", ";
+	cpp += std::to_string(_num_total_samples) + ", ";
+	cpp += (_no_solver ? "NULL" : _param.variable_param().solver_name()) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

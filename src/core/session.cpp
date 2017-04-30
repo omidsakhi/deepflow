@@ -192,7 +192,11 @@ void Session::setGraph(std::shared_ptr<GraphParam> graph) {
 }
 
 void Session::initialize() {
+	if (_initialized == true)
+		return;
 	
+	_initialized = true;
+
 	for (auto phase_param : _graph->phase())
 		_phases.insert(std::pair<std::string, PhaseParam_PhaseBehaviour>(phase_param.phase(), phase_param.behaviour()));
 
@@ -217,10 +221,18 @@ void Session::initialize() {
 	for (auto var : _variables) {
 		std::shared_ptr<Solver> solver;
 		std::string var_solver_name = var->param().variable_param().solver_name();
-		for (auto solver_param : _graph->solver()) {
-			if (var_solver_name == solver_param.name()) {
-				solver = _create_solver(solver_param);
+		for (auto solver_in_map : _solvers) {
+			if (solver_in_map.second->name() == var_solver_name) {
+				solver = solver_in_map.second;
 				break;
+			}
+		}
+		if (solver == NULL) {
+			for (auto solver_param : _graph->solver()) {
+				if (var_solver_name == solver_param.name()) {
+					solver = _create_solver(solver_param);
+					break;
+				}
 			}
 		}
 		if (solver) {
@@ -268,7 +280,7 @@ std::shared_ptr<Node> Session::_find_node_by_name(const std::string &name) const
 	return 0;
 }
 
-std::list<std::shared_ptr<Node>> Session::_get_end_nodes(std::string execution_phase)
+std::list<std::shared_ptr<Node>> Session::_get_end_nodes(std::string execution_phase) const
 {
 	std::list<std::shared_ptr<Node>> list;
 	for (auto node : _nodes) {
@@ -407,6 +419,32 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 	else {
 		_execute_one_pass(execution_context, 0, &_nodes, &execution_phase_generators, &execution_end_nodes,0,0, max_iter, false, false);
 	}
+}
+
+void generate_cpp_code(Node *node, std::string *code) {	
+	(*code) += node->to_cpp() + "\n";	
+}
+
+std::string Session::to_cpp() const
+{
+	std::list<std::shared_ptr<Node>> ends = _get_end_nodes("");
+	std::string code = "\n//--> BEGIN\nDeepFlow df;\n";
+	
+	std::set<std::shared_ptr<Solver>> solvers_set;
+	for (auto solver_map_item : _solvers)
+		solvers_set.insert(solver_map_item.second);
+	for (auto solver : solvers_set)
+		code += solver->to_cpp() + "\n";
+
+	std::function<void(Node*)> foo = std::bind(generate_cpp_code, std::placeholders::_1, &code);	
+	for (auto end : ends)
+		end->_unvisit();
+	for (auto end : ends)
+		end->_traverse(foo, Node::POST_ORDER, true);
+	
+	code += "//--> END";
+	
+	return code;
 }
 
 /*

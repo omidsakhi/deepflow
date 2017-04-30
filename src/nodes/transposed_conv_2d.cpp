@@ -72,3 +72,20 @@ void TransposedConvolution2D::backward() {
 	if (_inputs[1]->connectedNode()->shouldBackward())
 		DF_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &alpha, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->data(), _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &beta, _filterDesc, _inputs[1]->diff()->mutableData()));
 }
+
+std::string TransposedConvolution2D::to_cpp() const
+{	
+	const TransposedConv2dParam &param = _param.transposed_conv_2d_param();
+	std::string cpp = "auto " + _name + " = df.transposed_conv2d(" + _inputs[0]->connectedNode()->name() + ", " + _inputs[1]->connectedNode()->name() + ", ";
+	auto dims = _outputs[0]->value()->dims();
+	cpp += "{" + std::to_string(dims[0]) + ", " + std::to_string(dims[1]) + ", " + std::to_string(dims[2]) + ", " + std::to_string(dims[3]) + "}";
+	cpp += std::to_string(param.pad_h()) + ", ";
+	cpp += std::to_string(param.pad_w()) + ", ";
+	cpp += std::to_string(param.u()) + ", ";
+	cpp += std::to_string(param.v()) + ", ";
+	cpp += std::to_string(param.dilation_h()) + ", ";
+	cpp += std::to_string(param.dilation_w()) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

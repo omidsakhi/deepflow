@@ -77,3 +77,18 @@ void ImageReader::backward() {
 bool ImageReader::isLastBatch() {
 	return _last_batch;
 }
+
+std::string ImageReader::to_cpp() const
+{
+	auto image_reader_param = _param.generator_param().image_reader_param();
+	auto file_name = image_reader_param.file_name();
+	auto type = image_reader_param.type();	
+	std::string cpp = "auto " + _name + " = df.imread(\"" + file_name + "\", ";
+	if (type == ImageReaderParam_Type_GRAY_ONLY)
+		cpp += "ImageReaderParam_Type_GRAY_ONLY, ";
+	else
+		cpp += "ImageReaderParam_Type_COLOR_IF_AVAILABLE, ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

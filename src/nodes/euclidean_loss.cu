@@ -32,3 +32,11 @@ void EuclideanLoss::backward() {
 	EuclideanLossKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_inputs[0]->diff()->mutableData());
 	DF_KERNEL_CHECK();
 }
+
+std::string EuclideanLoss::to_cpp() const
+{
+	std::string cpp = "auto " + _name + " = df.euclidean_loss(" + _inputs[0]->connectedNode()->name() + ", " + _inputs[1]->connectedNode()->name() + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
+}

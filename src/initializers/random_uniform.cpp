@@ -21,3 +21,13 @@ void RandomUniform::apply(Variable *variable) {
 		h_rand[i] = distribution(generator);
 	DF_CUDA_CHECK(cudaMemcpy((float*)variable->output(0)->value()->mutableData(), h_rand, variable->output(0)->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 }
+
+std::string RandomUniform::to_cpp() const
+{
+	std::string cpp = "df.random_uniform(";
+	cpp += "{" + std::to_string(_dims[0]) + ", " + std::to_string(_dims[1]) + ", " + std::to_string(_dims[2]) + ", " + std::to_string(_dims[3]) + "}, ";
+	float min = _param.random_uniform_param().min();
+	float max = _param.random_uniform_param().max();
+	cpp += std::to_string(min) + ", " + std::to_string(max) + ")";
+	return cpp;
+}

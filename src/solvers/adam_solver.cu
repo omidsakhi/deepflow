@@ -41,3 +41,15 @@ void AdamSolver::init(std::shared_ptr<Variable> var) {
 	DF_CUDA_CHECK(cudaMemset(_v, 0, sizeInBytes));
 	_initialized = true;
 }
+
+std::string AdamSolver::to_cpp() const
+{	
+	std::string cpp = "auto " + name() + " = df.adam_solver(";
+	cpp += std::to_string(_my_param.learning_rate()) + ", ";
+	cpp += std::to_string(_my_param.beta1()) + ", ";
+	cpp += std::to_string(_my_param.beta2()) + ", ";
+	cpp += std::to_string(_my_param.eps()) + ", ";
+	cpp += "\"" + name() + "\"";
+	cpp += ");";
+	return cpp;
+}

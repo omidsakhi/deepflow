@@ -126,3 +126,8 @@ void MNISTReader::deinit() {
 bool MNISTReader::isLastBatch() {
 	return _last_batch;
 }
+
+std::string MNISTReader::to_cpp() const
+{
+	return std::string();
+}

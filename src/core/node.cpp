@@ -1,5 +1,5 @@
 #include "core/node.h"
-#include "core/node_observer.h"
+#include <functional>
 
 #include <glog/logging.h>
 
@@ -126,6 +126,21 @@ void Node::setShouldBackward(bool state)
 	//LOG_IF(INFO, state) << _name << " BACKWARD -> true";
 }
 
+void Node::_traverse(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition)
+{
+	if (_visited == visit_condition)
+		return;
+	if (_context && includePhase(_context->phase) == false)
+		return;
+	if (order == PRE_ORDER)
+		fun(this);
+	for (auto node : inputNodes())
+		node->_traverse(fun, order, visit_condition);
+	if (order == POST_ORDER)
+		fun(this);
+	_visited = visit_condition;
+}
+
 void Node::_forward() {
 	if (_visited == true)
 		return;	
@@ -154,22 +169,19 @@ void Node::_backward() {
 		node->_backward();
 }
 
-void Node::_traverse(NodeObserver *observer, TraverseOrder order, bool visit_condition) {
-	if (_visited == visit_condition)
-		return;
-	if (_context && includePhase(_context->phase) == false)
-		return;
-	if (order == TraverseOrder::PreOrder)
-		observer->apply(shared_from_this());
-	for (auto node : inputNodes())
-		node->_traverse(observer, order, visit_condition);
-	if (order == TraverseOrder::PostOrder)
-		observer->apply(shared_from_this());
-	_visited = visit_condition;
-}
-
 std::string Node::name() const {
 	return _name;	
+}
+
+std::string Node::_to_cpp_phases() const
+{
+	std::string phases;
+	if (_param.phase_size() > 0)
+		phases += "\"" + _param.phase(0) + "\"";
+	for (int i = 1; i < _param.phase_size(); ++i) {
+		phases = phases + ", " + "\"" + _param.phase(i) + "\"";
+	}
+	return phases;
 }
 
 std::vector<NodeInputPtr> & Node::inputs() {
@@ -201,6 +213,8 @@ NodeParam &Node::param() {
 }
 
 bool Node::includePhase(const std::string &phase) {
+	if (phase.empty())
+		return true;
 	if (_param.phase_size() == 0)
 		return true;
 	for (int i = 0; i < _param.phase_size(); ++i)

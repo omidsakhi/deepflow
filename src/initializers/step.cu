@@ -18,6 +18,18 @@ void Step::init() {
 	
 }
 
+std::string Step::to_cpp() const
+{
+	std::string cpp = "df.step(";
+	cpp += "{" + std::to_string(_dims[0]) + ", " + std::to_string(_dims[1]) + ", " + std::to_string(_dims[2]) + ", " + std::to_string(_dims[3]) + "}, ";
+	float min = _param.step_param().min();
+	float max = _param.step_param().max();
+	cpp += std::to_string(min) + ", ";
+	cpp += std::to_string(max);
+	cpp += ")";
+	return cpp;
+}
+
 void Step::apply(Variable *variable) {	
 	int size = variable->output(0)->value()->size();
 	float min = _param.step_param().min();
