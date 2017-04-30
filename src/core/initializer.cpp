@@ -22,11 +22,11 @@ Initializer::Initializer(const InitParam &param) : CudaHelper() {
 	default:
 		LOG(FATAL) << "Unsupported shape.";
 	}
-	_type = (Tensor::TensorType) tensorParam.type();
+	_reader_type = (Tensor::TensorType) tensorParam.type();
 }
 Initializer::Initializer(std::array<int, 4> dims, Tensor::TensorType type) {
 	_dims = dims;
-	_type = type;
+	_reader_type = type;
 }
 
 std::array<int, 4> Initializer::dims() const {

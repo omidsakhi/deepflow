@@ -192,10 +192,15 @@ message MnistParam {
 	enum ReaderType {
 		TRAIN = 0;
 		TEST = 1;
-	}	
+	}
+	enum OutputType {
+		DATA = 0;
+		LABELS = 1;
+	}
 	string folder_path = 1;	
-	ReaderType type = 2;
-	int32 batch_size = 3;
+	ReaderType reader_type = 2;
+	OutputType output_type = 3;
+	int32 batch_size = 4;
 }
 
 message CastFloatParam {

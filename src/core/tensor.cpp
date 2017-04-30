@@ -22,7 +22,7 @@ Tensor::Tensor(const TensorParam &param) {
 	default:
 		LOG(FATAL) << "Unsupported shape.";
 	}
-	_type = (Tensor::TensorType) param.type();
+	_reader_type = (Tensor::TensorType) param.type();
 	init();
 }
 
@@ -52,7 +52,7 @@ Tensor::Tensor(std::initializer_list<int> dims, TensorType type) {
 
 Tensor::Tensor(std::array<int, 4> dims, TensorType type) {
 	_dims = dims;
-	_type = type;
+	_reader_type = type;
 	init();
 }
 
@@ -62,17 +62,17 @@ void Tensor::init() {
 	for (int i = 1; i < 4; ++i)
 		_shapeString += "x" + std::to_string(_dims[i]);	
 	DF_CUDNN_CHECK(cudnnCreateTensorDescriptor(&_desc));
-	DF_CUDNN_CHECK(cudnnSetTensor4dDescriptor(_desc, CUDNN_TENSOR_NCHW, (cudnnDataType_t)_type, _dims[0], _dims[1], _dims[2], _dims[3]));
+	DF_CUDNN_CHECK(cudnnSetTensor4dDescriptor(_desc, CUDNN_TENSOR_NCHW, (cudnnDataType_t)_reader_type, _dims[0], _dims[1], _dims[2], _dims[3]));
 	DF_CUDNN_CHECK(cudnnGetTensorSizeInBytes(_desc, &_sizeInBytes));	
 	DF_CUDA_CHECK(cudaMalloc(&d_data, _sizeInBytes));	
 }
 
 cudnnDataType_t Tensor::cudnnType() const {
-	return (cudnnDataType_t)_type;
+	return (cudnnDataType_t)_reader_type;
 }
 
 Tensor::TensorType Tensor::type() const {
-	return _type;
+	return _reader_type;
 }
 
 std::string Tensor::shape() const {
@@ -136,7 +136,7 @@ void Tensor::reset() {
 }
 
 float Tensor::toFloat() const {
-	LOG_IF(FATAL, _type != TensorType::Float) << "_type != TensorType::Float";
+	LOG_IF(FATAL, _reader_type != TensorType::Float) << "_type != TensorType::Float";
 	LOG_IF(FATAL, _size != 1) << "toFloat() - _size != 1 [FAILED]";
 	auto h_data = cpyToHost<float>();
 	return h_data->at(0);
@@ -144,7 +144,7 @@ float Tensor::toFloat() const {
 
 std::string Tensor::toString() const {
 	std::string output;
-	switch (_type) {
+	switch (_reader_type) {
 		case TensorType::Int32:
 		{
 			auto h_data = cpyToHost<int>();
@@ -166,7 +166,7 @@ std::string Tensor::toString() const {
 }
 
 std::string Tensor::typeString() const {
-	switch (_type) {
+	switch (_reader_type) {
 	case Float:
 		return "Float";
 		break;

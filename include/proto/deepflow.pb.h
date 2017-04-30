@@ -403,6 +403,27 @@ inline bool MnistParam_ReaderType_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<MnistParam_ReaderType>(
     MnistParam_ReaderType_descriptor(), name, value);
 }
+enum MnistParam_OutputType {
+  MnistParam_OutputType_DATA = 0,
+  MnistParam_OutputType_LABELS = 1,
+  MnistParam_OutputType_MnistParam_OutputType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  MnistParam_OutputType_MnistParam_OutputType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool MnistParam_OutputType_IsValid(int value);
+const MnistParam_OutputType MnistParam_OutputType_OutputType_MIN = MnistParam_OutputType_DATA;
+const MnistParam_OutputType MnistParam_OutputType_OutputType_MAX = MnistParam_OutputType_LABELS;
+const int MnistParam_OutputType_OutputType_ARRAYSIZE = MnistParam_OutputType_OutputType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* MnistParam_OutputType_descriptor();
+inline const ::std::string& MnistParam_OutputType_Name(MnistParam_OutputType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    MnistParam_OutputType_descriptor(), value);
+}
+inline bool MnistParam_OutputType_Parse(
+    const ::std::string& name, MnistParam_OutputType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<MnistParam_OutputType>(
+    MnistParam_OutputType_descriptor(), name, value);
+}
 enum PhaseParam_PhaseBehaviour {
   PhaseParam_PhaseBehaviour_TRAIN = 0,
   PhaseParam_PhaseBehaviour_VALIDATION = 1,
@@ -3249,6 +3270,32 @@ class MnistParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
     return MnistParam_ReaderType_Parse(name, value);
   }
 
+  typedef MnistParam_OutputType OutputType;
+  static const OutputType DATA =
+    MnistParam_OutputType_DATA;
+  static const OutputType LABELS =
+    MnistParam_OutputType_LABELS;
+  static inline bool OutputType_IsValid(int value) {
+    return MnistParam_OutputType_IsValid(value);
+  }
+  static const OutputType OutputType_MIN =
+    MnistParam_OutputType_OutputType_MIN;
+  static const OutputType OutputType_MAX =
+    MnistParam_OutputType_OutputType_MAX;
+  static const int OutputType_ARRAYSIZE =
+    MnistParam_OutputType_OutputType_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  OutputType_descriptor() {
+    return MnistParam_OutputType_descriptor();
+  }
+  static inline const ::std::string& OutputType_Name(OutputType value) {
+    return MnistParam_OutputType_Name(value);
+  }
+  static inline bool OutputType_Parse(const ::std::string& name,
+      OutputType* value) {
+    return MnistParam_OutputType_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   // string folder_path = 1;
@@ -3265,15 +3312,21 @@ class MnistParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::std::string* release_folder_path();
   void set_allocated_folder_path(::std::string* folder_path);
 
-  // .MnistParam.ReaderType type = 2;
-  void clear_type();
-  static const int kTypeFieldNumber = 2;
-  ::MnistParam_ReaderType type() const;
-  void set_type(::MnistParam_ReaderType value);
+  // .MnistParam.ReaderType reader_type = 2;
+  void clear_reader_type();
+  static const int kReaderTypeFieldNumber = 2;
+  ::MnistParam_ReaderType reader_type() const;
+  void set_reader_type(::MnistParam_ReaderType value);
 
-  // int32 batch_size = 3;
+  // .MnistParam.OutputType output_type = 3;
+  void clear_output_type();
+  static const int kOutputTypeFieldNumber = 3;
+  ::MnistParam_OutputType output_type() const;
+  void set_output_type(::MnistParam_OutputType value);
+
+  // int32 batch_size = 4;
   void clear_batch_size();
-  static const int kBatchSizeFieldNumber = 3;
+  static const int kBatchSizeFieldNumber = 4;
   ::google::protobuf::int32 batch_size() const;
   void set_batch_size(::google::protobuf::int32 value);
 
@@ -3282,7 +3335,8 @@ class MnistParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr folder_path_;
-  int type_;
+  int reader_type_;
+  int output_type_;
   ::google::protobuf::int32 batch_size_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
@@ -6896,21 +6950,35 @@ inline void MnistParam::set_allocated_folder_path(::std::string* folder_path) {
   // @@protoc_insertion_point(field_set_allocated:MnistParam.folder_path)
 }
 
-// .MnistParam.ReaderType type = 2;
-inline void MnistParam::clear_type() {
-  type_ = 0;
+// .MnistParam.ReaderType reader_type = 2;
+inline void MnistParam::clear_reader_type() {
+  reader_type_ = 0;
 }
-inline ::MnistParam_ReaderType MnistParam::type() const {
-  // @@protoc_insertion_point(field_get:MnistParam.type)
-  return static_cast< ::MnistParam_ReaderType >(type_);
+inline ::MnistParam_ReaderType MnistParam::reader_type() const {
+  // @@protoc_insertion_point(field_get:MnistParam.reader_type)
+  return static_cast< ::MnistParam_ReaderType >(reader_type_);
 }
-inline void MnistParam::set_type(::MnistParam_ReaderType value) {
+inline void MnistParam::set_reader_type(::MnistParam_ReaderType value) {
   
-  type_ = value;
-  // @@protoc_insertion_point(field_set:MnistParam.type)
+  reader_type_ = value;
+  // @@protoc_insertion_point(field_set:MnistParam.reader_type)
 }
 
-// int32 batch_size = 3;
+// .MnistParam.OutputType output_type = 3;
+inline void MnistParam::clear_output_type() {
+  output_type_ = 0;
+}
+inline ::MnistParam_OutputType MnistParam::output_type() const {
+  // @@protoc_insertion_point(field_get:MnistParam.output_type)
+  return static_cast< ::MnistParam_OutputType >(output_type_);
+}
+inline void MnistParam::set_output_type(::MnistParam_OutputType value) {
+  
+  output_type_ = value;
+  // @@protoc_insertion_point(field_set:MnistParam.output_type)
+}
+
+// int32 batch_size = 4;
 inline void MnistParam::clear_batch_size() {
   batch_size_ = 0;
 }
@@ -9352,6 +9420,11 @@ template <> struct is_proto_enum< ::MnistParam_ReaderType> : ::google::protobuf:
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::MnistParam_ReaderType>() {
   return ::MnistParam_ReaderType_descriptor();
+}
+template <> struct is_proto_enum< ::MnistParam_OutputType> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::MnistParam_OutputType>() {
+  return ::MnistParam_OutputType_descriptor();
 }
 template <> struct is_proto_enum< ::PhaseParam_PhaseBehaviour> : ::google::protobuf::internal::true_type {};
 template <>

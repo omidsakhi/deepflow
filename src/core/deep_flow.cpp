@@ -10,19 +10,20 @@ void add_outputs(std::shared_ptr<NodeParam> node_param, int num_outputs) {
 		node_param->add_output(node_param->name() + "_output_" + std::to_string(i));
 }
 
-std::shared_ptr<NodeParam> DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNISTReaderType type, std::string name, std::initializer_list<std::string> phases) {
+std::string DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = std::make_shared<NodeParam>();
 	node_param->set_name(_get_unique_node_name(name));
-	add_outputs(node_param, 2);
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	auto generator_param = node_param->mutable_generator_param();
 	auto mnistParam = generator_param->mutable_mnist_param();
 	mnistParam->set_folder_path(folder_path);
-	mnistParam->set_type((MnistParam::ReaderType) type);
+	mnistParam->set_reader_type((MnistParam::ReaderType) reader_type);
+	mnistParam->set_output_type((MnistParam::OutputType) output_type);
 	mnistParam->set_batch_size(batch_size);
 	_nodes.push_back(node_param);
-	return node_param;
+	return node_param->output(0);
 
 }
 

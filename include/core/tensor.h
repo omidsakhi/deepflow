@@ -60,7 +60,7 @@ protected:
 	size_t _size;
 	size_t _sizeInBytes;
 	cudnnTensorDescriptor_t _desc = 0;
-	TensorType _type;
+	TensorType _reader_type;
 	std::string _shapeString;
 	void *d_data;
 };

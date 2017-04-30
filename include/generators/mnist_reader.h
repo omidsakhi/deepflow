@@ -12,16 +12,19 @@
 #include "cuda.h"
 #include "cudnn.h"
 
-enum DeepFlowDllExport MNISTReaderType {
-	Train,
-	Test
-};
-
 class DeepFlowDllExport MNISTReader : public Generator, public Node {
 public:
-	MNISTReader(const NodeParam &param);	
+	enum MNISTReaderType {
+		Train,
+		Test
+	};
+	enum MNISTOutputType {
+		Data,
+		Labels
+	};
+	MNISTReader(const NodeParam &param);
 	int minNumInputs() { return 0; }
-	int minNumOutputs() { return 2; }
+	int minNumOutputs() { return 1; }
 	void nextBatch();
 	void initForward();
 	void initBackward();
@@ -31,18 +34,17 @@ public:
 	ForwardType forwardType() { return ALWAYS_FORWARD; }
 	BackwardType backwardType() { return NEVER_BACKWARD; }
 private:
-	MNISTReaderType _type;
+	std::string _file_path;
+	MNISTReaderType _reader_type;
+	MNISTOutputType _output_type;
 	std::string _folder_path;
-	std::ifstream _tx;
-	std::ifstream _ty;
+	std::ifstream _tx;	
 	int _current_batch = 0;
-	std::streamoff _tx_start_pos, _ty_start_pos;
+	std::streamoff _tx_start_pos;
 	size_t _num_total_samples;
 	size_t _num_batch_samples;
 	bool _last_batch = false;
 	int _batch_size = 0;
-	float *_data_buf = NULL;
-	float *_labels_buf = NULL;
-	unsigned char *_temp_d;
-	unsigned char _temp_l;
+	float *_buf = NULL;	
+	unsigned char *_temp;	
 };

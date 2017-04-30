@@ -420,8 +420,13 @@ void generate_cpp_code(Node *node, std::string *code) {
 std::string Session::to_cpp() const
 {
 	std::list<std::shared_ptr<Node>> ends = _get_end_nodes("");
-	std::string code = "\n//--> BEGIN\nDeepFlow df;\n";
+	std::string code = "\nDeepFlow df;\n\n";
 	
+	for (auto phase : _phases)			
+		code += "df.define_phase(\"" + phase.first + "\", PhaseParam_PhaseBehaviour::" + PhaseParam_PhaseBehaviour_Name(phase.second) + ");\n";
+
+	code += "\n";
+
 	std::set<std::shared_ptr<Solver>> solvers_set;
 	for (auto solver_map_item : _solvers) {
 		bool exist = false;
@@ -437,6 +442,8 @@ std::string Session::to_cpp() const
 	}		
 	for (auto solver : solvers_set)
 		code += solver->to_cpp() + "\n";
+	
+	code += "\n";
 
 	std::function<void(Node*)> foo = std::bind(generate_cpp_code, std::placeholders::_1, &code);	
 	for (auto end : ends)
@@ -444,7 +451,7 @@ std::string Session::to_cpp() const
 	for (auto end : ends)
 		end->_traverse(foo, Node::POST_ORDER, true);
 	
-	code += "//--> END";
+	code += "\n";
 	
 	return code;
 }

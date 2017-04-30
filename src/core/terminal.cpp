@@ -5,11 +5,11 @@
 Terminal::Terminal(std::shared_ptr<Node> parentNode, int index, TerminalType type) {
 	_parentNode = parentNode;
 	_index = index;	
-	_type = type;
+	_reader_type = type;
 }
 
 const TerminalType& Terminal::type() const {
-	return _type;
+	return _reader_type;
 }
 
 const std::string& NodeInput::name() const {

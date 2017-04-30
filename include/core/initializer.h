@@ -20,6 +20,6 @@ public:
 protected:	
 	InitParam _param;
 	std::array<int, 4> _dims;
-	Tensor::TensorType _type;
+	Tensor::TensorType _reader_type;
 };
 

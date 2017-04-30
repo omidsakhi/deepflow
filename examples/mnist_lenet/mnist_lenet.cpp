@@ -32,15 +32,16 @@ void main(int argc, char** argv) {
 	if (FLAGS_i.empty()) {
 		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);
 		df.define_phase("Validation", PhaseParam_PhaseBehaviour_VALIDATION);		
-
 		auto gain = df.gain_solver(0.999900, 0.000100, 100.000000, 0.100000, 0.050000, 0.950000, "gain");
 		auto solver = df.gain_solver(0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f);
 		//auto solver = df.adadelta_solver(0.1f, 0.9f, 0.00001f); 
-		auto mnist_trainset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Train, "trainset", { "Train" });
-		auto mnist_testset = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReaderType::Test, "testset", { "Validation" });
-		auto data_selector = df.phaseplexer(mnist_trainset->output(0), "Train", mnist_testset->output(0), "Validation", "data_selector");	
+		auto train_data = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Train, MNISTReader::Data, "train_data", { "Train" });
+		auto train_labels = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Train, MNISTReader::Labels, "train_labels", { "Train" });
+		auto test_data = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });
+		auto test_labels = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Test, MNISTReader::Labels, "test_labels", { "Validation" });
+		auto data_selector = df.phaseplexer(train_data, "Train", test_data, "Validation", "data_selector");
 		//df.display(data_selector);
-		auto label_selector = df.phaseplexer(mnist_trainset->output(1), "Train", mnist_testset->output(1), "Validation", "label_selector");
+		auto label_selector = df.phaseplexer(train_labels, "Train", test_labels, "Validation", "label_selector");
 		auto f1 = df.variable(df.random_uniform({ 20, 1 , 5, 5 }, -0.1f, 0.1f),solver, "f1");
 		auto conv1 = df.conv2d(data_selector, f1, 2, 2, 1, 1, 1, 1, "conv1");
 		auto pool1 = df.pooling(conv1, 2, 2, 0, 0, 2, 2, "pool1");

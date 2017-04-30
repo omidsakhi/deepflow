@@ -27,7 +27,7 @@ public :
 protected:
 	std::shared_ptr<Node> _parentNode;
 	int _index;		
-	TerminalType _type;
+	TerminalType _reader_type;
 };
 
 class NodeOutput;
