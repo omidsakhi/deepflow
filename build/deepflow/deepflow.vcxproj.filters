@@ -61,6 +61,9 @@
     <CudaCompile Include="..\..\src\nodes\leaky_relu.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\generators\image_batch_reader.cu">
+      <Filter>source\generators</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -295,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\display.h">
       <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\generators\image_batch_reader.h">
+      <Filter>include\generators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

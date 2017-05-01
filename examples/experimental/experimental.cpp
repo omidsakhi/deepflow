@@ -34,13 +34,8 @@ void main(int argc, char** argv) {
 		auto solver2 = df.sgd_solver(1.0f, 0.00000001f);
 		//auto solver = df.adam_solver();
 		//auto solver = df.adadelta_solver();		
-		auto image = df.imread(FLAGS_image, ImageReaderParam_Type_GRAY_ONLY);
-		auto stat = df.variable(df.random_uniform({ 1,1,252,252 }, 0.8, 1),solver1);
-		auto f = df.variable(df.random_uniform({ 1,1,5,5 }, 0.9, 0.1),solver2);
-		auto tconv = df.transposed_conv2d(stat, f, { 1,1,256,256 }, 0, 0, 1, 1, 1, 1);
-		df.euclidean_loss(tconv, image);
-		df.display(tconv, 20, DisplayParam_DisplayType_VALUES, "input", { "Train" });			
-		df.psnr(tconv, image, Psnr::EVERY_PASS, "psnr", { "Train" });		
+		auto image = df.image_reader("./data/face", ImageReaderParam_Type_GRAY_ONLY);
+		df.display(image, 20, DisplayParam_DisplayType_VALUES, "input", { "Train" });
 	}
 	else {
 		df.load_from_binary(FLAGS_i);	

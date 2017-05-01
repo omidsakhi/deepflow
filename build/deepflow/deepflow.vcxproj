@@ -33,6 +33,7 @@
     <ClInclude Include="..\..\include\core\tensor.h" />
     <ClInclude Include="..\..\include\core\terminal.h" />
     <ClInclude Include="..\..\include\generators\data_generator.h" />
+    <ClInclude Include="..\..\include\generators\image_batch_reader.h" />
     <ClInclude Include="..\..\include\generators\image_reader.h" />
     <ClInclude Include="..\..\include\generators\mnist_reader.h" />
     <ClInclude Include="..\..\include\initializers\fill.h" />
@@ -82,6 +83,9 @@
     <ClCompile Include="..\..\src\core\tensor.cpp" />
     <ClCompile Include="..\..\src\generators\data_generator.cpp" />
     <CudaCompile Include="..\..\src\generators\image_reader.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\generators\image_batch_reader.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>
     <ClCompile Include="..\..\src\generators\mnist_reader.cpp" />

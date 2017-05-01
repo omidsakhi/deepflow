@@ -21,6 +21,7 @@ DEFINE_string(image, "lena-256x256.jpg", "Input image");
 DEFINE_int32(examp1, 0, "Eucliean image reconstruction");
 DEFINE_int32(examp2, 0, "Transposed convolution image reconstruction");
 DEFINE_int32(examp3, 0, "Random selector double image reconstruction");
+DEFINE_int32(examp4, 0, "Test of image_batch_reader");
 
 
 void main(int argc, char** argv) {
@@ -39,7 +40,7 @@ void main(int argc, char** argv) {
 			//auto solver = df.sgd_solver(1.0f, 0.01f);
 			//auto solver = df.adam_solver();
 			//auto solver = df.adadelta_solver();
-			auto image = df.imread(FLAGS_image, ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto image = df.image_reader(FLAGS_image, ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
 			df.euclidean_loss(generator, image);
 			df.display(image, 2, DisplayParam_DisplayType_VALUES, "input", { "Train" });
@@ -52,7 +53,7 @@ void main(int argc, char** argv) {
 			auto solver2 = df.sgd_solver(1.0f, 0.0000000001f);
 			//auto solver = df.adam_solver();
 			//auto solver = df.adadelta_solver();		
-			auto image = df.imread(FLAGS_image, ImageReaderParam_Type_GRAY_ONLY);
+			auto image = df.image_reader(FLAGS_image, ImageReaderParam_Type_GRAY_ONLY);
 			auto stat = df.variable(df.random_uniform({ 1,1,252,252 }, 0.8, 1), solver1);
 			auto f = df.variable(df.random_uniform({ 1,1,5,5 }, 0.9, 0.1), solver2);
 			auto tconv = df.transposed_conv2d(stat, f, { 1,1,256,256 }, 0, 0, 1, 1, 1, 1);
@@ -66,14 +67,20 @@ void main(int argc, char** argv) {
 			//auto solver = df.sgd_solver(1.0f, 0.01f);
 			//auto solver = df.adam_solver();
 			//auto solver = df.adadelta_solver();
-			auto image = df.imread(FLAGS_image, ImageReaderParam_Type_GRAY_ONLY);
+			auto image = df.image_reader(FLAGS_image, ImageReaderParam_Type_GRAY_ONLY);
 			auto generator1 = df.data_generator(df.random_uniform({ 1, 1, 256, 256 }, -0.1, 0.1), 1, solver, "gen1");
 			auto generator2 = df.data_generator(df.random_normal({ 1, 1, 256, 256 }, 0, 0.1), 1, solver, "gen2");
-			auto selector = df.random_selector(generator1, generator2, 0.8);
+			auto selector = df.random_selector(generator1, generator2, 0.5);
 			df.euclidean_loss(selector, image);
 			df.display(generator1, 2, DisplayParam_DisplayType_VALUES, "approx1", { "Train" });
 			df.display(generator2, 2, DisplayParam_DisplayType_VALUES, "approx2", { "Train" });			
 		}
+		else if (FLAGS_examp4 == 1) {
+			df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);
+			auto imbar = df.image_batch_reader("./data/face", { 1, 1, 27, 18 });
+			df.display(imbar, 1000, DisplayParam_DisplayType_VALUES, "approx1", { "Train" });
+		}
+
 	}
 	else {
 		df.load_from_binary(FLAGS_i);	

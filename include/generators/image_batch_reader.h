@@ -11,13 +11,9 @@ class Initializer;
 
 #include <opencv2/opencv.hpp>
 
-class DeepFlowDllExport ImageReader : public Generator, public Node {
+class DeepFlowDllExport ImageBatchReader : public Generator, public Node {
 public:
-	enum ColorType {
-		GRAY_ONLY,
-		COLOR_IF_AVAILABLE
-	};
-	ImageReader(const NodeParam &param);
+	ImageBatchReader(const NodeParam &param);
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
 	void nextBatch();
@@ -27,7 +23,14 @@ public:
 	std::string to_cpp() const;
 	ForwardType forwardType() { return ALWAYS_FORWARD; }
 	BackwardType backwardType() { return NEVER_BACKWARD; }
-private:	
-	bool _last_batch = true;	
+private:
+	std::string _folder_path;
+	std::array<int, 4> _dims;
+	std::vector<std::experimental::filesystem::path> _list_of_files;
+	int _current_batch = 0;
+	size_t _num_total_samples;
+	size_t _num_batch_samples;
+	bool _last_batch;	
 	cv::Mat img;
+	unsigned char *d_img;	
 };

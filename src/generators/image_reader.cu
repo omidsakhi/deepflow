@@ -35,43 +35,32 @@ void ImageReader::nextBatch() {
 
 void ImageReader::initForward() {
 	auto image_reader_param = _param.generator_param().image_reader_param();
-	auto file_name = image_reader_param.file_name();
+	auto file_name = image_reader_param.file_name();		
 	auto type = image_reader_param.type();
 	if (type == ImageReaderParam_Type_GRAY_ONLY)
 		img = cv::imread(file_name, 0);
 	else
 		img = cv::imread(file_name);
-	LOG_IF(FATAL, img.empty()) << "Image " << file_name << " does not exist.";		
+	LOG_IF(FATAL, img.empty()) << "Image " << file_name << " does not exist.";
 	_outputs[0]->initValue({ 1, img.channels(), img.rows , img.cols });
-	LOG(INFO) << "Initializing Image " << _name << " - " << _outputs[0]->value()->shape();
-	size_t size = _outputs[0]->value()->size();	
+	LOG(INFO) << "Initializing image_readr for image " << file_name << " - " << _outputs[0]->value()->shape();
+	size_t size = _outputs[0]->value()->size();
 	unsigned char *d_img;
 	DF_CUDA_CHECK(cudaMalloc(&d_img, size));
 	DF_CUDA_CHECK(cudaMemcpy(d_img, img.ptr<uchar>(), size, cudaMemcpyHostToDevice));
-	if (img.channels() == 1) {		
-		NormalizeKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, d_img, (float*)_outputs[0]->value()->mutableData());
+	if (img.channels() == 1) {
+		NormalizeKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, d_img, (float*)_outputs[0]->value()->mutableData());
 		DF_KERNEL_CHECK();
 	}
 	else if (img.channels() == 3) {
-		ConvertOpenCV3ImageKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, d_img, img.cols, img.rows, (float*)_outputs[0]->value()->mutableData());
+		ConvertOpenCV3ImageKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, d_img, img.cols, img.rows, (float*)_outputs[0]->value()->mutableData());
 		DF_KERNEL_CHECK();
 	}
 	else {
 		LOG(FATAL) << "Unsupported image.";
-	}	
-	DF_CUDA_CHECK(cudaFree(d_img));	
-}
-
-void ImageReader::initBackward() {
-	_outputs[0]->initDiff();
-}
-
-void ImageReader::forward() {
-
-}
-
-void ImageReader::backward() {
-
+	}
+	DF_CUDA_CHECK(cudaFree(d_img));
+	_last_batch = true;
 }
 
 bool ImageReader::isLastBatch() {
@@ -83,7 +72,7 @@ std::string ImageReader::to_cpp() const
 	auto image_reader_param = _param.generator_param().image_reader_param();
 	auto file_name = image_reader_param.file_name();
 	auto type = image_reader_param.type();	
-	std::string cpp = "auto " + _name + " = df.imread(\"" + file_name + "\", ";
+	std::string cpp = "auto " + _name + " = df.image_reader(\"" + file_name + "\", ";
 	if (type == ImageReaderParam_Type_GRAY_ONLY)
 		cpp += "ImageReaderParam_Type_GRAY_ONLY, ";
 	else

@@ -78,6 +78,9 @@ extern GeneratorParamDefaultTypeInternal _GeneratorParam_default_instance_;
 class GraphParam;
 class GraphParamDefaultTypeInternal;
 extern GraphParamDefaultTypeInternal _GraphParam_default_instance_;
+class ImageBatchReaderParam;
+class ImageBatchReaderParamDefaultTypeInternal;
+extern ImageBatchReaderParamDefaultTypeInternal _ImageBatchReaderParam_default_instance_;
 class ImageReaderParam;
 class ImageReaderParamDefaultTypeInternal;
 extern ImageReaderParamDefaultTypeInternal _ImageReaderParam_default_instance_;
@@ -2949,6 +2952,107 @@ class ActivationParam : public ::google::protobuf::Message /* @@protoc_insertion
 };
 // -------------------------------------------------------------------
 
+class ImageBatchReaderParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ImageBatchReaderParam) */ {
+ public:
+  ImageBatchReaderParam();
+  virtual ~ImageBatchReaderParam();
+
+  ImageBatchReaderParam(const ImageBatchReaderParam& from);
+
+  inline ImageBatchReaderParam& operator=(const ImageBatchReaderParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ImageBatchReaderParam& default_instance();
+
+  static inline const ImageBatchReaderParam* internal_default_instance() {
+    return reinterpret_cast<const ImageBatchReaderParam*>(
+               &_ImageBatchReaderParam_default_instance_);
+  }
+
+  void Swap(ImageBatchReaderParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ImageBatchReaderParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ImageBatchReaderParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ImageBatchReaderParam& from);
+  void MergeFrom(const ImageBatchReaderParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ImageBatchReaderParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string folder_path = 1;
+  void clear_folder_path();
+  static const int kFolderPathFieldNumber = 1;
+  const ::std::string& folder_path() const;
+  void set_folder_path(const ::std::string& value);
+  #if LANG_CXX11
+  void set_folder_path(::std::string&& value);
+  #endif
+  void set_folder_path(const char* value);
+  void set_folder_path(const char* value, size_t size);
+  ::std::string* mutable_folder_path();
+  ::std::string* release_folder_path();
+  void set_allocated_folder_path(::std::string* folder_path);
+
+  // .TensorParam tensor_param = 2;
+  bool has_tensor_param() const;
+  void clear_tensor_param();
+  static const int kTensorParamFieldNumber = 2;
+  const ::TensorParam& tensor_param() const;
+  ::TensorParam* mutable_tensor_param();
+  ::TensorParam* release_tensor_param();
+  void set_allocated_tensor_param(::TensorParam* tensor_param);
+
+  // @@protoc_insertion_point(class_scope:ImageBatchReaderParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr folder_path_;
+  ::TensorParam* tensor_param_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class ImageReaderParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ImageReaderParam) */ {
  public:
   ImageReaderParam();
@@ -3167,6 +3271,15 @@ class GeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_
   ::ImageReaderParam* release_image_reader_param();
   void set_allocated_image_reader_param(::ImageReaderParam* image_reader_param);
 
+  // .ImageBatchReaderParam image_batch_reader_param = 4;
+  bool has_image_batch_reader_param() const;
+  void clear_image_batch_reader_param();
+  static const int kImageBatchReaderParamFieldNumber = 4;
+  const ::ImageBatchReaderParam& image_batch_reader_param() const;
+  ::ImageBatchReaderParam* mutable_image_batch_reader_param();
+  ::ImageBatchReaderParam* release_image_batch_reader_param();
+  void set_allocated_image_batch_reader_param(::ImageBatchReaderParam* image_batch_reader_param);
+
   // @@protoc_insertion_point(class_scope:GeneratorParam)
  private:
 
@@ -3174,6 +3287,7 @@ class GeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_
   ::MnistParam* mnist_param_;
   ::DataGeneratorParam* data_generator_param_;
   ::ImageReaderParam* image_reader_param_;
+  ::ImageBatchReaderParam* image_batch_reader_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -6705,6 +6819,101 @@ inline void ActivationParam::set_coef(float value) {
 
 // -------------------------------------------------------------------
 
+// ImageBatchReaderParam
+
+// string folder_path = 1;
+inline void ImageBatchReaderParam::clear_folder_path() {
+  folder_path_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ImageBatchReaderParam::folder_path() const {
+  // @@protoc_insertion_point(field_get:ImageBatchReaderParam.folder_path)
+  return folder_path_.GetNoArena();
+}
+inline void ImageBatchReaderParam::set_folder_path(const ::std::string& value) {
+  
+  folder_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:ImageBatchReaderParam.folder_path)
+}
+#if LANG_CXX11
+inline void ImageBatchReaderParam::set_folder_path(::std::string&& value) {
+  
+  folder_path_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:ImageBatchReaderParam.folder_path)
+}
+#endif
+inline void ImageBatchReaderParam::set_folder_path(const char* value) {
+  
+  folder_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:ImageBatchReaderParam.folder_path)
+}
+inline void ImageBatchReaderParam::set_folder_path(const char* value, size_t size) {
+  
+  folder_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:ImageBatchReaderParam.folder_path)
+}
+inline ::std::string* ImageBatchReaderParam::mutable_folder_path() {
+  
+  // @@protoc_insertion_point(field_mutable:ImageBatchReaderParam.folder_path)
+  return folder_path_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ImageBatchReaderParam::release_folder_path() {
+  // @@protoc_insertion_point(field_release:ImageBatchReaderParam.folder_path)
+  
+  return folder_path_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ImageBatchReaderParam::set_allocated_folder_path(::std::string* folder_path) {
+  if (folder_path != NULL) {
+    
+  } else {
+    
+  }
+  folder_path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), folder_path);
+  // @@protoc_insertion_point(field_set_allocated:ImageBatchReaderParam.folder_path)
+}
+
+// .TensorParam tensor_param = 2;
+inline bool ImageBatchReaderParam::has_tensor_param() const {
+  return this != internal_default_instance() && tensor_param_ != NULL;
+}
+inline void ImageBatchReaderParam::clear_tensor_param() {
+  if (GetArenaNoVirtual() == NULL && tensor_param_ != NULL) delete tensor_param_;
+  tensor_param_ = NULL;
+}
+inline const ::TensorParam& ImageBatchReaderParam::tensor_param() const {
+  // @@protoc_insertion_point(field_get:ImageBatchReaderParam.tensor_param)
+  return tensor_param_ != NULL ? *tensor_param_
+                         : *::TensorParam::internal_default_instance();
+}
+inline ::TensorParam* ImageBatchReaderParam::mutable_tensor_param() {
+  
+  if (tensor_param_ == NULL) {
+    tensor_param_ = new ::TensorParam;
+  }
+  // @@protoc_insertion_point(field_mutable:ImageBatchReaderParam.tensor_param)
+  return tensor_param_;
+}
+inline ::TensorParam* ImageBatchReaderParam::release_tensor_param() {
+  // @@protoc_insertion_point(field_release:ImageBatchReaderParam.tensor_param)
+  
+  ::TensorParam* temp = tensor_param_;
+  tensor_param_ = NULL;
+  return temp;
+}
+inline void ImageBatchReaderParam::set_allocated_tensor_param(::TensorParam* tensor_param) {
+  delete tensor_param_;
+  tensor_param_ = tensor_param;
+  if (tensor_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:ImageBatchReaderParam.tensor_param)
+}
+
+// -------------------------------------------------------------------
+
 // ImageReaderParam
 
 // string file_name = 1;
@@ -6892,6 +7101,45 @@ inline void GeneratorParam::set_allocated_image_reader_param(::ImageReaderParam*
     
   }
   // @@protoc_insertion_point(field_set_allocated:GeneratorParam.image_reader_param)
+}
+
+// .ImageBatchReaderParam image_batch_reader_param = 4;
+inline bool GeneratorParam::has_image_batch_reader_param() const {
+  return this != internal_default_instance() && image_batch_reader_param_ != NULL;
+}
+inline void GeneratorParam::clear_image_batch_reader_param() {
+  if (GetArenaNoVirtual() == NULL && image_batch_reader_param_ != NULL) delete image_batch_reader_param_;
+  image_batch_reader_param_ = NULL;
+}
+inline const ::ImageBatchReaderParam& GeneratorParam::image_batch_reader_param() const {
+  // @@protoc_insertion_point(field_get:GeneratorParam.image_batch_reader_param)
+  return image_batch_reader_param_ != NULL ? *image_batch_reader_param_
+                         : *::ImageBatchReaderParam::internal_default_instance();
+}
+inline ::ImageBatchReaderParam* GeneratorParam::mutable_image_batch_reader_param() {
+  
+  if (image_batch_reader_param_ == NULL) {
+    image_batch_reader_param_ = new ::ImageBatchReaderParam;
+  }
+  // @@protoc_insertion_point(field_mutable:GeneratorParam.image_batch_reader_param)
+  return image_batch_reader_param_;
+}
+inline ::ImageBatchReaderParam* GeneratorParam::release_image_batch_reader_param() {
+  // @@protoc_insertion_point(field_release:GeneratorParam.image_batch_reader_param)
+  
+  ::ImageBatchReaderParam* temp = image_batch_reader_param_;
+  image_batch_reader_param_ = NULL;
+  return temp;
+}
+inline void GeneratorParam::set_allocated_image_batch_reader_param(::ImageBatchReaderParam* image_batch_reader_param) {
+  delete image_batch_reader_param_;
+  image_batch_reader_param_ = image_batch_reader_param;
+  if (image_batch_reader_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:GeneratorParam.image_batch_reader_param)
 }
 
 // -------------------------------------------------------------------
@@ -9273,6 +9521,8 @@ GraphParam::phase() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -173,6 +173,11 @@ message ActivationParam {
 	float coef = 2;
 }
 
+message ImageBatchReaderParam {
+	string folder_path = 1;	
+	TensorParam tensor_param = 2;
+}
+
 message ImageReaderParam {
 	enum Type {
 		GRAY_ONLY = 0;
@@ -186,6 +191,7 @@ message GeneratorParam {
 	MnistParam mnist_param = 1;
 	DataGeneratorParam data_generator_param = 2;
 	ImageReaderParam image_reader_param = 3;
+	ImageBatchReaderParam image_batch_reader_param = 4;
 }
 
 message MnistParam {
@@ -237,7 +243,7 @@ message NodeParam {
   DisplayParam display_param = 118;
   ActivationParam activation_param = 119;
   PsnrParam psnr_param = 120;
-  RandomSelectorParam random_selector_param = 121;
+  RandomSelectorParam random_selector_param = 121;  
 }
 
 message SquareParam {

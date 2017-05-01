@@ -39,6 +39,7 @@
 
 #include "generators/data_generator.h"
 #include "generators/image_reader.h"
+#include "generators/image_batch_reader.h"
 
 #include <unordered_map>
 #include <map>
@@ -89,11 +90,16 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 		else if (generator_param.has_data_generator_param()) {
 			const InitParam &init_param = node_param.variable_param().init_param();
 			std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
-			return std::make_shared<DataGenerator>(initializer,node_param);
+			return std::make_shared<DataGenerator>(initializer, node_param);
 		}
 		else if (generator_param.has_image_reader_param()) {
 			return std::make_shared<ImageReader>(node_param);
 		}
+		else if (generator_param.has_image_batch_reader_param()) {
+			return std::make_shared<ImageBatchReader>(node_param);
+		}
+		else
+			LOG(FATAL) << "Unsupported Generator";
 	}
 	else if (node_param.has_add_param())
 		return std::make_shared<Add>(node_param);
@@ -297,7 +303,7 @@ std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string
 	return 0;
 }
 
-void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Loss>> *loss_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool train, bool print_iteration) {
+void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool train, bool print_iteration) {
 	int iteration_per_epoch = 1;
 	bool any_last_batch = false;
 	for (auto node : *nodes)
@@ -364,9 +370,6 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 	execution_context->debug_level = debug_level;
 	if (behaviour == PhaseParam_PhaseBehaviour_TRAIN) {		
 		std::list<std::shared_ptr<Variable>> execution_phase_variable_nodes = _get_nodes<Variable>(phase);
-		std::list<std::shared_ptr<Loss>> execution_phase_loss_nodes = _get_nodes<Loss>(phase);
-		LOG_IF(FATAL, execution_phase_loss_nodes.size() == 0) << "No loss node is defined for phase " << phase;
-		LOG_IF(WARNING, execution_phase_loss_nodes.size() > 1) << "More than one loss node is defined for phase " << phase;
 		std::string validation_phase;
 		for (auto phase : _phases) {
 			if (phase.second == PhaseParam_PhaseBehaviour_VALIDATION) {
@@ -391,12 +394,12 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 				std::cout << "Epoch " << epoch << " -->" << std::endl;
 			auto epoch_start = std::chrono::high_resolution_clock::now();
 			execution_context->current_epoch = epoch;
-			_execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_phase_loss_nodes, &execution_phase_variable_nodes, max_iter, true, print_iteration);
+			_execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_phase_variable_nodes, max_iter, true, print_iteration);
 			if (!validation_phase.empty()) {
 				validation_context->phase = validation_phase;
 				validation_context->current_iteration = 1;
 				validation_context->current_epoch = epoch;
-				_execute_one_pass(validation_context, 0, &_nodes, &validation_readers, &validation_end_nodes, 0, 0, max_iter, false, false);
+				_execute_one_pass(validation_context, 0, &_nodes, &validation_readers, &validation_end_nodes, 0, max_iter, false, false);
 			}
 			auto epoch_end = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
@@ -409,7 +412,7 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 		}
 	}
 	else {
-		_execute_one_pass(execution_context, 0, &_nodes, &execution_phase_generators, &execution_end_nodes,0,0, max_iter, false, false);
+		_execute_one_pass(execution_context, 0, &_nodes, &execution_phase_generators, &execution_end_nodes,0, max_iter, false, false);
 	}
 }
 

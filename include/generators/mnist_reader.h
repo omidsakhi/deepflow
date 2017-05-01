@@ -40,11 +40,11 @@ private:
 	std::string _folder_path;
 	std::ifstream _tx;	
 	int _current_batch = 0;
+	int _batch_size = 0;
 	std::streamoff _tx_start_pos;
 	size_t _num_total_samples;
 	size_t _num_batch_samples;
-	bool _last_batch = false;
-	int _batch_size = 0;
+	bool _last_batch = false;	
 	float *_buf = NULL;	
 	unsigned char *_temp;	
 };

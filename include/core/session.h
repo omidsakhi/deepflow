@@ -25,7 +25,7 @@ private:
 	std::shared_ptr<NodeOutput> _find_node_output_by_name(const std::string &name) const;
 	std::shared_ptr<Node> _create_node(const NodeParam &);
 	std::shared_ptr<Solver> _create_solver(const SolverParam &);
-	void _execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Loss>> *loss_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool train, bool print_iteration);
+	void _execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool train, bool print_iteration);
 private:
 	bool _initialized = false;
 	std::shared_ptr<GraphParam> _graph;
