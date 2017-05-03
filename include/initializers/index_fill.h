@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport IndexFill : public Initializer {
 public:
-	IndexFill(const InitParam &param);
+	IndexFill(const deepflow::InitParam &param);
 	void apply(Variable *variable);
 	void init() {}
 	std::string to_cpp() const;

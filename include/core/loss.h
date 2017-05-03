@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport Loss : public Node {
 public:
-	Loss(const NodeParam &param);
+	Loss(const deepflow::NodeParam &param);
 	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
 	virtual BackwardType backwardType() { return ALWAYS_BACKWARD; }
 };

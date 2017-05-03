@@ -2,7 +2,7 @@
 
 #include <glog/logging.h>
 
-Softmax::Softmax(const NodeParam &param) : Node(param) {
+Softmax::Softmax(const deepflow::NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_softmax_param() == false) << "param.has_softmax_param() == false";
 }
 

@@ -18,21 +18,21 @@ class DeepFlowDllExport DeepFlow {
 public:
 	// GENERATORS
 	std::string mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name = "mnist", std::initializer_list<std::string> phases = {});
-	std::string data_generator(std::shared_ptr<InitParam> initializer, int num_samples = 1, std::shared_ptr<SolverParam> solver = NULL, std::string name = "igen", std::initializer_list<std::string> phases = {});
-	std::string image_reader(std::string file_path, ImageReaderParam_Type type, std::string name = "imread", std::initializer_list<std::string> phases = {});
+	std::string data_generator(std::shared_ptr<deepflow::InitParam> initializer, int num_samples = 1, std::shared_ptr<deepflow::SolverParam> solver = NULL, std::string name = "igen", std::initializer_list<std::string> phases = {});
+	std::string image_reader(std::string file_path, deepflow::ImageReaderParam_Type type, std::string name = "imread", std::initializer_list<std::string> phases = {});
 	std::string image_batch_reader(std::string folder_path, std::initializer_list<int> dims, std::string name = "imbar", std::initializer_list<std::string> phases = {});
 
 	// INITIALIZERS
-	std::shared_ptr<InitParam> fill(std::initializer_list<int> dims, float value);
-	std::shared_ptr<InitParam> index_fill(std::initializer_list<int> dims, float offset);
-	std::shared_ptr<InitParam> zeros(std::initializer_list<int> dims);
-	std::shared_ptr<InitParam> ones(std::initializer_list<int> dims);
-	std::shared_ptr<InitParam> random_uniform(std::initializer_list<int> dims, float min, float max);
-	std::shared_ptr<InitParam> random_normal(std::initializer_list<int> dims, float mean, float stddev);
-	std::shared_ptr<InitParam> step(std::initializer_list<int> dims, float min, float max);
+	std::shared_ptr<deepflow::InitParam> fill(std::initializer_list<int> dims, float value);
+	std::shared_ptr<deepflow::InitParam> index_fill(std::initializer_list<int> dims, float offset);
+	std::shared_ptr<deepflow::InitParam> zeros(std::initializer_list<int> dims);
+	std::shared_ptr<deepflow::InitParam> ones(std::initializer_list<int> dims);
+	std::shared_ptr<deepflow::InitParam> random_uniform(std::initializer_list<int> dims, float min, float max);
+	std::shared_ptr<deepflow::InitParam> random_normal(std::initializer_list<int> dims, float mean, float stddev);
+	std::shared_ptr<deepflow::InitParam> step(std::initializer_list<int> dims, float min, float max);
 
 	// VARIABLES & PLACE HOLDER
-	std::string variable(std::shared_ptr<InitParam> initializer, std::shared_ptr<SolverParam> solver, std::string name = "var", std::initializer_list<std::string> phases = {});	
+	std::string variable(std::shared_ptr<deepflow::InitParam> initializer, std::shared_ptr<deepflow::SolverParam> solver, std::string name = "var", std::initializer_list<std::string> phases = {});
 	std::string place_holder(std::array<int,4> dims, Tensor::TensorType type = Tensor::Float, std::string name = "ph", std::initializer_list<std::string> phases = {});
 	
 	//CONVOLUTION
@@ -76,18 +76,18 @@ public:
 	std::string random_selector(std::string input_1, std::string input_2, float probability = 0.5f, std::string name = "selector", std::initializer_list<std::string> phases = {});
 
 	// LOSS
-	std::shared_ptr<NodeParam> softmax_loss(std::string a, std::string b, std::string name = "softmaxloss", std::initializer_list<std::string> phases = {});
+	std::shared_ptr<deepflow::NodeParam> softmax_loss(std::string a, std::string b, std::string name = "softmaxloss", std::initializer_list<std::string> phases = {});
 	void euclidean_loss(std::string a, std::string b, std::string name = "euclideanloss", std::initializer_list<std::string> phases = {});
 		
 	// SOLVERS
-	std::shared_ptr<SolverParam> sgd_solver(float momentum, float learning_rate, std::string name = "sgd");
-	std::shared_ptr<SolverParam> gain_solver(float momentum = 0.99999, float learning_rate = 10e-3f, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f, std::string name = "gain");
-	std::shared_ptr<SolverParam> adam_solver(float learning_rate = 10e-2f, float beta1 = 0.99f, float beta2 = 0.999f, float eps = 10e-8f, std::string name = "adam");
-	std::shared_ptr<SolverParam> adadelta_solver(float learning_rate = 10e-1f, float momentum = 0.9f, float delta = 1e-6f, std::string name = "adadelta");
+	std::shared_ptr<deepflow::SolverParam> sgd_solver(float momentum, float learning_rate, std::string name = "sgd");
+	std::shared_ptr<deepflow::SolverParam> gain_solver(float momentum = 0.99999, float learning_rate = 10e-3f, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f, std::string name = "gain");
+	std::shared_ptr<deepflow::SolverParam> adam_solver(float learning_rate = 10e-2f, float beta1 = 0.99f, float beta2 = 0.999f, float eps = 10e-8f, std::string name = "adam");
+	std::shared_ptr<deepflow::SolverParam> adadelta_solver(float learning_rate = 10e-1f, float momentum = 0.9f, float delta = 1e-6f, std::string name = "adadelta");	
 	
 	// PRINTERS & DISPLAYS
 	void print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime printTime = Print::END_OF_EPOCH, Print::PrintType = Print::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
-	void display(std::string input, int delay_msec = 100, DisplayParam_DisplayType type = DisplayParam_DisplayType_VALUES , std::string name = "disp", std::initializer_list<std::string> phases = {});
+	void display(std::string input, int delay_msec = 100, deepflow::DisplayParam_DisplayType type = deepflow::DisplayParam_DisplayType_VALUES , std::string name = "disp", std::initializer_list<std::string> phases = {});
 	void psnr(std::string a, std::string b,  Psnr::PrintTime printTime = Psnr::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
 
 	// OTHER
@@ -100,19 +100,19 @@ public:
 	void save_as_binary(std::string filePath);
 	void load_from_binary(std::string filePath);
 	void save_as_text(std::string filePath);	
-	void define_phase(std::string phase, PhaseParam_PhaseBehaviour behaviour);	
+	void define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour);
 
-	std::shared_ptr<GraphParam> graph();
+	std::shared_ptr<deepflow::GraphParam> graph();
 	std::shared_ptr<Session> session();
 
 private:
 	std::string _get_unique_node_name(const std::string &prefix) const;
 	std::string _get_unique_solver_name(const std::string &prefix) const;
-	std::shared_ptr<NodeParam> _find_node_by_name(const std::string &name) const;
-	std::string _reduce(std::string input, int reduce_dimention, ReduceParam_ReduceOp op, int output, std::string name, std::initializer_list<std::string> phases);
+	std::shared_ptr<deepflow::NodeParam> _find_node_by_name(const std::string &name) const;
+	std::string _reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, int output, std::string name, std::initializer_list<std::string> phases);
 private:
-	std::list<std::shared_ptr<NodeParam>> _nodes;	
-	std::list<std::shared_ptr<SolverParam>> _solvers;	
-	std::list<std::shared_ptr<PhaseParam>> _phases;
+	std::list<std::shared_ptr<deepflow::NodeParam>> _nodes;
+	std::list<std::shared_ptr<deepflow::SolverParam>> _solvers;
+	std::list<std::shared_ptr<deepflow::PhaseParam>> _phases;
 	
 };

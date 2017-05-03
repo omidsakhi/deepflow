@@ -15,7 +15,7 @@ void SquareKernelBackward(const int n, const float *x, const float *diff, float 
 	if (i < n) out[i] = 2.0f * x[i] * diff[i];
 }
 
-Square::Square(const NodeParam &param) : Node(param) {
+Square::Square(const deepflow::NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_square_param() == false) << "param.has_square_param() == false";
 }
 

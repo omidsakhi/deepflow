@@ -1,14 +1,14 @@
 #include "nodes/place_holder.h"
 
-PlaceHolder::PlaceHolder(const NodeParam &param) : Node(param) {
+PlaceHolder::PlaceHolder(const deepflow::NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_place_holder_param() == false) << "param.has_place_holder_param() == false";
 }
 
 void PlaceHolder::initForward() {
 		
 	std::array<int, 4> dims;
-	const PlaceHolderParam &placeHolderParam = _param.place_holder_param();
-	const TensorParam &tensorParam = placeHolderParam.tensor_param();
+	auto placeHolderParam = _param.place_holder_param();
+	auto tensorParam = placeHolderParam.tensor_param();
 	switch (tensorParam.dims_size()) {
 	case 1:
 		dims = { 1,tensorParam.dims(0),1,1 };
@@ -51,8 +51,8 @@ void PlaceHolder::backward() {
 
 std::string PlaceHolder::to_cpp() const
 {
-	const PlaceHolderParam &placeHolderParam = _param.place_holder_param();
-	const TensorParam &tensorParam = placeHolderParam.tensor_param();
+	auto placeHolderParam = _param.place_holder_param();
+	auto tensorParam = placeHolderParam.tensor_param();
 	std::string dims;
 	switch (tensorParam.dims_size()) {
 	case 1:
@@ -74,10 +74,10 @@ std::string PlaceHolder::to_cpp() const
 	std::string type;
 	switch (tensorParam.type())
 	{
-	case TensorParam_TensorType_FLOAT:
+	case deepflow::TensorParam_TensorType_FLOAT:
 		type = "Tensor::Float";
 		break;
-	case TensorParam_TensorType_INT32:
+	case deepflow::TensorParam_TensorType_INT32:
 		type = "Tensor::Int32";
 		break;
 	default:

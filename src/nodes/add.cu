@@ -18,7 +18,7 @@ void AddKernelBackward(const int n, const float *dy, const float scale, float * 
 	}
 }
 
-Add::Add(const NodeParam &param) : Node(param) {	
+Add::Add(const deepflow::NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_add_param() == false) << "param.has_add_param() == false";	
 }
 

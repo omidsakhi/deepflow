@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport LeakyRelu : public Node {
 public:
-	LeakyRelu(const NodeParam &param);	
+	LeakyRelu(const deepflow::NodeParam &param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();

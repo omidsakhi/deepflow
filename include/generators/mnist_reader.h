@@ -22,7 +22,7 @@ public:
 		Data,
 		Labels
 	};
-	MNISTReader(const NodeParam &param);
+	MNISTReader(const deepflow::NodeParam &param);
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
 	void nextBatch();

@@ -1,7 +1,7 @@
 #include "core/common_cu.h"
 #include "nodes/activation.h"
 
-Activation::Activation(const NodeParam & param) : Node(param)
+Activation::Activation(const deepflow::NodeParam & param) : Node(param)
 {
 	LOG_IF(FATAL, param.has_activation_param() == false) << "param.has_activation_param() == false";
 }

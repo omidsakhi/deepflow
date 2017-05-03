@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport Step : public Initializer {
 public:
-	Step(const InitParam &param);
+	Step(const deepflow::InitParam &param);
 	void apply(Variable *variable);
 	void init();
 	std::string to_cpp() const;

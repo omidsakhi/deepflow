@@ -5,7 +5,7 @@
 
 #include <random>
 
-RandomNormal::RandomNormal(const InitParam &param) : Initializer(param) {
+RandomNormal::RandomNormal(const deepflow::InitParam &param) : Initializer(param) {
 	LOG_IF(FATAL, param.has_random_normal_param() == false) << "param.has_random_normal_param() == false";
 }
 

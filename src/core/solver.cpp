@@ -5,11 +5,11 @@
 
 #include <memory>
 
-Solver::Solver(const SolverParam &param) {
+Solver::Solver(const deepflow::SolverParam &param) {
 	_param = param;
 }
 
-const SolverParam& Solver::param() const {
+const deepflow::SolverParam& Solver::param() const {
 	return _param;
 }
 

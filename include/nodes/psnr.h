@@ -9,7 +9,7 @@ public:
 		EVERY_PASS = 0,
 		END_OF_EPOCH = 1
 	};
-	Psnr(const NodeParam &param);
+	Psnr(const deepflow::NodeParam &param);
 	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 0; }
 	void initForward();

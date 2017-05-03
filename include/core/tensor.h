@@ -25,7 +25,7 @@ public:
 	};
 
 	Tensor();
-	Tensor(const TensorParam &param);
+	Tensor(const deepflow::TensorParam &param);
 	//Tensor(std::initializer_list<int> dims, TensorType type);
 	Tensor(std::array<int, 4> dims, TensorType type);	
 	cudnnDataType_t cudnnType() const;

@@ -25,7 +25,7 @@ void ImageBatchReaderConvertOpenCV3ImageKernel(const int n, const unsigned char 
 }
 
 
-ImageBatchReader::ImageBatchReader(const NodeParam &param) : Node(param), Generator(param) {
+ImageBatchReader::ImageBatchReader(const deepflow::NodeParam &param) : Node(param), Generator(param) {
 	LOG_IF(FATAL, param.generator_param().has_image_batch_reader_param() == false) << "param.generator_param().has_image_batch_reader_param() == false";
 }
 
@@ -80,7 +80,7 @@ void ImageBatchReader::initForward() {
 	}
 	LOG_IF(FATAL, _list_of_files.size() == 0) << "Failed to find .png or .jpg or .pgm image files in the folder " << _folder_path;
 	_last_batch = false;
-	const TensorParam &tensorParam = image_batch_reader_param.tensor_param();
+	const deepflow::TensorParam &tensorParam = image_batch_reader_param.tensor_param();
 	switch (tensorParam.dims_size()) {
 	case 1:
 		_dims = { 1,tensorParam.dims(0),1,1 };
@@ -114,7 +114,7 @@ std::string ImageBatchReader::to_cpp() const
 	auto file_name = image_reader_param.file_name();
 	auto type = image_reader_param.type();
 	std::string cpp = "auto " + _name + " = df.image_batch_reader(\"" + file_name + "\", ";
-	if (type == ImageReaderParam_Type_GRAY_ONLY)
+	if (type == deepflow::ImageReaderParam_Type_GRAY_ONLY)
 		cpp += "ImageReaderParam_Type_GRAY_ONLY, ";
 	else
 		cpp += "ImageReaderParam_Type_COLOR_IF_AVAILABLE, ";

@@ -3,7 +3,7 @@
 #include "core/initializer.h"
 #include "core/common_cu.h"
 
-DataGenerator::DataGenerator(std::shared_ptr<Initializer> initializer, const NodeParam &param) : Generator(param), Variable(initializer,param) {
+DataGenerator::DataGenerator(std::shared_ptr<Initializer> initializer, const deepflow::NodeParam &param) : Generator(param), Variable(initializer,param) {
 	LOG_IF(FATAL, param.generator_param().has_data_generator_param() == false) << "param.generator_param().has_data_generator_param() == false";
 	_no_solver = param.variable_param().solver_name().empty();
 	_num_total_samples = param.generator_param().data_generator_param().num_samples();

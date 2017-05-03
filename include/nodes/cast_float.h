@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport CastFloat : public Node {
 public:
-	CastFloat(const NodeParam &param);
+	CastFloat(const deepflow::NodeParam &param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();

@@ -1,6 +1,6 @@
 #include "nodes/convolution_2d.h"
 
-Convolution2D::Convolution2D(const NodeParam &param) : Node(param) {
+Convolution2D::Convolution2D(const deepflow::NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_conv_2d_param() == false) << "param.has_conv_2d_param() [FAILED]";
 	d_workspace = 0;
 }
@@ -13,7 +13,7 @@ void Convolution2D::initForward() {
 	auto filterValueTensor = _inputs[1]->value();
 	LOG_IF(FATAL, filterDims[1] != inputDims[1]) << "Input channels " << inputDims[1] << " != Filter channels " << filterDims[1];
 	DF_CUDNN_CHECK(cudnnSetFilter4dDescriptor(_filterDesc, CUDNN_DATA_FLOAT, CUDNN_TENSOR_NCHW, filterDims[0], filterDims[1], filterDims[2], filterDims[3]));	
-	Conv2dParam *param = _param.mutable_conv_2d_param();
+	deepflow::Conv2dParam *param = _param.mutable_conv_2d_param();
 	DF_CUDNN_CHECK(cudnnCreateConvolutionDescriptor(&_convDesc));	
 	LOG_IF(FATAL, param->pad_h() < 0) << "pad_top_bottom (pad_h) < 0";
 	LOG_IF(FATAL, param->pad_w() < 0) << "pad_left_right (pad_w) < 0";
@@ -57,7 +57,7 @@ void Convolution2D::backward() {
 
 std::string Convolution2D::to_cpp() const
 {	
-	const Conv2dParam &param = _param.conv_2d_param();
+	const deepflow::Conv2dParam &param = _param.conv_2d_param();
 	std::string cpp = "auto " + _name + " = df.conv2d(" + _inputs[0]->connectedNode()->name() + ", " + _inputs[1]->connectedNode()->name() + ", ";
 	cpp += std::to_string(param.pad_h()) + ", ";
 	cpp += std::to_string(param.pad_w()) + ", ";

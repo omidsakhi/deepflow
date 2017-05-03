@@ -2,10 +2,10 @@
 
 #include <glog/logging.h>
 
-Initializer::Initializer(const InitParam &param) : CudaHelper() {
+Initializer::Initializer(const deepflow::InitParam &param) : CudaHelper() {
 	_param = param;
 	LOG_IF(FATAL, param.has_tensor_param() == false) << "param.has_tensor_param() == false [FAILED]";
-	const TensorParam &tensorParam = param.tensor_param();
+	const deepflow::TensorParam &tensorParam = param.tensor_param();
 	switch (tensorParam.dims_size()) {
 	case 1:
 		_dims = { 1,tensorParam.dims(0),1,1 };
@@ -33,10 +33,10 @@ std::array<int, 4> Initializer::dims() const {
 	return _dims;
 }
 
-const InitParam &Initializer::param() const {
+const deepflow::InitParam &Initializer::param() const {
 	return _param;
 }
 
-InitParam *Initializer::mutableParam() {
+deepflow::InitParam *Initializer::mutableParam() {
 	return &_param;
 }

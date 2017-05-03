@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package deepflow;
+
 message TensorData {
 	repeated float weight = 1;
 }
@@ -328,7 +330,7 @@ message SolverParam {
 	SGDSolverParam sgd_solver = 2;
 	GainSolverParam gain_solver = 3;
 	AdamSolverParam adam_solver = 4;
-	AdaDeltaSolverParam adadelta_solver = 5;
+	AdaDeltaSolverParam adadelta_solver = 5;	
 }
 
 message PhaseParam {

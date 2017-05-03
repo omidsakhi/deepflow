@@ -1,12 +1,12 @@
 #include "nodes/reduce.h"
 
-Reduce::Reduce(const NodeParam &param) : Node(param) {
+Reduce::Reduce(const deepflow::NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_reduce_param() == false) << "param.has_reduce_param() == false [FAILED]";
 }
 
 void Reduce::initForward() {
 	
-	const ReduceParam &reduceParam = _param.reduce_param();
+	auto reduceParam = _param.reduce_param();
 	int reduceDim = reduceParam.reduce_dim();
 	LOG_IF(FATAL, reduceDim > 3) << "reduceDim > 3 [FAILED]";
 	_reduceTensorOp = (cudnnReduceTensorOp_t) reduceParam.reduce_op();
@@ -27,28 +27,28 @@ void Reduce::initForward() {
 	
 	std::string opString;
 	switch (reduceParam.reduce_op()) {
-	case ReduceParam_ReduceOp_ADD:
+	case deepflow::ReduceParam_ReduceOp_ADD:
 		opString = "ReduceSum";
 		break;
-	case ReduceParam_ReduceOp_MUL:
+	case deepflow::ReduceParam_ReduceOp_MUL:
 		opString = "ReduceMul";
 		break;
-	case ReduceParam_ReduceOp_MIN:
+	case deepflow::ReduceParam_ReduceOp_MIN:
 		opString = "ReduceMin";
 		break;
-	case ReduceParam_ReduceOp_MAX:
+	case deepflow::ReduceParam_ReduceOp_MAX:
 		opString = "ReduceMax";
 		break;
-	case ReduceParam_ReduceOp_AMAX:
+	case deepflow::ReduceParam_ReduceOp_AMAX:
 		opString = "ReduceMaxAbs";
 		break;
-	case ReduceParam_ReduceOp_AVG:
+	case deepflow::ReduceParam_ReduceOp_AVG:
 		opString = "ReduceMean";
 		break;
-	case ReduceParam_ReduceOp_NORM1:
+	case deepflow::ReduceParam_ReduceOp_NORM1:
 		opString = "ReduceSumAbs";
 		break;
-	case ReduceParam_ReduceOp_NORM2:
+	case deepflow::ReduceParam_ReduceOp_NORM2:
 		opString = "ReduceHypot";
 		break;
 	};
@@ -69,33 +69,33 @@ std::string Reduce::to_cpp() const
 {
 	std::string op;
 	switch (_reduceTensorOp) {
-	case ReduceParam_ReduceOp_ADD:
+	case deepflow::ReduceParam_ReduceOp_ADD:
 		op = "reduce_sum";
 		break;
-	case ReduceParam_ReduceOp_MUL:
+	case deepflow::ReduceParam_ReduceOp_MUL:
 		op = "reduce_mul";
 		break;
-	case ReduceParam_ReduceOp_MIN:
+	case deepflow::ReduceParam_ReduceOp_MIN:
 		op = "reduce_min";
 		break;
-	case ReduceParam_ReduceOp_MAX:
+	case deepflow::ReduceParam_ReduceOp_MAX:
 		op = "reduce_max";
 		break;
-	case ReduceParam_ReduceOp_AMAX:
+	case deepflow::ReduceParam_ReduceOp_AMAX:
 		op = "reduce_absmax";
 		break;
-	case ReduceParam_ReduceOp_AVG:
+	case deepflow::ReduceParam_ReduceOp_AVG:
 		op = "reduce_mean";
 		break;
-	case ReduceParam_ReduceOp_NORM1:
+	case deepflow::ReduceParam_ReduceOp_NORM1:
 		op = "reduce_norm1";
 		break;
-	case ReduceParam_ReduceOp_NORM2:
+	case deepflow::ReduceParam_ReduceOp_NORM2:
 		op = "reduce_norm2";
 		break;
 	};
 
-	const ReduceParam &reduceParam = _param.reduce_param();
+	auto reduceParam = _param.reduce_param();
 	int reduceDim = reduceParam.reduce_dim();
 
 	std::string cpp = "auto " + _name + " = df." + op + "(" + _inputs[0]->connectedNode()->name() + ", " + std::to_string(reduceDim) + ", ";

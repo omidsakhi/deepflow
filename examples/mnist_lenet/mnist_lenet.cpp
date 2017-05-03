@@ -30,8 +30,8 @@ void main(int argc, char** argv) {
 	DeepFlow df;
 		
 	if (FLAGS_i.empty()) {
-		df.define_phase("Train", PhaseParam_PhaseBehaviour_TRAIN);
-		df.define_phase("Validation", PhaseParam_PhaseBehaviour_VALIDATION);		
+		df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
+		df.define_phase("Validation", deepflow::PhaseParam_PhaseBehaviour_VALIDATION);
 		auto gain = df.gain_solver(0.999900, 0.000100, 100.000000, 0.100000, 0.050000, 0.950000, "gain");
 		auto solver = df.gain_solver(0.9999f, 0.0001f, 100, 0.1f, 0.05f, 0.95f);
 		//auto solver = df.adadelta_solver(0.1f, 0.9f, 0.00001f); 

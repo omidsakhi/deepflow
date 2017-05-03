@@ -54,7 +54,7 @@
 
 #include <ctime>
 
-std::shared_ptr<Initializer> _create_initializer(const InitParam &init_param) {
+std::shared_ptr<Initializer> _create_initializer(const deepflow::InitParam &init_param) {
 	
 	if (init_param.has_fill_param()) {
 		return std::make_shared<Fill>(init_param);
@@ -78,17 +78,17 @@ std::shared_ptr<Initializer> _create_initializer(const InitParam &init_param) {
 	return NULL;
 }
 
-std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {	
+std::shared_ptr<Node> Session::_create_node(const deepflow::NodeParam &node_param) {
 
 	if (node_param.has_accumulator_param())
 		return std::make_shared<Accumulator>(node_param);	
 	else if (node_param.has_generator_param()) {
-		const GeneratorParam &generator_param = node_param.generator_param();
+		const deepflow::GeneratorParam &generator_param = node_param.generator_param();
 		if (generator_param.has_mnist_param()) {
 			return std::make_shared<MNISTReader>(node_param);
 		}
 		else if (generator_param.has_data_generator_param()) {
-			const InitParam &init_param = node_param.variable_param().init_param();
+			const deepflow::InitParam &init_param = node_param.variable_param().init_param();
 			std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
 			return std::make_shared<DataGenerator>(initializer, node_param);
 		}
@@ -162,7 +162,7 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 		return std::make_shared<RandomSelector>(node_param);
 	}
 	else if (node_param.has_variable_param()) {
-		const InitParam &init_param = node_param.variable_param().init_param();
+		const deepflow::InitParam &init_param = node_param.variable_param().init_param();
 		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
 		return std::make_shared<Variable>(initializer, node_param);
 	}
@@ -173,7 +173,7 @@ std::shared_ptr<Node> Session::_create_node(const NodeParam &node_param) {
 	return 0;
 }
 
-std::shared_ptr<Solver> Session::_create_solver(const SolverParam &solver_param) {
+std::shared_ptr<Solver> Session::_create_solver(const deepflow::SolverParam &solver_param) {
 	if (solver_param.has_gain_solver()) {
 		return std::make_shared<GainSolver>(solver_param);
 	}
@@ -193,7 +193,7 @@ std::shared_ptr<Solver> Session::_create_solver(const SolverParam &solver_param)
 	return 0;
 }
 
-void Session::setGraph(std::shared_ptr<GraphParam> graph) {
+void Session::setGraph(std::shared_ptr<deepflow::GraphParam> graph) {
 	_graph = graph;
 }
 
@@ -204,7 +204,7 @@ void Session::initialize() {
 	_initialized = true;
 
 	for (auto phase_param : _graph->phase())
-		_phases.insert(std::pair<std::string, PhaseParam_PhaseBehaviour>(phase_param.phase(), phase_param.behaviour()));
+		_phases.insert(std::pair<std::string, deepflow::PhaseParam_PhaseBehaviour>(phase_param.phase(), phase_param.behaviour()));
 
 	for (auto node_param : _graph->node()) {
 		auto node = _create_node(node_param);
@@ -356,7 +356,7 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 void Session::run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level) {
 	LOG(INFO) << "Executing graph for phase " << phase;
 	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";
-	PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
+	deepflow::PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
 	std::list<std::shared_ptr<Generator>> execution_phase_generators = _get_nodes<Generator>(phase);
 	LOG_IF(FATAL, execution_phase_generators.size() == 0) << "No generator is defined for phase " << phase;
 	std::list<std::shared_ptr<Node>> execution_end_nodes = _get_end_nodes(phase);
@@ -368,11 +368,11 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 	auto execution_context = std::make_shared<ExecutionContext>();
 	execution_context->phase = phase;
 	execution_context->debug_level = debug_level;
-	if (behaviour == PhaseParam_PhaseBehaviour_TRAIN) {		
+	if (behaviour == deepflow::PhaseParam_PhaseBehaviour_TRAIN) {
 		std::list<std::shared_ptr<Variable>> execution_phase_variable_nodes = _get_nodes<Variable>(phase);
 		std::string validation_phase;
 		for (auto phase : _phases) {
-			if (phase.second == PhaseParam_PhaseBehaviour_VALIDATION) {
+			if (phase.second == deepflow::PhaseParam_PhaseBehaviour_VALIDATION) {
 				validation_phase = phase.first;
 				break;
 			}

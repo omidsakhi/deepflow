@@ -1,12 +1,12 @@
 #include "nodes/pooling.h"
 
-Pooling::Pooling(const NodeParam &param) : Node(param) {
+Pooling::Pooling(const deepflow::NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_pooling_param() == false) << "param.has_pooling_param() == false";
 }
 
 void Pooling::initForward() {
 	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
-	const PoolingParam &param = _param.pooling_param();
+	auto param = _param.pooling_param();
 	LOG_IF(FATAL, param.window_w() < 1);
 	LOG_IF(FATAL, param.window_h() < 1);
 	LOG_IF(FATAL, param.v_pad() < 0);
@@ -37,7 +37,7 @@ void Pooling::backward() {
 
 std::string Pooling::to_cpp() const
 {
-	const PoolingParam &param = _param.pooling_param();	
+	auto param = _param.pooling_param();	
 	std::string cpp = "auto " + _name + " = df.pooling(" + _inputs[0]->connectedNode()->name() + ", ";
 	cpp += std::to_string(param.window_h()) + ", ";
 	cpp += std::to_string(param.window_w()) + ", ";

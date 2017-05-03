@@ -11,7 +11,7 @@
 
 #include <glog/logging.h>
 
-Variable::Variable(std::shared_ptr<Initializer> initializer, const NodeParam &param) : Node(param) {
+Variable::Variable(std::shared_ptr<Initializer> initializer, const deepflow::NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_variable_param() == false) << "param.has_variable_param() == false";
 	_initializer = initializer;			
 }

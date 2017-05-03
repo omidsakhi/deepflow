@@ -32,7 +32,7 @@ void GainStepKernel(const int n, float *w, const float *g, float *m, float *gain
 	}
 }
 
-GainSolver::GainSolver(const SolverParam &param): Solver(param) {
+GainSolver::GainSolver(const deepflow::SolverParam &param): Solver(param) {
 	LOG_IF(FATAL, param.has_gain_solver() == false) << "param.has_gain_solver() == false";
 	_my_param = param.gain_solver();
 }

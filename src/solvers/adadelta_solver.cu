@@ -24,7 +24,7 @@ void AdaDeltaKernel(const int n, float *w, const float *g, float *h1, float *h2,
 	}
 }
 
-AdaDeltaSolver::AdaDeltaSolver(const SolverParam &param) : Solver(param) {
+AdaDeltaSolver::AdaDeltaSolver(const deepflow::SolverParam &param) : Solver(param) {
 	LOG_IF(FATAL, param.has_adadelta_solver() == false) << "param.has_adadelta_solver() == false";
 	_my_param = param.adadelta_solver();
 }

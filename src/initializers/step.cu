@@ -10,7 +10,7 @@ void StepFillKernel(const int n, float *out, const float min, const float step)
 	if (i < n) out[i] = min + i * step;
 }
 
-Step::Step(const InitParam &param) : Initializer(param) {
+Step::Step(const deepflow::InitParam &param) : Initializer(param) {
 	LOG_IF(FATAL, param.has_step_param() == false) << "param.has_step_param() == false";
 }
 

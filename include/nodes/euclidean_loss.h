@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport EuclideanLoss : public Loss {
 public:
-	EuclideanLoss(const NodeParam &param);
+	EuclideanLoss(const deepflow::NodeParam &param);
 	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 0; }
 	void initForward();

@@ -3,7 +3,7 @@
 
 #include <glog/logging.h>
 
-Node::Node(const NodeParam &param) : CudaHelper() {
+Node::Node(const deepflow::NodeParam &param) : CudaHelper() {
 	_param = param;	
 	_name = param.name();
 	_visited = false;
@@ -208,7 +208,7 @@ void Node::setInitialized(bool status) {
 	_initialized = status;
 }
 
-NodeParam &Node::param() {
+deepflow::NodeParam &Node::param() {
 	return _param;
 }
 

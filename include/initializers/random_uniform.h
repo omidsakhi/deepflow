@@ -6,7 +6,7 @@
 
 class DeepFlowDllExport RandomUniform : public Initializer {
 public:
-	RandomUniform(const InitParam &param);
+	RandomUniform(const deepflow::InitParam &param);
 	void init() {}
 	void apply(Variable *variable);
 	std::string to_cpp() const;
