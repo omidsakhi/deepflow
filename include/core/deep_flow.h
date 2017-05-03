@@ -97,9 +97,10 @@ public:
 	std::string accumulator(std::string input, Accumulator::ResetTime resetTime = Accumulator::ResetTime::EndOfEpoch, std::string name = "acc", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES
-	void save_as_binary(std::string filePath);
-	void load_from_binary(std::string filePath);
-	void save_as_text(std::string filePath);	
+	void save_as_binary(std::string file_path);
+	void load_from_binary(std::string file_path);
+	void load_from_caffe_model(std::string file_path);
+	void save_as_text(std::string file_path);	
 	void define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour);
 
 	std::shared_ptr<deepflow::GraphParam> graph();

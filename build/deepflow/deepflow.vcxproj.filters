@@ -147,6 +147,9 @@
     <ClCompile Include="..\..\src\nodes\matmul.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\proto\caffe.pb.cc">
+      <Filter>source\proto</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -301,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\generators\image_batch_reader.h">
       <Filter>include\generators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\proto\caffe.pb.h">
+      <Filter>include\proto</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

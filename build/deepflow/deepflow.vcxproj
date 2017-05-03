@@ -65,6 +65,7 @@
     <ClInclude Include="..\..\include\nodes\square.h" />
     <ClInclude Include="..\..\include\nodes\transposed_conv_2d.h" />
     <ClInclude Include="..\..\include\nodes\variable.h" />
+    <ClInclude Include="..\..\include\proto\caffe.pb.h" />
     <ClInclude Include="..\..\include\proto\deepflow.pb.h" />
     <ClInclude Include="..\..\include\solvers\adadelta_solver.h" />
     <ClInclude Include="..\..\include\solvers\adam_solver.h" />
@@ -126,6 +127,7 @@
     <ClCompile Include="..\..\src\nodes\reduce.cpp" />
     <ClCompile Include="..\..\src\nodes\softmax.cpp" />
     <ClCompile Include="..\..\src\nodes\transposed_conv_2d.cpp" />
+    <ClCompile Include="..\..\src\proto\caffe.pb.cc" />
     <ClCompile Include="..\..\src\proto\deepflow.pb.cc" />
   </ItemGroup>
   <ItemGroup>

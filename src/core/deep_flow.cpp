@@ -3,7 +3,7 @@
 #include <google/protobuf/text_format.h>
 
 #include "core/session.h"
-
+#include "proto\caffe.pb.h"
 
 void add_outputs(std::shared_ptr<deepflow::NodeParam> node_param, int num_outputs) {
 	for (int i = 0; i < num_outputs; ++i)
@@ -723,18 +723,18 @@ std::shared_ptr<Session> DeepFlow::session()
 	return session;
 }
 
-void DeepFlow::save_as_binary(std::string filePath) {
+void DeepFlow::save_as_binary(std::string file_path) {
 	auto graph_param = graph();
-	std::fstream output(filePath, std::ios::out | std::ios::trunc | std::ios::binary);
-	LOG_IF(FATAL, !graph_param->SerializeToOstream(&output)) << "Failed to write graph to " << filePath;
+	std::fstream output(file_path, std::ios::out | std::ios::trunc | std::ios::binary);
+	LOG_IF(FATAL, !graph_param->SerializeToOstream(&output)) << "Failed to write graph to " << file_path;
 	output.close();
 }
 
-void DeepFlow::save_as_text(std::string filePath) {
+void DeepFlow::save_as_text(std::string file_path) {
 	auto graph_param = graph();	
 	std::string text;
 	google::protobuf::TextFormat::PrintToString(*graph_param, &text);
-	std::ofstream out(filePath);
+	std::ofstream out(file_path);
 	out << text;
 	out.close();
 }
@@ -763,4 +763,15 @@ void DeepFlow::load_from_binary(std::string file_path) {
 		solver_param->CopyFrom(_solver_param);
 		_solvers.push_back(solver_param);
 	}
+}
+
+void DeepFlow::load_from_caffe_model(std::string file_path)
+{
+	auto caffe = std::make_shared<caffe::NetParameter>();
+	std::fstream input(file_path, std::ios::in | std::ios::binary);
+	LOG_IF(FATAL, !caffe->ParseFromIstream(&input)) << "Failed to read caffe model " << file_path;
+	input.close();
+	for (auto layer : caffe->layers()) {
+		LOG(INFO) << layer.name();
+	}	
 }
