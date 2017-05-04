@@ -3,7 +3,6 @@
 #include <google/protobuf/text_format.h>
 
 #include "core/session.h"
-#include "proto\caffe.pb.h"
 
 void add_outputs(std::shared_ptr<deepflow::NodeParam> node_param, int num_outputs) {
 	for (int i = 0; i < num_outputs; ++i)
@@ -765,13 +764,69 @@ void DeepFlow::load_from_binary(std::string file_path) {
 	}
 }
 
+void DeepFlow::_parse_caffe_layer_deprecated(const caffe::V1LayerParameter &layer) {	
+	LOG(INFO) << "Type = " << caffe::V1LayerParameter_LayerType_Name(layer.type());
+	if (layer.has_convolution_param()) {
+		LOG(INFO) << " .name = " << layer.name();	
+		LOG(INFO) << " .top_size = " << layer.top_size();
+		for (auto t : layer.top())
+			LOG(INFO) << "    .top = " << t;
+		LOG(INFO) << " .bottom_size = " << layer.bottom_size();
+		for (auto b : layer.bottom())
+			LOG(INFO) << "    .bottom = " << b;
+		auto param = layer.convolution_param();
+		LOG(INFO) << " .num_output: " << param.num_output();
+		LOG(INFO) << " .axis = " << param.axis() << " [default: 1]";
+		LOG(INFO) << " .bias_term = " << param.bias_term();
+		LOG(INFO) << " .dilation_size = " << param.dilation_size() << " [default: 1]";
+		for (auto d : param.dilation())
+			LOG(INFO) << "    .dilation = " << d;
+		LOG(INFO) << " .pad_size = " << param.pad_size() << " [default: 0]";
+		for (auto d : param.pad())
+			LOG(INFO) << "    .pad = " << d;
+		LOG(INFO) << " .kernel_size_size = " << param.kernel_size_size();
+		for (auto d : param.kernel_size())
+			LOG(INFO) << "    .kernel_size = " << d;
+		LOG(INFO) << " .stride_size = " << param.stride_size() << " [default: 1]";
+		for (auto d : param.stride())
+			LOG(INFO) << "    .stride = " << d;
+		LOG(INFO) << " .pad_h = " << param.pad_h() << " [default: 0]";
+		LOG(INFO) << " .pad_w = " << param.pad_w() << " [default: 0]";
+		LOG(INFO) << " .kernel_h = " << param.kernel_h();
+		LOG(INFO) << " .kernel_w = " << param.kernel_w();
+		LOG(INFO) << " .stride_h = " << param.stride_h();
+		LOG(INFO) << " .stride_w = " << param.stride_w();
+
+
+	}
+}
+
+void DeepFlow::_parse_caffe_net_deprecated(std::shared_ptr<caffe::NetParameter> net) {
+	LOG(INFO) << "Loading Caffe model from V1LayerParameter (Deprecated) ...";
+	LOG(INFO) << "net.input_shape_size = " << net->input_shape_size();
+	LOG(INFO) << "net.input_size = " << net->input_size();
+	LOG(INFO) << "net.input_dim_size = " << net->input_dim_size();
+
+	for (auto i : net->input()) {
+		LOG(INFO) << "net->input = " << i;
+	}
+
+	for (auto layer : net->layers())
+		_parse_caffe_layer_deprecated(layer);
+}
+
 void DeepFlow::load_from_caffe_model(std::string file_path)
 {
-	auto caffe = std::make_shared<caffe::NetParameter>();
+	auto net = std::make_shared<caffe::NetParameter>();
 	std::fstream input(file_path, std::ios::in | std::ios::binary);
-	LOG_IF(FATAL, !caffe->ParseFromIstream(&input)) << "Failed to read caffe model " << file_path;
-	input.close();
-	for (auto layer : caffe->layers()) {
-		LOG(INFO) << layer.name();
-	}	
+	LOG_IF(FATAL, !net->ParseFromIstream(&input)) << "Failed to read caffe model " << file_path;
+	input.close();	
+	LOG(INFO) << "net.layers_size = " << net->layers_size();
+	LOG(INFO) << "net.layer_size = " << net->layer_size();
+	if (net->layer_size() > 0) {
+		LOG(INFO) << "Loading Caffe model from LayerParameter (NOT IMPLEMENTED)";
+	}
+	else if (net->layers_size() > 0){
+		_parse_caffe_net_deprecated(net);
+	}
 }

@@ -82,7 +82,7 @@ void main(int argc, char** argv) {
 			df.display(imbar, 1000, deepflow::DisplayParam_DisplayType_VALUES, "approx1", { "Train" });
 		}
 		else if (FLAGS_examp5 == 1) {
-			df.load_from_caffe_model("./models/VGG_ILSVRC_16_layers.caffemodel");
+			df.load_from_caffe_model("./models/VGG_ILSVRC_19_layers.caffemodel");
 		}
 
 

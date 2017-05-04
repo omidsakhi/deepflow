@@ -138,6 +138,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\src\proto\caffe.proto" />
     <None Include="..\..\src\proto\deepflow.proto" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -11,6 +11,8 @@
 #include <memory>
 #include <list>
 
+#include "proto\caffe.pb.h"
+
 class Session;
 
 class DeepFlowDllExport DeepFlow {	
@@ -98,19 +100,26 @@ public:
 
 	// UTILITIES
 	void save_as_binary(std::string file_path);
-	void load_from_binary(std::string file_path);
-	void load_from_caffe_model(std::string file_path);
+	void load_from_binary(std::string file_path);	
 	void save_as_text(std::string file_path);	
 	void define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour);
 
 	std::shared_ptr<deepflow::GraphParam> graph();
 	std::shared_ptr<Session> session();
 
+	// CAFFE
+	void load_from_caffe_model(std::string file_path);	
+
 private:
 	std::string _get_unique_node_name(const std::string &prefix) const;
 	std::string _get_unique_solver_name(const std::string &prefix) const;
 	std::shared_ptr<deepflow::NodeParam> _find_node_by_name(const std::string &name) const;
-	std::string _reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, int output, std::string name, std::initializer_list<std::string> phases);
+	std::string _reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, int output, std::string name, std::initializer_list<std::string> phases);	
+
+	// CAFFE
+	void _parse_caffe_net_deprecated(std::shared_ptr<caffe::NetParameter> net);
+	void _parse_caffe_layer_deprecated(const caffe::V1LayerParameter &layer);
+
 private:
 	std::list<std::shared_ptr<deepflow::NodeParam>> _nodes;
 	std::list<std::shared_ptr<deepflow::SolverParam>> _solvers;

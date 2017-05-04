@@ -360,5 +360,8 @@
     <None Include="..\..\src\proto\deepflow.proto">
       <Filter>source\proto</Filter>
     </None>
+    <None Include="..\..\src\proto\caffe.proto">
+      <Filter>source\proto</Filter>
+    </None>
   </ItemGroup>
 </Project>
