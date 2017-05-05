@@ -29,19 +29,19 @@
 
 # Current Nodes
 
-| Nodes                 |                |                 |                   |
-|-----------------------|:--------------:|:---------------:|------------------:|
-| data_generator        | variable       | place_holder    | conv2d            |
-| image_batch_generator | pooling        | convolution_2d  | transposed_conv2d |
-| image_reader          | add            | square          | matmult           |
-| mnist_reader          | subtract       | bias_add        | dropout           |
-| argmax                | argmin         | reduce_max      | reduce_min        |
-| reduce_mean           | reduce_sum     | reduce_absmax   | reduce_norm1      |
-| reduce_norm2          | leaky_relu     | sigmoid         | relu              |
-| tanh                  | clipped_relu   | elu             | phaseplexer       |
-| random_selector       | softmax_loss   | euclidean_loss  | print             |
-| display               | psnr           | softmax         | equal             |
-| cast_float            | accumulator    |                 |                   |
+| Nodes                 |                       |                       |                       |
+|-----------------------|:---------------------:|:---------------------:|----------------------:|
+| data_generator        | variable              | place_holder          | conv2d                |
+| image_batch_generator | pooling               | convolution_2d        | transposed_conv2d     |
+| image_reader          | add                   | square                | matmult               |
+| mnist_reader          | subtract              | bias_add              | dropout               |
+| argmax                | argmin                | reduce_max            | reduce_min            |
+| reduce_mean           | reduce_sum            | reduce_absmax         | reduce_norm1          |
+| reduce_norm2          | leaky_relu            | sigmoid               | relu                  |
+| tanh                  | clipped_relu          | elu                   | phaseplexer           |
+| random_selector       | softmax_loss          | euclidean_loss        | print                 |
+| display               | psnr                  | softmax               | equal                 |
+| cast_float            | accumulator           |                       |                       |
 
 # Current Solvers
 
