@@ -29,7 +29,7 @@
 
 # Current Nodes
 
-| Nodes                                                                                         |
+| Nodes                 | Nodes                 | Nodes                 | Nodes                 |
 |-----------------------|-----------------------|-----------------------|-----------------------|
 | data_generator        | variable              | place_holder          | conv2d                |
 | image_batch_generator | pooling               | convolution_2d        | transposed_conv2d     |
