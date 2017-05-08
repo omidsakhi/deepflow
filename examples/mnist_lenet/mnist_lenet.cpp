@@ -64,7 +64,7 @@ void main(int argc, char** argv) {
 		auto relu2 = df.leaky_relu(bias2, 0.01f, "relu2");
 		auto loss = df.softmax_loss(relu2, label_selector, "loss");		
 		auto target = df.argmax(label_selector, 1, "target");
-		auto predict = df.argmax(loss->output(0), 1, "predict");
+		auto predict = df.argmax(loss->output(1), 1, "predict");
 		auto equal = df.equal(predict, target,"equal");
 		auto acc = df.accumulator(equal, Accumulator::EndOfEpoch, "acc");
 		auto correct = df.reduce_sum(acc->output(0), 0, "correct");
