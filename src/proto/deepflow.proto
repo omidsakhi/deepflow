@@ -133,8 +133,13 @@ message ReduceParam {
 		NORM1 = 6;
 		NORM2 = 7;
 	}
+	enum OutputType {
+		VALUES = 0;
+		INDICES = 1;
+	}
 	ReduceOp reduce_op = 1;
-	int32 reduce_dim = 2;
+	int32 reduce_dim = 2;	
+	OutputType output_type = 3;
 }
 
 message SnapshotParam {

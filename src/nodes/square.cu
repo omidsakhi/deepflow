@@ -42,7 +42,7 @@ void Square::backward() {
 
 std::string Square::to_cpp() const
 {
-	std::string cpp = "auto " + _name + " = df.square(" + _inputs[0]->connectedNode()->name() + ", ";
+	std::string cpp = "auto " + _name + " = df.square(" + _input_name_for_cpp(0) + ", ";
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;

@@ -22,6 +22,7 @@ private:
 	cudnnReduceTensorOp_t _reduceTensorOp;
 	cudnnReduceTensorDescriptor_t _reduceTensorDesciptor;
 	cudnnReduceTensorIndices_t _reduceTensorIndices;
+	deepflow::ReduceParam::OutputType _type;
 	float *_d_workspace;
 	size_t _workspaceSizeInBytes;
 };

@@ -344,6 +344,27 @@ inline bool ReduceParam_ReduceOp_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<ReduceParam_ReduceOp>(
     ReduceParam_ReduceOp_descriptor(), name, value);
 }
+enum ReduceParam_OutputType {
+  ReduceParam_OutputType_VALUES = 0,
+  ReduceParam_OutputType_INDICES = 1,
+  ReduceParam_OutputType_ReduceParam_OutputType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  ReduceParam_OutputType_ReduceParam_OutputType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool ReduceParam_OutputType_IsValid(int value);
+const ReduceParam_OutputType ReduceParam_OutputType_OutputType_MIN = ReduceParam_OutputType_VALUES;
+const ReduceParam_OutputType ReduceParam_OutputType_OutputType_MAX = ReduceParam_OutputType_INDICES;
+const int ReduceParam_OutputType_OutputType_ARRAYSIZE = ReduceParam_OutputType_OutputType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ReduceParam_OutputType_descriptor();
+inline const ::std::string& ReduceParam_OutputType_Name(ReduceParam_OutputType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ReduceParam_OutputType_descriptor(), value);
+}
+inline bool ReduceParam_OutputType_Parse(
+    const ::std::string& name, ReduceParam_OutputType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ReduceParam_OutputType>(
+    ReduceParam_OutputType_descriptor(), name, value);
+}
 enum ActivationParam_Type {
   ActivationParam_Type_CUDNN_ACTIVATION_SIGMOID = 0,
   ActivationParam_Type_CUDNN_ACTIVATION_RELU = 1,
@@ -2321,6 +2342,32 @@ class ReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
     return ReduceParam_ReduceOp_Parse(name, value);
   }
 
+  typedef ReduceParam_OutputType OutputType;
+  static const OutputType VALUES =
+    ReduceParam_OutputType_VALUES;
+  static const OutputType INDICES =
+    ReduceParam_OutputType_INDICES;
+  static inline bool OutputType_IsValid(int value) {
+    return ReduceParam_OutputType_IsValid(value);
+  }
+  static const OutputType OutputType_MIN =
+    ReduceParam_OutputType_OutputType_MIN;
+  static const OutputType OutputType_MAX =
+    ReduceParam_OutputType_OutputType_MAX;
+  static const int OutputType_ARRAYSIZE =
+    ReduceParam_OutputType_OutputType_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  OutputType_descriptor() {
+    return ReduceParam_OutputType_descriptor();
+  }
+  static inline const ::std::string& OutputType_Name(OutputType value) {
+    return ReduceParam_OutputType_Name(value);
+  }
+  static inline bool OutputType_Parse(const ::std::string& name,
+      OutputType* value) {
+    return ReduceParam_OutputType_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   // .deepflow.ReduceParam.ReduceOp reduce_op = 1;
@@ -2335,12 +2382,19 @@ class ReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::int32 reduce_dim() const;
   void set_reduce_dim(::google::protobuf::int32 value);
 
+  // .deepflow.ReduceParam.OutputType output_type = 3;
+  void clear_output_type();
+  static const int kOutputTypeFieldNumber = 3;
+  ::deepflow::ReduceParam_OutputType output_type() const;
+  void set_output_type(::deepflow::ReduceParam_OutputType value);
+
   // @@protoc_insertion_point(class_scope:deepflow.ReduceParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   int reduce_op_;
   ::google::protobuf::int32 reduce_dim_;
+  int output_type_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -6414,6 +6468,20 @@ inline void ReduceParam::set_reduce_dim(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:deepflow.ReduceParam.reduce_dim)
 }
 
+// .deepflow.ReduceParam.OutputType output_type = 3;
+inline void ReduceParam::clear_output_type() {
+  output_type_ = 0;
+}
+inline ::deepflow::ReduceParam_OutputType ReduceParam::output_type() const {
+  // @@protoc_insertion_point(field_get:deepflow.ReduceParam.output_type)
+  return static_cast< ::deepflow::ReduceParam_OutputType >(output_type_);
+}
+inline void ReduceParam::set_output_type(::deepflow::ReduceParam_OutputType value) {
+  
+  output_type_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.ReduceParam.output_type)
+}
+
 // -------------------------------------------------------------------
 
 // SnapshotParam
@@ -9661,6 +9729,11 @@ template <> struct is_proto_enum< ::deepflow::ReduceParam_ReduceOp> : ::google::
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::ReduceParam_ReduceOp>() {
   return ::deepflow::ReduceParam_ReduceOp_descriptor();
+}
+template <> struct is_proto_enum< ::deepflow::ReduceParam_OutputType> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::ReduceParam_OutputType>() {
+  return ::deepflow::ReduceParam_OutputType_descriptor();
 }
 template <> struct is_proto_enum< ::deepflow::ActivationParam_Type> : ::google::protobuf::internal::true_type {};
 template <>

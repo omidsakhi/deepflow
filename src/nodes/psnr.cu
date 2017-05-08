@@ -70,7 +70,7 @@ void Psnr::backward() {
 
 std::string Psnr::to_cpp() const
 {	
-	std::string cpp = "df.psnr(" + _inputs[0]->connectedNode()->name() + ", " +_inputs[1]->connectedNode()->name() + ", ";	
+	std::string cpp = "df.psnr(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
 	if (_print_time == END_OF_EPOCH) {
 		cpp += "Psnr::END_OF_EPOCH, ";
 	}

@@ -75,7 +75,8 @@ void Display::forward() {
 	if (_display_type == deepflow::DisplayParam_DisplayType_VALUES) {
 		PictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col, d_pic);
 		DF_KERNEL_CHECK();
-		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) *num_pic_pixels, cudaMemcpyDeviceToHost));
+		cudaDeviceSynchronize();
+		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) * num_pic_pixels, cudaMemcpyDeviceToHost));
 		cv::imshow(name(), disp);		
 		int key = cv::waitKey(_delay_msec);
 		if (key == 27) {
@@ -85,7 +86,7 @@ void Display::forward() {
 	if (_display_type == deepflow::DisplayParam_DisplayType_DIFFS) {
 		PictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->diff()->data(), per_image_height, per_image_width, num_image_per_row_and_col, d_pic);
 		DF_KERNEL_CHECK();
-		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) *num_pic_pixels, cudaMemcpyDeviceToHost));
+		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) * num_pic_pixels, cudaMemcpyDeviceToHost));
 		cv::imshow(name(), disp);
 		int key = cv::waitKey(_delay_msec);
 		if (key == 27) {
@@ -99,7 +100,7 @@ void Display::backward() {
 
 std::string Display::to_cpp() const
 {	
-	std::string cpp = "df.display(" + _inputs[0]->connectedNode()->name() + ", ";
+	std::string cpp = "df.display(" + _input_name_for_cpp(0) + ", ";
 	cpp += std::to_string(_delay_msec) + ", ";
 	if (_display_type == deepflow::DisplayParam_DisplayType_DIFFS) {
 		cpp += "DisplayParam_DisplayType_DIFFS, ";

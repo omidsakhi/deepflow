@@ -75,7 +75,7 @@ std::string Activation::to_cpp() const
 	case CUDNN_ACTIVATION_ELU:
 		op = "elu";
 	};
-	std::string cpp = "auto " + _name + " = df."+ op + "(" + _inputs[0]->connectedNode()->name() + ", ";
+	std::string cpp = "auto " + _name + " = df."+ op + "(" + _input_name_for_cpp(0) + ", ";
 	if (op == "clipped_relu" || op == "elu")
 		cpp += std::to_string(coef) + ", ";
 	cpp += "\"" + _name + "\", ";

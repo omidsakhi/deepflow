@@ -33,7 +33,7 @@ void Dropout::backward() {
 
 std::string Dropout::to_cpp() const
 {
-	std::string cpp = "auto " + _name + " = df.dropout(" + _inputs[0]->connectedNode()->name() + ", ";
+	std::string cpp = "auto " + _name + " = df.dropout(" + _input_name_for_cpp(0) + ", ";
 	cpp += std::to_string(_dropout) + ", ";
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";

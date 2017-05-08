@@ -82,7 +82,7 @@ void MNISTReader::initForward() {
 }
 
 void MNISTReader::initBackward() {
-	_outputs[0]->initDiff();	
+	
 }
 
 void MNISTReader::nextBatch() {
@@ -127,6 +127,8 @@ void MNISTReader::nextBatch() {
 	}
 	
 	DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));			
+	if (_context && _context->debug_level == 4)
+		LOG(INFO) << "MNIST " << _name << " - BATCH @ " << _current_batch;
 }
 
 void MNISTReader::deinit() {
@@ -141,7 +143,7 @@ bool MNISTReader::isLastBatch() {
 
 std::string MNISTReader::to_cpp() const
 {
-	std::string cpp = "auto " + _name + " = df.mnist_reader(\"" + _file_path + "\", ";
+	std::string cpp = "auto " + _name + " = df.mnist_reader(\"" + _folder_path + "\", ";
 	cpp += std::to_string(_batch_size) + ", ";
 	if (_reader_type == Train)
 		cpp += "MNISTReader::Train, ";

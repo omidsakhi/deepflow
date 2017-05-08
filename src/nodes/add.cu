@@ -51,11 +51,11 @@ void Add::forward() {
 
 void Add::backward() {	
 	auto size = _outputs[0]->diff()->size();
-	if (_inputs[0]->connectedNode()->shouldBackward()) {
+	if (_inputs[0]->connectedNode()->propagateBack()) {
 		AddKernelBackward << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), _alpha, (float*)_inputs[0]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}	
-	if (_inputs[1]->connectedNode()->shouldBackward()) {
+	if (_inputs[1]->connectedNode()->propagateBack()) {
 		AddKernelBackward << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), _beta, (float*)_inputs[1]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}
@@ -73,7 +73,7 @@ std::string Add::to_cpp() const
 		op = "add";
 		print_alpha_beta = true;
 	}
-	std::string cpp = "auto " + _name + " = df." + op + "(" + _inputs[0]->connectedNode()->name() + ", " + _inputs[1]->connectedNode()->name() + ", ";
+	std::string cpp = "auto " + _name + " = df." + op + "(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
 	if (print_alpha_beta)
 		cpp += std::to_string(_alpha) + ", " + std::to_string(_beta);
 	cpp += "\"" + _name + "\", ";

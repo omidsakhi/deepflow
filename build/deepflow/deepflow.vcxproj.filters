@@ -150,6 +150,9 @@
     <ClCompile Include="..\..\src\proto\caffe.pb.cc">
       <Filter>source\proto</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\core\caffe.cpp">
+      <Filter>source\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -307,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\proto\caffe.pb.h">
       <Filter>include\proto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\caffe.h">
+      <Filter>include\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

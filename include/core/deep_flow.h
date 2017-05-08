@@ -11,11 +11,9 @@
 #include <memory>
 #include <list>
 
-#include "proto\caffe.pb.h"
-
 class Session;
 
-class DeepFlowDllExport DeepFlow {	
+class DeepFlowDllExport DeepFlow : public std::enable_shared_from_this<DeepFlow> {
 	friend class Session;
 public:
 	// GENERATORS
@@ -38,8 +36,8 @@ public:
 	std::string place_holder(std::array<int,4> dims, Tensor::TensorType type = Tensor::Float, std::string name = "ph", std::initializer_list<std::string> phases = {});
 	
 	//CONVOLUTION
-	std::string conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "conv", std::initializer_list<std::string> phases = {});
-	std::string conv2d(std::string input, std::string filter, std::string name = "conv", std::initializer_list<std::string> phases = {});
+	std::string conv2d(std::string input, std::string filter, std::string bias, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "conv", std::initializer_list<std::string> phases = {});
+	std::string conv2d(std::string input, std::string filter, std::string bias, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string pooling(std::string input, int windowHeight = 3, int windowWidth = 3, int verticalPadding = 0, int horizontalPadding = 0, int verticalStride = 1, int horizontalStride = 1, std::string name = "maxpool", std::initializer_list<std::string> phases = {});
 	std::string transposed_conv2d(std::string input, std::string filter, std::array<int, 4> dims, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
 
@@ -96,7 +94,7 @@ public:
 	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});
 	std::string equal(std::string a, std::string b, std::string name = "Equal", std::initializer_list<std::string> phases = {});
 	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});
-	std::string accumulator(std::string input, Accumulator::ResetTime resetTime = Accumulator::ResetTime::EndOfEpoch, std::string name = "acc", std::initializer_list<std::string> phases = {});
+	std::shared_ptr < deepflow::NodeParam > accumulator(std::string input, Accumulator::ResetTime resetTime = Accumulator::ResetTime::EndOfEpoch, std::string name = "acc", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES
 	void save_as_binary(std::string file_path);
@@ -114,12 +112,7 @@ private:
 	std::string _get_unique_node_name(const std::string &prefix) const;
 	std::string _get_unique_solver_name(const std::string &prefix) const;
 	std::shared_ptr<deepflow::NodeParam> _find_node_by_name(const std::string &name) const;
-	std::string _reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, int output, std::string name, std::initializer_list<std::string> phases);	
-
-	// CAFFE
-	void _parse_caffe_net_deprecated(std::shared_ptr<caffe::NetParameter> net);
-	void _parse_caffe_layer_deprecated(const caffe::V1LayerParameter &layer);
-
+	std::string _reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, deepflow::ReduceParam::OutputType type, int output, std::string name, std::initializer_list<std::string> phases);	
 private:
 	std::list<std::shared_ptr<deepflow::NodeParam>> _nodes;
 	std::list<std::shared_ptr<deepflow::SolverParam>> _solvers;

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\core\caffe.h" />
     <ClInclude Include="..\..\include\core\common_cu.h" />
     <ClInclude Include="..\..\include\core\cuda_helper.h" />
     <ClInclude Include="..\..\include\core\deep_flow.h" />
@@ -71,6 +72,7 @@
     <ClInclude Include="..\..\include\solvers\adam_solver.h" />
     <ClInclude Include="..\..\include\solvers\gain_solver.h" />
     <ClInclude Include="..\..\include\solvers\sgd_solver.h" />
+    <ClCompile Include="..\..\src\core\caffe.cpp" />
     <ClCompile Include="..\..\src\core\cuda_helper.cpp">
       <FileType>CppHeader</FileType>
     </ClCompile>

@@ -44,7 +44,7 @@ void LeakyRelu::backward() {
 
 std::string LeakyRelu::to_cpp() const
 {
-	std::string cpp = "auto " + _name + " = df.leaky_relu(" + _inputs[0]->connectedNode()->name() + ", ";
+	std::string cpp = "auto " + _name + " = df.leaky_relu(" + _input_name_for_cpp(0) + ", ";
 	cpp += std::to_string(_negative_slope) + ", ";
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";

@@ -18,12 +18,12 @@ DEFINE_int32(debug, 0, "Level of debug");
 DEFINE_int32(epoch, 1000, "Maximum epochs");
 DEFINE_int32(iter, -1, "Maximum iterations");
 DEFINE_string(image, "lena-256x256.jpg", "Input image");
-DEFINE_int32(examp1, 0, "Eucliean image reconstruction");
-DEFINE_int32(examp2, 0, "Transposed convolution image reconstruction");
-DEFINE_int32(examp3, 0, "Random selector double image reconstruction");
-DEFINE_int32(examp4, 0, "Test of image_batch_reader");
-DEFINE_int32(examp5, 0, "Test reading caffe model");
-
+DEFINE_bool(e1, false, "Eucliean image reconstruction");
+DEFINE_bool(e2, false, "Transposed convolution image reconstruction");
+DEFINE_bool(e3, false, "Random selector double image reconstruction");
+DEFINE_bool(e4, false, "Test of image_batch_reader");
+DEFINE_bool(e5, false, "Test reading caffe model");
+DEFINE_bool(e6, false, "Test convolution forward with bias");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -35,7 +35,7 @@ void main(int argc, char** argv) {
 	DeepFlow df;
 		
 	if (FLAGS_i.empty()) {
-		if (FLAGS_examp1 == 1) {
+		if (FLAGS_e1) {
 			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
 			auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
 			//auto solver = df.sgd_solver(1.0f, 0.01f);
@@ -48,7 +48,7 @@ void main(int argc, char** argv) {
 			df.display(generator, 2, deepflow::DisplayParam_DisplayType_VALUES, "approximation", { "Train" });
 			df.psnr(image, generator, Psnr::EVERY_PASS);
 		}
-		else if (FLAGS_examp2 == 1) {
+		else if (FLAGS_e2) {
 			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
 			auto solver1 = df.gain_solver(0.999f, 0.0001f, 100, 0.000000001f, 0.05f, 0.95f);
 			auto solver2 = df.sgd_solver(1.0f, 0.0000000001f);
@@ -62,7 +62,7 @@ void main(int argc, char** argv) {
 			df.display(tconv, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { "Train" });
 			df.psnr(tconv, image, Psnr::EVERY_PASS, "psnr", { "Train" });
 		}
-		else if (FLAGS_examp3 == 1) {
+		else if (FLAGS_e3) {
 			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
 			auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
 			//auto solver = df.sgd_solver(1.0f, 0.01f);
@@ -76,13 +76,21 @@ void main(int argc, char** argv) {
 			df.display(generator1, 2, deepflow::DisplayParam_DisplayType_VALUES, "approx1", { "Train" });
 			df.display(generator2, 2, deepflow::DisplayParam_DisplayType_VALUES, "approx2", { "Train" });
 		}
-		else if (FLAGS_examp4 == 1) {
+		else if (FLAGS_e4) {
 			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
 			auto imbar = df.image_batch_reader("./data/face", { 1, 1, 27, 18 });
 			df.display(imbar, 1000, deepflow::DisplayParam_DisplayType_VALUES, "approx1", { "Train" });
 		}
-		else if (FLAGS_examp5 == 1) {
+		else if (FLAGS_e5) {
 			df.load_from_caffe_model("./models/VGG_ILSVRC_19_layers.caffemodel");
+		}
+		else if (FLAGS_e6) {
+			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
+			auto image = df.image_reader(FLAGS_image, deepflow::ImageReaderParam_Type_GRAY_ONLY);
+			auto b = df.variable(df.zeros({ 1,1,1,1}), 0);
+			auto f = df.variable(df.ones({ 1,1,5,5 }), 0);
+			auto conv = df.conv2d(image, f, b, "conv");			
+			df.display(conv, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { "Train" });
 		}
 
 

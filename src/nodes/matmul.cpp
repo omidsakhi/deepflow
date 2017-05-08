@@ -48,13 +48,13 @@ void MatMul::backward() {
 	auto b = _inputs[1];
 	auto c = _outputs[0];
 
-	if (_inputs[0]->connectedNode()->shouldBackward()) {
+	if (_inputs[0]->connectedNode()->propagateBack()) {
 		// col_A = row_B
 		//A(row_A,col_A) = diff(row_A,col_B) * B(row_B,col_B).T		
 		LOG_IF(FATAL, cublasSgemm(_handle, CUBLAS_OP_T, CUBLAS_OP_N, _row_B, _row_A, _col_B, &_alpha, (float*)b->value()->data(), _col_B, (float*)c->diff()->data(), _col_B, &_beta, (float*)a->diff()->mutableData(), _col_A) != 0);
 	}
 	
-	if (_inputs[1]->connectedNode()->shouldBackward()) {
+	if (_inputs[1]->connectedNode()->propagateBack()) {
 		//B(row_B,col_B) = A(row_A,col_A).T * diff(row_A,col_B)		
 		LOG_IF(FATAL, cublasSgemm(_handle, CUBLAS_OP_N, CUBLAS_OP_T, _col_B, _col_A, _row_A, &_alpha, (float *)c->diff()->data(), _col_B, (float *)a->value()->data(), _col_A, &_beta, (float*)b->diff()->mutableData(), _col_B) != 0);
 	}
@@ -63,7 +63,7 @@ void MatMul::backward() {
 
 std::string MatMul::to_cpp() const
 {
-	std::string cpp = "auto " + _name + " = df.matmul(" + _inputs[0]->connectedNode()->name() + ", " + _inputs[1]->connectedNode()->name() + ", ";
+	std::string cpp = "auto " + _name + " = df.matmul(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;

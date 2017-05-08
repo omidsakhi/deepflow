@@ -28,7 +28,7 @@ void Softmax::backward() {
 
 std::string Softmax::to_cpp() const
 {
-	std::string cpp = "auto " + _name + " = df.softmax(" + _inputs[0]->connectedNode()->name() + ", ";
+	std::string cpp = "auto " + _name + " = df.softmax(" + _input_name_for_cpp(0) + ", ";
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;

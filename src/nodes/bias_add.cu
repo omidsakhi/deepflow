@@ -50,10 +50,10 @@ void BiasAdd::forward() {
 }
 
 void BiasAdd::backward() {
-	if (_inputs[0]->connectedNode()->shouldBackward()) {
+	if (_inputs[0]->connectedNode()->propagateBack()) {
 		DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), _inputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice));
 	}
-	if (_inputs[1]->connectedNode()->shouldBackward()) {
+	if (_inputs[1]->connectedNode()->propagateBack()) {
 		DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
 		auto outputDims = _outputs[0]->diff()->dims();
 		auto size = _outputs[0]->diff()->size();
@@ -64,7 +64,7 @@ void BiasAdd::backward() {
 
 std::string BiasAdd::to_cpp() const
 {
-	std::string cpp = "auto " + _name + " = df.bias_add(" + _inputs[0]->connectedNode()->name() + ", " + _inputs[1]->connectedNode()->name() + ", ";
+	std::string cpp = "auto " + _name + " = df.bias_add(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;

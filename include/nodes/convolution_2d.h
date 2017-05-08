@@ -5,7 +5,7 @@
 class DeepFlowDllExport Convolution2D : public Node {
 public:
 	Convolution2D(const deepflow::NodeParam &param);
-	int minNumInputs() { return 2; }
+	int minNumInputs();
 	int minNumOutputs() { return 1; }
 	void initForward();
 	void initBackward();
@@ -15,18 +15,22 @@ public:
 	virtual BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 	std::string to_cpp() const;
 protected:
-	cudnnHandle_t _cudnnHandle;	
-	cudnnFilterDescriptor_t _filterDesc;
+	cudnnHandle_t _cudnnHandle;
+	void *_x, *_y, *_w, *_dx, *_dy, *_dw, *_b, *_db, *_z;	
+	cudnnTensorDescriptor_t _xDesc, _yDesc, _dxDesc, _dyDesc, _zDesc, _bDesc, _dbDesc;
+	cudnnFilterDescriptor_t _wDesc;	
 	cudnnConvolutionDescriptor_t _convDesc;
 	cudnnConvolutionFwdAlgo_t _fwdAlgo;
 	cudnnConvolutionBwdFilterAlgo_t _bwdFilterAlgo;
 	cudnnConvolutionBwdDataAlgo_t _bwdDataAlgo;
+	cudnnActivationDescriptor_t _activationDesc;
 	size_t _fwdWorkspaceSize;
 	size_t _bwdDataWorkspaceSize;
 	size_t _bwdFilterWorkspaceSize;
 	size_t _maxWorkspaceSize;
-	const float alpha = 1.0f;
+	const float alpha1 = 1.0f;
+	const float alpha2 = 0.0f;
 	const float beta = 0.0f;
 	float *d_workspace;
-
+	int _num_inputs;
 };

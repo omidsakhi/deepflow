@@ -16,7 +16,7 @@ public:
 	BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 private:
 	cudnnHandle_t _cudnnHandle;
-	cudnnFilterDescriptor_t _filterDesc;
+	cudnnFilterDescriptor_t _wDesc;
 	cudnnConvolutionDescriptor_t _convDesc;
 	cudnnConvolutionFwdAlgo_t _fwdAlgo;	
 	cudnnConvolutionBwdDataAlgo_t _bwdDataAlgo;

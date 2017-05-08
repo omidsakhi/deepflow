@@ -35,8 +35,8 @@ std::list<std::shared_ptr<Node>> Phaseplexer::inputNodes() const {
 std::string Phaseplexer::to_cpp() const
 {
 	auto param = _param.phaseplexer_param();
-	std::string cpp = "auto " + _name + " = df.phaseplexer(" + _inputs[0]->connectedNode()->name() + ", \"" + param.phase(0) + "\", ";
-	cpp += _inputs[1]->connectedNode()->name() + ", \"" + param.phase(1) + "\", ";
+	std::string cpp = "auto " + _name + " = df.phaseplexer(" + _input_name_for_cpp(0) + ", \"" + param.phase(0) + "\", ";
+	cpp += _input_name_for_cpp(1) + ", \"" + param.phase(1) + "\", ";
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;

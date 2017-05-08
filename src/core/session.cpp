@@ -303,17 +303,17 @@ std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string
 	return 0;
 }
 
-void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool train, bool print_iteration) {
+void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration) {
 	int iteration_per_epoch = 1;
 	bool any_last_batch = false;
 	for (auto node : *nodes)
 		node->setExecutionContext(context);
-	for (auto node : *end_nodes) {
-		node->_unvisit();
-		node->_shouldForward();
-		if (train) {
+	bool train = _phases.find(context->phase)->second == deepflow::PhaseParam_PhaseBehaviour_TRAIN;
+	bool validation = _phases.find(context->phase)->second == deepflow::PhaseParam_PhaseBehaviour_VALIDATION;
+	if (train || validation) {
+		for (auto node : *end_nodes) {
 			node->_unvisit();
-			node->_shouldBackward();
+			node->_propagateBack();
 		}
 	}
 	do {
@@ -377,7 +377,7 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 				break;
 			}
 		}
-		std::list<std::shared_ptr<Generator>> validation_readers;
+		std::list<std::shared_ptr<Generator>> validation_phase_generators;
 		std::list<std::shared_ptr<Node>> validation_end_nodes;
 		std::shared_ptr<ExecutionContext> validation_context;
 		if (!validation_phase.empty()) {
@@ -385,7 +385,7 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 			validation_context = std::make_shared<ExecutionContext>();
 			validation_context->current_epoch = 1;
 			validation_context->debug_level = debug_level;
-			validation_readers = _get_nodes<Generator>(validation_phase);
+			validation_phase_generators = _get_nodes<Generator>(validation_phase);
 			validation_end_nodes = _get_end_nodes(validation_phase);
 		}
 		int iteration = 1;
@@ -394,12 +394,12 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 				std::cout << "Epoch " << epoch << " -->" << std::endl;
 			auto epoch_start = std::chrono::high_resolution_clock::now();
 			execution_context->current_epoch = epoch;
-			_execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_phase_variable_nodes, max_iter, true, print_iteration);
+			_execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_phase_variable_nodes, max_iter, print_iteration);
 			if (!validation_phase.empty()) {
 				validation_context->phase = validation_phase;
 				validation_context->current_iteration = 1;
 				validation_context->current_epoch = epoch;
-				_execute_one_pass(validation_context, 0, &_nodes, &validation_readers, &validation_end_nodes, 0, max_iter, false, false);
+				_execute_one_pass(validation_context, 0, &_nodes, &validation_phase_generators, &validation_end_nodes, 0, max_iter, false);
 			}
 			auto epoch_end = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
@@ -412,7 +412,7 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 		}
 	}
 	else {
-		_execute_one_pass(execution_context, 0, &_nodes, &execution_phase_generators, &execution_end_nodes,0, max_iter, false, false);
+		_execute_one_pass(execution_context, 0, &_nodes, &execution_phase_generators, &execution_end_nodes,0, max_iter, false);
 	}
 }
 
@@ -426,7 +426,7 @@ std::string Session::to_cpp() const
 	std::string code = "\nDeepFlow df;\n\n";
 	
 	for (auto phase : _phases)			
-		code += "df.define_phase(\"" + phase.first + "\", PhaseParam_PhaseBehaviour::" + PhaseParam_PhaseBehaviour_Name(phase.second) + ");\n";
+		code += "df.define_phase(\"" + phase.first + "\", deepflow::PhaseParam_PhaseBehaviour_" + PhaseParam_PhaseBehaviour_Name(phase.second) + ");\n";
 
 	code += "\n";
 

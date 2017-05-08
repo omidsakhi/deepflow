@@ -42,13 +42,19 @@ void Print::backward() {
 }
 
 std::string Print::to_cpp() const
-{
-	std::string inputs = _inputs[0]->connectedNode()->name();
-	for (int i = 1; i < _inputs.size(); ++i) {
-		inputs + ", " + _inputs[i]->connectedNode()->name();
-	}
-	std::string cpp = "df.print( {" + inputs + "} , ";
-	cpp += "\"" + _raw_message + "\", ";
+{	
+	std::string inputs = _input_name_for_cpp(0);
+	for (int i = 1; i < _num_inputs; ++i) {
+		inputs += ", " + _input_name_for_cpp(i);
+	}	
+
+	std::string cpp = "df.print( {" + inputs + "} , ";	
+	std::string escaped_raw_message = _raw_message;
+	for (int i=0; i < escaped_raw_message.size(); ++i) 
+		if (escaped_raw_message[i] == '\n') {
+			escaped_raw_message[i] = 'n';
+		}		
+	cpp += "\"" + escaped_raw_message + "\", ";
 	if (_print_time == deepflow::PrintParam_PrintTime_END_OF_EPOCH) {
 		cpp += "Print::END_OF_EPOCH, ";
 	}

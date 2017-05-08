@@ -42,38 +42,7 @@ void Node::_unvisit() {
 		node->_unvisit();
 }
 
-void Node::_shouldForward() {
-	if (_visited == true)
-		return;
-	_visited = true;
-	//LOG(INFO) << "VISITING " << _name;
-	if (forwardType() == ALWAYS_FORWARD) {				
-		//LOG(INFO) << "ALWAYS FORWARD " << _name << " " <<  _should_forward;
-		setShouldForward(true);
-	}
-	else if (forwardType() == NEVER_FORWARD) {		
-		//LOG(INFO) << _name << " NEVER FORWARD";
-		setShouldForward(false);
-	}
-	else {
-		bool _should_forward = false;				
-		auto list = outputNodes();
-		for (auto node : list) {						
-			//LOG(INFO) << "INSPECTING OUTPUT " << node->name();
-			if (node->__should_forward == true) {
-				_should_forward = true;				
-				break;
-			}
-		}	
-		setShouldForward(_should_forward);
-		//LOG_IF(INFO,!_should_forward) << _name << " NO FORWARD BASED ON " << list.size() << " OUTPUTS ";
-	}
-	for (auto node : inputNodes()) {
-		node->_shouldForward();
-	}
-}
-
-void Node::_shouldBackward() {
+void Node::_propagateBack() {
 	if (_visited == true)
 		return;
 	_visited = true;
@@ -91,8 +60,8 @@ void Node::_shouldBackward() {
 		auto list = inputNodes();
 		for (auto node : list) {
 			//LOG(INFO) << "INSPECTING INPUT " << node->name();
-			node->_shouldBackward();
-			if (node->__should_backward == true) {
+			node->_propagateBack();
+			if (node->_propagate_back == true) {
 				_should_backward = true;				
 				break;
 			}
@@ -101,28 +70,18 @@ void Node::_shouldBackward() {
 		setShouldBackward(_should_backward);
 	}	
 	for (auto node : inputNodes()) {
-		node->_shouldBackward();
+		node->_propagateBack();
 	}
 }
 
-bool Node::shouldForward() const
+bool Node::propagateBack() const
 {
-	return __should_forward;
-}
-
-bool Node::shouldBackward() const
-{
-	return __should_backward;
-}
-
-void Node::setShouldForward(bool state)
-{
-	__should_forward = state;
+	return _propagate_back;
 }
 
 void Node::setShouldBackward(bool state)
 {
-	__should_backward = state;
+	_propagate_back = state;
 	//LOG_IF(INFO, state) << _name << " BACKWARD -> true";
 }
 
@@ -149,10 +108,7 @@ void Node::_forward() {
 	_visited = true;
 	for (auto node : inputNodes())
 		node->_forward();
-	if (__should_forward) {
-		//LOG(INFO) << "FORWARD " << _name;
-		forward();
-	}
+	forward();
 }
 
 void Node::_backward() {
@@ -161,7 +117,7 @@ void Node::_backward() {
 	if (_context && includePhase(_context->phase) == false)
 		return;
 	_visited = true;
-	if (__should_backward) {
+	if (_propagate_back) {
 		//LOG(INFO) << "BACKWARD " << _name;
 		backward();
 	}		
@@ -182,6 +138,21 @@ std::string Node::_to_cpp_phases() const
 		phases = phases + ", " + "\"" + _param.phase(i) + "\"";
 	}
 	return phases;
+}
+
+std::string Node::_input_name_for_cpp(int i) const
+{
+	auto inputNode = _inputs[i]->connectedNode();
+	std::string name = inputNode->name();
+	if (inputNode->outputs().size() > 1) {
+		int index = 0;
+		for (int index = 0; index < inputNode->outputs().size(); ++index) {
+			if (inputNode->output(index)->name() == _param.input(i))
+				break;
+		}
+		name += "->output(" + std::to_string(index) + ")";
+	}
+	return name;
 }
 
 std::vector<NodeInputPtr> & Node::inputs() {

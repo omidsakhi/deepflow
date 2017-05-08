@@ -38,7 +38,7 @@ void Pooling::backward() {
 std::string Pooling::to_cpp() const
 {
 	auto param = _param.pooling_param();	
-	std::string cpp = "auto " + _name + " = df.pooling(" + _inputs[0]->connectedNode()->name() + ", ";
+	std::string cpp = "auto " + _name + " = df.pooling(" + _input_name_for_cpp(0) + ", ";
 	cpp += std::to_string(param.window_h()) + ", ";
 	cpp += std::to_string(param.window_w()) + ", ";
 	cpp += std::to_string(param.v_pad()) + ", ";

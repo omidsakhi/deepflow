@@ -10,6 +10,7 @@ void Reduce::initForward() {
 	int reduceDim = reduceParam.reduce_dim();
 	LOG_IF(FATAL, reduceDim > 3) << "reduceDim > 3 [FAILED]";
 	_reduceTensorOp = (cudnnReduceTensorOp_t) reduceParam.reduce_op();
+	_type = reduceParam.output_type();
 
 	auto inputDims = _inputs[0]->value()->dims();
 	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));	
@@ -33,7 +34,7 @@ void Reduce::initForward() {
 	case deepflow::ReduceParam_ReduceOp_MUL:
 		opString = "ReduceMul";
 		break;
-	case deepflow::ReduceParam_ReduceOp_MIN:
+	case deepflow::ReduceParam_ReduceOp_MIN:		
 		opString = "ReduceMin";
 		break;
 	case deepflow::ReduceParam_ReduceOp_MAX:
@@ -76,10 +77,16 @@ std::string Reduce::to_cpp() const
 		op = "reduce_mul";
 		break;
 	case deepflow::ReduceParam_ReduceOp_MIN:
-		op = "reduce_min";
+		if (_type == deepflow::ReduceParam_OutputType_VALUES)
+			op = "reduce_min";
+		else
+			op = "argmin";
 		break;
 	case deepflow::ReduceParam_ReduceOp_MAX:
-		op = "reduce_max";
+		if (_type == deepflow::ReduceParam_OutputType_VALUES)
+			op = "reduce_max";
+		else
+			op = "argmax";
 		break;
 	case deepflow::ReduceParam_ReduceOp_AMAX:
 		op = "reduce_absmax";
@@ -98,7 +105,7 @@ std::string Reduce::to_cpp() const
 	auto reduceParam = _param.reduce_param();
 	int reduceDim = reduceParam.reduce_dim();
 
-	std::string cpp = "auto " + _name + " = df." + op + "(" + _inputs[0]->connectedNode()->name() + ", " + std::to_string(reduceDim) + ", ";
+	std::string cpp = "auto " + _name + " = df." + op + "(" + _input_name_for_cpp(0) + ", " + std::to_string(reduceDim) + ", ";
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;
