@@ -28,18 +28,22 @@ int ReverseInt(int i)
 
 void MNISTReader::initForward() {
 	_file_path = _folder_path;
-	if (_output_type == MNISTOutputType::Data) {
-		if (_reader_type == MNISTReaderType::Train)
-			_file_path += "/train-images.idx3-ubyte";
-		else
-			_file_path += "/t10k-images.idx3-ubyte";
+	if (_output_type == MNISTOutputType::Data && _reader_type == MNISTReaderType::Train) {
+		_file_path += "/train-images.idx3-ubyte";
 	}
-	else {
-		if (_reader_type == MNISTReaderType::Train)
+	else if (_output_type == MNISTOutputType::Data && _reader_type == MNISTReaderType::Test) {
+		_file_path += "/t10k-images.idx3-ubyte";
+	} 
+	else if (_output_type == MNISTOutputType::Labels && _reader_type == MNISTReaderType::Train) {
 		_file_path += "/train-labels.idx1-ubyte";
-			else
+	} 
+	else if (_output_type == MNISTOutputType::Labels && _reader_type == MNISTReaderType::Test) {			
 		_file_path += "/t10k-labels.idx1-ubyte";
 	}
+	else {
+		LOG(FATAL);
+	}
+
 	LOG(INFO) << "MNIST " << _name << " reading from " << _file_path;
 
 	if (_output_type == MNISTOutputType::Data) {
@@ -50,7 +54,7 @@ void MNISTReader::initForward() {
 		int n = 0;
 		_tx.read((char*)&n, sizeof(__int32));
 		n = ReverseInt(n);
-		LOG_IF(FATAL, n != 60000 && n != 10000) << "TX error.";
+		LOG_IF(FATAL, n != _num_total_samples) << "TX error.";
 		int n_rows, n_cols;
 		_tx.read((char*)&n_rows, sizeof(n_rows));
 		n_rows = ReverseInt(n_rows);
@@ -63,7 +67,7 @@ void MNISTReader::initForward() {
 		_temp = new unsigned char[28 * 28];
 		_outputs[0]->initValue({ _batch_size, 1, 28, 28 });
 	}
-	else {
+	else if (_output_type == MNISTOutputType::Labels) {
 		_tx.open(_file_path, std::ios::binary);
 		LOG_IF(FATAL, !_tx.is_open()) << "Failed to open " << _file_path;
 		int msb = 0;
@@ -71,11 +75,14 @@ void MNISTReader::initForward() {
 		int n = 0;
 		_tx.read((char*)&n, sizeof(__int32));
 		n = ReverseInt(n);
-		LOG_IF(FATAL, n != 60000 && n != 10000) << _file_path << " error.";
+		LOG_IF(FATAL, n != _num_total_samples) << _file_path << " error. " << n;
 		_tx_start_pos = _tx.tellg();
-		_buf = new float[_batch_size * 10];
+		_buf = new float[_batch_size * 10];		
 		_temp = new unsigned char[1];
 		_outputs[0]->initValue({ _batch_size, 10, 1, 1 });
+	}
+	else {
+		LOG(FATAL);
 	}
 
 	nextBatch();
@@ -116,14 +123,27 @@ void MNISTReader::nextBatch() {
 				_buf[i * 28 * 28 + j] = ((float)_temp[j] / 255.0f - 0.5f) * 2;
 		}
 	}
-	else {
+	else if (_output_type == MNISTOutputType::Labels) {
 		for (int i = 0; i < _num_batch_samples * 10; i++)
 			_buf[i] = 0.0f;
 		for (int i = 0; i < _num_batch_samples; ++i)
 		{
-			_tx.read((char*)_temp, sizeof(_temp));
-			_buf[i * 10 + (*_temp)] = 1.0f;
+			_tx.read((char*)_temp, 1);			
+			_buf[i * 10 + _temp[0]] = 1.0f;
 		}
+		/*
+		for (int i = 0; i < _num_batch_samples; ++i) {
+			for (int j = 0; j < 10; ++j)
+			{
+				std::cout << _buf[i * 10 + j] << " ";
+			}
+			std::cout << ", ";
+		}
+		std::cout << std::endl;
+		*/
+	}
+	else {
+		LOG(FATAL);
 	}
 	
 	DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));			

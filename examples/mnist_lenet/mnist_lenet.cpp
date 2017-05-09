@@ -34,16 +34,17 @@ void main(int argc, char** argv) {
 		df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
 		df.define_phase("Validation", deepflow::PhaseParam_PhaseBehaviour_VALIDATION);		
 		//auto solver = df.gain_solver(0.9999f, 0.00001f, 10, 0.000000001f, 0.05f, 0.95f);
-		auto solver = df.sgd_solver(0.999f, 0.000000001f);
-		//auto solver = df.adadelta_solver(0.1f, 0.9f, 0.00001f); 
+		auto solver = df.sgd_solver(0.999f, 0.001f);
+		//auto solver = df.adadelta_solver();
 		auto train_data = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Train, MNISTReader::Data, "train_data", { "Train" });
 		auto train_labels = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Train, MNISTReader::Labels, "train_labels", { "Train" });
 		auto test_data = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });
 		auto test_labels = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Test, MNISTReader::Labels, "test_labels", { "Validation" });
 		auto data_selector = df.phaseplexer(train_data, "Train", test_data, "Validation", "data_selector");
-		//df.display(test_data, 50);
+		//df.display(test_data, 50, deepflow::DisplayParam_DisplayType_VALUES, { "Validation" });
 		auto label_selector = df.phaseplexer(train_labels, "Train", test_labels, "Validation", "label_selector");
 		auto conv1_w = df.variable(df.random_uniform({ 20, 1 , 5, 5 }, -0.1f, 0.1f),solver, "conv1_w");		
+		//auto conv1_b = df.variable(df.random_uniform({ 1, 20 , 1, 1 }, -0.1f, 0.1f), solver, "conv1_b");
 		auto conv1 = df.conv2d(data_selector, conv1_w, "", 2, 2, 1, 1, 1, 1, "conv1");
 		auto pool1 = df.pooling(conv1, 2, 2, 0, 0, 2, 2, "pool1");
 		auto conv2_w = df.variable(df.random_uniform({ 50, 20 , 5, 5 }, -0.1f, 0.1f),solver, "conv2_w");		
@@ -55,7 +56,7 @@ void main(int argc, char** argv) {
 		auto m1 = df.matmul(pool2, w1,"m1");
 		auto bias1 = df.bias_add(m1, b1,"bias1");
 		auto relu1 = df.leaky_relu(bias1, 0.01f, "relu1");
-		auto dropout = df.dropout(relu1, 0.0f, "dropout" );
+		auto dropout = df.dropout(relu1, 0.5f, "dropout" );
 		auto dropout_validation_bypass = df.phaseplexer(relu1, "Validation", dropout, "Train", "dropout_validation_bypass");
 		auto w2 = df.variable(df.random_uniform({ 500, 10, 1 , 1 }, -0.1f, 0.1f),solver, "w2");
 		auto b2 = df.variable(df.step({ 1, 10, 1, 1 }, -1.0f, 1.0f),solver, "b2");
@@ -68,9 +69,8 @@ void main(int argc, char** argv) {
 		auto equal = df.equal(predict, target,"equal");
 		auto acc = df.accumulator(equal, Accumulator::EndOfEpoch, "acc");
 		auto correct = df.reduce_sum(acc->output(0), 0, "correct");
-		//df.print({ correct, acc->output(1) }, "    TRAINSET   CORRECT COUNT : {0} OUT OF {1}\n", Print::END_OF_EPOCH, Print::VALUES, "print1", { "Train" });
-		df.print({ equal }, "    VALIDATION EQUAL : {0}\n", Print::EVERY_PASS, Print::VALUES, "print2", { "Validation" });
-		df.print({ correct, acc->output(1) }, "    VALIDATION CORRECT COUNT : {0} OUT OF {1}\n", Print::EVERY_PASS, Print::VALUES, "print3", { "Validation" });
+		df.print({ correct, acc->output(1) }, "    TRAINSET   CORRECT COUNT : {0} OUT OF {1} = %{}%\n", Print::END_OF_EPOCH, Print::VALUES, "print1", { "Train" });
+		df.print({ correct, acc->output(1) }, "    VALIDATION CORRECT COUNT : {0} OUT OF {1} = %{}%\n", Print::END_OF_EPOCH, Print::VALUES, "print2", { "Validation" });
 		
 	}
 	else {

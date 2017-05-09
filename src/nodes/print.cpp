@@ -25,6 +25,19 @@ void Print::forward() {
 	if (_print_time == END_OF_EPOCH && _context->last_batch == false)
 		return;
 	std::string message = _raw_message;
+	size_t start_pos = message.find("%{}");
+	if (start_pos != std::string::npos) {
+		float a, b;
+		if (_print_type == DIFFS) {
+			a = atof(_inputs[0]->diff()->toString().c_str());
+			b = atof(_inputs[1]->diff()->toString().c_str());
+		}
+		else {
+			a = atof(_inputs[0]->value()->toString().c_str());
+			b = atof(_inputs[1]->value()->toString().c_str());
+		}
+		message.replace(start_pos, 3, std::to_string(a / b * 100.0f));
+	}
 	for (int i = 0; i < _inputs.size(); ++i) {
 		size_t start_pos = message.find("{" + std::to_string(i) + "}");
 		if (start_pos == std::string::npos)
