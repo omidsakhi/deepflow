@@ -54,7 +54,7 @@ void Convolution2D::initForward() {
 		//	LOG(FATAL) << "Dimension of the bias must be 1x" << filterDims[0] << "x" << h << "x" << w;
 		//LOG_IF(FATAL, _inputs[2]->dims()[1] != _inputs[1]->dims()[0]) << "The second dimension of biasDesc and the first dimension of filterDesc are not equal.";
 		DF_CUDNN_CHECK(cudnnCreateActivationDescriptor(&_activationDesc));
-		cudnnSetActivationDescriptor(_activationDesc, CUDNN_ACTIVATION_RELU, CUDNN_NOT_PROPAGATE_NAN, 0.0f);
+		cudnnSetActivationDescriptor(_activationDesc, CUDNN_ACTIVATION_RELU, CUDNN_NOT_PROPAGATE_NAN, 0.01f);
 	}
 }
 
@@ -79,6 +79,8 @@ void Convolution2D::initBackward() {
 	_maxWorkspaceSize = std::max({ _maxWorkspaceSize, _bwdFilterWorkspaceSize });
 
 	if (_num_inputs == 3) {
+		_dzDesc = _dyDesc;
+		DF_CUDA_CHECK(cudaMalloc(&_dz, _outputs[0]->diff()->sizeInBytes()));
 		_db = _inputs[2]->diff()->mutableData();
 		_dbDesc = _inputs[2]->diff()->descriptor();		
 	}
@@ -96,12 +98,18 @@ void Convolution2D::forward() {
 }
 
 void Convolution2D::backward() {
+	if (_num_inputs == 3) {
+		if (_inputs[2]->connectedNode()->propagateBack())
+			cudnnConvolutionBackwardBias(_cudnnHandle, &alpha1, _dyDesc, _dy, &beta, _dbDesc, _db);
+		cudnnActivationBackward(_cudnnHandle, _activationDesc, &alpha1, _yDesc, _y, _dyDesc, _dy, _xDesc, _x, &beta, _dzDesc, _dz);
+	}
+	else {
+		_dz = _dy;
+	}
 	if (_inputs[0]->connectedNode()->propagateBack())
-		DF_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &alpha1, _wDesc, _w, _dyDesc, _dy, _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &beta, _dxDesc, _dx));
+		DF_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &alpha1, _wDesc, _w, _dzDesc, _dz, _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &beta, _dxDesc, _dx));
 	if (_inputs[1]->connectedNode()->propagateBack())
-		DF_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &alpha1, _xDesc, _x, _dyDesc, _dy, _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &beta, _wDesc, _dw));
-	if (_num_inputs == 3 && _inputs[2]->connectedNode()->propagateBack())
-		cudnnConvolutionBackwardBias(_cudnnHandle, &alpha1, _dyDesc, _dy, &beta, _dbDesc, _db);
+		DF_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &alpha1, _xDesc, _x, _dzDesc, _dz, _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &beta, _wDesc, _dw));
 }
 
 std::string Convolution2D::to_cpp() const

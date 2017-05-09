@@ -33,8 +33,8 @@ void main(int argc, char** argv) {
 
 		df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
 		df.define_phase("Validation", deepflow::PhaseParam_PhaseBehaviour_VALIDATION);		
-		//auto solver = df.gain_solver(0.9999f, 0.00001f, 10, 0.000000001f, 0.05f, 0.95f);
-		auto solver = df.sgd_solver(0.999f, 0.001f);
+		auto solver = df.gain_solver(0.9999f, 0.0001f, 10, 0.000000001f, 0.05f, 0.95f);
+		//auto solver = df.sgd_solver(0.999f, 0.001f);
 		//auto solver = df.adadelta_solver();
 		auto train_data = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Train, MNISTReader::Data, "train_data", { "Train" });
 		auto train_labels = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Train, MNISTReader::Labels, "train_labels", { "Train" });
@@ -44,12 +44,12 @@ void main(int argc, char** argv) {
 		//df.display(test_data, 50, deepflow::DisplayParam_DisplayType_VALUES, { "Validation" });
 		auto label_selector = df.phaseplexer(train_labels, "Train", test_labels, "Validation", "label_selector");
 		auto conv1_w = df.variable(df.random_uniform({ 20, 1 , 5, 5 }, -0.1f, 0.1f),solver, "conv1_w");		
-		//auto conv1_b = df.variable(df.random_uniform({ 1, 20 , 1, 1 }, -0.1f, 0.1f), solver, "conv1_b");
-		auto conv1 = df.conv2d(data_selector, conv1_w, "", 2, 2, 1, 1, 1, 1, "conv1");
+		auto conv1_b = df.variable(df.random_uniform({ 1, 20 , 1, 1 }, -0.1f, 0.1f), solver, "conv1_b");
+		auto conv1 = df.conv2d(data_selector, conv1_w, conv1_b, 2, 2, 1, 1, 1, 1, "conv1");
 		auto pool1 = df.pooling(conv1, 2, 2, 0, 0, 2, 2, "pool1");
 		auto conv2_w = df.variable(df.random_uniform({ 50, 20 , 5, 5 }, -0.1f, 0.1f),solver, "conv2_w");		
-		//auto conv2_b = df.variable(df.random_uniform({ 1, 50 , 1, 1 }, -0.1f, 0.1f), solver, "conv2_b");
-		auto conv2 = df.conv2d(pool1, conv2_w, "", "conv2");
+		auto conv2_b = df.variable(df.random_uniform({ 1, 50 , 1, 1 }, -0.1f, 0.1f), solver, "conv2_b");
+		auto conv2 = df.conv2d(pool1, conv2_w, conv2_b, "conv2");
 		auto pool2 = df.pooling(conv2, 2, 2, 0, 0, 2, 2, "pool2");
 		auto w1 = df.variable(df.random_uniform({ 1250, 500, 1 , 1 }, -0.1f, 0.1f),solver, "w1");
 		auto b1 = df.variable(df.step({ 1, 500, 1 , 1 }, -1.0f, 1.0f),solver, "b1");

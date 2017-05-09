@@ -16,8 +16,8 @@ public:
 	std::string to_cpp() const;
 protected:
 	cudnnHandle_t _cudnnHandle;
-	void *_x, *_y, *_w, *_dx, *_dy, *_dw, *_b, *_db, *_z;	
-	cudnnTensorDescriptor_t _xDesc, _yDesc, _dxDesc, _dyDesc, _zDesc, _bDesc, _dbDesc;
+	void *_x, *_y, *_w, *_dx, *_dy, *_dw, *_b, *_db, *_z, *_dz;	
+	cudnnTensorDescriptor_t _xDesc, _yDesc, _dxDesc, _dyDesc, _zDesc, _dzDesc, _bDesc, _dbDesc;
 	cudnnFilterDescriptor_t _wDesc;	
 	cudnnConvolutionDescriptor_t _convDesc;
 	cudnnConvolutionFwdAlgo_t _fwdAlgo;
