@@ -4,9 +4,13 @@
 
 #include "core/tensor.h"
 #include "generators/mnist_reader.h"
+
 #include "nodes/print.h"
 #include "nodes/psnr.h"
 #include "nodes/accumulator.h"
+
+#include "core/caffe.h"
+
 #include <string>
 #include <memory>
 #include <list>
@@ -15,6 +19,7 @@ class Session;
 
 class DeepFlowDllExport DeepFlow : public std::enable_shared_from_this<DeepFlow> {
 	friend class Session;
+	friend class Caffe;
 public:
 	// GENERATORS
 	std::string mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name = "mnist", std::initializer_list<std::string> phases = {});
@@ -112,6 +117,7 @@ private:
 	std::string _get_unique_node_name(const std::string &prefix) const;
 	std::string _get_unique_solver_name(const std::string &prefix) const;
 	std::shared_ptr<deepflow::NodeParam> _find_node_by_name(const std::string &name) const;
+	std::shared_ptr<deepflow::NodeParam> _find_node_by_output__name(const std::string &output_name) const;
 	std::string _reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, deepflow::ReduceParam::OutputType type, int output, std::string name, std::initializer_list<std::string> phases);	
 private:
 	std::list<std::shared_ptr<deepflow::NodeParam>> _nodes;

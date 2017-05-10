@@ -678,6 +678,16 @@ std::shared_ptr<deepflow::NodeParam> DeepFlow::_find_node_by_name(const std::str
 	return 0;
 }
 
+std::shared_ptr<deepflow::NodeParam> DeepFlow::_find_node_by_output__name(const std::string & output_name) const
+{
+	for (auto node : _nodes) {
+		for (auto output: node->output())
+		if (output == output_name)
+			return node;
+	}
+	return 0;
+}
+
 std::string DeepFlow::_get_unique_node_name(const std::string &prefix) const {
 	if (_find_node_by_name(prefix) == 0)
 		return prefix;
@@ -771,5 +781,5 @@ void DeepFlow::load_from_binary(std::string file_path) {
 void DeepFlow::load_from_caffe_model(std::string file_path)
 {
 	Caffe caffe(this, true);
-	caffe.load(file_path);
+	caffe.load(file_path, { std::pair< std::string, std::array<int,4> >("data",{10,3,224,224}) });
 }

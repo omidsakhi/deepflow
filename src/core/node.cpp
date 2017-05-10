@@ -12,7 +12,7 @@ Node::Node(const deepflow::NodeParam &param) : CudaHelper() {
 void Node::createIO() {
 	for (int i = 0; i < minNumInputs(); ++i)
 		_inputs.push_back(std::make_shared<NodeInput>(shared_from_this(), i));		
-	LOG_IF(FATAL, _param.input_size() != _inputs.size()) << name() << " _param.input_size() != minNumInputs()";
+	LOG_IF(FATAL, _param.input_size() != _inputs.size()) << name() << " _param.input_size() != minNumInputs() | " << _param.input_size() << " != " << _inputs.size();
 
 	for (int i = 0; i < minNumOutputs(); ++i)
 		_outputs.push_back(std::make_shared<NodeOutput>(shared_from_this(), i, name() + std::string("_output_") + std::to_string(i)));		

@@ -18,6 +18,7 @@ DEFINE_int32(debug, 0, "Level of debug");
 DEFINE_int32(epoch, 1000, "Maximum epochs");
 DEFINE_int32(iter, -1, "Maximum iterations");
 DEFINE_string(image, "lena-256x256.jpg", "Input image");
+DEFINE_bool(cpp, false, "Print C++ code");
 DEFINE_bool(e1, false, "Eucliean image reconstruction");
 DEFINE_bool(e2, false, "Transposed convolution image reconstruction");
 DEFINE_bool(e3, false, "Random selector double image reconstruction");
@@ -82,7 +83,7 @@ void main(int argc, char** argv) {
 			df.display(imbar, 1000, deepflow::DisplayParam_DisplayType_VALUES, "approx1", { "Train" });
 		}
 		else if (FLAGS_e5) {
-			df.load_from_caffe_model("./models/VGG_ILSVRC_19_layers.caffemodel");
+			df.load_from_caffe_model("./models/VGG_ILSVRC_16_layers.caffemodel");
 		}
 		else if (FLAGS_e6) {
 			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
@@ -104,6 +105,11 @@ void main(int argc, char** argv) {
 	if (!FLAGS_run.empty()) {
 		session->initialize();
 		session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
+	}
+
+	if (FLAGS_cpp) {
+		session->initialize();
+		std::cout << session->to_cpp() << std::endl;
 	}
 
 	
