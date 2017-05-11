@@ -84,7 +84,7 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_e5) {
 			df.load_from_caffe_model("./models/VGG_ILSVRC_16_layers.caffemodel");
-			df.print_nodes();
+			df.print_nodes();			
 		}
 		else if (FLAGS_e6) {
 			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
@@ -110,6 +110,7 @@ void main(int argc, char** argv) {
 
 	if (FLAGS_cpp) {
 		session->initialize();
+		session->printMemory();
 		std::cout << session->to_cpp() << std::endl;
 	}
 

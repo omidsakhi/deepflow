@@ -418,6 +418,17 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 	}
 }
 
+void Session::printMemory()
+{
+	size_t free_byte;
+	size_t total_byte;
+	cudaError_t cuda_status = cudaMemGetInfo(&free_byte, &total_byte);
+	if (cudaSuccess != cuda_status) {		
+		LOG(FATAL) << "cudaMemGetInfo fails, " << cudaGetErrorString(cuda_status);		
+	}
+	LOG(INFO) << "CUDA MEM - Free: " << free_byte << " - Total: " << total_byte << " Used (%): " << (((float)total_byte - (float) free_byte) / total_byte * 100.0f);
+}
+
 void generate_cpp_code(Node *node, std::string *code) {	
 	(*code) += node->to_cpp() + "\n";	
 }

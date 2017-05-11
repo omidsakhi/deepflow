@@ -14,6 +14,7 @@ public:
 	void setGraph(std::shared_ptr<deepflow::GraphParam> graph);
 	void initialize();
 	void run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level);
+	void printMemory();
 	std::string to_cpp() const;
 	//void save_as_binary(std::string filePath, bool include_inits);
 	//void save_as_text(std::string filePath, bool include_weights = false, bool include_inits = false);

@@ -49,6 +49,7 @@ void Caffe::_parse_layer_deprecated(const caffe::V1LayerParameter & layer)
 {
 	LOG_IF(INFO, _verbose) << "Type = " << caffe::V1LayerParameter_LayerType_Name(layer.type());
 	LOG_IF(INFO, _verbose) << " .name = " << layer.name();	
+	LOG_IF(FATAL, layer.name().empty()) << "layer.name().empty()";
 	LOG_IF(INFO, _verbose) << " .bottom_size = " << layer.bottom_size();
 	for (auto b : layer.bottom())
 		LOG_IF(INFO, _verbose) << "    .bottom = " << b;
@@ -164,8 +165,8 @@ void Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & para
 		auto bias_mutable_weights = bias_node->mutable_variable_param()->mutable_weights();
 		for (auto d : layer.blobs(1).data())
 			bias_mutable_weights->add_weight(d);		
-		std::string m = df->matmul(layer.bottom(0) + "_output_0", weight, layer.name(), {});
-		df->bias_add(m, bias, {});
+		std::string m = df->matmul(layer.bottom(0) + "_output_0", weight, layer.name() + "_ip", {});
+		df->bias_add(m, bias, layer.name());
 	}
 }
 

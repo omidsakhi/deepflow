@@ -812,5 +812,5 @@ void DeepFlow::load_from_binary(std::string file_path) {
 void DeepFlow::load_from_caffe_model(std::string file_path)
 {
 	Caffe caffe(this, true);
-	caffe.load(file_path, { std::pair< std::string, std::array<int,4> >("data",{10,3,224,224}) });
+	caffe.load(file_path, { std::pair< std::string, std::array<int,4> >("data",{3,3,224,224}) });
 }
