@@ -111,6 +111,7 @@ message Conv2dParam {
 
 message DropoutParam {
 	float dropout = 1;	
+	bool train_only = 2;
 }
 
 message MatMulParam {

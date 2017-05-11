@@ -305,7 +305,7 @@ std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string
 
 void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration) {
 	int iteration_per_epoch = 1;
-	bool any_last_batch = false;
+	bool any_last_batch = false;	
 	for (auto node : *nodes)
 		node->setExecutionContext(context);
 	bool train = _phases.find(context->phase)->second == deepflow::PhaseParam_PhaseBehaviour_TRAIN;
@@ -355,8 +355,7 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 
 void Session::run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level) {
 	LOG(INFO) << "Executing graph for phase " << phase;
-	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";
-	deepflow::PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
+	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";	
 	std::list<std::shared_ptr<Generator>> execution_phase_generators = _get_nodes<Generator>(phase);
 	LOG_IF(FATAL, execution_phase_generators.size() == 0) << "No generator is defined for phase " << phase;
 	std::list<std::shared_ptr<Node>> execution_end_nodes = _get_end_nodes(phase);
@@ -366,7 +365,9 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 	}
 	LOG(INFO) << "End nodes: " << end_node_names;
 	auto execution_context = std::make_shared<ExecutionContext>();
+	deepflow::PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
 	execution_context->phase = phase;
+	execution_context->phase_behaviour = behaviour;
 	execution_context->debug_level = debug_level;
 	if (behaviour == deepflow::PhaseParam_PhaseBehaviour_TRAIN) {
 		std::list<std::shared_ptr<Variable>> execution_phase_variable_nodes = _get_nodes<Variable>(phase);
@@ -385,6 +386,8 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 			validation_context = std::make_shared<ExecutionContext>();
 			validation_context->current_epoch = 1;
 			validation_context->debug_level = debug_level;
+			validation_context->phase = validation_phase;
+			validation_context->phase_behaviour = deepflow::PhaseParam_PhaseBehaviour_VALIDATION;
 			validation_phase_generators = _get_nodes<Generator>(validation_phase);
 			validation_end_nodes = _get_end_nodes(validation_phase);
 		}
@@ -396,7 +399,6 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 			execution_context->current_epoch = epoch;
 			_execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_phase_variable_nodes, max_iter, print_iteration);
 			if (!validation_phase.empty()) {
-				validation_context->phase = validation_phase;
 				validation_context->current_iteration = 1;
 				validation_context->current_epoch = epoch;
 				_execute_one_pass(validation_context, 0, &_nodes, &validation_phase_generators, &validation_end_nodes, 0, max_iter, false);

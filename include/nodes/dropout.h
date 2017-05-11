@@ -22,6 +22,7 @@ private:
 	float alpha = 1.0f;
 	float beta = 0.0f;
 	float _dropout;
+	bool _train_only;
 	float *d_states;
 	float *d_reserve;
 };

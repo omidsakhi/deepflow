@@ -361,13 +361,16 @@
     <Filter Include="source\nodes">
       <UniqueIdentifier>{e48513fd-5d23-4baa-b91a-e1ce019a9f1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="proto">
+      <UniqueIdentifier>{7ff734da-7359-4ef9-838e-0e7fcee1ce90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\src\proto\deepflow.proto">
-      <Filter>source\proto</Filter>
-    </None>
     <None Include="..\..\src\proto\caffe.proto">
-      <Filter>source\proto</Filter>
+      <Filter>proto</Filter>
+    </None>
+    <None Include="..\..\src\proto\deepflow.proto">
+      <Filter>proto</Filter>
     </None>
   </ItemGroup>
 </Project>

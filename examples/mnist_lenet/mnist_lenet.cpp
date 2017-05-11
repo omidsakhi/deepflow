@@ -31,15 +31,15 @@ void main(int argc, char** argv) {
 		
 	if (FLAGS_i.empty()) {		
 
-		df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
-		df.define_phase("Validation", deepflow::PhaseParam_PhaseBehaviour_VALIDATION);		
+		df.define_train_phase("Train");
+		df.define_validation_phase("Validation");		
 		auto solver = df.gain_solver(0.9999f, 0.0001f, 10, 0.000000001f, 0.05f, 0.95f);
 		//auto solver = df.sgd_solver(0.999f, 0.001f);
 		//auto solver = df.adadelta_solver();
 		auto train_data = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Train, MNISTReader::Data, "train_data", { "Train" });
 		auto train_labels = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Train, MNISTReader::Labels, "train_labels", { "Train" });
 		auto test_data = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });
-		auto test_labels = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Test, MNISTReader::Labels, "test_labels", { "Validation" });
+		auto test_labels = df.mnist_reader(FLAGS_mnist, batch_size, MNISTReader::Test, MNISTReader::Labels, "test_labels", { "Validation" });		
 		auto data_selector = df.phaseplexer(train_data, "Train", test_data, "Validation", "data_selector");
 		//df.display(test_data, 50, deepflow::DisplayParam_DisplayType_VALUES, { "Validation" });
 		auto label_selector = df.phaseplexer(train_labels, "Train", test_labels, "Validation", "label_selector");
@@ -56,11 +56,10 @@ void main(int argc, char** argv) {
 		auto m1 = df.matmul(pool2, w1,"m1");
 		auto bias1 = df.bias_add(m1, b1,"bias1");
 		auto relu1 = df.leaky_relu(bias1, 0.01f, "relu1");
-		auto dropout = df.dropout(relu1, 0.5f, "dropout" );
-		auto dropout_validation_bypass = df.phaseplexer(relu1, "Validation", dropout, "Train", "dropout_validation_bypass");
+		auto dropout = df.dropout(relu1, 0.5f, true, "dropout" );
 		auto w2 = df.variable(df.random_uniform({ 500, 10, 1 , 1 }, -0.1f, 0.1f),solver, "w2");
 		auto b2 = df.variable(df.step({ 1, 10, 1, 1 }, -1.0f, 1.0f),solver, "b2");
-		auto m2 = df.matmul(dropout_validation_bypass, w2,"m2");
+		auto m2 = df.matmul(dropout, w2,"m2");
 		auto bias2 = df.bias_add(m2, b2,"bias2");
 		auto relu2 = df.leaky_relu(bias2, 0.01f, "relu2");
 		auto loss = df.softmax_loss(relu2, label_selector, "loss");		

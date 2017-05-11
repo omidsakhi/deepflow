@@ -55,7 +55,7 @@ public:
 
 	// NEURAL NETS
 	std::string bias_add(std::string a, std::string b, std::string name = "bias", std::initializer_list<std::string> phases = {});
-	std::string dropout(std::string a, float dropout = 0.5f, std::string name = "dropout", std::initializer_list<std::string> phases = {});
+	std::string dropout(std::string a, float dropout = 0.5f, bool train_only = true, std::string name = "dropout", std::initializer_list<std::string> phases = {});
 
 	//REDUCTION
 	std::string argmax(std::string input, int reduceDimension, std::string name = "argmax", std::initializer_list<std::string> phases = {});
@@ -106,6 +106,10 @@ public:
 	void load_from_binary(std::string file_path);	
 	void save_as_text(std::string file_path);	
 	void define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour);
+	void define_train_phase(std::string train_phase);
+	void define_validation_phase(std::string validation_phase);
+	void define_inference_phase(std::string inference_phase);
+	void print_nodes();
 
 	std::shared_ptr<deepflow::GraphParam> graph();
 	std::shared_ptr<Session> session();

@@ -2056,11 +2056,18 @@ class DropoutParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   float dropout() const;
   void set_dropout(float value);
 
+  // bool train_only = 2;
+  void clear_train_only();
+  static const int kTrainOnlyFieldNumber = 2;
+  bool train_only() const;
+  void set_train_only(bool value);
+
   // @@protoc_insertion_point(class_scope:deepflow.DropoutParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   float dropout_;
+  bool train_only_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -6384,6 +6391,20 @@ inline void DropoutParam::set_dropout(float value) {
   
   dropout_ = value;
   // @@protoc_insertion_point(field_set:deepflow.DropoutParam.dropout)
+}
+
+// bool train_only = 2;
+inline void DropoutParam::clear_train_only() {
+  train_only_ = false;
+}
+inline bool DropoutParam::train_only() const {
+  // @@protoc_insertion_point(field_get:deepflow.DropoutParam.train_only)
+  return train_only_;
+}
+inline void DropoutParam::set_train_only(bool value) {
+  
+  train_only_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.DropoutParam.train_only)
 }
 
 // -------------------------------------------------------------------

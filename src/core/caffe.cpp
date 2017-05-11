@@ -123,14 +123,14 @@ void Caffe::_parse_relu_param(const caffe::ReLUParameter & param, const caffe::V
 {
 	LOG_IF(INFO, _verbose) << "  -> ReLUParameter";
 	LOG_IF(INFO, _verbose) << "     .negative_slope = " << param.negative_slope() << " [default: 0]";
-	df->leaky_relu(layer.bottom(0), param.negative_slope(), layer.name(), {});
+	df->leaky_relu(layer.bottom(0) + "_output_0", param.negative_slope(), layer.name(), {});
 }
 
 void Caffe::_parse_dropout_param(const caffe::DropoutParameter & param, const caffe::V1LayerParameter &layer)
 {
 	LOG_IF(INFO, _verbose) << "  -> DropoutParameter";
 	LOG_IF(INFO, _verbose) << "     .dropout_ratio = " << param.dropout_ratio() << " [default: 0.5]";
-	df->dropout(layer.bottom(0), param.dropout_ratio(), layer.name(), {});
+	df->dropout(layer.bottom(0) + "_output_0", param.dropout_ratio(), true, layer.name(), {});
 }
 
 void Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & param, const caffe::V1LayerParameter &layer)
@@ -155,7 +155,7 @@ void Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & para
 	for (auto d : layer.blobs(0).data())
 		weight_mutable_weights->add_weight(d);
 	if (param.bias_term() == false) {
-		df->matmul(layer.bottom(0), weight, layer.name(), {});
+		df->matmul(layer.bottom(0) + "_output_0", weight, layer.name(), {});
 	}
 	else {
 		//LOG_IF(FATAL, param.has_bias_filler() == false) << "param.has_bias_filler() == false - " << layer.name();
@@ -164,8 +164,8 @@ void Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & para
 		auto bias_mutable_weights = bias_node->mutable_variable_param()->mutable_weights();
 		for (auto d : layer.blobs(1).data())
 			bias_mutable_weights->add_weight(d);		
-		std::string m = df->matmul(layer.bottom(0), weight, layer.name() + "_ip", {});
-		df->bias_add(layer.name() + "_ip", bias, {});
+		std::string m = df->matmul(layer.bottom(0) + "_output_0", weight, layer.name(), {});
+		df->bias_add(m, bias, {});
 	}
 }
 
@@ -208,6 +208,11 @@ void Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, const c
 		stride_w = param.stride_w();
 	}
 
+	if (stride_h == 0)
+		stride_h = 1;
+	if (stride_w == 0)
+		stride_w = 1;
+
 	LOG_IF(INFO, _verbose) << "     .pad_size = " << param.pad_size() << " [default: 0]";
 	for (auto d : param.pad())
 		LOG_IF(INFO, _verbose) << "      .pad = " << d;
@@ -239,6 +244,11 @@ void Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, const c
 	} else {
 		LOG_IF(FATAL, param.dilation_size() > 2) << "Unsupported param.dilation_size = " << param.dilation_size();
 	}
+
+	if (dilation_h == 0)
+		dilation_h = 1;
+	if (dilation_w == 0)
+		dilation_w = 1;
 	
 	if (param.has_weight_filler()) {
 		LOG_IF(INFO, _verbose) << "     .weight_filler = true";		
@@ -267,7 +277,7 @@ void Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, const c
 		for (auto d : layer.blobs(1).data())
 			bias_mutable_weights->add_weight(d);
 	}
-	df->conv2d(layer.bottom(0), filter, bias, pad_h, pad_w, stride_h, stride_w, dilation_h, dilation_w, layer.name(), {});
+	df->conv2d(layer.bottom(0) + "_output_0", filter, bias, pad_h, pad_w, stride_h, stride_w, dilation_h, dilation_w, layer.name(), {});
 }
 
 void Caffe::_parse_pooling_param(const caffe::PoolingParameter & param, const caffe::V1LayerParameter &layer)
@@ -313,6 +323,6 @@ void Caffe::_parse_pooling_param(const caffe::PoolingParameter & param, const ca
 		horizontalStride = param.stride_h();
 	}
 
-	df->pooling(layer.bottom(0), windowHeight, windowWidth, verticalPadding, horizontalPadding, verticalStride, horizontalStride, layer.name(), {});
+	df->pooling(layer.bottom(0) + "_output_0", windowHeight, windowWidth, verticalPadding, horizontalPadding, verticalStride, horizontalStride, layer.name(), {});
 }
 

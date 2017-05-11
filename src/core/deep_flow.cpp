@@ -230,7 +230,7 @@ std::string DeepFlow::square(std::string a, std::string name, std::initializer_l
 
 std::string DeepFlow::place_holder(std::array<int, 4> dims, Tensor::TensorType type, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = std::make_shared<deepflow::NodeParam>();
-	node_param->set_name(_get_unique_node_name(name));
+	node_param->set_name(_get_unique_node_name(name));	
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -471,7 +471,7 @@ std::shared_ptr<deepflow::SolverParam> DeepFlow::adadelta_solver(float learning_
 	return solver_param;
 }
 
-std::string DeepFlow::dropout(std::string a, float dropout, std::string name, std::initializer_list<std::string> phases) {
+std::string DeepFlow::dropout(std::string a, float dropout, bool train_only, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = std::make_shared<deepflow::NodeParam>();
 	node_param->set_name(_get_unique_node_name(name));
 	add_outputs(node_param, 1);
@@ -480,6 +480,7 @@ std::string DeepFlow::dropout(std::string a, float dropout, std::string name, st
 	node_param->add_input(a);
 	auto dropout_param = node_param->mutable_dropout_param();	
 	dropout_param->set_dropout(dropout);
+	dropout_param->set_train_only(train_only);
 	_nodes.push_back(node_param);
 	return node_param->output(0);
 }
@@ -757,6 +758,36 @@ void DeepFlow::define_phase(std::string phase, deepflow::PhaseParam_PhaseBehavio
 	phase_param->set_phase(phase);
 	phase_param->set_behaviour(behaviour);
 	_phases.push_back(phase_param);
+}
+
+void DeepFlow::define_train_phase(std::string train_phase)
+{
+	define_phase(train_phase, deepflow::PhaseParam_PhaseBehaviour_TRAIN);
+}
+
+void DeepFlow::define_validation_phase(std::string validation_phase)
+{
+	define_phase(validation_phase, deepflow::PhaseParam_PhaseBehaviour_VALIDATION);
+}
+
+void DeepFlow::define_inference_phase(std::string inference_phase)
+{
+	define_phase(inference_phase, deepflow::PhaseParam_PhaseBehaviour_INFERENCE);
+}
+
+void DeepFlow::print_nodes()
+{	
+	for (auto node : _nodes) {		
+		std::string inputs = (node->input_size() > 0) ? node->input(0) : "";
+		for (int i=1; i < node->input_size(); ++i)		
+			inputs += ", " + node->input(i);
+		std::string outputs = (node->output_size() > 0) ? node->output(0) : "";
+		for (int i = 1; i < node->output_size(); ++i)
+			outputs += ", " + node->output(i);
+		if (!outputs.empty())
+			outputs = " -> " + outputs;		
+		LOG(INFO) << "Node " << node->name() << "(" << inputs << ")" << outputs;
+	}
 }
 
 void DeepFlow::load_from_binary(std::string file_path) {
