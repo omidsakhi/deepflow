@@ -24,7 +24,7 @@ std::string DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNIS
 
 }
 
-std::string DeepFlow::data_generator(std::shared_ptr<deepflow::InitParam> initializer, int num_samples, std::shared_ptr<deepflow::SolverParam> solver, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::data_generator(std::shared_ptr<deepflow::InitParam> initializer, int num_samples, std::string solver, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node();	
 	node_param->set_name(_block->get_unique_node_name(name));
@@ -35,8 +35,8 @@ std::string DeepFlow::data_generator(std::shared_ptr<deepflow::InitParam> initia
 	auto generator_param = node_param->mutable_generator_param();
 	auto data_generator_param = generator_param->mutable_data_generator_param();
 	data_generator_param->set_num_samples(num_samples);
-	if (solver)
-		variable_param->set_solver_name(solver->name());
+	if (!solver.empty())
+		variable_param->set_solver_name(solver);
 	auto init_param = variable_param->mutable_init_param();
 	init_param->CopyFrom(*initializer.get());	
 	return node_param->output(0);
@@ -229,15 +229,15 @@ std::string DeepFlow::place_holder(std::array<int, 4> dims, Tensor::TensorType t
 	return node_param->output(0);
 }
 
-std::string DeepFlow::variable(std::shared_ptr<deepflow::InitParam> initializer, std::shared_ptr<deepflow::SolverParam> solver, std::string name, std::initializer_list<std::string> phases) {
+std::string DeepFlow::variable(std::shared_ptr<deepflow::InitParam> initializer, std::string solver, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node();
 	node_param->set_name(_block->get_unique_node_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	auto variable_param = node_param->mutable_variable_param();
-	if (solver)
-		variable_param->set_solver_name(solver->name());
+	if (!solver.empty())
+		variable_param->set_solver_name(solver);
 	auto init_param = variable_param->mutable_init_param();
 	init_param->CopyFrom(*initializer.get());	
 	return node_param->output(0);
@@ -348,8 +348,8 @@ std::shared_ptr < deepflow::NodeParam > DeepFlow::accumulator(std::string input,
 	node_param->add_input(input);	
 	auto accumulator_param = node_param->mutable_accumulator_param();
 	accumulator_param->set_reset_time((deepflow::AccumulatorParam_ResetTime)resetTime);	
-	//return std::make_shared<deepflow::NodeParam>(node_param); //TODO
-	return 0;
+	return std::make_shared<deepflow::NodeParam>(node_param);
+	//return 0;
 }
 
 void DeepFlow::print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime printTime, Print::PrintType printType, std::string name, std::initializer_list<std::string> phases) {
@@ -396,17 +396,16 @@ void DeepFlow::euclidean_loss(std::string a, std::string b, std::string name, st
 	auto euclidean_loss_param = loss_param->mutable_euclidean_loss_param();	
 }
 
-std::shared_ptr<deepflow::SolverParam> DeepFlow::sgd_solver(float momentum, float learning_rate, std::string name) {
+std::string DeepFlow::sgd_solver(float momentum, float learning_rate, std::string name) {
 	auto solver_param = _block->add_solver();	
 	solver_param->set_name(_block->get_unique_solver_name(name));
 	auto sgd_solver = solver_param->mutable_sgd_solver();
 	sgd_solver->set_learning_rate(learning_rate);
-	sgd_solver->set_momentum(momentum);	
-	//return std::make_shared<deepflow::SolverParam>(solver_param);
-	return 0; //TODO
+	sgd_solver->set_momentum(momentum);
+	return solver_param->name();
 }
 
-std::shared_ptr<deepflow::SolverParam> DeepFlow::gain_solver(float momentum, float learning_rate, float max_gain, float min_gain, float gain_plus, float gain_mult, std::string name) {
+std::string DeepFlow::gain_solver(float momentum, float learning_rate, float max_gain, float min_gain, float gain_plus, float gain_mult, std::string name) {
 	auto solver_param = _block->add_solver();	
 	solver_param->set_name(_block->get_unique_solver_name(name));
 	auto gain_solver = solver_param->mutable_gain_solver();
@@ -415,11 +414,10 @@ std::shared_ptr<deepflow::SolverParam> DeepFlow::gain_solver(float momentum, flo
 	gain_solver->set_max_gain(max_gain);
 	gain_solver->set_min_gain(min_gain);
 	gain_solver->set_gain_plus(gain_plus);
-	gain_solver->set_gain_mult(gain_mult);	
-	//return std::make_shared<deepflow::SolverParam>(solver_param);
-	return 0;  //TODO
+	gain_solver->set_gain_mult(gain_mult);
+	return solver_param->name();
 }
-std::shared_ptr<deepflow::SolverParam> DeepFlow::adam_solver(float learning_rate, float beta1, float beta2, float eps, std::string name) {	
+std::string DeepFlow::adam_solver(float learning_rate, float beta1, float beta2, float eps, std::string name) {	
 	auto solver_param = _block->add_solver();
 	solver_param->set_name(_block->get_unique_solver_name(name));
 	auto adam_solver = solver_param->mutable_adam_solver();	
@@ -427,19 +425,17 @@ std::shared_ptr<deepflow::SolverParam> DeepFlow::adam_solver(float learning_rate
 	adam_solver->set_beta1(beta1);
 	adam_solver->set_beta2(beta2);
 	adam_solver->set_eps(eps);
-	//return std::make_shared<deepflow::SolverParam>(solver_param);	
-	return 0; //TODO
+	return solver_param->name();
 }
 
-std::shared_ptr<deepflow::SolverParam> DeepFlow::adadelta_solver(float learning_rate, float momentum, float delta, std::string name) {
+std::string DeepFlow::adadelta_solver(float learning_rate, float momentum, float delta, std::string name) {
 	auto solver_param = _block->add_solver();
 	solver_param->set_name(_block->get_unique_solver_name(name));
 	auto adadelta_solver = solver_param->mutable_adadelta_solver();
 	adadelta_solver->set_learning_rate(learning_rate);
 	adadelta_solver->set_momentum(momentum);
 	adadelta_solver->set_delta(delta);	
-	//return std::make_shared<deepflow::SolverParam>(solver_param);
-	return 0; // TODO
+	return solver_param->name();
 }
 
 std::string DeepFlow::dropout(std::string a, float dropout, bool train_only, std::string name, std::initializer_list<std::string> phases) {

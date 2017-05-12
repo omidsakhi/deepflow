@@ -24,7 +24,7 @@ class DeepFlowDllExport DeepFlow : public std::enable_shared_from_this<DeepFlow>
 public:
 	// GENERATORS
 	std::string mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name = "mnist", std::initializer_list<std::string> phases = {});
-	std::string data_generator(std::shared_ptr<deepflow::InitParam> initializer, int num_samples = 1, std::shared_ptr<deepflow::SolverParam> solver = NULL, std::string name = "igen", std::initializer_list<std::string> phases = {});
+	std::string data_generator(std::shared_ptr<deepflow::InitParam> initializer, int num_samples = 1, std::string solver = "", std::string name = "igen", std::initializer_list<std::string> phases = {});
 	std::string image_reader(std::string file_path, deepflow::ImageReaderParam_Type type, std::string name = "imread", std::initializer_list<std::string> phases = {});
 	std::string image_batch_reader(std::string folder_path, std::initializer_list<int> dims, std::string name = "imbar", std::initializer_list<std::string> phases = {});
 
@@ -38,7 +38,7 @@ public:
 	std::shared_ptr<deepflow::InitParam> step(std::initializer_list<int> dims, float min, float max);
 
 	// VARIABLES & PLACE HOLDER
-	std::string variable(std::shared_ptr<deepflow::InitParam> initializer, std::shared_ptr<deepflow::SolverParam> solver, std::string name = "var", std::initializer_list<std::string> phases = {});
+	std::string variable(std::shared_ptr<deepflow::InitParam> initializer, std::string solver = "", std::string name = "var", std::initializer_list<std::string> phases = {});
 	std::string place_holder(std::array<int,4> dims, Tensor::TensorType type = Tensor::Float, std::string name = "ph", std::initializer_list<std::string> phases = {});
 	
 	//CONVOLUTION
@@ -86,10 +86,10 @@ public:
 	void euclidean_loss(std::string a, std::string b, std::string name = "euclideanloss", std::initializer_list<std::string> phases = {});
 		
 	// SOLVERS
-	std::shared_ptr<deepflow::SolverParam> sgd_solver(float momentum, float learning_rate, std::string name = "sgd");
-	std::shared_ptr<deepflow::SolverParam> gain_solver(float momentum = 0.99999, float learning_rate = 10e-3f, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f, std::string name = "gain");
-	std::shared_ptr<deepflow::SolverParam> adam_solver(float learning_rate = 10e-2f, float beta1 = 0.99f, float beta2 = 0.999f, float eps = 10e-8f, std::string name = "adam");
-	std::shared_ptr<deepflow::SolverParam> adadelta_solver(float learning_rate = 10e-1f, float momentum = 0.9f, float delta = 1e-6f, std::string name = "adadelta");	
+	std::string sgd_solver(float momentum, float learning_rate, std::string name = "sgd");
+	std::string gain_solver(float momentum = 0.99999, float learning_rate = 10e-3f, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f, std::string name = "gain");
+	std::string adam_solver(float learning_rate = 10e-2f, float beta1 = 0.99f, float beta2 = 0.999f, float eps = 10e-8f, std::string name = "adam");
+	std::string adadelta_solver(float learning_rate = 10e-1f, float momentum = 0.9f, float delta = 1e-6f, std::string name = "adadelta");	
 	
 	// PRINTERS & DISPLAYS
 	void print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime printTime = Print::END_OF_EPOCH, Print::PrintType = Print::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});

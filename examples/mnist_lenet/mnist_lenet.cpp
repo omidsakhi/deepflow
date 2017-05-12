@@ -43,7 +43,7 @@ void main(int argc, char** argv) {
 		auto data_selector = df.phaseplexer(train_data, "Train", test_data, "Validation", "data_selector");
 		//df.display(test_data, 50, deepflow::DisplayParam_DisplayType_VALUES, { "Validation" });
 		auto label_selector = df.phaseplexer(train_labels, "Train", test_labels, "Validation", "label_selector");
-		auto conv1_w = df.variable(df.random_uniform({ 20, 1 , 5, 5 }, -0.1f, 0.1f),solver, "conv1_w");		
+		auto conv1_w = df.variable(df.random_uniform({ 20, 1 , 5, 5 }, -0.1f, 0.1f), solver, "conv1_w");		
 		auto conv1_b = df.variable(df.random_uniform({ 1, 20 , 1, 1 }, -0.1f, 0.1f), solver, "conv1_b");
 		auto conv1 = df.conv2d(data_selector, conv1_w, conv1_b, 2, 2, 1, 1, 1, 1, "conv1");
 		auto pool1 = df.pooling(conv1, 2, 2, 0, 0, 2, 2, "pool1");
