@@ -10,14 +10,13 @@ class Loss;
 
 class DeepFlowDllExport Session {
 	friend class DeepFlow;
+	friend class Node;
 public:
-	void setGraph(std::shared_ptr<deepflow::GraphParam> graph);
+	void setBlock(std::shared_ptr<Block> block);
 	void initialize();
 	void run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level);
 	void printMemory();
 	std::string to_cpp() const;
-	//void save_as_binary(std::string filePath, bool include_inits);
-	//void save_as_text(std::string filePath, bool include_weights = false, bool include_inits = false);
 private:
 	template <class T>
 	std::list<std::shared_ptr<T>> _get_nodes(std::string execution_phase);
@@ -29,7 +28,7 @@ private:
 	void _execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration);
 private:
 	bool _initialized = false;
-	std::shared_ptr<deepflow::GraphParam> _graph;
+	std::shared_ptr<Block> _block;
 	std::list<std::shared_ptr<Node>> _nodes;	
 	std::list<std::shared_ptr<Variable>> _variables;
 	std::map<std::string, deepflow::PhaseParam_PhaseBehaviour> _phases;

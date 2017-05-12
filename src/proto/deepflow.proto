@@ -225,8 +225,9 @@ message NodeParam {
   string name = 1;
   repeated string input = 2;
   repeated string output = 3;  
-  repeated string phase = 4;
-  
+  repeated string phase = 4;  
+  BlockParam block_param = 5;
+
   LossParam loss_param = 50;
   GeneratorParam generator_param = 51;
 
@@ -251,7 +252,8 @@ message NodeParam {
   DisplayParam display_param = 118;
   ActivationParam activation_param = 119;
   PsnrParam psnr_param = 120;
-  RandomSelectorParam random_selector_param = 121;  
+  RandomSelectorParam random_selector_param = 121; 
+  
 }
 
 message SquareParam {
@@ -349,8 +351,8 @@ message PhaseParam {
 	PhaseBehaviour behaviour = 2;
 }
 
-message GraphParam {
+message BlockParam {
 	repeated NodeParam node = 1;
 	repeated SolverParam solver = 2;
-	repeated PhaseParam phase = 3;
+	repeated PhaseParam phase = 3;	
 }

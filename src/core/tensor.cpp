@@ -188,4 +188,5 @@ std::string Tensor::typeString() const {
 	default:
 		LOG(FATAL) << "Unsupported type";
 	};
+	return "";
 }

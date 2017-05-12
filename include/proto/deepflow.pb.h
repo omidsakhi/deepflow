@@ -49,6 +49,9 @@ extern AddParamDefaultTypeInternal _AddParam_default_instance_;
 class BiasAddParam;
 class BiasAddParamDefaultTypeInternal;
 extern BiasAddParamDefaultTypeInternal _BiasAddParam_default_instance_;
+class BlockParam;
+class BlockParamDefaultTypeInternal;
+extern BlockParamDefaultTypeInternal _BlockParam_default_instance_;
 class CastFloatParam;
 class CastFloatParamDefaultTypeInternal;
 extern CastFloatParamDefaultTypeInternal _CastFloatParam_default_instance_;
@@ -76,9 +79,6 @@ extern GainSolverParamDefaultTypeInternal _GainSolverParam_default_instance_;
 class GeneratorParam;
 class GeneratorParamDefaultTypeInternal;
 extern GeneratorParamDefaultTypeInternal _GeneratorParam_default_instance_;
-class GraphParam;
-class GraphParamDefaultTypeInternal;
-extern GraphParamDefaultTypeInternal _GraphParam_default_instance_;
 class ImageBatchReaderParam;
 class ImageBatchReaderParamDefaultTypeInternal;
 extern ImageBatchReaderParamDefaultTypeInternal _ImageBatchReaderParam_default_instance_;
@@ -3745,6 +3745,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
 
+  // .deepflow.BlockParam block_param = 5;
+  bool has_block_param() const;
+  void clear_block_param();
+  static const int kBlockParamFieldNumber = 5;
+  const ::deepflow::BlockParam& block_param() const;
+  ::deepflow::BlockParam* mutable_block_param();
+  ::deepflow::BlockParam* release_block_param();
+  void set_allocated_block_param(::deepflow::BlockParam* block_param);
+
   // .deepflow.LossParam loss_param = 50;
   bool has_loss_param() const;
   void clear_loss_param();
@@ -3969,6 +3978,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::RepeatedPtrField< ::std::string> output_;
   ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
   ::google::protobuf::internal::ArenaStringPtr name_;
+  ::deepflow::BlockParam* block_param_;
   ::deepflow::LossParam* loss_param_;
   ::deepflow::GeneratorParam* generator_param_;
   ::deepflow::VariableParam* variable_param_;
@@ -5578,37 +5588,37 @@ class PhaseParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
 };
 // -------------------------------------------------------------------
 
-class GraphParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.GraphParam) */ {
+class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.BlockParam) */ {
  public:
-  GraphParam();
-  virtual ~GraphParam();
+  BlockParam();
+  virtual ~BlockParam();
 
-  GraphParam(const GraphParam& from);
+  BlockParam(const BlockParam& from);
 
-  inline GraphParam& operator=(const GraphParam& from) {
+  inline BlockParam& operator=(const BlockParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const GraphParam& default_instance();
+  static const BlockParam& default_instance();
 
-  static inline const GraphParam* internal_default_instance() {
-    return reinterpret_cast<const GraphParam*>(
-               &_GraphParam_default_instance_);
+  static inline const BlockParam* internal_default_instance() {
+    return reinterpret_cast<const BlockParam*>(
+               &_BlockParam_default_instance_);
   }
 
-  void Swap(GraphParam* other);
+  void Swap(BlockParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline GraphParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline BlockParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  GraphParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  BlockParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const GraphParam& from);
-  void MergeFrom(const GraphParam& from);
+  void CopyFrom(const BlockParam& from);
+  void MergeFrom(const BlockParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -5629,7 +5639,7 @@ class GraphParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(GraphParam* other);
+  void InternalSwap(BlockParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -5681,7 +5691,7 @@ class GraphParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   const ::google::protobuf::RepeatedPtrField< ::deepflow::PhaseParam >&
       phase() const;
 
-  // @@protoc_insertion_point(class_scope:deepflow.GraphParam)
+  // @@protoc_insertion_point(class_scope:deepflow.BlockParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -7592,6 +7602,45 @@ inline ::google::protobuf::RepeatedPtrField< ::std::string>*
 NodeParam::mutable_phase() {
   // @@protoc_insertion_point(field_mutable_list:deepflow.NodeParam.phase)
   return &phase_;
+}
+
+// .deepflow.BlockParam block_param = 5;
+inline bool NodeParam::has_block_param() const {
+  return this != internal_default_instance() && block_param_ != NULL;
+}
+inline void NodeParam::clear_block_param() {
+  if (GetArenaNoVirtual() == NULL && block_param_ != NULL) delete block_param_;
+  block_param_ = NULL;
+}
+inline const ::deepflow::BlockParam& NodeParam::block_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.block_param)
+  return block_param_ != NULL ? *block_param_
+                         : *::deepflow::BlockParam::internal_default_instance();
+}
+inline ::deepflow::BlockParam* NodeParam::mutable_block_param() {
+  
+  if (block_param_ == NULL) {
+    block_param_ = new ::deepflow::BlockParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.block_param)
+  return block_param_;
+}
+inline ::deepflow::BlockParam* NodeParam::release_block_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.block_param)
+  
+  ::deepflow::BlockParam* temp = block_param_;
+  block_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_block_param(::deepflow::BlockParam* block_param) {
+  delete block_param_;
+  block_param_ = block_param;
+  if (block_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.block_param)
 }
 
 // .deepflow.LossParam loss_param = 50;
@@ -9521,95 +9570,95 @@ inline void PhaseParam::set_behaviour(::deepflow::PhaseParam_PhaseBehaviour valu
 
 // -------------------------------------------------------------------
 
-// GraphParam
+// BlockParam
 
 // repeated .deepflow.NodeParam node = 1;
-inline int GraphParam::node_size() const {
+inline int BlockParam::node_size() const {
   return node_.size();
 }
-inline void GraphParam::clear_node() {
+inline void BlockParam::clear_node() {
   node_.Clear();
 }
-inline const ::deepflow::NodeParam& GraphParam::node(int index) const {
-  // @@protoc_insertion_point(field_get:deepflow.GraphParam.node)
+inline const ::deepflow::NodeParam& BlockParam::node(int index) const {
+  // @@protoc_insertion_point(field_get:deepflow.BlockParam.node)
   return node_.Get(index);
 }
-inline ::deepflow::NodeParam* GraphParam::mutable_node(int index) {
-  // @@protoc_insertion_point(field_mutable:deepflow.GraphParam.node)
+inline ::deepflow::NodeParam* BlockParam::mutable_node(int index) {
+  // @@protoc_insertion_point(field_mutable:deepflow.BlockParam.node)
   return node_.Mutable(index);
 }
-inline ::deepflow::NodeParam* GraphParam::add_node() {
-  // @@protoc_insertion_point(field_add:deepflow.GraphParam.node)
+inline ::deepflow::NodeParam* BlockParam::add_node() {
+  // @@protoc_insertion_point(field_add:deepflow.BlockParam.node)
   return node_.Add();
 }
 inline ::google::protobuf::RepeatedPtrField< ::deepflow::NodeParam >*
-GraphParam::mutable_node() {
-  // @@protoc_insertion_point(field_mutable_list:deepflow.GraphParam.node)
+BlockParam::mutable_node() {
+  // @@protoc_insertion_point(field_mutable_list:deepflow.BlockParam.node)
   return &node_;
 }
 inline const ::google::protobuf::RepeatedPtrField< ::deepflow::NodeParam >&
-GraphParam::node() const {
-  // @@protoc_insertion_point(field_list:deepflow.GraphParam.node)
+BlockParam::node() const {
+  // @@protoc_insertion_point(field_list:deepflow.BlockParam.node)
   return node_;
 }
 
 // repeated .deepflow.SolverParam solver = 2;
-inline int GraphParam::solver_size() const {
+inline int BlockParam::solver_size() const {
   return solver_.size();
 }
-inline void GraphParam::clear_solver() {
+inline void BlockParam::clear_solver() {
   solver_.Clear();
 }
-inline const ::deepflow::SolverParam& GraphParam::solver(int index) const {
-  // @@protoc_insertion_point(field_get:deepflow.GraphParam.solver)
+inline const ::deepflow::SolverParam& BlockParam::solver(int index) const {
+  // @@protoc_insertion_point(field_get:deepflow.BlockParam.solver)
   return solver_.Get(index);
 }
-inline ::deepflow::SolverParam* GraphParam::mutable_solver(int index) {
-  // @@protoc_insertion_point(field_mutable:deepflow.GraphParam.solver)
+inline ::deepflow::SolverParam* BlockParam::mutable_solver(int index) {
+  // @@protoc_insertion_point(field_mutable:deepflow.BlockParam.solver)
   return solver_.Mutable(index);
 }
-inline ::deepflow::SolverParam* GraphParam::add_solver() {
-  // @@protoc_insertion_point(field_add:deepflow.GraphParam.solver)
+inline ::deepflow::SolverParam* BlockParam::add_solver() {
+  // @@protoc_insertion_point(field_add:deepflow.BlockParam.solver)
   return solver_.Add();
 }
 inline ::google::protobuf::RepeatedPtrField< ::deepflow::SolverParam >*
-GraphParam::mutable_solver() {
-  // @@protoc_insertion_point(field_mutable_list:deepflow.GraphParam.solver)
+BlockParam::mutable_solver() {
+  // @@protoc_insertion_point(field_mutable_list:deepflow.BlockParam.solver)
   return &solver_;
 }
 inline const ::google::protobuf::RepeatedPtrField< ::deepflow::SolverParam >&
-GraphParam::solver() const {
-  // @@protoc_insertion_point(field_list:deepflow.GraphParam.solver)
+BlockParam::solver() const {
+  // @@protoc_insertion_point(field_list:deepflow.BlockParam.solver)
   return solver_;
 }
 
 // repeated .deepflow.PhaseParam phase = 3;
-inline int GraphParam::phase_size() const {
+inline int BlockParam::phase_size() const {
   return phase_.size();
 }
-inline void GraphParam::clear_phase() {
+inline void BlockParam::clear_phase() {
   phase_.Clear();
 }
-inline const ::deepflow::PhaseParam& GraphParam::phase(int index) const {
-  // @@protoc_insertion_point(field_get:deepflow.GraphParam.phase)
+inline const ::deepflow::PhaseParam& BlockParam::phase(int index) const {
+  // @@protoc_insertion_point(field_get:deepflow.BlockParam.phase)
   return phase_.Get(index);
 }
-inline ::deepflow::PhaseParam* GraphParam::mutable_phase(int index) {
-  // @@protoc_insertion_point(field_mutable:deepflow.GraphParam.phase)
+inline ::deepflow::PhaseParam* BlockParam::mutable_phase(int index) {
+  // @@protoc_insertion_point(field_mutable:deepflow.BlockParam.phase)
   return phase_.Mutable(index);
 }
-inline ::deepflow::PhaseParam* GraphParam::add_phase() {
-  // @@protoc_insertion_point(field_add:deepflow.GraphParam.phase)
+inline ::deepflow::PhaseParam* BlockParam::add_phase() {
+  // @@protoc_insertion_point(field_add:deepflow.BlockParam.phase)
   return phase_.Add();
 }
 inline ::google::protobuf::RepeatedPtrField< ::deepflow::PhaseParam >*
-GraphParam::mutable_phase() {
-  // @@protoc_insertion_point(field_mutable_list:deepflow.GraphParam.phase)
+BlockParam::mutable_phase() {
+  // @@protoc_insertion_point(field_mutable_list:deepflow.BlockParam.phase)
   return &phase_;
 }
 inline const ::google::protobuf::RepeatedPtrField< ::deepflow::PhaseParam >&
-GraphParam::phase() const {
-  // @@protoc_insertion_point(field_list:deepflow.GraphParam.phase)
+BlockParam::phase() const {
+  // @@protoc_insertion_point(field_list:deepflow.BlockParam.phase)
   return phase_;
 }
 

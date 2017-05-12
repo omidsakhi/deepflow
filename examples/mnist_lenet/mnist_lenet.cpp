@@ -73,7 +73,7 @@ void main(int argc, char** argv) {
 		
 	}
 	else {
-		df.load_from_binary(FLAGS_i);	
+		df.block()->load_from_binary(FLAGS_i);	
 	}
 
 	auto session = df.session();	
@@ -92,9 +92,9 @@ void main(int argc, char** argv) {
 	if (!FLAGS_o.empty())
 	{
 		if (FLAGS_text)
-			df.save_as_text(FLAGS_o);
+			df.block()->save_as_text(FLAGS_o);
 		else
-			df.save_as_binary(FLAGS_o);
+			df.block()->save_as_binary(FLAGS_o);
 	}
 	
 }

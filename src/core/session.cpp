@@ -36,6 +36,7 @@
 #include "nodes/activation.h"
 #include "nodes/psnr.h"
 #include "nodes/random_selector.h"
+#include "nodes/block.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_reader.h"
@@ -193,17 +194,20 @@ std::shared_ptr<Solver> Session::_create_solver(const deepflow::SolverParam &sol
 	return 0;
 }
 
-void Session::setGraph(std::shared_ptr<deepflow::GraphParam> graph) {
-	_graph = graph;
+void Session::setBlock(std::shared_ptr<Block> block) {
+	_block = block;
 }
 
 void Session::initialize() {
 	if (_initialized == true)
 		return;
 	
-	_initialized = true;
+	_initialized = true;	
 
-	for (auto phase_param : _graph->phase())
+	//auto d = _block->param();
+
+	/*
+	for (auto phase_param : _block->param().phase())
 		_phases.insert(std::pair<std::string, deepflow::PhaseParam_PhaseBehaviour>(phase_param.phase(), phase_param.behaviour()));
 
 	for (auto node_param : _graph->node()) {
@@ -241,6 +245,7 @@ void Session::initialize() {
 			LOG(INFO) << "Variable " << var->name() << " <-> Constant";
 		}
 	}
+	*/
 
 	std::srand(std::time(0));
 	std::list<std::shared_ptr<Node>> queue = _nodes;

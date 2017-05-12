@@ -10,6 +10,7 @@
 #include "nodes/accumulator.h"
 
 #include "core/caffe.h"
+#include "nodes/block.h"
 
 #include <string>
 #include <memory>
@@ -101,31 +102,21 @@ public:
 	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});
 	std::shared_ptr < deepflow::NodeParam > accumulator(std::string input, Accumulator::ResetTime resetTime = Accumulator::ResetTime::EndOfEpoch, std::string name = "acc", std::initializer_list<std::string> phases = {});
 
-	// UTILITIES
-	void save_as_binary(std::string file_path);
-	void load_from_binary(std::string file_path);	
-	void save_as_text(std::string file_path);	
+	// UTILITIES	
 	void define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour);
 	void define_train_phase(std::string train_phase);
 	void define_validation_phase(std::string validation_phase);
 	void define_inference_phase(std::string inference_phase);
-	void print_nodes();
 
-	std::shared_ptr<deepflow::GraphParam> graph();
+	std::shared_ptr<Block> block();
 	std::shared_ptr<Session> session();
 
 	// CAFFE
-	void load_from_caffe_model(std::string file_path);	
+	void load_from_caffe_model(std::string file_path, std::initializer_list<std::pair<std::string, std::array<int, 4>>> inputs);
 
 private:
-	std::string _get_unique_node_name(const std::string &prefix) const;
-	std::string _get_unique_solver_name(const std::string &prefix) const;
-	std::shared_ptr<deepflow::NodeParam> _find_node_by_name(const std::string &name) const;
-	std::shared_ptr<deepflow::NodeParam> _find_node_by_output__name(const std::string &output_name) const;
 	std::string _reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, deepflow::ReduceParam::OutputType type, int output, std::string name, std::initializer_list<std::string> phases);	
+
 private:
-	std::list<std::shared_ptr<deepflow::NodeParam>> _nodes;
-	std::list<std::shared_ptr<deepflow::SolverParam>> _solvers;
-	std::list<std::shared_ptr<deepflow::PhaseParam>> _phases;
-	
+	std::shared_ptr<Block> _block;
 };

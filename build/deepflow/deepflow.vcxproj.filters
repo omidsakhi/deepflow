@@ -153,6 +153,9 @@
     <ClCompile Include="..\..\src\core\caffe.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\nodes\block.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -313,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\core\caffe.h">
       <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\block.h">
+      <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

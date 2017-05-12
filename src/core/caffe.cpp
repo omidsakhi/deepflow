@@ -36,7 +36,7 @@ void Caffe::_parse_net_deprecated(std::shared_ptr<caffe::NetParameter> net, std:
 		for (auto place_holde : inputs) {
 			if (place_holde.first == net_input_name) {
 				auto place_holder_node_output = df->place_holder(place_holde.second, Tensor::Float, net_input_name, {});
-				auto place_holder_node_param = df->_find_node_by_output__name(place_holder_node_output);
+				auto place_holder_node_param = df->block()->find_node_by_output__name(place_holder_node_output);
 				place_holder_node_param->set_output(0, net_input_name);
 			}
 		}
@@ -151,7 +151,7 @@ void Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & para
 	int num_inputs = layer.blobs(0).data_size() / num_output;
 	//LOG_IF(FATAL, param.has_weight_filler() == false) << "param.has_weight_filler() == false - " << layer.name() ;
 	std::string weight = df->variable( _parse_filler_param({ num_inputs, num_output, 1, 1 }, param.weight_filler(), "weight filler"), 0, layer.name() + "_w", {});
-	auto weights_node = df->_find_node_by_output__name(weight);
+	auto weights_node = df->block()->find_node_by_output__name(weight);
 	auto weight_mutable_weights = weights_node->mutable_variable_param()->mutable_weights();
 	for (auto d : layer.blobs(0).data())
 		weight_mutable_weights->add_weight(d);
@@ -161,7 +161,7 @@ void Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & para
 	else {
 		//LOG_IF(FATAL, param.has_bias_filler() == false) << "param.has_bias_filler() == false - " << layer.name();
 		std::string bias = df->variable(_parse_filler_param({ 1, num_output, 1, 1 }, param.bias_filler(), "bias filler"), 0, layer.name() + "_b", {});
-		auto bias_node = df->_find_node_by_output__name(bias);		
+		auto bias_node = df->block()->find_node_by_output__name(bias);		
 		auto bias_mutable_weights = bias_node->mutable_variable_param()->mutable_weights();
 		for (auto d : layer.blobs(1).data())
 			bias_mutable_weights->add_weight(d);		
@@ -260,7 +260,7 @@ void Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, const c
 	LOG_IF(FATAL, num_output < 1) << "num_output < 1";
 	int filter_second_dimension = layer.blobs(0).data_size() / num_output / kernel_h / kernel_w;
 	std::string filter = df->variable(_parse_filler_param({ num_output, filter_second_dimension, kernel_h, kernel_w }, param.weight_filler(), "weight filler"), 0, layer.name() + "_w", {});
-	auto filter_node = df->_find_node_by_output__name(filter);
+	auto filter_node = df->block()->find_node_by_output__name(filter);
 	auto filter_mutable_weights = filter_node->mutable_variable_param()->mutable_weights();
 	for (auto d : layer.blobs(0).data())
 		filter_mutable_weights->add_weight(d);
@@ -273,12 +273,17 @@ void Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, const c
 		}
 		//LOG_IF(FATAL, param.has_bias_filler() == false) << "param.has_bias_filler() == false - " << layer.name();
 		bias = df->variable(_parse_filler_param({ 1, num_output, 1, 1 }, param.bias_filler(), "bias filler"), 0, layer.name() + "_b", {});
-		auto bias_node = df->_find_node_by_output__name(bias);
+		auto bias_node = df->block()->find_node_by_output__name(bias);
 		auto bias_mutable_weights = bias_node->mutable_variable_param()->mutable_weights();
 		for (auto d : layer.blobs(1).data())
 			bias_mutable_weights->add_weight(d);
 	}
 	df->conv2d(layer.bottom(0) + "_output_0", filter, bias, pad_h, pad_w, stride_h, stride_w, dilation_h, dilation_w, layer.name(), {});
+}
+
+void Caffe::_parse_softmax_param(const caffe::SoftmaxParameter & param, const caffe::V1LayerParameter & layer)
+{
+	LOG_IF(INFO, _verbose) << "  -> SoftmaxParameter";
 }
 
 void Caffe::_parse_pooling_param(const caffe::PoolingParameter & param, const caffe::V1LayerParameter &layer)
