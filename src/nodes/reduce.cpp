@@ -1,7 +1,7 @@
 #include "nodes/reduce.h"
 
-Reduce::Reduce(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_reduce_param() == false) << "param.has_reduce_param() == false [FAILED]";
+Reduce::Reduce(const deepflow::NodeParam &_block_param) : Node(_block_param) {
+	LOG_IF(FATAL, _block_param.has_reduce_param() == false) << "param.has_reduce_param() == false [FAILED]";
 }
 
 void Reduce::initForward() {

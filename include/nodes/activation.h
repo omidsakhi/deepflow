@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport Activation : public Node {
 public:
-	Activation(const deepflow::NodeParam &param);
+	Activation(const deepflow::NodeParam &_block_param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();

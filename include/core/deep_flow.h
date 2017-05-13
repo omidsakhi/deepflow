@@ -84,7 +84,7 @@ public:
 	std::string random_selector(std::string input_1, std::string input_2, float probability = 0.5f, std::string name = "selector", std::initializer_list<std::string> phases = {});
 
 	// LOSS
-	std::shared_ptr<deepflow::NodeParam> softmax_loss(std::string a, std::string b, std::string name = "softmaxloss", std::initializer_list<std::string> phases = {});
+	std::string softmax_loss(std::string a, std::string b, std::string name = "softmaxloss", std::initializer_list<std::string> phases = {});
 	void euclidean_loss(std::string a, std::string b, std::string name = "euclideanloss", std::initializer_list<std::string> phases = {});
 		
 	// SOLVERS
@@ -102,7 +102,7 @@ public:
 	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});
 	std::string equal(std::string a, std::string b, std::string name = "Equal", std::initializer_list<std::string> phases = {});
 	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});
-	std::shared_ptr < deepflow::NodeParam > accumulator(std::string input, Accumulator::ResetTime resetTime = Accumulator::ResetTime::EndOfEpoch, std::string name = "acc", std::initializer_list<std::string> phases = {});
+	std::array<std::string,2> accumulator(std::string input, Accumulator::ResetTime resetTime = Accumulator::ResetTime::EndOfEpoch, std::string name = "acc", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
 	void define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour);
@@ -119,7 +119,6 @@ public:
 private:
 	std::string _reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, deepflow::ReduceParam::OutputType type, int output, std::string name, std::initializer_list<std::string> phases);	
 
-private:
-	deepflow::NodeParam _block_node_param;	
+private:		
 	std::shared_ptr<Block> _block;
 };

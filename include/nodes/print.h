@@ -13,7 +13,7 @@ public:
 		VALUES = 0,
 		DIFFS = 1
 	};
-	Print(const deepflow::NodeParam &param);
+	Print(const deepflow::NodeParam &_block_param);
 	int minNumInputs();
 	int minNumOutputs() { return 0; }
 	void initForward();

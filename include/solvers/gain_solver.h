@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport GainSolver : public Solver {
 public:
-	GainSolver(const deepflow::SolverParam &param);
+	GainSolver(const deepflow::SolverParam &_block_param);
 	void apply(std::shared_ptr<Variable> var);
 	void init(std::shared_ptr<Variable> var);
 	std::string to_cpp() const;

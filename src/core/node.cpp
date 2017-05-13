@@ -3,10 +3,13 @@
 
 #include <glog/logging.h>
 
-Node::Node(const deepflow::NodeParam &param) : CudaHelper() {
-	_param = param;	
-	_name = param.name();
-	_visited = false;
+Node::Node() : CudaHelper() 
+{	
+}
+
+Node::Node(const deepflow::NodeParam &_block_param) : CudaHelper() {
+	_param = _block_param;	
+	_name = _block_param.name();	
 }
 
 void Node::createIO() {
@@ -146,11 +149,11 @@ std::string Node::_input_name_for_cpp(int i) const
 	std::string name = inputNode->name();
 	if (inputNode->outputs().size() > 1) {
 		int index = 0;
-		for (int index = 0; index < inputNode->outputs().size(); ++index) {
+		for (index = 0; index < inputNode->outputs().size(); ++index) {
 			if (inputNode->output(index)->name() == _param.input(i))
 				break;
 		}
-		name += "->output(" + std::to_string(index) + ")";
+		name += "[" + std::to_string(index) + "]";
 	}
 	return name;
 }
@@ -179,7 +182,7 @@ void Node::setInitialized(bool status) {
 	_initialized = status;
 }
 
-deepflow::NodeParam &Node::param() {
+deepflow::NodeParam &Node::_block_param() {
 	return _param;
 }
 

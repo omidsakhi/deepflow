@@ -7,7 +7,7 @@ class PlaceHolder;
 
 class DeepFlowDllExport Generator {
 public:	
-	Generator(const deepflow::NodeParam &param);
+	Generator(const deepflow::NodeParam &_block_param);
 	virtual void nextBatch() = 0;
 	virtual bool isLastBatch() = 0;
 };

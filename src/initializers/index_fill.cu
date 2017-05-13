@@ -10,8 +10,8 @@ void IndexFillKernel(const int n, float *a,const float offset)
 	if (i < n) a[i] = offset + i;
 }
 
-IndexFill::IndexFill(const deepflow::InitParam &param) : Initializer(param) {
-	LOG_IF(FATAL, param.has_index_fill_param() == false) << "param.has_index_fill_param() == false";	
+IndexFill::IndexFill(const deepflow::InitParam &_block_param) : Initializer(_block_param) {
+	LOG_IF(FATAL, _block_param.has_index_fill_param() == false) << "param.has_index_fill_param() == false";	
 }
 
 void IndexFill::apply(Variable *variable) {

@@ -40,8 +40,8 @@ void PictureGeneratorKernel(const int num_images, const float *in, const int per
 	}
 }
 
-Display::Display(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_display_param() == false) << "param.has_display_param() == false";
+Display::Display(const deepflow::NodeParam &_block_param) : Node(_block_param) {
+	LOG_IF(FATAL, _block_param.has_display_param() == false) << "param.has_display_param() == false";
 }
 
 void Display::initForward() {
@@ -103,10 +103,10 @@ std::string Display::to_cpp() const
 	std::string cpp = "df.display(" + _input_name_for_cpp(0) + ", ";
 	cpp += std::to_string(_delay_msec) + ", ";
 	if (_display_type == deepflow::DisplayParam_DisplayType_DIFFS) {
-		cpp += "DisplayParam_DisplayType_DIFFS, ";
+		cpp += "deepflow::DisplayParam_DisplayType_DIFFS, ";
 	}
 	else {
-		cpp += "DisplayParam_DisplayType_VALUES, ";
+		cpp += "deepflow::DisplayParam_DisplayType_VALUES, ";
 	}	
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";

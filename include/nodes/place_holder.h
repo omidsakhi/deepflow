@@ -8,7 +8,7 @@
 
 class DeepFlowDllExport PlaceHolder : public Node {
 public:
-	PlaceHolder(const deepflow::NodeParam &param);
+	PlaceHolder(const deepflow::NodeParam &_block_param);
 	void initForward();
 	void initBackward();
 	void forward();

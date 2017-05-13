@@ -1,15 +1,15 @@
 #include "nodes/random_selector.h"
 
-RandomSelector::RandomSelector(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_random_selector_param() == false) << "param.has_random_selector_param() == false";
+RandomSelector::RandomSelector(const deepflow::NodeParam &_block_param) : Node(_block_param) {
+	LOG_IF(FATAL, _block_param.has_random_selector_param() == false) << "param.has_random_selector_param() == false";
 }
 
 void RandomSelector::initForward()
 {
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size());
 	_outputs[0]->initValue(_inputs[0]->dims());
-	auto param = _param.random_selector_param();
-	_probability = param.probability();
+	auto _block_param = _param.random_selector_param();
+	_probability = _block_param.probability();
 	LOG(INFO) << "Initializing RandomSelector " << _name << " - " << _outputs[0]->value()->shape();
 }
 

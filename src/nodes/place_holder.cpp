@@ -1,7 +1,7 @@
 #include "nodes/place_holder.h"
 
-PlaceHolder::PlaceHolder(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_place_holder_param() == false) << "param.has_place_holder_param() == false";
+PlaceHolder::PlaceHolder(const deepflow::NodeParam &_block_param) : Node(_block_param) {
+	LOG_IF(FATAL, _block_param.has_place_holder_param() == false) << "param.has_place_holder_param() == false";
 }
 
 void PlaceHolder::initForward() {

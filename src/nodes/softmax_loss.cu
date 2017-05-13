@@ -10,32 +10,29 @@ void SoftmaxLossKernelBackward(const int n, const float *softmax_output,const fl
 }
 
 
-SoftmaxLoss::SoftmaxLoss(const deepflow::NodeParam &param) : Loss(param) {
-	LOG_IF(FATAL, param.loss_param().has_softmax_loss_param() == false) << "param.loss_param().has_softmax_loss_param() == false";
+SoftmaxLoss::SoftmaxLoss(const deepflow::NodeParam &_block_param) : Loss(_block_param) {
+	LOG_IF(FATAL, _block_param.loss_param().has_softmax_loss_param() == false) << "param.loss_param().has_softmax_loss_param() == false";
 }
 
 void SoftmaxLoss::initForward() {		
 	LOG(INFO) << "Initializing SoftmaxLoss " << _name << " - " << _inputs[0]->value()->shape();
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input size != target size";
 	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));	
-	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	_outputs[1]->initValue(_inputs[0]->value()->dims());
+	_outputs[0]->initValue(_inputs[0]->value()->dims());	
 }
 
 void SoftmaxLoss::initBackward() {
-	_outputs[0]->initDiff();
-	_outputs[1]->initDiff();
+	_outputs[0]->initDiff();	
 }
 
 void SoftmaxLoss::forward() {
-	DF_CUDNN_CHECK(cudnnSoftmaxForward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, CUDNN_SOFTMAX_MODE_CHANNEL, &alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &beta, _outputs[0]->value()->descriptor(), _outputs[1]->value()->mutableData()));
+	DF_CUDNN_CHECK(cudnnSoftmaxForward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, CUDNN_SOFTMAX_MODE_CHANNEL, &alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &beta, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
 }
 
 void SoftmaxLoss::backward() {
 	size_t size = _outputs[0]->value()->size();
-	SoftmaxLossKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*) _outputs[1]->value()->data(), (float*) _inputs[1]->value()->data(), (float*)_outputs[0]->value()->mutableData());
-	DF_KERNEL_CHECK();
-	DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->value()->data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice));	
+	SoftmaxLossKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*) _outputs[0]->value()->data(), (float*) _inputs[1]->value()->data(), (float*)_inputs[0]->diff()->mutableData());
+	DF_KERNEL_CHECK();	
 }
 
 std::string SoftmaxLoss::to_cpp() const

@@ -11,8 +11,8 @@
 
 #include <glog/logging.h>
 
-Variable::Variable(std::shared_ptr<Initializer> initializer, const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_variable_param() == false) << "param.has_variable_param() == false";
+Variable::Variable(std::shared_ptr<Initializer> initializer, const deepflow::NodeParam &_block_param) : Node(_block_param) {
+	LOG_IF(FATAL, _block_param.has_variable_param() == false) << "param.has_variable_param() == false";
 	_initializer = initializer;			
 }
 
@@ -25,8 +25,8 @@ void Variable::initForward() {
 		LOG_IF(FATAL, weights.weight_size() != _outputs[0]->value()->size()) << "weights.weight_size() != _outputs[0]->value()->size() in " << _name;
 		DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), weights.weight().data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 	}
-	else if (_initializer->param().has_init_data()) {
-		auto weights = _initializer->param().init_data();
+	else if (_initializer->_block_param().has_init_data()) {
+		auto weights = _initializer->_block_param().init_data();
 		LOG_IF(FATAL, weights.weight_size() != _outputs[0]->value()->size()) << "weights.weight_size() != _outputs[0]->value()->size() in " << _name;
 		DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), weights.weight().data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 	}

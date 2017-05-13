@@ -42,7 +42,8 @@ public:
 		DEPENDS_ON_INPUTS,
 		NEVER_BACKWARD
 	};
-	Node(const deepflow::NodeParam &param);
+	Node();
+	Node(const deepflow::NodeParam &_block_param);
 	void createIO();
 	virtual void initForward() = 0;
 	virtual void initBackward() = 0;
@@ -70,7 +71,7 @@ public:
 	NodeOutputPtr output(int index);
 	bool isInitialized() const;
 	void setInitialized(bool status);
-	deepflow::NodeParam &param();
+	deepflow::NodeParam &_block_param();
 	bool includePhase(const std::string &phase);
 	void setExecutionContext(ExecutionContextPtr context);
 	virtual std::list<std::shared_ptr<Node>> inputNodes() const;
@@ -78,7 +79,7 @@ public:
 protected:	
 	std::vector<NodeInputPtr> _inputs;
 	std::vector<NodeOutputPtr> _outputs;
-	std::string _name;	
+	std::string _name = "Unknown";	
 	bool _visited = false;	
 	bool _propagate_back = false;
 	bool _initialized = false;	

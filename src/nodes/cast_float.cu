@@ -9,8 +9,8 @@ void CastFloatKernelForward(int n, const int * __restrict__ x, float * __restric
 	if (i < n) y[i] = x[i];
 }
 
-CastFloat::CastFloat(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_cast_float_param() == false) << "param.has_cast_float_param() == false";
+CastFloat::CastFloat(const deepflow::NodeParam &_block_param) : Node(_block_param) {
+	LOG_IF(FATAL, _block_param.has_cast_float_param() == false) << "param.has_cast_float_param() == false";
 }
 
 void CastFloat::initForward() {

@@ -5,8 +5,8 @@
 
 #include <random>
 
-RandomUniform::RandomUniform(const deepflow::InitParam &param) : Initializer(param) {
-	LOG_IF(FATAL, param.has_random_uniform_param() == false) << "param.has_random_uniform_param() == false";
+RandomUniform::RandomUniform(const deepflow::InitParam &_block_param) : Initializer(_block_param) {
+	LOG_IF(FATAL, _block_param.has_random_uniform_param() == false) << "param.has_random_uniform_param() == false";
 }
 
 void RandomUniform::apply(Variable *variable) {	

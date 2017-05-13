@@ -2,8 +2,8 @@
 
 #include <glog/logging.h>
 
-MatMul::MatMul(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_matmul_param() == false) << "param.has_matmul_param() == false";
+MatMul::MatMul(const deepflow::NodeParam &_block_param) : Node(_block_param) {
+	LOG_IF(FATAL, _block_param.has_matmul_param() == false) << "param.has_matmul_param() == false";
 }
 
 void MatMul::initForward() {	

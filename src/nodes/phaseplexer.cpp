@@ -1,14 +1,14 @@
 #include "nodes/phaseplexer.h"
 
-Phaseplexer::Phaseplexer(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_phaseplexer_param() == false) << "param.has_phaseplexer_param() == false";
+Phaseplexer::Phaseplexer(const deepflow::NodeParam &_block_param) : Node(_block_param) {
+	LOG_IF(FATAL, _block_param.has_phaseplexer_param() == false) << "param.has_phaseplexer_param() == false";
 }
 
 void Phaseplexer::initForward()
 {
-	auto param = _param.phaseplexer_param();
-	for (int i = 0; i < param.phase_size(); ++i)
-		_map.insert(std::pair<std::string, NodeInputPtr>(param.phase(i), _inputs[i]));
+	auto _block_param = _param.phaseplexer_param();
+	for (int i = 0; i < _block_param.phase_size(); ++i)
+		_map.insert(std::pair<std::string, NodeInputPtr>(_block_param.phase(i), _inputs[i]));
 	LOG_IF(FATAL, _map.size() < 2);
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size());
 	_outputs[0]->initValue(_inputs[0]->dims());
@@ -34,9 +34,9 @@ std::list<std::shared_ptr<Node>> Phaseplexer::inputNodes() const {
 
 std::string Phaseplexer::to_cpp() const
 {
-	auto param = _param.phaseplexer_param();
-	std::string cpp = "auto " + _name + " = df.phaseplexer(" + _input_name_for_cpp(0) + ", \"" + param.phase(0) + "\", ";
-	cpp += _input_name_for_cpp(1) + ", \"" + param.phase(1) + "\", ";
+	auto _block_param = _param.phaseplexer_param();
+	std::string cpp = "auto " + _name + " = df.phaseplexer(" + _input_name_for_cpp(0) + ", \"" + _block_param.phase(0) + "\", ";
+	cpp += _input_name_for_cpp(1) + ", \"" + _block_param.phase(1) + "\", ";
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;

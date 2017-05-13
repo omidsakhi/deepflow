@@ -18,9 +18,9 @@ void AdamKernel(const int n, float *w, const float *g, float *m, float *v, const
 	}
 }
 
-AdamSolver::AdamSolver(const deepflow::SolverParam &param) : Solver(param) {
-	LOG_IF(FATAL, param.has_adam_solver() == false) << "param.has_adam_solver() == false";
-	_my_param = param.adam_solver();
+AdamSolver::AdamSolver(const deepflow::SolverParam &_block_param) : Solver(_block_param) {
+	LOG_IF(FATAL, _block_param.has_adam_solver() == false) << "param.has_adam_solver() == false";
+	_my_param = _block_param.adam_solver();
 }
 
 void AdamSolver::apply(std::shared_ptr<Variable> var) {

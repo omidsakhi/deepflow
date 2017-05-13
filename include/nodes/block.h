@@ -16,6 +16,7 @@ public: // Node
 	BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 
 public: // Block
+	Block();
 	Block(deepflow::NodeParam &param);
 	std::shared_ptr<deepflow::NodeParam> find_node_by_name(const std::string &name) const;
 	std::shared_ptr<deepflow::SolverParam> find_solver_by_name(const std::string &name) const;
@@ -30,7 +31,11 @@ public: // Block
 	void print_nodes();
 	void print_phases();
 	void load_from_binary(std::string file_path);
+	google::protobuf::RepeatedPtrField<deepflow::PhaseParam> phases();
+	google::protobuf::RepeatedPtrField<deepflow::NodeParam> nodes();
+	google::protobuf::RepeatedPtrField<deepflow::SolverParam> solvers();
+
 private:
-	deepflow::BlockParam *param;
+	deepflow::BlockParam *_block_param;
 
 };

@@ -1,7 +1,7 @@
 #include "nodes/print.h"
 
-Print::Print(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_print_param() == false) << "param.has_print_param() == false";
+Print::Print(const deepflow::NodeParam &_block_param) : Node(_block_param) {
+	LOG_IF(FATAL, _block_param.has_print_param() == false) << "param.has_print_param() == false";
 	auto printParam = _param.print_param();
 	_num_inputs = printParam.num_inputs();
 	_print_time = (PrintTime) printParam.print_time();

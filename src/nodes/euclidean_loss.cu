@@ -11,8 +11,8 @@ void EuclideanLossKernel(const int n, const float * __restrict__ x1, const float
 		y[i] = x2[i] - x1[i];
 }
 
-EuclideanLoss::EuclideanLoss(const deepflow::NodeParam &param) : Loss(param) {
-	LOG_IF(FATAL, param.loss_param().has_euclidean_loss_param() == false) << "param.loss_param().has_euclidean_loss_param() == false";
+EuclideanLoss::EuclideanLoss(const deepflow::NodeParam &_block_param) : Loss(_block_param) {
+	LOG_IF(FATAL, _block_param.loss_param().has_euclidean_loss_param() == false) << "param.loss_param().has_euclidean_loss_param() == false";
 }
 
 void EuclideanLoss::initForward() {

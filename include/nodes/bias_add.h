@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport BiasAdd : public Node {
 public:
-	BiasAdd(const deepflow::NodeParam &param);
+	BiasAdd(const deepflow::NodeParam &_block_param);
 	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 1; }
 	void initForward();
