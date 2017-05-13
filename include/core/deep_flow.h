@@ -22,6 +22,8 @@ class DeepFlowDllExport DeepFlow : public std::enable_shared_from_this<DeepFlow>
 	friend class Session;
 	friend class Caffe;
 public:
+	DeepFlow();
+
 	// GENERATORS
 	std::string mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name = "mnist", std::initializer_list<std::string> phases = {});
 	std::string data_generator(std::shared_ptr<deepflow::InitParam> initializer, int num_samples = 1, std::string solver = "", std::string name = "igen", std::initializer_list<std::string> phases = {});
@@ -118,5 +120,6 @@ private:
 	std::string _reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, deepflow::ReduceParam::OutputType type, int output, std::string name, std::initializer_list<std::string> phases);	
 
 private:
+	deepflow::NodeParam _block_node_param;	
 	std::shared_ptr<Block> _block;
 };

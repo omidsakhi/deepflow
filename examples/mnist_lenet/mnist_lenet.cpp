@@ -75,6 +75,9 @@ void main(int argc, char** argv) {
 	else {
 		df.block()->load_from_binary(FLAGS_i);	
 	}
+	
+	df.block()->print_nodes();
+	df.block()->print_phases();
 
 	auto session = df.session();	
 

@@ -28,8 +28,9 @@ public: // Block
 	deepflow::PhaseParam* add_phase();
 	deepflow::SolverParam* add_solver();
 	void print_nodes();
+	void print_phases();
 	void load_from_binary(std::string file_path);
-
-private:	
+private:
 	deepflow::BlockParam *param;
+
 };

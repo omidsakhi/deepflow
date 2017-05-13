@@ -4,7 +4,7 @@
 
 #include <fstream>
 
-Block::Block(deepflow::NodeParam & param) : Node(param) 
+Block::Block(deepflow::NodeParam & param) : Node(param)
 {
 	LOG_IF(FATAL, param.has_block_param() == false) << "param.has_block_param() == false";	
 	this->param = param.mutable_block_param();
@@ -12,9 +12,10 @@ Block::Block(deepflow::NodeParam & param) : Node(param)
 
 std::shared_ptr<deepflow::NodeParam> Block::find_node_by_name(const std::string & name) const
 {
-	for (int i = 0; i < param->node_size(); ++i) {
-		if (param->node(i).name() == name) {
-			//return std::make_shared<deepflow::NodeParam>(param->mutable_node(i)); //TODO
+	auto param = _param.block_param();
+	for (int i = 0; i < param.node_size(); ++i) {
+		if (param.node(i).name() == name) {
+			return std::shared_ptr<deepflow::NodeParam>(param.mutable_node(i));
 		}
 	}
 	return 0;
@@ -23,8 +24,8 @@ std::shared_ptr<deepflow::NodeParam> Block::find_node_by_name(const std::string 
 std::shared_ptr<deepflow::SolverParam> Block::find_solver_by_name(const std::string & name) const
 {
 	for (int i = 0; i < param->solver_size(); ++i) {
-		if (param->node(i).name() == name) {
-			//return std::make_shared<deepflow::SolverParam>(param->mutable_solver(i)); //TODO
+		if (param->solver(i).name() == name) {			
+			return std::shared_ptr<deepflow::SolverParam>(param->mutable_solver(i));
 		}
 	}
 	return 0;
@@ -35,7 +36,7 @@ std::shared_ptr<deepflow::NodeParam> Block::find_node_by_output__name(const std:
 	for (int i = 0; i < param->node_size(); ++i) {	
 		for (auto output : param->node(i).output())
 			if (output == output_name) {
-				// return std::make_shared<deepflow::NodeParam>(param->mutable_node(i)); //TODO
+				return std::shared_ptr<deepflow::NodeParam>(param->mutable_node(i));
 			}
 	}
 	return 0;
@@ -110,6 +111,13 @@ void Block::print_nodes()
 		if (!outputs.empty())
 			outputs = " -> " + outputs;
 		LOG(INFO) << "Node " << node.name() << "(" << inputs << ")" << outputs;
+	}
+}
+
+void Block::print_phases()
+{
+	for (auto phase : param->phase()) {
+		LOG(INFO) << phase.phase() << " <-> " << deepflow::PhaseParam_PhaseBehaviour_Name(phase.behaviour());
 	}
 }
 

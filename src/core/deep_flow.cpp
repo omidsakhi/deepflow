@@ -8,7 +8,13 @@ void add_outputs(deepflow::NodeParam *node_param, int num_outputs) {
 		node_param->add_output(node_param->name() + "_output_" + std::to_string(i));
 }
 
-std::string DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name, std::initializer_list<std::string> phases) {			
+DeepFlow::DeepFlow()
+{		
+	_block_node_param.mutable_block_param();
+	_block = std::make_shared<Block>(_block_node_param);
+}
+
+std::string DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node();
 	node_param->set_name(_block->get_unique_node_name(name));
 	add_outputs(node_param, 1);
@@ -348,8 +354,7 @@ std::shared_ptr < deepflow::NodeParam > DeepFlow::accumulator(std::string input,
 	node_param->add_input(input);	
 	auto accumulator_param = node_param->mutable_accumulator_param();
 	accumulator_param->set_reset_time((deepflow::AccumulatorParam_ResetTime)resetTime);	
-	return std::make_shared<deepflow::NodeParam>(node_param);
-	//return 0;
+	return std::shared_ptr<deepflow::NodeParam>(node_param);	
 }
 
 void DeepFlow::print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime printTime, Print::PrintType printType, std::string name, std::initializer_list<std::string> phases) {
@@ -380,8 +385,7 @@ std::shared_ptr<deepflow::NodeParam> DeepFlow::softmax_loss(std::string a, std::
 	auto softmax_loss_param = loss_param->mutable_softmax_loss_param();
 	softmax_loss_param->set_alpha(1.0f);
 	softmax_loss_param->set_beta(0.0f);	
-	//return std::make_shared<deepflow::NodeParam>(node_param);	//TODO
-	return 0;
+	return std::shared_ptr<deepflow::NodeParam>(node_param);
 }
 
 void DeepFlow::euclidean_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases)
