@@ -20,8 +20,8 @@ void BiasAddKernelBackward(const int n, const float *diff, const int num_samples
 	}
 }
 
-BiasAdd::BiasAdd(const deepflow::NodeParam &_block_param) : Node(_block_param) {
-	LOG_IF(FATAL, _block_param.has_bias_add_param() == false) << "param.has_bias_add_param() == false";
+BiasAdd::BiasAdd(const deepflow::NodeParam &param) : Node(param) {
+	LOG_IF(FATAL, param.has_bias_add_param() == false) << "param.has_bias_add_param() == false";
 }
 
 void BiasAdd::initForward() {

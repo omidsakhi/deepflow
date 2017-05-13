@@ -25,8 +25,8 @@ void ConvertOpenCV3ImageKernel(const int n, const unsigned char *in, const int w
 }
 
 
-ImageReader::ImageReader(const deepflow::NodeParam &_block_param) : Node(_block_param), Generator(_block_param) {
-	LOG_IF(FATAL, _block_param.generator_param().has_image_reader_param() == false) << "param.generator_param().has_image_reader_param() == false";
+ImageReader::ImageReader(const deepflow::NodeParam &param) : Node(param), Generator(param) {
+	LOG_IF(FATAL, param.generator_param().has_image_reader_param() == false) << "param.generator_param().has_image_reader_param() == false";
 }
 
 void ImageReader::nextBatch() {

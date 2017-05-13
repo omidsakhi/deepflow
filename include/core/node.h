@@ -43,7 +43,7 @@ public:
 		NEVER_BACKWARD
 	};
 	Node();
-	Node(const deepflow::NodeParam &_block_param);
+	Node(const deepflow::NodeParam &param);
 	void createIO();
 	virtual void initForward() = 0;
 	virtual void initBackward() = 0;
@@ -71,7 +71,7 @@ public:
 	NodeOutputPtr output(int index);
 	bool isInitialized() const;
 	void setInitialized(bool status);
-	deepflow::NodeParam &_block_param();
+	deepflow::NodeParam &param();
 	bool includePhase(const std::string &phase);
 	void setExecutionContext(ExecutionContextPtr context);
 	virtual std::list<std::shared_ptr<Node>> inputNodes() const;

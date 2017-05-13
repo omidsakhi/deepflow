@@ -3114,13 +3114,13 @@ class LayerParameter : public ::google::protobuf::Message /* @@protoc_insertion_
   int param_size() const;
   void clear_param();
   static const int kParamFieldNumber = 6;
-  const ::caffe::ParamSpec& _block_param(int index) const;
+  const ::caffe::ParamSpec& param(int index) const;
   ::caffe::ParamSpec* mutable_param(int index);
   ::caffe::ParamSpec* add_param();
   ::google::protobuf::RepeatedPtrField< ::caffe::ParamSpec >*
       mutable_param();
   const ::google::protobuf::RepeatedPtrField< ::caffe::ParamSpec >&
-      _block_param() const;
+      param() const;
 
   // repeated .caffe.BlobProto blobs = 7;
   int blobs_size() const;
@@ -10471,7 +10471,7 @@ class V1LayerParameter : public ::google::protobuf::Message /* @@protoc_insertio
   int param_size() const;
   void clear_param();
   static const int kParamFieldNumber = 1001;
-  const ::std::string& _block_param(int index) const;
+  const ::std::string& param(int index) const;
   ::std::string* mutable_param(int index);
   void set_param(int index, const ::std::string& value);
   #if LANG_CXX11
@@ -10486,7 +10486,7 @@ class V1LayerParameter : public ::google::protobuf::Message /* @@protoc_insertio
   #endif
   void add_param(const char* value);
   void add_param(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& _block_param() const;
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& param() const;
   ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_param();
 
   // repeated .caffe.V1LayerParameter.DimCheckMode blob_share_mode = 1002;
@@ -15030,7 +15030,7 @@ inline int LayerParameter::param_size() const {
 inline void LayerParameter::clear_param() {
   param_.Clear();
 }
-inline const ::caffe::ParamSpec& LayerParameter::_block_param(int index) const {
+inline const ::caffe::ParamSpec& LayerParameter::param(int index) const {
   // @@protoc_insertion_point(field_get:caffe.LayerParameter.param)
   return param_.Get(index);
 }
@@ -15048,7 +15048,7 @@ LayerParameter::mutable_param() {
   return &param_;
 }
 inline const ::google::protobuf::RepeatedPtrField< ::caffe::ParamSpec >&
-LayerParameter::_block_param() const {
+LayerParameter::param() const {
   // @@protoc_insertion_point(field_list:caffe.LayerParameter.param)
   return param_;
 }
@@ -23173,7 +23173,7 @@ inline int V1LayerParameter::param_size() const {
 inline void V1LayerParameter::clear_param() {
   param_.Clear();
 }
-inline const ::std::string& V1LayerParameter::_block_param(int index) const {
+inline const ::std::string& V1LayerParameter::param(int index) const {
   // @@protoc_insertion_point(field_get:caffe.V1LayerParameter.param)
   return param_.Get(index);
 }
@@ -23223,7 +23223,7 @@ inline void V1LayerParameter::add_param(const char* value, size_t size) {
   // @@protoc_insertion_point(field_add_pointer:caffe.V1LayerParameter.param)
 }
 inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-V1LayerParameter::_block_param() const {
+V1LayerParameter::param() const {
   // @@protoc_insertion_point(field_list:caffe.V1LayerParameter.param)
   return param_;
 }

@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport Fill : public Initializer {
 public:
-	Fill(const deepflow::InitParam &_block_param);
+	Fill(const deepflow::InitParam &param);
 	void apply(Variable *variable);
 	void init() {}
 	std::string to_cpp() const;

@@ -15,8 +15,8 @@ void ReluKernel(int n, const float * __restrict__ x, const float * __restrict__ 
 	}
 }
 
-LeakyRelu::LeakyRelu(const deepflow::NodeParam &_block_param) : Node(_block_param) {
-	LOG_IF(FATAL, _block_param.has_leaky_relu_param() == false) << "param.has_leaky_relu_param() == false";	
+LeakyRelu::LeakyRelu(const deepflow::NodeParam &param) : Node(param) {
+	LOG_IF(FATAL, param.has_leaky_relu_param() == false) << "param.has_leaky_relu_param() == false";	
 }
 
 void LeakyRelu::initForward() {	

@@ -7,9 +7,9 @@ Node::Node() : CudaHelper()
 {	
 }
 
-Node::Node(const deepflow::NodeParam &_block_param) : CudaHelper() {
-	_param = _block_param;	
-	_name = _block_param.name();	
+Node::Node(const deepflow::NodeParam &param) : CudaHelper() {
+	_param = param;	
+	_name = param.name();	
 }
 
 void Node::createIO() {
@@ -182,7 +182,7 @@ void Node::setInitialized(bool status) {
 	_initialized = status;
 }
 
-deepflow::NodeParam &Node::_block_param() {
+deepflow::NodeParam &Node::param() {
 	return _param;
 }
 

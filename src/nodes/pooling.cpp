@@ -1,24 +1,24 @@
 #include "nodes/pooling.h"
 
-Pooling::Pooling(const deepflow::NodeParam &_block_param) : Node(_block_param) {
-	LOG_IF(FATAL, _block_param.has_pooling_param() == false) << "param.has_pooling_param() == false";
+Pooling::Pooling(const deepflow::NodeParam &param) : Node(param) {
+	LOG_IF(FATAL, param.has_pooling_param() == false) << "param.has_pooling_param() == false";
 }
 
 void Pooling::initForward() {
 	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
-	auto _block_param = _param.pooling_param();
-	LOG_IF(FATAL, _block_param.window_w() < 1);
-	LOG_IF(FATAL, _block_param.window_h() < 1);
-	LOG_IF(FATAL, _block_param.v_pad() < 0);
-	LOG_IF(FATAL, _block_param.h_pad() < 0);
+	auto param = _param.pooling_param();
+	LOG_IF(FATAL, param.window_w() < 1);
+	LOG_IF(FATAL, param.window_h() < 1);
+	LOG_IF(FATAL, param.v_pad() < 0);
+	LOG_IF(FATAL, param.h_pad() < 0);
 	DF_CUDNN_CHECK(cudnnCreatePoolingDescriptor(&_poolingDesc));
 	int n, c, h, w;
-	DF_CUDNN_CHECK(cudnnSetPooling2dDescriptor(_poolingDesc, CUDNN_POOLING_MAX, CUDNN_PROPAGATE_NAN, _block_param.window_h(), _block_param.window_w(), _block_param.v_pad(), _block_param.h_pad(), _block_param.v_stride(), _block_param.h_stride()));
+	DF_CUDNN_CHECK(cudnnSetPooling2dDescriptor(_poolingDesc, CUDNN_POOLING_MAX, CUDNN_PROPAGATE_NAN, param.window_h(), param.window_w(), param.v_pad(), param.h_pad(), param.v_stride(), param.h_stride()));
 	auto dims = _inputs[0]->dims();
 	n = dims[0];
 	c = dims[1];
-	h = floor((float)dims[2] / _block_param.v_stride());
-	w = floor((float)dims[3] / _block_param.h_stride());	
+	h = floor((float)dims[2] / param.v_stride());
+	w = floor((float)dims[3] / param.h_stride());	
 	_outputs[0]->initValue({ n, c, h, w }, Tensor::Float);	
 	LOG(INFO) << "Initializing Pooling " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape();	
 }
@@ -37,14 +37,14 @@ void Pooling::backward() {
 
 std::string Pooling::to_cpp() const
 {
-	auto _block_param = _param.pooling_param();	
+	auto param = _param.pooling_param();	
 	std::string cpp = "auto " + _name + " = df.pooling(" + _input_name_for_cpp(0) + ", ";
-	cpp += std::to_string(_block_param.window_h()) + ", ";
-	cpp += std::to_string(_block_param.window_w()) + ", ";
-	cpp += std::to_string(_block_param.v_pad()) + ", ";
-	cpp += std::to_string(_block_param.h_pad()) + ", ";
-	cpp += std::to_string(_block_param.v_stride()) + ", ";
-	cpp += std::to_string(_block_param.h_stride()) + ", ";
+	cpp += std::to_string(param.window_h()) + ", ";
+	cpp += std::to_string(param.window_w()) + ", ";
+	cpp += std::to_string(param.v_pad()) + ", ";
+	cpp += std::to_string(param.h_pad()) + ", ";
+	cpp += std::to_string(param.v_stride()) + ", ";
+	cpp += std::to_string(param.h_stride()) + ", ";
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;

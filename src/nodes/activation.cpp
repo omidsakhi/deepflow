@@ -1,9 +1,9 @@
 #include "core/common_cu.h"
 #include "nodes/activation.h"
 
-Activation::Activation(const deepflow::NodeParam & _block_param) : Node(_block_param)
+Activation::Activation(const deepflow::NodeParam & param) : Node(param)
 {
-	LOG_IF(FATAL, _block_param.has_activation_param() == false) << "param.has_activation_param() == false";
+	LOG_IF(FATAL, param.has_activation_param() == false) << "param.has_activation_param() == false";
 }
 
 void Activation::initForward()

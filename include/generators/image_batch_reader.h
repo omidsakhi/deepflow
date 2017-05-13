@@ -13,7 +13,7 @@ class Initializer;
 
 class DeepFlowDllExport ImageBatchReader : public Generator, public Node {
 public:
-	ImageBatchReader(const deepflow::NodeParam &_block_param);
+	ImageBatchReader(const deepflow::NodeParam &param);
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
 	void nextBatch();

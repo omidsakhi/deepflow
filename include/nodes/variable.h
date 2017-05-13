@@ -9,7 +9,7 @@ class Initializer;
 
 class DeepFlowDllExport Variable : public Node {
 public:		
-	Variable(std::shared_ptr<Initializer> initializer, const deepflow::NodeParam &_block_param);
+	Variable(std::shared_ptr<Initializer> initializer, const deepflow::NodeParam &param);
 	virtual void initForward();
 	virtual void initBackward();		
 	virtual int minNumInputs() { return 0;  }

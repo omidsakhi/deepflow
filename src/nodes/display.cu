@@ -40,8 +40,8 @@ void PictureGeneratorKernel(const int num_images, const float *in, const int per
 	}
 }
 
-Display::Display(const deepflow::NodeParam &_block_param) : Node(_block_param) {
-	LOG_IF(FATAL, _block_param.has_display_param() == false) << "param.has_display_param() == false";
+Display::Display(const deepflow::NodeParam &param) : Node(param) {
+	LOG_IF(FATAL, param.has_display_param() == false) << "param.has_display_param() == false";
 }
 
 void Display::initForward() {

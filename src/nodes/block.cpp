@@ -16,11 +16,10 @@ Block::Block(deepflow::NodeParam & param) : Node(param)
 }
 
 std::shared_ptr<deepflow::NodeParam> Block::find_node_by_name(const std::string & name) const
-{
-	auto _block_param = _param.block_param();
-	for (int i = 0; i < _block_param.node_size(); ++i) {
-		if (_block_param.node(i).name() == name) {
-			return std::shared_ptr<deepflow::NodeParam>(_block_param.mutable_node(i));
+{	
+	for (int i = 0; i < _block_param->node_size(); ++i) {
+		if (_block_param->node(i).name() == name) {
+			return std::shared_ptr<deepflow::NodeParam>(_block_param->mutable_node(i));
 		}
 	}
 	return 0;
@@ -29,7 +28,7 @@ std::shared_ptr<deepflow::NodeParam> Block::find_node_by_name(const std::string 
 std::shared_ptr<deepflow::SolverParam> Block::find_solver_by_name(const std::string & name) const
 {
 	for (int i = 0; i < _block_param->solver_size(); ++i) {
-		if (_block_param->solver(i).name() == name) {			
+		if (_block_param->solver(i).name() == name) {
 			return std::shared_ptr<deepflow::SolverParam>(_block_param->mutable_solver(i));
 		}
 	}
@@ -38,7 +37,7 @@ std::shared_ptr<deepflow::SolverParam> Block::find_solver_by_name(const std::str
 
 std::shared_ptr<deepflow::NodeParam> Block::find_node_by_output__name(const std::string & output_name) const
 {
-	for (int i = 0; i < _block_param->node_size(); ++i) {	
+	for (int i = 0; i < _block_param->node_size(); ++i) {
 		for (auto output : _block_param->node(i).output())
 			if (output == output_name) {
 				return std::shared_ptr<deepflow::NodeParam>(_block_param->mutable_node(i));
@@ -91,7 +90,7 @@ void Block::save_as_text(std::string file_path)
 
 deepflow::NodeParam* Block::add_node()
 {
-	return _block_param->add_node();	
+	return _block_param->add_node();
 }
 
 deepflow::PhaseParam * Block::add_phase()

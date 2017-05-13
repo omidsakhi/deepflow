@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport Pooling : public Node {
 public:
-	Pooling(const deepflow::NodeParam &_block_param);
+	Pooling(const deepflow::NodeParam &param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();

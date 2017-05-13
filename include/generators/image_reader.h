@@ -17,7 +17,7 @@ public:
 		GRAY_ONLY,
 		COLOR_IF_AVAILABLE
 	};
-	ImageReader(const deepflow::NodeParam &_block_param);
+	ImageReader(const deepflow::NodeParam &param);
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
 	void nextBatch();

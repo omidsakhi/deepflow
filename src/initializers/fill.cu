@@ -10,8 +10,8 @@ void FillKernel(const int n, float *a, const float v)
 	if (i < n) a[i] = v;
 }
 
-Fill::Fill(const deepflow::InitParam &_block_param) : Initializer(_block_param) {
-	LOG_IF(FATAL, _block_param.has_fill_param() == false) << "param.has_fill_param() == false";		
+Fill::Fill(const deepflow::InitParam &param) : Initializer(param) {
+	LOG_IF(FATAL, param.has_fill_param() == false) << "param.has_fill_param() == false";		
 }
 
 void Fill::apply(Variable *variable) {

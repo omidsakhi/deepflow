@@ -10,8 +10,8 @@ void SoftmaxLossKernelBackward(const int n, const float *softmax_output,const fl
 }
 
 
-SoftmaxLoss::SoftmaxLoss(const deepflow::NodeParam &_block_param) : Loss(_block_param) {
-	LOG_IF(FATAL, _block_param.loss_param().has_softmax_loss_param() == false) << "param.loss_param().has_softmax_loss_param() == false";
+SoftmaxLoss::SoftmaxLoss(const deepflow::NodeParam &param) : Loss(param) {
+	LOG_IF(FATAL, param.loss_param().has_softmax_loss_param() == false) << "param.loss_param().has_softmax_loss_param() == false";
 }
 
 void SoftmaxLoss::initForward() {		

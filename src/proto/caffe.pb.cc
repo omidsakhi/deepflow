@@ -13637,7 +13637,7 @@ void LayerParameter::SerializeWithCachedSizes(
   // repeated .caffe.ParamSpec param = 6;
   for (unsigned int i = 0, n = this->param_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, this->_block_param(i), output);
+      6, this->param(i), output);
   }
 
   // repeated .caffe.BlobProto blobs = 7;
@@ -14015,7 +14015,7 @@ void LayerParameter::SerializeWithCachedSizes(
   for (unsigned int i = 0, n = this->param_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        6, this->_block_param(i), false, target);
+        6, this->param(i), false, target);
   }
 
   // repeated .caffe.BlobProto blobs = 7;
@@ -14429,7 +14429,7 @@ size_t LayerParameter::ByteSizeLong() const {
     for (unsigned int i = 0; i < count; i++) {
       total_size +=
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->_block_param(i));
+          this->param(i));
     }
   }
 
@@ -40829,8 +40829,8 @@ bool V1LayerParameter::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->add_param()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-            this->_block_param(this->param_size() - 1).data(),
-            this->_block_param(this->param_size() - 1).length(),
+            this->param(this->param_size() - 1).data(),
+            this->param(this->param_size() - 1).length(),
             ::google::protobuf::internal::WireFormat::PARSE,
             "caffe.V1LayerParameter.param");
         } else {
@@ -41152,11 +41152,11 @@ void V1LayerParameter::SerializeWithCachedSizes(
   // repeated string param = 1001;
   for (int i = 0, n = this->param_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->_block_param(i).data(), this->_block_param(i).length(),
+      this->param(i).data(), this->param(i).length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE,
       "caffe.V1LayerParameter.param");
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      1001, this->_block_param(i), output);
+      1001, this->param(i), output);
   }
 
   // repeated .caffe.V1LayerParameter.DimCheckMode blob_share_mode = 1002;
@@ -41472,11 +41472,11 @@ void V1LayerParameter::SerializeWithCachedSizes(
   // repeated string param = 1001;
   for (int i = 0, n = this->param_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->_block_param(i).data(), this->_block_param(i).length(),
+      this->param(i).data(), this->param(i).length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE,
       "caffe.V1LayerParameter.param");
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(1001, this->_block_param(i), target);
+      WriteStringToArray(1001, this->param(i), target);
   }
 
   // repeated .caffe.V1LayerParameter.DimCheckMode blob_share_mode = 1002;
@@ -41556,7 +41556,7 @@ size_t V1LayerParameter::ByteSizeLong() const {
       ::google::protobuf::internal::FromIntSize(this->param_size());
   for (int i = 0, n = this->param_size(); i < n; i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-      this->_block_param(i));
+      this->param(i));
   }
 
   // repeated .caffe.V1LayerParameter.DimCheckMode blob_share_mode = 1002;

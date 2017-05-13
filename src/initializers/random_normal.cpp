@@ -5,8 +5,8 @@
 
 #include <random>
 
-RandomNormal::RandomNormal(const deepflow::InitParam &_block_param) : Initializer(_block_param) {
-	LOG_IF(FATAL, _block_param.has_random_normal_param() == false) << "param.has_random_normal_param() == false";
+RandomNormal::RandomNormal(const deepflow::InitParam &param) : Initializer(param) {
+	LOG_IF(FATAL, param.has_random_normal_param() == false) << "param.has_random_normal_param() == false";
 }
 
 void RandomNormal::apply(Variable *variable) {

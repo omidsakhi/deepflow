@@ -2,9 +2,9 @@
 
 #include <glog/logging.h>
 
-MNISTReader::MNISTReader(const deepflow::NodeParam &_block_param) : Generator(_block_param), Node(_block_param) {
-	LOG_IF(FATAL, _block_param.generator_param().has_mnist_param() == false) << "param.generator_param().has_mnist_param() == false";
-	auto generator_param = _block_param.generator_param();
+MNISTReader::MNISTReader(const deepflow::NodeParam &param) : Generator(param), Node(param) {
+	LOG_IF(FATAL, param.generator_param().has_mnist_param() == false) << "param.generator_param().has_mnist_param() == false";
+	auto generator_param = param.generator_param();
 	auto mnist_param = generator_param.mnist_param();	
 	_folder_path = mnist_param.folder_path();
 	_batch_size = mnist_param.batch_size();

@@ -12,8 +12,8 @@ void ApplyGradientKernel(const int n, const float momentum, const float learning
 	if (i < n) var[i] = momentum * var[i] + learning_rate * grad[i];
 }
 
-SGDSolver::SGDSolver(const deepflow::SolverParam &_block_param) : Solver(_block_param) {
-	LOG_IF(FATAL, _block_param.has_sgd_solver() == false) << "param.has_sgd_solver() == false";
+SGDSolver::SGDSolver(const deepflow::SolverParam &param) : Solver(param) {
+	LOG_IF(FATAL, param.has_sgd_solver() == false) << "param.has_sgd_solver() == false";
 	_my_param = _param.sgd_solver();
 }
 

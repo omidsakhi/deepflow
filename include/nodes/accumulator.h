@@ -9,7 +9,7 @@ public:
 		EndOfEpoch = 0,
 		Never = 1
 	};
-	Accumulator(const deepflow::NodeParam &_block_param);
+	Accumulator(const deepflow::NodeParam &param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 2; }
 	void initForward();

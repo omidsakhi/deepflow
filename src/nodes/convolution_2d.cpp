@@ -1,8 +1,8 @@
 #include "nodes/convolution_2d.h"
 
-Convolution2D::Convolution2D(const deepflow::NodeParam &_block_param) : Node(_block_param) {
-	LOG_IF(FATAL, _block_param.has_conv_2d_param() == false) << "param.has_conv_2d_param() [FAILED]";
-	_num_inputs = _block_param.input_size(); // COULD BE 2 WITHOUT BIAS OR 3 WITH BIAS
+Convolution2D::Convolution2D(const deepflow::NodeParam &param) : Node(param) {
+	LOG_IF(FATAL, param.has_conv_2d_param() == false) << "param.has_conv_2d_param() [FAILED]";
+	_num_inputs = param.input_size(); // COULD BE 2 WITHOUT BIAS OR 3 WITH BIAS
 	d_workspace = 0;
 }
 
@@ -22,15 +22,15 @@ void Convolution2D::initForward() {
 	auto filterDims = _inputs[1]->dims();	
 	LOG_IF(FATAL, filterDims[1] != inputDims[1]) << "Input channels " << inputDims[1] << " != Filter channels " << filterDims[1];
 	DF_CUDNN_CHECK(cudnnSetFilter4dDescriptor(_wDesc, CUDNN_DATA_FLOAT, CUDNN_TENSOR_NCHW, filterDims[0], filterDims[1], filterDims[2], filterDims[3]));	
-	deepflow::Conv2dParam *_block_param = _param.mutable_conv_2d_param();
+	deepflow::Conv2dParam *param = _param.mutable_conv_2d_param();
 	DF_CUDNN_CHECK(cudnnCreateConvolutionDescriptor(&_convDesc));	
-	LOG_IF(FATAL, _block_param->pad_h() < 0) << "pad_top_bottom (pad_h) < 0";
-	LOG_IF(FATAL, _block_param->pad_w() < 0) << "pad_left_right (pad_w) < 0";
-	LOG_IF(FATAL, _block_param->u() <= 0) << "vertical_filter_stride (u) <= 0";
-	LOG_IF(FATAL, _block_param->v() <= 0) << "horizontal_filter_stride (v) <= 0";
-	LOG_IF(FATAL, _block_param->dilation_h() <= 0) << "filter_height_dilation (dilation_h) <= 0";
-	LOG_IF(FATAL, _block_param->dilation_w() <= 0) << "filter_width_dilation (dilation_w) <= 0";
-	DF_CUDNN_CHECK(cudnnSetConvolution2dDescriptor(_convDesc, _block_param->pad_h(), _block_param->pad_w(), _block_param->u(), _block_param->v(), _block_param->dilation_h(), _block_param->dilation_w(), CUDNN_CROSS_CORRELATION, CUDNN_DATA_FLOAT));	
+	LOG_IF(FATAL, param->pad_h() < 0) << "pad_top_bottom (pad_h) < 0";
+	LOG_IF(FATAL, param->pad_w() < 0) << "pad_left_right (pad_w) < 0";
+	LOG_IF(FATAL, param->u() <= 0) << "vertical_filter_stride (u) <= 0";
+	LOG_IF(FATAL, param->v() <= 0) << "horizontal_filter_stride (v) <= 0";
+	LOG_IF(FATAL, param->dilation_h() <= 0) << "filter_height_dilation (dilation_h) <= 0";
+	LOG_IF(FATAL, param->dilation_w() <= 0) << "filter_width_dilation (dilation_w) <= 0";
+	DF_CUDNN_CHECK(cudnnSetConvolution2dDescriptor(_convDesc, param->pad_h(), param->pad_w(), param->u(), param->v(), param->dilation_h(), param->dilation_w(), CUDNN_CROSS_CORRELATION, CUDNN_DATA_FLOAT));	
 	int n, c, h, w;
 	DF_CUDNN_CHECK(cudnnGetConvolution2dForwardOutputDim(_convDesc, _xDesc, _wDesc, &n, &c, &h, &w));
 	_outputs[0]->initValue({ n, c, h, w });
@@ -114,18 +114,18 @@ void Convolution2D::backward() {
 
 std::string Convolution2D::to_cpp() const
 {	
-	const deepflow::Conv2dParam &_block_param = _param.conv_2d_param();
+	const deepflow::Conv2dParam &param = _param.conv_2d_param();
 	std::string cpp = "auto " + _name + " = df.conv2d(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
 	if (_num_inputs == 3)
 		cpp += _input_name_for_cpp(2) + ", ";
 	else
 		cpp += "\"\", ";
-	cpp += std::to_string(_block_param.pad_h()) + ", ";
-	cpp += std::to_string(_block_param.pad_w()) + ", ";
-	cpp += std::to_string(_block_param.u()) + ", ";
-	cpp += std::to_string(_block_param.v()) + ", ";
-	cpp += std::to_string(_block_param.dilation_h()) + ", ";
-	cpp += std::to_string(_block_param.dilation_w()) + ", ";
+	cpp += std::to_string(param.pad_h()) + ", ";
+	cpp += std::to_string(param.pad_w()) + ", ";
+	cpp += std::to_string(param.u()) + ", ";
+	cpp += std::to_string(param.v()) + ", ";
+	cpp += std::to_string(param.dilation_h()) + ", ";
+	cpp += std::to_string(param.dilation_w()) + ", ";
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;

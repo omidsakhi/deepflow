@@ -210,13 +210,13 @@ void Session::initialize() {
 	for (auto node_param : _block->nodes()) {
 		auto node = _create_node(node_param);
 		node->createIO();
-		LOG_IF(FATAL, node->inputs().size() != node->_block_param().input_size()) << "Node " << node->name() << "'s input size " << node->inputs().size() << " does not match the one specified in proto (" << node->_block_param().input_size() << ")";
+		LOG_IF(FATAL, node->inputs().size() != node->param().input_size()) << "Node " << node->name() << "'s input size " << node->inputs().size() << " does not match the one specified in proto (" << node->param().input_size() << ")";
 		_nodes.push_back(node);
 	}
 
 	for (auto node : _nodes) {
-		for (int i = 0; i < node->_block_param().input_size(); ++i) {
-			const std::string terminal_name = node->_block_param().input(i);
+		for (int i = 0; i < node->param().input_size(); ++i) {
+			const std::string terminal_name = node->param().input(i);
 			auto terminal = _find_node_output_by_name(terminal_name);
 			LOG_IF(FATAL, terminal == 0) << "Failed to find " << terminal_name << " for node " << node->name() ;
 			node->input(i)->connect(terminal);
@@ -227,7 +227,7 @@ void Session::initialize() {
 
 	for (auto var : _variables) {
 		std::shared_ptr<Solver> solver;
-		std::string var_solver_name = var->_block_param().variable_param().solver_name();
+		std::string var_solver_name = var->param().variable_param().solver_name();
 		for (auto solver_param : _block->solvers()) {
 			if (var_solver_name == solver_param.name()) {
 				solver = _create_solver(solver_param);
