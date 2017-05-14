@@ -61,7 +61,12 @@ void Caffe::_parse_layer_deprecated(const caffe::V1LayerParameter & layer)
 	}	
 	if (layer.has_relu_param()) {
 		_parse_relu_param(layer.relu_param(), layer);
-	}	
+	}
+	else if (layer.type() == caffe::V1LayerParameter::RELU) {
+		caffe::ReLUParameter param;
+		param.set_negative_slope(0.01f);
+		_parse_relu_param(param, layer);
+	}
 	if (layer.has_pooling_param()) {
 		_parse_pooling_param(layer.pooling_param(), layer);
 	}
@@ -76,8 +81,19 @@ void Caffe::_parse_layer_deprecated(const caffe::V1LayerParameter & layer)
 		for (auto blob : layer.blobs())
 			_parse_blob_param(blob);
 	}
+	if (layer.has_softmax_param()) {
+		_parse_softmax_param(layer.softmax_param(), layer);
+	}
+	else if (layer.type() == caffe::V1LayerParameter::SOFTMAX) {
+		_parse_softmax_param(caffe::SoftmaxParameter(), layer);
+	}
 	if (layer.has_dropout_param()) {
 		_parse_dropout_param(layer.dropout_param(), layer);
+	}
+	else if (layer.type() == caffe::V1LayerParameter::DROPOUT) {
+		caffe::DropoutParameter param;
+		param.set_dropout_ratio(0.5);
+		_parse_dropout_param(param, layer);
 	}
 	if (layer.include_size() > 0) {
 		LOG_IF(INFO, _verbose) << " .include_size = " << layer.include_size();
@@ -284,6 +300,7 @@ void Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, const c
 void Caffe::_parse_softmax_param(const caffe::SoftmaxParameter & param, const caffe::V1LayerParameter & layer)
 {
 	LOG_IF(INFO, _verbose) << "  -> SoftmaxParameter";
+	df->softmax(layer.bottom(0) + "_output_0", layer.name(), {});
 }
 
 void Caffe::_parse_pooling_param(const caffe::PoolingParameter & param, const caffe::V1LayerParameter &layer)

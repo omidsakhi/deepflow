@@ -672,8 +672,8 @@ void DeepFlow::define_inference_phase(std::string inference_phase)
 	define_phase(inference_phase, deepflow::PhaseParam_PhaseBehaviour_INFERENCE);
 }
 
-void DeepFlow::load_from_caffe_model(std::string file_path, std::initializer_list<std::pair<std::string, std::array<int, 4>>> inputs)
+void DeepFlow::load_from_caffe_model(std::string file_path, std::initializer_list<std::pair<std::string, std::array<int, 4>>> inputs, bool verbose)
 {
-	Caffe caffe(this, true);
+	Caffe caffe(this, verbose);
 	caffe.load(file_path, inputs);
 }

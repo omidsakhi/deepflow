@@ -441,8 +441,9 @@ std::string Session::to_cpp() const
 	
 	for (auto phase : _phases)			
 		code += "df.define_phase(\"" + phase.first + "\", deepflow::PhaseParam_PhaseBehaviour_" + PhaseParam_PhaseBehaviour_Name(phase.second) + ");\n";
-
-	code += "\n";
+	
+	if (_phases.size() > 0)
+		code += "\n";
 
 	std::set<std::shared_ptr<Solver>> solvers_set;
 	for (auto solver_map_item : _solvers) {
@@ -460,7 +461,8 @@ std::string Session::to_cpp() const
 	for (auto solver : solvers_set)
 		code += solver->to_cpp() + "\n";
 	
-	code += "\n";
+	if (solvers_set.size() > 0)
+		code += "\n";
 
 	std::function<void(Node*)> foo = std::bind(generate_cpp_code, std::placeholders::_1, &code);	
 	for (auto end : ends)
