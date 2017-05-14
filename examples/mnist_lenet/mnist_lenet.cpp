@@ -53,7 +53,7 @@ void main(int argc, char** argv) {
 		auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, -1.000000, 1.000000), gain, "b1", {});
 		auto bias1 = df.bias_add(m1, b1, "bias1", {});
 		auto relu1 = df.leaky_relu(bias1, 0.010000, "relu1", {});
-		auto dropout = df.dropout(relu1, 0.500000, "dropout", {});
+		auto dropout = df.dropout(relu1, 0.500000, true, "dropout", {});
 		auto w2 = df.variable(df.random_uniform({ 500, 10, 1, 1 }, -0.100000, 0.100000), gain, "w2", {});
 		auto m2 = df.matmul(dropout, w2, "m2", {});
 		auto b2 = df.variable(df.step({ 1, 10, 1, 1 }, -1.000000, 1.000000), gain, "b2", {});

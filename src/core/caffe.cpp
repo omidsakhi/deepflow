@@ -84,7 +84,7 @@ void Caffe::_parse_layer_deprecated(const caffe::V1LayerParameter & layer)
 	}	
 }
 
-std::shared_ptr<deepflow::InitParam> Caffe::_parse_filler_param(std::initializer_list<int> dims, const caffe::FillerParameter & param, std::string name)
+std::string Caffe::_parse_filler_param(std::initializer_list<int> dims, const caffe::FillerParameter & param, std::string name)
 {
 	// LOG_IF(INFO, _verbose) << " . = " << param. << " [default: ]";
 	LOG_IF(INFO, _verbose) << "  -> FillerParameter " << name;
@@ -150,7 +150,7 @@ void Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & para
 	LOG_IF(FATAL, num_output < 1) << "num_output < 1";
 	int num_inputs = layer.blobs(0).data_size() / num_output;
 	//LOG_IF(FATAL, param.has_weight_filler() == false) << "param.has_weight_filler() == false - " << layer.name() ;
-	std::string weight = df->variable( _parse_filler_param({ num_inputs, num_output, 1, 1 }, param.weight_filler(), "weight filler"), 0, layer.name() + "_w", {});
+	std::string weight = df->variable( _parse_filler_param({ num_inputs, num_output, 1, 1 }, param.weight_filler(), "weight filler"), "", layer.name() + "_w", {});
 	auto weights_node = df->block()->find_node_by_output__name(weight);
 	auto weight_mutable_weights = weights_node->mutable_variable_param()->mutable_weights();
 	for (auto d : layer.blobs(0).data())
@@ -160,7 +160,7 @@ void Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & para
 	}
 	else {
 		//LOG_IF(FATAL, param.has_bias_filler() == false) << "param.has_bias_filler() == false - " << layer.name();
-		std::string bias = df->variable(_parse_filler_param({ 1, num_output, 1, 1 }, param.bias_filler(), "bias filler"), 0, layer.name() + "_b", {});
+		std::string bias = df->variable(_parse_filler_param({ 1, num_output, 1, 1 }, param.bias_filler(), "bias filler"), "", layer.name() + "_b", {});
 		auto bias_node = df->block()->find_node_by_output__name(bias);		
 		auto bias_mutable_weights = bias_node->mutable_variable_param()->mutable_weights();
 		for (auto d : layer.blobs(1).data())
@@ -259,7 +259,7 @@ void Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, const c
 	int num_output = param.num_output();
 	LOG_IF(FATAL, num_output < 1) << "num_output < 1";
 	int filter_second_dimension = layer.blobs(0).data_size() / num_output / kernel_h / kernel_w;
-	std::string filter = df->variable(_parse_filler_param({ num_output, filter_second_dimension, kernel_h, kernel_w }, param.weight_filler(), "weight filler"), 0, layer.name() + "_w", {});
+	std::string filter = df->variable(_parse_filler_param({ num_output, filter_second_dimension, kernel_h, kernel_w }, param.weight_filler(), "weight filler"), "", layer.name() + "_w", {});
 	auto filter_node = df->block()->find_node_by_output__name(filter);
 	auto filter_mutable_weights = filter_node->mutable_variable_param()->mutable_weights();
 	for (auto d : layer.blobs(0).data())
@@ -272,7 +272,7 @@ void Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, const c
 			_parse_filler_param({}, param.bias_filler(), "bias_filler");
 		}
 		//LOG_IF(FATAL, param.has_bias_filler() == false) << "param.has_bias_filler() == false - " << layer.name();
-		bias = df->variable(_parse_filler_param({ 1, num_output, 1, 1 }, param.bias_filler(), "bias filler"), 0, layer.name() + "_b", {});
+		bias = df->variable(_parse_filler_param({ 1, num_output, 1, 1 }, param.bias_filler(), "bias filler"), "", layer.name() + "_b", {});
 		auto bias_node = df->block()->find_node_by_output__name(bias);
 		auto bias_mutable_weights = bias_node->mutable_variable_param()->mutable_weights();
 		for (auto d : layer.blobs(1).data())

@@ -12,7 +12,8 @@ RandomUniform::RandomUniform(const deepflow::InitParam &param) : Initializer(par
 void RandomUniform::apply(Variable *variable) {	
 	auto size = variable->output(0)->value()->size();
 	float min = _param.random_uniform_param().min();
-	float max = _param.random_uniform_param().max();	
+	float max = _param.random_uniform_param().max();
+	LOG_IF(FATAL, max < min) << "max < min";
 	std::mt19937 generator;
 	generator.seed(std::random_device()());
 	std::uniform_real_distribution<float> distribution(min, max);

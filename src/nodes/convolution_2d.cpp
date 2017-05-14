@@ -54,7 +54,7 @@ void Convolution2D::initForward() {
 		//	LOG(FATAL) << "Dimension of the bias must be 1x" << filterDims[0] << "x" << h << "x" << w;
 		//LOG_IF(FATAL, _inputs[2]->dims()[1] != _inputs[1]->dims()[0]) << "The second dimension of biasDesc and the first dimension of filterDesc are not equal.";
 		DF_CUDNN_CHECK(cudnnCreateActivationDescriptor(&_activationDesc));
-		cudnnSetActivationDescriptor(_activationDesc, CUDNN_ACTIVATION_RELU, CUDNN_NOT_PROPAGATE_NAN, 0.01f);
+		cudnnSetActivationDescriptor(_activationDesc, CUDNN_ACTIVATION_RELU, CUDNN_NOT_PROPAGATE_NAN, 1.0f);
 	}
 }
 

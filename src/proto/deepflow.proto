@@ -297,13 +297,14 @@ message InitStepParam {
 }
 
 message InitParam {
-  TensorParam tensor_param = 1;
-  TensorData init_data = 2;
-  InitFillParam fill_param = 3;
-  InitIndexFillParam index_fill_param = 4;
-  InitRandomUniformParam random_uniform_param = 5;
-  InitStepParam step_param = 6;
-  InitRandomNormalParam random_normal_param = 7;
+  string name = 1;
+  TensorParam tensor_param = 2;
+  TensorData init_data = 3;
+  InitFillParam fill_param = 4;
+  InitIndexFillParam index_fill_param = 5;
+  InitRandomUniformParam random_uniform_param = 6;
+  InitStepParam step_param = 7;
+  InitRandomNormalParam random_normal_param = 8;
 }
 
 message SGDSolverParam {
@@ -354,5 +355,6 @@ message PhaseParam {
 message BlockParam {
 	repeated NodeParam node = 1;
 	repeated SolverParam solver = 2;
-	repeated PhaseParam phase = 3;	
+	repeated PhaseParam phase = 3;
+	repeated InitParam initializer = 4;
 }

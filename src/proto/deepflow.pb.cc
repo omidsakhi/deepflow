@@ -392,6 +392,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, name_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, tensor_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, init_data_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, fill_param_),
@@ -452,6 +453,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BlockParam, node_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BlockParam, solver_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BlockParam, phase_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BlockParam, initializer_),
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
@@ -495,13 +497,13 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 252, -1, sizeof(InitRandomNormalParam)},
   { 258, -1, sizeof(InitStepParam)},
   { 264, -1, sizeof(InitParam)},
-  { 275, -1, sizeof(SGDSolverParam)},
-  { 281, -1, sizeof(GainSolverParam)},
-  { 291, -1, sizeof(AdaDeltaSolverParam)},
-  { 298, -1, sizeof(AdamSolverParam)},
-  { 306, -1, sizeof(SolverParam)},
-  { 315, -1, sizeof(PhaseParam)},
-  { 321, -1, sizeof(BlockParam)},
+  { 276, -1, sizeof(SGDSolverParam)},
+  { 282, -1, sizeof(GainSolverParam)},
+  { 292, -1, sizeof(AdaDeltaSolverParam)},
+  { 299, -1, sizeof(AdamSolverParam)},
+  { 307, -1, sizeof(SolverParam)},
+  { 316, -1, sizeof(PhaseParam)},
+  { 322, -1, sizeof(BlockParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -949,40 +951,42 @@ void AddDescriptorsImpl() {
       "min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"5\n\025InitRandomNorm"
       "alParam\022\014\n\004mean\030\001 \001(\002\022\016\n\006stddev\030\002 \001(\002\")\n"
       "\rInitStepParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002"
-      "\"\361\002\n\tInitParam\022+\n\014tensor_param\030\001 \001(\0132\025.d"
-      "eepflow.TensorParam\022\'\n\tinit_data\030\002 \001(\0132\024"
-      ".deepflow.TensorData\022+\n\nfill_param\030\003 \001(\013"
-      "2\027.deepflow.InitFillParam\0226\n\020index_fill_"
-      "param\030\004 \001(\0132\034.deepflow.InitIndexFillPara"
-      "m\022>\n\024random_uniform_param\030\005 \001(\0132 .deepfl"
-      "ow.InitRandomUniformParam\022+\n\nstep_param\030"
-      "\006 \001(\0132\027.deepflow.InitStepParam\022<\n\023random"
-      "_normal_param\030\007 \001(\0132\037.deepflow.InitRando"
-      "mNormalParam\"9\n\016SGDSolverParam\022\025\n\rlearni"
-      "ng_rate\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\"\204\001\n\017Gain"
-      "SolverParam\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010mo"
-      "mentum\030\002 \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020\n\010min_ga"
-      "in\030\004 \001(\002\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tgain_mult"
-      "\030\006 \001(\002\"M\n\023AdaDeltaSolverParam\022\025\n\rlearnin"
-      "g_rate\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\022\r\n\005delta\030"
-      "\003 \001(\002\"S\n\017AdamSolverParam\022\025\n\rlearning_rat"
-      "e\030\001 \001(\002\022\r\n\005beta1\030\002 \001(\002\022\r\n\005beta2\030\003 \001(\002\022\013\n"
-      "\003eps\030\004 \001(\002\"\341\001\n\013SolverParam\022\014\n\004name\030\001 \001(\t"
-      "\022,\n\nsgd_solver\030\002 \001(\0132\030.deepflow.SGDSolve"
-      "rParam\022.\n\013gain_solver\030\003 \001(\0132\031.deepflow.G"
-      "ainSolverParam\022.\n\013adam_solver\030\004 \001(\0132\031.de"
-      "epflow.AdamSolverParam\0226\n\017adadelta_solve"
-      "r\030\005 \001(\0132\035.deepflow.AdaDeltaSolverParam\"\217"
-      "\001\n\nPhaseParam\022\r\n\005phase\030\001 \001(\t\0226\n\tbehaviou"
-      "r\030\002 \001(\0162#.deepflow.PhaseParam.PhaseBehav"
-      "iour\":\n\016PhaseBehaviour\022\t\n\005TRAIN\020\000\022\016\n\nVAL"
-      "IDATION\020\001\022\r\n\tINFERENCE\020\002\"{\n\nBlockParam\022!"
-      "\n\004node\030\001 \003(\0132\023.deepflow.NodeParam\022%\n\006sol"
-      "ver\030\002 \003(\0132\025.deepflow.SolverParam\022#\n\005phas"
-      "e\030\003 \003(\0132\024.deepflow.PhaseParamb\006proto3"
+      "\"\377\002\n\tInitParam\022\014\n\004name\030\001 \001(\t\022+\n\014tensor_p"
+      "aram\030\002 \001(\0132\025.deepflow.TensorParam\022\'\n\tini"
+      "t_data\030\003 \001(\0132\024.deepflow.TensorData\022+\n\nfi"
+      "ll_param\030\004 \001(\0132\027.deepflow.InitFillParam\022"
+      "6\n\020index_fill_param\030\005 \001(\0132\034.deepflow.Ini"
+      "tIndexFillParam\022>\n\024random_uniform_param\030"
+      "\006 \001(\0132 .deepflow.InitRandomUniformParam\022"
+      "+\n\nstep_param\030\007 \001(\0132\027.deepflow.InitStepP"
+      "aram\022<\n\023random_normal_param\030\010 \001(\0132\037.deep"
+      "flow.InitRandomNormalParam\"9\n\016SGDSolverP"
+      "aram\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030"
+      "\002 \001(\002\"\204\001\n\017GainSolverParam\022\025\n\rlearning_ra"
+      "te\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\022\020\n\010max_gain\030\003"
+      " \001(\002\022\020\n\010min_gain\030\004 \001(\002\022\021\n\tgain_plus\030\005 \001("
+      "\002\022\021\n\tgain_mult\030\006 \001(\002\"M\n\023AdaDeltaSolverPa"
+      "ram\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030\002"
+      " \001(\002\022\r\n\005delta\030\003 \001(\002\"S\n\017AdamSolverParam\022\025"
+      "\n\rlearning_rate\030\001 \001(\002\022\r\n\005beta1\030\002 \001(\002\022\r\n\005"
+      "beta2\030\003 \001(\002\022\013\n\003eps\030\004 \001(\002\"\341\001\n\013SolverParam"
+      "\022\014\n\004name\030\001 \001(\t\022,\n\nsgd_solver\030\002 \001(\0132\030.dee"
+      "pflow.SGDSolverParam\022.\n\013gain_solver\030\003 \001("
+      "\0132\031.deepflow.GainSolverParam\022.\n\013adam_sol"
+      "ver\030\004 \001(\0132\031.deepflow.AdamSolverParam\0226\n\017"
+      "adadelta_solver\030\005 \001(\0132\035.deepflow.AdaDelt"
+      "aSolverParam\"\217\001\n\nPhaseParam\022\r\n\005phase\030\001 \001"
+      "(\t\0226\n\tbehaviour\030\002 \001(\0162#.deepflow.PhasePa"
+      "ram.PhaseBehaviour\":\n\016PhaseBehaviour\022\t\n\005"
+      "TRAIN\020\000\022\016\n\nVALIDATION\020\001\022\r\n\tINFERENCE\020\002\"\245"
+      "\001\n\nBlockParam\022!\n\004node\030\001 \003(\0132\023.deepflow.N"
+      "odeParam\022%\n\006solver\030\002 \003(\0132\025.deepflow.Solv"
+      "erParam\022#\n\005phase\030\003 \003(\0132\024.deepflow.PhaseP"
+      "aram\022(\n\013initializer\030\004 \003(\0132\023.deepflow.Ini"
+      "tParamb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 6077);
+      descriptor, 6134);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -15697,6 +15701,7 @@ void InitStepParam::set_max(float value) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int InitParam::kNameFieldNumber;
 const int InitParam::kTensorParamFieldNumber;
 const int InitParam::kInitDataFieldNumber;
 const int InitParam::kFillParamFieldNumber;
@@ -15719,6 +15724,10 @@ InitParam::InitParam(const InitParam& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.name().size() > 0) {
+    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+  }
   if (from.has_tensor_param()) {
     tensor_param_ = new ::deepflow::TensorParam(*from.tensor_param_);
   } else {
@@ -15758,6 +15767,7 @@ InitParam::InitParam(const InitParam& from)
 }
 
 void InitParam::SharedCtor() {
+  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&tensor_param_, 0, reinterpret_cast<char*>(&random_normal_param_) -
     reinterpret_cast<char*>(&tensor_param_) + sizeof(random_normal_param_));
   _cached_size_ = 0;
@@ -15769,6 +15779,7 @@ InitParam::~InitParam() {
 }
 
 void InitParam::SharedDtor() {
+  name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) {
     delete tensor_param_;
   }
@@ -15817,6 +15828,7 @@ InitParam* InitParam::New(::google::protobuf::Arena* arena) const {
 
 void InitParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:deepflow.InitParam)
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && tensor_param_ != NULL) {
     delete tensor_param_;
   }
@@ -15857,10 +15869,26 @@ bool InitParam::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .deepflow.TensorParam tensor_param = 1;
+      // string name = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->name().data(), this->name().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "deepflow.InitParam.name"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .deepflow.TensorParam tensor_param = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_tensor_param()));
         } else {
@@ -15869,10 +15897,10 @@ bool InitParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .deepflow.TensorData init_data = 2;
-      case 2: {
+      // .deepflow.TensorData init_data = 3;
+      case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u)) {
+            static_cast< ::google::protobuf::uint8>(26u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_init_data()));
         } else {
@@ -15881,10 +15909,10 @@ bool InitParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .deepflow.InitFillParam fill_param = 3;
-      case 3: {
+      // .deepflow.InitFillParam fill_param = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u)) {
+            static_cast< ::google::protobuf::uint8>(34u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_fill_param()));
         } else {
@@ -15893,10 +15921,10 @@ bool InitParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .deepflow.InitIndexFillParam index_fill_param = 4;
-      case 4: {
+      // .deepflow.InitIndexFillParam index_fill_param = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u)) {
+            static_cast< ::google::protobuf::uint8>(42u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_index_fill_param()));
         } else {
@@ -15905,10 +15933,10 @@ bool InitParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .deepflow.InitRandomUniformParam random_uniform_param = 5;
-      case 5: {
+      // .deepflow.InitRandomUniformParam random_uniform_param = 6;
+      case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u)) {
+            static_cast< ::google::protobuf::uint8>(50u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_random_uniform_param()));
         } else {
@@ -15917,10 +15945,10 @@ bool InitParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .deepflow.InitStepParam step_param = 6;
-      case 6: {
+      // .deepflow.InitStepParam step_param = 7;
+      case 7: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(50u)) {
+            static_cast< ::google::protobuf::uint8>(58u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_step_param()));
         } else {
@@ -15929,10 +15957,10 @@ bool InitParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .deepflow.InitRandomNormalParam random_normal_param = 7;
-      case 7: {
+      // .deepflow.InitRandomNormalParam random_normal_param = 8;
+      case 8: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(58u)) {
+            static_cast< ::google::protobuf::uint8>(66u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_random_normal_param()));
         } else {
@@ -15965,46 +15993,56 @@ failure:
 void InitParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.InitParam)
-  // .deepflow.TensorParam tensor_param = 1;
+  // string name = 1;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "deepflow.InitParam.name");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->name(), output);
+  }
+
+  // .deepflow.TensorParam tensor_param = 2;
   if (this->has_tensor_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, *this->tensor_param_, output);
+      2, *this->tensor_param_, output);
   }
 
-  // .deepflow.TensorData init_data = 2;
+  // .deepflow.TensorData init_data = 3;
   if (this->has_init_data()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, *this->init_data_, output);
+      3, *this->init_data_, output);
   }
 
-  // .deepflow.InitFillParam fill_param = 3;
+  // .deepflow.InitFillParam fill_param = 4;
   if (this->has_fill_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, *this->fill_param_, output);
+      4, *this->fill_param_, output);
   }
 
-  // .deepflow.InitIndexFillParam index_fill_param = 4;
+  // .deepflow.InitIndexFillParam index_fill_param = 5;
   if (this->has_index_fill_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, *this->index_fill_param_, output);
+      5, *this->index_fill_param_, output);
   }
 
-  // .deepflow.InitRandomUniformParam random_uniform_param = 5;
+  // .deepflow.InitRandomUniformParam random_uniform_param = 6;
   if (this->has_random_uniform_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, *this->random_uniform_param_, output);
+      6, *this->random_uniform_param_, output);
   }
 
-  // .deepflow.InitStepParam step_param = 6;
+  // .deepflow.InitStepParam step_param = 7;
   if (this->has_step_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, *this->step_param_, output);
+      7, *this->step_param_, output);
   }
 
-  // .deepflow.InitRandomNormalParam random_normal_param = 7;
+  // .deepflow.InitRandomNormalParam random_normal_param = 8;
   if (this->has_random_normal_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      7, *this->random_normal_param_, output);
+      8, *this->random_normal_param_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:deepflow.InitParam)
@@ -16014,53 +16052,64 @@ void InitParam::SerializeWithCachedSizes(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.InitParam)
-  // .deepflow.TensorParam tensor_param = 1;
+  // string name = 1;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "deepflow.InitParam.name");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->name(), target);
+  }
+
+  // .deepflow.TensorParam tensor_param = 2;
   if (this->has_tensor_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        1, *this->tensor_param_, false, target);
+        2, *this->tensor_param_, false, target);
   }
 
-  // .deepflow.TensorData init_data = 2;
+  // .deepflow.TensorData init_data = 3;
   if (this->has_init_data()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        2, *this->init_data_, false, target);
+        3, *this->init_data_, false, target);
   }
 
-  // .deepflow.InitFillParam fill_param = 3;
+  // .deepflow.InitFillParam fill_param = 4;
   if (this->has_fill_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        3, *this->fill_param_, false, target);
+        4, *this->fill_param_, false, target);
   }
 
-  // .deepflow.InitIndexFillParam index_fill_param = 4;
+  // .deepflow.InitIndexFillParam index_fill_param = 5;
   if (this->has_index_fill_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        4, *this->index_fill_param_, false, target);
+        5, *this->index_fill_param_, false, target);
   }
 
-  // .deepflow.InitRandomUniformParam random_uniform_param = 5;
+  // .deepflow.InitRandomUniformParam random_uniform_param = 6;
   if (this->has_random_uniform_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        5, *this->random_uniform_param_, false, target);
+        6, *this->random_uniform_param_, false, target);
   }
 
-  // .deepflow.InitStepParam step_param = 6;
+  // .deepflow.InitStepParam step_param = 7;
   if (this->has_step_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        6, *this->step_param_, false, target);
+        7, *this->step_param_, false, target);
   }
 
-  // .deepflow.InitRandomNormalParam random_normal_param = 7;
+  // .deepflow.InitRandomNormalParam random_normal_param = 8;
   if (this->has_random_normal_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        7, *this->random_normal_param_, false, target);
+        8, *this->random_normal_param_, false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.InitParam)
@@ -16071,49 +16120,56 @@ size_t InitParam::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:deepflow.InitParam)
   size_t total_size = 0;
 
-  // .deepflow.TensorParam tensor_param = 1;
+  // string name = 1;
+  if (this->name().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->name());
+  }
+
+  // .deepflow.TensorParam tensor_param = 2;
   if (this->has_tensor_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->tensor_param_);
   }
 
-  // .deepflow.TensorData init_data = 2;
+  // .deepflow.TensorData init_data = 3;
   if (this->has_init_data()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->init_data_);
   }
 
-  // .deepflow.InitFillParam fill_param = 3;
+  // .deepflow.InitFillParam fill_param = 4;
   if (this->has_fill_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->fill_param_);
   }
 
-  // .deepflow.InitIndexFillParam index_fill_param = 4;
+  // .deepflow.InitIndexFillParam index_fill_param = 5;
   if (this->has_index_fill_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->index_fill_param_);
   }
 
-  // .deepflow.InitRandomUniformParam random_uniform_param = 5;
+  // .deepflow.InitRandomUniformParam random_uniform_param = 6;
   if (this->has_random_uniform_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->random_uniform_param_);
   }
 
-  // .deepflow.InitStepParam step_param = 6;
+  // .deepflow.InitStepParam step_param = 7;
   if (this->has_step_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->step_param_);
   }
 
-  // .deepflow.InitRandomNormalParam random_normal_param = 7;
+  // .deepflow.InitRandomNormalParam random_normal_param = 8;
   if (this->has_random_normal_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -16146,6 +16202,10 @@ void InitParam::MergeFrom(const InitParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.InitParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.name().size() > 0) {
+
+    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+  }
   if (from.has_tensor_param()) {
     mutable_tensor_param()->::deepflow::TensorParam::MergeFrom(from.tensor_param());
   }
@@ -16192,6 +16252,7 @@ void InitParam::Swap(InitParam* other) {
   InternalSwap(other);
 }
 void InitParam::InternalSwap(InitParam* other) {
+  name_.Swap(&other->name_);
   std::swap(tensor_param_, other->tensor_param_);
   std::swap(init_data_, other->init_data_);
   std::swap(fill_param_, other->fill_param_);
@@ -16210,7 +16271,59 @@ void InitParam::InternalSwap(InitParam* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // InitParam
 
-// .deepflow.TensorParam tensor_param = 1;
+// string name = 1;
+void InitParam::clear_name() {
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& InitParam::name() const {
+  // @@protoc_insertion_point(field_get:deepflow.InitParam.name)
+  return name_.GetNoArena();
+}
+void InitParam::set_name(const ::std::string& value) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:deepflow.InitParam.name)
+}
+#if LANG_CXX11
+void InitParam::set_name(::std::string&& value) {
+  
+  name_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:deepflow.InitParam.name)
+}
+#endif
+void InitParam::set_name(const char* value) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:deepflow.InitParam.name)
+}
+void InitParam::set_name(const char* value, size_t size) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:deepflow.InitParam.name)
+}
+::std::string* InitParam::mutable_name() {
+  
+  // @@protoc_insertion_point(field_mutable:deepflow.InitParam.name)
+  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* InitParam::release_name() {
+  // @@protoc_insertion_point(field_release:deepflow.InitParam.name)
+  
+  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void InitParam::set_allocated_name(::std::string* name) {
+  if (name != NULL) {
+    
+  } else {
+    
+  }
+  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
+  // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.name)
+}
+
+// .deepflow.TensorParam tensor_param = 2;
 bool InitParam::has_tensor_param() const {
   return this != internal_default_instance() && tensor_param_ != NULL;
 }
@@ -16249,7 +16362,7 @@ void InitParam::set_allocated_tensor_param(::deepflow::TensorParam* tensor_param
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.tensor_param)
 }
 
-// .deepflow.TensorData init_data = 2;
+// .deepflow.TensorData init_data = 3;
 bool InitParam::has_init_data() const {
   return this != internal_default_instance() && init_data_ != NULL;
 }
@@ -16288,7 +16401,7 @@ void InitParam::set_allocated_init_data(::deepflow::TensorData* init_data) {
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.init_data)
 }
 
-// .deepflow.InitFillParam fill_param = 3;
+// .deepflow.InitFillParam fill_param = 4;
 bool InitParam::has_fill_param() const {
   return this != internal_default_instance() && fill_param_ != NULL;
 }
@@ -16327,7 +16440,7 @@ void InitParam::set_allocated_fill_param(::deepflow::InitFillParam* fill_param) 
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.fill_param)
 }
 
-// .deepflow.InitIndexFillParam index_fill_param = 4;
+// .deepflow.InitIndexFillParam index_fill_param = 5;
 bool InitParam::has_index_fill_param() const {
   return this != internal_default_instance() && index_fill_param_ != NULL;
 }
@@ -16366,7 +16479,7 @@ void InitParam::set_allocated_index_fill_param(::deepflow::InitIndexFillParam* i
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.index_fill_param)
 }
 
-// .deepflow.InitRandomUniformParam random_uniform_param = 5;
+// .deepflow.InitRandomUniformParam random_uniform_param = 6;
 bool InitParam::has_random_uniform_param() const {
   return this != internal_default_instance() && random_uniform_param_ != NULL;
 }
@@ -16405,7 +16518,7 @@ void InitParam::set_allocated_random_uniform_param(::deepflow::InitRandomUniform
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.random_uniform_param)
 }
 
-// .deepflow.InitStepParam step_param = 6;
+// .deepflow.InitStepParam step_param = 7;
 bool InitParam::has_step_param() const {
   return this != internal_default_instance() && step_param_ != NULL;
 }
@@ -16444,7 +16557,7 @@ void InitParam::set_allocated_step_param(::deepflow::InitStepParam* step_param) 
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.step_param)
 }
 
-// .deepflow.InitRandomNormalParam random_normal_param = 7;
+// .deepflow.InitRandomNormalParam random_normal_param = 8;
 bool InitParam::has_random_normal_param() const {
   return this != internal_default_instance() && random_normal_param_ != NULL;
 }
@@ -18904,6 +19017,7 @@ void PhaseParam::set_behaviour(::deepflow::PhaseParam_PhaseBehaviour value) {
 const int BlockParam::kNodeFieldNumber;
 const int BlockParam::kSolverFieldNumber;
 const int BlockParam::kPhaseFieldNumber;
+const int BlockParam::kInitializerFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 BlockParam::BlockParam()
@@ -18920,6 +19034,7 @@ BlockParam::BlockParam(const BlockParam& from)
       node_(from.node_),
       solver_(from.solver_),
       phase_(from.phase_),
+      initializer_(from.initializer_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:deepflow.BlockParam)
@@ -18965,6 +19080,7 @@ void BlockParam::Clear() {
   node_.Clear();
   solver_.Clear();
   phase_.Clear();
+  initializer_.Clear();
 }
 
 bool BlockParam::MergePartialFromCodedStream(
@@ -19019,6 +19135,20 @@ bool BlockParam::MergePartialFromCodedStream(
         break;
       }
 
+      // repeated .deepflow.InitParam initializer = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u)) {
+          DO_(input->IncrementRecursionDepth());
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
+                input, add_initializer()));
+        } else {
+          goto handle_unusual;
+        }
+        input->UnsafeDecrementRecursionDepth();
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -19061,6 +19191,12 @@ void BlockParam::SerializeWithCachedSizes(
       3, this->phase(i), output);
   }
 
+  // repeated .deepflow.InitParam initializer = 4;
+  for (unsigned int i = 0, n = this->initializer_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      4, this->initializer(i), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:deepflow.BlockParam)
 }
 
@@ -19087,6 +19223,13 @@ void BlockParam::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         3, this->phase(i), false, target);
+  }
+
+  // repeated .deepflow.InitParam initializer = 4;
+  for (unsigned int i = 0, n = this->initializer_size(); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        4, this->initializer(i), false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.BlockParam)
@@ -19130,6 +19273,17 @@ size_t BlockParam::ByteSizeLong() const {
     }
   }
 
+  // repeated .deepflow.InitParam initializer = 4;
+  {
+    unsigned int count = this->initializer_size();
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->initializer(i));
+    }
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -19159,6 +19313,7 @@ void BlockParam::MergeFrom(const BlockParam& from) {
   node_.MergeFrom(from.node_);
   solver_.MergeFrom(from.solver_);
   phase_.MergeFrom(from.phase_);
+  initializer_.MergeFrom(from.initializer_);
 }
 
 void BlockParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -19187,6 +19342,7 @@ void BlockParam::InternalSwap(BlockParam* other) {
   node_.UnsafeArenaSwap(&other->node_);
   solver_.UnsafeArenaSwap(&other->solver_);
   phase_.UnsafeArenaSwap(&other->phase_);
+  initializer_.UnsafeArenaSwap(&other->initializer_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -19286,6 +19442,36 @@ const ::google::protobuf::RepeatedPtrField< ::deepflow::PhaseParam >&
 BlockParam::phase() const {
   // @@protoc_insertion_point(field_list:deepflow.BlockParam.phase)
   return phase_;
+}
+
+// repeated .deepflow.InitParam initializer = 4;
+int BlockParam::initializer_size() const {
+  return initializer_.size();
+}
+void BlockParam::clear_initializer() {
+  initializer_.Clear();
+}
+const ::deepflow::InitParam& BlockParam::initializer(int index) const {
+  // @@protoc_insertion_point(field_get:deepflow.BlockParam.initializer)
+  return initializer_.Get(index);
+}
+::deepflow::InitParam* BlockParam::mutable_initializer(int index) {
+  // @@protoc_insertion_point(field_mutable:deepflow.BlockParam.initializer)
+  return initializer_.Mutable(index);
+}
+::deepflow::InitParam* BlockParam::add_initializer() {
+  // @@protoc_insertion_point(field_add:deepflow.BlockParam.initializer)
+  return initializer_.Add();
+}
+::google::protobuf::RepeatedPtrField< ::deepflow::InitParam >*
+BlockParam::mutable_initializer() {
+  // @@protoc_insertion_point(field_mutable_list:deepflow.BlockParam.initializer)
+  return &initializer_;
+}
+const ::google::protobuf::RepeatedPtrField< ::deepflow::InitParam >&
+BlockParam::initializer() const {
+  // @@protoc_insertion_point(field_list:deepflow.BlockParam.initializer)
+  return initializer_;
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

@@ -57,7 +57,7 @@ void main(int argc, char** argv) {
 			//auto solver = df.adadelta_solver();		
 			auto image = df.image_reader(FLAGS_image, deepflow::ImageReaderParam_Type_GRAY_ONLY);
 			auto stat = df.variable(df.random_uniform({ 1,1,252,252 }, 0.8, 1), solver1);
-			auto f = df.variable(df.random_uniform({ 1,1,5,5 }, 0.9, 0.1), solver2);
+			auto f = df.variable(df.random_uniform({ 1,1,5,5 }, 0.9, 1.1), solver2);
 			auto tconv = df.transposed_conv2d(stat, f, { 1,1,256,256 }, 0, 0, 1, 1, 1, 1);
 			df.euclidean_loss(tconv, image);
 			df.display(tconv, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { "Train" });
@@ -83,13 +83,13 @@ void main(int argc, char** argv) {
 			df.display(imbar, 1000, deepflow::DisplayParam_DisplayType_VALUES, "approx1", { "Train" });
 		}
 		else if (FLAGS_x5) {
-			df.load_from_caffe_model("./models/VGG_ILSVRC_16_layers.caffemodel", { std::pair<std::string, std::array<int,4>>("data", {2,3,224,224}) });				
+			df.load_from_caffe_model("D:/Projects/deepflow/build/x64/Release/models/VGG_ILSVRC_16_layers.caffemodel", { std::pair<std::string, std::array<int,4>>("data", {2,3,224,224}) });				
 		}
 		else if (FLAGS_x6) {
 			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
 			auto image = df.image_reader(FLAGS_image, deepflow::ImageReaderParam_Type_GRAY_ONLY);
-			auto b = df.variable(df.zeros({ 1,1,1,1}), 0);
-			auto f = df.variable(df.ones({ 1,1,5,5 }), 0);
+			auto b = df.variable(df.zeros({ 1,1,1,1 }), "", "b", {});
+			auto f = df.variable(df.ones({ 1,1,5,5 }), "", "f", {});
 			auto conv = df.conv2d(image, f, b, "conv");			
 			df.display(conv, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { "Train" });
 		}
@@ -99,6 +99,9 @@ void main(int argc, char** argv) {
 	else {
 		df.block()->load_from_binary(FLAGS_i);
 	}
+
+	df.block()->print_nodes();
+	df.block()->print_phases();
 
 	auto session = df.session();	
 

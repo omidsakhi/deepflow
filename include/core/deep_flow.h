@@ -26,21 +26,21 @@ public:
 
 	// GENERATORS
 	std::string mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name = "mnist", std::initializer_list<std::string> phases = {});
-	std::string data_generator(std::shared_ptr<deepflow::InitParam> initializer, int num_samples = 1, std::string solver = "", std::string name = "igen", std::initializer_list<std::string> phases = {});
+	std::string data_generator(std::string initializer, int num_samples = 1, std::string solver = "", std::string name = "igen", std::initializer_list<std::string> phases = {});
 	std::string image_reader(std::string file_path, deepflow::ImageReaderParam_Type type, std::string name = "imread", std::initializer_list<std::string> phases = {});
 	std::string image_batch_reader(std::string folder_path, std::initializer_list<int> dims, std::string name = "imbar", std::initializer_list<std::string> phases = {});
 
 	// INITIALIZERS
-	std::shared_ptr<deepflow::InitParam> fill(std::initializer_list<int> dims, float value);
-	std::shared_ptr<deepflow::InitParam> index_fill(std::initializer_list<int> dims, float offset);
-	std::shared_ptr<deepflow::InitParam> zeros(std::initializer_list<int> dims);
-	std::shared_ptr<deepflow::InitParam> ones(std::initializer_list<int> dims);
-	std::shared_ptr<deepflow::InitParam> random_uniform(std::initializer_list<int> dims, float min, float max);
-	std::shared_ptr<deepflow::InitParam> random_normal(std::initializer_list<int> dims, float mean, float stddev);
-	std::shared_ptr<deepflow::InitParam> step(std::initializer_list<int> dims, float min, float max);
+	std::string fill(std::initializer_list<int> dims, float value, std::string name = "fill");
+	std::string index_fill(std::initializer_list<int> dims, float offset, std::string name = "index_fill");
+	std::string zeros(std::initializer_list<int> dims, std::string name = "zero");
+	std::string ones(std::initializer_list<int> dims, std::string = "ones");
+	std::string random_uniform(std::initializer_list<int> dims, float min, float max, std::string name = "random_uniform");
+	std::string random_normal(std::initializer_list<int> dims, float mean, float stddev, std::string name = "random_normal");
+	std::string step(std::initializer_list<int> dims, float min, float max, std::string name = "step");
 
 	// VARIABLES & PLACE HOLDER
-	std::string variable(std::shared_ptr<deepflow::InitParam> initializer, std::string solver = "", std::string name = "var", std::initializer_list<std::string> phases = {});
+	std::string variable(std::string initializer, std::string solver = "", std::string name = "var", std::initializer_list<std::string> phases = {});
 	std::string place_holder(std::array<int,4> dims, Tensor::TensorType type = Tensor::Float, std::string name = "ph", std::initializer_list<std::string> phases = {});
 	
 	//CONVOLUTION

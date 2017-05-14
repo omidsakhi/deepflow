@@ -22,12 +22,12 @@ void Variable::initForward() {
 	LOG(INFO) << "Initializing Variable " << _name << " - " << _outputs[0]->value()->shape();
 	if (_param.variable_param().has_weights()) {
 		auto weights = _param.variable_param().weights();
-		LOG_IF(FATAL, weights.weight_size() != _outputs[0]->value()->size()) << "weights.weight_size() != _outputs[0]->value()->size() in " << _name;
+		LOG_IF(FATAL, weights.weight_size() != _outputs[0]->value()->size()) << "weights.weight_size() != _outputs[0]->value()->size() in " << _name << " - " << weights.weight_size() << " != " << _outputs[0]->value()->size();
 		DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), weights.weight().data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 	}
 	else if (_initializer->param().has_init_data()) {
 		auto weights = _initializer->param().init_data();
-		LOG_IF(FATAL, weights.weight_size() != _outputs[0]->value()->size()) << "weights.weight_size() != _outputs[0]->value()->size() in " << _name;
+		LOG_IF(FATAL, weights.weight_size() != _outputs[0]->value()->size()) << "weights.weight_size() != _outputs[0]->value()->size() in " << _name << " - " << weights.weight_size() << " != " << _outputs[0]->value()->size();
 		DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), weights.weight().data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 	}
 	else {

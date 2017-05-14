@@ -15,32 +15,42 @@ Block::Block(deepflow::NodeParam & param) : Node(param)
 	_block_param = param.mutable_block_param();
 }
 
-std::shared_ptr<deepflow::NodeParam> Block::find_node_by_name(const std::string & name) const
+deepflow::NodeParam* Block::find_node_by_name(const std::string & name) const
 {	
 	for (int i = 0; i < _block_param->node_size(); ++i) {
 		if (_block_param->node(i).name() == name) {
-			return std::shared_ptr<deepflow::NodeParam>(_block_param->mutable_node(i));
+			return _block_param->mutable_node(i);
 		}
 	}
 	return 0;
 }
 
-std::shared_ptr<deepflow::SolverParam> Block::find_solver_by_name(const std::string & name) const
+deepflow::SolverParam* Block::find_solver_by_name(const std::string & name) const
 {
 	for (int i = 0; i < _block_param->solver_size(); ++i) {
 		if (_block_param->solver(i).name() == name) {
-			return std::shared_ptr<deepflow::SolverParam>(_block_param->mutable_solver(i));
+			return _block_param->mutable_solver(i);
 		}
 	}
 	return 0;
 }
 
-std::shared_ptr<deepflow::NodeParam> Block::find_node_by_output__name(const std::string & output_name) const
+deepflow::InitParam * Block::find_initializer_by_name(const std::string & name) const
+{
+	for (int i = 0; i < _block_param->initializer_size(); ++i) {
+		if (_block_param->initializer(i).name() == name) {
+			return _block_param->mutable_initializer(i);
+		}
+	}
+	return 0;
+}
+
+deepflow::NodeParam* Block::find_node_by_output__name(const std::string & output_name) const
 {
 	for (int i = 0; i < _block_param->node_size(); ++i) {
 		for (auto output : _block_param->node(i).output())
 			if (output == output_name) {
-				return std::shared_ptr<deepflow::NodeParam>(_block_param->mutable_node(i));
+				return _block_param->mutable_node(i);
 			}
 	}
 	return 0;
@@ -72,6 +82,19 @@ std::string Block::get_unique_solver_name(const std::string & prefix) const
 	return nodeName;
 }
 
+std::string Block::get_unique_initializer_name(const std::string & prefix) const
+{
+	if (find_initializer_by_name(prefix) == 0)
+		return prefix;
+	int index = 1;
+	std::string initName = prefix + "_" + std::to_string(index);
+	while (find_solver_by_name(initName) != 0) {
+		index++;
+		initName = prefix + "_" + std::to_string(index);
+	}
+	return initName;
+}
+
 void Block::save_as_binary(std::string file_path)
 {	
 	std::fstream output(file_path, std::ios::out | std::ios::trunc | std::ios::binary);
@@ -101,6 +124,11 @@ deepflow::PhaseParam * Block::add_phase()
 deepflow::SolverParam * Block::add_solver()
 {
 	return _block_param->add_solver();
+}
+
+deepflow::InitParam * Block::add_initializer()
+{
+	return _block_param->add_initializer();
 }
 
 void Block::print_nodes()
@@ -145,6 +173,11 @@ google::protobuf::RepeatedPtrField<deepflow::NodeParam> Block::nodes()
 google::protobuf::RepeatedPtrField<deepflow::SolverParam> Block::solvers()
 {
 	return _block_param->solver();
+}
+
+google::protobuf::RepeatedPtrField<deepflow::InitParam> Block::initializers()
+{
+	return _block_param->initializer();
 }
 
 int Block::minNumInputs()

@@ -24,6 +24,7 @@ std::string Step::to_cpp() const
 	cpp += "{" + std::to_string(_dims[0]) + ", " + std::to_string(_dims[1]) + ", " + std::to_string(_dims[2]) + ", " + std::to_string(_dims[3]) + "}, ";
 	float min = _param.step_param().min();
 	float max = _param.step_param().max();
+	LOG_IF(FATAL, max < min) << "max < min";
 	cpp += std::to_string(min) + ", ";
 	cpp += std::to_string(max);
 	cpp += ")";

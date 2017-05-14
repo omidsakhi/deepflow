@@ -4843,64 +4843,78 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
-  // .deepflow.TensorParam tensor_param = 1;
+  // string name = 1;
+  void clear_name();
+  static const int kNameFieldNumber = 1;
+  const ::std::string& name() const;
+  void set_name(const ::std::string& value);
+  #if LANG_CXX11
+  void set_name(::std::string&& value);
+  #endif
+  void set_name(const char* value);
+  void set_name(const char* value, size_t size);
+  ::std::string* mutable_name();
+  ::std::string* release_name();
+  void set_allocated_name(::std::string* name);
+
+  // .deepflow.TensorParam tensor_param = 2;
   bool has_tensor_param() const;
   void clear_tensor_param();
-  static const int kTensorParamFieldNumber = 1;
+  static const int kTensorParamFieldNumber = 2;
   const ::deepflow::TensorParam& tensor_param() const;
   ::deepflow::TensorParam* mutable_tensor_param();
   ::deepflow::TensorParam* release_tensor_param();
   void set_allocated_tensor_param(::deepflow::TensorParam* tensor_param);
 
-  // .deepflow.TensorData init_data = 2;
+  // .deepflow.TensorData init_data = 3;
   bool has_init_data() const;
   void clear_init_data();
-  static const int kInitDataFieldNumber = 2;
+  static const int kInitDataFieldNumber = 3;
   const ::deepflow::TensorData& init_data() const;
   ::deepflow::TensorData* mutable_init_data();
   ::deepflow::TensorData* release_init_data();
   void set_allocated_init_data(::deepflow::TensorData* init_data);
 
-  // .deepflow.InitFillParam fill_param = 3;
+  // .deepflow.InitFillParam fill_param = 4;
   bool has_fill_param() const;
   void clear_fill_param();
-  static const int kFillParamFieldNumber = 3;
+  static const int kFillParamFieldNumber = 4;
   const ::deepflow::InitFillParam& fill_param() const;
   ::deepflow::InitFillParam* mutable_fill_param();
   ::deepflow::InitFillParam* release_fill_param();
   void set_allocated_fill_param(::deepflow::InitFillParam* fill_param);
 
-  // .deepflow.InitIndexFillParam index_fill_param = 4;
+  // .deepflow.InitIndexFillParam index_fill_param = 5;
   bool has_index_fill_param() const;
   void clear_index_fill_param();
-  static const int kIndexFillParamFieldNumber = 4;
+  static const int kIndexFillParamFieldNumber = 5;
   const ::deepflow::InitIndexFillParam& index_fill_param() const;
   ::deepflow::InitIndexFillParam* mutable_index_fill_param();
   ::deepflow::InitIndexFillParam* release_index_fill_param();
   void set_allocated_index_fill_param(::deepflow::InitIndexFillParam* index_fill_param);
 
-  // .deepflow.InitRandomUniformParam random_uniform_param = 5;
+  // .deepflow.InitRandomUniformParam random_uniform_param = 6;
   bool has_random_uniform_param() const;
   void clear_random_uniform_param();
-  static const int kRandomUniformParamFieldNumber = 5;
+  static const int kRandomUniformParamFieldNumber = 6;
   const ::deepflow::InitRandomUniformParam& random_uniform_param() const;
   ::deepflow::InitRandomUniformParam* mutable_random_uniform_param();
   ::deepflow::InitRandomUniformParam* release_random_uniform_param();
   void set_allocated_random_uniform_param(::deepflow::InitRandomUniformParam* random_uniform_param);
 
-  // .deepflow.InitStepParam step_param = 6;
+  // .deepflow.InitStepParam step_param = 7;
   bool has_step_param() const;
   void clear_step_param();
-  static const int kStepParamFieldNumber = 6;
+  static const int kStepParamFieldNumber = 7;
   const ::deepflow::InitStepParam& step_param() const;
   ::deepflow::InitStepParam* mutable_step_param();
   ::deepflow::InitStepParam* release_step_param();
   void set_allocated_step_param(::deepflow::InitStepParam* step_param);
 
-  // .deepflow.InitRandomNormalParam random_normal_param = 7;
+  // .deepflow.InitRandomNormalParam random_normal_param = 8;
   bool has_random_normal_param() const;
   void clear_random_normal_param();
-  static const int kRandomNormalParamFieldNumber = 7;
+  static const int kRandomNormalParamFieldNumber = 8;
   const ::deepflow::InitRandomNormalParam& random_normal_param() const;
   ::deepflow::InitRandomNormalParam* mutable_random_normal_param();
   ::deepflow::InitRandomNormalParam* release_random_normal_param();
@@ -4910,6 +4924,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr name_;
   ::deepflow::TensorParam* tensor_param_;
   ::deepflow::TensorData* init_data_;
   ::deepflow::InitFillParam* fill_param_;
@@ -5691,6 +5706,18 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   const ::google::protobuf::RepeatedPtrField< ::deepflow::PhaseParam >&
       phase() const;
 
+  // repeated .deepflow.InitParam initializer = 4;
+  int initializer_size() const;
+  void clear_initializer();
+  static const int kInitializerFieldNumber = 4;
+  const ::deepflow::InitParam& initializer(int index) const;
+  ::deepflow::InitParam* mutable_initializer(int index);
+  ::deepflow::InitParam* add_initializer();
+  ::google::protobuf::RepeatedPtrField< ::deepflow::InitParam >*
+      mutable_initializer();
+  const ::google::protobuf::RepeatedPtrField< ::deepflow::InitParam >&
+      initializer() const;
+
   // @@protoc_insertion_point(class_scope:deepflow.BlockParam)
  private:
 
@@ -5698,6 +5725,7 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::RepeatedPtrField< ::deepflow::NodeParam > node_;
   ::google::protobuf::RepeatedPtrField< ::deepflow::SolverParam > solver_;
   ::google::protobuf::RepeatedPtrField< ::deepflow::PhaseParam > phase_;
+  ::google::protobuf::RepeatedPtrField< ::deepflow::InitParam > initializer_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -8787,7 +8815,59 @@ inline void InitStepParam::set_max(float value) {
 
 // InitParam
 
-// .deepflow.TensorParam tensor_param = 1;
+// string name = 1;
+inline void InitParam::clear_name() {
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& InitParam::name() const {
+  // @@protoc_insertion_point(field_get:deepflow.InitParam.name)
+  return name_.GetNoArena();
+}
+inline void InitParam::set_name(const ::std::string& value) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:deepflow.InitParam.name)
+}
+#if LANG_CXX11
+inline void InitParam::set_name(::std::string&& value) {
+  
+  name_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:deepflow.InitParam.name)
+}
+#endif
+inline void InitParam::set_name(const char* value) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:deepflow.InitParam.name)
+}
+inline void InitParam::set_name(const char* value, size_t size) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:deepflow.InitParam.name)
+}
+inline ::std::string* InitParam::mutable_name() {
+  
+  // @@protoc_insertion_point(field_mutable:deepflow.InitParam.name)
+  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* InitParam::release_name() {
+  // @@protoc_insertion_point(field_release:deepflow.InitParam.name)
+  
+  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void InitParam::set_allocated_name(::std::string* name) {
+  if (name != NULL) {
+    
+  } else {
+    
+  }
+  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
+  // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.name)
+}
+
+// .deepflow.TensorParam tensor_param = 2;
 inline bool InitParam::has_tensor_param() const {
   return this != internal_default_instance() && tensor_param_ != NULL;
 }
@@ -8826,7 +8906,7 @@ inline void InitParam::set_allocated_tensor_param(::deepflow::TensorParam* tenso
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.tensor_param)
 }
 
-// .deepflow.TensorData init_data = 2;
+// .deepflow.TensorData init_data = 3;
 inline bool InitParam::has_init_data() const {
   return this != internal_default_instance() && init_data_ != NULL;
 }
@@ -8865,7 +8945,7 @@ inline void InitParam::set_allocated_init_data(::deepflow::TensorData* init_data
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.init_data)
 }
 
-// .deepflow.InitFillParam fill_param = 3;
+// .deepflow.InitFillParam fill_param = 4;
 inline bool InitParam::has_fill_param() const {
   return this != internal_default_instance() && fill_param_ != NULL;
 }
@@ -8904,7 +8984,7 @@ inline void InitParam::set_allocated_fill_param(::deepflow::InitFillParam* fill_
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.fill_param)
 }
 
-// .deepflow.InitIndexFillParam index_fill_param = 4;
+// .deepflow.InitIndexFillParam index_fill_param = 5;
 inline bool InitParam::has_index_fill_param() const {
   return this != internal_default_instance() && index_fill_param_ != NULL;
 }
@@ -8943,7 +9023,7 @@ inline void InitParam::set_allocated_index_fill_param(::deepflow::InitIndexFillP
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.index_fill_param)
 }
 
-// .deepflow.InitRandomUniformParam random_uniform_param = 5;
+// .deepflow.InitRandomUniformParam random_uniform_param = 6;
 inline bool InitParam::has_random_uniform_param() const {
   return this != internal_default_instance() && random_uniform_param_ != NULL;
 }
@@ -8982,7 +9062,7 @@ inline void InitParam::set_allocated_random_uniform_param(::deepflow::InitRandom
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.random_uniform_param)
 }
 
-// .deepflow.InitStepParam step_param = 6;
+// .deepflow.InitStepParam step_param = 7;
 inline bool InitParam::has_step_param() const {
   return this != internal_default_instance() && step_param_ != NULL;
 }
@@ -9021,7 +9101,7 @@ inline void InitParam::set_allocated_step_param(::deepflow::InitStepParam* step_
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.step_param)
 }
 
-// .deepflow.InitRandomNormalParam random_normal_param = 7;
+// .deepflow.InitRandomNormalParam random_normal_param = 8;
 inline bool InitParam::has_random_normal_param() const {
   return this != internal_default_instance() && random_normal_param_ != NULL;
 }
@@ -9660,6 +9740,36 @@ inline const ::google::protobuf::RepeatedPtrField< ::deepflow::PhaseParam >&
 BlockParam::phase() const {
   // @@protoc_insertion_point(field_list:deepflow.BlockParam.phase)
   return phase_;
+}
+
+// repeated .deepflow.InitParam initializer = 4;
+inline int BlockParam::initializer_size() const {
+  return initializer_.size();
+}
+inline void BlockParam::clear_initializer() {
+  initializer_.Clear();
+}
+inline const ::deepflow::InitParam& BlockParam::initializer(int index) const {
+  // @@protoc_insertion_point(field_get:deepflow.BlockParam.initializer)
+  return initializer_.Get(index);
+}
+inline ::deepflow::InitParam* BlockParam::mutable_initializer(int index) {
+  // @@protoc_insertion_point(field_mutable:deepflow.BlockParam.initializer)
+  return initializer_.Mutable(index);
+}
+inline ::deepflow::InitParam* BlockParam::add_initializer() {
+  // @@protoc_insertion_point(field_add:deepflow.BlockParam.initializer)
+  return initializer_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::deepflow::InitParam >*
+BlockParam::mutable_initializer() {
+  // @@protoc_insertion_point(field_mutable_list:deepflow.BlockParam.initializer)
+  return &initializer_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::deepflow::InitParam >&
+BlockParam::initializer() const {
+  // @@protoc_insertion_point(field_list:deepflow.BlockParam.initializer)
+  return initializer_;
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
