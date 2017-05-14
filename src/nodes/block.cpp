@@ -88,7 +88,7 @@ std::string Block::get_unique_initializer_name(const std::string & prefix) const
 		return prefix;
 	int index = 1;
 	std::string initName = prefix + "_" + std::to_string(index);
-	while (find_solver_by_name(initName) != 0) {
+	while (find_initializer_by_name(initName) != 0) {
 		index++;
 		initName = prefix + "_" + std::to_string(index);
 	}

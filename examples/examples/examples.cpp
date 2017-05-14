@@ -100,22 +100,24 @@ void main(int argc, char** argv) {
 		df.block()->load_from_binary(FLAGS_i);
 	}
 
-	df.block()->print_nodes();
-	df.block()->print_phases();
+	if (FLAGS_debug == 1) {
+		df.block()->print_nodes();
+		df.block()->print_phases();
+	}
 
 	auto session = df.session();	
+
+	if (FLAGS_cpp) {
+		session->initialize();
+		if (FLAGS_debug == 1) {
+			session->printMemory();
+		}
+	}
 
 	if (!FLAGS_run.empty()) {
 		session->initialize();
 		session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
 	}
-
-	if (FLAGS_cpp) {
-		session->initialize();
-		session->printMemory();
-		//std::cout << session->to_cpp() << std::endl;
-	}
-
 	
 	if (!FLAGS_o.empty())
 	{
