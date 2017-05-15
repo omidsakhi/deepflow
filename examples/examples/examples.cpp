@@ -83,7 +83,7 @@ void main(int argc, char** argv) {
 			df.display(imbar, 1000, deepflow::DisplayParam_DisplayType_VALUES, "approx1", { "Train" });
 		}
 		else if (FLAGS_x5) {
-			df.load_from_caffe_model("D:/Projects/deepflow/build/x64/Release/models/VGG_ILSVRC_16_layers.caffemodel", { std::pair<std::string, std::array<int,4>>("data", {2,3,224,224}) });				
+			df.load_from_caffe_model("D:/Projects/deepflow/build/x64/Release/models/VGG_ILSVRC_16_layers.caffemodel", { std::pair<std::string, std::array<int,4>>("data", {2,3,224,224}) }, FLAGS_debug > 0);				
 		}
 		else if (FLAGS_x6) {
 			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
@@ -100,7 +100,7 @@ void main(int argc, char** argv) {
 		df.block()->load_from_binary(FLAGS_i);
 	}
 
-	if (FLAGS_debug == 1) {
+	if (FLAGS_debug > 0) {
 		df.block()->print_nodes();
 		df.block()->print_phases();
 	}

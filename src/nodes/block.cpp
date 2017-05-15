@@ -56,6 +56,18 @@ deepflow::NodeParam* Block::find_node_by_output__name(const std::string & output
 	return 0;
 }
 
+std::list<deepflow::NodeParam*> Block::find_nodes_by_input_name(const std::string & input_name) const
+{
+	auto list = std::list<deepflow::NodeParam*>();
+	for (int i = 0; i < _block_param->node_size(); ++i) {
+		for (auto input : _block_param->node(i).input())
+			if (input == input_name) {
+				list.push_back(_block_param->mutable_node(i));
+			}
+	}
+	return list;
+}
+
 std::string Block::get_unique_node_name(const std::string & prefix) const
 {
 	if (find_node_by_name(prefix) == 0)

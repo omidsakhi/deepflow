@@ -22,6 +22,7 @@ public: // Block
 	deepflow::SolverParam* find_solver_by_name(const std::string &name) const;
 	deepflow::InitParam* find_initializer_by_name(const std::string &name) const;
 	deepflow::NodeParam* find_node_by_output__name(const std::string & output_name) const;
+	std::list<deepflow::NodeParam*> find_nodes_by_input_name(const std::string & input_name) const;
 	std::string get_unique_node_name(const std::string &prefix) const;
 	std::string get_unique_solver_name(const std::string &prefix) const;
 	std::string get_unique_initializer_name(const std::string &prefix) const;

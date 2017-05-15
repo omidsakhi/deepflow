@@ -41,8 +41,16 @@ void Caffe::_parse_net_deprecated(std::shared_ptr<caffe::NetParameter> net, std:
 			}
 		}
 	}	
+	
 	for (auto layer : net->layers())
-		_parse_layer_deprecated(layer);	
+		_parse_layer_deprecated(layer);
+
+	if (_inplace_nodes.size() > 0) {
+		LOG_IF(INFO, _verbose) << "-> In-Place Nodes";
+		for (auto node : _inplace_nodes)
+			LOG_IF(INFO, _verbose) << "    " << node;
+		_fix_inplace_nodes();
+	}
 }
 
 void Caffe::_parse_layer_deprecated(const caffe::V1LayerParameter & layer)
@@ -50,54 +58,61 @@ void Caffe::_parse_layer_deprecated(const caffe::V1LayerParameter & layer)
 	LOG_IF(INFO, _verbose) << "Type = " << caffe::V1LayerParameter_LayerType_Name(layer.type());
 	LOG_IF(INFO, _verbose) << " .name = " << layer.name();	
 	LOG_IF(FATAL, layer.name().empty()) << "layer.name().empty()";
-	LOG_IF(INFO, _verbose) << " .bottom_size = " << layer.bottom_size();
+	int bottom_size = layer.bottom_size();
+	LOG_IF(INFO, _verbose) << " .bottom_size = " << bottom_size;
 	for (auto b : layer.bottom())
 		LOG_IF(INFO, _verbose) << "    .bottom = " << b;
-	LOG_IF(INFO, _verbose) << " .top_size = " << layer.top_size();
+	int top_size = layer.top_size();
+	LOG_IF(INFO, _verbose) << " .top_size = " << top_size;
 	for (auto t : layer.top())
-		LOG_IF(INFO, _verbose) << "    .top = " << t;	
-	if (layer.has_convolution_param()) {
-		_parse_conv_param(layer.convolution_param(), layer);
-	}	
-	if (layer.has_relu_param()) {
-		_parse_relu_param(layer.relu_param(), layer);
-	}
-	else if (layer.type() == caffe::V1LayerParameter::RELU) {
-		caffe::ReLUParameter param;
-		param.set_negative_slope(0.01f);
-		_parse_relu_param(param, layer);
-	}
-	if (layer.has_pooling_param()) {
-		_parse_pooling_param(layer.pooling_param(), layer);
+		LOG_IF(INFO, _verbose) << "    .top = " << t;
+	if (layer.include_size() > 0) {
+		LOG_IF(INFO, _verbose) << " .include_size = " << layer.include_size();
 	}
 	if (layer.has_data_param()) {
 		LOG_IF(INFO, _verbose) << " .data_param = true";
-	}
-	if (layer.has_inner_product_param()) {
-		_parse_inner_product_param(layer.inner_product_param(), layer);
 	}
 	if (layer.blobs_size() > 0) {
 		LOG_IF(INFO, _verbose) << " .blob_size = " << layer.blobs_size();
 		for (auto blob : layer.blobs())
 			_parse_blob_param(blob);
 	}
+	std::string df_node_output;
+	if (layer.has_convolution_param()) {
+		df_node_output = _parse_conv_param(layer.convolution_param(), layer);
+	}	
+	if (layer.has_relu_param()) {
+		df_node_output = _parse_relu_param(layer.relu_param(), layer);
+	}
+	else if (layer.type() == caffe::V1LayerParameter::RELU) {
+		caffe::ReLUParameter param;
+		param.set_negative_slope(0.01f);
+		df_node_output = _parse_relu_param(param, layer);
+	}
+	if (layer.has_pooling_param()) {
+		df_node_output = _parse_pooling_param(layer.pooling_param(), layer);
+	}
+	if (layer.has_inner_product_param()) {
+		df_node_output = _parse_inner_product_param(layer.inner_product_param(), layer);
+	}
 	if (layer.has_softmax_param()) {
-		_parse_softmax_param(layer.softmax_param(), layer);
+		df_node_output = _parse_softmax_param(layer.softmax_param(), layer);
 	}
 	else if (layer.type() == caffe::V1LayerParameter::SOFTMAX) {
-		_parse_softmax_param(caffe::SoftmaxParameter(), layer);
+		df_node_output = _parse_softmax_param(caffe::SoftmaxParameter(), layer);
 	}
 	if (layer.has_dropout_param()) {
-		_parse_dropout_param(layer.dropout_param(), layer);
+		df_node_output = _parse_dropout_param(layer.dropout_param(), layer);
 	}
 	else if (layer.type() == caffe::V1LayerParameter::DROPOUT) {
 		caffe::DropoutParameter param;
 		param.set_dropout_ratio(0.5);
-		_parse_dropout_param(param, layer);
+		df_node_output = _parse_dropout_param(param, layer);
 	}
-	if (layer.include_size() > 0) {
-		LOG_IF(INFO, _verbose) << " .include_size = " << layer.include_size();
-	}	
+	if (!df_node_output.empty() && top_size == bottom_size && top_size == 1 && layer.top(0) == layer.bottom(0)) {
+		auto df_node = df->block()->find_node_by_output__name(df_node_output);
+		_inplace_nodes.push_back(df_node->name());
+	}
 }
 
 std::string Caffe::_parse_filler_param(std::initializer_list<int> dims, const caffe::FillerParameter & param, std::string name)
@@ -136,21 +151,40 @@ void Caffe::_parse_blob_param(const caffe::BlobProto & param)
 	LOG_IF(INFO, _verbose) << "     .double_diff_size = " << param.double_diff_size();
 }
 
-void Caffe::_parse_relu_param(const caffe::ReLUParameter & param, const caffe::V1LayerParameter &layer)
+void Caffe::_fix_inplace_nodes()
+{
+	while (!_inplace_nodes.empty()) {
+		std::string inplace_node_name = _inplace_nodes.front();
+		_inplace_nodes.pop_front();
+		auto inplace_node_param = df->block()->find_node_by_name(inplace_node_name);
+		auto inplace_node_input = inplace_node_param->input(0);
+		auto inplace_node_output = inplace_node_param->output(0);
+		auto affected_input_nodes = df->block()->find_nodes_by_input_name(inplace_node_input);
+		affected_input_nodes.remove(inplace_node_param);
+		for (auto affected_input_node : affected_input_nodes)
+		for (int i = 0; i < affected_input_node->input_size(); i++) {
+			if (affected_input_node->input(i) == inplace_node_input) {
+				affected_input_node->set_input(i, inplace_node_output);
+			}
+		}
+	}
+}
+
+std::string Caffe::_parse_relu_param(const caffe::ReLUParameter & param, const caffe::V1LayerParameter &layer)
 {
 	LOG_IF(INFO, _verbose) << "  -> ReLUParameter";
 	LOG_IF(INFO, _verbose) << "     .negative_slope = " << param.negative_slope() << " [default: 0]";
-	df->leaky_relu(layer.bottom(0) + "_output_0", param.negative_slope(), layer.name(), {});
+	return df->leaky_relu(layer.bottom(0) + "_output_0", param.negative_slope(), layer.name(), {});
 }
 
-void Caffe::_parse_dropout_param(const caffe::DropoutParameter & param, const caffe::V1LayerParameter &layer)
+std::string Caffe::_parse_dropout_param(const caffe::DropoutParameter & param, const caffe::V1LayerParameter &layer)
 {
 	LOG_IF(INFO, _verbose) << "  -> DropoutParameter";
 	LOG_IF(INFO, _verbose) << "     .dropout_ratio = " << param.dropout_ratio() << " [default: 0.5]";
-	df->dropout(layer.bottom(0) + "_output_0", param.dropout_ratio(), true, layer.name(), {});
+	return df->dropout(layer.bottom(0) + "_output_0", param.dropout_ratio(), true, layer.name(), {});
 }
 
-void Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & param, const caffe::V1LayerParameter &layer)
+std::string Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & param, const caffe::V1LayerParameter &layer)
 {
 	LOG_IF(INFO, _verbose) << "  -> InnerProductParameter";
 	LOG_IF(INFO, _verbose) << "     .num_output = " << param.num_output();
@@ -172,7 +206,7 @@ void Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & para
 	for (auto d : layer.blobs(0).data())
 		weight_mutable_weights->add_weight(d);
 	if (param.bias_term() == false) {
-		df->matmul(layer.bottom(0) + "_output_0", weight, layer.name(), {});
+		return df->matmul(layer.bottom(0) + "_output_0", weight, layer.name(), {});
 	}
 	else {
 		//LOG_IF(FATAL, param.has_bias_filler() == false) << "param.has_bias_filler() == false - " << layer.name();
@@ -182,11 +216,11 @@ void Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & para
 		for (auto d : layer.blobs(1).data())
 			bias_mutable_weights->add_weight(d);		
 		std::string m = df->matmul(layer.bottom(0) + "_output_0", weight, layer.name() + "_ip", {});
-		df->bias_add(m, bias, layer.name());
+		return df->bias_add(m, bias, layer.name());
 	}
 }
 
-void Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, const caffe::V1LayerParameter &layer)
+std::string Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, const caffe::V1LayerParameter &layer)
 {
 	LOG_IF(INFO, _verbose) << "  -> ConvolutionParam";	
 
@@ -294,16 +328,16 @@ void Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, const c
 		for (auto d : layer.blobs(1).data())
 			bias_mutable_weights->add_weight(d);
 	}
-	df->conv2d(layer.bottom(0) + "_output_0", filter, bias, pad_h, pad_w, stride_h, stride_w, dilation_h, dilation_w, layer.name(), {});
+	return df->conv2d(layer.bottom(0) + "_output_0", filter, bias, pad_h, pad_w, stride_h, stride_w, dilation_h, dilation_w, layer.name(), {});
 }
 
-void Caffe::_parse_softmax_param(const caffe::SoftmaxParameter & param, const caffe::V1LayerParameter & layer)
+std::string Caffe::_parse_softmax_param(const caffe::SoftmaxParameter & param, const caffe::V1LayerParameter & layer)
 {
 	LOG_IF(INFO, _verbose) << "  -> SoftmaxParameter";
-	df->softmax(layer.bottom(0) + "_output_0", layer.name(), {});
+	return df->softmax(layer.bottom(0) + "_output_0", layer.name(), {});
 }
 
-void Caffe::_parse_pooling_param(const caffe::PoolingParameter & param, const caffe::V1LayerParameter &layer)
+std::string Caffe::_parse_pooling_param(const caffe::PoolingParameter & param, const caffe::V1LayerParameter &layer)
 {
 	LOG_IF(INFO, _verbose) << "  -> PoolingParameter";
 	LOG_IF(INFO, _verbose) << "     .pool_method = " << caffe::PoolingParameter_PoolMethod_Name(param.pool()) << " [default: MAX]";
@@ -346,6 +380,6 @@ void Caffe::_parse_pooling_param(const caffe::PoolingParameter & param, const ca
 		horizontalStride = param.stride_h();
 	}
 
-	df->pooling(layer.bottom(0) + "_output_0", windowHeight, windowWidth, verticalPadding, horizontalPadding, verticalStride, horizontalStride, layer.name(), {});
+	return df->pooling(layer.bottom(0) + "_output_0", windowHeight, windowWidth, verticalPadding, horizontalPadding, verticalStride, horizontalStride, layer.name(), {});
 }
 
