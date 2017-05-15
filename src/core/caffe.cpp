@@ -33,13 +33,17 @@ void Caffe::_parse_net_deprecated(std::shared_ptr<caffe::NetParameter> net, std:
 	LOG_IF(INFO, _verbose) << "net.input_size = " << net->input_size();	
 	for (auto net_input_name : net->input()) {
 		LOG_IF(INFO, _verbose) << "    input = " << net_input_name;
+		bool resolved = false;
 		for (auto place_holde : inputs) {
 			if (place_holde.first == net_input_name) {
 				auto place_holder_node_output = df->place_holder(place_holde.second, Tensor::Float, net_input_name, {});
 				auto place_holder_node_param = df->block()->find_node_by_output__name(place_holder_node_output);
 				place_holder_node_param->set_output(0, net_input_name);
+				resolved = true;
+				break;
 			}
 		}
+		LOG_IF(FATAL, resolved == false) << net_input_name << " input is not provided for the loading function.";
 	}	
 	
 	for (auto layer : net->layers())

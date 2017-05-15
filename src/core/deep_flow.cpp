@@ -13,6 +13,11 @@ DeepFlow::DeepFlow()
 	_block = std::make_shared<Block>();
 }
 
+DeepFlow::DeepFlow(std::shared_ptr<Block> block)
+{
+	_block = block;
+}
+
 std::string DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node();
 	node_param->set_name(_block->get_unique_node_name(name));

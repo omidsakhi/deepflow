@@ -23,6 +23,7 @@ class DeepFlowDllExport DeepFlow : public std::enable_shared_from_this<DeepFlow>
 	friend class Caffe;
 public:
 	DeepFlow();
+	DeepFlow(std::shared_ptr<Block> block);
 
 	// GENERATORS
 	std::string mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name = "mnist", std::initializer_list<std::string> phases = {});
