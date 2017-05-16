@@ -107,6 +107,23 @@ std::string Block::get_unique_initializer_name(const std::string & prefix) const
 	return initName;
 }
 
+void Block::remove(const std::string & output)
+{
+	deepflow::NodeParam *node = find_node_by_output__name(output);
+	LOG_IF(FATAL, node == nullptr) << "Failed to find node with output " << output;
+	int num_inputs = node->input_size();
+	int num_outputs = node->output_size();
+	if (num_inputs > 0 && num_outputs > 0) {
+		LOG_IF(FATAL, num_inputs != num_outputs) << "Failed to remove node " << node->name() << "due to num_inputs != num_outputs";
+	}
+	else if (num_inputs > 0 && num_outputs == 0) {
+
+	}	
+	else if (num_inputs == 0 && num_outputs > 0) {
+
+	}
+}
+
 void Block::save_as_binary(std::string file_path)
 {	
 	std::fstream output(file_path, std::ios::out | std::ios::trunc | std::ios::binary);

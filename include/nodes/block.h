@@ -26,6 +26,7 @@ public: // Block
 	std::string get_unique_node_name(const std::string &prefix) const;
 	std::string get_unique_solver_name(const std::string &prefix) const;
 	std::string get_unique_initializer_name(const std::string &prefix) const;
+	void remove(const std::string &name);
 	void save_as_binary(std::string file_path);
 	void save_as_text(std::string file_path);
 	deepflow::NodeParam* add_node();
