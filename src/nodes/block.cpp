@@ -130,20 +130,6 @@ void Block::replace_nodes_input(const std::string & search, const std::string & 
 		}
 }
 
-void RemoveFromRepeatedField(
-	const google::protobuf::Reflection *reflection,
-	const google::protobuf::FieldDescriptor *field,
-	google::protobuf::Message *message,
-	int row,
-	int count)
-{
-	int size = reflection->FieldSize(*message, field);
-	for (int i = row; i < size - count; ++i)
-		reflection->SwapElements(message, field, i, i + count);
-	for (int i = 0; i < count; ++i)
-		reflection->RemoveLast(message, field);
-}
-
 void Block::remove_and_reconnect_node_by_name(const std::string & node_name)
 {
 	deepflow::NodeParam *node = find_node_by_name(node_name);

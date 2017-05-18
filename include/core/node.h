@@ -63,7 +63,8 @@ public:
 	void _propagateBack();	
 	bool propagateBack() const;	
 	void setShouldBackward(bool state);
-	void _traverse(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
+	void _traverse_up(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
+	void _traverse_down(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
 	void setVisited(bool state);
 	std::vector<NodeInputPtr> &inputs();
 	std::vector<NodeOutputPtr> &outputs();

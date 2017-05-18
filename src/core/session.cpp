@@ -468,7 +468,7 @@ std::string Session::to_cpp() const
 	for (auto end : ends)
 		end->_unvisit();
 	for (auto end : ends)
-		end->_traverse(foo, Node::POST_ORDER, true);
+		end->_traverse_up(foo, Node::POST_ORDER, true);
 	
 	code += "\n";
 	

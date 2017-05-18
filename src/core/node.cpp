@@ -88,7 +88,7 @@ void Node::setShouldBackward(bool state)
 	//LOG_IF(INFO, state) << _name << " BACKWARD -> true";
 }
 
-void Node::_traverse(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition)
+void Node::_traverse_up(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition)
 {
 	if (_visited == visit_condition)
 		return;
@@ -97,7 +97,22 @@ void Node::_traverse(std::function<void(Node*)> fun, TraverseOrder order, bool v
 	if (order == PRE_ORDER)
 		fun(this);
 	for (auto node : inputNodes())
-		node->_traverse(fun, order, visit_condition);
+		node->_traverse_up(fun, order, visit_condition);
+	if (order == POST_ORDER)
+		fun(this);
+	_visited = visit_condition;
+}
+
+void Node::_traverse_down(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition)
+{
+	if (_visited == visit_condition)
+		return;
+	if (_context && includePhase(_context->phase) == false)
+		return;
+	if (order == PRE_ORDER)
+		fun(this);
+	for (auto node : outputNodes())
+		node->_traverse_down(fun, order, visit_condition);
 	if (order == POST_ORDER)
 		fun(this);
 	_visited = visit_condition;
