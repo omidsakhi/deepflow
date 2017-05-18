@@ -144,16 +144,22 @@ void RemoveFromRepeatedField(
 		reflection->RemoveLast(message, field);
 }
 
-void Block::remove_node_by_name(const std::string & name)
+void Block::remove_and_reconnect_node_by_name(const std::string & node_name)
 {
-	deepflow::NodeParam *node = find_node_by_name(name);
-	LOG_IF(FATAL, node == nullptr) << "Failed to find node with name " << name;
+	deepflow::NodeParam *node = find_node_by_name(node_name);
+	LOG_IF(FATAL, node == nullptr) << "Failed to find node with name " << node_name;
 	int num_inputs = node->input_size();
 	int num_outputs = node->output_size();
-	LOG_IF(FATAL, num_outputs > num_inputs) << "Failed to remove node " << node->name() << "due to num_outputs > num_inputs";
-	for (int i = 0; i < num_outputs; ++i)
-		replace_nodes_input(node->output(i), node->input(i), {});	
-	RemoveFromRepeatedField(_block_param->GetReflection(), _block_param->GetDescriptor()->FindFieldByName("node"), node, find_node_index_by_name(node->name())  , 1);
+	LOG_IF(FATAL, num_outputs > num_inputs) << "Failed to remove node " << node_name << " due to num_outputs > num_inputs";	
+	for (int i = 0; i < num_outputs; i++) {
+		replace_nodes_input(node->output(i), node->input(i), { node });
+	}
+	for (auto itr = _block_param->node().begin(); itr != _block_param->node().end(); itr++) {		
+		if (itr->name() == node_name) {
+			_block_param->mutable_node()->erase(itr);
+			break;
+		}
+	}	
 }
 
 void Block::save_as_binary(std::string file_path)

@@ -18,7 +18,7 @@ public: // Node
 public: // Block
 	Block();
 	Block(deepflow::NodeParam &param);
-	deepflow::NodeParam* find_node_by_name(const std::string &name) const;
+	deepflow::NodeParam* find_node_by_name(const std::string &node_name) const;
 	int find_node_index_by_name(const std::string & output_name) const;
 	deepflow::SolverParam* find_solver_by_name(const std::string &name) const;
 	deepflow::InitParam* find_initializer_by_name(const std::string &name) const;
@@ -28,7 +28,7 @@ public: // Block
 	std::string get_unique_solver_name(const std::string &prefix) const;
 	std::string get_unique_initializer_name(const std::string &prefix) const;
 	void replace_nodes_input(const std::string &search, const std::string &replace, const std::initializer_list<deepflow::NodeParam *> exclude_nodes);
-	void remove_node_by_name(const std::string &name);
+	void remove_and_reconnect_node_by_name(const std::string &node_name);
 	void save_as_binary(std::string file_path);
 	void save_as_text(std::string file_path);
 	deepflow::NodeParam* add_node();
