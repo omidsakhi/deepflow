@@ -25,6 +25,16 @@ deepflow::NodeParam* Block::find_node_by_name(const std::string & name) const
 	return 0;
 }
 
+int Block::find_node_index_by_name(const std::string & name) const
+{
+	for (int i = 0; i < _block_param->node_size(); ++i) {
+		if (_block_param->node(i).name() == name) {
+			return i;
+		}
+	}
+	return -1;
+}
+
 deepflow::SolverParam* Block::find_solver_by_name(const std::string & name) const
 {
 	for (int i = 0; i < _block_param->solver_size(); ++i) {
@@ -45,7 +55,7 @@ deepflow::InitParam * Block::find_initializer_by_name(const std::string & name) 
 	return 0;
 }
 
-deepflow::NodeParam* Block::find_node_by_output__name(const std::string & output_name) const
+deepflow::NodeParam* Block::find_node_by_output_name(const std::string & output_name) const
 {
 	for (int i = 0; i < _block_param->node_size(); ++i) {
 		for (auto output : _block_param->node(i).output())
@@ -107,21 +117,43 @@ std::string Block::get_unique_initializer_name(const std::string & prefix) const
 	return initName;
 }
 
-void Block::remove(const std::string & output)
+void Block::replace_nodes_input(const std::string & search, const std::string & replace, const std::initializer_list<deepflow::NodeParam *> exclude_nodes)
 {
-	deepflow::NodeParam *node = find_node_by_output__name(output);
-	LOG_IF(FATAL, node == nullptr) << "Failed to find node with output " << output;
+	auto affected_input_nodes = find_nodes_by_input_name(search);
+	for (auto node : exclude_nodes)
+		affected_input_nodes.remove(node);
+	for (auto affected_input_node : affected_input_nodes)
+		for (int i = 0; i < affected_input_node->input_size(); i++) {
+			if (affected_input_node->input(i) == search) {
+				affected_input_node->set_input(i, replace);
+			}
+		}
+}
+
+void RemoveFromRepeatedField(
+	const google::protobuf::Reflection *reflection,
+	const google::protobuf::FieldDescriptor *field,
+	google::protobuf::Message *message,
+	int row,
+	int count)
+{
+	int size = reflection->FieldSize(*message, field);
+	for (int i = row; i < size - count; ++i)
+		reflection->SwapElements(message, field, i, i + count);
+	for (int i = 0; i < count; ++i)
+		reflection->RemoveLast(message, field);
+}
+
+void Block::remove_node_by_name(const std::string & name)
+{
+	deepflow::NodeParam *node = find_node_by_name(name);
+	LOG_IF(FATAL, node == nullptr) << "Failed to find node with name " << name;
 	int num_inputs = node->input_size();
 	int num_outputs = node->output_size();
-	if (num_inputs > 0 && num_outputs > 0) {
-		LOG_IF(FATAL, num_inputs != num_outputs) << "Failed to remove node " << node->name() << "due to num_inputs != num_outputs";
-	}
-	else if (num_inputs > 0 && num_outputs == 0) {
-
-	}	
-	else if (num_inputs == 0 && num_outputs > 0) {
-
-	}
+	LOG_IF(FATAL, num_outputs > num_inputs) << "Failed to remove node " << node->name() << "due to num_outputs > num_inputs";
+	for (int i = 0; i < num_outputs; ++i)
+		replace_nodes_input(node->output(i), node->input(i), {});	
+	RemoveFromRepeatedField(_block_param->GetReflection(), _block_param->GetDescriptor()->FindFieldByName("node"), node, find_node_index_by_name(node->name())  , 1);
 }
 
 void Block::save_as_binary(std::string file_path)

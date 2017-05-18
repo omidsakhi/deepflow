@@ -37,7 +37,7 @@ void Caffe::_parse_net_deprecated(std::shared_ptr<caffe::NetParameter> net, std:
 		for (auto place_holde : inputs) {
 			if (place_holde.first == net_input_name) {
 				auto place_holder_node_output = df->place_holder(place_holde.second, Tensor::Float, net_input_name, {});
-				auto place_holder_node_param = df->block()->find_node_by_output__name(place_holder_node_output);
+				auto place_holder_node_param = df->block()->find_node_by_output_name(place_holder_node_output);
 				place_holder_node_param->set_output(0, net_input_name);
 				resolved = true;
 				break;
@@ -114,7 +114,7 @@ void Caffe::_parse_layer_deprecated(const caffe::V1LayerParameter & layer)
 		df_node_output = _parse_dropout_param(param, layer);
 	}
 	if (!df_node_output.empty() && top_size == bottom_size && top_size == 1 && layer.top(0) == layer.bottom(0)) {
-		auto df_node = df->block()->find_node_by_output__name(df_node_output);
+		auto df_node = df->block()->find_node_by_output_name(df_node_output);
 		_inplace_nodes.push_back(df_node->name());
 	}
 }
@@ -163,14 +163,7 @@ void Caffe::_fix_inplace_nodes()
 		auto inplace_node_param = df->block()->find_node_by_name(inplace_node_name);
 		auto inplace_node_input = inplace_node_param->input(0);
 		auto inplace_node_output = inplace_node_param->output(0);
-		auto affected_input_nodes = df->block()->find_nodes_by_input_name(inplace_node_input);
-		affected_input_nodes.remove(inplace_node_param);
-		for (auto affected_input_node : affected_input_nodes)
-		for (int i = 0; i < affected_input_node->input_size(); i++) {
-			if (affected_input_node->input(i) == inplace_node_input) {
-				affected_input_node->set_input(i, inplace_node_output);
-			}
-		}
+		df->block()->replace_nodes_input(inplace_node_input, inplace_node_output, { inplace_node_param });
 	}
 }
 
@@ -205,7 +198,7 @@ std::string Caffe::_parse_inner_product_param(const caffe::InnerProductParameter
 	int num_inputs = layer.blobs(0).data_size() / num_output;
 	//LOG_IF(FATAL, param.has_weight_filler() == false) << "param.has_weight_filler() == false - " << layer.name() ;
 	std::string weight = df->variable( _parse_filler_param({ num_inputs, num_output, 1, 1 }, param.weight_filler(), "weight filler"), "", layer.name() + "_w", {});
-	auto weights_node = df->block()->find_node_by_output__name(weight);
+	auto weights_node = df->block()->find_node_by_output_name(weight);
 	auto weight_mutable_weights = weights_node->mutable_variable_param()->mutable_weights();
 	for (auto d : layer.blobs(0).data())
 		weight_mutable_weights->add_weight(d);
@@ -215,7 +208,7 @@ std::string Caffe::_parse_inner_product_param(const caffe::InnerProductParameter
 	else {
 		//LOG_IF(FATAL, param.has_bias_filler() == false) << "param.has_bias_filler() == false - " << layer.name();
 		std::string bias = df->variable(_parse_filler_param({ 1, num_output, 1, 1 }, param.bias_filler(), "bias filler"), "", layer.name() + "_b", {});
-		auto bias_node = df->block()->find_node_by_output__name(bias);		
+		auto bias_node = df->block()->find_node_by_output_name(bias);		
 		auto bias_mutable_weights = bias_node->mutable_variable_param()->mutable_weights();
 		for (auto d : layer.blobs(1).data())
 			bias_mutable_weights->add_weight(d);		
@@ -314,7 +307,7 @@ std::string Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, 
 	LOG_IF(FATAL, num_output < 1) << "num_output < 1";
 	int filter_second_dimension = layer.blobs(0).data_size() / num_output / kernel_h / kernel_w;
 	std::string filter = df->variable(_parse_filler_param({ num_output, filter_second_dimension, kernel_h, kernel_w }, param.weight_filler(), "weight filler"), "", layer.name() + "_w", {});
-	auto filter_node = df->block()->find_node_by_output__name(filter);
+	auto filter_node = df->block()->find_node_by_output_name(filter);
 	auto filter_mutable_weights = filter_node->mutable_variable_param()->mutable_weights();
 	for (auto d : layer.blobs(0).data())
 		filter_mutable_weights->add_weight(d);
@@ -327,7 +320,7 @@ std::string Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, 
 		}
 		//LOG_IF(FATAL, param.has_bias_filler() == false) << "param.has_bias_filler() == false - " << layer.name();
 		bias = df->variable(_parse_filler_param({ 1, num_output, 1, 1 }, param.bias_filler(), "bias filler"), "", layer.name() + "_b", {});
-		auto bias_node = df->block()->find_node_by_output__name(bias);
+		auto bias_node = df->block()->find_node_by_output_name(bias);
 		auto bias_mutable_weights = bias_node->mutable_variable_param()->mutable_weights();
 		for (auto d : layer.blobs(1).data())
 			bias_mutable_weights->add_weight(d);
