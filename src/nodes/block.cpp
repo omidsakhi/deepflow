@@ -180,6 +180,45 @@ void Block::remove_node_params(std::initializer_list<std::string> node_names)
 	}
 }
 
+void Block::set_phase_for_node_params(std::string phase, std::initializer_list<std::string> node_names)
+{
+	if (node_names.size() > 0) {
+		for (auto node : _block_param->node()) {
+			node.add_phase(phase);
+		}
+	}
+	else {
+		for (auto name : node_names) {
+			deepflow::NodeParam *node = find_node_param_by_name(name);
+			LOG_IF(FATAL, node == nullptr) << "Failed to find node with name " << name;
+			node->add_phase(phase);
+		}
+	}
+}
+
+void Block::set_solver_for_variable_params(std::string solver, std::initializer_list<std::string> variable_names)
+{
+	if (variable_names.size() > 0) {
+		for (auto node : _block_param->node()) {
+			if (node.has_variable_param()) {
+				node.mutable_variable_param()->set_solver_name(solver);
+			}
+		}
+	}
+	else {
+		for (auto name : variable_names) {
+			deepflow::NodeParam *node = find_node_param_by_name(name);
+			LOG_IF(FATAL, node == nullptr) << "Failed to find node with name " << name;
+			if (node->has_variable_param()) {
+				node->mutable_variable_param()->set_solver_name(solver);
+			}
+			else {
+				LOG(FATAL) << "Node " << name << " is not a variable.";
+			}
+		}
+	}
+}
+
 void Block::save_as_binary(std::string file_path)
 {	
 	std::fstream output(file_path, std::ios::out | std::ios::trunc | std::ios::binary);
@@ -245,22 +284,22 @@ void Block::load_from_binary(std::string file_path)
 	input.close();
 }
 
-google::protobuf::RepeatedPtrField<deepflow::PhaseParam> Block::phases()
+google::protobuf::RepeatedPtrField<deepflow::PhaseParam> Block::phase_params()
 {
 	return _block_param->phase();
 }
 
-google::protobuf::RepeatedPtrField<deepflow::NodeParam> Block::nodes()
+google::protobuf::RepeatedPtrField<deepflow::NodeParam> Block::node_params()
 {
 	return _block_param->node();
 }
 
-google::protobuf::RepeatedPtrField<deepflow::SolverParam> Block::solvers()
+google::protobuf::RepeatedPtrField<deepflow::SolverParam> Block::solver_params()
 {
 	return _block_param->solver();
 }
 
-google::protobuf::RepeatedPtrField<deepflow::InitParam> Block::initializers()
+google::protobuf::RepeatedPtrField<deepflow::InitParam> Block::initializer_params()
 {
 	return _block_param->initializer();
 }

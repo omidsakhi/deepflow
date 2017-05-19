@@ -31,6 +31,8 @@ public: // Block
 	void remove_and_reconnect_node_param_by_name(const std::string &node_name);
 	void remove_single_node_param(const std::string &node_name);
 	void remove_node_params(std::initializer_list<std::string> node_names);
+	void set_phase_for_node_params(std::string phase, std::initializer_list<std::string> node_names);
+	void set_solver_for_variable_params(std::string solver, std::initializer_list<std::string> variable_names);
 	void save_as_binary(std::string file_path);
 	void save_as_text(std::string file_path);
 	deepflow::NodeParam* add_node_param();
@@ -40,10 +42,10 @@ public: // Block
 	void print_node_params();
 	void print_phase_params();
 	void load_from_binary(std::string file_path);
-	google::protobuf::RepeatedPtrField<deepflow::PhaseParam> phases();
-	google::protobuf::RepeatedPtrField<deepflow::NodeParam> nodes();
-	google::protobuf::RepeatedPtrField<deepflow::SolverParam> solvers();
-	google::protobuf::RepeatedPtrField<deepflow::InitParam> initializers();
+	google::protobuf::RepeatedPtrField<deepflow::PhaseParam> phase_params();
+	google::protobuf::RepeatedPtrField<deepflow::NodeParam> node_params();
+	google::protobuf::RepeatedPtrField<deepflow::SolverParam> solver_params();
+	google::protobuf::RepeatedPtrField<deepflow::InitParam> initializer_params();
 
 private:
 	deepflow::BlockParam *_block_param;

@@ -106,10 +106,10 @@ public:
 	std::array<std::string,2> accumulator(std::string input, Accumulator::ResetTime resetTime = Accumulator::ResetTime::EndOfEpoch, std::string name = "acc", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
-	void define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour);
-	void define_train_phase(std::string train_phase);
-	void define_validation_phase(std::string validation_phase);
-	void define_inference_phase(std::string inference_phase);
+	std::string define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour);
+	std::string define_train_phase(std::string train_phase);
+	std::string define_validation_phase(std::string validation_phase);
+	std::string define_inference_phase(std::string inference_phase);
 
 	std::shared_ptr<Block> block();
 	std::shared_ptr<Session> session();

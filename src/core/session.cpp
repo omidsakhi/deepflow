@@ -204,10 +204,10 @@ void Session::initialize() {
 	
 	_initialized = true;	
 
-	for (auto phase_param : _block->phases())
+	for (auto phase_param : _block->phase_params())
 		_phases.insert(std::pair<std::string, deepflow::PhaseParam_PhaseBehaviour>(phase_param.phase(), phase_param.behaviour()));
 
-	for (auto node_param : _block->nodes()) {
+	for (auto node_param : _block->node_params()) {
 		auto node = _create_node(node_param);
 		node->createIO();
 		LOG_IF(FATAL, node->inputs().size() != node->param().input_size()) << "Node " << node->name() << "'s input size " << node->inputs().size() << " does not match the one specified in proto (" << node->param().input_size() << ")";
@@ -228,7 +228,7 @@ void Session::initialize() {
 	for (auto var : _variables) {
 		std::shared_ptr<Solver> solver;
 		std::string var_solver_name = var->param().variable_param().solver_name();
-		for (auto solver_param : _block->solvers()) {
+		for (auto solver_param : _block->solver_params()) {
 			if (var_solver_name == solver_param.name()) {
 				solver = _create_solver(solver_param);
 				break;

@@ -37,7 +37,7 @@ void main(int argc, char** argv) {
 		
 	if (FLAGS_i.empty()) {
 		if (FLAGS_x1) {
-			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
+			auto train = df.define_train_phase("Train");			
 			auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
 			//auto solver = df.sgd_solver(1.0f, 0.01f);
 			//auto solver = df.adam_solver();
@@ -45,12 +45,12 @@ void main(int argc, char** argv) {
 			auto image = df.image_reader(FLAGS_image, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
 			df.euclidean_loss(generator, image);
-			df.display(image, 2, deepflow::DisplayParam_DisplayType_VALUES, "input", { "Train" });
-			df.display(generator, 2, deepflow::DisplayParam_DisplayType_VALUES, "approximation", { "Train" });
+			df.display(image, 2, deepflow::DisplayParam_DisplayType_VALUES, "input", { train });
+			df.display(generator, 2, deepflow::DisplayParam_DisplayType_VALUES, "approximation", { train });
 			df.psnr(image, generator, Psnr::EVERY_PASS);
 		}
 		else if (FLAGS_x2) {
-			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
+			auto train = df.define_train_phase("Train");			
 			auto solver1 = df.gain_solver(0.999f, 0.0001f, 100, 0.000000001f, 0.05f, 0.95f);
 			auto solver2 = df.sgd_solver(1.0f, 0.0000000001f);
 			//auto solver = df.adam_solver();
@@ -60,11 +60,11 @@ void main(int argc, char** argv) {
 			auto f = df.variable(df.random_uniform({ 1,1,5,5 }, 0.9, 1.1), solver2);
 			auto tconv = df.transposed_conv2d(stat, f, { 1,1,256,256 }, 0, 0, 1, 1, 1, 1);
 			df.euclidean_loss(tconv, image);
-			df.display(tconv, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { "Train" });
-			df.psnr(tconv, image, Psnr::EVERY_PASS, "psnr", { "Train" });
+			df.display(tconv, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { train });
+			df.psnr(tconv, image, Psnr::EVERY_PASS, "psnr", { train });
 		}
 		else if (FLAGS_x3) {
-			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
+			auto train = df.define_train_phase("Train");			
 			auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
 			//auto solver = df.sgd_solver(1.0f, 0.01f);
 			//auto solver = df.adam_solver();
@@ -74,25 +74,29 @@ void main(int argc, char** argv) {
 			auto generator2 = df.data_generator(df.random_normal({ 1, 1, 256, 256 }, 0, 0.1), 1, solver, "gen2");
 			auto selector = df.random_selector(generator1, generator2, 0.5);
 			df.euclidean_loss(selector, image);
-			df.display(generator1, 2, deepflow::DisplayParam_DisplayType_VALUES, "approx1", { "Train" });
-			df.display(generator2, 2, deepflow::DisplayParam_DisplayType_VALUES, "approx2", { "Train" });
+			df.display(generator1, 2, deepflow::DisplayParam_DisplayType_VALUES, "approx1", { train });
+			df.display(generator2, 2, deepflow::DisplayParam_DisplayType_VALUES, "approx2", { train });
 		}
 		else if (FLAGS_x4) {
-			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
+			auto train = df.define_train_phase("Train");
 			auto imbar = df.image_batch_reader("./data/face", { 1, 1, 27, 18 });
-			df.display(imbar, 1000, deepflow::DisplayParam_DisplayType_VALUES, "approx1", { "Train" });
+			df.display(imbar, 1000, deepflow::DisplayParam_DisplayType_VALUES, "approx1", { train });
 		}
 		else if (FLAGS_x5) {
 			df.load_from_caffe_model("D:/Projects/deepflow/build/x64/Release/models/VGG_ILSVRC_16_layers.caffemodel", { std::pair<std::string, std::array<int,4>>("data", {2,3,224,224}) }, FLAGS_debug > 0);			
-			df.block()->remove_node_params({ "fc6_ip", "fc6_w", "fc6_b", "fc7_w", "fc7_b", "fc8_w", "fc8_b" });			
+			df.block()->remove_node_params({ "fc6_ip", "fc6_w", "fc6_b", "fc7_w", "fc7_b", "fc8_w", "fc8_b" });	
+			auto train = df.define_train_phase("Train");
+			auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
+			df.block()->set_solver_for_variable_params(solver, {});
+			df.block()->set_phase_for_node_params( train, {});
 		}
 		else if (FLAGS_x6) {
-			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
+			auto train = df.define_train_phase("Train");
 			auto image = df.image_reader(FLAGS_image, deepflow::ImageReaderParam_Type_GRAY_ONLY);
 			auto b = df.variable(df.zeros({ 1,1,1,1 }), "", "b", {});
 			auto f = df.variable(df.ones({ 1,1,5,5 }), "", "f", {});
 			auto conv = df.conv2d(image, f, b, "conv");			
-			df.display(conv, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { "Train" });
+			df.display(conv, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { train });
 		}
 
 

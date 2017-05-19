@@ -656,25 +656,26 @@ std::shared_ptr<Session> DeepFlow::session()
 	return session;
 }
 
-void DeepFlow::define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour) {
+std::string DeepFlow::define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour) {
 	auto phase_param = _block->add_phase_param();	
 	phase_param->set_phase(phase);
-	phase_param->set_behaviour(behaviour);	
+	phase_param->set_behaviour(behaviour);
+	return phase;
 }
 
-void DeepFlow::define_train_phase(std::string train_phase)
+std::string DeepFlow::define_train_phase(std::string train_phase)
 {
-	define_phase(train_phase, deepflow::PhaseParam_PhaseBehaviour_TRAIN);
+	return define_phase(train_phase, deepflow::PhaseParam_PhaseBehaviour_TRAIN);
 }
 
-void DeepFlow::define_validation_phase(std::string validation_phase)
+std::string DeepFlow::define_validation_phase(std::string validation_phase)
 {
-	define_phase(validation_phase, deepflow::PhaseParam_PhaseBehaviour_VALIDATION);
+	return define_phase(validation_phase, deepflow::PhaseParam_PhaseBehaviour_VALIDATION);
 }
 
-void DeepFlow::define_inference_phase(std::string inference_phase)
+std::string DeepFlow::define_inference_phase(std::string inference_phase)
 {
-	define_phase(inference_phase, deepflow::PhaseParam_PhaseBehaviour_INFERENCE);
+	return define_phase(inference_phase, deepflow::PhaseParam_PhaseBehaviour_INFERENCE);
 }
 
 void DeepFlow::load_from_caffe_model(std::string file_path, std::initializer_list<std::pair<std::string, std::array<int, 4>>> inputs, bool verbose)
