@@ -19,8 +19,8 @@ DeepFlow::DeepFlow(std::shared_ptr<Block> block)
 }
 
 std::string DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -36,8 +36,8 @@ std::string DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNIS
 
 std::string DeepFlow::data_generator(std::string initializer, int num_samples, std::string solver, std::string name, std::initializer_list<std::string> phases)
 {
-	auto node_param = _block->add_node();	
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();	
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -48,14 +48,14 @@ std::string DeepFlow::data_generator(std::string initializer, int num_samples, s
 	if (!solver.empty())
 		variable_param->set_solver_name(solver);
 	auto init_param = variable_param->mutable_init_param();
-	init_param->CopyFrom(*_block->find_initializer_by_name(initializer));	
+	init_param->CopyFrom(*_block->find_initializer_param_by_name(initializer));	
 	return node_param->output(0);
 }
 
 std::string DeepFlow::image_reader(std::string file_path, deepflow::ImageReaderParam_Type type, std::string name, std::initializer_list<std::string> phases)
 {
-	auto node_param = _block->add_node();	
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();	
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -68,8 +68,8 @@ std::string DeepFlow::image_reader(std::string file_path, deepflow::ImageReaderP
 
 std::string DeepFlow::image_batch_reader(std::string folder_path, std::initializer_list<int> dims, std::string name, std::initializer_list<std::string> phases)
 {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -86,8 +86,8 @@ std::string DeepFlow::image_batch_reader(std::string folder_path, std::initializ
 }
 
 std::string DeepFlow::add(std::string a, std::string b, float alpha, float beta, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();	
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();	
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -108,8 +108,8 @@ std::string DeepFlow::subtract(std::string a, std::string b, std::string name, s
 }
 
 std::string DeepFlow::bias_add(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -120,8 +120,8 @@ std::string DeepFlow::bias_add(std::string a, std::string b, std::string name, s
 }
 
 std::string DeepFlow::index_fill(std::initializer_list<int> dims, float offset, std::string name) {
-	auto init_param = _block->add_initializer();
-	init_param->set_name(_block->get_unique_initializer_name(name));
+	auto init_param = _block->add_initializer_param();
+	init_param->set_name(_block->get_unique_initializer_param_name(name));
 	std::vector<int> values(dims);
 	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
@@ -133,8 +133,8 @@ std::string DeepFlow::index_fill(std::initializer_list<int> dims, float offset, 
 }
 
 std::string DeepFlow::step(std::initializer_list<int> dims, float min, float max, std::string name) {
-	auto init_param = _block->add_initializer();
-	init_param->set_name(_block->get_unique_initializer_name(name));
+	auto init_param = _block->add_initializer_param();
+	init_param->set_name(_block->get_unique_initializer_param_name(name));
 	std::vector<int> values(dims);
 	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
@@ -147,8 +147,8 @@ std::string DeepFlow::step(std::initializer_list<int> dims, float min, float max
 }
 
 std::string DeepFlow::fill(std::initializer_list<int> dims, float value, std::string name) {
-	auto init_param = _block->add_initializer();
-	init_param->set_name(_block->get_unique_initializer_name(name));
+	auto init_param = _block->add_initializer_param();
+	init_param->set_name(_block->get_unique_initializer_param_name(name));
 	std::vector<int> values(dims);
 	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
@@ -168,8 +168,8 @@ std::string DeepFlow::ones(std::initializer_list<int> dims, std::string name) {
 }
 
 std::string DeepFlow::random_uniform(std::initializer_list<int> dims,  float min, float max, std::string name) {
-	auto init_param = _block->add_initializer();
-	init_param->set_name(_block->get_unique_initializer_name(name));
+	auto init_param = _block->add_initializer_param();
+	init_param->set_name(_block->get_unique_initializer_param_name(name));
 	std::vector<int> values(dims);
 	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
@@ -183,8 +183,8 @@ std::string DeepFlow::random_uniform(std::initializer_list<int> dims,  float min
 
 std::string DeepFlow::random_normal(std::initializer_list<int> dims, float mean, float stddev, std::string name)
 {
-	auto init_param = _block->add_initializer();
-	init_param->set_name(_block->get_unique_initializer_name(name));
+	auto init_param = _block->add_initializer_param();
+	init_param->set_name(_block->get_unique_initializer_param_name(name));
 	std::vector<int> values(dims);
 	auto tensor_param = init_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
@@ -197,8 +197,8 @@ std::string DeepFlow::random_normal(std::initializer_list<int> dims, float mean,
 }
 
 std::string DeepFlow::cast_float(std::string input, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -208,8 +208,8 @@ std::string DeepFlow::cast_float(std::string input, std::string name, std::initi
 }
 
 std::string DeepFlow::softmax(std::string a, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();	
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();	
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -221,8 +221,8 @@ std::string DeepFlow::softmax(std::string a, std::string name, std::initializer_
 }
 
 std::string DeepFlow::square(std::string a, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();	
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();	
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -232,8 +232,8 @@ std::string DeepFlow::square(std::string a, std::string name, std::initializer_l
 }
 
 std::string DeepFlow::place_holder(std::array<int, 4> dims, Tensor::TensorType type, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -246,8 +246,8 @@ std::string DeepFlow::place_holder(std::array<int, 4> dims, Tensor::TensorType t
 }
 
 std::string DeepFlow::variable(std::string initializer, std::string solver, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -255,13 +255,13 @@ std::string DeepFlow::variable(std::string initializer, std::string solver, std:
 	if (!solver.empty())
 		variable_param->set_solver_name(solver);
 	auto init_param = variable_param->mutable_init_param();
-	init_param->CopyFrom(*_block->find_initializer_by_name(initializer));
+	init_param->CopyFrom(*_block->find_initializer_param_by_name(initializer));
 	return node_param->output(0);
 }
 
 std::string DeepFlow::matmul(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -274,8 +274,8 @@ std::string DeepFlow::matmul(std::string a, std::string b, std::string name, std
 }
 
 std::string DeepFlow::leaky_relu(std::string a, float negative_slope, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -287,8 +287,8 @@ std::string DeepFlow::leaky_relu(std::string a, float negative_slope, std::strin
 
 std::string DeepFlow::sigmoid(std::string a, std::string name, std::initializer_list<std::string> phases)
 {
-	auto node_param = _block->add_node();	
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();	
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -301,8 +301,8 @@ std::string DeepFlow::sigmoid(std::string a, std::string name, std::initializer_
 
 std::string DeepFlow::relu(std::string a, std::string name, std::initializer_list<std::string> phases)
 {
-	auto node_param = _block->add_node();	
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();	
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -315,8 +315,8 @@ std::string DeepFlow::relu(std::string a, std::string name, std::initializer_lis
 
 std::string DeepFlow::tanh(std::string a, std::string name, std::initializer_list<std::string> phases)
 {
-	auto node_param = _block->add_node();	
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();	
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -329,8 +329,8 @@ std::string DeepFlow::tanh(std::string a, std::string name, std::initializer_lis
 
 std::string DeepFlow::clipped_relu(std::string a, float threshold, std::string name, std::initializer_list<std::string> phases)
 {
-	auto node_param = _block->add_node();	
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();	
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -343,8 +343,8 @@ std::string DeepFlow::clipped_relu(std::string a, float threshold, std::string n
 
 std::string DeepFlow::elu(std::string a, float alpha, std::string name, std::initializer_list<std::string> phases)
 {
-	auto node_param = _block->add_node();	
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();	
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -356,8 +356,8 @@ std::string DeepFlow::elu(std::string a, float alpha, std::string name, std::ini
 }
 
 std::array<std::string, 2> DeepFlow::accumulator(std::string input, Accumulator::ResetTime resetTime, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 2);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -371,8 +371,8 @@ std::array<std::string, 2> DeepFlow::accumulator(std::string input, Accumulator:
 }
 
 void DeepFlow::print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime printTime, Print::PrintType printType, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	std::vector<std::string> inputsVec(inputs.size());
@@ -387,8 +387,8 @@ void DeepFlow::print(std::initializer_list<std::string> inputs, std::string mess
 }
 
 std::string DeepFlow::softmax_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -403,8 +403,8 @@ std::string DeepFlow::softmax_loss(std::string a, std::string b, std::string nam
 
 void DeepFlow::euclidean_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases)
 {
-	auto node_param = _block->add_node();	
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();	
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(a);
@@ -414,8 +414,8 @@ void DeepFlow::euclidean_loss(std::string a, std::string b, std::string name, st
 }
 
 std::string DeepFlow::sgd_solver(float momentum, float learning_rate, std::string name) {
-	auto solver_param = _block->add_solver();	
-	solver_param->set_name(_block->get_unique_solver_name(name));
+	auto solver_param = _block->add_solver_param();	
+	solver_param->set_name(_block->get_unique_solver_param_name(name));
 	auto sgd_solver = solver_param->mutable_sgd_solver();
 	sgd_solver->set_learning_rate(learning_rate);
 	sgd_solver->set_momentum(momentum);
@@ -423,8 +423,8 @@ std::string DeepFlow::sgd_solver(float momentum, float learning_rate, std::strin
 }
 
 std::string DeepFlow::gain_solver(float momentum, float learning_rate, float max_gain, float min_gain, float gain_plus, float gain_mult, std::string name) {
-	auto solver_param = _block->add_solver();	
-	solver_param->set_name(_block->get_unique_solver_name(name));
+	auto solver_param = _block->add_solver_param();	
+	solver_param->set_name(_block->get_unique_solver_param_name(name));
 	auto gain_solver = solver_param->mutable_gain_solver();
 	gain_solver->set_momentum(momentum);
 	gain_solver->set_learning_rate(learning_rate);
@@ -435,8 +435,8 @@ std::string DeepFlow::gain_solver(float momentum, float learning_rate, float max
 	return solver_param->name();
 }
 std::string DeepFlow::adam_solver(float learning_rate, float beta1, float beta2, float eps, std::string name) {	
-	auto solver_param = _block->add_solver();
-	solver_param->set_name(_block->get_unique_solver_name(name));
+	auto solver_param = _block->add_solver_param();
+	solver_param->set_name(_block->get_unique_solver_param_name(name));
 	auto adam_solver = solver_param->mutable_adam_solver();	
 	adam_solver->set_learning_rate(learning_rate);
 	adam_solver->set_beta1(beta1);
@@ -446,8 +446,8 @@ std::string DeepFlow::adam_solver(float learning_rate, float beta1, float beta2,
 }
 
 std::string DeepFlow::adadelta_solver(float learning_rate, float momentum, float delta, std::string name) {
-	auto solver_param = _block->add_solver();
-	solver_param->set_name(_block->get_unique_solver_name(name));
+	auto solver_param = _block->add_solver_param();
+	solver_param->set_name(_block->get_unique_solver_param_name(name));
 	auto adadelta_solver = solver_param->mutable_adadelta_solver();
 	adadelta_solver->set_learning_rate(learning_rate);
 	adadelta_solver->set_momentum(momentum);
@@ -456,8 +456,8 @@ std::string DeepFlow::adadelta_solver(float learning_rate, float momentum, float
 }
 
 std::string DeepFlow::dropout(std::string a, float dropout, bool train_only, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -469,8 +469,8 @@ std::string DeepFlow::dropout(std::string a, float dropout, bool train_only, std
 }
 
 std::string DeepFlow::transposed_conv2d(std::string input, std::string filter,std::array<int, 4> dims, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -491,8 +491,8 @@ std::string DeepFlow::transposed_conv2d(std::string input, std::string filter,st
 }
 
 std::string DeepFlow::conv2d(std::string input, std::string filter, std::string bias, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -515,8 +515,8 @@ std::string DeepFlow::conv2d(std::string input, std::string filter, std::string 
 }
 
 void DeepFlow::display(std::string input,int delay_msec, deepflow::DisplayParam_DisplayType type, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(input);
@@ -527,8 +527,8 @@ void DeepFlow::display(std::string input,int delay_msec, deepflow::DisplayParam_
 
 void DeepFlow::psnr(std::string a, std::string b, Psnr::PrintTime printTime, std::string name, std::initializer_list<std::string> phases)
 {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(a);
@@ -538,8 +538,8 @@ void DeepFlow::psnr(std::string a, std::string b, Psnr::PrintTime printTime, std
 }
 
 std::string DeepFlow::pooling(std::string input, int windowHeight, int windowWidth, int verticalPadding, int horizontalPadding, int verticalStride, int horizontalStride, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -555,8 +555,8 @@ std::string DeepFlow::pooling(std::string input, int windowHeight, int windowWid
 }
 
 std::string DeepFlow::_reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, deepflow::ReduceParam::OutputType type, int output, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 2);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -606,8 +606,8 @@ std::string DeepFlow::reduce_mean(std::string input, int reduceDimension, std::s
 
 
 std::string DeepFlow::phaseplexer(std::string input_1, std::string phase_1, std::string input_2, std::string phase_2, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -621,8 +621,8 @@ std::string DeepFlow::phaseplexer(std::string input_1, std::string phase_1, std:
 
 std::string DeepFlow::random_selector(std::string input_1, std::string input_2, float probability, std::string name, std::initializer_list<std::string> phases)
 {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -634,8 +634,8 @@ std::string DeepFlow::random_selector(std::string input_1, std::string input_2, 
 }
 
 std::string DeepFlow::equal(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node();
-	node_param->set_name(_block->get_unique_node_name(name));
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
@@ -657,7 +657,7 @@ std::shared_ptr<Session> DeepFlow::session()
 }
 
 void DeepFlow::define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour) {
-	auto phase_param = _block->add_phase();	
+	auto phase_param = _block->add_phase_param();	
 	phase_param->set_phase(phase);
 	phase_param->set_behaviour(behaviour);	
 }

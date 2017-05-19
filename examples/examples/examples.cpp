@@ -84,6 +84,7 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x5) {
 			df.load_from_caffe_model("D:/Projects/deepflow/build/x64/Release/models/VGG_ILSVRC_16_layers.caffemodel", { std::pair<std::string, std::array<int,4>>("data", {2,3,224,224}) }, FLAGS_debug > 0);			
+			df.block()->remove_node_params({ "fc6_ip", "fc6_w", "fc6_b", "fc7_w", "fc7_b", "fc8_w", "fc8_b" });			
 		}
 		else if (FLAGS_x6) {
 			df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
@@ -101,8 +102,8 @@ void main(int argc, char** argv) {
 	}
 
 	if (FLAGS_debug > 0) {
-		df.block()->print_nodes();
-		df.block()->print_phases();
+		df.block()->print_node_params();
+		df.block()->print_phase_params();
 	}
 
 	auto session = df.session();	

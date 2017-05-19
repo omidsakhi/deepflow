@@ -15,7 +15,7 @@ Block::Block(deepflow::NodeParam & param) : Node(param)
 	_block_param = param.mutable_block_param();
 }
 
-deepflow::NodeParam* Block::find_node_by_name(const std::string & name) const
+deepflow::NodeParam* Block::find_node_param_by_name(const std::string & name) const
 {	
 	for (int i = 0; i < _block_param->node_size(); ++i) {
 		if (_block_param->node(i).name() == name) {
@@ -25,7 +25,7 @@ deepflow::NodeParam* Block::find_node_by_name(const std::string & name) const
 	return 0;
 }
 
-int Block::find_node_index_by_name(const std::string & name) const
+int Block::find_node_param_index_by_name(const std::string & name) const
 {
 	for (int i = 0; i < _block_param->node_size(); ++i) {
 		if (_block_param->node(i).name() == name) {
@@ -35,7 +35,7 @@ int Block::find_node_index_by_name(const std::string & name) const
 	return -1;
 }
 
-deepflow::SolverParam* Block::find_solver_by_name(const std::string & name) const
+deepflow::SolverParam* Block::find_solver_param_by_name(const std::string & name) const
 {
 	for (int i = 0; i < _block_param->solver_size(); ++i) {
 		if (_block_param->solver(i).name() == name) {
@@ -45,7 +45,7 @@ deepflow::SolverParam* Block::find_solver_by_name(const std::string & name) cons
 	return 0;
 }
 
-deepflow::InitParam * Block::find_initializer_by_name(const std::string & name) const
+deepflow::InitParam * Block::find_initializer_param_by_name(const std::string & name) const
 {
 	for (int i = 0; i < _block_param->initializer_size(); ++i) {
 		if (_block_param->initializer(i).name() == name) {
@@ -55,7 +55,7 @@ deepflow::InitParam * Block::find_initializer_by_name(const std::string & name) 
 	return 0;
 }
 
-deepflow::NodeParam* Block::find_node_by_output_name(const std::string & output_name) const
+deepflow::NodeParam* Block::find_node_param_by_output_name(const std::string & output_name) const
 {
 	for (int i = 0; i < _block_param->node_size(); ++i) {
 		for (auto output : _block_param->node(i).output())
@@ -66,7 +66,7 @@ deepflow::NodeParam* Block::find_node_by_output_name(const std::string & output_
 	return 0;
 }
 
-std::list<deepflow::NodeParam*> Block::find_nodes_by_input_name(const std::string & input_name) const
+std::list<deepflow::NodeParam*> Block::find_node_params_by_input_name(const std::string & input_name) const
 {
 	auto list = std::list<deepflow::NodeParam*>();
 	for (int i = 0; i < _block_param->node_size(); ++i) {
@@ -78,48 +78,48 @@ std::list<deepflow::NodeParam*> Block::find_nodes_by_input_name(const std::strin
 	return list;
 }
 
-std::string Block::get_unique_node_name(const std::string & prefix) const
+std::string Block::get_unique_node_param_name(const std::string & prefix) const
 {
-	if (find_node_by_name(prefix) == 0)
+	if (find_node_param_by_name(prefix) == 0)
 		return prefix;
 	int index = 1;
 	std::string nodeName = prefix + "_" + std::to_string(index);
-	while (find_node_by_name(nodeName) != 0) {
+	while (find_node_param_by_name(nodeName) != 0) {
 		index++;
 		nodeName = prefix + "_" + std::to_string(index);
 	}
 	return nodeName;
 }
 
-std::string Block::get_unique_solver_name(const std::string & prefix) const
+std::string Block::get_unique_solver_param_name(const std::string & prefix) const
 {	
-	if (find_solver_by_name(prefix) == 0)
+	if (find_solver_param_by_name(prefix) == 0)
 		return prefix;
 	int index = 1;
 	std::string nodeName = prefix + "_" + std::to_string(index);
-	while (find_solver_by_name(nodeName) != 0) {
+	while (find_solver_param_by_name(nodeName) != 0) {
 		index++;
 		nodeName = prefix + "_" + std::to_string(index);
 	}
 	return nodeName;
 }
 
-std::string Block::get_unique_initializer_name(const std::string & prefix) const
+std::string Block::get_unique_initializer_param_name(const std::string & prefix) const
 {
-	if (find_initializer_by_name(prefix) == 0)
+	if (find_initializer_param_by_name(prefix) == 0)
 		return prefix;
 	int index = 1;
 	std::string initName = prefix + "_" + std::to_string(index);
-	while (find_initializer_by_name(initName) != 0) {
+	while (find_initializer_param_by_name(initName) != 0) {
 		index++;
 		initName = prefix + "_" + std::to_string(index);
 	}
 	return initName;
 }
 
-void Block::replace_nodes_input(const std::string & search, const std::string & replace, const std::initializer_list<deepflow::NodeParam *> exclude_nodes)
+void Block::replace_node_params_input(const std::string & search, const std::string & replace, const std::initializer_list<deepflow::NodeParam *> exclude_nodes)
 {
-	auto affected_input_nodes = find_nodes_by_input_name(search);
+	auto affected_input_nodes = find_node_params_by_input_name(search);
 	for (auto node : exclude_nodes)
 		affected_input_nodes.remove(node);
 	for (auto affected_input_node : affected_input_nodes)
@@ -130,22 +130,54 @@ void Block::replace_nodes_input(const std::string & search, const std::string & 
 		}
 }
 
-void Block::remove_and_reconnect_node_by_name(const std::string & node_name)
+void Block::remove_and_reconnect_node_param_by_name(const std::string & node_name)
 {
-	deepflow::NodeParam *node = find_node_by_name(node_name);
+	deepflow::NodeParam *node = find_node_param_by_name(node_name);
 	LOG_IF(FATAL, node == nullptr) << "Failed to find node with name " << node_name;
 	int num_inputs = node->input_size();
 	int num_outputs = node->output_size();
 	LOG_IF(FATAL, num_outputs > num_inputs) << "Failed to remove node " << node_name << " due to num_outputs > num_inputs";	
 	for (int i = 0; i < num_outputs; i++) {
-		replace_nodes_input(node->output(i), node->input(i), { node });
+		replace_node_params_input(node->output(i), node->input(i), { node });
 	}
-	for (auto itr = _block_param->node().begin(); itr != _block_param->node().end(); itr++) {		
+	remove_single_node_param(node_name);
+}
+
+void Block::remove_single_node_param(const std::string & node_name)
+{
+	for (auto itr = _block_param->node().begin(); itr != _block_param->node().end(); itr++) {
 		if (itr->name() == node_name) {
 			_block_param->mutable_node()->erase(itr);
 			break;
 		}
-	}	
+	}
+}
+
+void Block::remove_node_params(std::initializer_list<std::string> node_names)
+{
+	std::list<deepflow::NodeParam*> queue;
+	for (auto name : node_names) {
+		deepflow::NodeParam *node = find_node_param_by_name(name);
+		if (node != nullptr)
+			queue.push_back(node);
+	}			
+	std::list<deepflow::NodeParam*> nodes_to_remove;
+	while (!queue.empty()) {
+		deepflow::NodeParam *node = queue.front();
+		queue.pop_front();
+		nodes_to_remove.push_back(node);
+		for (auto node_output : node->output()) {
+			auto downstream_nodes = find_node_params_by_input_name(node_output);
+			for (auto another_node : downstream_nodes) {
+				queue.push_back(another_node);
+			}
+		}
+	}
+	while (!nodes_to_remove.empty()) {
+		deepflow::NodeParam *node = nodes_to_remove.front();
+		nodes_to_remove.pop_front();
+		remove_single_node_param(node->name());
+	}
 }
 
 void Block::save_as_binary(std::string file_path)
@@ -164,27 +196,27 @@ void Block::save_as_text(std::string file_path)
 	out.close();
 }
 
-deepflow::NodeParam* Block::add_node()
+deepflow::NodeParam* Block::add_node_param()
 {
 	return _block_param->add_node();
 }
 
-deepflow::PhaseParam * Block::add_phase()
+deepflow::PhaseParam * Block::add_phase_param()
 {
 	return _block_param->add_phase();
 }
 
-deepflow::SolverParam * Block::add_solver()
+deepflow::SolverParam * Block::add_solver_param()
 {
 	return _block_param->add_solver();
 }
 
-deepflow::InitParam * Block::add_initializer()
+deepflow::InitParam * Block::add_initializer_param()
 {
 	return _block_param->add_initializer();
 }
 
-void Block::print_nodes()
+void Block::print_node_params()
 {
 	for (auto node : _block_param->node()) {
 		std::string inputs = (node.input_size() > 0) ? node.input(0) : "";
@@ -199,7 +231,7 @@ void Block::print_nodes()
 	}
 }
 
-void Block::print_phases()
+void Block::print_phase_params()
 {
 	for (auto phase : _block_param->phase()) {
 		LOG(INFO) << phase.phase() << " <-> " << deepflow::PhaseParam_PhaseBehaviour_Name(phase.behaviour());
