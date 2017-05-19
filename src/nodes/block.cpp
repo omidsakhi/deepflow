@@ -182,10 +182,9 @@ void Block::remove_node_params(std::initializer_list<std::string> node_names)
 
 void Block::set_phase_for_node_params(std::string phase, std::initializer_list<std::string> node_names)
 {
-	if (node_names.size() > 0) {
-		for (auto node : _block_param->node()) {
-			node.add_phase(phase);
-		}
+	if (node_names.size() == 0) {
+		for (int i = 0; i < _block_param->node_size(); ++i)
+			_block_param->mutable_node(i)->add_phase(phase);
 	}
 	else {
 		for (auto name : node_names) {
@@ -198,10 +197,11 @@ void Block::set_phase_for_node_params(std::string phase, std::initializer_list<s
 
 void Block::set_solver_for_variable_params(std::string solver, std::initializer_list<std::string> variable_names)
 {
-	if (variable_names.size() > 0) {
-		for (auto node : _block_param->node()) {
-			if (node.has_variable_param()) {
-				node.mutable_variable_param()->set_solver_name(solver);
+	if (variable_names.size() == 0) {
+		for (int i = 0; i < _block_param->node_size(); ++i) {
+			deepflow::NodeParam * node = _block_param->mutable_node(i);
+			if (node->has_variable_param()) {
+				node->mutable_variable_param()->set_solver_name(solver);
 			}
 		}
 	}
