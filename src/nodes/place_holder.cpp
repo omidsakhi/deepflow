@@ -45,7 +45,7 @@ void PlaceHolder::forward() {
 void PlaceHolder::backward() {
 	if (_inputs[0] && _inputs[0]->connectedNode()) {
 		LOG_IF(FATAL, _outputs[0]->diff()->sizeInBytes() != _inputs[0]->diff()->sizeInBytes()) << "Size mismatch.";
-		DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice));		
+		cpyAddDiff(_inputs[0]->value()->size(), _outputs[0]->diff()->data(), _inputs[0]->diff()->mutableData());		
 	}
 }
 

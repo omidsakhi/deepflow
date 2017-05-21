@@ -6,10 +6,11 @@
 #include "nodes/variable.h"
 
 __global__
-void ApplyGradientKernel(const int n, const float momentum, const float learning_rate, float *var, const float *grad)
+void ApplyGradientKernel(const int n, const float momentum, const float learning_rate, float *w, const float *grad)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	if (i < n) var[i] = momentum * var[i] + learning_rate * grad[i];
+	if (i < n) 
+		w[i] = momentum * w[i] + learning_rate * grad[i];
 }
 
 SGDSolver::SGDSolver(const deepflow::SolverParam &param) : Solver(param) {

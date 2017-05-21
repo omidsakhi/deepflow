@@ -17,8 +17,6 @@ public:
 	ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
 	BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 private:	
-	float _alpha;
-	float _beta;
 	cublasHandle_t _handle;
 	int _col_A, _row_A, _col_B, _row_B;	
 };

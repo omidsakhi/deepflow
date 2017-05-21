@@ -16,8 +16,6 @@ public:
 	ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
 	BackwardType backwardType() { return NEVER_BACKWARD; }
 private:
-	const float alpha = 1.0f;
-	const float beta = 0.0f;
 	cudnnHandle_t _cudnnHandle;
 	cudnnReduceTensorOp_t _reduceTensorOp;
 	cudnnReduceTensorDescriptor_t _reduceTensorDesciptor;

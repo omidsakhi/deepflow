@@ -8,7 +8,7 @@ void EuclideanLossKernel(const int n, const float * __restrict__ x1, const float
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n)
-		y[i] = x2[i] - x1[i];
+		y[i] += x2[i] - x1[i];
 }
 
 EuclideanLoss::EuclideanLoss(const deepflow::NodeParam &param) : Loss(param) {

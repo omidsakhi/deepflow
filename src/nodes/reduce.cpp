@@ -124,10 +124,10 @@ void Reduce::forward() {
 			requiresIndices() ? _outputs[1]->value()->sizeInBytes() : 0,
 			_d_workspace,
 			_workspaceSizeInBytes,
-			&alpha,
+			&one,
 			_inputs[0]->value()->descriptor(),
 			_inputs[0]->value()->data(),
-			&beta,
+			&zero,
 			_outputs[0]->value()->descriptor(),
 			_outputs[0]->value()->mutableData()));
 }

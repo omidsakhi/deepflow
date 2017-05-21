@@ -3,15 +3,15 @@
 #include "nodes/leaky_relu.h"
 
 __global__
-void ReluKernel(int n, const float * __restrict__ x, const float * __restrict__ y, float * __restrict__ z, const float slope)
+void ReluKernel(int n, const float * __restrict__ x, const float * __restrict__ y, float beta, float * __restrict__ z, const float slope)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n)
 	{
 		if (x[i] > 0)
-			z[i] = y[i];
+			z[i] = beta * z[i] + y[i];
 		else
-			z[i] = y[i] * slope;
+			z[i] = beta * z[i] + y[i] * slope;
 	}
 }
 
@@ -32,13 +32,13 @@ void LeakyRelu::initBackward() {
 
 void LeakyRelu::forward() {	
 	auto size = _inputs[0]->value()->size();	
-	ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData(), _negative_slope);
+	ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_inputs[0]->value()->data(), 0.0f, (float*)_outputs[0]->value()->mutableData(), _negative_slope);
 	DF_KERNEL_CHECK();	
 }
 
 void LeakyRelu::backward() {	
 	auto size = _inputs[0]->value()->size();	
-	ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), _negative_slope);
+	ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), 1.0f, (float*)_inputs[0]->diff()->mutableData(), _negative_slope);
 	DF_KERNEL_CHECK();	
 }
 

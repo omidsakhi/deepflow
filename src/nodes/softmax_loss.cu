@@ -6,7 +6,8 @@ __global__
 void SoftmaxLossKernelBackward(const int n, const float *softmax_output,const float * __restrict__ target, float * __restrict__ diff)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	if (i < n) diff[i] = target[i] - softmax_output[i];
+	if (i < n) 
+		diff[i] += target[i] - softmax_output[i];
 }
 
 
@@ -26,7 +27,7 @@ void SoftmaxLoss::initBackward() {
 }
 
 void SoftmaxLoss::forward() {
-	DF_CUDNN_CHECK(cudnnSoftmaxForward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, CUDNN_SOFTMAX_MODE_CHANNEL, &alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &beta, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
+	DF_CUDNN_CHECK(cudnnSoftmaxForward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, CUDNN_SOFTMAX_MODE_CHANNEL, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
 }
 
 void SoftmaxLoss::backward() {

@@ -333,6 +333,8 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 			node->_forward();
 		}
 		if (train) {
+			for (auto node : *nodes)
+				node->resetGradients();			
 			for (auto node : *end_nodes) {
 				node->_unvisit();
 				node->_backward();

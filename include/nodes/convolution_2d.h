@@ -28,9 +28,6 @@ protected:
 	size_t _bwdDataWorkspaceSize;
 	size_t _bwdFilterWorkspaceSize;
 	size_t _maxWorkspaceSize;
-	const float alpha1 = 1.0f;
-	const float alpha2 = 0.0f;
-	const float beta = 0.0f;
 	float *d_workspace;
 	int _num_inputs;
 };

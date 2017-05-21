@@ -64,6 +64,9 @@
     <CudaCompile Include="..\..\src\generators\image_batch_reader.cu">
       <Filter>source\generators</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\core\node.cu">
+      <Filter>source\core</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">

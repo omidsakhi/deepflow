@@ -28,11 +28,11 @@ void Pooling::initBackward() {
 }
 
 void Pooling::forward() {
-	DF_CUDNN_CHECK(cudnnPoolingForward(_cudnnHandle, _poolingDesc, &_alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &_beta, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
+	DF_CUDNN_CHECK(cudnnPoolingForward(_cudnnHandle, _poolingDesc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
 }
 
 void Pooling::backward() {
-	DF_CUDNN_CHECK(cudnnPoolingBackward(_cudnnHandle, _poolingDesc, &_alpha, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &_beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+	DF_CUDNN_CHECK(cudnnPoolingBackward(_cudnnHandle, _poolingDesc, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &one, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
 }
 
 std::string Pooling::to_cpp() const

@@ -14,7 +14,7 @@ void AdamKernel(const int n, float *w, const float *g, float *m, float *v, const
 		float mi = m[i] = m[i] * beta1 + gi*(1 - beta1);
 		float vi = v[i] = v[i] * beta2 + gi*gi*(1 - beta2);
 		gi = learning_rate * mi / (sqrt(vi) + eps);
-		w[i] = w[i] + gi;
+		w[i] += gi;
 	}
 }
 

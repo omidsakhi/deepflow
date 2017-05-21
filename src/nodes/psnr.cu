@@ -51,10 +51,10 @@ void Psnr::forward() {
 			NULL,
 			_d_workspace,
 			_workspaceSizeInBytes,
-			&alpha,
+			&one,
 			_inputs[0]->value()->descriptor(),
 			d_square_error,
-			&beta,
+			&zero,
 			_output_desc,
 			d_sum_square_error));
 	float sse;
@@ -64,8 +64,6 @@ void Psnr::forward() {
 }
 
 void Psnr::backward() {
-	auto size = _inputs[0]->value()->size();
-	DF_KERNEL_CHECK();
 }
 
 std::string Psnr::to_cpp() const

@@ -61,7 +61,7 @@ message PrintParam {
 
 message AddParam {
 	float alpha = 1;
-	float beta = 2;	
+	float beta = 2;
 }
 
 message DisplayParam {
@@ -115,8 +115,6 @@ message DropoutParam {
 }
 
 message MatMulParam {
-	float alpha = 1;
-	float beta = 2;
 }
 
 message LeakyReluParam {
@@ -264,13 +262,9 @@ message EuclideanLossParam {
 }
 
 message SoftmaxLossParam {
-	float alpha = 1;
-	float beta = 2;		
 }
 
 message SoftmaxParam {
-	float alpha = 1;
-	float beta = 2;	
 }
 
 message InitFillParam {

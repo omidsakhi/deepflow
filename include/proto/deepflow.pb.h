@@ -2140,24 +2140,10 @@ class MatMulParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 
   // accessors -------------------------------------------------------
 
-  // float alpha = 1;
-  void clear_alpha();
-  static const int kAlphaFieldNumber = 1;
-  float alpha() const;
-  void set_alpha(float value);
-
-  // float beta = 2;
-  void clear_beta();
-  static const int kBetaFieldNumber = 2;
-  float beta() const;
-  void set_beta(float value);
-
   // @@protoc_insertion_point(class_scope:deepflow.MatMulParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  float alpha_;
-  float beta_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4227,24 +4213,10 @@ class SoftmaxLossParam : public ::google::protobuf::Message /* @@protoc_insertio
 
   // accessors -------------------------------------------------------
 
-  // float alpha = 1;
-  void clear_alpha();
-  static const int kAlphaFieldNumber = 1;
-  float alpha() const;
-  void set_alpha(float value);
-
-  // float beta = 2;
-  void clear_beta();
-  static const int kBetaFieldNumber = 2;
-  float beta() const;
-  void set_beta(float value);
-
   // @@protoc_insertion_point(class_scope:deepflow.SoftmaxLossParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  float alpha_;
-  float beta_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4317,24 +4289,10 @@ class SoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // float alpha = 1;
-  void clear_alpha();
-  static const int kAlphaFieldNumber = 1;
-  float alpha() const;
-  void set_alpha(float value);
-
-  // float beta = 2;
-  void clear_beta();
-  static const int kBetaFieldNumber = 2;
-  float beta() const;
-  void set_beta(float value);
-
   // @@protoc_insertion_point(class_scope:deepflow.SoftmaxParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  float alpha_;
-  float beta_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -6448,34 +6406,6 @@ inline void DropoutParam::set_train_only(bool value) {
 // -------------------------------------------------------------------
 
 // MatMulParam
-
-// float alpha = 1;
-inline void MatMulParam::clear_alpha() {
-  alpha_ = 0;
-}
-inline float MatMulParam::alpha() const {
-  // @@protoc_insertion_point(field_get:deepflow.MatMulParam.alpha)
-  return alpha_;
-}
-inline void MatMulParam::set_alpha(float value) {
-  
-  alpha_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.MatMulParam.alpha)
-}
-
-// float beta = 2;
-inline void MatMulParam::clear_beta() {
-  beta_ = 0;
-}
-inline float MatMulParam::beta() const {
-  // @@protoc_insertion_point(field_get:deepflow.MatMulParam.beta)
-  return beta_;
-}
-inline void MatMulParam::set_beta(float value) {
-  
-  beta_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.MatMulParam.beta)
-}
 
 // -------------------------------------------------------------------
 
@@ -8619,65 +8549,9 @@ inline void NodeParam::set_allocated_random_selector_param(::deepflow::RandomSel
 
 // SoftmaxLossParam
 
-// float alpha = 1;
-inline void SoftmaxLossParam::clear_alpha() {
-  alpha_ = 0;
-}
-inline float SoftmaxLossParam::alpha() const {
-  // @@protoc_insertion_point(field_get:deepflow.SoftmaxLossParam.alpha)
-  return alpha_;
-}
-inline void SoftmaxLossParam::set_alpha(float value) {
-  
-  alpha_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.SoftmaxLossParam.alpha)
-}
-
-// float beta = 2;
-inline void SoftmaxLossParam::clear_beta() {
-  beta_ = 0;
-}
-inline float SoftmaxLossParam::beta() const {
-  // @@protoc_insertion_point(field_get:deepflow.SoftmaxLossParam.beta)
-  return beta_;
-}
-inline void SoftmaxLossParam::set_beta(float value) {
-  
-  beta_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.SoftmaxLossParam.beta)
-}
-
 // -------------------------------------------------------------------
 
 // SoftmaxParam
-
-// float alpha = 1;
-inline void SoftmaxParam::clear_alpha() {
-  alpha_ = 0;
-}
-inline float SoftmaxParam::alpha() const {
-  // @@protoc_insertion_point(field_get:deepflow.SoftmaxParam.alpha)
-  return alpha_;
-}
-inline void SoftmaxParam::set_alpha(float value) {
-  
-  alpha_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.SoftmaxParam.alpha)
-}
-
-// float beta = 2;
-inline void SoftmaxParam::clear_beta() {
-  beta_ = 0;
-}
-inline float SoftmaxParam::beta() const {
-  // @@protoc_insertion_point(field_get:deepflow.SoftmaxParam.beta)
-  return beta_;
-}
-inline void SoftmaxParam::set_beta(float value) {
-  
-  beta_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.SoftmaxParam.beta)
-}
 
 // -------------------------------------------------------------------
 

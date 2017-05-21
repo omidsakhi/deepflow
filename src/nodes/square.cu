@@ -5,14 +5,16 @@ __global__
 void SquareKernelForward(const int n, const float * __restrict__ x, float * __restrict__ x2)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	if (i < n) x2[i] = x[i] * x[i];
+	if (i < n) 
+		x2[i] = x[i] * x[i];
 }
 
 __global__
 void SquareKernelBackward(const int n, const float *x, const float *diff, float *out)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	if (i < n) out[i] = 2.0f * x[i] * diff[i];
+	if (i < n) 
+		out[i] += 2.0f * x[i] * diff[i];
 }
 
 Square::Square(const deepflow::NodeParam &param) : Node(param) {

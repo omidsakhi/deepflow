@@ -30,10 +30,7 @@ void RandomSelector::forward()
 
 void RandomSelector::backward()
 {
-	if (_selection == 0)
-		DF_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), _outputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice))
-	else
-		DF_CUDA_CHECK(cudaMemcpy(_inputs[1]->diff()->mutableData(), _outputs[0]->diff()->data(), _outputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice))
+		cpyAddDiff(_outputs[0]->diff()->size(), _outputs[0]->diff()->data(), _inputs[ _selection == 0 ? 0 : 1 ]->diff()->mutableData());
 }
 
 std::string RandomSelector::to_cpp() const

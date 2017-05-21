@@ -86,6 +86,7 @@
     <ClCompile Include="..\..\src\core\session.cpp" />
     <ClCompile Include="..\..\src\core\tensor.cpp" />
     <ClCompile Include="..\..\src\generators\data_generator.cpp" />
+    <CudaCompile Include="..\..\src\core\node.cu" />
     <CudaCompile Include="..\..\src\generators\image_reader.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>

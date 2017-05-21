@@ -18,6 +18,4 @@ public:
 	BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 private:
 	cudnnHandle_t _cudnnHandle;	
-	float _alpha;
-	float _beta;
 };

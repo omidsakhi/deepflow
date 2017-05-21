@@ -17,6 +17,4 @@ public:
 private:
 	cudnnHandle_t _cudnnHandle;	
 	cudnnPoolingDescriptor_t _poolingDesc;
-	const float _alpha = 1.0f;
-	const float _beta = 0.0f;
 };

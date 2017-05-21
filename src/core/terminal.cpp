@@ -95,11 +95,20 @@ std::shared_ptr<Tensor> NodeOutput::diff() {
 }
 
 void NodeOutput::initValue(std::array<int, 4> dims, Tensor::TensorType type) {
+	LOG_IF(FATAL, _value != nullptr) << "_value != nullptr";
 	_value = std::make_shared<Tensor>(dims,type);
 }
 
 void NodeOutput::initDiff() {
+	LOG_IF(FATAL, _diff != nullptr) << "_diff != nullptr";
 	_diff = std::make_shared<Tensor>(_value->dims(),_value->type());
+}
+
+void NodeOutput::resetDiff()
+{
+	if (_diff) {
+		DF_CUDA_CHECK(cudaMemset(_diff->mutableData(), 0, _diff->sizeInBytes()));
+	}
 }
 
 void NodeOutput::cpyValueToDiff() {

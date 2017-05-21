@@ -1,0 +1,4 @@
+VGG_ILSVRC_16_layers.caffemodel
+VGG_ILSVRC_16_layers_deploy.prototxt
+VGG_ILSVRC_19_layers.caffemodel
+VGG_ILSVRC_19_layers_deploy.prototxt

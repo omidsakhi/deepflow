@@ -5,6 +5,9 @@
 #include <gflags/gflags.h>
 
 DEFINE_string(mnist, "./data/mnist", "Path to MNIST data folder");
+DEFINE_string(image, "D:/Projects/deepflow/data/image/lena-256x256.jpg", "Input image");
+DEFINE_string(model, "D:/Projects/deepflow/models/VGG_ILSVRC_16_layers.caffemodel", "Caffe model to load");
+
 DEFINE_string(i, "", "Trained network model to load");
 DEFINE_string(o, "", "Trained network model to save");
 DEFINE_bool(text, false, "Save model as text");
@@ -17,7 +20,6 @@ DEFINE_bool(printepoch, true, "Print epoch message");
 DEFINE_int32(debug, 0, "Level of debug");
 DEFINE_int32(epoch, 1000, "Maximum epochs");
 DEFINE_int32(iter, -1, "Maximum iterations");
-DEFINE_string(image, "lena-256x256.jpg", "Input image");
 DEFINE_bool(cpp, false, "Print C++ code");
 DEFINE_bool(x1, false, "Eucliean image reconstruction");
 DEFINE_bool(x2, false, "Transposed convolution image reconstruction");
@@ -83,7 +85,7 @@ void main(int argc, char** argv) {
 			df.display(imbar, 1000, deepflow::DisplayParam_DisplayType_VALUES, "approx1", { train });
 		}
 		else if (FLAGS_x5) {
-			df.load_from_caffe_model("D:/Projects/deepflow/build/x64/Release/models/VGG_ILSVRC_16_layers.caffemodel", { std::pair<std::string, std::array<int,4>>("data", {4,3,224,224}) }, FLAGS_debug > 0);			
+			df.load_from_caffe_model(FLAGS_model, { std::pair<std::string, std::array<int,4>>("data", {4,3,224,224}) }, FLAGS_debug > 0);			
 			df.block()->remove_node_params({ "fc6_ip", "fc6_w", "fc6_b", "fc7_w", "fc7_b", "fc8_w", "fc8_b" });	
 			auto train = df.define_train_phase("Train");
 			auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);

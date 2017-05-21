@@ -95,7 +95,7 @@ std::string DeepFlow::add(std::string a, std::string b, float alpha, float beta,
 	node_param->add_input(b);
 	auto add_param = node_param->mutable_add_param();
 	add_param->set_alpha(alpha);
-	add_param->set_beta(beta);	
+	add_param->set_beta(beta);
 	return node_param->output(0);
 }
 
@@ -215,8 +215,6 @@ std::string DeepFlow::softmax(std::string a, std::string name, std::initializer_
 		node_param->add_phase(phase);
 	node_param->add_input(a);
 	auto softmax_param = node_param->mutable_softmax_param();
-	softmax_param->set_alpha(1.0f);
-	softmax_param->set_beta(0.0f);	
 	return node_param->output(0);
 }
 
@@ -268,8 +266,6 @@ std::string DeepFlow::matmul(std::string a, std::string b, std::string name, std
 	node_param->add_input(a);
 	node_param->add_input(b);
 	auto matmul_param = node_param->mutable_matmul_param();
-	matmul_param->set_alpha(1.0f);
-	matmul_param->set_beta(0.0f);	
 	return node_param->output(0);
 }
 
@@ -396,8 +392,6 @@ std::string DeepFlow::softmax_loss(std::string a, std::string b, std::string nam
 	node_param->add_input(b);
 	auto loss_param = node_param->mutable_loss_param();
 	auto softmax_loss_param = loss_param->mutable_softmax_loss_param();
-	softmax_loss_param->set_alpha(1.0f);
-	softmax_loss_param->set_beta(0.0f);
 	return node_param->output(0);	
 }
 

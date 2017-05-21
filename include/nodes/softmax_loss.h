@@ -17,6 +17,4 @@ public:
 	BackwardType backwardType() { return ALWAYS_BACKWARD; }
 private:
 	cudnnHandle_t _cudnnHandle;	
-	float alpha = 1.0f;
-	float beta = 0.0f;
 };

@@ -51,5 +51,5 @@ void Phaseplexer::forward()
 void Phaseplexer::backward()
 {	
 	auto input = _map.find(_context->phase);
-	DF_CUDA_CHECK(cudaMemcpy(input->second->diff()->mutableData(), _outputs[0]->diff()->data(), _outputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice))	
+	cpyAddDiff(_outputs[0]->diff()->size(), _outputs[0]->diff()->data(), input->second->diff()->mutableData());	
 }

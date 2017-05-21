@@ -53,7 +53,8 @@ public:
 	void initValue(std::array<int, 4> dims, Tensor::TensorType type = Tensor::Float);	
 	std::array<int, 4> dims();
 	void feed(std::shared_ptr<NodeOutput> t);
-	void initDiff();	
+	void initDiff();
+	void resetDiff();
 	void cpyValueToDiff();
 	std::shared_ptr<Tensor> value();
 	std::shared_ptr<Tensor> diff();

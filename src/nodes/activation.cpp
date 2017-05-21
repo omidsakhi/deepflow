@@ -45,12 +45,12 @@ void Activation::initBackward()
 
 void Activation::forward()
 {
-	DF_CUDNN_CHECK(cudnnActivationForward(_cudnnHandle, _activation_desc, &alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &beta, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
+	DF_CUDNN_CHECK(cudnnActivationForward(_cudnnHandle, _activation_desc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
 }
 
 void Activation::backward()
 {
-	DF_CUDNN_CHECK(cudnnActivationBackward(_cudnnHandle, _activation_desc, &alpha, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &beta, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+	DF_CUDNN_CHECK(cudnnActivationBackward(_cudnnHandle, _activation_desc, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &one, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
 }
 
 std::string Activation::to_cpp() const

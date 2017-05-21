@@ -66,6 +66,8 @@ public:
 	void _traverse_up(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
 	void _traverse_down(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
 	void setVisited(bool state);
+	void resetGradients();
+	void cpyAddDiff(int n, const void *src, void *dst);
 	std::vector<NodeInputPtr> &inputs();
 	std::vector<NodeOutputPtr> &outputs();
 	NodeInputPtr input(int index);
@@ -86,6 +88,8 @@ protected:
 	bool _initialized = false;	
 	deepflow::NodeParam _param;
 	ExecutionContextPtr _context;
+	const float one = 1.0f;
+	const float zero = 0.0f;
 };
 
 using NodePtr = std::shared_ptr<Node>;

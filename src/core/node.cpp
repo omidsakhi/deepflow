@@ -26,6 +26,12 @@ void Node::setVisited(bool state) {
 	_visited = state;
 }
 
+void Node::resetGradients()
+{
+	for (auto output: _outputs)
+		output->resetDiff();
+}
+
 std::list<std::shared_ptr<Node>> Node::inputNodes() const {
 	std::list<std::shared_ptr<Node>> list;
 	for (int i = 0; i < _inputs.size(); ++i)

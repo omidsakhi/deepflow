@@ -10,9 +10,6 @@ void MatMul::initForward() {
 	auto a = _inputs[0];
 	auto b = _inputs[1];
 	
-	_alpha = _param.matmul_param().alpha();
-	_beta = _param.matmul_param().beta();
-
 	auto ad = a->value()->dims();
 	auto bd = b->value()->dims();
 
@@ -40,7 +37,7 @@ void MatMul::forward() {
 	auto c = _outputs[0];
 
 	// C(row_A,col_B) = A(row_A,col_A) * B(row_B,col_B)
-	LOG_IF(FATAL, cublasSgemm(_handle, CUBLAS_OP_N, CUBLAS_OP_N, _col_B, _row_A, _row_B, &_alpha, (float *) b->value()->data(), _col_B, (float *) a->value()->data(), _col_A, &_beta, (float*) c->value()->mutableData(), _col_B) != 0) << "cublasSgemm [FAILED]";	
+	LOG_IF(FATAL, cublasSgemm(_handle, CUBLAS_OP_N, CUBLAS_OP_N, _col_B, _row_A, _row_B, &one, (float *) b->value()->data(), _col_B, (float *) a->value()->data(), _col_A, &zero, (float*) c->value()->mutableData(), _col_B) != 0) << "cublasSgemm [FAILED]";	
 }
 
 void MatMul::backward() {			
@@ -51,12 +48,12 @@ void MatMul::backward() {
 	if (_inputs[0]->connectedNode()->propagateBack()) {
 		// col_A = row_B
 		//A(row_A,col_A) = diff(row_A,col_B) * B(row_B,col_B).T		
-		LOG_IF(FATAL, cublasSgemm(_handle, CUBLAS_OP_T, CUBLAS_OP_N, _row_B, _row_A, _col_B, &_alpha, (float*)b->value()->data(), _col_B, (float*)c->diff()->data(), _col_B, &_beta, (float*)a->diff()->mutableData(), _col_A) != 0);
+		LOG_IF(FATAL, cublasSgemm(_handle, CUBLAS_OP_T, CUBLAS_OP_N, _row_B, _row_A, _col_B, &one, (float*)b->value()->data(), _col_B, (float*)c->diff()->data(), _col_B, &one, (float*)a->diff()->mutableData(), _col_A) != 0);
 	}
 	
 	if (_inputs[1]->connectedNode()->propagateBack()) {
 		//B(row_B,col_B) = A(row_A,col_A).T * diff(row_A,col_B)		
-		LOG_IF(FATAL, cublasSgemm(_handle, CUBLAS_OP_N, CUBLAS_OP_T, _col_B, _col_A, _row_A, &_alpha, (float *)c->diff()->data(), _col_B, (float *)a->value()->data(), _col_A, &_beta, (float*)b->diff()->mutableData(), _col_B) != 0);
+		LOG_IF(FATAL, cublasSgemm(_handle, CUBLAS_OP_N, CUBLAS_OP_T, _col_B, _col_A, _row_A, &one, (float *)c->diff()->data(), _col_B, (float *)a->value()->data(), _col_A, &one, (float*)b->diff()->mutableData(), _col_B) != 0);
 	}
 	
 }

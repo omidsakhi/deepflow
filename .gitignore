@@ -30,3 +30,7 @@
 *.dll
 *.opendb
 *.*-ubyte
+/models/VGG_ILSVRC_19_layers.caffemodel
+/models/VGG_ILSVRC_19_layers_deploy.prototxt
+/models/VGG_ILSVRC_16_layers.caffemodel
+/models/VGG_ILSVRC_16_layers_deploy.prototxt

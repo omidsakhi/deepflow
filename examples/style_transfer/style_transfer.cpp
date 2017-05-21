@@ -30,8 +30,12 @@ void main(int argc, char** argv) {
 	DeepFlow df;
 		
 	if (FLAGS_i.empty()) {		
-
-		
+		df.load_from_caffe_model(FLAGS_model, { std::pair<std::string, std::array<int,4>>("data",{ 4,3,224,224 }) }, FLAGS_debug > 0);
+		df.block()->remove_node_params({ "fc6_ip", "fc6_w", "fc6_b", "fc7_w", "fc7_b", "fc8_w", "fc8_b" });
+		auto train = df.define_train_phase("Train");
+		auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
+		df.block()->set_solver_for_variable_params(solver, {});
+		df.block()->set_phase_for_node_params(train, {});
 	}
 	else {
 		df.block()->load_from_binary(FLAGS_i);	

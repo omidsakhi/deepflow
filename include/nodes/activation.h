@@ -18,6 +18,4 @@ public:
 private:
 	cudnnActivationDescriptor_t _activation_desc;
 	cudnnHandle_t _cudnnHandle;
-	const float alpha = 1.0f;
-	const float beta = 0.0f;
 };

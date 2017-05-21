@@ -23,8 +23,6 @@ private:
 	PrintTime _print_time;
 	float *d_square_error;
 	float *d_sum_square_error;
-	const float alpha = 1.0f;
-	const float beta = 0.0f;
 	cudnnHandle_t _cudnnHandle;	
 	cudnnReduceTensorDescriptor_t _reduce_tensor_desciptor;
 	cudnnTensorDescriptor_t _output_desc;
