@@ -5,7 +5,8 @@
 #include <gflags/gflags.h>
 
 DEFINE_string(mnist, "./data/mnist", "Path to MNIST data folder");
-DEFINE_string(image, "D:/Projects/deepflow/data/image/lena-256x256.jpg", "Input image");
+DEFINE_string(image1, "D:/Projects/deepflow/data/image/lena-256x256.jpg", "Input test image");
+DEFINE_string(image2, "D:/Projects/deepflow/data/style_transfer/sanfrancisco.jpg", "Another input test image");
 DEFINE_string(model, "D:/Projects/deepflow/models/VGG_ILSVRC_16_layers.caffemodel", "Caffe model to load");
 
 DEFINE_string(i, "", "Trained network model to load");
@@ -27,6 +28,7 @@ DEFINE_bool(x3, false, "Random selector double image reconstruction");
 DEFINE_bool(x4, false, "Test of image_batch_reader");
 DEFINE_bool(x5, false, "Test reading caffe model");
 DEFINE_bool(x6, false, "Test convolution forward with bias");
+DEFINE_bool(x7, false, "Test color image display");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -44,7 +46,7 @@ void main(int argc, char** argv) {
 			//auto solver = df.sgd_solver(1.0f, 0.01f);
 			//auto solver = df.adam_solver();
 			//auto solver = df.adadelta_solver();
-			auto image = df.image_reader(FLAGS_image, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
 			df.euclidean_loss(generator, image);
 			df.display(image, 2, deepflow::DisplayParam_DisplayType_VALUES, "input", { train });
@@ -57,7 +59,7 @@ void main(int argc, char** argv) {
 			auto solver2 = df.sgd_solver(1.0f, 0.0000000001f);
 			//auto solver = df.adam_solver();
 			//auto solver = df.adadelta_solver();		
-			auto image = df.image_reader(FLAGS_image, deepflow::ImageReaderParam_Type_GRAY_ONLY);
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY);
 			auto stat = df.variable(df.random_uniform({ 1,1,252,252 }, 0.8, 1), solver1);
 			auto f = df.variable(df.random_uniform({ 1,1,5,5 }, 0.9, 1.1), solver2);
 			auto tconv = df.transposed_conv2d(stat, f, { 1,1,256,256 }, 0, 0, 1, 1, 1, 1);
@@ -71,7 +73,7 @@ void main(int argc, char** argv) {
 			//auto solver = df.sgd_solver(1.0f, 0.01f);
 			//auto solver = df.adam_solver();
 			//auto solver = df.adadelta_solver();
-			auto image = df.image_reader(FLAGS_image, deepflow::ImageReaderParam_Type_GRAY_ONLY);
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY);
 			auto generator1 = df.data_generator(df.random_uniform({ 1, 1, 256, 256 }, -0.1, 0.1), 1, solver, "gen1");
 			auto generator2 = df.data_generator(df.random_normal({ 1, 1, 256, 256 }, 0, 0.1), 1, solver, "gen2");
 			auto selector = df.random_selector(generator1, generator2, 0.5);
@@ -94,14 +96,17 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x6) {
 			auto train = df.define_train_phase("Train");
-			auto image = df.image_reader(FLAGS_image, deepflow::ImageReaderParam_Type_GRAY_ONLY);
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY);
 			auto b = df.variable(df.zeros({ 1,1,1,1 }), "", "b", {});
 			auto f = df.variable(df.ones({ 1,1,5,5 }), "", "f", {});
 			auto conv = df.conv2d(image, f, b, "conv");			
 			df.display(conv, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { train });
 		}
-
-
+		else if (FLAGS_x7) {
+			auto train = df.define_train_phase("Train");
+			auto image = df.image_reader(FLAGS_image2, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			df.display(image, 10000, deepflow::DisplayParam_DisplayType_VALUES, "input", { train });
+		}
 	}
 	else {
 		df.block()->load_from_binary(FLAGS_i);

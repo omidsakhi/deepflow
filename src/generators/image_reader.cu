@@ -16,11 +16,11 @@ void ConvertOpenCV3ImageKernel(const int n, const unsigned char *in, const int w
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
-		int ch = i % 3;
-		int i3 = (i - ch) / 3;
-		int i3c = i3 % width;
-		int i3r = (i3 - i3c) / height;
-		out[ (2 - ch) * width * height + i3r * width + i3c] = (((float)in[i] / 255.0f) - 0.5f) * 2;
+		int channel = i % 3;
+		int input_pixel = (i - channel) / 3;
+		int input_col = input_pixel % width;
+		int input_row = (input_pixel - input_col) / width;
+		out[ (2 - channel) * width * height + input_row * width + input_col] = (((float)in[i] / 255.0f) - 0.5f) * 2;
 	}
 }
 

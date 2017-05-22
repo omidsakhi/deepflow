@@ -4,7 +4,7 @@
 #include <opencv2/opencv.hpp>
 
 __global__
-void PictureGeneratorKernel(const int num_images, const float *in, const int per_image_height, const int per_image_width, const int num_image_per_row_and_col, unsigned char *out)
+void GrayPictureGeneratorKernel(const int num_images, const float *in, const int per_image_height, const int per_image_width, const int num_image_per_row_and_col, unsigned char *out)
 {
 	int num_image = blockIdx.x*blockDim.x + threadIdx.x;
 	if (num_image < num_images) {
@@ -40,6 +40,54 @@ void PictureGeneratorKernel(const int num_images, const float *in, const int per
 	}
 }
 
+__global__
+void ColorPictureGeneratorKernel(const int num_images, const float *in, const int per_image_height, const int per_image_width, const int num_image_per_row_and_col, unsigned char *out)
+{
+	int num_image = blockIdx.x*blockDim.x + threadIdx.x;
+	if (num_image < num_images) {
+		int input_width = per_image_height * per_image_width;
+
+		float max[3];
+		float min[3];
+		for (int i = 0; i < 3; i++) {
+			max[i] = -FLT_MAX;
+			min[i] = FLT_MAX;
+		}
+
+		float tmp[3];
+		for (int i = 0; i < input_width; i++) {
+			for (int j = 0; j < 3; j++) {
+				tmp[j] = in[(3 * num_image + j)*input_width + i];
+				if (max[j] < tmp[j]) max[j] = tmp[j];
+				if (min[j] > tmp[j]) min[j] = tmp[j];
+			}
+		}
+
+		float denom[3];
+		for (int i = 0; i < 3; i++) {
+			denom[i] = (max[i] - min[i]);
+			if (denom[i] == 0)
+				denom[i] = 1;			
+		}			
+
+		int output_block_col = num_image % num_image_per_row_and_col;
+		int output_block_row = (num_image - output_block_col) / num_image_per_row_and_col;
+		int output_width = per_image_width * num_image_per_row_and_col * 3;
+
+		for (int i = 0; i < input_width; i++) {
+			int input_image_col = i % per_image_width;
+			for (int j = 0; j < 3; j++) {				
+				int output_image_row = (i - input_image_col) / per_image_width;
+				int input_image_row = output_image_row * 3 + j;
+				int output_col = 3 * (output_block_col*per_image_width + input_image_col) + j;
+				int output_row = output_block_row*per_image_height + output_image_row;
+				out[output_row*output_width + output_col] = (in[(3 * num_image + 2 - j)*input_width + i] - min[2 - j]) / denom[2 - j] * 255;
+			}
+		}
+
+	}
+}
+
 Display::Display(const deepflow::NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_display_param() == false) << "param.has_display_param() == false";
 }
@@ -50,21 +98,21 @@ void Display::initForward() {
 	auto dims = _inputs[0]->value()->dims();	
 	input_size = _inputs[0]->value()->size();
 	input_size_in_bytes = _inputs[0]->value()->sizeInBytes();
-	num_channels = dims[1];
-	num_samples = dims[0];
-	num_images = num_samples * num_channels;
+	num_channels = dims[1]; 
+	num_samples = dims[0];	
+	num_images = num_samples * (num_channels == 3? 1 : num_channels);
 	per_image_height = dims[2];
 	per_image_width = dims[3];
 	num_image_per_row_and_col = (int)floor(sqrt((float)num_images));
 	pic_width = per_image_width * num_image_per_row_and_col;
 	pic_height = per_image_height * ((int)ceil(((float)num_images / num_image_per_row_and_col)));
-	num_pic_pixels = pic_width * pic_height;	
+	num_pic_pixels = pic_width * pic_height * (num_channels == 3 ? 3 : 1);	
 
-	LOG_IF(FATAL, cudaMalloc(&d_pic, sizeof(unsigned char) * num_pic_pixels) != 0);
-	LOG_IF(FATAL, cudaMemset(d_pic, 0, sizeof(unsigned char) * num_pic_pixels) != 0);
+	LOG_IF(FATAL, cudaMalloc(&d_pic, num_pic_pixels) != 0);
+	LOG_IF(FATAL, cudaMemset(d_pic, 0, num_pic_pixels) != 0);
 			
 	LOG(INFO) << "Initializing Display " << _name << " - " << _inputs[0]->value()->shape() << " -> " << pic_height << "x" << pic_width;
-	disp = cv::Mat(pic_height, pic_width, CV_8U);	
+	disp = cv::Mat(pic_height, pic_width, (num_channels == 3 ? CV_8UC3 : CV_8U));	
 }
 
 void Display::initBackward() {
@@ -73,10 +121,14 @@ void Display::initBackward() {
 
 void Display::forward() {
 	if (_display_type == deepflow::DisplayParam_DisplayType_VALUES) {
-		PictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col, d_pic);
-		DF_KERNEL_CHECK();
-		cudaDeviceSynchronize();
-		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) * num_pic_pixels, cudaMemcpyDeviceToHost));
+		if (num_channels == 3) {
+			cudaMemset(d_pic, 0, num_pic_pixels);
+			ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, (float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col, d_pic);
+		}
+		else
+			GrayPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col, d_pic);
+		DF_KERNEL_CHECK();				
+		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, num_pic_pixels, cudaMemcpyDeviceToHost));
 		cv::imshow(name(), disp);		
 		int key = cv::waitKey(_delay_msec);
 		if (key == 27) {
@@ -84,9 +136,12 @@ void Display::forward() {
 		}
 	}
 	if (_display_type == deepflow::DisplayParam_DisplayType_DIFFS) {
-		PictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->diff()->data(), per_image_height, per_image_width, num_image_per_row_and_col, d_pic);
+		if (num_channels == 3)
+			ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, (float*)_inputs[0]->diff()->data(), per_image_height, per_image_width, num_image_per_row_and_col, d_pic);			
+		else
+			GrayPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->diff()->data(), per_image_height, per_image_width, num_image_per_row_and_col, d_pic);
 		DF_KERNEL_CHECK();
-		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, sizeof(unsigned char) * num_pic_pixels, cudaMemcpyDeviceToHost));
+		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), d_pic, num_pic_pixels, cudaMemcpyDeviceToHost));
 		cv::imshow(name(), disp);
 		int key = cv::waitKey(_delay_msec);
 		if (key == 27) {
