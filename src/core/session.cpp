@@ -138,6 +138,9 @@ std::shared_ptr<Node> Session::_create_node(const deepflow::NodeParam &node_para
 	else if (node_param.has_print_param()) {
 		return std::make_shared<Print>(node_param);
 	}
+	else if (node_param.has_logger_param()) {
+		return std::make_shared<Logger>(node_param);
+	}
 	else if (node_param.has_display_param()) {
 		return std::make_shared<Display>(node_param);
 	}

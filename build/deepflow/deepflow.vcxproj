@@ -54,6 +54,7 @@
     <ClInclude Include="..\..\include\nodes\equal.h" />
     <ClInclude Include="..\..\include\nodes\euclidean_loss.h" />
     <ClInclude Include="..\..\include\nodes\leaky_relu.h" />
+    <ClInclude Include="..\..\include\nodes\logger.h" />
     <ClInclude Include="..\..\include\nodes\matmul.h" />
     <ClInclude Include="..\..\include\nodes\phaseplexer.h" />
     <ClInclude Include="..\..\include\nodes\place_holder.h" />
@@ -123,6 +124,7 @@
     <ClCompile Include="..\..\src\nodes\block.cpp" />
     <ClCompile Include="..\..\src\nodes\convolution_2d.cpp" />
     <ClCompile Include="..\..\src\nodes\dropout.cpp" />
+    <ClCompile Include="..\..\src\nodes\logger.cpp" />
     <ClCompile Include="..\..\src\nodes\matmul.cpp" />
     <ClCompile Include="..\..\src\nodes\phaseplexer.cpp" />
     <ClCompile Include="..\..\src\nodes\place_holder.cpp" />

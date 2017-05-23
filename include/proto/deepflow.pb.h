@@ -106,6 +106,9 @@ extern InitStepParamDefaultTypeInternal _InitStepParam_default_instance_;
 class LeakyReluParam;
 class LeakyReluParamDefaultTypeInternal;
 extern LeakyReluParamDefaultTypeInternal _LeakyReluParam_default_instance_;
+class LoggerParam;
+class LoggerParamDefaultTypeInternal;
+extern LoggerParamDefaultTypeInternal _LoggerParam_default_instance_;
 class LossParam;
 class LossParamDefaultTypeInternal;
 extern LossParamDefaultTypeInternal _LossParam_default_instance_;
@@ -253,6 +256,48 @@ inline bool PsnrParam_PrintTime_Parse(
     const ::std::string& name, PsnrParam_PrintTime* value) {
   return ::google::protobuf::internal::ParseNamedEnum<PsnrParam_PrintTime>(
     PsnrParam_PrintTime_descriptor(), name, value);
+}
+enum LoggerParam_LoggingTime {
+  LoggerParam_LoggingTime_EVERY_PASS = 0,
+  LoggerParam_LoggingTime_END_OF_EPOCH = 1,
+  LoggerParam_LoggingTime_LoggerParam_LoggingTime_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  LoggerParam_LoggingTime_LoggerParam_LoggingTime_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool LoggerParam_LoggingTime_IsValid(int value);
+const LoggerParam_LoggingTime LoggerParam_LoggingTime_LoggingTime_MIN = LoggerParam_LoggingTime_EVERY_PASS;
+const LoggerParam_LoggingTime LoggerParam_LoggingTime_LoggingTime_MAX = LoggerParam_LoggingTime_END_OF_EPOCH;
+const int LoggerParam_LoggingTime_LoggingTime_ARRAYSIZE = LoggerParam_LoggingTime_LoggingTime_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* LoggerParam_LoggingTime_descriptor();
+inline const ::std::string& LoggerParam_LoggingTime_Name(LoggerParam_LoggingTime value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    LoggerParam_LoggingTime_descriptor(), value);
+}
+inline bool LoggerParam_LoggingTime_Parse(
+    const ::std::string& name, LoggerParam_LoggingTime* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<LoggerParam_LoggingTime>(
+    LoggerParam_LoggingTime_descriptor(), name, value);
+}
+enum LoggerParam_LoggingType {
+  LoggerParam_LoggingType_VALUES = 0,
+  LoggerParam_LoggingType_DIFFS = 1,
+  LoggerParam_LoggingType_LoggerParam_LoggingType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  LoggerParam_LoggingType_LoggerParam_LoggingType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool LoggerParam_LoggingType_IsValid(int value);
+const LoggerParam_LoggingType LoggerParam_LoggingType_LoggingType_MIN = LoggerParam_LoggingType_VALUES;
+const LoggerParam_LoggingType LoggerParam_LoggingType_LoggingType_MAX = LoggerParam_LoggingType_DIFFS;
+const int LoggerParam_LoggingType_LoggingType_ARRAYSIZE = LoggerParam_LoggingType_LoggingType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* LoggerParam_LoggingType_descriptor();
+inline const ::std::string& LoggerParam_LoggingType_Name(LoggerParam_LoggingType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    LoggerParam_LoggingType_descriptor(), value);
+}
+inline bool LoggerParam_LoggingType_Parse(
+    const ::std::string& name, LoggerParam_LoggingType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<LoggerParam_LoggingType>(
+    LoggerParam_LoggingType_descriptor(), name, value);
 }
 enum PrintParam_PrintTime {
   PrintParam_PrintTime_EVERY_PASS = 0,
@@ -1092,6 +1137,185 @@ class PsnrParam : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   int print_time_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class LoggerParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.LoggerParam) */ {
+ public:
+  LoggerParam();
+  virtual ~LoggerParam();
+
+  LoggerParam(const LoggerParam& from);
+
+  inline LoggerParam& operator=(const LoggerParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const LoggerParam& default_instance();
+
+  static inline const LoggerParam* internal_default_instance() {
+    return reinterpret_cast<const LoggerParam*>(
+               &_LoggerParam_default_instance_);
+  }
+
+  void Swap(LoggerParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline LoggerParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  LoggerParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const LoggerParam& from);
+  void MergeFrom(const LoggerParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(LoggerParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef LoggerParam_LoggingTime LoggingTime;
+  static const LoggingTime EVERY_PASS =
+    LoggerParam_LoggingTime_EVERY_PASS;
+  static const LoggingTime END_OF_EPOCH =
+    LoggerParam_LoggingTime_END_OF_EPOCH;
+  static inline bool LoggingTime_IsValid(int value) {
+    return LoggerParam_LoggingTime_IsValid(value);
+  }
+  static const LoggingTime LoggingTime_MIN =
+    LoggerParam_LoggingTime_LoggingTime_MIN;
+  static const LoggingTime LoggingTime_MAX =
+    LoggerParam_LoggingTime_LoggingTime_MAX;
+  static const int LoggingTime_ARRAYSIZE =
+    LoggerParam_LoggingTime_LoggingTime_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  LoggingTime_descriptor() {
+    return LoggerParam_LoggingTime_descriptor();
+  }
+  static inline const ::std::string& LoggingTime_Name(LoggingTime value) {
+    return LoggerParam_LoggingTime_Name(value);
+  }
+  static inline bool LoggingTime_Parse(const ::std::string& name,
+      LoggingTime* value) {
+    return LoggerParam_LoggingTime_Parse(name, value);
+  }
+
+  typedef LoggerParam_LoggingType LoggingType;
+  static const LoggingType VALUES =
+    LoggerParam_LoggingType_VALUES;
+  static const LoggingType DIFFS =
+    LoggerParam_LoggingType_DIFFS;
+  static inline bool LoggingType_IsValid(int value) {
+    return LoggerParam_LoggingType_IsValid(value);
+  }
+  static const LoggingType LoggingType_MIN =
+    LoggerParam_LoggingType_LoggingType_MIN;
+  static const LoggingType LoggingType_MAX =
+    LoggerParam_LoggingType_LoggingType_MAX;
+  static const int LoggingType_ARRAYSIZE =
+    LoggerParam_LoggingType_LoggingType_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  LoggingType_descriptor() {
+    return LoggerParam_LoggingType_descriptor();
+  }
+  static inline const ::std::string& LoggingType_Name(LoggingType value) {
+    return LoggerParam_LoggingType_Name(value);
+  }
+  static inline bool LoggingType_Parse(const ::std::string& name,
+      LoggingType* value) {
+    return LoggerParam_LoggingType_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // string file_path = 1;
+  void clear_file_path();
+  static const int kFilePathFieldNumber = 1;
+  const ::std::string& file_path() const;
+  void set_file_path(const ::std::string& value);
+  #if LANG_CXX11
+  void set_file_path(::std::string&& value);
+  #endif
+  void set_file_path(const char* value);
+  void set_file_path(const char* value, size_t size);
+  ::std::string* mutable_file_path();
+  ::std::string* release_file_path();
+  void set_allocated_file_path(::std::string* file_path);
+
+  // string message = 3;
+  void clear_message();
+  static const int kMessageFieldNumber = 3;
+  const ::std::string& message() const;
+  void set_message(const ::std::string& value);
+  #if LANG_CXX11
+  void set_message(::std::string&& value);
+  #endif
+  void set_message(const char* value);
+  void set_message(const char* value, size_t size);
+  ::std::string* mutable_message();
+  ::std::string* release_message();
+  void set_allocated_message(::std::string* message);
+
+  // int32 num_inputs = 2;
+  void clear_num_inputs();
+  static const int kNumInputsFieldNumber = 2;
+  ::google::protobuf::int32 num_inputs() const;
+  void set_num_inputs(::google::protobuf::int32 value);
+
+  // .deepflow.LoggerParam.LoggingTime logging_time = 4;
+  void clear_logging_time();
+  static const int kLoggingTimeFieldNumber = 4;
+  ::deepflow::LoggerParam_LoggingTime logging_time() const;
+  void set_logging_time(::deepflow::LoggerParam_LoggingTime value);
+
+  // .deepflow.LoggerParam.LoggingType logging_type = 5;
+  void clear_logging_type();
+  static const int kLoggingTypeFieldNumber = 5;
+  ::deepflow::LoggerParam_LoggingType logging_type() const;
+  void set_logging_type(::deepflow::LoggerParam_LoggingType value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.LoggerParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr file_path_;
+  ::google::protobuf::internal::ArenaStringPtr message_;
+  ::google::protobuf::int32 num_inputs_;
+  int logging_time_;
+  int logging_type_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3956,6 +4180,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::RandomSelectorParam* release_random_selector_param();
   void set_allocated_random_selector_param(::deepflow::RandomSelectorParam* random_selector_param);
 
+  // .deepflow.LoggerParam logger_param = 122;
+  bool has_logger_param() const;
+  void clear_logger_param();
+  static const int kLoggerParamFieldNumber = 122;
+  const ::deepflow::LoggerParam& logger_param() const;
+  ::deepflow::LoggerParam* mutable_logger_param();
+  ::deepflow::LoggerParam* release_logger_param();
+  void set_allocated_logger_param(::deepflow::LoggerParam* logger_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -3989,6 +4222,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::ActivationParam* activation_param_;
   ::deepflow::PsnrParam* psnr_param_;
   ::deepflow::RandomSelectorParam* random_selector_param_;
+  ::deepflow::LoggerParam* logger_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -5896,6 +6130,156 @@ inline void PsnrParam::set_print_time(::deepflow::PsnrParam_PrintTime value) {
   
   print_time_ = value;
   // @@protoc_insertion_point(field_set:deepflow.PsnrParam.print_time)
+}
+
+// -------------------------------------------------------------------
+
+// LoggerParam
+
+// string file_path = 1;
+inline void LoggerParam::clear_file_path() {
+  file_path_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& LoggerParam::file_path() const {
+  // @@protoc_insertion_point(field_get:deepflow.LoggerParam.file_path)
+  return file_path_.GetNoArena();
+}
+inline void LoggerParam::set_file_path(const ::std::string& value) {
+  
+  file_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:deepflow.LoggerParam.file_path)
+}
+#if LANG_CXX11
+inline void LoggerParam::set_file_path(::std::string&& value) {
+  
+  file_path_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:deepflow.LoggerParam.file_path)
+}
+#endif
+inline void LoggerParam::set_file_path(const char* value) {
+  
+  file_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:deepflow.LoggerParam.file_path)
+}
+inline void LoggerParam::set_file_path(const char* value, size_t size) {
+  
+  file_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:deepflow.LoggerParam.file_path)
+}
+inline ::std::string* LoggerParam::mutable_file_path() {
+  
+  // @@protoc_insertion_point(field_mutable:deepflow.LoggerParam.file_path)
+  return file_path_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* LoggerParam::release_file_path() {
+  // @@protoc_insertion_point(field_release:deepflow.LoggerParam.file_path)
+  
+  return file_path_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void LoggerParam::set_allocated_file_path(::std::string* file_path) {
+  if (file_path != NULL) {
+    
+  } else {
+    
+  }
+  file_path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), file_path);
+  // @@protoc_insertion_point(field_set_allocated:deepflow.LoggerParam.file_path)
+}
+
+// int32 num_inputs = 2;
+inline void LoggerParam::clear_num_inputs() {
+  num_inputs_ = 0;
+}
+inline ::google::protobuf::int32 LoggerParam::num_inputs() const {
+  // @@protoc_insertion_point(field_get:deepflow.LoggerParam.num_inputs)
+  return num_inputs_;
+}
+inline void LoggerParam::set_num_inputs(::google::protobuf::int32 value) {
+  
+  num_inputs_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.LoggerParam.num_inputs)
+}
+
+// string message = 3;
+inline void LoggerParam::clear_message() {
+  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& LoggerParam::message() const {
+  // @@protoc_insertion_point(field_get:deepflow.LoggerParam.message)
+  return message_.GetNoArena();
+}
+inline void LoggerParam::set_message(const ::std::string& value) {
+  
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:deepflow.LoggerParam.message)
+}
+#if LANG_CXX11
+inline void LoggerParam::set_message(::std::string&& value) {
+  
+  message_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:deepflow.LoggerParam.message)
+}
+#endif
+inline void LoggerParam::set_message(const char* value) {
+  
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:deepflow.LoggerParam.message)
+}
+inline void LoggerParam::set_message(const char* value, size_t size) {
+  
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:deepflow.LoggerParam.message)
+}
+inline ::std::string* LoggerParam::mutable_message() {
+  
+  // @@protoc_insertion_point(field_mutable:deepflow.LoggerParam.message)
+  return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* LoggerParam::release_message() {
+  // @@protoc_insertion_point(field_release:deepflow.LoggerParam.message)
+  
+  return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void LoggerParam::set_allocated_message(::std::string* message) {
+  if (message != NULL) {
+    
+  } else {
+    
+  }
+  message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
+  // @@protoc_insertion_point(field_set_allocated:deepflow.LoggerParam.message)
+}
+
+// .deepflow.LoggerParam.LoggingTime logging_time = 4;
+inline void LoggerParam::clear_logging_time() {
+  logging_time_ = 0;
+}
+inline ::deepflow::LoggerParam_LoggingTime LoggerParam::logging_time() const {
+  // @@protoc_insertion_point(field_get:deepflow.LoggerParam.logging_time)
+  return static_cast< ::deepflow::LoggerParam_LoggingTime >(logging_time_);
+}
+inline void LoggerParam::set_logging_time(::deepflow::LoggerParam_LoggingTime value) {
+  
+  logging_time_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.LoggerParam.logging_time)
+}
+
+// .deepflow.LoggerParam.LoggingType logging_type = 5;
+inline void LoggerParam::clear_logging_type() {
+  logging_type_ = 0;
+}
+inline ::deepflow::LoggerParam_LoggingType LoggerParam::logging_type() const {
+  // @@protoc_insertion_point(field_get:deepflow.LoggerParam.logging_type)
+  return static_cast< ::deepflow::LoggerParam_LoggingType >(logging_type_);
+}
+inline void LoggerParam::set_logging_type(::deepflow::LoggerParam_LoggingType value) {
+  
+  logging_type_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.LoggerParam.logging_type)
 }
 
 // -------------------------------------------------------------------
@@ -8537,6 +8921,45 @@ inline void NodeParam::set_allocated_random_selector_param(::deepflow::RandomSel
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.random_selector_param)
 }
 
+// .deepflow.LoggerParam logger_param = 122;
+inline bool NodeParam::has_logger_param() const {
+  return this != internal_default_instance() && logger_param_ != NULL;
+}
+inline void NodeParam::clear_logger_param() {
+  if (GetArenaNoVirtual() == NULL && logger_param_ != NULL) delete logger_param_;
+  logger_param_ = NULL;
+}
+inline const ::deepflow::LoggerParam& NodeParam::logger_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.logger_param)
+  return logger_param_ != NULL ? *logger_param_
+                         : *::deepflow::LoggerParam::internal_default_instance();
+}
+inline ::deepflow::LoggerParam* NodeParam::mutable_logger_param() {
+  
+  if (logger_param_ == NULL) {
+    logger_param_ = new ::deepflow::LoggerParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.logger_param)
+  return logger_param_;
+}
+inline ::deepflow::LoggerParam* NodeParam::release_logger_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.logger_param)
+  
+  ::deepflow::LoggerParam* temp = logger_param_;
+  logger_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_logger_param(::deepflow::LoggerParam* logger_param) {
+  delete logger_param_;
+  logger_param_ = logger_param;
+  if (logger_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.logger_param)
+}
+
 // -------------------------------------------------------------------
 
 // SquareParam
@@ -9739,6 +10162,8 @@ BlockParam::initializer() const {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -9763,6 +10188,16 @@ template <> struct is_proto_enum< ::deepflow::PsnrParam_PrintTime> : ::google::p
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::PsnrParam_PrintTime>() {
   return ::deepflow::PsnrParam_PrintTime_descriptor();
+}
+template <> struct is_proto_enum< ::deepflow::LoggerParam_LoggingTime> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::LoggerParam_LoggingTime>() {
+  return ::deepflow::LoggerParam_LoggingTime_descriptor();
+}
+template <> struct is_proto_enum< ::deepflow::LoggerParam_LoggingType> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::LoggerParam_LoggingType>() {
+  return ::deepflow::LoggerParam_LoggingType_descriptor();
 }
 template <> struct is_proto_enum< ::deepflow::PrintParam_PrintTime> : ::google::protobuf::internal::true_type {};
 template <>

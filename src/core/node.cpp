@@ -65,7 +65,7 @@ void Node::_propagateBack() {
 		setShouldBackward(false);
 	}
 	else {
-		bool _should_backward = false;		
+		bool _should_backward = false;
 		auto list = inputNodes();
 		for (auto node : list) {
 			//LOG(INFO) << "INSPECTING INPUT " << node->name();
@@ -140,11 +140,14 @@ void Node::_backward() {
 		return;	
 	if (_context && includePhase(_context->phase) == false)
 		return;
-	_visited = true;
+	_visited = true;	
 	if (_propagate_back) {
 		//LOG(INFO) << "BACKWARD " << _name;
 		backward();
-	}		
+	}
+	else {
+		return;
+	}
 	for (auto node : inputNodes())
 		node->_backward();
 }
@@ -177,6 +180,15 @@ std::string Node::_input_name_for_cpp(int i) const
 		name += "[" + std::to_string(index) + "]";
 	}
 	return name;
+}
+
+int Node::numConnectedOutputs()
+{
+	int sum = 0;
+	for (auto terminal: _outputs) {
+		sum += terminal->connectedNodes().size();
+	}
+	return sum;
 }
 
 std::vector<NodeInputPtr> & Node::inputs() {

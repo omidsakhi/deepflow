@@ -145,6 +145,13 @@ float Tensor::toFloat() const {
 std::string Tensor::toString() const {
 	std::string output;
 	switch (_reader_type) {
+		case TensorType::Int8:
+		{
+			auto h_data = cpyToHost<unsigned char>();						
+			for (int i = 0; i < h_data->size(); ++i)
+				output += std::to_string(h_data->at(i)) + " ";
+		}
+		break;
 		case TensorType::Int32:
 		{
 			auto h_data = cpyToHost<int>();

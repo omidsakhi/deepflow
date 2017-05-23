@@ -57,6 +57,7 @@ public:
 	std::string name() const;	
 	std::string _to_cpp_phases() const;
 	std::string _input_name_for_cpp(int i) const;
+	int numConnectedOutputs();
 	void _unvisit();
 	void _forward();
 	void _backward();	

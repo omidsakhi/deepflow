@@ -382,6 +382,24 @@ void DeepFlow::print(std::initializer_list<std::string> inputs, std::string mess
 	print_param->set_print_type((deepflow::PrintParam_PrintType)printType);	
 }
 
+void DeepFlow::logger(std::initializer_list<std::string> inputs, std::string file_path, std::string message, Logger::LoggingTime loggingTime, Logger::LoggingType loggingType, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	std::vector<std::string> inputsVec(inputs.size());
+	std::copy(inputs.begin(), inputs.end(), inputsVec.begin());
+	for (int i = 0; i < inputsVec.size(); ++i)
+		node_param->add_input(inputsVec[i]);
+	auto logger_param = node_param->mutable_logger_param();
+	logger_param->set_message(message);
+	logger_param->set_num_inputs(inputs.size());
+	logger_param->set_file_path(file_path);
+	logger_param->set_logging_time((deepflow::LoggerParam_LoggingTime)loggingTime);
+	logger_param->set_logging_type((deepflow::LoggerParam_LoggingType)loggingType);
+}
+
 std::string DeepFlow::softmax_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -508,15 +526,17 @@ std::string DeepFlow::conv2d(std::string input, std::string filter, std::string 
 	return conv2d(input, filter, bias, 0, 0, 1, 1, 1, 1, name, phases);
 }
 
-void DeepFlow::display(std::string input,int delay_msec, deepflow::DisplayParam_DisplayType type, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node_param();
+std::string DeepFlow::display(std::string input,int delay_msec, deepflow::DisplayParam_DisplayType type, std::string name, std::initializer_list<std::string> phases) {
+	auto node_param = _block->add_node_param();	
 	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(input);
 	auto display_param = node_param->mutable_display_param();
 	display_param->set_delay_msec(delay_msec);
 	display_param->set_display_type(type);	
+	return node_param->output(0);
 }
 
 void DeepFlow::psnr(std::string a, std::string b, Psnr::PrintTime printTime, std::string name, std::initializer_list<std::string> phases)

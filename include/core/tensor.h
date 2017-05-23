@@ -78,7 +78,7 @@ void Tensor::print() const {
 
 template <typename T>
 std::shared_ptr<std::vector<T>> Tensor::cpyToHost() const {
-	auto h_data = std::make_shared<std::vector<T>>(_size);	
+	auto h_data = std::make_shared<std::vector<T>>(_size);		
 	cudaMemcpy(h_data->data(), d_data, _sizeInBytes, cudaMemcpyDeviceToHost);
 	return h_data;
 }

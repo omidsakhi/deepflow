@@ -8,7 +8,7 @@ class DeepFlowDllExport Display : public Node {
 public:
 	Display(const deepflow::NodeParam &param);
 	int minNumInputs() { return 1; }
-	int minNumOutputs() { return 0; }
+	int minNumOutputs() { return 1; }
 	void initForward();
 	void initBackward();
 	void forward();
@@ -27,8 +27,7 @@ private:
 	int num_image_per_row_and_col;
 	int pic_width;
 	int pic_height;
-	int num_pic_pixels;
-	unsigned char *d_pic;	
+	int num_pic_pixels;	
 	cv::Mat disp;
 	int _delay_msec = 100;
 	deepflow::DisplayParam_DisplayType _display_type;

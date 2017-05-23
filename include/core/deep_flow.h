@@ -6,6 +6,7 @@
 #include "generators/mnist_reader.h"
 
 #include "nodes/print.h"
+#include "nodes/logger.h"
 #include "nodes/psnr.h"
 #include "nodes/accumulator.h"
 
@@ -96,7 +97,8 @@ public:
 	
 	// PRINTERS & DISPLAYS
 	void print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime printTime = Print::END_OF_EPOCH, Print::PrintType = Print::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
-	void display(std::string input, int delay_msec = 100, deepflow::DisplayParam_DisplayType type = deepflow::DisplayParam_DisplayType_VALUES , std::string name = "disp", std::initializer_list<std::string> phases = {});
+	void logger(std::initializer_list<std::string> inputs, std::string file_path, std::string message, Logger::LoggingTime loggingTime = Logger::END_OF_EPOCH, Logger::LoggingType loggingType = Logger::VALUES, std::string name = "logger", std::initializer_list<std::string> phases = {});
+	std::string display(std::string input, int delay_msec = 100, deepflow::DisplayParam_DisplayType type = deepflow::DisplayParam_DisplayType_VALUES , std::string name = "disp", std::initializer_list<std::string> phases = {});
 	void psnr(std::string a, std::string b,  Psnr::PrintTime printTime = Psnr::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
 
 	// OTHER

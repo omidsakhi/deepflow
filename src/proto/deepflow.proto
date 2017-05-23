@@ -44,6 +44,22 @@ message PsnrParam {
 	PrintTime print_time = 1;
 }
 
+message LoggerParam {
+	enum LoggingTime {
+		EVERY_PASS = 0;
+		END_OF_EPOCH = 1;
+	}
+	enum LoggingType {
+		VALUES = 0;
+		DIFFS = 1;
+	}
+	string file_path = 1;
+	int32 num_inputs = 2;
+	string message = 3;
+	LoggingTime logging_time = 4;
+	LoggingType logging_type = 5;
+}
+
 message PrintParam {
 	enum PrintTime {
 		EVERY_PASS = 0;
@@ -251,7 +267,7 @@ message NodeParam {
   ActivationParam activation_param = 119;
   PsnrParam psnr_param = 120;
   RandomSelectorParam random_selector_param = 121; 
-  
+  LoggerParam logger_param = 122;
 }
 
 message SquareParam {

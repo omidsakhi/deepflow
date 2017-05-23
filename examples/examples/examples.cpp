@@ -29,6 +29,7 @@ DEFINE_bool(x4, false, "Test of image_batch_reader");
 DEFINE_bool(x5, false, "Test reading caffe model");
 DEFINE_bool(x6, false, "Test convolution forward with bias");
 DEFINE_bool(x7, false, "Test color image display");
+DEFINE_bool(x8, false, "Test color image convolutional display");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -59,10 +60,10 @@ void main(int argc, char** argv) {
 			auto solver2 = df.sgd_solver(1.0f, 0.0000000001f);
 			//auto solver = df.adam_solver();
 			//auto solver = df.adadelta_solver();		
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY);
-			auto stat = df.variable(df.random_uniform({ 1,1,252,252 }, 0.8, 1), solver1);
-			auto f = df.variable(df.random_uniform({ 1,1,5,5 }, 0.9, 1.1), solver2);
-			auto tconv = df.transposed_conv2d(stat, f, { 1,1,256,256 }, 0, 0, 1, 1, 1, 1);
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE, "image");
+			auto recon = df.variable(df.random_uniform({ 1,3,252,252 }, 0.8, 1), solver1, "recon");
+			auto f = df.variable(df.random_uniform({ 3,3,5,5 }, 0.9, 1.1), solver2, "w");
+			auto tconv = df.transposed_conv2d(recon, f, { 1,3,256,256 }, 0, 0, 1, 1, 1, 1);
 			df.euclidean_loss(tconv, image);
 			df.display(tconv, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { train });
 			df.psnr(tconv, image, Psnr::EVERY_PASS, "psnr", { train });
@@ -73,9 +74,9 @@ void main(int argc, char** argv) {
 			//auto solver = df.sgd_solver(1.0f, 0.01f);
 			//auto solver = df.adam_solver();
 			//auto solver = df.adadelta_solver();
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY);
-			auto generator1 = df.data_generator(df.random_uniform({ 1, 1, 256, 256 }, -0.1, 0.1), 1, solver, "gen1");
-			auto generator2 = df.data_generator(df.random_normal({ 1, 1, 256, 256 }, 0, 0.1), 1, solver, "gen2");
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto generator1 = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -0.1, 0.1), 1, solver, "gen1");
+			auto generator2 = df.data_generator(df.random_normal({ 1, 3, 256, 256 }, 0, 0.1), 1, solver, "gen2");
 			auto selector = df.random_selector(generator1, generator2, 0.5);
 			df.euclidean_loss(selector, image);
 			df.display(generator1, 2, deepflow::DisplayParam_DisplayType_VALUES, "approx1", { train });
@@ -96,16 +97,24 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x6) {
 			auto train = df.define_train_phase("Train");
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY);
-			auto b = df.variable(df.zeros({ 1,1,1,1 }), "", "b", {});
-			auto f = df.variable(df.ones({ 1,1,5,5 }), "", "f", {});
-			auto conv = df.conv2d(image, f, b, "conv");			
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto b = df.variable(df.zeros({ 1,3,1,1 }), "", "b", {});
+			auto f = df.variable(df.ones({ 3,3,5,5 }), "", "f", {});
+			auto conv = df.conv2d(image, f, b, "conv");			 
 			df.display(conv, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { train });
 		}
 		else if (FLAGS_x7) {
 			auto train = df.define_train_phase("Train");
-			auto image = df.image_reader(FLAGS_image2, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			df.display(image, 10000, deepflow::DisplayParam_DisplayType_VALUES, "input", { train });
+		}
+		else if (FLAGS_x8) {
+			auto train = df.define_train_phase("Train");
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto f = df.variable(df.ones({3,3,5,5}), "", "f", {});
+			auto conv = df.conv2d(image, f, "", "conv");
+			auto disp = df.display(conv, 10000, deepflow::DisplayParam_DisplayType_VALUES, "input", { train });
+			df.logger({ conv }, "log.txt", "{0}\n", Logger::EVERY_PASS, Logger::VALUES, { train });
 		}
 	}
 	else {

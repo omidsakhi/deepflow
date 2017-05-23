@@ -20,7 +20,7 @@ void Convolution2D::initForward() {
 	DF_CUDNN_CHECK(cudnnCreateFilterDescriptor(&_wDesc));
 	_w = _inputs[1]->value()->mutableData();
 	auto filterDims = _inputs[1]->dims();	
-	LOG_IF(FATAL, filterDims[1] != inputDims[1]) << "Input channels " << inputDims[1] << " != Filter channels " << filterDims[1];
+	LOG_IF(FATAL, filterDims[1] != inputDims[1]) << "Input channels " << inputDims[1] << " != Filter channels " << filterDims[1];	
 	DF_CUDNN_CHECK(cudnnSetFilter4dDescriptor(_wDesc, CUDNN_DATA_FLOAT, CUDNN_TENSOR_NCHW, filterDims[0], filterDims[1], filterDims[2], filterDims[3]));	
 	deepflow::Conv2dParam *param = _param.mutable_conv_2d_param();
 	DF_CUDNN_CHECK(cudnnCreateConvolutionDescriptor(&_convDesc));	
