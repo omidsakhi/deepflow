@@ -5,11 +5,6 @@
 #include "core/tensor.h"
 #include "generators/mnist_reader.h"
 
-#include "nodes/print.h"
-#include "nodes/logger.h"
-#include "nodes/psnr.h"
-#include "nodes/accumulator.h"
-
 #include "core/caffe.h"
 #include "nodes/block.h"
 
@@ -23,6 +18,17 @@ class DeepFlowDllExport DeepFlow : public std::enable_shared_from_this<DeepFlow>
 	friend class Session;
 	friend class Caffe;
 public:
+
+	enum ActionTime {
+		EVERY_PASS = 0,
+		END_OF_EPOCH = 1,
+		NEVER = 2
+	};
+	enum ActionType {
+		VALUES = 0,
+		DIFFS = 1
+	};
+
 	DeepFlow();
 	DeepFlow(std::shared_ptr<Block> block);
 
@@ -97,16 +103,16 @@ public:
 	std::string adadelta_solver(float learning_rate = 10e-1f, float momentum = 0.9f, float delta = 1e-6f, std::string name = "adadelta");	
 	
 	// PRINTERS & DISPLAYS
-	void print(std::initializer_list<std::string> inputs, std::string message, Print::PrintTime printTime = Print::END_OF_EPOCH, Print::PrintType = Print::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
-	void logger(std::initializer_list<std::string> inputs, std::string file_path, std::string message, Logger::LoggingTime loggingTime = Logger::END_OF_EPOCH, Logger::LoggingType loggingType = Logger::VALUES, std::string name = "logger", std::initializer_list<std::string> phases = {});
-	std::string display(std::string input, int delay_msec = 100, deepflow::DisplayParam_DisplayType type = deepflow::DisplayParam_DisplayType_VALUES , std::string name = "disp", std::initializer_list<std::string> phases = {});
-	void psnr(std::string a, std::string b,  Psnr::PrintTime printTime = Psnr::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
+	void print(std::initializer_list<std::string> inputs, std::string message, ActionTime printTime = ActionTime::END_OF_EPOCH, ActionType = ActionType::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
+	void logger(std::initializer_list<std::string> inputs, std::string file_path, std::string message, ActionTime loggingTime = ActionTime::END_OF_EPOCH, ActionType loggingType = ActionType::VALUES, std::string name = "logger", std::initializer_list<std::string> phases = {});
+	std::string display(std::string input, int delay_msec = 100, ActionTime displayTime = ActionTime::EVERY_PASS, ActionType dislayType = ActionType::VALUES  , std::string name = "disp", std::initializer_list<std::string> phases = {});
+	void psnr(std::string a, std::string b, ActionTime printTime = ActionTime::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
 
 	// OTHER
 	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});
 	std::string equal(std::string a, std::string b, std::string name = "Equal", std::initializer_list<std::string> phases = {});
 	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});
-	std::array<std::string,2> accumulator(std::string input, Accumulator::ResetTime resetTime = Accumulator::ResetTime::EndOfEpoch, std::string name = "acc", std::initializer_list<std::string> phases = {});
+	std::array<std::string,2> accumulator(std::string input, ActionTime resetTime = ActionTime::END_OF_EPOCH, std::string name = "acc", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
 	std::string define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour);

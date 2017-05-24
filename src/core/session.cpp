@@ -38,6 +38,10 @@
 #include "nodes/random_selector.h"
 #include "nodes/block.h"
 #include "nodes/reshape.h"
+#include "nodes/accumulator.h"
+#include "nodes/print.h"
+#include "nodes/psnr.h"
+#include "nodes/logger.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_reader.h"

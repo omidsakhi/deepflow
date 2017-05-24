@@ -5,14 +5,6 @@
 
 class DeepFlowDllExport Logger : public Node {
 public:
-	enum LoggingTime {
-		EVERY_PASS = 0,
-		END_OF_EPOCH = 1
-	};
-	enum LoggingType {
-		VALUES = 0,
-		DIFFS = 1
-	};
 	Logger(const deepflow::NodeParam &param);
 	int minNumInputs();
 	int minNumOutputs() { return 0; }
@@ -27,6 +19,6 @@ private:
 	std::string _filePath;
 	int _num_inputs = 0;
 	std::string _raw_message;
-	LoggingTime _logging_time;
-	LoggingType _logging_type;
+	deepflow::ActionTime _logging_time;
+	deepflow::ActionType _logging_type;
 };

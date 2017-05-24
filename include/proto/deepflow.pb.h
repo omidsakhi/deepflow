@@ -218,153 +218,6 @@ inline bool TensorParam_TensorType_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<TensorParam_TensorType>(
     TensorParam_TensorType_descriptor(), name, value);
 }
-enum AccumulatorParam_ResetTime {
-  AccumulatorParam_ResetTime_END_OF_EPOCH = 0,
-  AccumulatorParam_ResetTime_NEVER = 1,
-  AccumulatorParam_ResetTime_AccumulatorParam_ResetTime_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  AccumulatorParam_ResetTime_AccumulatorParam_ResetTime_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
-};
-bool AccumulatorParam_ResetTime_IsValid(int value);
-const AccumulatorParam_ResetTime AccumulatorParam_ResetTime_ResetTime_MIN = AccumulatorParam_ResetTime_END_OF_EPOCH;
-const AccumulatorParam_ResetTime AccumulatorParam_ResetTime_ResetTime_MAX = AccumulatorParam_ResetTime_NEVER;
-const int AccumulatorParam_ResetTime_ResetTime_ARRAYSIZE = AccumulatorParam_ResetTime_ResetTime_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* AccumulatorParam_ResetTime_descriptor();
-inline const ::std::string& AccumulatorParam_ResetTime_Name(AccumulatorParam_ResetTime value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    AccumulatorParam_ResetTime_descriptor(), value);
-}
-inline bool AccumulatorParam_ResetTime_Parse(
-    const ::std::string& name, AccumulatorParam_ResetTime* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<AccumulatorParam_ResetTime>(
-    AccumulatorParam_ResetTime_descriptor(), name, value);
-}
-enum PsnrParam_PrintTime {
-  PsnrParam_PrintTime_EVERY_PASS = 0,
-  PsnrParam_PrintTime_END_OF_EPOCH = 1,
-  PsnrParam_PrintTime_PsnrParam_PrintTime_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  PsnrParam_PrintTime_PsnrParam_PrintTime_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
-};
-bool PsnrParam_PrintTime_IsValid(int value);
-const PsnrParam_PrintTime PsnrParam_PrintTime_PrintTime_MIN = PsnrParam_PrintTime_EVERY_PASS;
-const PsnrParam_PrintTime PsnrParam_PrintTime_PrintTime_MAX = PsnrParam_PrintTime_END_OF_EPOCH;
-const int PsnrParam_PrintTime_PrintTime_ARRAYSIZE = PsnrParam_PrintTime_PrintTime_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* PsnrParam_PrintTime_descriptor();
-inline const ::std::string& PsnrParam_PrintTime_Name(PsnrParam_PrintTime value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    PsnrParam_PrintTime_descriptor(), value);
-}
-inline bool PsnrParam_PrintTime_Parse(
-    const ::std::string& name, PsnrParam_PrintTime* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<PsnrParam_PrintTime>(
-    PsnrParam_PrintTime_descriptor(), name, value);
-}
-enum LoggerParam_LoggingTime {
-  LoggerParam_LoggingTime_EVERY_PASS = 0,
-  LoggerParam_LoggingTime_END_OF_EPOCH = 1,
-  LoggerParam_LoggingTime_LoggerParam_LoggingTime_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  LoggerParam_LoggingTime_LoggerParam_LoggingTime_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
-};
-bool LoggerParam_LoggingTime_IsValid(int value);
-const LoggerParam_LoggingTime LoggerParam_LoggingTime_LoggingTime_MIN = LoggerParam_LoggingTime_EVERY_PASS;
-const LoggerParam_LoggingTime LoggerParam_LoggingTime_LoggingTime_MAX = LoggerParam_LoggingTime_END_OF_EPOCH;
-const int LoggerParam_LoggingTime_LoggingTime_ARRAYSIZE = LoggerParam_LoggingTime_LoggingTime_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* LoggerParam_LoggingTime_descriptor();
-inline const ::std::string& LoggerParam_LoggingTime_Name(LoggerParam_LoggingTime value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    LoggerParam_LoggingTime_descriptor(), value);
-}
-inline bool LoggerParam_LoggingTime_Parse(
-    const ::std::string& name, LoggerParam_LoggingTime* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<LoggerParam_LoggingTime>(
-    LoggerParam_LoggingTime_descriptor(), name, value);
-}
-enum LoggerParam_LoggingType {
-  LoggerParam_LoggingType_VALUES = 0,
-  LoggerParam_LoggingType_DIFFS = 1,
-  LoggerParam_LoggingType_LoggerParam_LoggingType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  LoggerParam_LoggingType_LoggerParam_LoggingType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
-};
-bool LoggerParam_LoggingType_IsValid(int value);
-const LoggerParam_LoggingType LoggerParam_LoggingType_LoggingType_MIN = LoggerParam_LoggingType_VALUES;
-const LoggerParam_LoggingType LoggerParam_LoggingType_LoggingType_MAX = LoggerParam_LoggingType_DIFFS;
-const int LoggerParam_LoggingType_LoggingType_ARRAYSIZE = LoggerParam_LoggingType_LoggingType_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* LoggerParam_LoggingType_descriptor();
-inline const ::std::string& LoggerParam_LoggingType_Name(LoggerParam_LoggingType value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    LoggerParam_LoggingType_descriptor(), value);
-}
-inline bool LoggerParam_LoggingType_Parse(
-    const ::std::string& name, LoggerParam_LoggingType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<LoggerParam_LoggingType>(
-    LoggerParam_LoggingType_descriptor(), name, value);
-}
-enum PrintParam_PrintTime {
-  PrintParam_PrintTime_EVERY_PASS = 0,
-  PrintParam_PrintTime_END_OF_EPOCH = 1,
-  PrintParam_PrintTime_PrintParam_PrintTime_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  PrintParam_PrintTime_PrintParam_PrintTime_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
-};
-bool PrintParam_PrintTime_IsValid(int value);
-const PrintParam_PrintTime PrintParam_PrintTime_PrintTime_MIN = PrintParam_PrintTime_EVERY_PASS;
-const PrintParam_PrintTime PrintParam_PrintTime_PrintTime_MAX = PrintParam_PrintTime_END_OF_EPOCH;
-const int PrintParam_PrintTime_PrintTime_ARRAYSIZE = PrintParam_PrintTime_PrintTime_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* PrintParam_PrintTime_descriptor();
-inline const ::std::string& PrintParam_PrintTime_Name(PrintParam_PrintTime value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    PrintParam_PrintTime_descriptor(), value);
-}
-inline bool PrintParam_PrintTime_Parse(
-    const ::std::string& name, PrintParam_PrintTime* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<PrintParam_PrintTime>(
-    PrintParam_PrintTime_descriptor(), name, value);
-}
-enum PrintParam_PrintType {
-  PrintParam_PrintType_VALUES = 0,
-  PrintParam_PrintType_DIFFS = 1,
-  PrintParam_PrintType_PrintParam_PrintType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  PrintParam_PrintType_PrintParam_PrintType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
-};
-bool PrintParam_PrintType_IsValid(int value);
-const PrintParam_PrintType PrintParam_PrintType_PrintType_MIN = PrintParam_PrintType_VALUES;
-const PrintParam_PrintType PrintParam_PrintType_PrintType_MAX = PrintParam_PrintType_DIFFS;
-const int PrintParam_PrintType_PrintType_ARRAYSIZE = PrintParam_PrintType_PrintType_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* PrintParam_PrintType_descriptor();
-inline const ::std::string& PrintParam_PrintType_Name(PrintParam_PrintType value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    PrintParam_PrintType_descriptor(), value);
-}
-inline bool PrintParam_PrintType_Parse(
-    const ::std::string& name, PrintParam_PrintType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<PrintParam_PrintType>(
-    PrintParam_PrintType_descriptor(), name, value);
-}
-enum DisplayParam_DisplayType {
-  DisplayParam_DisplayType_VALUES = 0,
-  DisplayParam_DisplayType_DIFFS = 1,
-  DisplayParam_DisplayType_DisplayParam_DisplayType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  DisplayParam_DisplayType_DisplayParam_DisplayType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
-};
-bool DisplayParam_DisplayType_IsValid(int value);
-const DisplayParam_DisplayType DisplayParam_DisplayType_DisplayType_MIN = DisplayParam_DisplayType_VALUES;
-const DisplayParam_DisplayType DisplayParam_DisplayType_DisplayType_MAX = DisplayParam_DisplayType_DIFFS;
-const int DisplayParam_DisplayType_DisplayType_ARRAYSIZE = DisplayParam_DisplayType_DisplayType_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* DisplayParam_DisplayType_descriptor();
-inline const ::std::string& DisplayParam_DisplayType_Name(DisplayParam_DisplayType value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    DisplayParam_DisplayType_descriptor(), value);
-}
-inline bool DisplayParam_DisplayType_Parse(
-    const ::std::string& name, DisplayParam_DisplayType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<DisplayParam_DisplayType>(
-    DisplayParam_DisplayType_descriptor(), name, value);
-}
 enum ReduceParam_ReduceOp {
   ReduceParam_ReduceOp_ADD = 0,
   ReduceParam_ReduceOp_MUL = 1,
@@ -521,6 +374,49 @@ inline bool PhaseParam_PhaseBehaviour_Parse(
     const ::std::string& name, PhaseParam_PhaseBehaviour* value) {
   return ::google::protobuf::internal::ParseNamedEnum<PhaseParam_PhaseBehaviour>(
     PhaseParam_PhaseBehaviour_descriptor(), name, value);
+}
+enum ActionTime {
+  EVERY_PASS = 0,
+  END_OF_EPOCH = 1,
+  NEVER = 2,
+  ActionTime_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  ActionTime_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool ActionTime_IsValid(int value);
+const ActionTime ActionTime_MIN = EVERY_PASS;
+const ActionTime ActionTime_MAX = NEVER;
+const int ActionTime_ARRAYSIZE = ActionTime_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ActionTime_descriptor();
+inline const ::std::string& ActionTime_Name(ActionTime value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ActionTime_descriptor(), value);
+}
+inline bool ActionTime_Parse(
+    const ::std::string& name, ActionTime* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ActionTime>(
+    ActionTime_descriptor(), name, value);
+}
+enum ActionType {
+  VALUES = 0,
+  DIFFS = 1,
+  ActionType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  ActionType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool ActionType_IsValid(int value);
+const ActionType ActionType_MIN = VALUES;
+const ActionType ActionType_MAX = DIFFS;
+const int ActionType_ARRAYSIZE = ActionType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ActionType_descriptor();
+inline const ::std::string& ActionType_Name(ActionType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ActionType_descriptor(), value);
+}
+inline bool ActionType_Parse(
+    const ::std::string& name, ActionType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ActionType>(
+    ActionType_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -992,39 +888,13 @@ class AccumulatorParam : public ::google::protobuf::Message /* @@protoc_insertio
 
   // nested types ----------------------------------------------------
 
-  typedef AccumulatorParam_ResetTime ResetTime;
-  static const ResetTime END_OF_EPOCH =
-    AccumulatorParam_ResetTime_END_OF_EPOCH;
-  static const ResetTime NEVER =
-    AccumulatorParam_ResetTime_NEVER;
-  static inline bool ResetTime_IsValid(int value) {
-    return AccumulatorParam_ResetTime_IsValid(value);
-  }
-  static const ResetTime ResetTime_MIN =
-    AccumulatorParam_ResetTime_ResetTime_MIN;
-  static const ResetTime ResetTime_MAX =
-    AccumulatorParam_ResetTime_ResetTime_MAX;
-  static const int ResetTime_ARRAYSIZE =
-    AccumulatorParam_ResetTime_ResetTime_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  ResetTime_descriptor() {
-    return AccumulatorParam_ResetTime_descriptor();
-  }
-  static inline const ::std::string& ResetTime_Name(ResetTime value) {
-    return AccumulatorParam_ResetTime_Name(value);
-  }
-  static inline bool ResetTime_Parse(const ::std::string& name,
-      ResetTime* value) {
-    return AccumulatorParam_ResetTime_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
 
-  // .deepflow.AccumulatorParam.ResetTime reset_time = 1;
+  // .deepflow.ActionTime reset_time = 1;
   void clear_reset_time();
   static const int kResetTimeFieldNumber = 1;
-  ::deepflow::AccumulatorParam_ResetTime reset_time() const;
-  void set_reset_time(::deepflow::AccumulatorParam_ResetTime value);
+  ::deepflow::ActionTime reset_time() const;
+  void set_reset_time(::deepflow::ActionTime value);
 
   // @@protoc_insertion_point(class_scope:deepflow.AccumulatorParam)
  private:
@@ -1101,39 +971,13 @@ class PsnrParam : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // nested types ----------------------------------------------------
 
-  typedef PsnrParam_PrintTime PrintTime;
-  static const PrintTime EVERY_PASS =
-    PsnrParam_PrintTime_EVERY_PASS;
-  static const PrintTime END_OF_EPOCH =
-    PsnrParam_PrintTime_END_OF_EPOCH;
-  static inline bool PrintTime_IsValid(int value) {
-    return PsnrParam_PrintTime_IsValid(value);
-  }
-  static const PrintTime PrintTime_MIN =
-    PsnrParam_PrintTime_PrintTime_MIN;
-  static const PrintTime PrintTime_MAX =
-    PsnrParam_PrintTime_PrintTime_MAX;
-  static const int PrintTime_ARRAYSIZE =
-    PsnrParam_PrintTime_PrintTime_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  PrintTime_descriptor() {
-    return PsnrParam_PrintTime_descriptor();
-  }
-  static inline const ::std::string& PrintTime_Name(PrintTime value) {
-    return PsnrParam_PrintTime_Name(value);
-  }
-  static inline bool PrintTime_Parse(const ::std::string& name,
-      PrintTime* value) {
-    return PsnrParam_PrintTime_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
 
-  // .deepflow.PsnrParam.PrintTime print_time = 1;
+  // .deepflow.ActionTime print_time = 1;
   void clear_print_time();
   static const int kPrintTimeFieldNumber = 1;
-  ::deepflow::PsnrParam_PrintTime print_time() const;
-  void set_print_time(::deepflow::PsnrParam_PrintTime value);
+  ::deepflow::ActionTime print_time() const;
+  void set_print_time(::deepflow::ActionTime value);
 
   // @@protoc_insertion_point(class_scope:deepflow.PsnrParam)
  private:
@@ -1210,58 +1054,6 @@ class LoggerParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 
   // nested types ----------------------------------------------------
 
-  typedef LoggerParam_LoggingTime LoggingTime;
-  static const LoggingTime EVERY_PASS =
-    LoggerParam_LoggingTime_EVERY_PASS;
-  static const LoggingTime END_OF_EPOCH =
-    LoggerParam_LoggingTime_END_OF_EPOCH;
-  static inline bool LoggingTime_IsValid(int value) {
-    return LoggerParam_LoggingTime_IsValid(value);
-  }
-  static const LoggingTime LoggingTime_MIN =
-    LoggerParam_LoggingTime_LoggingTime_MIN;
-  static const LoggingTime LoggingTime_MAX =
-    LoggerParam_LoggingTime_LoggingTime_MAX;
-  static const int LoggingTime_ARRAYSIZE =
-    LoggerParam_LoggingTime_LoggingTime_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  LoggingTime_descriptor() {
-    return LoggerParam_LoggingTime_descriptor();
-  }
-  static inline const ::std::string& LoggingTime_Name(LoggingTime value) {
-    return LoggerParam_LoggingTime_Name(value);
-  }
-  static inline bool LoggingTime_Parse(const ::std::string& name,
-      LoggingTime* value) {
-    return LoggerParam_LoggingTime_Parse(name, value);
-  }
-
-  typedef LoggerParam_LoggingType LoggingType;
-  static const LoggingType VALUES =
-    LoggerParam_LoggingType_VALUES;
-  static const LoggingType DIFFS =
-    LoggerParam_LoggingType_DIFFS;
-  static inline bool LoggingType_IsValid(int value) {
-    return LoggerParam_LoggingType_IsValid(value);
-  }
-  static const LoggingType LoggingType_MIN =
-    LoggerParam_LoggingType_LoggingType_MIN;
-  static const LoggingType LoggingType_MAX =
-    LoggerParam_LoggingType_LoggingType_MAX;
-  static const int LoggingType_ARRAYSIZE =
-    LoggerParam_LoggingType_LoggingType_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  LoggingType_descriptor() {
-    return LoggerParam_LoggingType_descriptor();
-  }
-  static inline const ::std::string& LoggingType_Name(LoggingType value) {
-    return LoggerParam_LoggingType_Name(value);
-  }
-  static inline bool LoggingType_Parse(const ::std::string& name,
-      LoggingType* value) {
-    return LoggerParam_LoggingType_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
 
   // string file_path = 1;
@@ -1298,17 +1090,17 @@ class LoggerParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::int32 num_inputs() const;
   void set_num_inputs(::google::protobuf::int32 value);
 
-  // .deepflow.LoggerParam.LoggingTime logging_time = 4;
+  // .deepflow.ActionTime logging_time = 4;
   void clear_logging_time();
   static const int kLoggingTimeFieldNumber = 4;
-  ::deepflow::LoggerParam_LoggingTime logging_time() const;
-  void set_logging_time(::deepflow::LoggerParam_LoggingTime value);
+  ::deepflow::ActionTime logging_time() const;
+  void set_logging_time(::deepflow::ActionTime value);
 
-  // .deepflow.LoggerParam.LoggingType logging_type = 5;
+  // .deepflow.ActionType logging_type = 5;
   void clear_logging_type();
   static const int kLoggingTypeFieldNumber = 5;
-  ::deepflow::LoggerParam_LoggingType logging_type() const;
-  void set_logging_type(::deepflow::LoggerParam_LoggingType value);
+  ::deepflow::ActionType logging_type() const;
+  void set_logging_type(::deepflow::ActionType value);
 
   // @@protoc_insertion_point(class_scope:deepflow.LoggerParam)
  private:
@@ -1389,58 +1181,6 @@ class PrintParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   // nested types ----------------------------------------------------
 
-  typedef PrintParam_PrintTime PrintTime;
-  static const PrintTime EVERY_PASS =
-    PrintParam_PrintTime_EVERY_PASS;
-  static const PrintTime END_OF_EPOCH =
-    PrintParam_PrintTime_END_OF_EPOCH;
-  static inline bool PrintTime_IsValid(int value) {
-    return PrintParam_PrintTime_IsValid(value);
-  }
-  static const PrintTime PrintTime_MIN =
-    PrintParam_PrintTime_PrintTime_MIN;
-  static const PrintTime PrintTime_MAX =
-    PrintParam_PrintTime_PrintTime_MAX;
-  static const int PrintTime_ARRAYSIZE =
-    PrintParam_PrintTime_PrintTime_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  PrintTime_descriptor() {
-    return PrintParam_PrintTime_descriptor();
-  }
-  static inline const ::std::string& PrintTime_Name(PrintTime value) {
-    return PrintParam_PrintTime_Name(value);
-  }
-  static inline bool PrintTime_Parse(const ::std::string& name,
-      PrintTime* value) {
-    return PrintParam_PrintTime_Parse(name, value);
-  }
-
-  typedef PrintParam_PrintType PrintType;
-  static const PrintType VALUES =
-    PrintParam_PrintType_VALUES;
-  static const PrintType DIFFS =
-    PrintParam_PrintType_DIFFS;
-  static inline bool PrintType_IsValid(int value) {
-    return PrintParam_PrintType_IsValid(value);
-  }
-  static const PrintType PrintType_MIN =
-    PrintParam_PrintType_PrintType_MIN;
-  static const PrintType PrintType_MAX =
-    PrintParam_PrintType_PrintType_MAX;
-  static const int PrintType_ARRAYSIZE =
-    PrintParam_PrintType_PrintType_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  PrintType_descriptor() {
-    return PrintParam_PrintType_descriptor();
-  }
-  static inline const ::std::string& PrintType_Name(PrintType value) {
-    return PrintParam_PrintType_Name(value);
-  }
-  static inline bool PrintType_Parse(const ::std::string& name,
-      PrintType* value) {
-    return PrintParam_PrintType_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
 
   // string message = 2;
@@ -1463,17 +1203,17 @@ class PrintParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::int32 num_inputs() const;
   void set_num_inputs(::google::protobuf::int32 value);
 
-  // .deepflow.PrintParam.PrintTime print_time = 3;
+  // .deepflow.ActionTime print_time = 3;
   void clear_print_time();
   static const int kPrintTimeFieldNumber = 3;
-  ::deepflow::PrintParam_PrintTime print_time() const;
-  void set_print_time(::deepflow::PrintParam_PrintTime value);
+  ::deepflow::ActionTime print_time() const;
+  void set_print_time(::deepflow::ActionTime value);
 
-  // .deepflow.PrintParam.PrintType print_type = 4;
+  // .deepflow.ActionType print_type = 4;
   void clear_print_type();
   static const int kPrintTypeFieldNumber = 4;
-  ::deepflow::PrintParam_PrintType print_type() const;
-  void set_print_type(::deepflow::PrintParam_PrintType value);
+  ::deepflow::ActionType print_type() const;
+  void set_print_type(::deepflow::ActionType value);
 
   // @@protoc_insertion_point(class_scope:deepflow.PrintParam)
  private:
@@ -1643,32 +1383,6 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // nested types ----------------------------------------------------
 
-  typedef DisplayParam_DisplayType DisplayType;
-  static const DisplayType VALUES =
-    DisplayParam_DisplayType_VALUES;
-  static const DisplayType DIFFS =
-    DisplayParam_DisplayType_DIFFS;
-  static inline bool DisplayType_IsValid(int value) {
-    return DisplayParam_DisplayType_IsValid(value);
-  }
-  static const DisplayType DisplayType_MIN =
-    DisplayParam_DisplayType_DisplayType_MIN;
-  static const DisplayType DisplayType_MAX =
-    DisplayParam_DisplayType_DisplayType_MAX;
-  static const int DisplayType_ARRAYSIZE =
-    DisplayParam_DisplayType_DisplayType_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  DisplayType_descriptor() {
-    return DisplayParam_DisplayType_descriptor();
-  }
-  static inline const ::std::string& DisplayType_Name(DisplayType value) {
-    return DisplayParam_DisplayType_Name(value);
-  }
-  static inline bool DisplayType_Parse(const ::std::string& name,
-      DisplayType* value) {
-    return DisplayParam_DisplayType_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
 
   // int32 delay_msec = 1;
@@ -1677,17 +1391,24 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::int32 delay_msec() const;
   void set_delay_msec(::google::protobuf::int32 value);
 
-  // .deepflow.DisplayParam.DisplayType display_type = 2;
+  // .deepflow.ActionTime display_time = 2;
+  void clear_display_time();
+  static const int kDisplayTimeFieldNumber = 2;
+  ::deepflow::ActionTime display_time() const;
+  void set_display_time(::deepflow::ActionTime value);
+
+  // .deepflow.ActionType display_type = 3;
   void clear_display_type();
-  static const int kDisplayTypeFieldNumber = 2;
-  ::deepflow::DisplayParam_DisplayType display_type() const;
-  void set_display_type(::deepflow::DisplayParam_DisplayType value);
+  static const int kDisplayTypeFieldNumber = 3;
+  ::deepflow::ActionType display_type() const;
+  void set_display_type(::deepflow::ActionType value);
 
   // @@protoc_insertion_point(class_scope:deepflow.DisplayParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int32 delay_msec_;
+  int display_time_;
   int display_type_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
@@ -6189,15 +5910,15 @@ inline void RandomSelectorParam::set_probability(float value) {
 
 // AccumulatorParam
 
-// .deepflow.AccumulatorParam.ResetTime reset_time = 1;
+// .deepflow.ActionTime reset_time = 1;
 inline void AccumulatorParam::clear_reset_time() {
   reset_time_ = 0;
 }
-inline ::deepflow::AccumulatorParam_ResetTime AccumulatorParam::reset_time() const {
+inline ::deepflow::ActionTime AccumulatorParam::reset_time() const {
   // @@protoc_insertion_point(field_get:deepflow.AccumulatorParam.reset_time)
-  return static_cast< ::deepflow::AccumulatorParam_ResetTime >(reset_time_);
+  return static_cast< ::deepflow::ActionTime >(reset_time_);
 }
-inline void AccumulatorParam::set_reset_time(::deepflow::AccumulatorParam_ResetTime value) {
+inline void AccumulatorParam::set_reset_time(::deepflow::ActionTime value) {
   
   reset_time_ = value;
   // @@protoc_insertion_point(field_set:deepflow.AccumulatorParam.reset_time)
@@ -6207,15 +5928,15 @@ inline void AccumulatorParam::set_reset_time(::deepflow::AccumulatorParam_ResetT
 
 // PsnrParam
 
-// .deepflow.PsnrParam.PrintTime print_time = 1;
+// .deepflow.ActionTime print_time = 1;
 inline void PsnrParam::clear_print_time() {
   print_time_ = 0;
 }
-inline ::deepflow::PsnrParam_PrintTime PsnrParam::print_time() const {
+inline ::deepflow::ActionTime PsnrParam::print_time() const {
   // @@protoc_insertion_point(field_get:deepflow.PsnrParam.print_time)
-  return static_cast< ::deepflow::PsnrParam_PrintTime >(print_time_);
+  return static_cast< ::deepflow::ActionTime >(print_time_);
 }
-inline void PsnrParam::set_print_time(::deepflow::PsnrParam_PrintTime value) {
+inline void PsnrParam::set_print_time(::deepflow::ActionTime value) {
   
   print_time_ = value;
   // @@protoc_insertion_point(field_set:deepflow.PsnrParam.print_time)
@@ -6343,29 +6064,29 @@ inline void LoggerParam::set_allocated_message(::std::string* message) {
   // @@protoc_insertion_point(field_set_allocated:deepflow.LoggerParam.message)
 }
 
-// .deepflow.LoggerParam.LoggingTime logging_time = 4;
+// .deepflow.ActionTime logging_time = 4;
 inline void LoggerParam::clear_logging_time() {
   logging_time_ = 0;
 }
-inline ::deepflow::LoggerParam_LoggingTime LoggerParam::logging_time() const {
+inline ::deepflow::ActionTime LoggerParam::logging_time() const {
   // @@protoc_insertion_point(field_get:deepflow.LoggerParam.logging_time)
-  return static_cast< ::deepflow::LoggerParam_LoggingTime >(logging_time_);
+  return static_cast< ::deepflow::ActionTime >(logging_time_);
 }
-inline void LoggerParam::set_logging_time(::deepflow::LoggerParam_LoggingTime value) {
+inline void LoggerParam::set_logging_time(::deepflow::ActionTime value) {
   
   logging_time_ = value;
   // @@protoc_insertion_point(field_set:deepflow.LoggerParam.logging_time)
 }
 
-// .deepflow.LoggerParam.LoggingType logging_type = 5;
+// .deepflow.ActionType logging_type = 5;
 inline void LoggerParam::clear_logging_type() {
   logging_type_ = 0;
 }
-inline ::deepflow::LoggerParam_LoggingType LoggerParam::logging_type() const {
+inline ::deepflow::ActionType LoggerParam::logging_type() const {
   // @@protoc_insertion_point(field_get:deepflow.LoggerParam.logging_type)
-  return static_cast< ::deepflow::LoggerParam_LoggingType >(logging_type_);
+  return static_cast< ::deepflow::ActionType >(logging_type_);
 }
-inline void LoggerParam::set_logging_type(::deepflow::LoggerParam_LoggingType value) {
+inline void LoggerParam::set_logging_type(::deepflow::ActionType value) {
   
   logging_type_ = value;
   // @@protoc_insertion_point(field_set:deepflow.LoggerParam.logging_type)
@@ -6441,29 +6162,29 @@ inline void PrintParam::set_allocated_message(::std::string* message) {
   // @@protoc_insertion_point(field_set_allocated:deepflow.PrintParam.message)
 }
 
-// .deepflow.PrintParam.PrintTime print_time = 3;
+// .deepflow.ActionTime print_time = 3;
 inline void PrintParam::clear_print_time() {
   print_time_ = 0;
 }
-inline ::deepflow::PrintParam_PrintTime PrintParam::print_time() const {
+inline ::deepflow::ActionTime PrintParam::print_time() const {
   // @@protoc_insertion_point(field_get:deepflow.PrintParam.print_time)
-  return static_cast< ::deepflow::PrintParam_PrintTime >(print_time_);
+  return static_cast< ::deepflow::ActionTime >(print_time_);
 }
-inline void PrintParam::set_print_time(::deepflow::PrintParam_PrintTime value) {
+inline void PrintParam::set_print_time(::deepflow::ActionTime value) {
   
   print_time_ = value;
   // @@protoc_insertion_point(field_set:deepflow.PrintParam.print_time)
 }
 
-// .deepflow.PrintParam.PrintType print_type = 4;
+// .deepflow.ActionType print_type = 4;
 inline void PrintParam::clear_print_type() {
   print_type_ = 0;
 }
-inline ::deepflow::PrintParam_PrintType PrintParam::print_type() const {
+inline ::deepflow::ActionType PrintParam::print_type() const {
   // @@protoc_insertion_point(field_get:deepflow.PrintParam.print_type)
-  return static_cast< ::deepflow::PrintParam_PrintType >(print_type_);
+  return static_cast< ::deepflow::ActionType >(print_type_);
 }
-inline void PrintParam::set_print_type(::deepflow::PrintParam_PrintType value) {
+inline void PrintParam::set_print_type(::deepflow::ActionType value) {
   
   print_type_ = value;
   // @@protoc_insertion_point(field_set:deepflow.PrintParam.print_type)
@@ -6519,15 +6240,29 @@ inline void DisplayParam::set_delay_msec(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:deepflow.DisplayParam.delay_msec)
 }
 
-// .deepflow.DisplayParam.DisplayType display_type = 2;
+// .deepflow.ActionTime display_time = 2;
+inline void DisplayParam::clear_display_time() {
+  display_time_ = 0;
+}
+inline ::deepflow::ActionTime DisplayParam::display_time() const {
+  // @@protoc_insertion_point(field_get:deepflow.DisplayParam.display_time)
+  return static_cast< ::deepflow::ActionTime >(display_time_);
+}
+inline void DisplayParam::set_display_time(::deepflow::ActionTime value) {
+  
+  display_time_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.DisplayParam.display_time)
+}
+
+// .deepflow.ActionType display_type = 3;
 inline void DisplayParam::clear_display_type() {
   display_type_ = 0;
 }
-inline ::deepflow::DisplayParam_DisplayType DisplayParam::display_type() const {
+inline ::deepflow::ActionType DisplayParam::display_type() const {
   // @@protoc_insertion_point(field_get:deepflow.DisplayParam.display_type)
-  return static_cast< ::deepflow::DisplayParam_DisplayType >(display_type_);
+  return static_cast< ::deepflow::ActionType >(display_type_);
 }
-inline void DisplayParam::set_display_type(::deepflow::DisplayParam_DisplayType value) {
+inline void DisplayParam::set_display_type(::deepflow::ActionType value) {
   
   display_type_ = value;
   // @@protoc_insertion_point(field_set:deepflow.DisplayParam.display_type)
@@ -10313,41 +10048,6 @@ template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::TensorParam_TensorType>() {
   return ::deepflow::TensorParam_TensorType_descriptor();
 }
-template <> struct is_proto_enum< ::deepflow::AccumulatorParam_ResetTime> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::AccumulatorParam_ResetTime>() {
-  return ::deepflow::AccumulatorParam_ResetTime_descriptor();
-}
-template <> struct is_proto_enum< ::deepflow::PsnrParam_PrintTime> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::PsnrParam_PrintTime>() {
-  return ::deepflow::PsnrParam_PrintTime_descriptor();
-}
-template <> struct is_proto_enum< ::deepflow::LoggerParam_LoggingTime> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::LoggerParam_LoggingTime>() {
-  return ::deepflow::LoggerParam_LoggingTime_descriptor();
-}
-template <> struct is_proto_enum< ::deepflow::LoggerParam_LoggingType> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::LoggerParam_LoggingType>() {
-  return ::deepflow::LoggerParam_LoggingType_descriptor();
-}
-template <> struct is_proto_enum< ::deepflow::PrintParam_PrintTime> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::PrintParam_PrintTime>() {
-  return ::deepflow::PrintParam_PrintTime_descriptor();
-}
-template <> struct is_proto_enum< ::deepflow::PrintParam_PrintType> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::PrintParam_PrintType>() {
-  return ::deepflow::PrintParam_PrintType_descriptor();
-}
-template <> struct is_proto_enum< ::deepflow::DisplayParam_DisplayType> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::DisplayParam_DisplayType>() {
-  return ::deepflow::DisplayParam_DisplayType_descriptor();
-}
 template <> struct is_proto_enum< ::deepflow::ReduceParam_ReduceOp> : ::google::protobuf::internal::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::ReduceParam_ReduceOp>() {
@@ -10382,6 +10082,16 @@ template <> struct is_proto_enum< ::deepflow::PhaseParam_PhaseBehaviour> : ::goo
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::PhaseParam_PhaseBehaviour>() {
   return ::deepflow::PhaseParam_PhaseBehaviour_descriptor();
+}
+template <> struct is_proto_enum< ::deepflow::ActionTime> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::ActionTime>() {
+  return ::deepflow::ActionTime_descriptor();
+}
+template <> struct is_proto_enum< ::deepflow::ActionType> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::ActionType>() {
+  return ::deepflow::ActionType_descriptor();
 }
 
 }  // namespace protobuf

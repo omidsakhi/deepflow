@@ -36,8 +36,7 @@ void main(int argc, char** argv) {
 
 		auto gain = df.gain_solver(0.999900, 0.000100, 10.000000, 0.000000, 0.050000, 0.950000, "gain");
 
-		auto test_data = df.mnist_reader("./data/mnist", 100, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });
-		//df.display(test_data, 50, deepflow::DisplayParam_DisplayType_VALUES, "Validation", {});
+		auto test_data = df.mnist_reader("./data/mnist", 100, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });		
 		auto train_data = df.mnist_reader("./data/mnist", 100, MNISTReader::Train, MNISTReader::Data, "train_data", { "Train" });
 		auto data_selector = df.phaseplexer(train_data, "Train", test_data, "Validation", "data_selector", {});
 		auto conv1_w = df.variable(df.random_uniform({ 20, 1, 5, 5 }, -0.100000, 0.100000), gain, "conv1_w", {});
@@ -66,10 +65,10 @@ void main(int argc, char** argv) {
 		auto predict = df.argmax(loss, 1, "predict", {});
 		auto target = df.argmax(label_selector, 1, "target", {});
 		auto equal = df.equal(predict, target, "equal", {});
-		auto acc = df.accumulator(equal, Accumulator::EndOfEpoch, "acc", {});
+		auto acc = df.accumulator(equal, DeepFlow::END_OF_EPOCH, "acc", {});
 		auto correct = df.reduce_sum(acc[0], 0, "correct", {});
-		df.print({ correct, acc[1] }, "    TRAINSET   CORRECT COUNT : {0} OUT OF {1} = %{}%\n", Print::END_OF_EPOCH, Print::VALUES, "print1", { "Train" });
-		df.print({ correct, acc[1] }, "    VALIDATION CORRECT COUNT : {0} OUT OF {1} = %{}%\n", Print::END_OF_EPOCH, Print::VALUES, "print2", { "Validation" });
+		df.print({ correct, acc[1] }, "    TRAINSET   CORRECT COUNT : {0} OUT OF {1} = %{}%\n", DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, "print1", { "Train" });
+		df.print({ correct, acc[1] }, "    VALIDATION CORRECT COUNT : {0} OUT OF {1} = %{}%\n", DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, "print2", { "Validation" });
 		
 	}
 	else {

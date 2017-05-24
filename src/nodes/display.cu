@@ -1,8 +1,6 @@
 #include "nodes/display.h"
 #include "core/common_cu.h"
 
-#include <opencv2/opencv.hpp>
-
 __global__
 void GrayPictureGeneratorKernel(const int num_images, const float *in, const int per_image_height, const int per_image_width, const int num_image_per_row_and_col, unsigned char *out)
 {
@@ -93,8 +91,10 @@ Display::Display(const deepflow::NodeParam &param) : Node(param) {
 }
 
 void Display::initForward() {
-	_delay_msec = _param.display_param().delay_msec();
-	_display_type = _param.display_param().display_type();
+	auto display_param = _param.display_param();
+	_delay_msec = display_param.delay_msec();
+	_display_type = display_param.display_type();
+	_display_time = display_param.display_time();
 	auto dims = _inputs[0]->value()->dims();	
 	input_size = _inputs[0]->value()->size();
 	input_size_in_bytes = _inputs[0]->value()->sizeInBytes();
@@ -119,7 +119,9 @@ void Display::initBackward() {
 }
 
 void Display::forward() {
-	if (_display_type == deepflow::DisplayParam_DisplayType_VALUES) {
+	if (_display_time == deepflow::ActionTime::END_OF_EPOCH && _context->last_batch == false)
+		return;
+	if (_display_type == deepflow::ActionType::VALUES) {
 		if (num_channels == 3) {
 			ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, (float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col,(unsigned char*) _outputs[0]->value()->mutableData());
 		}
@@ -133,7 +135,7 @@ void Display::forward() {
 			_context->quit = true;
 		}
 	}
-	if (_display_type == deepflow::DisplayParam_DisplayType_DIFFS) {
+	if (_display_type == deepflow::ActionType::DIFFS) {
 		if (num_channels == 3)
 			ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, (float*)_inputs[0]->diff()->data(), per_image_height, per_image_width, num_image_per_row_and_col, (unsigned char*)_outputs[0]->value()->mutableData());
 		else
@@ -155,7 +157,7 @@ std::string Display::to_cpp() const
 {	
 	std::string cpp = "df.display(" + _input_name_for_cpp(0) + ", ";
 	cpp += std::to_string(_delay_msec) + ", ";
-	if (_display_type == deepflow::DisplayParam_DisplayType_DIFFS) {
+	if (_display_type == deepflow::ActionType::DIFFS) {
 		cpp += "deepflow::DisplayParam_DisplayType_DIFFS, ";
 	}
 	else {

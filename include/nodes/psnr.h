@@ -5,10 +5,6 @@
 
 class DeepFlowDllExport Psnr : public Node {
 public:
-	enum PrintTime {
-		EVERY_PASS = 0,
-		END_OF_EPOCH = 1
-	};
 	Psnr(const deepflow::NodeParam &param);
 	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 0; }
@@ -20,7 +16,7 @@ public:
 	ForwardType forwardType() { return ALWAYS_FORWARD; }
 	BackwardType backwardType() { return NEVER_BACKWARD; }
 private:
-	PrintTime _print_time;
+	deepflow::ActionTime _print_time;
 	float *d_square_error;
 	float *d_sum_square_error;
 	cudnnHandle_t _cudnnHandle;	

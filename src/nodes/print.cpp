@@ -4,8 +4,8 @@ Print::Print(const deepflow::NodeParam &param) : Node(param) {
 	LOG_IF(FATAL, param.has_print_param() == false) << "param.has_print_param() == false";
 	auto printParam = _param.print_param();
 	_num_inputs = printParam.num_inputs();
-	_print_time = (PrintTime) printParam.print_time();
-	_print_type = (PrintType) printParam.print_type();
+	_print_time = printParam.print_time();
+	_print_type = printParam.print_type();
 }
 
 int Print::minNumInputs() {	
@@ -22,13 +22,13 @@ void Print::initBackward() {
 }
 
 void Print::forward() {
-	if (_print_time == END_OF_EPOCH && _context->last_batch == false)
+	if (_print_time == deepflow::ActionTime::END_OF_EPOCH && _context->last_batch == false)
 		return;
 	std::string message = _raw_message;
 	size_t start_pos = message.find("%{}");
 	if (start_pos != std::string::npos) {
 		float a, b;
-		if (_print_type == DIFFS) {
+		if (_print_type == deepflow::ActionType::DIFFS) {
 			a = atof(_inputs[0]->diff()->toString().c_str());
 			b = atof(_inputs[1]->diff()->toString().c_str());
 		}
@@ -42,7 +42,7 @@ void Print::forward() {
 		size_t start_pos = message.find("{" + std::to_string(i) + "}");
 		if (start_pos == std::string::npos)
 			continue;
-		if (_print_type == DIFFS)
+		if (_print_type == deepflow::ActionType::DIFFS)
 			message.replace(start_pos, 3, _inputs[i]->diff()->toString());
 		else
 			message.replace(start_pos, 3, _inputs[i]->value()->toString());
@@ -68,13 +68,13 @@ std::string Print::to_cpp() const
 			escaped_raw_message[i] = 'n';
 		}		
 	cpp += "\"" + escaped_raw_message + "\", ";
-	if (_print_time == deepflow::PrintParam_PrintTime_END_OF_EPOCH) {
+	if (_print_time == deepflow::ActionTime::END_OF_EPOCH) {
 		cpp += "Print::END_OF_EPOCH, ";
 	}
 	else {
 		cpp += "Print::EVERY_PASS, ";
 	}
-	if (_print_type == deepflow::PrintParam_PrintType_DIFFS) {
+	if (_print_type == deepflow::ActionType::DIFFS) {
 		cpp += "Print::DIFFS, ";
 	}
 	else {

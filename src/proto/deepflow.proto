@@ -6,6 +6,17 @@ message TensorData {
 	repeated float weight = 1;
 }
 
+enum ActionTime {
+	EVERY_PASS = 0;	
+	END_OF_EPOCH = 1;
+	NEVER = 2;
+}
+
+enum ActionType {
+	VALUES = 0;
+	DIFFS = 1;
+}
+
 message TensorParam {
 	enum TensorType
 	{
@@ -29,50 +40,26 @@ message RandomSelectorParam {
 }
 
 message AccumulatorParam {
-	enum ResetTime {		
-		END_OF_EPOCH = 0;
-		NEVER = 1;
-	}
-	ResetTime reset_time = 1;
+	ActionTime reset_time = 1;
 }
 
 message PsnrParam {
-	enum PrintTime {
-		EVERY_PASS = 0;
-		END_OF_EPOCH = 1;
-	}
-	PrintTime print_time = 1;
+	ActionTime print_time = 1;
 }
 
 message LoggerParam {
-	enum LoggingTime {
-		EVERY_PASS = 0;
-		END_OF_EPOCH = 1;
-	}
-	enum LoggingType {
-		VALUES = 0;
-		DIFFS = 1;
-	}
 	string file_path = 1;
 	int32 num_inputs = 2;
 	string message = 3;
-	LoggingTime logging_time = 4;
-	LoggingType logging_type = 5;
+	ActionTime logging_time = 4;
+	ActionType logging_type = 5;
 }
 
 message PrintParam {
-	enum PrintTime {
-		EVERY_PASS = 0;
-		END_OF_EPOCH = 1;
-	}
-	enum PrintType {
-		VALUES = 0;
-		DIFFS = 1;
-	}
 	int32 num_inputs = 1;
 	string message = 2;
-	PrintTime print_time = 3;
-	PrintType print_type = 4;
+	ActionTime print_time = 3;
+	ActionType print_type = 4;
 }
 
 message AddParam {
@@ -81,12 +68,9 @@ message AddParam {
 }
 
 message DisplayParam {
-	enum DisplayType {
-		VALUES = 0;
-		DIFFS = 1;
-	}
 	int32 delay_msec = 1;
-	DisplayType display_type = 2;
+	ActionTime display_time = 2;
+	ActionType display_type = 3;
 }
 
 message EqualParam {

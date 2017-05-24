@@ -30,5 +30,6 @@ private:
 	int num_pic_pixels;	
 	cv::Mat disp;
 	int _delay_msec = 100;
-	deepflow::DisplayParam_DisplayType _display_type;
+	deepflow::ActionType _display_type;
+	deepflow::ActionTime _display_time;
 };

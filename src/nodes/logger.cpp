@@ -7,8 +7,8 @@ Logger::Logger(const deepflow::NodeParam &param) : Node(param) {
 	auto loggingParam = _param.logger_param();
 	_filePath = loggingParam.file_path();
 	_num_inputs = loggingParam.num_inputs();
-	_logging_time = (LoggingTime)loggingParam.logging_time();
-	_logging_type = (LoggingType)loggingParam.logging_type();
+	_logging_time = loggingParam.logging_time();
+	_logging_type = loggingParam.logging_type();
 }
 
 int Logger::minNumInputs() {
@@ -25,13 +25,13 @@ void Logger::initBackward() {
 }
 
 void Logger::forward() {
-	if (_logging_time == END_OF_EPOCH && _context->last_batch == false)
+	if (_logging_time == deepflow::ActionTime::END_OF_EPOCH && _context->last_batch == false)
 		return;
 	std::string message = _raw_message;
 	size_t start_pos = message.find("%{}");
 	if (start_pos != std::string::npos) {
 		float a, b;
-		if (_logging_type == DIFFS) {
+		if (_logging_type == deepflow::ActionType::DIFFS) {
 			a = atof(_inputs[0]->diff()->toString().c_str());
 			b = atof(_inputs[1]->diff()->toString().c_str());
 		}
@@ -45,7 +45,7 @@ void Logger::forward() {
 		size_t start_pos = message.find("{" + std::to_string(i) + "}");
 		if (start_pos == std::string::npos)
 			continue;
-		if (_logging_type == DIFFS)
+		if (_logging_type == deepflow::ActionType::DIFFS)
 			message.replace(start_pos, 3, _inputs[i]->diff()->toString());
 		else
 			message.replace(start_pos, 3, _inputs[i]->value()->toString());
@@ -76,13 +76,13 @@ std::string Logger::to_cpp() const
 			escaped_raw_message[i] = 'n';
 		}
 	cpp += "\"" + escaped_raw_message + "\", ";
-	if (_logging_time == deepflow::PrintParam_PrintTime_END_OF_EPOCH) {
+	if (_logging_time == deepflow::ActionTime::END_OF_EPOCH) {
 		cpp += "Logger::END_OF_EPOCH, ";
 	}
 	else {
 		cpp += "Logger::EVERY_PASS, ";
 	}
-	if (_logging_type == deepflow::PrintParam_PrintType_DIFFS) {
+	if (_logging_type == deepflow::ActionType::DIFFS) {
 		cpp += "Logger::DIFFS, ";
 	}
 	else {

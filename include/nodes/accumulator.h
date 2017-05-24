@@ -5,10 +5,6 @@
 
 class DeepFlowDllExport Accumulator : public Node {
 public:
-	enum ResetTime {		
-		EndOfEpoch = 0,
-		Never = 1
-	};
 	Accumulator(const deepflow::NodeParam &param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 2; }
@@ -20,6 +16,6 @@ public:
 	virtual ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
 	virtual BackwardType backwardType() { return NEVER_BACKWARD; }
 private:
-	ResetTime _reset_time;
+	deepflow::ActionTime _reset_time;
 	float _total = 0;
 };
