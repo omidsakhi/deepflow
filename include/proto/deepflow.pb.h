@@ -2028,48 +2028,39 @@ class TransposedConv2dParam : public ::google::protobuf::Message /* @@protoc_ins
 
   // accessors -------------------------------------------------------
 
-  // .deepflow.TensorParam tensor_param = 1;
-  bool has_tensor_param() const;
-  void clear_tensor_param();
-  static const int kTensorParamFieldNumber = 1;
-  const ::deepflow::TensorParam& tensor_param() const;
-  ::deepflow::TensorParam* mutable_tensor_param();
-  ::deepflow::TensorParam* release_tensor_param();
-  void set_allocated_tensor_param(::deepflow::TensorParam* tensor_param);
-
-  // int32 pad_h = 2;
+  // int32 pad_h = 1;
   void clear_pad_h();
-  static const int kPadHFieldNumber = 2;
+  static const int kPadHFieldNumber = 1;
   ::google::protobuf::int32 pad_h() const;
   void set_pad_h(::google::protobuf::int32 value);
 
-  // int32 pad_w = 3;
+  // int32 pad_w = 2;
   void clear_pad_w();
-  static const int kPadWFieldNumber = 3;
+  static const int kPadWFieldNumber = 2;
   ::google::protobuf::int32 pad_w() const;
   void set_pad_w(::google::protobuf::int32 value);
 
-  // int32 u = 4;
+  // int32 u = 3;
   void clear_u();
-  static const int kUFieldNumber = 4;
+  static const int kUFieldNumber = 3;
   ::google::protobuf::int32 u() const;
   void set_u(::google::protobuf::int32 value);
 
-  // int32 v = 5;
+  // int32 v = 4;
   void clear_v();
-  static const int kVFieldNumber = 5;
+  static const int kVFieldNumber = 4;
   ::google::protobuf::int32 v() const;
   void set_v(::google::protobuf::int32 value);
 
-  // int32 dilation_h = 6;
+  // int32 dilation_h = 5;
   void clear_dilation_h();
-  static const int kDilationHFieldNumber = 6;
+  static const int kDilationHFieldNumber = 5;
   ::google::protobuf::int32 dilation_h() const;
   void set_dilation_h(::google::protobuf::int32 value);
 
-  // int32 dilation_w = 7;
+  // int32 dilation_w = 6;
   void clear_dilation_w();
-  static const int kDilationWFieldNumber = 7;
+  static const int kDilationWFieldNumber = 6;
   ::google::protobuf::int32 dilation_w() const;
   void set_dilation_w(::google::protobuf::int32 value);
 
@@ -2077,7 +2068,6 @@ class TransposedConv2dParam : public ::google::protobuf::Message /* @@protoc_ins
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::deepflow::TensorParam* tensor_param_;
   ::google::protobuf::int32 pad_h_;
   ::google::protobuf::int32 pad_w_;
   ::google::protobuf::int32 u_;
@@ -6544,46 +6534,7 @@ inline void PoolingParam::set_v_stride(::google::protobuf::int32 value) {
 
 // TransposedConv2dParam
 
-// .deepflow.TensorParam tensor_param = 1;
-inline bool TransposedConv2dParam::has_tensor_param() const {
-  return this != internal_default_instance() && tensor_param_ != NULL;
-}
-inline void TransposedConv2dParam::clear_tensor_param() {
-  if (GetArenaNoVirtual() == NULL && tensor_param_ != NULL) delete tensor_param_;
-  tensor_param_ = NULL;
-}
-inline const ::deepflow::TensorParam& TransposedConv2dParam::tensor_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.TransposedConv2dParam.tensor_param)
-  return tensor_param_ != NULL ? *tensor_param_
-                         : *::deepflow::TensorParam::internal_default_instance();
-}
-inline ::deepflow::TensorParam* TransposedConv2dParam::mutable_tensor_param() {
-  
-  if (tensor_param_ == NULL) {
-    tensor_param_ = new ::deepflow::TensorParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.TransposedConv2dParam.tensor_param)
-  return tensor_param_;
-}
-inline ::deepflow::TensorParam* TransposedConv2dParam::release_tensor_param() {
-  // @@protoc_insertion_point(field_release:deepflow.TransposedConv2dParam.tensor_param)
-  
-  ::deepflow::TensorParam* temp = tensor_param_;
-  tensor_param_ = NULL;
-  return temp;
-}
-inline void TransposedConv2dParam::set_allocated_tensor_param(::deepflow::TensorParam* tensor_param) {
-  delete tensor_param_;
-  tensor_param_ = tensor_param;
-  if (tensor_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.TransposedConv2dParam.tensor_param)
-}
-
-// int32 pad_h = 2;
+// int32 pad_h = 1;
 inline void TransposedConv2dParam::clear_pad_h() {
   pad_h_ = 0;
 }
@@ -6597,7 +6548,7 @@ inline void TransposedConv2dParam::set_pad_h(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:deepflow.TransposedConv2dParam.pad_h)
 }
 
-// int32 pad_w = 3;
+// int32 pad_w = 2;
 inline void TransposedConv2dParam::clear_pad_w() {
   pad_w_ = 0;
 }
@@ -6611,7 +6562,7 @@ inline void TransposedConv2dParam::set_pad_w(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:deepflow.TransposedConv2dParam.pad_w)
 }
 
-// int32 u = 4;
+// int32 u = 3;
 inline void TransposedConv2dParam::clear_u() {
   u_ = 0;
 }
@@ -6625,7 +6576,7 @@ inline void TransposedConv2dParam::set_u(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:deepflow.TransposedConv2dParam.u)
 }
 
-// int32 v = 5;
+// int32 v = 4;
 inline void TransposedConv2dParam::clear_v() {
   v_ = 0;
 }
@@ -6639,7 +6590,7 @@ inline void TransposedConv2dParam::set_v(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:deepflow.TransposedConv2dParam.v)
 }
 
-// int32 dilation_h = 6;
+// int32 dilation_h = 5;
 inline void TransposedConv2dParam::clear_dilation_h() {
   dilation_h_ = 0;
 }
@@ -6653,7 +6604,7 @@ inline void TransposedConv2dParam::set_dilation_h(::google::protobuf::int32 valu
   // @@protoc_insertion_point(field_set:deepflow.TransposedConv2dParam.dilation_h)
 }
 
-// int32 dilation_w = 7;
+// int32 dilation_w = 6;
 inline void TransposedConv2dParam::clear_dilation_w() {
   dilation_w_ = 0;
 }

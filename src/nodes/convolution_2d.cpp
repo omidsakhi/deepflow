@@ -105,6 +105,7 @@ void Convolution2D::backward() {
 	}
 	else {
 		_dz = _dy;
+		_dzDesc = _dyDesc;
 	}
 	if (_inputs[0]->connectedNode()->propagateBack())
 		DF_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &one, _wDesc, _w, _dzDesc, _dz, _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &one, _dxDesc, _dx));

@@ -480,7 +480,7 @@ std::string DeepFlow::dropout(std::string a, float dropout, bool train_only, std
 	return node_param->output(0);
 }
 
-std::string DeepFlow::transposed_conv2d(std::string input, std::string filter,std::array<int, 4> dims, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name, std::initializer_list<std::string> phases) {
+std::string DeepFlow::transposed_conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
@@ -489,10 +489,6 @@ std::string DeepFlow::transposed_conv2d(std::string input, std::string filter,st
 	node_param->add_input(input);
 	node_param->add_input(filter);
 	auto tconv_2d_param = node_param->mutable_transposed_conv_2d_param();
-	auto tensor_param = tconv_2d_param->mutable_tensor_param();
-	tensor_param->set_type(deepflow::TensorParam_TensorType_FLOAT);
-	for (int i = 0; i < 4; ++i)
-		tensor_param->add_dims(dims[i]);
 	tconv_2d_param->set_pad_h(pad_top_bottom);
 	tconv_2d_param->set_pad_w(pad_left_right);
 	tconv_2d_param->set_u(vertical_filter_stride);

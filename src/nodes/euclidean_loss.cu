@@ -29,8 +29,14 @@ void EuclideanLoss::forward() {
 
 void EuclideanLoss::backward() {		
 	auto size = _inputs[0]->value()->size();
-	EuclideanLossKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_inputs[0]->diff()->mutableData());
-	DF_KERNEL_CHECK();
+	if (_inputs[0]->connectedNode()->propagateBack()) {
+		EuclideanLossKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_inputs[0]->diff()->mutableData());
+		DF_KERNEL_CHECK();
+	}
+	if (_inputs[1]->connectedNode()->propagateBack()) {
+		EuclideanLossKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[1]->value()->data(), (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->diff()->mutableData());
+		DF_KERNEL_CHECK();
+	}
 }
 
 std::string EuclideanLoss::to_cpp() const

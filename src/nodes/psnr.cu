@@ -17,8 +17,8 @@ Psnr::Psnr(const deepflow::NodeParam &param) : Node(param) {
 	_print_time = (PrintTime)printParam.print_time();
 }
 
-void Psnr::initForward() {
-	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[0]->value()->size()) << "Size mismatch [FAILED]";	
+void Psnr::initForward() {	
+	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input " << _inputs[0]->value()->shape() << " != " << " Target " << _inputs[1]->value()->shape();
 	LOG(INFO) << "Initializing PSNR " << _name;
 	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 	DF_CUDA_CHECK(cudaMalloc(&d_square_error, _inputs[0]->value()->sizeInBytes()));

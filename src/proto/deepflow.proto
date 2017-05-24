@@ -106,14 +106,13 @@ message PoolingParam {
 	int32 v_stride = 6;
 }
 
-message TransposedConv2dParam {
-	TensorParam tensor_param = 1;
-	int32 pad_h = 2;
-	int32 pad_w = 3;
-	int32 u = 4;
-	int32 v = 5;
-	int32 dilation_h = 6;
-	int32 dilation_w = 7;
+message TransposedConv2dParam {	
+	int32 pad_h = 1;
+	int32 pad_w = 2;
+	int32 u = 3;
+	int32 v = 4;
+	int32 dilation_h = 5;
+	int32 dilation_w = 6;
 }
 
 message Conv2dParam {
