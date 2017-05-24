@@ -145,6 +145,9 @@ extern RandomSelectorParamDefaultTypeInternal _RandomSelectorParam_default_insta
 class ReduceParam;
 class ReduceParamDefaultTypeInternal;
 extern ReduceParamDefaultTypeInternal _ReduceParam_default_instance_;
+class ReshapeParam;
+class ReshapeParamDefaultTypeInternal;
+extern ReshapeParamDefaultTypeInternal _ReshapeParam_default_instance_;
 class SGDSolverParam;
 class SGDSolverParamDefaultTypeInternal;
 extern SGDSolverParamDefaultTypeInternal _SGDSolverParam_default_instance_;
@@ -2805,6 +2808,92 @@ class PlaceHolderParam : public ::google::protobuf::Message /* @@protoc_insertio
 };
 // -------------------------------------------------------------------
 
+class ReshapeParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.ReshapeParam) */ {
+ public:
+  ReshapeParam();
+  virtual ~ReshapeParam();
+
+  ReshapeParam(const ReshapeParam& from);
+
+  inline ReshapeParam& operator=(const ReshapeParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ReshapeParam& default_instance();
+
+  static inline const ReshapeParam* internal_default_instance() {
+    return reinterpret_cast<const ReshapeParam*>(
+               &_ReshapeParam_default_instance_);
+  }
+
+  void Swap(ReshapeParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ReshapeParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ReshapeParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ReshapeParam& from);
+  void MergeFrom(const ReshapeParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ReshapeParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .deepflow.TensorParam tensor_param = 1;
+  bool has_tensor_param() const;
+  void clear_tensor_param();
+  static const int kTensorParamFieldNumber = 1;
+  const ::deepflow::TensorParam& tensor_param() const;
+  ::deepflow::TensorParam* mutable_tensor_param();
+  ::deepflow::TensorParam* release_tensor_param();
+  void set_allocated_tensor_param(::deepflow::TensorParam* tensor_param);
+
+  // @@protoc_insertion_point(class_scope:deepflow.ReshapeParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::deepflow::TensorParam* tensor_param_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.VariableParam) */ {
  public:
   VariableParam();
@@ -4179,6 +4268,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::LoggerParam* release_logger_param();
   void set_allocated_logger_param(::deepflow::LoggerParam* logger_param);
 
+  // .deepflow.ReshapeParam reshape_param = 123;
+  bool has_reshape_param() const;
+  void clear_reshape_param();
+  static const int kReshapeParamFieldNumber = 123;
+  const ::deepflow::ReshapeParam& reshape_param() const;
+  ::deepflow::ReshapeParam* mutable_reshape_param();
+  ::deepflow::ReshapeParam* release_reshape_param();
+  void set_allocated_reshape_param(::deepflow::ReshapeParam* reshape_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -4213,6 +4311,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::PsnrParam* psnr_param_;
   ::deepflow::RandomSelectorParam* random_selector_param_;
   ::deepflow::LoggerParam* logger_param_;
+  ::deepflow::ReshapeParam* reshape_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -6949,6 +7048,49 @@ inline void PlaceHolderParam::set_allocated_tensor_param(::deepflow::TensorParam
 
 // -------------------------------------------------------------------
 
+// ReshapeParam
+
+// .deepflow.TensorParam tensor_param = 1;
+inline bool ReshapeParam::has_tensor_param() const {
+  return this != internal_default_instance() && tensor_param_ != NULL;
+}
+inline void ReshapeParam::clear_tensor_param() {
+  if (GetArenaNoVirtual() == NULL && tensor_param_ != NULL) delete tensor_param_;
+  tensor_param_ = NULL;
+}
+inline const ::deepflow::TensorParam& ReshapeParam::tensor_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.ReshapeParam.tensor_param)
+  return tensor_param_ != NULL ? *tensor_param_
+                         : *::deepflow::TensorParam::internal_default_instance();
+}
+inline ::deepflow::TensorParam* ReshapeParam::mutable_tensor_param() {
+  
+  if (tensor_param_ == NULL) {
+    tensor_param_ = new ::deepflow::TensorParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.ReshapeParam.tensor_param)
+  return tensor_param_;
+}
+inline ::deepflow::TensorParam* ReshapeParam::release_tensor_param() {
+  // @@protoc_insertion_point(field_release:deepflow.ReshapeParam.tensor_param)
+  
+  ::deepflow::TensorParam* temp = tensor_param_;
+  tensor_param_ = NULL;
+  return temp;
+}
+inline void ReshapeParam::set_allocated_tensor_param(::deepflow::TensorParam* tensor_param) {
+  delete tensor_param_;
+  tensor_param_ = tensor_param;
+  if (tensor_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.ReshapeParam.tensor_param)
+}
+
+// -------------------------------------------------------------------
+
 // VariableParam
 
 // .deepflow.InitParam init_param = 1;
@@ -8911,6 +9053,45 @@ inline void NodeParam::set_allocated_logger_param(::deepflow::LoggerParam* logge
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.logger_param)
 }
 
+// .deepflow.ReshapeParam reshape_param = 123;
+inline bool NodeParam::has_reshape_param() const {
+  return this != internal_default_instance() && reshape_param_ != NULL;
+}
+inline void NodeParam::clear_reshape_param() {
+  if (GetArenaNoVirtual() == NULL && reshape_param_ != NULL) delete reshape_param_;
+  reshape_param_ = NULL;
+}
+inline const ::deepflow::ReshapeParam& NodeParam::reshape_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.reshape_param)
+  return reshape_param_ != NULL ? *reshape_param_
+                         : *::deepflow::ReshapeParam::internal_default_instance();
+}
+inline ::deepflow::ReshapeParam* NodeParam::mutable_reshape_param() {
+  
+  if (reshape_param_ == NULL) {
+    reshape_param_ = new ::deepflow::ReshapeParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.reshape_param)
+  return reshape_param_;
+}
+inline ::deepflow::ReshapeParam* NodeParam::release_reshape_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.reshape_param)
+  
+  ::deepflow::ReshapeParam* temp = reshape_param_;
+  reshape_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_reshape_param(::deepflow::ReshapeParam* reshape_param) {
+  delete reshape_param_;
+  reshape_param_ = reshape_param;
+  if (reshape_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.reshape_param)
+}
+
 // -------------------------------------------------------------------
 
 // SquareParam
@@ -10021,6 +10202,8 @@ BlockParam::initializer() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

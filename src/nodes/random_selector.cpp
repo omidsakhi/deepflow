@@ -30,7 +30,7 @@ void RandomSelector::forward()
 
 void RandomSelector::backward()
 {
-		cpyAddDiff(_outputs[0]->diff()->size(), _outputs[0]->diff()->data(), _inputs[ _selection == 0 ? 0 : 1 ]->diff()->mutableData());
+		cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 1, _inputs[ _selection == 0 ? 0 : 1 ]->diff()->mutableData());
 }
 
 std::string RandomSelector::to_cpp() const

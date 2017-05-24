@@ -68,7 +68,7 @@ public:
 	void _traverse_down(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
 	void setVisited(bool state);
 	void resetGradients();
-	void cpyAddDiff(int n, const void *src, void *dst);
+	void cpy(int n, const float alpha, const void *src, const float beta, void *dst);
 	std::vector<NodeInputPtr> &inputs();
 	std::vector<NodeOutputPtr> &outputs();
 	NodeInputPtr input(int index);

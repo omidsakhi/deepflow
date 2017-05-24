@@ -203,7 +203,7 @@ std::string DeepFlow::cast_float(std::string input, std::string name, std::initi
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(input);	
-	auto bias_add_param = node_param->mutable_bias_add_param();	
+	node_param->mutable_cast_float_param();
 	return node_param->output(0);
 }
 
@@ -240,6 +240,22 @@ std::string DeepFlow::place_holder(std::array<int, 4> dims, Tensor::TensorType t
 	tensor_param->set_type((deepflow::TensorParam_TensorType)type);
 	for (int i = 0; i < 4; ++i)
 		tensor_param->add_dims(dims[i]);	
+	return node_param->output(0);
+}
+
+std::string DeepFlow::reshape(std::string input, std::array<int, 4> output_dims, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto reshape_param = node_param->mutable_reshape_param();
+	auto tensor_param = reshape_param->mutable_tensor_param();
+	tensor_param->set_type(deepflow::TensorParam_TensorType_FLOAT);
+	for (int i = 0; i < 4; ++i)
+		tensor_param->add_dims(output_dims[i]);
 	return node_param->output(0);
 }
 

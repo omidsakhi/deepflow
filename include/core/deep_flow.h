@@ -44,7 +44,8 @@ public:
 	// VARIABLES & PLACE HOLDER
 	std::string variable(std::string initializer, std::string solver = "", std::string name = "var", std::initializer_list<std::string> phases = {});
 	std::string place_holder(std::array<int,4> dims, Tensor::TensorType type = Tensor::Float, std::string name = "ph", std::initializer_list<std::string> phases = {});
-	
+	std::string reshape(std::string input, std::array<int, 4> output_dims, std::string name = "reshape", std::initializer_list<std::string> phases = {});
+
 	//CONVOLUTION
 	std::string conv2d(std::string input, std::string filter, std::string bias, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string conv2d(std::string input, std::string filter, std::string bias, std::string name = "conv", std::initializer_list<std::string> phases = {});

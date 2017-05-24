@@ -63,6 +63,7 @@
     <ClInclude Include="..\..\include\nodes\psnr.h" />
     <ClInclude Include="..\..\include\nodes\random_selector.h" />
     <ClInclude Include="..\..\include\nodes\reduce.h" />
+    <ClInclude Include="..\..\include\nodes\reshape.h" />
     <ClInclude Include="..\..\include\nodes\softmax.h" />
     <ClInclude Include="..\..\include\nodes\softmax_loss.h" />
     <ClInclude Include="..\..\include\nodes\square.h" />
@@ -132,6 +133,7 @@
     <ClCompile Include="..\..\src\nodes\print.cpp" />
     <ClCompile Include="..\..\src\nodes\random_selector.cpp" />
     <ClCompile Include="..\..\src\nodes\reduce.cpp" />
+    <ClCompile Include="..\..\src\nodes\reshape.cpp" />
     <ClCompile Include="..\..\src\nodes\softmax.cpp" />
     <ClCompile Include="..\..\src\nodes\transposed_conv_2d.cpp" />
     <ClCompile Include="..\..\src\proto\caffe.pb.cc" />

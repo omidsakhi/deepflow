@@ -37,6 +37,7 @@
 #include "nodes/psnr.h"
 #include "nodes/random_selector.h"
 #include "nodes/block.h"
+#include "nodes/reshape.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_reader.h"
@@ -158,6 +159,9 @@ std::shared_ptr<Node> Session::_create_node(const deepflow::NodeParam &node_para
 	}
 	else if (node_param.has_transposed_conv_2d_param()) {
 		return std::make_shared<TransposedConvolution2D>(node_param);
+	}
+	else if (node_param.has_reshape_param()) {
+		return std::make_shared<Reshape>(node_param);
 	}
 	else if (node_param.has_psnr_param()) {
 		return std::make_shared<Psnr>(node_param);

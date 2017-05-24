@@ -64,15 +64,15 @@ void main(int argc, char** argv) {
 			df.display(recon, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { train });
 			df.psnr(recon, image, Psnr::EVERY_PASS, "psnr", { train });
 		}
-		else if (FLAGS_x3) {
-			// NOT WORKING
+		else if (FLAGS_x3) {			
 			auto train = df.define_train_phase("Train");
 			auto solver = df.gain_solver(0.999f, 0.0001f, 100, 0.000000001f, 0.05f, 0.95f);
+			//auto solver = df.adadelta_solver(0.01f);
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE, "image");
 			auto recon = df.variable(df.step({ 1,3,256,256 }, 0, 1), solver, "recon");
-			auto f1 = df.variable(df.step({ 11,3,5,5 }, 0, 1), "", "w");
-			auto conv = df.conv2d(image, f1, "", 2, 2, 1, 1, 1, 1);
-			auto f2 = df.variable(df.step({ 3,11,5,5 }, 0, 1), "", "w");
+			auto f1 = df.data_generator(df.random_uniform({ 11,3,5,5 }, -1, 1), 11, "", "f1");
+			auto f2 = df.reshape(f1, { 3, 11, 5, 5 });			
+			auto conv = df.conv2d(image, f1, "", 2, 2, 1, 1, 1, 1);			
 			auto tconv = df.transposed_conv2d(recon, f2, 2, 2, 1, 1, 1, 1);
 			df.euclidean_loss(tconv, conv);
 			df.display(recon, 20, deepflow::DisplayParam_DisplayType_VALUES, "input", { train });

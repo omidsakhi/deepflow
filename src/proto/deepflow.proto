@@ -167,6 +167,10 @@ message PlaceHolderParam {
 	TensorParam tensor_param = 1;
 }
 
+message ReshapeParam {
+	TensorParam tensor_param = 1;
+}
+
 message VariableParam {	
 	InitParam init_param = 1;	
 	string solver_name = 2;
@@ -267,6 +271,7 @@ message NodeParam {
   PsnrParam psnr_param = 120;
   RandomSelectorParam random_selector_param = 121; 
   LoggerParam logger_param = 122;
+  ReshapeParam reshape_param = 123;
 }
 
 message SquareParam {

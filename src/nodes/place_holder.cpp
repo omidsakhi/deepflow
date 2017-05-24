@@ -45,7 +45,7 @@ void PlaceHolder::forward() {
 void PlaceHolder::backward() {
 	if (_inputs[0] && _inputs[0]->connectedNode()) {
 		LOG_IF(FATAL, _outputs[0]->diff()->sizeInBytes() != _inputs[0]->diff()->sizeInBytes()) << "Size mismatch.";
-		cpyAddDiff(_inputs[0]->value()->size(), _outputs[0]->diff()->data(), _inputs[0]->diff()->mutableData());		
+		cpy(_inputs[0]->value()->size(), 1, _outputs[0]->diff()->data(), 1, _inputs[0]->diff()->mutableData());		
 	}
 }
 

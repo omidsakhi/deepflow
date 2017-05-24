@@ -51,7 +51,7 @@ void BiasAdd::forward() {
 
 void BiasAdd::backward() {
 	if (_inputs[0]->connectedNode()->propagateBack()) {
-		cpyAddDiff(_inputs[0]->diff()->size(), _outputs[0]->diff()->data(), _inputs[0]->diff()->mutableData());		
+		cpy(_inputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 1, _inputs[0]->diff()->mutableData());		
 	}
 	if (_inputs[1]->connectedNode()->propagateBack()) {
 		auto outputDims = _outputs[0]->diff()->dims();
