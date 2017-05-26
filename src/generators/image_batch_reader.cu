@@ -110,10 +110,10 @@ bool ImageBatchReader::isLastBatch() {
 
 std::string ImageBatchReader::to_cpp() const
 {
-	auto image_reader_param = _param.generator_param().image_reader_param();
-	auto file_name = image_reader_param.file_name();
-	auto type = image_reader_param.type();
-	std::string cpp = "auto " + _name + " = df.image_batch_reader(\"" + file_name + "\", ";
+	auto image_batch_reader_param = _param.generator_param().image_batch_reader_param();
+	auto folder_path = image_batch_reader_param.folder_path();	
+	auto type = image_batch_reader_param.tensor_param().type();
+	std::string cpp = "auto " + _name + " = df.image_batch_reader(\"" + folder_path + "\", ";
 	if (type == deepflow::ImageReaderParam_Type_GRAY_ONLY)
 		cpp += "ImageReaderParam_Type_GRAY_ONLY, ";
 	else

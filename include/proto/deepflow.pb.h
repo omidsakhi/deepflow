@@ -3337,15 +3337,6 @@ class GeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_
   ::deepflow::DataGeneratorParam* release_data_generator_param();
   void set_allocated_data_generator_param(::deepflow::DataGeneratorParam* data_generator_param);
 
-  // .deepflow.ImageReaderParam image_reader_param = 3;
-  bool has_image_reader_param() const;
-  void clear_image_reader_param();
-  static const int kImageReaderParamFieldNumber = 3;
-  const ::deepflow::ImageReaderParam& image_reader_param() const;
-  ::deepflow::ImageReaderParam* mutable_image_reader_param();
-  ::deepflow::ImageReaderParam* release_image_reader_param();
-  void set_allocated_image_reader_param(::deepflow::ImageReaderParam* image_reader_param);
-
   // .deepflow.ImageBatchReaderParam image_batch_reader_param = 4;
   bool has_image_batch_reader_param() const;
   void clear_image_batch_reader_param();
@@ -3361,7 +3352,6 @@ class GeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::deepflow::MnistParam* mnist_param_;
   ::deepflow::DataGeneratorParam* data_generator_param_;
-  ::deepflow::ImageReaderParam* image_reader_param_;
   ::deepflow::ImageBatchReaderParam* image_batch_reader_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
@@ -3998,6 +3988,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::ReshapeParam* release_reshape_param();
   void set_allocated_reshape_param(::deepflow::ReshapeParam* reshape_param);
 
+  // .deepflow.ImageReaderParam image_reader_param = 124;
+  bool has_image_reader_param() const;
+  void clear_image_reader_param();
+  static const int kImageReaderParamFieldNumber = 124;
+  const ::deepflow::ImageReaderParam& image_reader_param() const;
+  ::deepflow::ImageReaderParam* mutable_image_reader_param();
+  ::deepflow::ImageReaderParam* release_image_reader_param();
+  void set_allocated_image_reader_param(::deepflow::ImageReaderParam* image_reader_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -4033,6 +4032,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::RandomSelectorParam* random_selector_param_;
   ::deepflow::LoggerParam* logger_param_;
   ::deepflow::ReshapeParam* reshape_param_;
+  ::deepflow::ImageReaderParam* image_reader_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -7337,45 +7337,6 @@ inline void GeneratorParam::set_allocated_data_generator_param(::deepflow::DataG
   // @@protoc_insertion_point(field_set_allocated:deepflow.GeneratorParam.data_generator_param)
 }
 
-// .deepflow.ImageReaderParam image_reader_param = 3;
-inline bool GeneratorParam::has_image_reader_param() const {
-  return this != internal_default_instance() && image_reader_param_ != NULL;
-}
-inline void GeneratorParam::clear_image_reader_param() {
-  if (GetArenaNoVirtual() == NULL && image_reader_param_ != NULL) delete image_reader_param_;
-  image_reader_param_ = NULL;
-}
-inline const ::deepflow::ImageReaderParam& GeneratorParam::image_reader_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.GeneratorParam.image_reader_param)
-  return image_reader_param_ != NULL ? *image_reader_param_
-                         : *::deepflow::ImageReaderParam::internal_default_instance();
-}
-inline ::deepflow::ImageReaderParam* GeneratorParam::mutable_image_reader_param() {
-  
-  if (image_reader_param_ == NULL) {
-    image_reader_param_ = new ::deepflow::ImageReaderParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.GeneratorParam.image_reader_param)
-  return image_reader_param_;
-}
-inline ::deepflow::ImageReaderParam* GeneratorParam::release_image_reader_param() {
-  // @@protoc_insertion_point(field_release:deepflow.GeneratorParam.image_reader_param)
-  
-  ::deepflow::ImageReaderParam* temp = image_reader_param_;
-  image_reader_param_ = NULL;
-  return temp;
-}
-inline void GeneratorParam::set_allocated_image_reader_param(::deepflow::ImageReaderParam* image_reader_param) {
-  delete image_reader_param_;
-  image_reader_param_ = image_reader_param;
-  if (image_reader_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.GeneratorParam.image_reader_param)
-}
-
 // .deepflow.ImageBatchReaderParam image_batch_reader_param = 4;
 inline bool GeneratorParam::has_image_batch_reader_param() const {
   return this != internal_default_instance() && image_batch_reader_param_ != NULL;
@@ -8825,6 +8786,45 @@ inline void NodeParam::set_allocated_reshape_param(::deepflow::ReshapeParam* res
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.reshape_param)
+}
+
+// .deepflow.ImageReaderParam image_reader_param = 124;
+inline bool NodeParam::has_image_reader_param() const {
+  return this != internal_default_instance() && image_reader_param_ != NULL;
+}
+inline void NodeParam::clear_image_reader_param() {
+  if (GetArenaNoVirtual() == NULL && image_reader_param_ != NULL) delete image_reader_param_;
+  image_reader_param_ = NULL;
+}
+inline const ::deepflow::ImageReaderParam& NodeParam::image_reader_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.image_reader_param)
+  return image_reader_param_ != NULL ? *image_reader_param_
+                         : *::deepflow::ImageReaderParam::internal_default_instance();
+}
+inline ::deepflow::ImageReaderParam* NodeParam::mutable_image_reader_param() {
+  
+  if (image_reader_param_ == NULL) {
+    image_reader_param_ = new ::deepflow::ImageReaderParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.image_reader_param)
+  return image_reader_param_;
+}
+inline ::deepflow::ImageReaderParam* NodeParam::release_image_reader_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.image_reader_param)
+  
+  ::deepflow::ImageReaderParam* temp = image_reader_param_;
+  image_reader_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_image_reader_param(::deepflow::ImageReaderParam* image_reader_param) {
+  delete image_reader_param_;
+  image_reader_param_ = image_reader_param;
+  if (image_reader_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.image_reader_param)
 }
 
 // -------------------------------------------------------------------

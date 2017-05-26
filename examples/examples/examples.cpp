@@ -85,8 +85,8 @@ void main(int argc, char** argv) {
 			auto generator2 = df.data_generator(df.random_normal({ 1, 3, 256, 256 }, 0, 0.1), 1, solver, "gen2");
 			auto selector = df.random_selector(generator1, generator2, 0.5);
 			df.euclidean_loss(selector, image);
-			df.display(generator1, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "approx1", { train });
-			df.display(generator2, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "approx2", { train });
+			df.display(generator1, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "approx1", { train });
+			df.display(generator2, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "approx2", { train });
 		}
 		else if (FLAGS_x5) {
 			auto train = df.define_train_phase("Train");

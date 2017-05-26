@@ -58,9 +58,8 @@ std::string DeepFlow::image_reader(std::string file_path, deepflow::ImageReaderP
 	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		node_param->add_phase(phase);
-	auto generator_param = node_param->mutable_generator_param();
-	auto image_reader_param = generator_param->mutable_image_reader_param();
+		node_param->add_phase(phase);	
+	auto image_reader_param = node_param->mutable_image_reader_param();
 	image_reader_param->set_file_name(file_path);
 	image_reader_param->set_type(type);	
 	return node_param->output(0);

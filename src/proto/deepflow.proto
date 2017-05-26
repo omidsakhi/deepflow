@@ -198,8 +198,7 @@ message ImageReaderParam {
 
 message GeneratorParam {	
 	MnistParam mnist_param = 1;
-	DataGeneratorParam data_generator_param = 2;
-	ImageReaderParam image_reader_param = 3;
+	DataGeneratorParam data_generator_param = 2;	
 	ImageBatchReaderParam image_batch_reader_param = 4;
 }
 
@@ -256,6 +255,7 @@ message NodeParam {
   RandomSelectorParam random_selector_param = 121; 
   LoggerParam logger_param = 122;
   ReshapeParam reshape_param = 123;
+  ImageReaderParam image_reader_param = 124;
 }
 
 message SquareParam {

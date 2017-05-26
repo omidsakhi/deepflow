@@ -98,15 +98,14 @@ std::shared_ptr<Node> Session::_create_node(const deepflow::NodeParam &node_para
 			std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
 			return std::make_shared<DataGenerator>(initializer, node_param);
 		}
-		else if (generator_param.has_image_reader_param()) {
-			return std::make_shared<ImageReader>(node_param);
-		}
 		else if (generator_param.has_image_batch_reader_param()) {
 			return std::make_shared<ImageBatchReader>(node_param);
 		}
 		else
 			LOG(FATAL) << "Unsupported Generator";
 	}
+	else if (node_param.has_image_reader_param())
+		return std::make_shared<ImageReader>(node_param);
 	else if (node_param.has_add_param())
 		return std::make_shared<Add>(node_param);
 	else if (node_param.has_bias_add_param())
@@ -317,7 +316,7 @@ std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string
 
 void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration) {
 	int iteration_per_epoch = 1;
-	bool any_last_batch = false;	
+	bool last_batch = false;	
 	for (auto node : *nodes)
 		node->setExecutionContext(context);
 	bool train = _phases.find(context->phase)->second == deepflow::PhaseParam_PhaseBehaviour_TRAIN;
@@ -329,14 +328,19 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 		}
 	}
 	do {
-		for (auto gen : *generators) {
-			if (gen->isLastBatch())
-				any_last_batch = true;
-		}		
+		if (generators->size() > 0) {
+			for (auto gen : *generators) {
+				if (gen->isLastBatch())
+					last_batch = true;
+			}
+		}
+		else {
+			last_batch = true;
+		}
 		if (iteration)
 			context->current_iteration = *iteration;
 		context->current_iteration_per_epoch = iteration_per_epoch;
-		context->last_batch = any_last_batch;
+		context->last_batch = last_batch;
 		if (iteration && print_iteration)
 			std::cout << "  Iteration " << *iteration << std::endl;
 		for (auto node : *end_nodes) {
@@ -364,14 +368,13 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 		iteration_per_epoch++;
 		if (max_iter > 0 && iteration && (*iteration) >= max_iter)
 			break;
-	} while (any_last_batch == false && context->quit != true);
+	} while (last_batch == false && context->quit != true);
 }
 
 void Session::run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level) {
 	LOG(INFO) << "Executing graph for phase " << phase;
 	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";	
-	std::list<std::shared_ptr<Generator>> execution_phase_generators = _get_nodes<Generator>(phase);
-	LOG_IF(FATAL, execution_phase_generators.size() == 0) << "No generator is defined for phase " << phase;
+	std::list<std::shared_ptr<Generator>> execution_phase_generators = _get_nodes<Generator>(phase);	
 	std::list<std::shared_ptr<Node>> execution_end_nodes = _get_end_nodes(phase);
 	std::string end_node_names;
 	for (auto node : execution_end_nodes) {
@@ -407,7 +410,7 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 		}
 		int iteration = 1;
 		for (int epoch = 1; epoch <= max_epoch; ++epoch) {
-			if (print_epoch)
+			if (print_epoch) 
 				std::cout << "Epoch " << epoch << " -->" << std::endl;
 			auto epoch_start = std::chrono::high_resolution_clock::now();
 			execution_context->current_epoch = epoch;

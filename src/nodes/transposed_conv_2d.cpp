@@ -32,11 +32,11 @@ void TransposedConvolution2D::initForward() {
 	int filter_w = filterDims[3];
 	int output_n = input_n;
 	int output_c = filter_c;
-	int output_h = (input_h - 1) * u - 2 * pad_h + filter_h;
-	int output_w = (input_w - 1) * v - 2 * pad_w + filter_w;
+	int output_h = (input_h - 1) * u - 2 * pad_h + ((filter_h - 1) * dilation_h) + 1;
+	int output_w = (input_w - 1) * v - 2 * pad_w + ((filter_w - 1) * dilation_w) + 1;
 	_outputs[0]->initValue({ output_n, output_c, output_h, output_w });
 	_outputs[0]->initDiff();	
-	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
+	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));		
 	DF_CUDNN_CHECK(cudnnCreateFilterDescriptor(&_wDesc));	
 	auto filterValueTensor = _inputs[1]->value();	
 	DF_CUDNN_CHECK(cudnnSetFilter4dDescriptor(_wDesc, CUDNN_DATA_FLOAT, CUDNN_TENSOR_NCHW, filter_n, filter_c, filter_h, filter_w));

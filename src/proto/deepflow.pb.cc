@@ -309,7 +309,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, mnist_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, data_generator_param_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, image_reader_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeneratorParam, image_batch_reader_param_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MnistParam, _internal_metadata_),
@@ -358,6 +357,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, random_selector_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, logger_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, reshape_param_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, image_reader_param_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SquareParam, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -500,9 +500,9 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 163, -1, sizeof(ImageBatchReaderParam)},
   { 169, -1, sizeof(ImageReaderParam)},
   { 175, -1, sizeof(GeneratorParam)},
-  { 183, -1, sizeof(MnistParam)},
-  { 191, -1, sizeof(CastFloatParam)},
-  { 195, -1, sizeof(NodeParam)},
+  { 182, -1, sizeof(MnistParam)},
+  { 190, -1, sizeof(CastFloatParam)},
+  { 194, -1, sizeof(NodeParam)},
   { 230, -1, sizeof(SquareParam)},
   { 234, -1, sizeof(EuclideanLossParam)},
   { 238, -1, sizeof(SoftmaxLossParam)},
@@ -769,8 +769,6 @@ void TableStruct::InitDefaultsImpl() {
       ::deepflow::MnistParam::internal_default_instance());
   _GeneratorParam_default_instance_.get_mutable()->data_generator_param_ = const_cast< ::deepflow::DataGeneratorParam*>(
       ::deepflow::DataGeneratorParam::internal_default_instance());
-  _GeneratorParam_default_instance_.get_mutable()->image_reader_param_ = const_cast< ::deepflow::ImageReaderParam*>(
-      ::deepflow::ImageReaderParam::internal_default_instance());
   _GeneratorParam_default_instance_.get_mutable()->image_batch_reader_param_ = const_cast< ::deepflow::ImageBatchReaderParam*>(
       ::deepflow::ImageBatchReaderParam::internal_default_instance());
   _NodeParam_default_instance_.get_mutable()->block_param_ = const_cast< ::deepflow::BlockParam*>(
@@ -827,6 +825,8 @@ void TableStruct::InitDefaultsImpl() {
       ::deepflow::LoggerParam::internal_default_instance());
   _NodeParam_default_instance_.get_mutable()->reshape_param_ = const_cast< ::deepflow::ReshapeParam*>(
       ::deepflow::ReshapeParam::internal_default_instance());
+  _NodeParam_default_instance_.get_mutable()->image_reader_param_ = const_cast< ::deepflow::ImageReaderParam*>(
+      ::deepflow::ImageReaderParam::internal_default_instance());
   _InitParam_default_instance_.get_mutable()->tensor_param_ = const_cast< ::deepflow::TensorParam*>(
       ::deepflow::TensorParam::internal_default_instance());
   _InitParam_default_instance_.get_mutable()->init_data_ = const_cast< ::deepflow::TensorData*>(
@@ -923,54 +923,54 @@ void AddDescriptorsImpl() {
       "aram\"\203\001\n\020ImageReaderParam\022\021\n\tfile_name\030\001"
       " \001(\t\022-\n\004type\030\002 \001(\0162\037.deepflow.ImageReade"
       "rParam.Type\"-\n\004Type\022\r\n\tGRAY_ONLY\020\000\022\026\n\022CO"
-      "LOR_IF_AVAILABLE\020\001\"\362\001\n\016GeneratorParam\022)\n"
+      "LOR_IF_AVAILABLE\020\001\"\272\001\n\016GeneratorParam\022)\n"
       "\013mnist_param\030\001 \001(\0132\024.deepflow.MnistParam"
       "\022:\n\024data_generator_param\030\002 \001(\0132\034.deepflo"
-      "w.DataGeneratorParam\0226\n\022image_reader_par"
-      "am\030\003 \001(\0132\032.deepflow.ImageReaderParam\022A\n\030"
-      "image_batch_reader_param\030\004 \001(\0132\037.deepflo"
-      "w.ImageBatchReaderParam\"\350\001\n\nMnistParam\022\023"
-      "\n\013folder_path\030\001 \001(\t\0224\n\013reader_type\030\002 \001(\016"
-      "2\037.deepflow.MnistParam.ReaderType\0224\n\013out"
-      "put_type\030\003 \001(\0162\037.deepflow.MnistParam.Out"
-      "putType\022\022\n\nbatch_size\030\004 \001(\005\"!\n\nReaderTyp"
-      "e\022\t\n\005TRAIN\020\000\022\010\n\004TEST\020\001\"\"\n\nOutputType\022\010\n\004"
-      "DATA\020\000\022\n\n\006LABELS\020\001\"\020\n\016CastFloatParam\"\346\n\n"
-      "\tNodeParam\022\014\n\004name\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022"
-      "\016\n\006output\030\003 \003(\t\022\r\n\005phase\030\004 \003(\t\022)\n\013block_"
-      "param\030\005 \001(\0132\024.deepflow.BlockParam\022\'\n\nlos"
-      "s_param\0302 \001(\0132\023.deepflow.LossParam\0221\n\017ge"
-      "nerator_param\0303 \001(\0132\030.deepflow.Generator"
-      "Param\022/\n\016variable_param\030d \001(\0132\027.deepflow"
-      ".VariableParam\0226\n\022place_holder_param\030e \001"
-      "(\0132\032.deepflow.PlaceHolderParam\0225\n\021phasep"
-      "lexer_param\030f \001(\0132\032.deepflow.Phaseplexer"
-      "Param\022%\n\tadd_param\030g \001(\0132\022.deepflow.AddP"
-      "aram\022.\n\016bias_add_param\030h \001(\0132\026.deepflow."
-      "BiasAddParam\022,\n\rconv_2d_param\030i \001(\0132\025.de"
-      "epflow.Conv2dParam\022A\n\030transposed_conv_2d"
-      "_param\030j \001(\0132\037.deepflow.TransposedConv2d"
-      "Param\022-\n\rdropout_param\030k \001(\0132\026.deepflow."
-      "DropoutParam\0222\n\020leaky_relu_param\030l \001(\0132\030"
-      ".deepflow.LeakyReluParam\022-\n\rsoftmax_para"
-      "m\030m \001(\0132\026.deepflow.SoftmaxParam\022+\n\014squar"
-      "e_param\030n \001(\0132\025.deepflow.SquareParam\022+\n\014"
-      "matmul_param\030o \001(\0132\025.deepflow.MatMulPara"
-      "m\022-\n\rpooling_param\030p \001(\0132\026.deepflow.Pool"
-      "ingParam\022+\n\014reduce_param\030q \001(\0132\025.deepflo"
-      "w.ReduceParam\022)\n\013equal_param\030r \001(\0132\024.dee"
-      "pflow.EqualParam\022)\n\013print_param\030s \001(\0132\024."
-      "deepflow.PrintParam\0222\n\020cast_float_param\030"
-      "t \001(\0132\030.deepflow.CastFloatParam\0225\n\021accum"
-      "ulator_param\030u \001(\0132\032.deepflow.Accumulato"
-      "rParam\022-\n\rdisplay_param\030v \001(\0132\026.deepflow"
-      ".DisplayParam\0223\n\020activation_param\030w \001(\0132"
-      "\031.deepflow.ActivationParam\022\'\n\npsnr_param"
-      "\030x \001(\0132\023.deepflow.PsnrParam\022<\n\025random_se"
-      "lector_param\030y \001(\0132\035.deepflow.RandomSele"
-      "ctorParam\022+\n\014logger_param\030z \001(\0132\025.deepfl"
-      "ow.LoggerParam\022-\n\rreshape_param\030{ \001(\0132\026."
-      "deepflow.ReshapeParam\"\r\n\013SquareParam\"\024\n\022"
+      "w.DataGeneratorParam\022A\n\030image_batch_read"
+      "er_param\030\004 \001(\0132\037.deepflow.ImageBatchRead"
+      "erParam\"\350\001\n\nMnistParam\022\023\n\013folder_path\030\001 "
+      "\001(\t\0224\n\013reader_type\030\002 \001(\0162\037.deepflow.Mnis"
+      "tParam.ReaderType\0224\n\013output_type\030\003 \001(\0162\037"
+      ".deepflow.MnistParam.OutputType\022\022\n\nbatch"
+      "_size\030\004 \001(\005\"!\n\nReaderType\022\t\n\005TRAIN\020\000\022\010\n\004"
+      "TEST\020\001\"\"\n\nOutputType\022\010\n\004DATA\020\000\022\n\n\006LABELS"
+      "\020\001\"\020\n\016CastFloatParam\"\236\013\n\tNodeParam\022\014\n\004na"
+      "me\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022\016\n\006output\030\003 \003(\t\022"
+      "\r\n\005phase\030\004 \003(\t\022)\n\013block_param\030\005 \001(\0132\024.de"
+      "epflow.BlockParam\022\'\n\nloss_param\0302 \001(\0132\023."
+      "deepflow.LossParam\0221\n\017generator_param\0303 "
+      "\001(\0132\030.deepflow.GeneratorParam\022/\n\016variabl"
+      "e_param\030d \001(\0132\027.deepflow.VariableParam\0226"
+      "\n\022place_holder_param\030e \001(\0132\032.deepflow.Pl"
+      "aceHolderParam\0225\n\021phaseplexer_param\030f \001("
+      "\0132\032.deepflow.PhaseplexerParam\022%\n\tadd_par"
+      "am\030g \001(\0132\022.deepflow.AddParam\022.\n\016bias_add"
+      "_param\030h \001(\0132\026.deepflow.BiasAddParam\022,\n\r"
+      "conv_2d_param\030i \001(\0132\025.deepflow.Conv2dPar"
+      "am\022A\n\030transposed_conv_2d_param\030j \001(\0132\037.d"
+      "eepflow.TransposedConv2dParam\022-\n\rdropout"
+      "_param\030k \001(\0132\026.deepflow.DropoutParam\0222\n\020"
+      "leaky_relu_param\030l \001(\0132\030.deepflow.LeakyR"
+      "eluParam\022-\n\rsoftmax_param\030m \001(\0132\026.deepfl"
+      "ow.SoftmaxParam\022+\n\014square_param\030n \001(\0132\025."
+      "deepflow.SquareParam\022+\n\014matmul_param\030o \001"
+      "(\0132\025.deepflow.MatMulParam\022-\n\rpooling_par"
+      "am\030p \001(\0132\026.deepflow.PoolingParam\022+\n\014redu"
+      "ce_param\030q \001(\0132\025.deepflow.ReduceParam\022)\n"
+      "\013equal_param\030r \001(\0132\024.deepflow.EqualParam"
+      "\022)\n\013print_param\030s \001(\0132\024.deepflow.PrintPa"
+      "ram\0222\n\020cast_float_param\030t \001(\0132\030.deepflow"
+      ".CastFloatParam\0225\n\021accumulator_param\030u \001"
+      "(\0132\032.deepflow.AccumulatorParam\022-\n\rdispla"
+      "y_param\030v \001(\0132\026.deepflow.DisplayParam\0223\n"
+      "\020activation_param\030w \001(\0132\031.deepflow.Activ"
+      "ationParam\022\'\n\npsnr_param\030x \001(\0132\023.deepflo"
+      "w.PsnrParam\022<\n\025random_selector_param\030y \001"
+      "(\0132\035.deepflow.RandomSelectorParam\022+\n\014log"
+      "ger_param\030z \001(\0132\025.deepflow.LoggerParam\022-"
+      "\n\rreshape_param\030{ \001(\0132\026.deepflow.Reshape"
+      "Param\0226\n\022image_reader_param\030| \001(\0132\032.deep"
+      "flow.ImageReaderParam\"\r\n\013SquareParam\"\024\n\022"
       "EuclideanLossParam\"\022\n\020SoftmaxLossParam\"\016"
       "\n\014SoftmaxParam\"\036\n\rInitFillParam\022\r\n\005value"
       "\030\001 \001(\002\"$\n\022InitIndexFillParam\022\016\n\006offset\030\001"
@@ -10189,7 +10189,6 @@ void ImageReaderParam::set_type(::deepflow::ImageReaderParam_Type value) {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int GeneratorParam::kMnistParamFieldNumber;
 const int GeneratorParam::kDataGeneratorParamFieldNumber;
-const int GeneratorParam::kImageReaderParamFieldNumber;
 const int GeneratorParam::kImageBatchReaderParamFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -10216,11 +10215,6 @@ GeneratorParam::GeneratorParam(const GeneratorParam& from)
   } else {
     data_generator_param_ = NULL;
   }
-  if (from.has_image_reader_param()) {
-    image_reader_param_ = new ::deepflow::ImageReaderParam(*from.image_reader_param_);
-  } else {
-    image_reader_param_ = NULL;
-  }
   if (from.has_image_batch_reader_param()) {
     image_batch_reader_param_ = new ::deepflow::ImageBatchReaderParam(*from.image_batch_reader_param_);
   } else {
@@ -10246,9 +10240,6 @@ void GeneratorParam::SharedDtor() {
   }
   if (this != internal_default_instance()) {
     delete data_generator_param_;
-  }
-  if (this != internal_default_instance()) {
-    delete image_reader_param_;
   }
   if (this != internal_default_instance()) {
     delete image_batch_reader_param_;
@@ -10288,10 +10279,6 @@ void GeneratorParam::Clear() {
     delete data_generator_param_;
   }
   data_generator_param_ = NULL;
-  if (GetArenaNoVirtual() == NULL && image_reader_param_ != NULL) {
-    delete image_reader_param_;
-  }
-  image_reader_param_ = NULL;
   if (GetArenaNoVirtual() == NULL && image_batch_reader_param_ != NULL) {
     delete image_batch_reader_param_;
   }
@@ -10326,18 +10313,6 @@ bool GeneratorParam::MergePartialFromCodedStream(
             static_cast< ::google::protobuf::uint8>(18u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_data_generator_param()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .deepflow.ImageReaderParam image_reader_param = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_image_reader_param()));
         } else {
           goto handle_unusual;
         }
@@ -10392,12 +10367,6 @@ void GeneratorParam::SerializeWithCachedSizes(
       2, *this->data_generator_param_, output);
   }
 
-  // .deepflow.ImageReaderParam image_reader_param = 3;
-  if (this->has_image_reader_param()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, *this->image_reader_param_, output);
-  }
-
   // .deepflow.ImageBatchReaderParam image_batch_reader_param = 4;
   if (this->has_image_batch_reader_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -10423,13 +10392,6 @@ void GeneratorParam::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         2, *this->data_generator_param_, false, target);
-  }
-
-  // .deepflow.ImageReaderParam image_reader_param = 3;
-  if (this->has_image_reader_param()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageNoVirtualToArray(
-        3, *this->image_reader_param_, false, target);
   }
 
   // .deepflow.ImageBatchReaderParam image_batch_reader_param = 4;
@@ -10459,13 +10421,6 @@ size_t GeneratorParam::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->data_generator_param_);
-  }
-
-  // .deepflow.ImageReaderParam image_reader_param = 3;
-  if (this->has_image_reader_param()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->image_reader_param_);
   }
 
   // .deepflow.ImageBatchReaderParam image_batch_reader_param = 4;
@@ -10507,9 +10462,6 @@ void GeneratorParam::MergeFrom(const GeneratorParam& from) {
   if (from.has_data_generator_param()) {
     mutable_data_generator_param()->::deepflow::DataGeneratorParam::MergeFrom(from.data_generator_param());
   }
-  if (from.has_image_reader_param()) {
-    mutable_image_reader_param()->::deepflow::ImageReaderParam::MergeFrom(from.image_reader_param());
-  }
   if (from.has_image_batch_reader_param()) {
     mutable_image_batch_reader_param()->::deepflow::ImageBatchReaderParam::MergeFrom(from.image_batch_reader_param());
   }
@@ -10540,7 +10492,6 @@ void GeneratorParam::Swap(GeneratorParam* other) {
 void GeneratorParam::InternalSwap(GeneratorParam* other) {
   std::swap(mnist_param_, other->mnist_param_);
   std::swap(data_generator_param_, other->data_generator_param_);
-  std::swap(image_reader_param_, other->image_reader_param_);
   std::swap(image_batch_reader_param_, other->image_batch_reader_param_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -10629,45 +10580,6 @@ void GeneratorParam::set_allocated_data_generator_param(::deepflow::DataGenerato
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.GeneratorParam.data_generator_param)
-}
-
-// .deepflow.ImageReaderParam image_reader_param = 3;
-bool GeneratorParam::has_image_reader_param() const {
-  return this != internal_default_instance() && image_reader_param_ != NULL;
-}
-void GeneratorParam::clear_image_reader_param() {
-  if (GetArenaNoVirtual() == NULL && image_reader_param_ != NULL) delete image_reader_param_;
-  image_reader_param_ = NULL;
-}
-const ::deepflow::ImageReaderParam& GeneratorParam::image_reader_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.GeneratorParam.image_reader_param)
-  return image_reader_param_ != NULL ? *image_reader_param_
-                         : *::deepflow::ImageReaderParam::internal_default_instance();
-}
-::deepflow::ImageReaderParam* GeneratorParam::mutable_image_reader_param() {
-  
-  if (image_reader_param_ == NULL) {
-    image_reader_param_ = new ::deepflow::ImageReaderParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.GeneratorParam.image_reader_param)
-  return image_reader_param_;
-}
-::deepflow::ImageReaderParam* GeneratorParam::release_image_reader_param() {
-  // @@protoc_insertion_point(field_release:deepflow.GeneratorParam.image_reader_param)
-  
-  ::deepflow::ImageReaderParam* temp = image_reader_param_;
-  image_reader_param_ = NULL;
-  return temp;
-}
-void GeneratorParam::set_allocated_image_reader_param(::deepflow::ImageReaderParam* image_reader_param) {
-  delete image_reader_param_;
-  image_reader_param_ = image_reader_param;
-  if (image_reader_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.GeneratorParam.image_reader_param)
 }
 
 // .deepflow.ImageBatchReaderParam image_batch_reader_param = 4;
@@ -11356,6 +11268,7 @@ const int NodeParam::kPsnrParamFieldNumber;
 const int NodeParam::kRandomSelectorParamFieldNumber;
 const int NodeParam::kLoggerParamFieldNumber;
 const int NodeParam::kReshapeParamFieldNumber;
+const int NodeParam::kImageReaderParamFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 NodeParam::NodeParam()
@@ -11513,13 +11426,18 @@ NodeParam::NodeParam(const NodeParam& from)
   } else {
     reshape_param_ = NULL;
   }
+  if (from.has_image_reader_param()) {
+    image_reader_param_ = new ::deepflow::ImageReaderParam(*from.image_reader_param_);
+  } else {
+    image_reader_param_ = NULL;
+  }
   // @@protoc_insertion_point(copy_constructor:deepflow.NodeParam)
 }
 
 void NodeParam::SharedCtor() {
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&block_param_, 0, reinterpret_cast<char*>(&reshape_param_) -
-    reinterpret_cast<char*>(&block_param_) + sizeof(reshape_param_));
+  ::memset(&block_param_, 0, reinterpret_cast<char*>(&image_reader_param_) -
+    reinterpret_cast<char*>(&block_param_) + sizeof(image_reader_param_));
   _cached_size_ = 0;
 }
 
@@ -11610,6 +11528,9 @@ void NodeParam::SharedDtor() {
   }
   if (this != internal_default_instance()) {
     delete reshape_param_;
+  }
+  if (this != internal_default_instance()) {
+    delete image_reader_param_;
   }
 }
 
@@ -11750,6 +11671,10 @@ void NodeParam::Clear() {
     delete reshape_param_;
   }
   reshape_param_ = NULL;
+  if (GetArenaNoVirtual() == NULL && image_reader_param_ != NULL) {
+    delete image_reader_param_;
+  }
+  image_reader_param_ = NULL;
 }
 
 bool NodeParam::MergePartialFromCodedStream(
@@ -12153,6 +12078,18 @@ bool NodeParam::MergePartialFromCodedStream(
         break;
       }
 
+      // .deepflow.ImageReaderParam image_reader_param = 124;
+      case 124: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(994u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_image_reader_param()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -12377,6 +12314,12 @@ void NodeParam::SerializeWithCachedSizes(
   if (this->has_reshape_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       123, *this->reshape_param_, output);
+  }
+
+  // .deepflow.ImageReaderParam image_reader_param = 124;
+  if (this->has_image_reader_param()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      124, *this->image_reader_param_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:deepflow.NodeParam)
@@ -12616,6 +12559,13 @@ void NodeParam::SerializeWithCachedSizes(
         123, *this->reshape_param_, false, target);
   }
 
+  // .deepflow.ImageReaderParam image_reader_param = 124;
+  if (this->has_image_reader_param()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        124, *this->image_reader_param_, false, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.NodeParam)
   return target;
 }
@@ -12844,6 +12794,13 @@ size_t NodeParam::ByteSizeLong() const {
         *this->reshape_param_);
   }
 
+  // .deepflow.ImageReaderParam image_reader_param = 124;
+  if (this->has_image_reader_param()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->image_reader_param_);
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -12958,6 +12915,9 @@ void NodeParam::MergeFrom(const NodeParam& from) {
   if (from.has_reshape_param()) {
     mutable_reshape_param()->::deepflow::ReshapeParam::MergeFrom(from.reshape_param());
   }
+  if (from.has_image_reader_param()) {
+    mutable_image_reader_param()->::deepflow::ImageReaderParam::MergeFrom(from.image_reader_param());
+  }
 }
 
 void NodeParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -13014,6 +12974,7 @@ void NodeParam::InternalSwap(NodeParam* other) {
   std::swap(random_selector_param_, other->random_selector_param_);
   std::swap(logger_param_, other->logger_param_);
   std::swap(reshape_param_, other->reshape_param_);
+  std::swap(image_reader_param_, other->image_reader_param_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -14329,6 +14290,45 @@ void NodeParam::set_allocated_reshape_param(::deepflow::ReshapeParam* reshape_pa
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.reshape_param)
+}
+
+// .deepflow.ImageReaderParam image_reader_param = 124;
+bool NodeParam::has_image_reader_param() const {
+  return this != internal_default_instance() && image_reader_param_ != NULL;
+}
+void NodeParam::clear_image_reader_param() {
+  if (GetArenaNoVirtual() == NULL && image_reader_param_ != NULL) delete image_reader_param_;
+  image_reader_param_ = NULL;
+}
+const ::deepflow::ImageReaderParam& NodeParam::image_reader_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.image_reader_param)
+  return image_reader_param_ != NULL ? *image_reader_param_
+                         : *::deepflow::ImageReaderParam::internal_default_instance();
+}
+::deepflow::ImageReaderParam* NodeParam::mutable_image_reader_param() {
+  
+  if (image_reader_param_ == NULL) {
+    image_reader_param_ = new ::deepflow::ImageReaderParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.image_reader_param)
+  return image_reader_param_;
+}
+::deepflow::ImageReaderParam* NodeParam::release_image_reader_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.image_reader_param)
+  
+  ::deepflow::ImageReaderParam* temp = image_reader_param_;
+  image_reader_param_ = NULL;
+  return temp;
+}
+void NodeParam::set_allocated_image_reader_param(::deepflow::ImageReaderParam* image_reader_param) {
+  delete image_reader_param_;
+  image_reader_param_ = image_reader_param;
+  if (image_reader_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.image_reader_param)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

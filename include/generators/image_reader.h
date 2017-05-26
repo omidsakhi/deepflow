@@ -11,7 +11,7 @@ class Initializer;
 
 #include <opencv2/opencv.hpp>
 
-class DeepFlowDllExport ImageReader : public Generator, public Node {
+class DeepFlowDllExport ImageReader : public Node {
 public:
 	enum ColorType {
 		GRAY_ONLY,
@@ -19,15 +19,12 @@ public:
 	};
 	ImageReader(const deepflow::NodeParam &param);
 	int minNumInputs() { return 0; }
-	int minNumOutputs() { return 1; }
-	void nextBatch();
+	int minNumOutputs() { return 1; }	
 	void initForward();
-	void initBackward() {}
-	bool isLastBatch();
+	void initBackward() {}	
 	std::string to_cpp() const;
 	ForwardType forwardType() { return ALWAYS_FORWARD; }
 	BackwardType backwardType() { return NEVER_BACKWARD; }
-private:	
-	bool _last_batch = true;	
+private:		
 	cv::Mat img;
 };

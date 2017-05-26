@@ -25,16 +25,12 @@ void ConvertOpenCV3ImageKernel(const int n, const unsigned char *in, const int w
 }
 
 
-ImageReader::ImageReader(const deepflow::NodeParam &param) : Node(param), Generator(param) {
-	LOG_IF(FATAL, param.generator_param().has_image_reader_param() == false) << "param.generator_param().has_image_reader_param() == false";
-}
-
-void ImageReader::nextBatch() {
-
+ImageReader::ImageReader(const deepflow::NodeParam &param) : Node(param) {
+	LOG_IF(FATAL, param.has_image_reader_param() == false) << "param.generator_param().has_image_reader_param() == false";
 }
 
 void ImageReader::initForward() {
-	auto image_reader_param = _param.generator_param().image_reader_param();
+	auto image_reader_param = _param.image_reader_param();
 	auto file_name = image_reader_param.file_name();		
 	auto type = image_reader_param.type();
 	if (type == deepflow::ImageReaderParam_Type_GRAY_ONLY)
@@ -59,17 +55,12 @@ void ImageReader::initForward() {
 	else {
 		LOG(FATAL) << "Unsupported image.";
 	}
-	DF_CUDA_CHECK(cudaFree(d_img));
-	_last_batch = true;
-}
-
-bool ImageReader::isLastBatch() {
-	return _last_batch;
+	DF_CUDA_CHECK(cudaFree(d_img));	
 }
 
 std::string ImageReader::to_cpp() const
 {
-	auto image_reader_param = _param.generator_param().image_reader_param();
+	auto image_reader_param = _param.image_reader_param();
 	auto file_name = image_reader_param.file_name();
 	auto type = image_reader_param.type();	
 	std::string cpp = "auto " + _name + " = df.image_reader(\"" + file_name + "\", ";
