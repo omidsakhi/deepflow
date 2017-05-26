@@ -21,10 +21,11 @@ private:
 	cudnnConvolutionFwdAlgo_t _fwdAlgo;	
 	cudnnConvolutionBwdDataAlgo_t _bwdDataAlgo;
 	cudnnConvolutionBwdFilterAlgo_t _bwdFilterAlgo;
-	size_t _fwdWorkspaceSize;
-	size_t _bwdDataWorkspaceSize;	
-	size_t _maxWorkspaceSize;
-	size_t _bwdFilterWorkspaceSize;
+	size_t _fwdWorkspaceSize = 0;
+	size_t _bwdDataWorkspaceSize = 0;	
+	size_t _maxWorkspaceSize = 0;
+	size_t _bwdFilterWorkspaceSize = 0;
 	float *d_workspace;
+	float *_dy;
 
 };
