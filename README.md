@@ -12,10 +12,6 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 - Live weight/data display
 - Create C++ code from Deepflow model
 
-# In Progress
-
-- A method to convert Caffe models to Deeflow models
-
 # Requirments
 
 - NVIDIA Graphics Card
