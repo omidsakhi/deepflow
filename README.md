@@ -1,5 +1,8 @@
 # Deepflow
 
+#Status
+A work in progress. Not mature enough for a release but cool enough for poking around.
+
 # Features
 
 - Node base like Tensorflow
