@@ -17,13 +17,13 @@ DataGenerator::DataGenerator(std::shared_ptr<Initializer> initializer, const dee
 void DataGenerator::nextBatch() {
 	if (_no_solver) {
 		_initializer->apply(this);		
-		if (_current_batch >= _num_batches) {
-			_current_batch = 0;
+		_last_batch = (_current_batch >= (_num_batches - 1));
+		if (_last_batch) {
+			_current_batch = 0;			
 		}
-		else {
+		else {			
 			_current_batch++;
-		}
-		_last_batch = (_current_batch == (_num_batches - 1));
+		}		
 	}
 }
 
@@ -43,9 +43,7 @@ void DataGenerator::initForward() {
 		for (int i = 0; i < _outputs[0]->value()->size(); ++i)
 			_param.mutable_variable_param()->mutable_init_param()->mutable_init_data()->add_weight(0);
 		DF_CUDA_CHECK(cudaMemcpy(_param.mutable_variable_param()->mutable_init_param()->mutable_init_data()->mutable_weight()->mutable_data(), _outputs[0]->value()->data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToHost));
-	}
-
-	_last_batch = _no_solver ? false : true;
+	}	
 }
 
 void DataGenerator::initBackward() {

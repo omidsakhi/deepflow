@@ -20,7 +20,7 @@ public:
 	ForwardType forwardType() { return ALWAYS_FORWARD; }
 	BackwardType backwardType() { return ALWAYS_BACKWARD; }
 private:
-	int _current_batch = 1;
+	int _current_batch = 0;
 	int _num_total_samples = 0;
 	int _num_batches = 0;
 	int _batch_size = 0;

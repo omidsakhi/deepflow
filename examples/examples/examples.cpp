@@ -69,13 +69,13 @@ void main(int argc, char** argv) {
 			auto solver = df.adadelta_solver(0.05f);
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE, "image");
 			auto recon = df.variable(df.random_uniform({ 1,3,256,256 }, 0, 1), solver, "recon");			
-			auto f1 = df.data_generator(df.random_uniform({ 1,3,3,3 }, -1, 1), 1, "", "f1");
+			auto f1 = df.data_generator(df.random_uniform({ 1,3,3,3 }, -1, 1), 100, "", "f1");
 			auto f2 = df.reshape(f1, { 3, 1, 3, 3 });			
 			auto conv = df.conv2d(image, f1, "", 1, 1, 1, 1, 1, 1);			
 			auto tconv = df.transposed_conv2d(recon, f2, 1, 1, 1, 1, 1, 1);
 			df.euclidean_loss(tconv, conv);
-			df.display(recon, 5, DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, "input", { train });
-			df.psnr(recon, image, DeepFlow::EVERY_PASS, "psnr", { train });
+			df.display(recon, 2, DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, "input", { train });
+			df.psnr(recon, image, DeepFlow::END_OF_EPOCH, "psnr", { train });
 		}
 		else if (FLAGS_x4) {
 			auto train = df.define_train_phase("Train");			
