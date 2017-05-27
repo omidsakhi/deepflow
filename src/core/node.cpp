@@ -131,7 +131,7 @@ void Node::_forward() {
 		return;
 	_visited = true;
 	for (auto node : inputNodes())
-		node->_forward();
+		node->_forward();	
 	forward();
 }
 

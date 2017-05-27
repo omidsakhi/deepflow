@@ -186,6 +186,7 @@ message ActivationParam {
 message ImageBatchReaderParam {
 	string folder_path = 1;	
 	TensorParam tensor_param = 2;
+	bool randomize = 3;
 }
 
 message ImageReaderParam {

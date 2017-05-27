@@ -3121,12 +3121,19 @@ class ImageBatchReaderParam : public ::google::protobuf::Message /* @@protoc_ins
   ::deepflow::TensorParam* release_tensor_param();
   void set_allocated_tensor_param(::deepflow::TensorParam* tensor_param);
 
+  // bool randomize = 3;
+  void clear_randomize();
+  static const int kRandomizeFieldNumber = 3;
+  bool randomize() const;
+  void set_randomize(bool value);
+
   // @@protoc_insertion_point(class_scope:deepflow.ImageBatchReaderParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr folder_path_;
   ::deepflow::TensorParam* tensor_param_;
+  bool randomize_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -7176,6 +7183,20 @@ inline void ImageBatchReaderParam::set_allocated_tensor_param(::deepflow::Tensor
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.ImageBatchReaderParam.tensor_param)
+}
+
+// bool randomize = 3;
+inline void ImageBatchReaderParam::clear_randomize() {
+  randomize_ = false;
+}
+inline bool ImageBatchReaderParam::randomize() const {
+  // @@protoc_insertion_point(field_get:deepflow.ImageBatchReaderParam.randomize)
+  return randomize_;
+}
+inline void ImageBatchReaderParam::set_randomize(bool value) {
+  
+  randomize_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.ImageBatchReaderParam.randomize)
 }
 
 // -------------------------------------------------------------------

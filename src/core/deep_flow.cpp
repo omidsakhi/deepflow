@@ -65,7 +65,7 @@ std::string DeepFlow::image_reader(std::string file_path, deepflow::ImageReaderP
 	return node_param->output(0);
 }
 
-std::string DeepFlow::image_batch_reader(std::string folder_path, std::initializer_list<int> dims, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::image_batch_reader(std::string folder_path, std::initializer_list<int> dims, bool randomize, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -74,6 +74,7 @@ std::string DeepFlow::image_batch_reader(std::string folder_path, std::initializ
 		node_param->add_phase(phase);
 	auto generator_param = node_param->mutable_generator_param();
 	auto image_batch_reader_param = generator_param->mutable_image_batch_reader_param();
+	image_batch_reader_param->set_randomize(randomize);
 	image_batch_reader_param->set_folder_path(folder_path);	
 
 	std::vector<int> values(dims);

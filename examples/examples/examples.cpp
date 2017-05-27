@@ -4,9 +4,10 @@
 
 #include <gflags/gflags.h>
 
-DEFINE_string(mnist, "./data/mnist", "Path to MNIST data folder");
+DEFINE_string(mnist, "D:/Projects/deepflow/data/mnist", "Path to MNIST data folder");
 DEFINE_string(image1, "D:/Projects/deepflow/data/image/lena-256x256.jpg", "Input test image");
 DEFINE_string(image2, "D:/Projects/deepflow/data/style_transfer/sanfrancisco.jpg", "Another input test image");
+DEFINE_string(image_folder, "D:/Projects/deepflow/data/face", "Path to image folder");
 DEFINE_string(model, "D:/Projects/deepflow/models/VGG_ILSVRC_16_layers.caffemodel", "Caffe model to load");
 
 DEFINE_string(i, "", "Trained network model to load");
@@ -91,8 +92,8 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x5) {
 			auto train = df.define_train_phase("Train");
-			auto imbar = df.image_batch_reader("./data/face", { 1, 1, 27, 18 });
-			df.display(imbar, 1000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "approx1", { train });
+			auto imbar = df.image_batch_reader(FLAGS_image_folder, { 6, 1, 27, 18 }, true);
+			df.display(imbar, 500, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "approx1", { train });
 		}
 		else if (FLAGS_x6) {
 			df.load_from_caffe_model(FLAGS_model, { std::pair<std::string, std::array<int,4>>("data", {4,3,224,224}) }, FLAGS_debug > 0);			

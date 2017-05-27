@@ -26,11 +26,14 @@ public:
 private:
 	std::string _folder_path;
 	std::array<int, 4> _dims;
+	std::vector<int> _indices;
 	std::vector<std::experimental::filesystem::path> _list_of_files;
-	int _current_batch = 0;
-	size_t _num_total_samples;
-	size_t _num_batch_samples;
-	bool _last_batch;	
+	int _current_batch = -1;
+	size_t _num_total_samples = 0;	
+	int _num_batches = 0;
+	int _batch_size = 0;
+	bool _last_batch = false;	
 	cv::Mat img;
 	unsigned char *d_img;	
+	bool _randomize = false;
 };
