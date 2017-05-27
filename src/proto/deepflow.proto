@@ -151,8 +151,9 @@ message PlaceHolderParam {
 	TensorParam tensor_param = 1;
 }
 
-message ReshapeParam {
-	TensorParam tensor_param = 1;
+message RestructureParam {
+	int32 first_dim = 1;
+	int32 second_dim = 2;
 }
 
 message VariableParam {	
@@ -254,7 +255,7 @@ message NodeParam {
   PsnrParam psnr_param = 120;
   RandomSelectorParam random_selector_param = 121; 
   LoggerParam logger_param = 122;
-  ReshapeParam reshape_param = 123;
+  RestructureParam restructure_param = 123;
   ImageReaderParam image_reader_param = 124;
 }
 

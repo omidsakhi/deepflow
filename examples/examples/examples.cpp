@@ -30,6 +30,7 @@ DEFINE_bool(x5, false, "Test of image_batch_reader");
 DEFINE_bool(x6, false, "Test reading caffe model");
 DEFINE_bool(x7, false, "Test convolution forward with bias");
 DEFINE_bool(x8, false, "Test color image display");
+DEFINE_bool(x9, false, "Test restructured image display");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -69,8 +70,8 @@ void main(int argc, char** argv) {
 			auto solver = df.adadelta_solver(0.05f);
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE, "image");
 			auto recon = df.variable(df.random_uniform({ 1,3,256,256 }, 0, 1), solver, "recon");			
-			auto f1 = df.data_generator(df.random_uniform({ 1,3,3,3 }, -1, 1), 100, "", "f1");
-			auto f2 = df.reshape(f1, { 3, 1, 3, 3 });			
+			auto f1 = df.data_generator(df.random_uniform({ 10,3,3,3 }, -1, 1), 100, "", "f1");
+			auto f2 = df.restructure(f1, 0, 1);
 			auto conv = df.conv2d(image, f1, "", 1, 1, 1, 1, 1, 1);			
 			auto tconv = df.transposed_conv2d(recon, f2, 1, 1, 1, 1, 1, 1);
 			df.euclidean_loss(tconv, conv);
@@ -113,6 +114,12 @@ void main(int argc, char** argv) {
 			auto train = df.define_train_phase("Train");
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			df.display(image, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "input", { train });
+		}
+		else if (FLAGS_x9) {
+			auto train = df.define_train_phase("Train");
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto rotate = df.restructure(image, 2, 3);
+			df.display(rotate, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "rotate", { train });
 		}
 	}
 	else {

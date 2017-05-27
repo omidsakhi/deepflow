@@ -60,8 +60,8 @@ class SnapshotParamDefaultTypeInternal : public ::google::protobuf::internal::Ex
 } _SnapshotParam_default_instance_;
 class PlaceHolderParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<PlaceHolderParam> {
 } _PlaceHolderParam_default_instance_;
-class ReshapeParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<ReshapeParam> {
-} _ReshapeParam_default_instance_;
+class RestructureParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<RestructureParam> {
+} _RestructureParam_default_instance_;
 class VariableParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<VariableParam> {
 } _VariableParam_default_instance_;
 class LossParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<LossParam> {
@@ -263,10 +263,11 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlaceHolderParam, tensor_param_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReshapeParam, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RestructureParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReshapeParam, tensor_param_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RestructureParam, first_dim_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RestructureParam, second_dim_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(VariableParam, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -356,7 +357,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, psnr_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, random_selector_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, logger_param_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, reshape_param_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, restructure_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, image_reader_param_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SquareParam, _internal_metadata_),
@@ -492,34 +493,34 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 114, -1, sizeof(ReduceParam)},
   { 121, -1, sizeof(SnapshotParam)},
   { 129, -1, sizeof(PlaceHolderParam)},
-  { 134, -1, sizeof(ReshapeParam)},
-  { 139, -1, sizeof(VariableParam)},
-  { 146, -1, sizeof(LossParam)},
-  { 152, -1, sizeof(DataGeneratorParam)},
-  { 157, -1, sizeof(ActivationParam)},
-  { 163, -1, sizeof(ImageBatchReaderParam)},
-  { 169, -1, sizeof(ImageReaderParam)},
-  { 175, -1, sizeof(GeneratorParam)},
-  { 182, -1, sizeof(MnistParam)},
-  { 190, -1, sizeof(CastFloatParam)},
-  { 194, -1, sizeof(NodeParam)},
-  { 230, -1, sizeof(SquareParam)},
-  { 234, -1, sizeof(EuclideanLossParam)},
-  { 238, -1, sizeof(SoftmaxLossParam)},
-  { 242, -1, sizeof(SoftmaxParam)},
-  { 246, -1, sizeof(InitFillParam)},
-  { 251, -1, sizeof(InitIndexFillParam)},
-  { 256, -1, sizeof(InitRandomUniformParam)},
-  { 262, -1, sizeof(InitRandomNormalParam)},
-  { 268, -1, sizeof(InitStepParam)},
-  { 274, -1, sizeof(InitParam)},
-  { 286, -1, sizeof(SGDSolverParam)},
-  { 292, -1, sizeof(GainSolverParam)},
-  { 302, -1, sizeof(AdaDeltaSolverParam)},
-  { 309, -1, sizeof(AdamSolverParam)},
-  { 317, -1, sizeof(SolverParam)},
-  { 326, -1, sizeof(PhaseParam)},
-  { 332, -1, sizeof(BlockParam)},
+  { 134, -1, sizeof(RestructureParam)},
+  { 140, -1, sizeof(VariableParam)},
+  { 147, -1, sizeof(LossParam)},
+  { 153, -1, sizeof(DataGeneratorParam)},
+  { 158, -1, sizeof(ActivationParam)},
+  { 164, -1, sizeof(ImageBatchReaderParam)},
+  { 170, -1, sizeof(ImageReaderParam)},
+  { 176, -1, sizeof(GeneratorParam)},
+  { 183, -1, sizeof(MnistParam)},
+  { 191, -1, sizeof(CastFloatParam)},
+  { 195, -1, sizeof(NodeParam)},
+  { 231, -1, sizeof(SquareParam)},
+  { 235, -1, sizeof(EuclideanLossParam)},
+  { 239, -1, sizeof(SoftmaxLossParam)},
+  { 243, -1, sizeof(SoftmaxParam)},
+  { 247, -1, sizeof(InitFillParam)},
+  { 252, -1, sizeof(InitIndexFillParam)},
+  { 257, -1, sizeof(InitRandomUniformParam)},
+  { 263, -1, sizeof(InitRandomNormalParam)},
+  { 269, -1, sizeof(InitStepParam)},
+  { 275, -1, sizeof(InitParam)},
+  { 287, -1, sizeof(SGDSolverParam)},
+  { 293, -1, sizeof(GainSolverParam)},
+  { 303, -1, sizeof(AdaDeltaSolverParam)},
+  { 310, -1, sizeof(AdamSolverParam)},
+  { 318, -1, sizeof(SolverParam)},
+  { 327, -1, sizeof(PhaseParam)},
+  { 333, -1, sizeof(BlockParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -544,7 +545,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_ReduceParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_SnapshotParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_PlaceHolderParam_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&_ReshapeParam_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_RestructureParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_VariableParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_LossParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_DataGeneratorParam_default_instance_),
@@ -640,7 +641,7 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[19].reflection;
   _PlaceHolderParam_default_instance_.Shutdown();
   delete file_level_metadata[20].reflection;
-  _ReshapeParam_default_instance_.Shutdown();
+  _RestructureParam_default_instance_.Shutdown();
   delete file_level_metadata[21].reflection;
   _VariableParam_default_instance_.Shutdown();
   delete file_level_metadata[22].reflection;
@@ -723,7 +724,7 @@ void TableStruct::InitDefaultsImpl() {
   _ReduceParam_default_instance_.DefaultConstruct();
   _SnapshotParam_default_instance_.DefaultConstruct();
   _PlaceHolderParam_default_instance_.DefaultConstruct();
-  _ReshapeParam_default_instance_.DefaultConstruct();
+  _RestructureParam_default_instance_.DefaultConstruct();
   _VariableParam_default_instance_.DefaultConstruct();
   _LossParam_default_instance_.DefaultConstruct();
   _DataGeneratorParam_default_instance_.DefaultConstruct();
@@ -752,8 +753,6 @@ void TableStruct::InitDefaultsImpl() {
   _PhaseParam_default_instance_.DefaultConstruct();
   _BlockParam_default_instance_.DefaultConstruct();
   _PlaceHolderParam_default_instance_.get_mutable()->tensor_param_ = const_cast< ::deepflow::TensorParam*>(
-      ::deepflow::TensorParam::internal_default_instance());
-  _ReshapeParam_default_instance_.get_mutable()->tensor_param_ = const_cast< ::deepflow::TensorParam*>(
       ::deepflow::TensorParam::internal_default_instance());
   _VariableParam_default_instance_.get_mutable()->init_param_ = const_cast< ::deepflow::InitParam*>(
       ::deepflow::InitParam::internal_default_instance());
@@ -823,8 +822,8 @@ void TableStruct::InitDefaultsImpl() {
       ::deepflow::RandomSelectorParam::internal_default_instance());
   _NodeParam_default_instance_.get_mutable()->logger_param_ = const_cast< ::deepflow::LoggerParam*>(
       ::deepflow::LoggerParam::internal_default_instance());
-  _NodeParam_default_instance_.get_mutable()->reshape_param_ = const_cast< ::deepflow::ReshapeParam*>(
-      ::deepflow::ReshapeParam::internal_default_instance());
+  _NodeParam_default_instance_.get_mutable()->restructure_param_ = const_cast< ::deepflow::RestructureParam*>(
+      ::deepflow::RestructureParam::internal_default_instance());
   _NodeParam_default_instance_.get_mutable()->image_reader_param_ = const_cast< ::deepflow::ImageReaderParam*>(
       ::deepflow::ImageReaderParam::internal_default_instance());
   _InitParam_default_instance_.get_mutable()->tensor_param_ = const_cast< ::deepflow::TensorParam*>(
@@ -903,119 +902,119 @@ void AddDescriptorsImpl() {
       "prefix\030\002 \001(\t\022\030\n\020per_image_height\030\003 \001(\005\022\027"
       "\n\017per_image_width\030\004 \001(\005\"\?\n\020PlaceHolderPa"
       "ram\022+\n\014tensor_param\030\001 \001(\0132\025.deepflow.Ten"
-      "sorParam\";\n\014ReshapeParam\022+\n\014tensor_param"
-      "\030\001 \001(\0132\025.deepflow.TensorParam\"t\n\rVariabl"
-      "eParam\022\'\n\ninit_param\030\001 \001(\0132\023.deepflow.In"
-      "itParam\022\023\n\013solver_name\030\002 \001(\t\022%\n\007weights\030"
-      "\003 \001(\0132\024.deepflow.TensorData\"\177\n\tLossParam"
-      "\0226\n\022softmax_loss_param\030\001 \001(\0132\032.deepflow."
-      "SoftmaxLossParam\022:\n\024euclidean_loss_param"
-      "\030\002 \001(\0132\034.deepflow.EuclideanLossParam\")\n\022"
-      "DataGeneratorParam\022\023\n\013num_samples\030\001 \001(\005\""
-      "\347\001\n\017ActivationParam\022,\n\004type\030\001 \001(\0162\036.deep"
-      "flow.ActivationParam.Type\022\014\n\004coef\030\002 \001(\002\""
-      "\227\001\n\004Type\022\034\n\030CUDNN_ACTIVATION_SIGMOID\020\000\022\031"
-      "\n\025CUDNN_ACTIVATION_RELU\020\001\022\031\n\025CUDNN_ACTIV"
-      "ATION_TANH\020\002\022!\n\035CUDNN_ACTIVATION_CLIPPED"
-      "_RELU\020\003\022\030\n\024CUDNN_ACTIVATION_ELU\020\004\"Y\n\025Ima"
-      "geBatchReaderParam\022\023\n\013folder_path\030\001 \001(\t\022"
-      "+\n\014tensor_param\030\002 \001(\0132\025.deepflow.TensorP"
-      "aram\"\203\001\n\020ImageReaderParam\022\021\n\tfile_name\030\001"
-      " \001(\t\022-\n\004type\030\002 \001(\0162\037.deepflow.ImageReade"
-      "rParam.Type\"-\n\004Type\022\r\n\tGRAY_ONLY\020\000\022\026\n\022CO"
-      "LOR_IF_AVAILABLE\020\001\"\272\001\n\016GeneratorParam\022)\n"
-      "\013mnist_param\030\001 \001(\0132\024.deepflow.MnistParam"
-      "\022:\n\024data_generator_param\030\002 \001(\0132\034.deepflo"
-      "w.DataGeneratorParam\022A\n\030image_batch_read"
-      "er_param\030\004 \001(\0132\037.deepflow.ImageBatchRead"
-      "erParam\"\350\001\n\nMnistParam\022\023\n\013folder_path\030\001 "
-      "\001(\t\0224\n\013reader_type\030\002 \001(\0162\037.deepflow.Mnis"
-      "tParam.ReaderType\0224\n\013output_type\030\003 \001(\0162\037"
-      ".deepflow.MnistParam.OutputType\022\022\n\nbatch"
-      "_size\030\004 \001(\005\"!\n\nReaderType\022\t\n\005TRAIN\020\000\022\010\n\004"
-      "TEST\020\001\"\"\n\nOutputType\022\010\n\004DATA\020\000\022\n\n\006LABELS"
-      "\020\001\"\020\n\016CastFloatParam\"\236\013\n\tNodeParam\022\014\n\004na"
-      "me\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022\016\n\006output\030\003 \003(\t\022"
-      "\r\n\005phase\030\004 \003(\t\022)\n\013block_param\030\005 \001(\0132\024.de"
-      "epflow.BlockParam\022\'\n\nloss_param\0302 \001(\0132\023."
-      "deepflow.LossParam\0221\n\017generator_param\0303 "
-      "\001(\0132\030.deepflow.GeneratorParam\022/\n\016variabl"
-      "e_param\030d \001(\0132\027.deepflow.VariableParam\0226"
-      "\n\022place_holder_param\030e \001(\0132\032.deepflow.Pl"
-      "aceHolderParam\0225\n\021phaseplexer_param\030f \001("
-      "\0132\032.deepflow.PhaseplexerParam\022%\n\tadd_par"
-      "am\030g \001(\0132\022.deepflow.AddParam\022.\n\016bias_add"
-      "_param\030h \001(\0132\026.deepflow.BiasAddParam\022,\n\r"
-      "conv_2d_param\030i \001(\0132\025.deepflow.Conv2dPar"
-      "am\022A\n\030transposed_conv_2d_param\030j \001(\0132\037.d"
-      "eepflow.TransposedConv2dParam\022-\n\rdropout"
-      "_param\030k \001(\0132\026.deepflow.DropoutParam\0222\n\020"
-      "leaky_relu_param\030l \001(\0132\030.deepflow.LeakyR"
-      "eluParam\022-\n\rsoftmax_param\030m \001(\0132\026.deepfl"
-      "ow.SoftmaxParam\022+\n\014square_param\030n \001(\0132\025."
-      "deepflow.SquareParam\022+\n\014matmul_param\030o \001"
-      "(\0132\025.deepflow.MatMulParam\022-\n\rpooling_par"
-      "am\030p \001(\0132\026.deepflow.PoolingParam\022+\n\014redu"
-      "ce_param\030q \001(\0132\025.deepflow.ReduceParam\022)\n"
-      "\013equal_param\030r \001(\0132\024.deepflow.EqualParam"
-      "\022)\n\013print_param\030s \001(\0132\024.deepflow.PrintPa"
-      "ram\0222\n\020cast_float_param\030t \001(\0132\030.deepflow"
-      ".CastFloatParam\0225\n\021accumulator_param\030u \001"
-      "(\0132\032.deepflow.AccumulatorParam\022-\n\rdispla"
-      "y_param\030v \001(\0132\026.deepflow.DisplayParam\0223\n"
-      "\020activation_param\030w \001(\0132\031.deepflow.Activ"
-      "ationParam\022\'\n\npsnr_param\030x \001(\0132\023.deepflo"
-      "w.PsnrParam\022<\n\025random_selector_param\030y \001"
-      "(\0132\035.deepflow.RandomSelectorParam\022+\n\014log"
-      "ger_param\030z \001(\0132\025.deepflow.LoggerParam\022-"
-      "\n\rreshape_param\030{ \001(\0132\026.deepflow.Reshape"
-      "Param\0226\n\022image_reader_param\030| \001(\0132\032.deep"
-      "flow.ImageReaderParam\"\r\n\013SquareParam\"\024\n\022"
-      "EuclideanLossParam\"\022\n\020SoftmaxLossParam\"\016"
-      "\n\014SoftmaxParam\"\036\n\rInitFillParam\022\r\n\005value"
-      "\030\001 \001(\002\"$\n\022InitIndexFillParam\022\016\n\006offset\030\001"
-      " \001(\002\"2\n\026InitRandomUniformParam\022\013\n\003min\030\001 "
-      "\001(\002\022\013\n\003max\030\002 \001(\002\"5\n\025InitRandomNormalPara"
-      "m\022\014\n\004mean\030\001 \001(\002\022\016\n\006stddev\030\002 \001(\002\")\n\rInitS"
-      "tepParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"\377\002\n\tI"
-      "nitParam\022\014\n\004name\030\001 \001(\t\022+\n\014tensor_param\030\002"
-      " \001(\0132\025.deepflow.TensorParam\022\'\n\tinit_data"
-      "\030\003 \001(\0132\024.deepflow.TensorData\022+\n\nfill_par"
-      "am\030\004 \001(\0132\027.deepflow.InitFillParam\0226\n\020ind"
-      "ex_fill_param\030\005 \001(\0132\034.deepflow.InitIndex"
-      "FillParam\022>\n\024random_uniform_param\030\006 \001(\0132"
-      " .deepflow.InitRandomUniformParam\022+\n\nste"
-      "p_param\030\007 \001(\0132\027.deepflow.InitStepParam\022<"
-      "\n\023random_normal_param\030\010 \001(\0132\037.deepflow.I"
-      "nitRandomNormalParam\"9\n\016SGDSolverParam\022\025"
-      "\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\""
-      "\204\001\n\017GainSolverParam\022\025\n\rlearning_rate\030\001 \001"
-      "(\002\022\020\n\010momentum\030\002 \001(\002\022\020\n\010max_gain\030\003 \001(\002\022\020"
-      "\n\010min_gain\030\004 \001(\002\022\021\n\tgain_plus\030\005 \001(\002\022\021\n\tg"
-      "ain_mult\030\006 \001(\002\"M\n\023AdaDeltaSolverParam\022\025\n"
-      "\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\022\r"
-      "\n\005delta\030\003 \001(\002\"S\n\017AdamSolverParam\022\025\n\rlear"
-      "ning_rate\030\001 \001(\002\022\r\n\005beta1\030\002 \001(\002\022\r\n\005beta2\030"
-      "\003 \001(\002\022\013\n\003eps\030\004 \001(\002\"\341\001\n\013SolverParam\022\014\n\004na"
-      "me\030\001 \001(\t\022,\n\nsgd_solver\030\002 \001(\0132\030.deepflow."
-      "SGDSolverParam\022.\n\013gain_solver\030\003 \001(\0132\031.de"
-      "epflow.GainSolverParam\022.\n\013adam_solver\030\004 "
-      "\001(\0132\031.deepflow.AdamSolverParam\0226\n\017adadel"
-      "ta_solver\030\005 \001(\0132\035.deepflow.AdaDeltaSolve"
-      "rParam\"\217\001\n\nPhaseParam\022\r\n\005phase\030\001 \001(\t\0226\n\t"
-      "behaviour\030\002 \001(\0162#.deepflow.PhaseParam.Ph"
-      "aseBehaviour\":\n\016PhaseBehaviour\022\t\n\005TRAIN\020"
-      "\000\022\016\n\nVALIDATION\020\001\022\r\n\tINFERENCE\020\002\"\245\001\n\nBlo"
-      "ckParam\022!\n\004node\030\001 \003(\0132\023.deepflow.NodePar"
-      "am\022%\n\006solver\030\002 \003(\0132\025.deepflow.SolverPara"
-      "m\022#\n\005phase\030\003 \003(\0132\024.deepflow.PhaseParam\022("
-      "\n\013initializer\030\004 \003(\0132\023.deepflow.InitParam"
-      "*9\n\nActionTime\022\016\n\nEVERY_PASS\020\000\022\020\n\014END_OF"
-      "_EPOCH\020\001\022\t\n\005NEVER\020\002*#\n\nActionType\022\n\n\006VAL"
-      "UES\020\000\022\t\n\005DIFFS\020\001b\006proto3"
+      "sorParam\"9\n\020RestructureParam\022\021\n\tfirst_di"
+      "m\030\001 \001(\005\022\022\n\nsecond_dim\030\002 \001(\005\"t\n\rVariableP"
+      "aram\022\'\n\ninit_param\030\001 \001(\0132\023.deepflow.Init"
+      "Param\022\023\n\013solver_name\030\002 \001(\t\022%\n\007weights\030\003 "
+      "\001(\0132\024.deepflow.TensorData\"\177\n\tLossParam\0226"
+      "\n\022softmax_loss_param\030\001 \001(\0132\032.deepflow.So"
+      "ftmaxLossParam\022:\n\024euclidean_loss_param\030\002"
+      " \001(\0132\034.deepflow.EuclideanLossParam\")\n\022Da"
+      "taGeneratorParam\022\023\n\013num_samples\030\001 \001(\005\"\347\001"
+      "\n\017ActivationParam\022,\n\004type\030\001 \001(\0162\036.deepfl"
+      "ow.ActivationParam.Type\022\014\n\004coef\030\002 \001(\002\"\227\001"
+      "\n\004Type\022\034\n\030CUDNN_ACTIVATION_SIGMOID\020\000\022\031\n\025"
+      "CUDNN_ACTIVATION_RELU\020\001\022\031\n\025CUDNN_ACTIVAT"
+      "ION_TANH\020\002\022!\n\035CUDNN_ACTIVATION_CLIPPED_R"
+      "ELU\020\003\022\030\n\024CUDNN_ACTIVATION_ELU\020\004\"Y\n\025Image"
+      "BatchReaderParam\022\023\n\013folder_path\030\001 \001(\t\022+\n"
+      "\014tensor_param\030\002 \001(\0132\025.deepflow.TensorPar"
+      "am\"\203\001\n\020ImageReaderParam\022\021\n\tfile_name\030\001 \001"
+      "(\t\022-\n\004type\030\002 \001(\0162\037.deepflow.ImageReaderP"
+      "aram.Type\"-\n\004Type\022\r\n\tGRAY_ONLY\020\000\022\026\n\022COLO"
+      "R_IF_AVAILABLE\020\001\"\272\001\n\016GeneratorParam\022)\n\013m"
+      "nist_param\030\001 \001(\0132\024.deepflow.MnistParam\022:"
+      "\n\024data_generator_param\030\002 \001(\0132\034.deepflow."
+      "DataGeneratorParam\022A\n\030image_batch_reader"
+      "_param\030\004 \001(\0132\037.deepflow.ImageBatchReader"
+      "Param\"\350\001\n\nMnistParam\022\023\n\013folder_path\030\001 \001("
+      "\t\0224\n\013reader_type\030\002 \001(\0162\037.deepflow.MnistP"
+      "aram.ReaderType\0224\n\013output_type\030\003 \001(\0162\037.d"
+      "eepflow.MnistParam.OutputType\022\022\n\nbatch_s"
+      "ize\030\004 \001(\005\"!\n\nReaderType\022\t\n\005TRAIN\020\000\022\010\n\004TE"
+      "ST\020\001\"\"\n\nOutputType\022\010\n\004DATA\020\000\022\n\n\006LABELS\020\001"
+      "\"\020\n\016CastFloatParam\"\246\013\n\tNodeParam\022\014\n\004name"
+      "\030\001 \001(\t\022\r\n\005input\030\002 \003(\t\022\016\n\006output\030\003 \003(\t\022\r\n"
+      "\005phase\030\004 \003(\t\022)\n\013block_param\030\005 \001(\0132\024.deep"
+      "flow.BlockParam\022\'\n\nloss_param\0302 \001(\0132\023.de"
+      "epflow.LossParam\0221\n\017generator_param\0303 \001("
+      "\0132\030.deepflow.GeneratorParam\022/\n\016variable_"
+      "param\030d \001(\0132\027.deepflow.VariableParam\0226\n\022"
+      "place_holder_param\030e \001(\0132\032.deepflow.Plac"
+      "eHolderParam\0225\n\021phaseplexer_param\030f \001(\0132"
+      "\032.deepflow.PhaseplexerParam\022%\n\tadd_param"
+      "\030g \001(\0132\022.deepflow.AddParam\022.\n\016bias_add_p"
+      "aram\030h \001(\0132\026.deepflow.BiasAddParam\022,\n\rco"
+      "nv_2d_param\030i \001(\0132\025.deepflow.Conv2dParam"
+      "\022A\n\030transposed_conv_2d_param\030j \001(\0132\037.dee"
+      "pflow.TransposedConv2dParam\022-\n\rdropout_p"
+      "aram\030k \001(\0132\026.deepflow.DropoutParam\0222\n\020le"
+      "aky_relu_param\030l \001(\0132\030.deepflow.LeakyRel"
+      "uParam\022-\n\rsoftmax_param\030m \001(\0132\026.deepflow"
+      ".SoftmaxParam\022+\n\014square_param\030n \001(\0132\025.de"
+      "epflow.SquareParam\022+\n\014matmul_param\030o \001(\013"
+      "2\025.deepflow.MatMulParam\022-\n\rpooling_param"
+      "\030p \001(\0132\026.deepflow.PoolingParam\022+\n\014reduce"
+      "_param\030q \001(\0132\025.deepflow.ReduceParam\022)\n\013e"
+      "qual_param\030r \001(\0132\024.deepflow.EqualParam\022)"
+      "\n\013print_param\030s \001(\0132\024.deepflow.PrintPara"
+      "m\0222\n\020cast_float_param\030t \001(\0132\030.deepflow.C"
+      "astFloatParam\0225\n\021accumulator_param\030u \001(\013"
+      "2\032.deepflow.AccumulatorParam\022-\n\rdisplay_"
+      "param\030v \001(\0132\026.deepflow.DisplayParam\0223\n\020a"
+      "ctivation_param\030w \001(\0132\031.deepflow.Activat"
+      "ionParam\022\'\n\npsnr_param\030x \001(\0132\023.deepflow."
+      "PsnrParam\022<\n\025random_selector_param\030y \001(\013"
+      "2\035.deepflow.RandomSelectorParam\022+\n\014logge"
+      "r_param\030z \001(\0132\025.deepflow.LoggerParam\0225\n\021"
+      "restructure_param\030{ \001(\0132\032.deepflow.Restr"
+      "uctureParam\0226\n\022image_reader_param\030| \001(\0132"
+      "\032.deepflow.ImageReaderParam\"\r\n\013SquarePar"
+      "am\"\024\n\022EuclideanLossParam\"\022\n\020SoftmaxLossP"
+      "aram\"\016\n\014SoftmaxParam\"\036\n\rInitFillParam\022\r\n"
+      "\005value\030\001 \001(\002\"$\n\022InitIndexFillParam\022\016\n\006of"
+      "fset\030\001 \001(\002\"2\n\026InitRandomUniformParam\022\013\n\003"
+      "min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002\"5\n\025InitRandomNorm"
+      "alParam\022\014\n\004mean\030\001 \001(\002\022\016\n\006stddev\030\002 \001(\002\")\n"
+      "\rInitStepParam\022\013\n\003min\030\001 \001(\002\022\013\n\003max\030\002 \001(\002"
+      "\"\377\002\n\tInitParam\022\014\n\004name\030\001 \001(\t\022+\n\014tensor_p"
+      "aram\030\002 \001(\0132\025.deepflow.TensorParam\022\'\n\tini"
+      "t_data\030\003 \001(\0132\024.deepflow.TensorData\022+\n\nfi"
+      "ll_param\030\004 \001(\0132\027.deepflow.InitFillParam\022"
+      "6\n\020index_fill_param\030\005 \001(\0132\034.deepflow.Ini"
+      "tIndexFillParam\022>\n\024random_uniform_param\030"
+      "\006 \001(\0132 .deepflow.InitRandomUniformParam\022"
+      "+\n\nstep_param\030\007 \001(\0132\027.deepflow.InitStepP"
+      "aram\022<\n\023random_normal_param\030\010 \001(\0132\037.deep"
+      "flow.InitRandomNormalParam\"9\n\016SGDSolverP"
+      "aram\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030"
+      "\002 \001(\002\"\204\001\n\017GainSolverParam\022\025\n\rlearning_ra"
+      "te\030\001 \001(\002\022\020\n\010momentum\030\002 \001(\002\022\020\n\010max_gain\030\003"
+      " \001(\002\022\020\n\010min_gain\030\004 \001(\002\022\021\n\tgain_plus\030\005 \001("
+      "\002\022\021\n\tgain_mult\030\006 \001(\002\"M\n\023AdaDeltaSolverPa"
+      "ram\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum\030\002"
+      " \001(\002\022\r\n\005delta\030\003 \001(\002\"S\n\017AdamSolverParam\022\025"
+      "\n\rlearning_rate\030\001 \001(\002\022\r\n\005beta1\030\002 \001(\002\022\r\n\005"
+      "beta2\030\003 \001(\002\022\013\n\003eps\030\004 \001(\002\"\341\001\n\013SolverParam"
+      "\022\014\n\004name\030\001 \001(\t\022,\n\nsgd_solver\030\002 \001(\0132\030.dee"
+      "pflow.SGDSolverParam\022.\n\013gain_solver\030\003 \001("
+      "\0132\031.deepflow.GainSolverParam\022.\n\013adam_sol"
+      "ver\030\004 \001(\0132\031.deepflow.AdamSolverParam\0226\n\017"
+      "adadelta_solver\030\005 \001(\0132\035.deepflow.AdaDelt"
+      "aSolverParam\"\217\001\n\nPhaseParam\022\r\n\005phase\030\001 \001"
+      "(\t\0226\n\tbehaviour\030\002 \001(\0162#.deepflow.PhasePa"
+      "ram.PhaseBehaviour\":\n\016PhaseBehaviour\022\t\n\005"
+      "TRAIN\020\000\022\016\n\nVALIDATION\020\001\022\r\n\tINFERENCE\020\002\"\245"
+      "\001\n\nBlockParam\022!\n\004node\030\001 \003(\0132\023.deepflow.N"
+      "odeParam\022%\n\006solver\030\002 \003(\0132\025.deepflow.Solv"
+      "erParam\022#\n\005phase\030\003 \003(\0132\024.deepflow.PhaseP"
+      "aram\022(\n\013initializer\030\004 \003(\0132\023.deepflow.Ini"
+      "tParam*9\n\nActionTime\022\016\n\nEVERY_PASS\020\000\022\020\n\014"
+      "END_OF_EPOCH\020\001\022\t\n\005NEVER\020\002*#\n\nActionType\022"
+      "\n\n\006VALUES\020\000\022\t\n\005DIFFS\020\001b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 6184);
+      descriptor, 6190);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -7900,93 +7899,104 @@ void PlaceHolderParam::set_allocated_tensor_param(::deepflow::TensorParam* tenso
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ReshapeParam::kTensorParamFieldNumber;
+const int RestructureParam::kFirstDimFieldNumber;
+const int RestructureParam::kSecondDimFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-ReshapeParam::ReshapeParam()
+RestructureParam::RestructureParam()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     protobuf_deepflow_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:deepflow.ReshapeParam)
+  // @@protoc_insertion_point(constructor:deepflow.RestructureParam)
 }
-ReshapeParam::ReshapeParam(const ReshapeParam& from)
+RestructureParam::RestructureParam(const RestructureParam& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_tensor_param()) {
-    tensor_param_ = new ::deepflow::TensorParam(*from.tensor_param_);
-  } else {
-    tensor_param_ = NULL;
-  }
-  // @@protoc_insertion_point(copy_constructor:deepflow.ReshapeParam)
+  ::memcpy(&first_dim_, &from.first_dim_,
+    reinterpret_cast<char*>(&second_dim_) -
+    reinterpret_cast<char*>(&first_dim_) + sizeof(second_dim_));
+  // @@protoc_insertion_point(copy_constructor:deepflow.RestructureParam)
 }
 
-void ReshapeParam::SharedCtor() {
-  tensor_param_ = NULL;
+void RestructureParam::SharedCtor() {
+  ::memset(&first_dim_, 0, reinterpret_cast<char*>(&second_dim_) -
+    reinterpret_cast<char*>(&first_dim_) + sizeof(second_dim_));
   _cached_size_ = 0;
 }
 
-ReshapeParam::~ReshapeParam() {
-  // @@protoc_insertion_point(destructor:deepflow.ReshapeParam)
+RestructureParam::~RestructureParam() {
+  // @@protoc_insertion_point(destructor:deepflow.RestructureParam)
   SharedDtor();
 }
 
-void ReshapeParam::SharedDtor() {
-  if (this != internal_default_instance()) {
-    delete tensor_param_;
-  }
+void RestructureParam::SharedDtor() {
 }
 
-void ReshapeParam::SetCachedSize(int size) const {
+void RestructureParam::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* ReshapeParam::descriptor() {
+const ::google::protobuf::Descriptor* RestructureParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_deepflow_2eproto::file_level_metadata[21].descriptor;
 }
 
-const ReshapeParam& ReshapeParam::default_instance() {
+const RestructureParam& RestructureParam::default_instance() {
   protobuf_deepflow_2eproto::InitDefaults();
   return *internal_default_instance();
 }
 
-ReshapeParam* ReshapeParam::New(::google::protobuf::Arena* arena) const {
-  ReshapeParam* n = new ReshapeParam;
+RestructureParam* RestructureParam::New(::google::protobuf::Arena* arena) const {
+  RestructureParam* n = new RestructureParam;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void ReshapeParam::Clear() {
-// @@protoc_insertion_point(message_clear_start:deepflow.ReshapeParam)
-  if (GetArenaNoVirtual() == NULL && tensor_param_ != NULL) {
-    delete tensor_param_;
-  }
-  tensor_param_ = NULL;
+void RestructureParam::Clear() {
+// @@protoc_insertion_point(message_clear_start:deepflow.RestructureParam)
+  ::memset(&first_dim_, 0, reinterpret_cast<char*>(&second_dim_) -
+    reinterpret_cast<char*>(&first_dim_) + sizeof(second_dim_));
 }
 
-bool ReshapeParam::MergePartialFromCodedStream(
+bool RestructureParam::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:deepflow.ReshapeParam)
+  // @@protoc_insertion_point(parse_start:deepflow.RestructureParam)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .deepflow.TensorParam tensor_param = 1;
+      // int32 first_dim = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_tensor_param()));
+            static_cast< ::google::protobuf::uint8>(8u)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &first_dim_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 second_dim = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &second_dim_)));
         } else {
           goto handle_unusual;
         }
@@ -8006,50 +8016,64 @@ bool ReshapeParam::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:deepflow.ReshapeParam)
+  // @@protoc_insertion_point(parse_success:deepflow.RestructureParam)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:deepflow.ReshapeParam)
+  // @@protoc_insertion_point(parse_failure:deepflow.RestructureParam)
   return false;
 #undef DO_
 }
 
-void ReshapeParam::SerializeWithCachedSizes(
+void RestructureParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:deepflow.ReshapeParam)
-  // .deepflow.TensorParam tensor_param = 1;
-  if (this->has_tensor_param()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, *this->tensor_param_, output);
+  // @@protoc_insertion_point(serialize_start:deepflow.RestructureParam)
+  // int32 first_dim = 1;
+  if (this->first_dim() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->first_dim(), output);
   }
 
-  // @@protoc_insertion_point(serialize_end:deepflow.ReshapeParam)
+  // int32 second_dim = 2;
+  if (this->second_dim() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->second_dim(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:deepflow.RestructureParam)
 }
 
-::google::protobuf::uint8* ReshapeParam::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* RestructureParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:deepflow.ReshapeParam)
-  // .deepflow.TensorParam tensor_param = 1;
-  if (this->has_tensor_param()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageNoVirtualToArray(
-        1, *this->tensor_param_, false, target);
+  // @@protoc_insertion_point(serialize_to_array_start:deepflow.RestructureParam)
+  // int32 first_dim = 1;
+  if (this->first_dim() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->first_dim(), target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:deepflow.ReshapeParam)
+  // int32 second_dim = 2;
+  if (this->second_dim() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->second_dim(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:deepflow.RestructureParam)
   return target;
 }
 
-size_t ReshapeParam::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:deepflow.ReshapeParam)
+size_t RestructureParam::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:deepflow.RestructureParam)
   size_t total_size = 0;
 
-  // .deepflow.TensorParam tensor_param = 1;
-  if (this->has_tensor_param()) {
+  // int32 first_dim = 1;
+  if (this->first_dim() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->tensor_param_);
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->first_dim());
+  }
+
+  // int32 second_dim = 2;
+  if (this->second_dim() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->second_dim());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -8059,102 +8083,95 @@ size_t ReshapeParam::ByteSizeLong() const {
   return total_size;
 }
 
-void ReshapeParam::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:deepflow.ReshapeParam)
+void RestructureParam::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:deepflow.RestructureParam)
   GOOGLE_DCHECK_NE(&from, this);
-  const ReshapeParam* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const ReshapeParam>(
+  const RestructureParam* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RestructureParam>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:deepflow.ReshapeParam)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:deepflow.RestructureParam)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:deepflow.ReshapeParam)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:deepflow.RestructureParam)
     MergeFrom(*source);
   }
 }
 
-void ReshapeParam::MergeFrom(const ReshapeParam& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:deepflow.ReshapeParam)
+void RestructureParam::MergeFrom(const RestructureParam& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:deepflow.RestructureParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_tensor_param()) {
-    mutable_tensor_param()->::deepflow::TensorParam::MergeFrom(from.tensor_param());
+  if (from.first_dim() != 0) {
+    set_first_dim(from.first_dim());
+  }
+  if (from.second_dim() != 0) {
+    set_second_dim(from.second_dim());
   }
 }
 
-void ReshapeParam::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:deepflow.ReshapeParam)
+void RestructureParam::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:deepflow.RestructureParam)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void ReshapeParam::CopyFrom(const ReshapeParam& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:deepflow.ReshapeParam)
+void RestructureParam::CopyFrom(const RestructureParam& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:deepflow.RestructureParam)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool ReshapeParam::IsInitialized() const {
+bool RestructureParam::IsInitialized() const {
   return true;
 }
 
-void ReshapeParam::Swap(ReshapeParam* other) {
+void RestructureParam::Swap(RestructureParam* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void ReshapeParam::InternalSwap(ReshapeParam* other) {
-  std::swap(tensor_param_, other->tensor_param_);
+void RestructureParam::InternalSwap(RestructureParam* other) {
+  std::swap(first_dim_, other->first_dim_);
+  std::swap(second_dim_, other->second_dim_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata ReshapeParam::GetMetadata() const {
+::google::protobuf::Metadata RestructureParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_deepflow_2eproto::file_level_metadata[21];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
-// ReshapeParam
+// RestructureParam
 
-// .deepflow.TensorParam tensor_param = 1;
-bool ReshapeParam::has_tensor_param() const {
-  return this != internal_default_instance() && tensor_param_ != NULL;
+// int32 first_dim = 1;
+void RestructureParam::clear_first_dim() {
+  first_dim_ = 0;
 }
-void ReshapeParam::clear_tensor_param() {
-  if (GetArenaNoVirtual() == NULL && tensor_param_ != NULL) delete tensor_param_;
-  tensor_param_ = NULL;
+::google::protobuf::int32 RestructureParam::first_dim() const {
+  // @@protoc_insertion_point(field_get:deepflow.RestructureParam.first_dim)
+  return first_dim_;
 }
-const ::deepflow::TensorParam& ReshapeParam::tensor_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.ReshapeParam.tensor_param)
-  return tensor_param_ != NULL ? *tensor_param_
-                         : *::deepflow::TensorParam::internal_default_instance();
-}
-::deepflow::TensorParam* ReshapeParam::mutable_tensor_param() {
+void RestructureParam::set_first_dim(::google::protobuf::int32 value) {
   
-  if (tensor_param_ == NULL) {
-    tensor_param_ = new ::deepflow::TensorParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.ReshapeParam.tensor_param)
-  return tensor_param_;
+  first_dim_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.RestructureParam.first_dim)
 }
-::deepflow::TensorParam* ReshapeParam::release_tensor_param() {
-  // @@protoc_insertion_point(field_release:deepflow.ReshapeParam.tensor_param)
+
+// int32 second_dim = 2;
+void RestructureParam::clear_second_dim() {
+  second_dim_ = 0;
+}
+::google::protobuf::int32 RestructureParam::second_dim() const {
+  // @@protoc_insertion_point(field_get:deepflow.RestructureParam.second_dim)
+  return second_dim_;
+}
+void RestructureParam::set_second_dim(::google::protobuf::int32 value) {
   
-  ::deepflow::TensorParam* temp = tensor_param_;
-  tensor_param_ = NULL;
-  return temp;
-}
-void ReshapeParam::set_allocated_tensor_param(::deepflow::TensorParam* tensor_param) {
-  delete tensor_param_;
-  tensor_param_ = tensor_param;
-  if (tensor_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.ReshapeParam.tensor_param)
+  second_dim_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.RestructureParam.second_dim)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -11267,7 +11284,7 @@ const int NodeParam::kActivationParamFieldNumber;
 const int NodeParam::kPsnrParamFieldNumber;
 const int NodeParam::kRandomSelectorParamFieldNumber;
 const int NodeParam::kLoggerParamFieldNumber;
-const int NodeParam::kReshapeParamFieldNumber;
+const int NodeParam::kRestructureParamFieldNumber;
 const int NodeParam::kImageReaderParamFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -11421,10 +11438,10 @@ NodeParam::NodeParam(const NodeParam& from)
   } else {
     logger_param_ = NULL;
   }
-  if (from.has_reshape_param()) {
-    reshape_param_ = new ::deepflow::ReshapeParam(*from.reshape_param_);
+  if (from.has_restructure_param()) {
+    restructure_param_ = new ::deepflow::RestructureParam(*from.restructure_param_);
   } else {
-    reshape_param_ = NULL;
+    restructure_param_ = NULL;
   }
   if (from.has_image_reader_param()) {
     image_reader_param_ = new ::deepflow::ImageReaderParam(*from.image_reader_param_);
@@ -11527,7 +11544,7 @@ void NodeParam::SharedDtor() {
     delete logger_param_;
   }
   if (this != internal_default_instance()) {
-    delete reshape_param_;
+    delete restructure_param_;
   }
   if (this != internal_default_instance()) {
     delete image_reader_param_;
@@ -11667,10 +11684,10 @@ void NodeParam::Clear() {
     delete logger_param_;
   }
   logger_param_ = NULL;
-  if (GetArenaNoVirtual() == NULL && reshape_param_ != NULL) {
-    delete reshape_param_;
+  if (GetArenaNoVirtual() == NULL && restructure_param_ != NULL) {
+    delete restructure_param_;
   }
-  reshape_param_ = NULL;
+  restructure_param_ = NULL;
   if (GetArenaNoVirtual() == NULL && image_reader_param_ != NULL) {
     delete image_reader_param_;
   }
@@ -12066,12 +12083,12 @@ bool NodeParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .deepflow.ReshapeParam reshape_param = 123;
+      // .deepflow.RestructureParam restructure_param = 123;
       case 123: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(986u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_reshape_param()));
+               input, mutable_restructure_param()));
         } else {
           goto handle_unusual;
         }
@@ -12310,10 +12327,10 @@ void NodeParam::SerializeWithCachedSizes(
       122, *this->logger_param_, output);
   }
 
-  // .deepflow.ReshapeParam reshape_param = 123;
-  if (this->has_reshape_param()) {
+  // .deepflow.RestructureParam restructure_param = 123;
+  if (this->has_restructure_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      123, *this->reshape_param_, output);
+      123, *this->restructure_param_, output);
   }
 
   // .deepflow.ImageReaderParam image_reader_param = 124;
@@ -12552,11 +12569,11 @@ void NodeParam::SerializeWithCachedSizes(
         122, *this->logger_param_, false, target);
   }
 
-  // .deepflow.ReshapeParam reshape_param = 123;
-  if (this->has_reshape_param()) {
+  // .deepflow.RestructureParam restructure_param = 123;
+  if (this->has_restructure_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        123, *this->reshape_param_, false, target);
+        123, *this->restructure_param_, false, target);
   }
 
   // .deepflow.ImageReaderParam image_reader_param = 124;
@@ -12787,11 +12804,11 @@ size_t NodeParam::ByteSizeLong() const {
         *this->logger_param_);
   }
 
-  // .deepflow.ReshapeParam reshape_param = 123;
-  if (this->has_reshape_param()) {
+  // .deepflow.RestructureParam restructure_param = 123;
+  if (this->has_restructure_param()) {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->reshape_param_);
+        *this->restructure_param_);
   }
 
   // .deepflow.ImageReaderParam image_reader_param = 124;
@@ -12912,8 +12929,8 @@ void NodeParam::MergeFrom(const NodeParam& from) {
   if (from.has_logger_param()) {
     mutable_logger_param()->::deepflow::LoggerParam::MergeFrom(from.logger_param());
   }
-  if (from.has_reshape_param()) {
-    mutable_reshape_param()->::deepflow::ReshapeParam::MergeFrom(from.reshape_param());
+  if (from.has_restructure_param()) {
+    mutable_restructure_param()->::deepflow::RestructureParam::MergeFrom(from.restructure_param());
   }
   if (from.has_image_reader_param()) {
     mutable_image_reader_param()->::deepflow::ImageReaderParam::MergeFrom(from.image_reader_param());
@@ -12973,7 +12990,7 @@ void NodeParam::InternalSwap(NodeParam* other) {
   std::swap(psnr_param_, other->psnr_param_);
   std::swap(random_selector_param_, other->random_selector_param_);
   std::swap(logger_param_, other->logger_param_);
-  std::swap(reshape_param_, other->reshape_param_);
+  std::swap(restructure_param_, other->restructure_param_);
   std::swap(image_reader_param_, other->image_reader_param_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -14253,43 +14270,43 @@ void NodeParam::set_allocated_logger_param(::deepflow::LoggerParam* logger_param
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.logger_param)
 }
 
-// .deepflow.ReshapeParam reshape_param = 123;
-bool NodeParam::has_reshape_param() const {
-  return this != internal_default_instance() && reshape_param_ != NULL;
+// .deepflow.RestructureParam restructure_param = 123;
+bool NodeParam::has_restructure_param() const {
+  return this != internal_default_instance() && restructure_param_ != NULL;
 }
-void NodeParam::clear_reshape_param() {
-  if (GetArenaNoVirtual() == NULL && reshape_param_ != NULL) delete reshape_param_;
-  reshape_param_ = NULL;
+void NodeParam::clear_restructure_param() {
+  if (GetArenaNoVirtual() == NULL && restructure_param_ != NULL) delete restructure_param_;
+  restructure_param_ = NULL;
 }
-const ::deepflow::ReshapeParam& NodeParam::reshape_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.NodeParam.reshape_param)
-  return reshape_param_ != NULL ? *reshape_param_
-                         : *::deepflow::ReshapeParam::internal_default_instance();
+const ::deepflow::RestructureParam& NodeParam::restructure_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.restructure_param)
+  return restructure_param_ != NULL ? *restructure_param_
+                         : *::deepflow::RestructureParam::internal_default_instance();
 }
-::deepflow::ReshapeParam* NodeParam::mutable_reshape_param() {
+::deepflow::RestructureParam* NodeParam::mutable_restructure_param() {
   
-  if (reshape_param_ == NULL) {
-    reshape_param_ = new ::deepflow::ReshapeParam;
+  if (restructure_param_ == NULL) {
+    restructure_param_ = new ::deepflow::RestructureParam;
   }
-  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.reshape_param)
-  return reshape_param_;
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.restructure_param)
+  return restructure_param_;
 }
-::deepflow::ReshapeParam* NodeParam::release_reshape_param() {
-  // @@protoc_insertion_point(field_release:deepflow.NodeParam.reshape_param)
+::deepflow::RestructureParam* NodeParam::release_restructure_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.restructure_param)
   
-  ::deepflow::ReshapeParam* temp = reshape_param_;
-  reshape_param_ = NULL;
+  ::deepflow::RestructureParam* temp = restructure_param_;
+  restructure_param_ = NULL;
   return temp;
 }
-void NodeParam::set_allocated_reshape_param(::deepflow::ReshapeParam* reshape_param) {
-  delete reshape_param_;
-  reshape_param_ = reshape_param;
-  if (reshape_param) {
+void NodeParam::set_allocated_restructure_param(::deepflow::RestructureParam* restructure_param) {
+  delete restructure_param_;
+  restructure_param_ = restructure_param;
+  if (restructure_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.reshape_param)
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.restructure_param)
 }
 
 // .deepflow.ImageReaderParam image_reader_param = 124;

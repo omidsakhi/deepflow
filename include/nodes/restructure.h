@@ -2,9 +2,9 @@
 
 #include "core/node.h"
 
-class DeepFlowDllExport Reshape : public Node {
+class DeepFlowDllExport Restructure : public Node {
 public:
-	Reshape(const deepflow::NodeParam &param);
+	Restructure(const deepflow::NodeParam &param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();
@@ -16,4 +16,6 @@ public:
 	BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 private:
 	cudnnHandle_t _cudnnHandle;
+	int _first_dim;
+	int _second_dim;
 };

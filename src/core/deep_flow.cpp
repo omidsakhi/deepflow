@@ -242,7 +242,7 @@ std::string DeepFlow::place_holder(std::array<int, 4> dims, Tensor::TensorType t
 	return node_param->output(0);
 }
 
-std::string DeepFlow::reshape(std::string input, std::array<int, 4> output_dims, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::restructure(std::string input, int first_dim, int second_dim, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -250,11 +250,9 @@ std::string DeepFlow::reshape(std::string input, std::array<int, 4> output_dims,
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(input);
-	auto reshape_param = node_param->mutable_reshape_param();
-	auto tensor_param = reshape_param->mutable_tensor_param();
-	tensor_param->set_type(deepflow::TensorParam_TensorType_FLOAT);
-	for (int i = 0; i < 4; ++i)
-		tensor_param->add_dims(output_dims[i]);
+	auto restructure_param = node_param->mutable_restructure_param();
+	restructure_param->set_first_dim(first_dim);
+	restructure_param->set_second_dim(second_dim);
 	return node_param->output(0);
 }
 
