@@ -1,4 +1,4 @@
-#include "generators/image_reader.h"
+#include "nodes/image_reader.h"
 #include "core/common_cu.h"
 #include <opencv2/opencv.hpp>
 

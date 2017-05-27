@@ -42,9 +42,9 @@
 #include "nodes/print.h"
 #include "nodes/psnr.h"
 #include "nodes/logger.h"
+#include "nodes/image_reader.h"
 
 #include "generators/data_generator.h"
-#include "generators/image_reader.h"
 #include "generators/image_batch_reader.h"
 
 #include <unordered_map>

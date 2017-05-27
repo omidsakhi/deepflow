@@ -22,9 +22,6 @@
     <CudaCompile Include="..\..\src\solvers\adadelta_solver.cu">
       <Filter>source\solver</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\generators\image_reader.cu">
-      <Filter>source\generators</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\psnr.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
@@ -66,6 +63,10 @@
     </CudaCompile>
     <CudaCompile Include="..\..\src\core\node.cu">
       <Filter>source\core</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\restructure.cu" />
+    <CudaCompile Include="..\..\src\nodes\image_reader.cu">
+      <Filter>source\nodes</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,9 +163,6 @@
     <ClCompile Include="..\..\src\nodes\logger.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\nodes\swap.cu">
-      <Filter>source\nodes</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -234,9 +232,6 @@
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\generators\mnist_reader.h">
-      <Filter>include\generators</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\generators\image_reader.h">
       <Filter>include\generators</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\generators\data_generator.h">
@@ -333,6 +328,9 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\restructure.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\image_reader.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

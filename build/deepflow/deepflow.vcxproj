@@ -35,7 +35,6 @@
     <ClInclude Include="..\..\include\core\terminal.h" />
     <ClInclude Include="..\..\include\generators\data_generator.h" />
     <ClInclude Include="..\..\include\generators\image_batch_reader.h" />
-    <ClInclude Include="..\..\include\generators\image_reader.h" />
     <ClInclude Include="..\..\include\generators\mnist_reader.h" />
     <ClInclude Include="..\..\include\initializers\fill.h" />
     <ClInclude Include="..\..\include\initializers\index_fill.h" />
@@ -53,6 +52,7 @@
     <ClInclude Include="..\..\include\nodes\dropout.h" />
     <ClInclude Include="..\..\include\nodes\equal.h" />
     <ClInclude Include="..\..\include\nodes\euclidean_loss.h" />
+    <ClInclude Include="..\..\include\nodes\image_reader.h" />
     <ClInclude Include="..\..\include\nodes\leaky_relu.h" />
     <ClInclude Include="..\..\include\nodes\logger.h" />
     <ClInclude Include="..\..\include\nodes\matmul.h" />
@@ -89,9 +89,6 @@
     <ClCompile Include="..\..\src\core\tensor.cpp" />
     <ClCompile Include="..\..\src\generators\data_generator.cpp" />
     <CudaCompile Include="..\..\src\core\node.cu" />
-    <CudaCompile Include="..\..\src\generators\image_reader.cu">
-      <FileType>CppCode</FileType>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\generators\image_batch_reader.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>
@@ -104,6 +101,7 @@
     <CudaCompile Include="..\..\src\nodes\display.cu" />
     <CudaCompile Include="..\..\src\nodes\equal.cu" />
     <CudaCompile Include="..\..\src\nodes\euclidean_loss.cu" />
+    <CudaCompile Include="..\..\src\nodes\image_reader.cu" />
     <CudaCompile Include="..\..\src\nodes\leaky_relu.cu" />
     <CudaCompile Include="..\..\src\nodes\psnr.cu" />
     <CudaCompile Include="..\..\src\nodes\softmax_loss.cu" />
