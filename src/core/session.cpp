@@ -248,7 +248,10 @@ void Session::initialize() {
 				break;
 			}
 		}
-		if (solver) {
+		if (!var_solver_name.empty() && solver == nullptr) {
+			LOG(FATAL) << "Solver " << var_solver_name << " couldn't be found for variable " << var->name();
+		}
+		else if (solver) {
 			_solvers.insert(std::pair<std::shared_ptr<Variable>, std::shared_ptr<Solver>>(var, solver));
 			LOG(INFO) << "Variable " << var->name() << " <-> Solver " << solver->name();
 		}

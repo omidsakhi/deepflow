@@ -30,20 +30,6 @@ void main(int argc, char** argv) {
 	
 	DeepFlow df;
 		
-/*
-0528 21:44:36.111176 19700 image_batch_reader.cu:118] Initializing image_batch_reader from folder D:/Projects/deepflow/data/face - 12x1x27x18
-I0528 21:44:36.115166 19700 variable.cu:22] Initializing Variable dc1_f - 128x1x5x5
-I0528 21:44:36.474220 19700 convolution_2d.cpp:39] Initializing Convolution dc1 - 12x1x27x18 * 128x1x5x5 -> 12x128x23x14
-I0528 21:44:36.475220 19700 variable.cu:22] Initializing Variable dc2_f - 256x128x5x5
-I0528 21:44:36.552469 19700 convolution_2d.cpp:39] Initializing Convolution dc1_1 - 12x128x23x14 * 256x128x5x5 -> 12x256x19x10
-I0528 21:44:36.554348 19700 variable.cu:22] Initializing Variable dc3_f - 512x256x5x5
-I0528 21:44:36.854460 19700 convolution_2d.cpp:39] Initializing Convolution dc1_2 - 12x256x19x10 * 512x256x5x5 -> 12x512x15x6
-I0528 21:44:36.855053 19700 session.cpp:376] Executing graph for phase Train
-I0528 21:44:36.855053 19700 session.cpp:384] End nodes: dc1_2
-Epoch 1 -->
-PS D:\Projects\deepflow\build\x64\Release> ^C
-PS D:\Projects\deepflow\build\x64\Release>
-*/
 
 	if (FLAGS_i.empty()) {
 		auto train = df.define_train_phase("Train");
@@ -65,7 +51,7 @@ PS D:\Projects\deepflow\build\x64\Release>
 		auto di = df.image_batch_reader(FLAGS_image_folder, { FLAGS_batch, 1, 27, 18 }, true, "di", { train });
 		
 		auto select = df.data_generator(df.random_uniform({ 1,1,1,1 }, 0, 1.99), 60, "", "select");
-		auto selector = df.multiplexer({ gc3, di }, select);
+		auto selector = df.multiplexer({ gc3, di }, select, "selector");
 				
 		auto dc1_f = df.variable(df.random_normal({ 64, 1, 5, 5 }, mean, stddev), d_adam, "dc1_f", { train });
 		auto dc1 = df.conv2d(selector, dc1_f, 0, 0, 1, 1, 1, 1, "dc1", { train });
@@ -81,9 +67,6 @@ PS D:\Projects\deepflow\build\x64\Release>
 		df.block()->load_from_binary(FLAGS_i);	
 	}
 	
-	df.block()->print_node_params();
-	df.block()->print_phase_params();
-
 	auto session = df.session();	
 
 	if (!FLAGS_run.empty()) {
