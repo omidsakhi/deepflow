@@ -33,34 +33,52 @@ void main(int argc, char** argv) {
 
 	if (FLAGS_i.empty()) {
 		auto train = df.define_train_phase("Train");
-		auto g_adam = df.adam_solver(0.0002f, 0.5f);
-		auto d_adam = df.adam_solver(0.0001f, 0.5f);
+		auto g_solver = df.adadelta_solver();
+		auto d_solver = df.gain_solver();
 
 		auto mean = 0;
 		auto stddev = 0.02;
+		auto negative_slope = 0.2;
 
-		auto gi = df.data_generator(df.random_normal({ FLAGS_batch, 1, 15, 6 }, mean, stddev, "random_input"), 60, "", "input", { train });
+		auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 1, 15, 6 }, mean, stddev, "random_input"), 60, "", "input", { train });
 
-		auto gc1_f = df.variable(df.random_normal({ 1, 128, 5, 5 }, mean, stddev), g_adam, "gc1_f", { train });
-		auto gc1 = df.transposed_conv2d(gi, gc1_f, 0, 0, 1, 1, 1, 1, "gc1", { train });
-		auto gc2_f = df.variable(df.random_normal({ 128, 64, 5, 5 }, mean, stddev), g_adam, "gc2_f", { train });
-		auto gc2 = df.transposed_conv2d(gc1, gc2_f, 0, 0, 1, 1, 1, 1, "gc2", { train });
-		auto gc3_f = df.variable(df.random_normal({ 64, 1, 5, 5 }, mean, stddev), g_adam, "gc3_f", { train });
-		auto gc3 = df.transposed_conv2d(gc2, gc3_f, 0, 0, 1, 1, 1, 1, "gc3", { train });
+		auto gconv1_f = df.variable(df.random_normal({ 1, 128, 5, 5 }, mean, stddev), g_solver, "gconv1_f", { train });
+		auto gconv1 = df.transposed_conv2d(gin, gconv1_f, 0, 0, 1, 1, 1, 1, "gconv1", { train });
+		//auto gconv1_relu = df.leaky_relu(gconv1, negative_slope, "gconv1_relu");
+		auto gconv2_f = df.variable(df.random_normal({ 128, 64, 5, 5 }, mean, stddev), g_solver, "gconv2_f", { train });
+		auto gconv2 = df.transposed_conv2d(gconv1, gconv2_f, 0, 0, 1, 1, 1, 1, "gconv2", { train });
+		//auto gconv2_relu = df.leaky_relu(gconv2, negative_slope, "gconv2_relu");
+		auto gconv3_f = df.variable(df.random_normal({ 64, 1, 5, 5 }, mean, stddev), g_solver, "gconv3_f", { train });
+		auto gconv3 = df.transposed_conv2d(gconv2, gconv3_f, 0, 0, 1, 1, 1, 1, "gconv3", { train });
 
-		auto di = df.image_batch_reader(FLAGS_image_folder, { FLAGS_batch, 1, 27, 18 }, true, "di", { train });
+		auto din = df.image_batch_reader(FLAGS_image_folder, { FLAGS_batch, 1, 27, 18 }, true, "din", { train });
 		
 		auto select = df.data_generator(df.random_uniform({ 1,1,1,1 }, 0, 1.99), 60, "", "select");
-		auto selector = df.multiplexer({ gc3, di }, select, "selector");
+		auto data_selector = df.multiplexer({ gconv3, din }, select, "data_selector");
 				
-		auto dc1_f = df.variable(df.random_normal({ 64, 1, 5, 5 }, mean, stddev), d_adam, "dc1_f", { train });
-		auto dc1 = df.conv2d(selector, dc1_f, 0, 0, 1, 1, 1, 1, "dc1", { train });
-		auto dc2_f = df.variable(df.random_normal({ 128, 64, 5, 5 }, mean, stddev), d_adam, "dc2_f", { train });
-		auto dc2 = df.conv2d(dc1, dc2_f, 0, 0, 1, 1, 1, 1, "dc2", { train });
-		auto dc3_f = df.variable(df.random_normal({ 256, 128, 5, 5 }, mean, stddev), d_adam, "dc3_f", { train });
-		auto dc3 = df.conv2d(dc2, dc3_f, 0, 0, 1, 1, 1, 1, "dc3", { train });		
+		auto disp = df.display(gconv3);
+
+		auto dconv1_f = df.variable(df.random_normal({ 32, 1, 5, 5 }, mean, stddev), d_solver, "dconv1_f");
+		auto dconv1 = df.conv2d(data_selector, dconv1_f, 0, 0, 1, 1, 1, 1, "dconv1");		
+		auto dconv1_relu = df.leaky_relu(dconv1, negative_slope, "dconv1_relu");
+		auto dconv2_f = df.variable(df.random_normal({ 64, 32, 5, 5 }, mean, stddev), d_solver, "dconv2_f");
+		auto dconv2 = df.conv2d(dconv1_relu, dconv2_f, 0, 0, 1, 1, 1, 1, "dconv2");
+		auto dconv2_relu = df.leaky_relu(dconv2, negative_slope, "dconv2_relu");
+		auto dconv3_f = df.variable(df.random_normal({ 128, 64, 5, 5 }, mean, stddev), d_solver, "dconv3_f");
+		auto dconv3 = df.conv2d(dconv2_relu, dconv3_f, 0, 0, 1, 1, 1, 1, "dconv3");
+		auto dfc1_w = df.variable(df.random_normal({ 11520, 128, 1, 1 }, mean, stddev), d_solver, "dfc1_w");
+		auto dfc1_m = df.matmul(dconv3, dfc1_w, "dfc1_m");
+		auto dfc1_b = df.variable(df.random_normal({ 1, 128, 1, 1 }, mean, stddev), d_solver, "dfc1_b");
+		auto dfc1_bias = df.bias_add(dfc1_m, dfc1_b, "dfc1_bias");
+		auto dfc2_w = df.variable(df.random_normal({ 128, 1, 1, 1 }, mean, stddev), d_solver, "dfc2_w");
+		auto dfc2 = df.matmul(dfc1_bias, dfc2_w, "dfc2_m");
 		
-		auto disp = df.display(dc3);
+		auto d_labels = df.data_generator( df.random_uniform({ batch_size, 1, 1, 1}, 0.5, 1.0), 60, "", "true_labels");
+		auto g_labels = df.data_generator(df.random_uniform({ batch_size, 1, 1, 1 }, -1.0, 0.5), 60, "", "fake_labels");
+
+		auto label_selector = df.multiplexer({ g_labels, d_labels }, select, "label_selector");
+		
+		df.euclidean_loss(dfc2, label_selector);
 		
 	}
 	else {
