@@ -11,9 +11,9 @@ void Activation::initForward()
 	auto activation_param = _param.activation_param();
 	cudnnActivationMode_t _activation_mode =  (cudnnActivationMode_t) activation_param.type();
 	float coef = activation_param.coef();
-	DF_CUDNN_CHECK(cudnnCreateActivationDescriptor(&_activation_desc));
-	DF_CUDNN_CHECK(cudnnSetActivationDescriptor(_activation_desc, _activation_mode, CUDNN_PROPAGATE_NAN, coef));
-	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
+	DF_NODE_CUDNN_CHECK(cudnnCreateActivationDescriptor(&_activation_desc));
+	DF_NODE_CUDNN_CHECK(cudnnSetActivationDescriptor(_activation_desc, _activation_mode, CUDNN_PROPAGATE_NAN, coef));
+	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 
 	std::string opString;
 	switch (_activation_mode) {
@@ -45,12 +45,12 @@ void Activation::initBackward()
 
 void Activation::forward()
 {
-	DF_CUDNN_CHECK(cudnnActivationForward(_cudnnHandle, _activation_desc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
+	DF_NODE_CUDNN_CHECK(cudnnActivationForward(_cudnnHandle, _activation_desc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
 }
 
 void Activation::backward()
 {
-	DF_CUDNN_CHECK(cudnnActivationBackward(_cudnnHandle, _activation_desc, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &one, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+	DF_NODE_CUDNN_CHECK(cudnnActivationBackward(_cudnnHandle, _activation_desc, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &one, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
 }
 
 std::string Activation::to_cpp() const

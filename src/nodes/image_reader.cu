@@ -42,8 +42,8 @@ void ImageReader::initForward() {
 	LOG(INFO) << "Initializing image_readr for image " << file_name << " - " << _outputs[0]->value()->shape();
 	size_t size = _outputs[0]->value()->size();
 	unsigned char *d_img;
-	DF_CUDA_CHECK(cudaMalloc(&d_img, size));
-	DF_CUDA_CHECK(cudaMemcpy(d_img, img.ptr<uchar>(), size, cudaMemcpyHostToDevice));
+	DF_NODE_CUDA_CHECK(cudaMalloc(&d_img, size));
+	DF_NODE_CUDA_CHECK(cudaMemcpy(d_img, img.ptr<uchar>(), size, cudaMemcpyHostToDevice));
 	if (img.channels() == 1) {
 		GrayImageReaderKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (d_img, img.cols, img.rows, (float*)_outputs[0]->value()->mutableData());
 		DF_KERNEL_CHECK();
@@ -55,7 +55,7 @@ void ImageReader::initForward() {
 	else {
 		LOG(FATAL) << "Unsupported image.";
 	}
-	DF_CUDA_CHECK(cudaFree(d_img));	
+	DF_NODE_CUDA_CHECK(cudaFree(d_img));	
 }
 
 std::string ImageReader::to_cpp() const

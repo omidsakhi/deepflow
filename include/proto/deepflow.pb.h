@@ -354,14 +354,15 @@ inline bool MnistParam_OutputType_Parse(
     MnistParam_OutputType_descriptor(), name, value);
 }
 enum PhaseParam_PhaseBehaviour {
-  PhaseParam_PhaseBehaviour_TRAIN = 0,
-  PhaseParam_PhaseBehaviour_VALIDATION = 1,
-  PhaseParam_PhaseBehaviour_INFERENCE = 2,
+  PhaseParam_PhaseBehaviour_TRAIN_AND_INFERENCE = 0,
+  PhaseParam_PhaseBehaviour_TRAIN = 1,
+  PhaseParam_PhaseBehaviour_VALIDATION = 2,
+  PhaseParam_PhaseBehaviour_INFERENCE = 3,
   PhaseParam_PhaseBehaviour_PhaseParam_PhaseBehaviour_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   PhaseParam_PhaseBehaviour_PhaseParam_PhaseBehaviour_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool PhaseParam_PhaseBehaviour_IsValid(int value);
-const PhaseParam_PhaseBehaviour PhaseParam_PhaseBehaviour_PhaseBehaviour_MIN = PhaseParam_PhaseBehaviour_TRAIN;
+const PhaseParam_PhaseBehaviour PhaseParam_PhaseBehaviour_PhaseBehaviour_MIN = PhaseParam_PhaseBehaviour_TRAIN_AND_INFERENCE;
 const PhaseParam_PhaseBehaviour PhaseParam_PhaseBehaviour_PhaseBehaviour_MAX = PhaseParam_PhaseBehaviour_INFERENCE;
 const int PhaseParam_PhaseBehaviour_PhaseBehaviour_ARRAYSIZE = PhaseParam_PhaseBehaviour_PhaseBehaviour_MAX + 1;
 
@@ -1906,6 +1907,12 @@ class Conv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::int32 dilation_w() const;
   void set_dilation_w(::google::protobuf::int32 value);
 
+  // float negative_slope = 7;
+  void clear_negative_slope();
+  static const int kNegativeSlopeFieldNumber = 7;
+  float negative_slope() const;
+  void set_negative_slope(float value);
+
   // @@protoc_insertion_point(class_scope:deepflow.Conv2dParam)
  private:
 
@@ -1916,6 +1923,7 @@ class Conv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::int32 v_;
   ::google::protobuf::int32 dilation_h_;
   ::google::protobuf::int32 dilation_w_;
+  float negative_slope_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -5556,6 +5564,8 @@ class PhaseParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   // nested types ----------------------------------------------------
 
   typedef PhaseParam_PhaseBehaviour PhaseBehaviour;
+  static const PhaseBehaviour TRAIN_AND_INFERENCE =
+    PhaseParam_PhaseBehaviour_TRAIN_AND_INFERENCE;
   static const PhaseBehaviour TRAIN =
     PhaseParam_PhaseBehaviour_TRAIN;
   static const PhaseBehaviour VALIDATION =
@@ -6549,6 +6559,20 @@ inline void Conv2dParam::set_dilation_w(::google::protobuf::int32 value) {
   
   dilation_w_ = value;
   // @@protoc_insertion_point(field_set:deepflow.Conv2dParam.dilation_w)
+}
+
+// float negative_slope = 7;
+inline void Conv2dParam::clear_negative_slope() {
+  negative_slope_ = 0;
+}
+inline float Conv2dParam::negative_slope() const {
+  // @@protoc_insertion_point(field_get:deepflow.Conv2dParam.negative_slope)
+  return negative_slope_;
+}
+inline void Conv2dParam::set_negative_slope(float value) {
+  
+  negative_slope_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.Conv2dParam.negative_slope)
 }
 
 // -------------------------------------------------------------------

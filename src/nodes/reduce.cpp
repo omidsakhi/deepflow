@@ -13,7 +13,7 @@ void Reduce::initForward() {
 	_type = reduceParam.output_type();
 
 	auto inputDims = _inputs[0]->value()->dims();
-	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));	
+	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));	
 		
 	auto outputDims = inputDims;
 	outputDims[reduceDim] = 1;
@@ -54,10 +54,10 @@ void Reduce::initForward() {
 		break;
 	};
 
-	DF_CUDNN_CHECK(cudnnCreateReduceTensorDescriptor(&_reduceTensorDesciptor));	
-	DF_CUDNN_CHECK(cudnnSetReduceTensorDescriptor(_reduceTensorDesciptor, _reduceTensorOp, CUDNN_DATA_FLOAT, CUDNN_PROPAGATE_NAN, _reduceTensorIndices, CUDNN_32BIT_INDICES));
-	DF_CUDNN_CHECK(cudnnGetReductionWorkspaceSize(_cudnnHandle, _reduceTensorDesciptor, _inputs[0]->value()->descriptor(), _outputs[0]->value()->descriptor(), &_workspaceSizeInBytes));
-	DF_CUDA_CHECK(cudaMalloc(&_d_workspace, _workspaceSizeInBytes));
+	DF_NODE_CUDNN_CHECK(cudnnCreateReduceTensorDescriptor(&_reduceTensorDesciptor));	
+	DF_NODE_CUDNN_CHECK(cudnnSetReduceTensorDescriptor(_reduceTensorDesciptor, _reduceTensorOp, CUDNN_DATA_FLOAT, CUDNN_PROPAGATE_NAN, _reduceTensorIndices, CUDNN_32BIT_INDICES));
+	DF_NODE_CUDNN_CHECK(cudnnGetReductionWorkspaceSize(_cudnnHandle, _reduceTensorDesciptor, _inputs[0]->value()->descriptor(), _outputs[0]->value()->descriptor(), &_workspaceSizeInBytes));
+	DF_NODE_CUDA_CHECK(cudaMalloc(&_d_workspace, _workspaceSizeInBytes));
 
 	LOG(INFO) << "Initializing " << opString << " " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape();
 }
@@ -116,7 +116,7 @@ void Reduce::initBackward() {
 }
 
 void Reduce::forward() {		
-	DF_CUDNN_CHECK(
+	DF_NODE_CUDNN_CHECK(
 		cudnnReduceTensor(
 			_cudnnHandle,
 			_reduceTensorDesciptor,

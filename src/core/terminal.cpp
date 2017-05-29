@@ -107,12 +107,12 @@ void NodeOutput::initDiff() {
 void NodeOutput::resetDiff()
 {
 	if (_diff) {
-		DF_CUDA_CHECK(cudaMemset(_diff->mutableData(), 0, _diff->sizeInBytes()));
+		DF_NODE_CUDA_CHECK(cudaMemset(_diff->mutableData(), 0, _diff->sizeInBytes()));
 	}
 }
 
 void NodeOutput::cpyValueToDiff() {
-	DF_CUDA_CHECK(cudaMemcpy(_diff->mutableData(), _value->data(), _value->sizeInBytes(), cudaMemcpyDeviceToDevice));	
+	DF_NODE_CUDA_CHECK(cudaMemcpy(_diff->mutableData(), _value->data(), _value->sizeInBytes(), cudaMemcpyDeviceToDevice));	
 }
 
 std::array<int, 4> NodeInput::dims() {
@@ -125,5 +125,5 @@ std::array<int, 4> NodeOutput::dims() {
 
 void NodeOutput::feed(std::shared_ptr<NodeOutput> t) {
 	LOG_IF(FATAL, t->value()->sizeInBytes() != value()->sizeInBytes()) << "Size mismatch between terminals: " << _name << " and " << t->name();
-	DF_CUDA_CHECK(cudaMemcpy(value()->mutableData(), t->value()->data(), value()->sizeInBytes(), cudaMemcpyDeviceToDevice));	
+	DF_NODE_CUDA_CHECK(cudaMemcpy(value()->mutableData(), t->value()->data(), value()->sizeInBytes(), cudaMemcpyDeviceToDevice));	
 }

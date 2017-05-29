@@ -106,6 +106,7 @@ message Conv2dParam {
 	int32 v = 4;
 	int32 dilation_h = 5;
 	int32 dilation_w = 6;
+	float negative_slope = 7;
 }
 
 message DropoutParam {
@@ -344,9 +345,10 @@ message SolverParam {
 
 message PhaseParam {
 	enum PhaseBehaviour {
-		TRAIN = 0;
-		VALIDATION = 1;
-		INFERENCE = 2;
+		TRAIN_AND_INFERENCE = 0;
+		TRAIN = 1;
+		VALIDATION = 2;
+		INFERENCE = 3;
 	}
 	string phase = 1;	
 	PhaseBehaviour behaviour = 2;

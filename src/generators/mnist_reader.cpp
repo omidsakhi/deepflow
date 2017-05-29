@@ -146,7 +146,7 @@ void MNISTReader::nextBatch() {
 		LOG(FATAL);
 	}
 	
-	DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));			
+	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));			
 	if (_context && _context->debug_level == 4)
 		LOG(INFO) << "MNIST " << _name << " - BATCH @ " << _current_batch;
 }

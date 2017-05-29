@@ -28,14 +28,14 @@ void Accumulator::initBackward() {
 
 void Accumulator::forward() {
 	if (_reset_time == deepflow::ActionTime::END_OF_EPOCH && _context->current_iteration_per_epoch == 1) {
-		DF_CUDA_CHECK(cudaMemset(_outputs[0]->value()->mutableData(), 0, _outputs[0]->value()->sizeInBytes()));
+		DF_NODE_CUDA_CHECK(cudaMemset(_outputs[0]->value()->mutableData(), 0, _outputs[0]->value()->sizeInBytes()));
 		_total = 0;		
 	}
 	auto size = _inputs[0]->value()->size();
 	AccumulatorKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData());
 	DF_KERNEL_CHECK();
 	_total += _inputs[0]->dims()[0];	
-	DF_CUDA_CHECK(cudaMemcpy(_outputs[1]->value()->mutableData(), &_total, sizeof(float), cudaMemcpyHostToDevice));
+	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[1]->value()->mutableData(), &_total, sizeof(float), cudaMemcpyHostToDevice));
 }
 
 void Accumulator::backward() {

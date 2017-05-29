@@ -31,21 +31,19 @@ void main(int argc, char** argv) {
 		
 	if (FLAGS_i.empty()) {		
 
-		df.define_phase("Train", deepflow::PhaseParam_PhaseBehaviour_TRAIN);
-		df.define_phase("Validation", deepflow::PhaseParam_PhaseBehaviour_VALIDATION);
+		df.define_phase("Train", DeepFlow::TRAIN);
+		df.define_phase("Validation", DeepFlow::VALIDATION);
 
 		auto gain = df.gain_solver(0.999900, 0.000100, 10.000000, 0.000000, 0.050000, 0.950000, "gain");
 
 		auto test_data = df.mnist_reader("./data/mnist", 100, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });		
 		auto train_data = df.mnist_reader("./data/mnist", 100, MNISTReader::Train, MNISTReader::Data, "train_data", { "Train" });
 		auto data_selector = df.phaseplexer(train_data, "Train", test_data, "Validation", "data_selector", {});
-		auto conv1_w = df.variable(df.random_uniform({ 20, 1, 5, 5 }, -0.100000, 0.100000), gain, "conv1_w", {});
-		auto conv1_b = df.variable(df.random_uniform({ 1, 20, 1, 1 }, -0.100000, 0.100000), gain, "conv1_b", {});
-		auto conv1 = df.conv2d(data_selector, conv1_w, conv1_b, 2, 2, 1, 1, 1, 1, "conv1", {});
+		auto conv1_w = df.variable(df.random_uniform({ 20, 1, 5, 5 }, -0.100000, 0.100000), gain, "conv1_w", {});		
+		auto conv1 = df.conv2d(data_selector, conv1_w, 2, 2, 1, 1, 1, 1, "conv1", {});
 		auto pool1 = df.pooling(conv1, 2, 2, 0, 0, 2, 2, "pool1", {});
-		auto conv2_w = df.variable(df.random_uniform({ 50, 20, 5, 5 }, -0.100000, 0.100000), gain, "conv2_w", {});
-		auto conv2_b = df.variable(df.random_uniform({ 1, 50, 1, 1 }, -0.100000, 0.100000), gain, "conv2_b", {});
-		auto conv2 = df.conv2d(pool1, conv2_w, conv2_b, 0, 0, 1, 1, 1, 1, "conv2", {});
+		auto conv2_w = df.variable(df.random_uniform({ 50, 20, 5, 5 }, -0.100000, 0.100000), gain, "conv2_w", {});		
+		auto conv2 = df.conv2d(pool1, conv2_w, 0, 0, 1, 1, 1, 1, "conv2", {});
 		auto pool2 = df.pooling(conv2, 2, 2, 0, 0, 2, 2, "pool2", {});
 		auto w1 = df.variable(df.random_uniform({ 1250, 500, 1, 1 }, -0.100000, 0.100000), gain, "w1", {});
 		auto m1 = df.matmul(pool2, w1, "m1", {});

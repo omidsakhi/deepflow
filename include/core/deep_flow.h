@@ -18,7 +18,12 @@ class DeepFlowDllExport DeepFlow : public std::enable_shared_from_this<DeepFlow>
 	friend class Session;
 	friend class Caffe;
 public:
-
+	enum PhaseBehaviour {
+		TRAIN_AND_INFERENCE,
+		TRAIN,
+		VALIDATION,
+		INFERENCE
+	};
 	enum ActionTime {
 		EVERY_PASS = 0,
 		END_OF_EPOCH = 1,
@@ -53,8 +58,8 @@ public:
 	std::string restructure(std::string input, int first_dims, int second_dim, std::string name = "restructure", std::initializer_list<std::string> phases = {});
 
 	//CONVOLUTION
-	std::string conv2d(std::string input, std::string filter, std::string bias, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "conv", std::initializer_list<std::string> phases = {});
-	std::string conv2d(std::string input, std::string filter, std::string bias, std::string name = "conv", std::initializer_list<std::string> phases = {});
+	std::string conv2d(std::string input, std::string filter, std::string bias, float negative_slope /* NOT SUPPORTED YET BY CUDNN */, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
+	std::string conv2d(std::string input, std::string filter, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string pooling(std::string input, int windowHeight = 3, int windowWidth = 3, int verticalPadding = 0, int horizontalPadding = 0, int verticalStride = 1, int horizontalStride = 1, std::string name = "maxpool", std::initializer_list<std::string> phases = {});
 	std::string transposed_conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
 
@@ -115,7 +120,7 @@ public:
 	std::array<std::string,2> accumulator(std::string input, ActionTime resetTime = ActionTime::END_OF_EPOCH, std::string name = "acc", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
-	std::string define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour);
+	std::string define_phase(std::string phase, PhaseBehaviour behaviour = TRAIN_AND_INFERENCE);
 	std::string define_train_phase(std::string train_phase);
 	std::string define_validation_phase(std::string validation_phase);
 	std::string define_inference_phase(std::string inference_phase);

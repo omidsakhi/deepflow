@@ -23,18 +23,18 @@ void Variable::initForward() {
 	if (_param.variable_param().has_weights()) {
 		auto weights = _param.variable_param().weights();
 		LOG_IF(FATAL, weights.weight_size() != _outputs[0]->value()->size()) << "weights.weight_size() != _outputs[0]->value()->size() in " << _name << " - " << weights.weight_size() << " != " << _outputs[0]->value()->size();
-		DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), weights.weight().data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
+		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), weights.weight().data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 	}
 	else if (_initializer->param().has_init_data()) {
 		auto weights = _initializer->param().init_data();
 		LOG_IF(FATAL, weights.weight_size() != _outputs[0]->value()->size()) << "weights.weight_size() != _outputs[0]->value()->size() in " << _name << " - " << weights.weight_size() << " != " << _outputs[0]->value()->size();
-		DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), weights.weight().data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
+		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), weights.weight().data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 	}
 	else {
 		_initializer->apply(this);
 		for (int i = 0; i < _outputs[0]->value()->size(); ++i)
 			_param.mutable_variable_param()->mutable_init_param()->mutable_init_data()->add_weight(0);
-		DF_CUDA_CHECK(cudaMemcpy(_param.mutable_variable_param()->mutable_init_param()->mutable_init_data()->mutable_weight()->mutable_data(),_outputs[0]->value()->data(),_outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToHost));
+		DF_NODE_CUDA_CHECK(cudaMemcpy(_param.mutable_variable_param()->mutable_init_param()->mutable_init_data()->mutable_weight()->mutable_data(),_outputs[0]->value()->data(),_outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToHost));
 	}
 }
 
@@ -46,7 +46,7 @@ void Variable::transferDataToParam() {
 	auto dma = _param.mutable_variable_param()->mutable_weights();
 	for (int i = 0; i < _outputs[0]->value()->size(); ++i)
 		dma->add_weight(0);
-	DF_CUDA_CHECK(cudaMemcpy(dma->mutable_weight()->mutable_data(), _outputs[0]->value()->data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToHost));
+	DF_NODE_CUDA_CHECK(cudaMemcpy(dma->mutable_weight()->mutable_data(), _outputs[0]->value()->data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToHost));
 }
 
 std::string Variable::to_cpp() const

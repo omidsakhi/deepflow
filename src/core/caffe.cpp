@@ -325,7 +325,7 @@ std::string Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, 
 		for (auto d : layer.blobs(1).data())
 			bias_mutable_weights->add_weight(d);
 	}
-	return df->conv2d(layer.bottom(0) + "_output_0", filter, bias, pad_h, pad_w, stride_h, stride_w, dilation_h, dilation_w, layer.name(), {});
+	return df->conv2d(layer.bottom(0) + "_output_0", filter, bias, 1.0, pad_h, pad_w, stride_h, stride_w, dilation_h, dilation_w, layer.name(), {});
 }
 
 std::string Caffe::_parse_softmax_param(const caffe::SoftmaxParameter & param, const caffe::V1LayerParameter & layer)

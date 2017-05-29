@@ -128,7 +128,7 @@ void Display::forward() {
 		else
 			GrayPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col, (unsigned char*)_outputs[0]->value()->mutableData());
 		DF_KERNEL_CHECK();				
-		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), _outputs[0]->value()->data(), num_pic_pixels, cudaMemcpyDeviceToHost));
+		DF_NODE_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), _outputs[0]->value()->data(), num_pic_pixels, cudaMemcpyDeviceToHost));
 		cv::imshow(name(), disp);		
 		int key = cv::waitKey(_delay_msec);
 		if (key == 27) {
@@ -141,7 +141,7 @@ void Display::forward() {
 		else
 			GrayPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->diff()->data(), per_image_height, per_image_width, num_image_per_row_and_col, (unsigned char*)_outputs[0]->value()->mutableData());
 		DF_KERNEL_CHECK();
-		DF_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), _outputs[0]->value()->data(), num_pic_pixels, cudaMemcpyDeviceToHost));
+		DF_NODE_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), _outputs[0]->value()->data(), num_pic_pixels, cudaMemcpyDeviceToHost));
 		cv::imshow(name(), disp);
 		int key = cv::waitKey(_delay_msec);
 		if (key == 27) {

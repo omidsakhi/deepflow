@@ -67,7 +67,7 @@ void ImageBatchReader::nextBatch() {
 		LOG_IF(FATAL, img.rows != _dims[2]) << "Provided height doesn't match for " << file_name;
 		LOG_IF(FATAL, img.cols != _dims[3]) << "Provided width doesn't match for " << file_name;		
 		size_t img_size = img.cols * img.rows * img.channels();
-		DF_CUDA_CHECK(cudaMemcpy(d_img, img.ptr<uchar>(), img_size, cudaMemcpyHostToDevice));
+		DF_NODE_CUDA_CHECK(cudaMemcpy(d_img, img.ptr<uchar>(), img_size, cudaMemcpyHostToDevice));
 		if (img.channels() == 1) {
 			GrayImageBatchReaderKernel << < numOfBlocks(img_size), maxThreadsPerBlock >> > (img_size, i * img_size, d_img, (float*)_outputs[0]->value()->mutableData());
 			DF_KERNEL_CHECK();
@@ -117,7 +117,7 @@ void ImageBatchReader::initForward() {
 	_outputs[0]->initValue(_dims);
 	LOG(INFO) << "Initializing image_batch_reader from folder " << _folder_path << " - " << _outputs[0]->value()->shape();
 	size_t img_size = _dims[1] * _dims[2] * _dims[3];
-	DF_CUDA_CHECK(cudaMalloc(&d_img, img_size ));
+	DF_NODE_CUDA_CHECK(cudaMalloc(&d_img, img_size ));
 	_indices.resize(_batch_size);
 	nextBatch();
 }

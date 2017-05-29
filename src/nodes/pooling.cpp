@@ -5,15 +5,15 @@ Pooling::Pooling(const deepflow::NodeParam &param) : Node(param) {
 }
 
 void Pooling::initForward() {
-	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
+	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 	auto param = _param.pooling_param();
 	LOG_IF(FATAL, param.window_w() < 1);
 	LOG_IF(FATAL, param.window_h() < 1);
 	LOG_IF(FATAL, param.v_pad() < 0);
 	LOG_IF(FATAL, param.h_pad() < 0);
-	DF_CUDNN_CHECK(cudnnCreatePoolingDescriptor(&_poolingDesc));
+	DF_NODE_CUDNN_CHECK(cudnnCreatePoolingDescriptor(&_poolingDesc));
 	int n, c, h, w;
-	DF_CUDNN_CHECK(cudnnSetPooling2dDescriptor(_poolingDesc, CUDNN_POOLING_MAX, CUDNN_PROPAGATE_NAN, param.window_h(), param.window_w(), param.v_pad(), param.h_pad(), param.v_stride(), param.h_stride()));
+	DF_NODE_CUDNN_CHECK(cudnnSetPooling2dDescriptor(_poolingDesc, CUDNN_POOLING_MAX, CUDNN_PROPAGATE_NAN, param.window_h(), param.window_w(), param.v_pad(), param.h_pad(), param.v_stride(), param.h_stride()));
 	auto dims = _inputs[0]->dims();
 	n = dims[0];
 	c = dims[1];
@@ -28,11 +28,11 @@ void Pooling::initBackward() {
 }
 
 void Pooling::forward() {
-	DF_CUDNN_CHECK(cudnnPoolingForward(_cudnnHandle, _poolingDesc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
+	DF_NODE_CUDNN_CHECK(cudnnPoolingForward(_cudnnHandle, _poolingDesc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
 }
 
 void Pooling::backward() {
-	DF_CUDNN_CHECK(cudnnPoolingBackward(_cudnnHandle, _poolingDesc, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &one, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+	DF_NODE_CUDNN_CHECK(cudnnPoolingBackward(_cudnnHandle, _poolingDesc, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &one, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
 }
 
 std::string Pooling::to_cpp() const

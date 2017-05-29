@@ -105,11 +105,15 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x7) {
 			auto train = df.define_train_phase("Train");
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
-			auto b = df.variable(df.zeros({ 1,3,1,1 }), "", "b", {});
-			auto f = df.variable(df.ones({ 3,3,5,5 }), "", "f", {});
-			auto conv = df.conv2d(image, f, b, "conv");			 
-			df.display(conv, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "input", { train });
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY);
+			auto b = df.variable(df.ones({ 1,1,1,1 }), "", "b", {});
+			auto f = df.variable(df.ones({ 1,1,5,5 }), "", "f", {});
+			auto conv1 = df.conv2d(image, f, b, -1.0, 0, 0, 1, 1, 1, 1, "conv");
+			df.display(conv1, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "input", { train });
+			auto conv2 = df.conv2d(image, f, b, 0.0, 0, 0, 1, 1, 1, 1, "conv");
+			df.display(conv2, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "input", { train });
+			df.logger({ conv1 }, "log.txt", "{0}\n", DeepFlow::EVERY_PASS);
+			df.logger({ conv2 }, "log.txt", "{0}\n", DeepFlow::EVERY_PASS);
 		}
 		else if (FLAGS_x8) {
 			auto train = df.define_train_phase("Train");

@@ -45,7 +45,7 @@ std::string Phaseplexer::to_cpp() const
 void Phaseplexer::forward()
 {	
 	auto input = _map.find(_context->phase);
-	DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), input->second->value()->data(), input->second->value()->sizeInBytes(), cudaMemcpyDeviceToDevice))	
+	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), input->second->value()->data(), input->second->value()->sizeInBytes(), cudaMemcpyDeviceToDevice))	
 }
 
 void Phaseplexer::backward()

@@ -429,6 +429,18 @@ std::string DeepFlow::display(std::string input, int delay_msec, ActionTime disl
 	return node_param->output(0);
 }
 
+void DeepFlow::psnr(std::string a, std::string b, ActionTime printTime, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	node_param->add_input(b);
+	auto psnr_param = node_param->mutable_psnr_param();
+	psnr_param->set_print_time((deepflow::ActionTime)printTime);
+}
+
 std::string DeepFlow::softmax_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -527,7 +539,7 @@ std::string DeepFlow::transposed_conv2d(std::string input, std::string filter, i
 	return node_param->output(0);
 }
 
-std::string DeepFlow::conv2d(std::string input, std::string filter, std::string bias, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name, std::initializer_list<std::string> phases) {
+std::string DeepFlow::conv2d(std::string input, std::string filter, std::string bias, float negative_slope, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
@@ -544,23 +556,13 @@ std::string DeepFlow::conv2d(std::string input, std::string filter, std::string 
 	conv_2d_param->set_v(horizontal_filter_stride);
 	conv_2d_param->set_dilation_h(filter_height_dilation);
 	conv_2d_param->set_dilation_w(filter_width_dialation);	
+	conv_2d_param->set_negative_slope(negative_slope);
 	return node_param->output(0);
 }
 
-std::string DeepFlow::conv2d(std::string input, std::string filter, std::string bias, std::string name, std::initializer_list<std::string> phases) {
-	return conv2d(input, filter, bias, 0, 0, 1, 1, 1, 1, name, phases);
-}
-
-void DeepFlow::psnr(std::string a, std::string b, ActionTime printTime, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name, std::initializer_list<std::string> phases)
 {
-	auto node_param = _block->add_node_param();
-	node_param->set_name(_block->get_unique_node_param_name(name));
-	for (auto phase : phases)
-		node_param->add_phase(phase);
-	node_param->add_input(a);
-	node_param->add_input(b);
-	auto psnr_param = node_param->mutable_psnr_param();
-	psnr_param->set_print_time((deepflow::ActionTime)printTime);
+	return conv2d(input, filter, "", 0, pad_top_bottom, pad_left_right, vertical_filter_stride, horizontal_filter_stride, filter_height_dilation, filter_width_dialation, name, phases);
 }
 
 std::string DeepFlow::pooling(std::string input, int windowHeight, int windowWidth, int verticalPadding, int horizontalPadding, int verticalStride, int horizontalStride, std::string name, std::initializer_list<std::string> phases) {
@@ -682,26 +684,26 @@ std::shared_ptr<Session> DeepFlow::session()
 	return session;
 }
 
-std::string DeepFlow::define_phase(std::string phase, deepflow::PhaseParam_PhaseBehaviour behaviour) {
+std::string DeepFlow::define_phase(std::string phase, PhaseBehaviour behaviour) {
 	auto phase_param = _block->add_phase_param();	
 	phase_param->set_phase(phase);
-	phase_param->set_behaviour(behaviour);
+	phase_param->set_behaviour((deepflow::PhaseParam_PhaseBehaviour)behaviour);
 	return phase;
 }
 
 std::string DeepFlow::define_train_phase(std::string train_phase)
 {
-	return define_phase(train_phase, deepflow::PhaseParam_PhaseBehaviour_TRAIN);
+	return define_phase(train_phase, TRAIN);
 }
 
 std::string DeepFlow::define_validation_phase(std::string validation_phase)
 {
-	return define_phase(validation_phase, deepflow::PhaseParam_PhaseBehaviour_VALIDATION);
+	return define_phase(validation_phase, VALIDATION);
 }
 
 std::string DeepFlow::define_inference_phase(std::string inference_phase)
 {
-	return define_phase(inference_phase, deepflow::PhaseParam_PhaseBehaviour_INFERENCE);
+	return define_phase(inference_phase, INFERENCE);
 }
 
 void DeepFlow::load_from_caffe_model(std::string file_path, std::initializer_list<std::pair<std::string, std::array<int, 4>>> inputs, bool verbose)

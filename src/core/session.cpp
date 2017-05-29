@@ -274,6 +274,7 @@ void Session::initialize() {
 			node->initForward();
 			node->initBackward();
 			node->setInitialized(true);
+			//printMemory();
 		}
 		else {
 			queue.push_back(node);

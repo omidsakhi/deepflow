@@ -6,7 +6,7 @@ RandomSelector::RandomSelector(const deepflow::NodeParam &param) : Node(param) {
 
 void RandomSelector::initForward()
 {
-	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size());
+	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Size mismatch " << _inputs[0]->value()->shape() << " vs " << _inputs[1]->value()->shape();
 	_outputs[0]->initValue(_inputs[0]->dims());
 	auto param = _param.random_selector_param();
 	_probability = param.probability();
@@ -23,9 +23,9 @@ void RandomSelector::forward()
 	float rnd = ((float)rand() / RAND_MAX);
 	_selection = (rnd < _probability) ? 0 : 1;
 	if (_selection == 0)
-		DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice))
+		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice))
 	else
-		DF_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[1]->value()->data(), _inputs[1]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice))
+		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[1]->value()->data(), _inputs[1]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice))
 }
 
 void RandomSelector::backward()

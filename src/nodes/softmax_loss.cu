@@ -18,7 +18,7 @@ SoftmaxLoss::SoftmaxLoss(const deepflow::NodeParam &param) : Loss(param) {
 void SoftmaxLoss::initForward() {		
 	LOG(INFO) << "Initializing SoftmaxLoss " << _name << " - " << _inputs[0]->value()->shape();
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input size != target size";
-	DF_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));	
+	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());	
 }
 
@@ -27,7 +27,7 @@ void SoftmaxLoss::initBackward() {
 }
 
 void SoftmaxLoss::forward() {
-	DF_CUDNN_CHECK(cudnnSoftmaxForward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, CUDNN_SOFTMAX_MODE_CHANNEL, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
+	DF_NODE_CUDNN_CHECK(cudnnSoftmaxForward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, CUDNN_SOFTMAX_MODE_CHANNEL, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
 }
 
 void SoftmaxLoss::backward() {
