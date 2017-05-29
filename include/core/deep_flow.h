@@ -96,6 +96,7 @@ public:
 	// SELECTORS
 	std::string phaseplexer(std::string input_1, std::string phase_1, std::string input_2, std::string phase_2, std::string name = "plex", std::initializer_list<std::string> phases = {});
 	std::string random_selector(std::string input_1, std::string input_2, float probability = 0.5f, std::string name = "selector", std::initializer_list<std::string> phases = {});
+	std::string multiplexer(std::initializer_list<std::string> inputs, std::string selector, std::string name = "multiplexer", std::initializer_list<std::string> phases = {});
 
 	// LOSS
 	std::string softmax_loss(std::string a, std::string b, std::string name = "softmaxloss", std::initializer_list<std::string> phases = {});

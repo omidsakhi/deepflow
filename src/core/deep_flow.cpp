@@ -661,6 +661,23 @@ std::string DeepFlow::random_selector(std::string input_1, std::string input_2, 
 	return node_param->output(0);
 }
 
+std::string DeepFlow::multiplexer(std::initializer_list<std::string> inputs, std::string selector, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);	
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	std::vector<std::string> inputsVec(inputs.size());
+	std::copy(inputs.begin(), inputs.end(), inputsVec.begin());
+	for (int i = 0; i < inputsVec.size(); ++i)
+		node_param->add_input(inputsVec[i]);
+	node_param->add_input(selector);
+	auto multiplexer_param = node_param->mutable_multiplexer_param();
+	multiplexer_param->set_num_inputs(inputs.size());
+	return node_param->output(0);
+}
+
 std::string DeepFlow::equal(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));

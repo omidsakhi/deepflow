@@ -163,6 +163,9 @@
     <ClCompile Include="..\..\src\nodes\logger.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\nodes\multiplexer.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -331,6 +334,9 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\image_reader.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\multiplexer.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

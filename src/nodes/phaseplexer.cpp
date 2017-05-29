@@ -51,5 +51,7 @@ void Phaseplexer::forward()
 void Phaseplexer::backward()
 {	
 	auto input = _map.find(_context->phase);
-	cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 1,  input->second->diff()->mutableData());	
+	if (input->second->connectedNode()->propagateBack()) {		
+		cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 1, input->second->diff()->mutableData());
+	}
 }

@@ -56,6 +56,7 @@
     <ClInclude Include="..\..\include\nodes\leaky_relu.h" />
     <ClInclude Include="..\..\include\nodes\logger.h" />
     <ClInclude Include="..\..\include\nodes\matmul.h" />
+    <ClInclude Include="..\..\include\nodes\multiplexer.h" />
     <ClInclude Include="..\..\include\nodes\phaseplexer.h" />
     <ClInclude Include="..\..\include\nodes\place_holder.h" />
     <ClInclude Include="..\..\include\nodes\pooling.h" />
@@ -125,6 +126,7 @@
     <ClCompile Include="..\..\src\nodes\dropout.cpp" />
     <ClCompile Include="..\..\src\nodes\logger.cpp" />
     <ClCompile Include="..\..\src\nodes\matmul.cpp" />
+    <ClCompile Include="..\..\src\nodes\multiplexer.cpp" />
     <ClCompile Include="..\..\src\nodes\phaseplexer.cpp" />
     <ClCompile Include="..\..\src\nodes\place_holder.cpp" />
     <ClCompile Include="..\..\src\nodes\pooling.cpp" />

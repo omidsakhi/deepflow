@@ -31,6 +31,10 @@ message TensorParam {
 	repeated int32 dims = 2;		
 }
 
+message MultiplexerParam {
+	int32 num_inputs = 1;
+}
+
 message PhaseplexerParam {
 	repeated string phase = 1;
 }
@@ -259,6 +263,7 @@ message NodeParam {
   LoggerParam logger_param = 122;
   RestructureParam restructure_param = 123;
   ImageReaderParam image_reader_param = 124;
+  MultiplexerParam multiplexer_param = 125;
 }
 
 message SquareParam {

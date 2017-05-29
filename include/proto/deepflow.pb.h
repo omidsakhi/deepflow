@@ -118,6 +118,9 @@ extern MatMulParamDefaultTypeInternal _MatMulParam_default_instance_;
 class MnistParam;
 class MnistParamDefaultTypeInternal;
 extern MnistParamDefaultTypeInternal _MnistParam_default_instance_;
+class MultiplexerParam;
+class MultiplexerParamDefaultTypeInternal;
+extern MultiplexerParamDefaultTypeInternal _MultiplexerParam_default_instance_;
 class NodeParam;
 class NodeParamDefaultTypeInternal;
 extern NodeParamDefaultTypeInternal _NodeParam_default_instance_;
@@ -637,6 +640,89 @@ class TensorParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 > dims_;
   mutable int _dims_cached_byte_size_;
   int type_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class MultiplexerParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.MultiplexerParam) */ {
+ public:
+  MultiplexerParam();
+  virtual ~MultiplexerParam();
+
+  MultiplexerParam(const MultiplexerParam& from);
+
+  inline MultiplexerParam& operator=(const MultiplexerParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const MultiplexerParam& default_instance();
+
+  static inline const MultiplexerParam* internal_default_instance() {
+    return reinterpret_cast<const MultiplexerParam*>(
+               &_MultiplexerParam_default_instance_);
+  }
+
+  void Swap(MultiplexerParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline MultiplexerParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  MultiplexerParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const MultiplexerParam& from);
+  void MergeFrom(const MultiplexerParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(MultiplexerParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // int32 num_inputs = 1;
+  void clear_num_inputs();
+  static const int kNumInputsFieldNumber = 1;
+  ::google::protobuf::int32 num_inputs() const;
+  void set_num_inputs(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.MultiplexerParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 num_inputs_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4016,6 +4102,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::ImageReaderParam* release_image_reader_param();
   void set_allocated_image_reader_param(::deepflow::ImageReaderParam* image_reader_param);
 
+  // .deepflow.MultiplexerParam multiplexer_param = 125;
+  bool has_multiplexer_param() const;
+  void clear_multiplexer_param();
+  static const int kMultiplexerParamFieldNumber = 125;
+  const ::deepflow::MultiplexerParam& multiplexer_param() const;
+  ::deepflow::MultiplexerParam* mutable_multiplexer_param();
+  ::deepflow::MultiplexerParam* release_multiplexer_param();
+  void set_allocated_multiplexer_param(::deepflow::MultiplexerParam* multiplexer_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -4052,6 +4147,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::LoggerParam* logger_param_;
   ::deepflow::RestructureParam* restructure_param_;
   ::deepflow::ImageReaderParam* image_reader_param_;
+  ::deepflow::MultiplexerParam* multiplexer_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -5836,6 +5932,24 @@ inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
 TensorParam::mutable_dims() {
   // @@protoc_insertion_point(field_mutable_list:deepflow.TensorParam.dims)
   return &dims_;
+}
+
+// -------------------------------------------------------------------
+
+// MultiplexerParam
+
+// int32 num_inputs = 1;
+inline void MultiplexerParam::clear_num_inputs() {
+  num_inputs_ = 0;
+}
+inline ::google::protobuf::int32 MultiplexerParam::num_inputs() const {
+  // @@protoc_insertion_point(field_get:deepflow.MultiplexerParam.num_inputs)
+  return num_inputs_;
+}
+inline void MultiplexerParam::set_num_inputs(::google::protobuf::int32 value) {
+  
+  num_inputs_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.MultiplexerParam.num_inputs)
 }
 
 // -------------------------------------------------------------------
@@ -8865,6 +8979,45 @@ inline void NodeParam::set_allocated_image_reader_param(::deepflow::ImageReaderP
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.image_reader_param)
 }
 
+// .deepflow.MultiplexerParam multiplexer_param = 125;
+inline bool NodeParam::has_multiplexer_param() const {
+  return this != internal_default_instance() && multiplexer_param_ != NULL;
+}
+inline void NodeParam::clear_multiplexer_param() {
+  if (GetArenaNoVirtual() == NULL && multiplexer_param_ != NULL) delete multiplexer_param_;
+  multiplexer_param_ = NULL;
+}
+inline const ::deepflow::MultiplexerParam& NodeParam::multiplexer_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.multiplexer_param)
+  return multiplexer_param_ != NULL ? *multiplexer_param_
+                         : *::deepflow::MultiplexerParam::internal_default_instance();
+}
+inline ::deepflow::MultiplexerParam* NodeParam::mutable_multiplexer_param() {
+  
+  if (multiplexer_param_ == NULL) {
+    multiplexer_param_ = new ::deepflow::MultiplexerParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.multiplexer_param)
+  return multiplexer_param_;
+}
+inline ::deepflow::MultiplexerParam* NodeParam::release_multiplexer_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.multiplexer_param)
+  
+  ::deepflow::MultiplexerParam* temp = multiplexer_param_;
+  multiplexer_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_multiplexer_param(::deepflow::MultiplexerParam* multiplexer_param) {
+  delete multiplexer_param_;
+  multiplexer_param_ = multiplexer_param;
+  if (multiplexer_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.multiplexer_param)
+}
+
 // -------------------------------------------------------------------
 
 // SquareParam
@@ -9975,6 +10128,8 @@ BlockParam::initializer() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

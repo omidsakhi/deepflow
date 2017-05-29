@@ -47,29 +47,31 @@ PS D:\Projects\deepflow\build\x64\Release>
 
 	if (FLAGS_i.empty()) {
 		auto train = df.define_train_phase("Train");
-		auto adam = df.adam_solver(0.0002f, 0.5f);
+		auto g_adam = df.adam_solver(0.0002f, 0.5f);
+		auto d_adam = df.adam_solver(0.0001f, 0.5f);
 
 		auto mean = 0;
 		auto stddev = 0.02;
 
 		auto gi = df.data_generator(df.random_normal({ FLAGS_batch, 1, 15, 6 }, mean, stddev, "random_input"), 60, "", "input", { train });
 
-		auto gc1_f = df.variable(df.random_normal({ 1, 128, 5, 5 }, mean, stddev), adam, "gc1_f", { train });
+		auto gc1_f = df.variable(df.random_normal({ 1, 128, 5, 5 }, mean, stddev), g_adam, "gc1_f", { train });
 		auto gc1 = df.transposed_conv2d(gi, gc1_f, 0, 0, 1, 1, 1, 1, "gc1", { train });
-		auto gc2_f = df.variable(df.random_normal({ 128, 64, 5, 5 }, mean, stddev), adam, "gc2_f", { train });
+		auto gc2_f = df.variable(df.random_normal({ 128, 64, 5, 5 }, mean, stddev), g_adam, "gc2_f", { train });
 		auto gc2 = df.transposed_conv2d(gc1, gc2_f, 0, 0, 1, 1, 1, 1, "gc2", { train });
-		auto gc3_f = df.variable(df.random_normal({ 64, 1, 5, 5 }, mean, stddev), adam, "gc3_f", { train });
+		auto gc3_f = df.variable(df.random_normal({ 64, 1, 5, 5 }, mean, stddev), g_adam, "gc3_f", { train });
 		auto gc3 = df.transposed_conv2d(gc2, gc3_f, 0, 0, 1, 1, 1, 1, "gc3", { train });
 
 		auto di = df.image_batch_reader(FLAGS_image_folder, { FLAGS_batch, 1, 27, 18 }, true, "di", { train });
 		
-		auto selector = df.random_selector(gc3, di);
+		auto select = df.data_generator(df.random_uniform({ 1,1,1,1 }, 0, 1.99), 60, "", "select");
+		auto selector = df.multiplexer({ gc3, di }, select);
 				
-		auto dc1_f = df.variable(df.random_normal({ 64, 1, 5, 5 }, mean, stddev), adam, "dc1_f", { train });
+		auto dc1_f = df.variable(df.random_normal({ 64, 1, 5, 5 }, mean, stddev), d_adam, "dc1_f", { train });
 		auto dc1 = df.conv2d(selector, dc1_f, 0, 0, 1, 1, 1, 1, "dc1", { train });
-		auto dc2_f = df.variable(df.random_normal({ 128, 64, 5, 5 }, mean, stddev), adam, "dc2_f", { train });
+		auto dc2_f = df.variable(df.random_normal({ 128, 64, 5, 5 }, mean, stddev), d_adam, "dc2_f", { train });
 		auto dc2 = df.conv2d(dc1, dc2_f, 0, 0, 1, 1, 1, 1, "dc2", { train });
-		auto dc3_f = df.variable(df.random_normal({ 256, 128, 5, 5 }, mean, stddev), adam, "dc3_f", { train });
+		auto dc3_f = df.variable(df.random_normal({ 256, 128, 5, 5 }, mean, stddev), d_adam, "dc3_f", { train });
 		auto dc3 = df.conv2d(dc2, dc3_f, 0, 0, 1, 1, 1, 1, "dc3", { train });		
 		
 		auto disp = df.display(dc3);
