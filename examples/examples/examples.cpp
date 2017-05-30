@@ -32,6 +32,7 @@ DEFINE_bool(x6, false, "Test reading caffe model");
 DEFINE_bool(x7, false, "Test convolution forward with bias");
 DEFINE_bool(x8, false, "Test color image display");
 DEFINE_bool(x9, false, "Test restructured image display");
+DEFINE_bool(x10, false, "Test dcgan generator image reconstruction");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -125,6 +126,49 @@ void main(int argc, char** argv) {
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto rotate = df.restructure(image, 2, 3);
 			df.display(rotate, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "rotate", { train });
+		}
+		else if (FLAGS_x10) {
+			
+			/*
+			auto train = df.define_train_phase("Train");
+			auto solver = df.adadelta_solver();
+			auto rand = df.data_generator(df.ones({ 1, 512, 128, 128 }), 1, "", "rand");
+			auto deconv1_f = df.variable(df.random_normal({ 512, 3, 3, 3 }, 0, 0.1), solver);
+			auto deconv1 = df.transposed_conv2d(rand, deconv1_f, 1, 1, 2, 2, 1, 1, "deconv1");
+			auto disp = df.display(deconv1, 1);
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			df.euclidean_loss(deconv1, image);
+			*/
+
+			
+			auto train = df.define_train_phase("Train");
+			auto solver = df.sgd_solver(0.99f, 0.0001f);
+			auto rand = df.data_generator(df.ones({ 1, 32, 16, 16 }), 100, "", "rand");
+			auto deconv1_f = df.variable(df.random_normal({ 32, 64, 3, 3 }, 0, 0.02), solver);
+			auto deconv1 = df.transposed_conv2d(rand, deconv1_f, 1, 1, 2, 2, 1, 1, "deconv1");
+			auto deconv1_relu = df.leaky_relu(deconv1);
+			auto deconv2_f = df.variable(df.random_normal({ 64, 128, 3, 3 }, 0, 0.02), solver);
+			auto deconv2 = df.transposed_conv2d(deconv1_relu, deconv2_f, 1, 1, 2, 2, 1, 1, "deconv1");
+			auto deconv2_relu = df.leaky_relu(deconv2);
+			auto deconv3_f = df.variable(df.random_normal({ 128, 256, 3, 3 }, 0, 0.02), solver);
+			auto deconv3 = df.transposed_conv2d(deconv2_relu, deconv3_f, 1, 1, 2, 2, 1, 1, "deconv1");
+			auto deconv4_f = df.variable(df.random_normal({ 256, 3, 3, 3 }, 0, 0.02), solver);
+			auto deconv4 = df.transposed_conv2d(deconv3, deconv4_f, 1, 1, 2, 2, 1, 1, "deconv1");			
+			auto disp = df.display(deconv4, 2, DeepFlow::EVERY_PASS);
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			df.euclidean_loss(deconv4, image);
+			
+
+			/*			
+			auto conv1_f = df.variable(df.ones({ 1, 3, 3, 3 }));
+			auto conv1 = df.conv2d(image, conv1_f, 1, 1, 2, 2, 1, 1);
+			auto conv2_f = df.variable(df.ones({ 1, 1, 3, 3 }));
+			auto conv2 = df.conv2d(conv1, conv2_f, 1, 1, 2, 2, 1, 1);
+			auto conv3_f = df.variable(df.ones({ 1, 1, 3, 3 }));
+			auto conv3 = df.conv2d(conv2, conv2_f, 1, 1, 2, 2, 1, 1);
+			auto conv4_f = df.variable(df.ones({ 1, 1, 3, 3 }));
+			auto conv4 = df.conv2d(conv3, conv2_f, 1, 1, 2, 2, 1, 1);
+			*/			
 		}
 	}
 	else {
