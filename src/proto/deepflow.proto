@@ -15,6 +15,7 @@ enum ActionTime {
 enum ActionType {
 	VALUES = 0;
 	DIFFS = 1;
+	VALUES_AND_DIFFS = 2;
 }
 
 message TensorParam {
@@ -69,6 +70,10 @@ message PrintParam {
 message AddParam {
 	float alpha = 1;
 	float beta = 2;
+}
+
+message NegateParam {
+	ActionType negate_type = 1;
 }
 
 message DisplayParam {
@@ -264,6 +269,7 @@ message NodeParam {
   RestructureParam restructure_param = 123;
   ImageReaderParam image_reader_param = 124;
   MultiplexerParam multiplexer_param = 125;
+  NegateParam negate_param = 126;
 }
 
 message SquareParam {

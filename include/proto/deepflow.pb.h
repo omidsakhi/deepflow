@@ -121,6 +121,9 @@ extern MnistParamDefaultTypeInternal _MnistParam_default_instance_;
 class MultiplexerParam;
 class MultiplexerParamDefaultTypeInternal;
 extern MultiplexerParamDefaultTypeInternal _MultiplexerParam_default_instance_;
+class NegateParam;
+class NegateParamDefaultTypeInternal;
+extern NegateParamDefaultTypeInternal _NegateParam_default_instance_;
 class NodeParam;
 class NodeParamDefaultTypeInternal;
 extern NodeParamDefaultTypeInternal _NodeParam_default_instance_;
@@ -404,12 +407,13 @@ inline bool ActionTime_Parse(
 enum ActionType {
   VALUES = 0,
   DIFFS = 1,
+  VALUES_AND_DIFFS = 2,
   ActionType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   ActionType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool ActionType_IsValid(int value);
 const ActionType ActionType_MIN = VALUES;
-const ActionType ActionType_MAX = DIFFS;
+const ActionType ActionType_MAX = VALUES_AND_DIFFS;
 const int ActionType_ARRAYSIZE = ActionType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ActionType_descriptor();
@@ -1400,6 +1404,89 @@ class AddParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   float alpha_;
   float beta_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class NegateParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.NegateParam) */ {
+ public:
+  NegateParam();
+  virtual ~NegateParam();
+
+  NegateParam(const NegateParam& from);
+
+  inline NegateParam& operator=(const NegateParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const NegateParam& default_instance();
+
+  static inline const NegateParam* internal_default_instance() {
+    return reinterpret_cast<const NegateParam*>(
+               &_NegateParam_default_instance_);
+  }
+
+  void Swap(NegateParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline NegateParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  NegateParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const NegateParam& from);
+  void MergeFrom(const NegateParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(NegateParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .deepflow.ActionType negate_type = 1;
+  void clear_negate_type();
+  static const int kNegateTypeFieldNumber = 1;
+  ::deepflow::ActionType negate_type() const;
+  void set_negate_type(::deepflow::ActionType value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.NegateParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  int negate_type_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4111,6 +4198,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::MultiplexerParam* release_multiplexer_param();
   void set_allocated_multiplexer_param(::deepflow::MultiplexerParam* multiplexer_param);
 
+  // .deepflow.NegateParam negate_param = 126;
+  bool has_negate_param() const;
+  void clear_negate_param();
+  static const int kNegateParamFieldNumber = 126;
+  const ::deepflow::NegateParam& negate_param() const;
+  ::deepflow::NegateParam* mutable_negate_param();
+  ::deepflow::NegateParam* release_negate_param();
+  void set_allocated_negate_param(::deepflow::NegateParam* negate_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -4148,6 +4244,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::RestructureParam* restructure_param_;
   ::deepflow::ImageReaderParam* image_reader_param_;
   ::deepflow::MultiplexerParam* multiplexer_param_;
+  ::deepflow::NegateParam* negate_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -6355,6 +6452,24 @@ inline void AddParam::set_beta(float value) {
   
   beta_ = value;
   // @@protoc_insertion_point(field_set:deepflow.AddParam.beta)
+}
+
+// -------------------------------------------------------------------
+
+// NegateParam
+
+// .deepflow.ActionType negate_type = 1;
+inline void NegateParam::clear_negate_type() {
+  negate_type_ = 0;
+}
+inline ::deepflow::ActionType NegateParam::negate_type() const {
+  // @@protoc_insertion_point(field_get:deepflow.NegateParam.negate_type)
+  return static_cast< ::deepflow::ActionType >(negate_type_);
+}
+inline void NegateParam::set_negate_type(::deepflow::ActionType value) {
+  
+  negate_type_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.NegateParam.negate_type)
 }
 
 // -------------------------------------------------------------------
@@ -9018,6 +9133,45 @@ inline void NodeParam::set_allocated_multiplexer_param(::deepflow::MultiplexerPa
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.multiplexer_param)
 }
 
+// .deepflow.NegateParam negate_param = 126;
+inline bool NodeParam::has_negate_param() const {
+  return this != internal_default_instance() && negate_param_ != NULL;
+}
+inline void NodeParam::clear_negate_param() {
+  if (GetArenaNoVirtual() == NULL && negate_param_ != NULL) delete negate_param_;
+  negate_param_ = NULL;
+}
+inline const ::deepflow::NegateParam& NodeParam::negate_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.negate_param)
+  return negate_param_ != NULL ? *negate_param_
+                         : *::deepflow::NegateParam::internal_default_instance();
+}
+inline ::deepflow::NegateParam* NodeParam::mutable_negate_param() {
+  
+  if (negate_param_ == NULL) {
+    negate_param_ = new ::deepflow::NegateParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.negate_param)
+  return negate_param_;
+}
+inline ::deepflow::NegateParam* NodeParam::release_negate_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.negate_param)
+  
+  ::deepflow::NegateParam* temp = negate_param_;
+  negate_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_negate_param(::deepflow::NegateParam* negate_param) {
+  delete negate_param_;
+  negate_param_ = negate_param;
+  if (negate_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.negate_param)
+}
+
 // -------------------------------------------------------------------
 
 // SquareParam
@@ -10128,6 +10282,8 @@ BlockParam::initializer() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

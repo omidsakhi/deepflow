@@ -57,6 +57,7 @@
     <ClInclude Include="..\..\include\nodes\logger.h" />
     <ClInclude Include="..\..\include\nodes\matmul.h" />
     <ClInclude Include="..\..\include\nodes\multiplexer.h" />
+    <ClInclude Include="..\..\include\nodes\negate.h" />
     <ClInclude Include="..\..\include\nodes\phaseplexer.h" />
     <ClInclude Include="..\..\include\nodes\place_holder.h" />
     <ClInclude Include="..\..\include\nodes\pooling.h" />
@@ -104,6 +105,7 @@
     <CudaCompile Include="..\..\src\nodes\euclidean_loss.cu" />
     <CudaCompile Include="..\..\src\nodes\image_reader.cu" />
     <CudaCompile Include="..\..\src\nodes\leaky_relu.cu" />
+    <CudaCompile Include="..\..\src\nodes\negate.cu" />
     <CudaCompile Include="..\..\src\nodes\psnr.cu" />
     <CudaCompile Include="..\..\src\nodes\softmax_loss.cu" />
     <CudaCompile Include="..\..\src\nodes\square.cu" />

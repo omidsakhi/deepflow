@@ -31,7 +31,8 @@ public:
 	};
 	enum ActionType {
 		VALUES = 0,
-		DIFFS = 1
+		DIFFS = 1,
+		VALUES_AND_DIFFS = 2
 	};
 
 	DeepFlow();
@@ -118,6 +119,7 @@ public:
 	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});
 	std::string equal(std::string a, std::string b, std::string name = "Equal", std::initializer_list<std::string> phases = {});
 	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});
+	std::string negate(std::string input, ActionType negateType = ActionType::VALUES_AND_DIFFS, std::string name = "negate", std::initializer_list<std::string> phases = {});
 	std::array<std::string,2> accumulator(std::string input, ActionTime resetTime = ActionTime::END_OF_EPOCH, std::string name = "acc", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	

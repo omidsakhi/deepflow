@@ -129,18 +129,41 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x10) {
 			
-			/*
-			auto train = df.define_train_phase("Train");
-			auto solver = df.adadelta_solver();
-			auto rand = df.data_generator(df.ones({ 1, 512, 128, 128 }), 1, "", "rand");
-			auto deconv1_f = df.variable(df.random_normal({ 512, 3, 3, 3 }, 0, 0.1), solver);
-			auto deconv1 = df.transposed_conv2d(rand, deconv1_f, 1, 1, 2, 2, 1, 1, "deconv1");
-			auto disp = df.display(deconv1, 1);
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
-			df.euclidean_loss(deconv1, image);
-			*/
-
 			
+			auto train = df.define_train_phase("Train");
+			//auto solver = df.adam_solver(0.0002f,0.5f);
+			auto solver = df.sgd_solver(0.98f, 0.00001f);
+
+			auto rand = df.data_generator(df.random_normal({ 1, 32, 8, 8 }, 0, 0.1), 10, "", "rand");
+
+			auto deconv1_f = df.variable(df.random_normal({ 32, 1024, 3, 3 }, 0, 0.1), solver);			
+			auto deconv1 = df.transposed_conv2d(rand, deconv1_f, 1, 1, 2, 2, 1, 1, "deconv1");
+			auto relu1 = df.leaky_relu(deconv1);
+
+			auto deconv2_f = df.variable(df.random_normal({ 1024, 512, 3, 3 }, 0, 0.1), solver);
+			auto deconv2 = df.transposed_conv2d(relu1, deconv2_f, 1, 1, 2, 2, 1, 1, "deconv2");
+			auto relu2 = df.leaky_relu(deconv2);
+
+			auto deconv3_f = df.variable(df.random_normal({ 512, 256, 3, 3 }, 0, 0.1), solver);
+			auto deconv3 = df.transposed_conv2d(relu2, deconv3_f, 1, 1, 2, 2, 1, 1, "deconv3");
+			auto relu3 = df.leaky_relu(deconv3);
+
+			auto deconv4_f = df.variable(df.random_normal({ 256, 128, 3, 3 }, 0, 0.1), solver);
+			auto deconv4 = df.transposed_conv2d(relu3, deconv4_f, 1, 1, 2, 2, 1, 1, "deconv4");
+			auto relu4 = df.leaky_relu(deconv4);
+
+			auto deconv5_f = df.variable(df.random_normal({ 128, 3, 3, 3 }, 0, 0.1), solver);
+			auto deconv5 = df.transposed_conv2d(relu4, deconv5_f, 1, 1, 2, 2, 1, 1, "deconv4");
+
+			auto out = df.tanh(deconv5);
+
+			auto disp = df.display(out, 1, DeepFlow::END_OF_EPOCH, DeepFlow::VALUES);
+			
+			auto image = df.image_batch_reader("D:/Projects/deepflow/data/image", { 1 , 3, 256, 256 }, false);			
+			df.euclidean_loss(out, image);
+			
+
+			/*
 			auto train = df.define_train_phase("Train");
 			auto solver = df.sgd_solver(0.99f, 0.0001f);
 			auto rand = df.data_generator(df.ones({ 1, 32, 16, 16 }), 100, "", "rand");
@@ -157,7 +180,7 @@ void main(int argc, char** argv) {
 			auto disp = df.display(deconv4, 2, DeepFlow::EVERY_PASS);
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			df.euclidean_loss(deconv4, image);
-			
+			*/
 
 			/*			
 			auto conv1_f = df.variable(df.ones({ 1, 3, 3, 3 }));

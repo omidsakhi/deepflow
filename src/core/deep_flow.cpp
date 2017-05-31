@@ -207,6 +207,19 @@ std::string DeepFlow::cast_float(std::string input, std::string name, std::initi
 	return node_param->output(0);
 }
 
+std::string DeepFlow::negate(std::string input, ActionType negateType, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto negate = node_param->mutable_negate_param();
+	negate->set_negate_type((deepflow::ActionType)negateType);
+	return node_param->output(0);
+}
+
 std::string DeepFlow::softmax(std::string a, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();	
 	node_param->set_name(_block->get_unique_node_param_name(name));

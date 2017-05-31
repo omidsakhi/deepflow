@@ -68,6 +68,9 @@
     <CudaCompile Include="..\..\src\nodes\image_reader.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\negate.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -337,6 +340,9 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\multiplexer.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\negate.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>
