@@ -33,14 +33,14 @@ void main(int argc, char** argv) {
 
 	if (FLAGS_i.empty()) {
 		auto train = df.define_train_phase("Train");
-		auto g_solver = df.adadelta_solver();
-		auto d_solver = df.sgd_solver(0.98f, 0.00001f);
+		auto g_solver = df.sgd_solver(0.98f, 0.00001f);
+		auto d_solver = df.gain_solver(); 
 
 		auto mean = 0;
 		auto stddev = 0.02;
 		auto negative_slope = 0.2;
 
-		auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 10, 7, 7 }, mean, stddev, "random_input"), 100, "", "input", { train });
+		auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 10, 7, 7 }, mean, stddev, "random_input"), 10000, "", "input", { train });
 
 		auto gconv1_f = df.variable(df.random_normal({ 10, 1024, 3, 3 }, mean, stddev), g_solver, "gconv1_f", { train });
 		auto gconv1 = df.transposed_conv2d(gin, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1", { train });
@@ -55,10 +55,10 @@ void main(int argc, char** argv) {
 
 		auto din = df.mnist_reader("D:/Projects/deepflow/data/mnist", 100, MNISTReader::MNISTReaderType::Test, MNISTReader::Data);
 		
-		auto select = df.data_generator(df.random_uniform({ 1,1,1,1 }, 0.5f, 1.99), 10000, "", "select");
+		auto select = df.data_generator(df.random_uniform({ 1,1,1,1 }, 0.1f, 1.99), 10000, "", "select");
 		auto data_selector = df.multiplexer({ neg, din }, select, "data_selector");
 				
-		auto disp = df.display(neg);
+		auto disp = df.display(data_selector, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
 
 		auto dconv1_f = df.variable(df.random_normal({ 32, 1, 5, 5 }, mean, stddev), d_solver, "dconv1_f");
 		auto dconv1 = df.conv2d(data_selector, dconv1_f, 0, 0, 1, 1, 1, 1, "dconv1");		
