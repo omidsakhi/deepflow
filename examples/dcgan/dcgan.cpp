@@ -33,12 +33,12 @@ void main(int argc, char** argv) {
 
 	if (FLAGS_i.empty()) {
 		auto train = df.define_train_phase("Train");
-		auto g_solver = df.sgd_solver(0.98f, 0.00001f);
-		auto d_solver = df.gain_solver(); 
+		auto g_solver = df.adadelta_solver();
+		auto d_solver = df.sgd_solver(0.98f, 0.00001f);
 
 		auto mean = 0;
-		auto stddev = 0.02;
-		auto negative_slope = 0.2;
+		auto stddev = 0.1;
+		auto negative_slope = 0.1;
 
 		auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 10, 7, 7 }, mean, stddev, "random_input"), 10000, "", "input", { train });
 
@@ -55,10 +55,10 @@ void main(int argc, char** argv) {
 
 		auto din = df.mnist_reader("D:/Projects/deepflow/data/mnist", 100, MNISTReader::MNISTReaderType::Test, MNISTReader::Data);
 		
-		auto select = df.data_generator(df.random_uniform({ 1,1,1,1 }, 0.1f, 1.99), 10000, "", "select");
+		auto select = df.data_generator(df.random_uniform({ 1,1,1,1 }, 0, 1.99), 10000, "", "select");
 		auto data_selector = df.multiplexer({ neg, din }, select, "data_selector");
 				
-		auto disp = df.display(data_selector, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
+		auto disp = df.display(gout, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
 
 		auto dconv1_f = df.variable(df.random_normal({ 32, 1, 5, 5 }, mean, stddev), d_solver, "dconv1_f");
 		auto dconv1 = df.conv2d(data_selector, dconv1_f, 0, 0, 1, 1, 1, 1, "dconv1");		
@@ -68,19 +68,25 @@ void main(int argc, char** argv) {
 		auto dconv2_relu = df.leaky_relu(dconv2, negative_slope, "dconv2_relu");
 		auto dconv3_f = df.variable(df.random_normal({ 128, 64, 5, 5 }, mean, stddev), d_solver, "dconv3_f");
 		auto dconv3 = df.conv2d(dconv2_relu, dconv3_f, 0, 0, 1, 1, 1, 1, "dconv3");
+		auto dconv3_relu = df.leaky_relu(dconv3, negative_slope, "dconv3_relu");
 		auto dfc1_w = df.variable(df.random_normal({ 32768, 128, 1, 1 }, mean, stddev), d_solver, "dfc1_w");
-		auto dfc1_m = df.matmul(dconv3, dfc1_w, "dfc1_m");
+		auto dfc1_m = df.matmul(dconv3_relu, dfc1_w, "dfc1_m");
 		auto dfc1_b = df.variable(df.random_normal({ 1, 128, 1, 1 }, mean, stddev), d_solver, "dfc1_b");
 		auto dfc1_bias = df.bias_add(dfc1_m, dfc1_b, "dfc1_bias");
-		auto dfc2_w = df.variable(df.random_normal({ 128, 1, 1, 1 }, mean, stddev), d_solver, "dfc2_w");
-		auto dfc2 = df.matmul(dfc1_bias, dfc2_w, "dfc2_m");
 		
+		auto dfc2_w = df.variable(df.random_normal({ 128, 1, 1, 1 }, mean, stddev), d_solver, "dfc2_w");
+		auto dfc2_m = df.matmul(dfc1_bias, dfc2_w, "dfc2_m");
+		auto dfc2_b = df.variable(df.random_normal({ 1, 1, 1, 1 }, mean, stddev), d_solver, "dfc1_b");
+		auto dfc2_bias = df.bias_add(dfc2_m, dfc2_b, "dfc1_bias");
+
+		auto dout = df.tanh(dfc2_bias);
+
 		auto d_labels = df.data_generator( df.random_uniform({ batch_size, 1, 1, 1}, 0.5, 1.0), 10000, "", "true_labels");
 		auto g_labels = df.data_generator(df.random_uniform({ batch_size, 1, 1, 1 }, -1.0, -0.5), 10000, "", "fake_labels");
 
 		auto label_selector = df.multiplexer({ g_labels, d_labels }, select, "label_selector");
 		
-		df.euclidean_loss(dfc2, label_selector);
+		df.euclidean_loss(dout, label_selector, { train });
 		
 	}
 	else {
