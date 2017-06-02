@@ -4,7 +4,7 @@
 
 #include <gflags/gflags.h>
 
-DEFINE_string(mnist, "./data/mnist", "Path to MNIST data folder");
+DEFINE_string(mnist, "D:/Projects/deepflow/data/mnist", "Path to MNIST data folder");
 DEFINE_string(i, "", "Trained network model to load");
 DEFINE_string(o, "", "Trained network model to save");
 DEFINE_bool(text, false, "Save model as text");
@@ -36,8 +36,8 @@ void main(int argc, char** argv) {
 
 		auto gain = df.gain_solver(0.999900, 0.000100, 10.000000, 0.000000, 0.050000, 0.950000, "gain");
 
-		auto test_data = df.mnist_reader("./data/mnist", 100, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });		
-		auto train_data = df.mnist_reader("./data/mnist", 100, MNISTReader::Train, MNISTReader::Data, "train_data", { "Train" });
+		auto test_data = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });		
+		auto train_data = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Train, MNISTReader::Data, "train_data", { "Train" });
 		auto data_selector = df.phaseplexer(train_data, "Train", test_data, "Validation", "data_selector", {});
 		auto conv1_w = df.variable(df.random_uniform({ 20, 1, 5, 5 }, -0.100000, 0.100000), gain, "conv1_w", {});		
 		auto conv1 = df.conv2d(data_selector, conv1_w, 2, 2, 1, 1, 1, 1, "conv1", {});
@@ -56,8 +56,8 @@ void main(int argc, char** argv) {
 		auto b2 = df.variable(df.step({ 1, 10, 1, 1 }, -1.000000, 1.000000), gain, "b2", {});
 		auto bias2 = df.bias_add(m2, b2, "bias2", {});
 		auto relu2 = df.leaky_relu(bias2, 0.010000, "relu2", {});
-		auto train_labels = df.mnist_reader("./data/mnist", 100, MNISTReader::Train, MNISTReader::Labels, "train_labels", { "Train" });
-		auto test_labels = df.mnist_reader("./data/mnist", 100, MNISTReader::Test, MNISTReader::Labels, "test_labels", { "Validation" });
+		auto train_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Train, MNISTReader::Labels, "train_labels", { "Train" });
+		auto test_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Labels, "test_labels", { "Validation" });
 		auto label_selector = df.phaseplexer(train_labels, "Train", test_labels, "Validation", "label_selector", {});
 		auto loss = df.softmax_loss(relu2, label_selector, "loss", {});
 		auto predict = df.argmax(loss, 1, "predict", {});

@@ -126,12 +126,16 @@ void Node::_traverse_down(std::function<void(Node*)> fun, TraverseOrder order, b
 
 void Node::_forward() {
 	if (_visited == true)
-		return;	
+		return;
 	if (_context && includePhase(_context->phase) == false)
 		return;
 	_visited = true;
-	for (auto node : inputNodes())
-		node->_forward();	
+	bool verbos = (_context && _context->debug_level == 4) ? true : false;
+	for (auto node : inputNodes()) {
+		LOG_IF(INFO, verbos) << "FROM " << _name << " GOING TO FORWARD " << node->name();
+		node->_forward();
+	}	
+	LOG_IF(INFO, verbos) << "FORWARD " << _name;
 	forward();
 }
 
@@ -141,15 +145,18 @@ void Node::_backward() {
 	if (_context && includePhase(_context->phase) == false)
 		return;
 	_visited = true;	
-	if (_propagate_back) {
-		//LOG(INFO) << "BACKWARD " << _name;
+	bool verbos = (_context && _context->debug_level == 4) ? true : false;
+	if (_propagate_back) {		
+		LOG_IF(INFO, verbos) << "BACKWARD " << _name;
 		backward();
 	}
 	else {
 		return;
 	}
-	for (auto node : inputNodes())
+	for (auto node : inputNodes()) {
+		LOG_IF(INFO, verbos) << "FROM " << _name << " GOING TO BACKWARD " << node->name();
 		node->_backward();
+	}
 }
 
 std::string Node::name() const {
