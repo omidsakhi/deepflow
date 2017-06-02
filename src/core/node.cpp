@@ -55,27 +55,28 @@ void Node::_propagateBack() {
 	if (_visited == true)
 		return;
 	_visited = true;
-	//LOG(INFO) << "VISITING " << _name;
+	bool verbos = (_context && _context->debug_level == 4) ? true : false;
+	LOG_IF(INFO, verbos) << "RESOLVING BP - VISITING " << _name;
 	if (backwardType() == ALWAYS_BACKWARD) {				
-		//LOG(INFO) << "ALWAYS BACKWARD " << _name;
+		LOG_IF(INFO, verbos) << "RESOLVING BP - ALWAYS BACKWARD " << _name;
 		setShouldBackward(true);
 	}
-	else if (backwardType() == NEVER_BACKWARD) {		
-		//LOG(INFO) << "NEVER BACKWARD " << _name;
+	else if (backwardType() == NEVER_BACKWARD) {
+		LOG_IF(INFO, verbos) << "RESOLVING BP - NEVER BACKWARD " << _name;
 		setShouldBackward(false);
 	}
 	else {
 		bool _should_backward = false;
 		auto list = inputNodes();
 		for (auto node : list) {
-			//LOG(INFO) << "INSPECTING INPUT " << node->name();
+			LOG_IF(INFO, verbos) << "RESOLVING BP - INSPECTING INPUT " << node->name();
 			node->_propagateBack();
 			if (node->_propagate_back == true) {
 				_should_backward = true;				
 				break;
 			}
-		}				
-		//LOG_IF(INFO, !_should_backward) << _name << " - NO BACKWARD DUE TO " << list.size() << " INPUTS ";
+		}
+		LOG_IF(INFO, verbos) << "RESOLVING BP - " << _name << (_should_backward?" SHOULD PROPAGATE." : " SHOULD **NOT** PROPAGATE.");
 		setShouldBackward(_should_backward);
 	}	
 	for (auto node : inputNodes()) {
@@ -90,8 +91,7 @@ bool Node::propagateBack() const
 
 void Node::setShouldBackward(bool state)
 {
-	_propagate_back = state;
-	//LOG_IF(INFO, state) << _name << " BACKWARD -> true";
+	_propagate_back = state;	
 }
 
 void Node::_traverse_up(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition)
