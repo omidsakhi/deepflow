@@ -20,7 +20,7 @@ void MatMul::initForward() {
 	
 	LOG_IF(FATAL, _col_A != _row_B) << "_col_A != _row_B - " << a->value()->shape() << " * " << b->value()->shape();
 	
-	_outputs[0]->initValue({ _row_A, _col_B, 1, 1 });
+	_outputs[0]->initValue({ _row_A, bd[1], bd[2], bd[3] });
 
 	LOG(INFO) << "Initializing InnerProduct " << _name << " - " << _outputs[0]->value()->shape();	
 	

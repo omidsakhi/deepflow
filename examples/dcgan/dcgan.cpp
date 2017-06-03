@@ -4,8 +4,7 @@
 
 #include <gflags/gflags.h>
 
-DEFINE_string(model, "D:/Projects/deepflow/build/x64/Release/models/VGG_ILSVRC_16_layers.caffemodel", "Path to VGG16 model");
-DEFINE_string(image_folder, "D:/Projects/deepflow/data/face", "Path to image folder dataset");
+DEFINE_string(mnist, "D:/Projects/deepflow/data/mnist", "Path to mnist folder dataset");
 DEFINE_string(i, "", "Trained network model to load");
 DEFINE_string(o, "", "Trained network model to save");
 DEFINE_bool(text, false, "Save model as text");
@@ -21,6 +20,7 @@ DEFINE_int32(iter, -1, "Maximum iterations");
 DEFINE_bool(cpp, false, "Print C++ code");
 
 
+
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
 
@@ -33,60 +33,63 @@ void main(int argc, char** argv) {
 
 	if (FLAGS_i.empty()) {
 		auto train = df.define_train_phase("Train");
-		auto g_solver = df.adadelta_solver();
-		auto d_solver = df.sgd_solver(0.98f, 0.00001f);
+		auto g_solver = df.gain_solver(0.999900, -0.0002f, 10.000000, 0.000000, 0.050000, 0.950000, "gain");
+		auto d_solver = df.gain_solver(0.999900,  0.0001f, 10.000000, 0.000000, 0.050000, 0.950000, "gain");
 
 		auto mean = 0;
 		auto stddev = 0.1;
-		auto negative_slope = 0.1;
+		auto negative_slope = 0.02;
 
-		auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 10, 7, 7 }, mean, stddev, "random_input"), 10000, "", "input", { train });
+		auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, mean, stddev, "random_input"), 10000, "", "input", { train });
 
-		auto gconv1_f = df.variable(df.random_normal({ 10, 1024, 3, 3 }, mean, stddev), g_solver, "gconv1_f", { train });
-		auto gconv1 = df.transposed_conv2d(gin, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1", { train });
-		auto gconv_relu = df.leaky_relu(gconv1);		
-		
-		auto gconv2_f = df.variable(df.random_normal({ 1024, 1, 3, 3 }, mean, stddev), g_solver, "gconv2_f", { train });
-		auto gconv2 = df.transposed_conv2d(gconv_relu, gconv2_f, 1, 1, 2, 2, 1, 1, "gconv2", { train });
-		
-		auto gout = df.tanh(gconv2);
-		
-		auto neg = df.negate(gout, DeepFlow::DIFFS);
+		auto gfc_w = df.variable(df.random_normal({ 100, 1024, 7, 7 }, mean, stddev), g_solver, "gfc_w");
+		auto gfc = df.matmul(gin, gfc_w, "gfc");		
 
-		auto din = df.mnist_reader("D:/Projects/deepflow/data/mnist", 100, MNISTReader::MNISTReaderType::Test, MNISTReader::Data);
+		auto gconv1_f = df.variable(df.random_normal({ 1024, 128, 3, 3 }, mean, stddev), g_solver, "gconv1_f", { train });
+		auto gconv1 = df.transposed_conv2d(gfc, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1", { train });			
 		
-		auto select = df.data_generator(df.random_uniform({ 1,1,1,1 }, 0, 1.99), 10000, "", "select");
-		auto data_selector = df.multiplexer({ neg, din }, select, "data_selector");
+		auto gconv2_f = df.variable(df.random_normal({ 128, 1, 3, 3 }, mean, stddev), g_solver, "gconv2_f", { train });
+		auto gconv2 = df.transposed_conv2d(gconv1, gconv2_f, 1, 1, 2, 2, 1, 1, "gconv2", { train });
+		
+		auto gout = df.tanh(gconv2);		 
+
+		auto din = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::MNISTReaderType::Test, MNISTReader::Data);
+		
+		auto select = df.data_generator(df.random_uniform({ 1,1,1,1 }, 0.5, 1.99), 10000, "", "select");
+		auto data_selector = df.multiplexer({ gout, din }, select, "data_selector");
 				
-		auto disp = df.display(gout, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
-
-		auto dconv1_f = df.variable(df.random_normal({ 32, 1, 5, 5 }, mean, stddev), d_solver, "dconv1_f");
-		auto dconv1 = df.conv2d(data_selector, dconv1_f, 0, 0, 1, 1, 1, 1, "dconv1");		
-		auto dconv1_relu = df.leaky_relu(dconv1, negative_slope, "dconv1_relu");
-		auto dconv2_f = df.variable(df.random_normal({ 64, 32, 5, 5 }, mean, stddev), d_solver, "dconv2_f");
-		auto dconv2 = df.conv2d(dconv1_relu, dconv2_f, 0, 0, 1, 1, 1, 1, "dconv2");
-		auto dconv2_relu = df.leaky_relu(dconv2, negative_slope, "dconv2_relu");
-		auto dconv3_f = df.variable(df.random_normal({ 128, 64, 5, 5 }, mean, stddev), d_solver, "dconv3_f");
-		auto dconv3 = df.conv2d(dconv2_relu, dconv3_f, 0, 0, 1, 1, 1, 1, "dconv3");
-		auto dconv3_relu = df.leaky_relu(dconv3, negative_slope, "dconv3_relu");
-		auto dfc1_w = df.variable(df.random_normal({ 32768, 128, 1, 1 }, mean, stddev), d_solver, "dfc1_w");
-		auto dfc1_m = df.matmul(dconv3_relu, dfc1_w, "dfc1_m");
-		auto dfc1_b = df.variable(df.random_normal({ 1, 128, 1, 1 }, mean, stddev), d_solver, "dfc1_b");
-		auto dfc1_bias = df.bias_add(dfc1_m, dfc1_b, "dfc1_bias");
+		auto disp = df.display(data_selector, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
 		
-		auto dfc2_w = df.variable(df.random_normal({ 128, 1, 1, 1 }, mean, stddev), d_solver, "dfc2_w");
-		auto dfc2_m = df.matmul(dfc1_bias, dfc2_w, "dfc2_m");
-		auto dfc2_b = df.variable(df.random_normal({ 1, 1, 1, 1 }, mean, stddev), d_solver, "dfc1_b");
-		auto dfc2_bias = df.bias_add(dfc2_m, dfc2_b, "dfc1_bias");
+		auto conv1_w = df.variable(df.random_uniform({ 16, 1, 3, 3 }, -0.100000, 0.100000), d_solver, "conv1_w", {});
+		auto conv1 = df.conv2d(data_selector, conv1_w, 1, 1, 2, 2, 1, 1, "conv1", {});
+		auto conv2_w = df.variable(df.random_uniform({ 32, 16, 3, 3 }, -0.100000, 0.100000), d_solver, "conv2_w", {});
+		auto conv2 = df.conv2d(conv1, conv2_w, 1, 1, 2, 2, 1, 1, "conv2", {});
+		auto conv3_w = df.variable(df.random_uniform({ 64, 32, 3, 3 }, -0.100000, 0.100000), d_solver, "conv3_w", {});
+		auto conv3 = df.conv2d(conv2, conv3_w, 1, 1, 2, 2, 1, 1, "conv3", {});
+		auto w1 = df.variable(df.random_uniform({ 1024, 500, 1, 1 }, -0.100000, 0.100000), d_solver, "w1", {});
+		auto m1 = df.matmul(conv3, w1, "m1", {});
+		auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, -1.000000, 1.000000), d_solver, "b1", {});
+		auto bias1 = df.bias_add(m1, b1, "bias1", {});
+		auto relu1 = df.leaky_relu(bias1, 0.010000, "relu1", {});
+		auto dropout = df.dropout(relu1, 0.500000, true, "dropout", {});
+		auto w2 = df.variable(df.random_uniform({ 500, 10, 1, 1 }, -0.100000, 0.100000), d_solver, "w2", {});
+		auto m2 = df.matmul(dropout, w2, "m2", {});
+		auto b2 = df.variable(df.step({ 1, 10, 1, 1 }, -1.000000, 1.000000), d_solver, "b2", {});
+		auto bias2 = df.bias_add(m2, b2, "bias2", {});
+		auto relu2 = df.leaky_relu(bias2, 0.010000, "relu2", {});
 
-		auto dout = df.tanh(dfc2_bias);
-
-		auto d_labels = df.data_generator( df.random_uniform({ batch_size, 1, 1, 1}, 0.5, 1.0), 10000, "", "true_labels");
-		auto g_labels = df.data_generator(df.random_uniform({ batch_size, 1, 1, 1 }, -1.0, -0.5), 10000, "", "fake_labels");
-
-		auto label_selector = df.multiplexer({ g_labels, d_labels }, select, "label_selector");
+		auto data_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Labels, "test_labels");		
+		auto fake_labels = df.data_generator(df.fill({ batch_size, 10, 1, 1 }, 0), 10000, "", "fake_labels");
 		
-		df.euclidean_loss(dout, label_selector, { train });
+		auto label_selector = df.multiplexer({ fake_labels, data_labels }, select, "label_selector");
+
+		auto loss = df.softmax_loss(relu2, label_selector, "loss", {});
+		auto predict = df.argmax(loss, 1, "predict", {});
+		auto target = df.argmax(label_selector, 1, "target", {});
+		auto equal = df.equal(predict, target, "equal", {});
+		auto acc = df.accumulator(equal, DeepFlow::END_OF_EPOCH, "acc", {});
+		auto correct = df.reduce_sum(acc[0], 0, "correct", {});
+		df.print({ correct, acc[1] }, "    TRAINSET   CORRECT COUNT : {0} OUT OF {1} = %{}%\n", DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, "print");		
 		
 	}
 	else {

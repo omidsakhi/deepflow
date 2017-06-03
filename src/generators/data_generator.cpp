@@ -25,6 +25,7 @@ void DataGenerator::nextBatch() {
 			_current_batch++;
 		}		
 	}
+	LOG_IF(INFO, (_context && _context->debug_level > 2)) << "MNIST " << _name << " - BATCH @ " << _current_batch;
 }
 
 void DataGenerator::initForward() {

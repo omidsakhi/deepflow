@@ -14,6 +14,8 @@ MNISTReader::MNISTReader(const deepflow::NodeParam &param) : Generator(param), N
 		_num_total_samples = 60000;
 	else
 		_num_total_samples = 10000;
+	_num_batches = _num_total_samples / _batch_size;
+	_last_batch = (_current_batch == (_num_batches - 1));
 }
 
 int ReverseInt(int i)
@@ -83,9 +85,7 @@ void MNISTReader::initForward() {
 	}
 	else {
 		LOG(FATAL);
-	}
-
-	nextBatch();
+	}	
 }
 
 void MNISTReader::initBackward() {
@@ -93,6 +93,7 @@ void MNISTReader::initBackward() {
 }
 
 void MNISTReader::nextBatch() {
+	_last_batch = (_current_batch >= (_num_batches - 1));
 	if (_last_batch == true)
 	{
 		_tx.clear(); // Reached EOF. Must reset the flag.
@@ -103,20 +104,9 @@ void MNISTReader::nextBatch() {
 	{
 		_current_batch++;
 	}
-	size_t _remaining_samples = _num_total_samples - _current_batch*_batch_size;
-	if (_remaining_samples > _batch_size)
-	{
-		_num_batch_samples = _batch_size;
-		_last_batch = false;
-	}
-	else
-	{
-		_num_batch_samples = _remaining_samples;
-		_last_batch = true;
-	}
 
 	if (_output_type == MNISTOutputType::Data) {
-		for (int i = 0; i < _num_batch_samples; ++i)
+		for (int i = 0; i < _batch_size; ++i)
 		{
 			_tx.read((char*)_temp, 28 * 28);
 			for (int j = 0; j < 28 * 28; ++j)
@@ -124,9 +114,9 @@ void MNISTReader::nextBatch() {
 		}
 	}
 	else if (_output_type == MNISTOutputType::Labels) {
-		for (int i = 0; i < _num_batch_samples * 10; i++)
+		for (int i = 0; i < _batch_size * 10; i++)
 			_buf[i] = 0.0f;
-		for (int i = 0; i < _num_batch_samples; ++i)
+		for (int i = 0; i < _batch_size; ++i)
 		{
 			_tx.read((char*)_temp, 1);			
 			_buf[i * 10 + _temp[0]] = 1.0f;
@@ -146,9 +136,8 @@ void MNISTReader::nextBatch() {
 		LOG(FATAL);
 	}
 	
-	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));			
-	if (_context && _context->debug_level == 4)
-		LOG(INFO) << "MNIST " << _name << " - BATCH @ " << _current_batch;
+	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));				
+	LOG_IF(INFO, (_context && _context->debug_level > 2)) << "MNIST " << _name << " - BATCH @ " << _current_batch;
 }
 
 void MNISTReader::deinit() {

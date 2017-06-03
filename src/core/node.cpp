@@ -150,9 +150,9 @@ void Node::_backward() {
 		LOG_IF(INFO, verbos) << "BACKWARD " << _name;
 		backward();
 	}
-	else {
-		return;
-	}
+	//else {
+	//	return;
+	//}
 	for (auto node : inputNodes()) {
 		LOG_IF(INFO, verbos) << "FROM " << _name << " GOING TO BACKWARD " << node->name();
 		node->_backward();

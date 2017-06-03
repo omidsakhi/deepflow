@@ -46,6 +46,15 @@ void Multiplexer::backward()
 	}
 }
 
+std::list<std::shared_ptr<Node>> Multiplexer::inputNodes() const
+{
+	std::list<std::shared_ptr<Node>> list;
+	int _selected_input = floor(_inputs[_num_inputs]->value()->toFloat());
+	list.push_back(_inputs[_selected_input]->connectedNode());
+	LOG_IF(INFO, _context && _context->debug_level == 4) << "MULTIPLEXER INPUT " << _selected_input;
+	return list;
+}
+
 std::string Multiplexer::to_cpp() const
 {
 	std::string inputs = _input_name_for_cpp(0);

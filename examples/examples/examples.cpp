@@ -132,9 +132,9 @@ void main(int argc, char** argv) {
 			
 			auto train = df.define_train_phase("Train");
 			//auto solver = df.adam_solver(0.0002f,0.5f);
-			auto solver = df.sgd_solver(0.98f, 0.00001f);
+			auto solver = df.sgd_solver(0.99f, 0.000000001f);
 
-			auto rand = df.data_generator(df.random_normal({ 1, 32, 8, 8 }, 0, 0.1), 10, "", "rand");
+			auto rand = df.data_generator(df.random_uniform({ 16, 32, 4, 4 }, -0.1, 0.1), 240, "", "rand");
 
 			auto deconv1_f = df.variable(df.random_normal({ 32, 1024, 3, 3 }, 0, 0.1), solver);			
 			auto deconv1 = df.transposed_conv2d(rand, deconv1_f, 1, 1, 2, 2, 1, 1, "deconv1");
@@ -148,19 +148,19 @@ void main(int argc, char** argv) {
 			auto deconv3 = df.transposed_conv2d(relu2, deconv3_f, 1, 1, 2, 2, 1, 1, "deconv3");
 			auto relu3 = df.leaky_relu(deconv3);
 
-			auto deconv4_f = df.variable(df.random_normal({ 256, 128, 3, 3 }, 0, 0.1), solver);
+			auto deconv4_f = df.variable(df.random_normal({ 256, 1, 3, 3 }, 0, 0.1), solver);
 			auto deconv4 = df.transposed_conv2d(relu3, deconv4_f, 1, 1, 2, 2, 1, 1, "deconv4");
-			auto relu4 = df.leaky_relu(deconv4);
+			auto relu4 = df.tanh(deconv4);
+						
 
-			auto deconv5_f = df.variable(df.random_normal({ 128, 3, 3, 3 }, 0, 0.1), solver);
-			auto deconv5 = df.transposed_conv2d(relu4, deconv5_f, 1, 1, 2, 2, 1, 1, "deconv4");
+			auto disp1 = df.display(relu4, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "recon");
+			auto disp2 = df.display(relu4, 1, DeepFlow::EVERY_PASS, DeepFlow::DIFFS, "diffs");
 
-			auto out = df.tanh(deconv5);
-
-			auto disp = df.display(out, 1, DeepFlow::END_OF_EPOCH, DeepFlow::VALUES);
+			auto image = df.image_batch_reader("D:/Projects/deepflow/data/face64", { 16 , 1, 64, 64 }, true);			
 			
-			auto image = df.image_batch_reader("D:/Projects/deepflow/data/image", { 1 , 3, 256, 256 }, false);			
-			df.euclidean_loss(out, image);
+			auto disp3 = df.display(image, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "db");
+
+			df.euclidean_loss(relu4, image);
 			
 
 			/*

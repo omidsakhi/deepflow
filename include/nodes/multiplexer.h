@@ -12,6 +12,7 @@ public:
 	void initBackward();
 	void forward();
 	void backward();	
+	std::list<std::shared_ptr<Node>> inputNodes() const;
 	std::string to_cpp() const;
 	ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
 	BackwardType backwardType() { return DEPENDS_ON_INPUTS; }

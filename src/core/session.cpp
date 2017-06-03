@@ -342,8 +342,10 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 	do {
 		if (generators->size() > 0) {
 			for (auto gen : *generators) {
-				if (gen->isLastBatch())
+				if (gen->isLastBatch()) {
 					last_batch = true;
+					//LOG(INFO) << "LAST BATCH: " << std::dynamic_pointer_cast<Node>(gen)->name();
+				}
 			}
 		}
 		else {
