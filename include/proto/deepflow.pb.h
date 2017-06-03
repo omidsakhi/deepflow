@@ -5641,37 +5641,51 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
 
-  // .deepflow.SGDSolverParam sgd_solver = 2;
+  // string enable_input = 2;
+  void clear_enable_input();
+  static const int kEnableInputFieldNumber = 2;
+  const ::std::string& enable_input() const;
+  void set_enable_input(const ::std::string& value);
+  #if LANG_CXX11
+  void set_enable_input(::std::string&& value);
+  #endif
+  void set_enable_input(const char* value);
+  void set_enable_input(const char* value, size_t size);
+  ::std::string* mutable_enable_input();
+  ::std::string* release_enable_input();
+  void set_allocated_enable_input(::std::string* enable_input);
+
+  // .deepflow.SGDSolverParam sgd_solver = 3;
   bool has_sgd_solver() const;
   void clear_sgd_solver();
-  static const int kSgdSolverFieldNumber = 2;
+  static const int kSgdSolverFieldNumber = 3;
   const ::deepflow::SGDSolverParam& sgd_solver() const;
   ::deepflow::SGDSolverParam* mutable_sgd_solver();
   ::deepflow::SGDSolverParam* release_sgd_solver();
   void set_allocated_sgd_solver(::deepflow::SGDSolverParam* sgd_solver);
 
-  // .deepflow.GainSolverParam gain_solver = 3;
+  // .deepflow.GainSolverParam gain_solver = 4;
   bool has_gain_solver() const;
   void clear_gain_solver();
-  static const int kGainSolverFieldNumber = 3;
+  static const int kGainSolverFieldNumber = 4;
   const ::deepflow::GainSolverParam& gain_solver() const;
   ::deepflow::GainSolverParam* mutable_gain_solver();
   ::deepflow::GainSolverParam* release_gain_solver();
   void set_allocated_gain_solver(::deepflow::GainSolverParam* gain_solver);
 
-  // .deepflow.AdamSolverParam adam_solver = 4;
+  // .deepflow.AdamSolverParam adam_solver = 5;
   bool has_adam_solver() const;
   void clear_adam_solver();
-  static const int kAdamSolverFieldNumber = 4;
+  static const int kAdamSolverFieldNumber = 5;
   const ::deepflow::AdamSolverParam& adam_solver() const;
   ::deepflow::AdamSolverParam* mutable_adam_solver();
   ::deepflow::AdamSolverParam* release_adam_solver();
   void set_allocated_adam_solver(::deepflow::AdamSolverParam* adam_solver);
 
-  // .deepflow.AdaDeltaSolverParam adadelta_solver = 5;
+  // .deepflow.AdaDeltaSolverParam adadelta_solver = 6;
   bool has_adadelta_solver() const;
   void clear_adadelta_solver();
-  static const int kAdadeltaSolverFieldNumber = 5;
+  static const int kAdadeltaSolverFieldNumber = 6;
   const ::deepflow::AdaDeltaSolverParam& adadelta_solver() const;
   ::deepflow::AdaDeltaSolverParam* mutable_adadelta_solver();
   ::deepflow::AdaDeltaSolverParam* release_adadelta_solver();
@@ -5682,6 +5696,7 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr name_;
+  ::google::protobuf::internal::ArenaStringPtr enable_input_;
   ::deepflow::SGDSolverParam* sgd_solver_;
   ::deepflow::GainSolverParam* gain_solver_;
   ::deepflow::AdamSolverParam* adam_solver_;
@@ -9931,7 +9946,59 @@ inline void SolverParam::set_allocated_name(::std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.name)
 }
 
-// .deepflow.SGDSolverParam sgd_solver = 2;
+// string enable_input = 2;
+inline void SolverParam::clear_enable_input() {
+  enable_input_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& SolverParam::enable_input() const {
+  // @@protoc_insertion_point(field_get:deepflow.SolverParam.enable_input)
+  return enable_input_.GetNoArena();
+}
+inline void SolverParam::set_enable_input(const ::std::string& value) {
+  
+  enable_input_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:deepflow.SolverParam.enable_input)
+}
+#if LANG_CXX11
+inline void SolverParam::set_enable_input(::std::string&& value) {
+  
+  enable_input_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:deepflow.SolverParam.enable_input)
+}
+#endif
+inline void SolverParam::set_enable_input(const char* value) {
+  
+  enable_input_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:deepflow.SolverParam.enable_input)
+}
+inline void SolverParam::set_enable_input(const char* value, size_t size) {
+  
+  enable_input_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:deepflow.SolverParam.enable_input)
+}
+inline ::std::string* SolverParam::mutable_enable_input() {
+  
+  // @@protoc_insertion_point(field_mutable:deepflow.SolverParam.enable_input)
+  return enable_input_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* SolverParam::release_enable_input() {
+  // @@protoc_insertion_point(field_release:deepflow.SolverParam.enable_input)
+  
+  return enable_input_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void SolverParam::set_allocated_enable_input(::std::string* enable_input) {
+  if (enable_input != NULL) {
+    
+  } else {
+    
+  }
+  enable_input_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), enable_input);
+  // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.enable_input)
+}
+
+// .deepflow.SGDSolverParam sgd_solver = 3;
 inline bool SolverParam::has_sgd_solver() const {
   return this != internal_default_instance() && sgd_solver_ != NULL;
 }
@@ -9970,7 +10037,7 @@ inline void SolverParam::set_allocated_sgd_solver(::deepflow::SGDSolverParam* sg
   // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.sgd_solver)
 }
 
-// .deepflow.GainSolverParam gain_solver = 3;
+// .deepflow.GainSolverParam gain_solver = 4;
 inline bool SolverParam::has_gain_solver() const {
   return this != internal_default_instance() && gain_solver_ != NULL;
 }
@@ -10009,7 +10076,7 @@ inline void SolverParam::set_allocated_gain_solver(::deepflow::GainSolverParam* 
   // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.gain_solver)
 }
 
-// .deepflow.AdamSolverParam adam_solver = 4;
+// .deepflow.AdamSolverParam adam_solver = 5;
 inline bool SolverParam::has_adam_solver() const {
   return this != internal_default_instance() && adam_solver_ != NULL;
 }
@@ -10048,7 +10115,7 @@ inline void SolverParam::set_allocated_adam_solver(::deepflow::AdamSolverParam* 
   // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.adam_solver)
 }
 
-// .deepflow.AdaDeltaSolverParam adadelta_solver = 5;
+// .deepflow.AdaDeltaSolverParam adadelta_solver = 6;
 inline bool SolverParam::has_adadelta_solver() const {
   return this != internal_default_instance() && adadelta_solver_ != NULL;
 }

@@ -258,6 +258,14 @@ void Session::initialize() {
 		else if (solver) {
 			_solvers.insert(std::pair<std::shared_ptr<Variable>, std::shared_ptr<Solver>>(var, solver));
 			LOG(INFO) << "Variable " << var->name() << " <-> Solver " << solver->name();
+			auto enable_input = solver->param().enable_input();
+			if (!enable_input.empty()) {
+				auto terminal = _find_node_output_by_name(enable_input);
+				LOG_IF(FATAL, terminal == 0) << "Failed to find " << enable_input << " as the input for solver " << solver->param().name() << " in variable " << var_solver_name;
+				solver->create_enable_input();
+				solver->enable_input()->connect(terminal);
+				LOG(INFO) << "Solver " << solver->name() << " Enable <-> Node " << terminal->parentNode()->name();
+			}
 		}
 		else {
 			LOG(INFO) << "Variable " << var->name() << " <-> Constant";

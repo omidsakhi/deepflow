@@ -46,7 +46,8 @@ void main(int argc, char** argv) {
 	if (FLAGS_i.empty()) {
 		if (FLAGS_x1) {
 			auto train = df.define_train_phase("Train");			
-			auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
+			//auto solver = df.gain_solver(0.8f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
+			auto solver = df.adam_solver(0.1f, 0.5f, 0.5f);
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
 			df.euclidean_loss(generator, image);
@@ -56,11 +57,11 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x2) {
 			auto train = df.define_train_phase("Train");						
-			auto solver = df.gain_solver(0.999f, 0.0001f, 100, 0.000000001f, 0.05f, 0.95f);
+			auto solver = df.gain_solver(0.98, 0.001f);
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY, "image");
-			auto recon = df.variable(df.step({ 1,1,256,256 }, 0, 1), solver, "recon");
+			auto recon = df.variable(df.random_normal({ 1,1,256,256 }, 0, 0.1), solver, "recon");
 			auto f1 = df.variable(df.step({ 11,1,5,5 }, 0, 1), "" , "w");
-			auto conv = df.conv2d(image, f1, "", 2, 2, 1, 1, 1, 1);			
+			auto conv = df.conv2d(image, f1, 2, 2, 1, 1, 1, 1);			
 			auto f2 = df.variable(df.step({ 1,11,5,5 }, 0, 1), "", "w");
 			auto tconv = df.transposed_conv2d(recon, f2, 2, 2, 1, 1, 1, 1);
 			df.euclidean_loss(conv, tconv);
@@ -69,9 +70,9 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x3) {			
 			auto train = df.define_train_phase("Train");			
-			auto solver = df.adadelta_solver(0.05f);
+			auto solver = df.adadelta_solver();
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE, "image");
-			auto recon = df.variable(df.random_uniform({ 1,3,256,256 }, 0, 1), solver, "recon");			
+			auto recon = df.variable(df.random_normal({ 1,3,256,256 }, 0, 0.1), solver, "recon");			
 			auto f1 = df.data_generator(df.random_uniform({ 10,3,3,3 }, -1, 1), 100, "", "f1");
 			auto f2 = df.restructure(f1, 0, 1);
 			auto conv = df.conv2d(image, f1, "", 1, 1, 1, 1, 1, 1);			
@@ -131,8 +132,8 @@ void main(int argc, char** argv) {
 			
 			
 			auto train = df.define_train_phase("Train");
-			//auto solver = df.adam_solver(0.0002f,0.5f);
-			auto solver = df.sgd_solver(0.99f, 0.000000001f);
+			auto solver = df.adam_solver();
+			//auto solver = df.sgd_solver(0.99f, 0.000000001f);
 
 			auto rand = df.data_generator(df.random_uniform({ 16, 32, 4, 4 }, -0.1, 0.1), 240, "", "rand");
 

@@ -22,6 +22,12 @@ void SGDSolver::apply(std::shared_ptr<Variable> var) {
 	if (_initialized == false) {
 		init(var);
 	}	
+	if (_enable_input) {
+		bool is_enable = _enable_input->value()->toFloat() >= 1;
+		if (!is_enable) {			
+			return;
+		}
+	}
 	auto output = var->output(0);
 	auto size = output->value()->size();						
 	ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, _my_param.momentum(), _my_param.learning_rate(), (float*) output->value()->mutableData(), (float*) output->diff()->data());

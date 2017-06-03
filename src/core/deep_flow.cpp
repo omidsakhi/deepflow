@@ -479,8 +479,9 @@ void DeepFlow::euclidean_loss(std::string a, std::string b, std::string name, st
 	auto euclidean_loss_param = loss_param->mutable_euclidean_loss_param();	
 }
 
-std::string DeepFlow::sgd_solver(float momentum, float learning_rate, std::string name) {
+std::string DeepFlow::sgd_solver(float momentum, float learning_rate, std::string name, std::string enable_input) {
 	auto solver_param = _block->add_solver_param();	
+	solver_param->set_enable_input(enable_input);
 	solver_param->set_name(_block->get_unique_solver_param_name(name));
 	auto sgd_solver = solver_param->mutable_sgd_solver();
 	sgd_solver->set_learning_rate(learning_rate);
@@ -488,8 +489,9 @@ std::string DeepFlow::sgd_solver(float momentum, float learning_rate, std::strin
 	return solver_param->name();
 }
 
-std::string DeepFlow::gain_solver(float momentum, float learning_rate, float max_gain, float min_gain, float gain_plus, float gain_mult, std::string name) {
+std::string DeepFlow::gain_solver(float momentum, float learning_rate, float max_gain, float min_gain, float gain_plus, float gain_mult, std::string name, std::string enable_input) {
 	auto solver_param = _block->add_solver_param();	
+	solver_param->set_enable_input(enable_input);
 	solver_param->set_name(_block->get_unique_solver_param_name(name));
 	auto gain_solver = solver_param->mutable_gain_solver();
 	gain_solver->set_momentum(momentum);
@@ -500,8 +502,9 @@ std::string DeepFlow::gain_solver(float momentum, float learning_rate, float max
 	gain_solver->set_gain_mult(gain_mult);
 	return solver_param->name();
 }
-std::string DeepFlow::adam_solver(float learning_rate, float beta1, float beta2, float eps, std::string name) {	
+std::string DeepFlow::adam_solver(float learning_rate, float beta1, float beta2, float eps, std::string name, std::string enable_input) {
 	auto solver_param = _block->add_solver_param();
+	solver_param->set_enable_input(enable_input);
 	solver_param->set_name(_block->get_unique_solver_param_name(name));
 	auto adam_solver = solver_param->mutable_adam_solver();	
 	adam_solver->set_learning_rate(learning_rate);
@@ -511,8 +514,9 @@ std::string DeepFlow::adam_solver(float learning_rate, float beta1, float beta2,
 	return solver_param->name();
 }
 
-std::string DeepFlow::adadelta_solver(float learning_rate, float momentum, float delta, std::string name) {
+std::string DeepFlow::adadelta_solver(float learning_rate, float momentum, float delta, std::string name, std::string enable_input) {
 	auto solver_param = _block->add_solver_param();
+	solver_param->set_enable_input(enable_input);
 	solver_param->set_name(_block->get_unique_solver_param_name(name));
 	auto adadelta_solver = solver_param->mutable_adadelta_solver();
 	adadelta_solver->set_learning_rate(learning_rate);

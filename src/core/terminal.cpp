@@ -60,7 +60,8 @@ const int& Terminal::index() const {
 
 void NodeInput::connect(std::shared_ptr<NodeOutput> terminal) {
 	_connected_terminal = terminal;
-	_parentNode->param().set_input(_index, terminal->name());
+	if (_parentNode)
+		_parentNode->param().set_input(_index, terminal->name());
 	_connected_terminal->parentNode()->param().set_output(_connected_terminal->index(), terminal->name());
 	terminal->connectTerminal(shared_from_this());	
 	LOG_IF(FATAL, _connected_terminal->parentNode()->param().input_size() != _connected_terminal->parentNode()->inputs().size()) << _connected_terminal->parentNode()->name() << " _param.input_size() != minNumInputs()";

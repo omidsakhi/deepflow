@@ -348,10 +348,11 @@ message AdamSolverParam {
 
 message SolverParam {
 	string name = 1;
-	SGDSolverParam sgd_solver = 2;
-	GainSolverParam gain_solver = 3;
-	AdamSolverParam adam_solver = 4;
-	AdaDeltaSolverParam adadelta_solver = 5;	
+	string enable_input = 2;
+	SGDSolverParam sgd_solver = 3;
+	GainSolverParam gain_solver = 4;
+	AdamSolverParam adam_solver = 5;
+	AdaDeltaSolverParam adadelta_solver = 6;	
 }
 
 message PhaseParam {

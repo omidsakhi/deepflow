@@ -1,7 +1,7 @@
 #pragma once
 
 #include "nodes/variable.h"
-
+#include "core/terminal.h"
 #include "proto/deepflow.pb.h"
 
 class Variable;
@@ -15,7 +15,10 @@ public:
 	const deepflow::SolverParam& param() const;
 	const std::string name() const;
 	bool hasTheSameParam(std::shared_ptr<Solver> another) const;
-protected:	
+	NodeInputPtr enable_input();
+	void create_enable_input();
+protected:
+	NodeInputPtr _enable_input;
 	deepflow::SolverParam _param;
 	bool _initialized = false;
 };

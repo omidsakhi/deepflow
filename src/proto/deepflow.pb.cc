@@ -469,6 +469,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SolverParam, name_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SolverParam, enable_input_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SolverParam, sgd_solver_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SolverParam, gain_solver_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SolverParam, adam_solver_),
@@ -539,8 +540,8 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 317, -1, sizeof(AdaDeltaSolverParam)},
   { 324, -1, sizeof(AdamSolverParam)},
   { 332, -1, sizeof(SolverParam)},
-  { 341, -1, sizeof(PhaseParam)},
-  { 347, -1, sizeof(BlockParam)},
+  { 342, -1, sizeof(PhaseParam)},
+  { 348, -1, sizeof(BlockParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -1033,27 +1034,28 @@ void AddDescriptorsImpl() {
       "Param\022\025\n\rlearning_rate\030\001 \001(\002\022\020\n\010momentum"
       "\030\002 \001(\002\022\r\n\005delta\030\003 \001(\002\"S\n\017AdamSolverParam"
       "\022\025\n\rlearning_rate\030\001 \001(\002\022\r\n\005beta1\030\002 \001(\002\022\r"
-      "\n\005beta2\030\003 \001(\002\022\013\n\003eps\030\004 \001(\002\"\341\001\n\013SolverPar"
-      "am\022\014\n\004name\030\001 \001(\t\022,\n\nsgd_solver\030\002 \001(\0132\030.d"
-      "eepflow.SGDSolverParam\022.\n\013gain_solver\030\003 "
-      "\001(\0132\031.deepflow.GainSolverParam\022.\n\013adam_s"
-      "olver\030\004 \001(\0132\031.deepflow.AdamSolverParam\0226"
-      "\n\017adadelta_solver\030\005 \001(\0132\035.deepflow.AdaDe"
-      "ltaSolverParam\"\250\001\n\nPhaseParam\022\r\n\005phase\030\001"
-      " \001(\t\0226\n\tbehaviour\030\002 \001(\0162#.deepflow.Phase"
-      "Param.PhaseBehaviour\"S\n\016PhaseBehaviour\022\027"
-      "\n\023TRAIN_AND_INFERENCE\020\000\022\t\n\005TRAIN\020\001\022\016\n\nVA"
-      "LIDATION\020\002\022\r\n\tINFERENCE\020\003\"\245\001\n\nBlockParam"
-      "\022!\n\004node\030\001 \003(\0132\023.deepflow.NodeParam\022%\n\006s"
-      "olver\030\002 \003(\0132\025.deepflow.SolverParam\022#\n\005ph"
-      "ase\030\003 \003(\0132\024.deepflow.PhaseParam\022(\n\013initi"
-      "alizer\030\004 \003(\0132\023.deepflow.InitParam*9\n\nAct"
-      "ionTime\022\016\n\nEVERY_PASS\020\000\022\020\n\014END_OF_EPOCH\020"
-      "\001\022\t\n\005NEVER\020\002*9\n\nActionType\022\n\n\006VALUES\020\000\022\t"
-      "\n\005DIFFS\020\001\022\024\n\020VALUES_AND_DIFFS\020\002b\006proto3"
+      "\n\005beta2\030\003 \001(\002\022\013\n\003eps\030\004 \001(\002\"\367\001\n\013SolverPar"
+      "am\022\014\n\004name\030\001 \001(\t\022\024\n\014enable_input\030\002 \001(\t\022,"
+      "\n\nsgd_solver\030\003 \001(\0132\030.deepflow.SGDSolverP"
+      "aram\022.\n\013gain_solver\030\004 \001(\0132\031.deepflow.Gai"
+      "nSolverParam\022.\n\013adam_solver\030\005 \001(\0132\031.deep"
+      "flow.AdamSolverParam\0226\n\017adadelta_solver\030"
+      "\006 \001(\0132\035.deepflow.AdaDeltaSolverParam\"\250\001\n"
+      "\nPhaseParam\022\r\n\005phase\030\001 \001(\t\0226\n\tbehaviour\030"
+      "\002 \001(\0162#.deepflow.PhaseParam.PhaseBehavio"
+      "ur\"S\n\016PhaseBehaviour\022\027\n\023TRAIN_AND_INFERE"
+      "NCE\020\000\022\t\n\005TRAIN\020\001\022\016\n\nVALIDATION\020\002\022\r\n\tINFE"
+      "RENCE\020\003\"\245\001\n\nBlockParam\022!\n\004node\030\001 \003(\0132\023.d"
+      "eepflow.NodeParam\022%\n\006solver\030\002 \003(\0132\025.deep"
+      "flow.SolverParam\022#\n\005phase\030\003 \003(\0132\024.deepfl"
+      "ow.PhaseParam\022(\n\013initializer\030\004 \003(\0132\023.dee"
+      "pflow.InitParam*9\n\nActionTime\022\016\n\nEVERY_P"
+      "ASS\020\000\022\020\n\014END_OF_EPOCH\020\001\022\t\n\005NEVER\020\002*9\n\nAc"
+      "tionType\022\n\n\006VALUES\020\000\022\t\n\005DIFFS\020\001\022\024\n\020VALUE"
+      "S_AND_DIFFS\020\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 6479);
+      descriptor, 6501);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -19413,6 +19415,7 @@ void AdamSolverParam::set_eps(float value) {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int SolverParam::kNameFieldNumber;
+const int SolverParam::kEnableInputFieldNumber;
 const int SolverParam::kSgdSolverFieldNumber;
 const int SolverParam::kGainSolverFieldNumber;
 const int SolverParam::kAdamSolverFieldNumber;
@@ -19435,6 +19438,10 @@ SolverParam::SolverParam(const SolverParam& from)
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.name().size() > 0) {
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+  }
+  enable_input_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.enable_input().size() > 0) {
+    enable_input_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.enable_input_);
   }
   if (from.has_sgd_solver()) {
     sgd_solver_ = new ::deepflow::SGDSolverParam(*from.sgd_solver_);
@@ -19461,6 +19468,7 @@ SolverParam::SolverParam(const SolverParam& from)
 
 void SolverParam::SharedCtor() {
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  enable_input_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&sgd_solver_, 0, reinterpret_cast<char*>(&adadelta_solver_) -
     reinterpret_cast<char*>(&sgd_solver_) + sizeof(adadelta_solver_));
   _cached_size_ = 0;
@@ -19473,6 +19481,7 @@ SolverParam::~SolverParam() {
 
 void SolverParam::SharedDtor() {
   name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  enable_input_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) {
     delete sgd_solver_;
   }
@@ -19513,6 +19522,7 @@ SolverParam* SolverParam::New(::google::protobuf::Arena* arena) const {
 void SolverParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:deepflow.SolverParam)
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  enable_input_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && sgd_solver_ != NULL) {
     delete sgd_solver_;
   }
@@ -19557,10 +19567,26 @@ bool SolverParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .deepflow.SGDSolverParam sgd_solver = 2;
+      // string enable_input = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_enable_input()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->enable_input().data(), this->enable_input().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "deepflow.SolverParam.enable_input"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .deepflow.SGDSolverParam sgd_solver = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_sgd_solver()));
         } else {
@@ -19569,10 +19595,10 @@ bool SolverParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .deepflow.GainSolverParam gain_solver = 3;
-      case 3: {
+      // .deepflow.GainSolverParam gain_solver = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u)) {
+            static_cast< ::google::protobuf::uint8>(34u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_gain_solver()));
         } else {
@@ -19581,10 +19607,10 @@ bool SolverParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .deepflow.AdamSolverParam adam_solver = 4;
-      case 4: {
+      // .deepflow.AdamSolverParam adam_solver = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u)) {
+            static_cast< ::google::protobuf::uint8>(42u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_adam_solver()));
         } else {
@@ -19593,10 +19619,10 @@ bool SolverParam::MergePartialFromCodedStream(
         break;
       }
 
-      // .deepflow.AdaDeltaSolverParam adadelta_solver = 5;
-      case 5: {
+      // .deepflow.AdaDeltaSolverParam adadelta_solver = 6;
+      case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u)) {
+            static_cast< ::google::protobuf::uint8>(50u)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_adadelta_solver()));
         } else {
@@ -19639,28 +19665,38 @@ void SolverParam::SerializeWithCachedSizes(
       1, this->name(), output);
   }
 
-  // .deepflow.SGDSolverParam sgd_solver = 2;
+  // string enable_input = 2;
+  if (this->enable_input().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->enable_input().data(), this->enable_input().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "deepflow.SolverParam.enable_input");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->enable_input(), output);
+  }
+
+  // .deepflow.SGDSolverParam sgd_solver = 3;
   if (this->has_sgd_solver()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, *this->sgd_solver_, output);
+      3, *this->sgd_solver_, output);
   }
 
-  // .deepflow.GainSolverParam gain_solver = 3;
+  // .deepflow.GainSolverParam gain_solver = 4;
   if (this->has_gain_solver()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, *this->gain_solver_, output);
+      4, *this->gain_solver_, output);
   }
 
-  // .deepflow.AdamSolverParam adam_solver = 4;
+  // .deepflow.AdamSolverParam adam_solver = 5;
   if (this->has_adam_solver()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, *this->adam_solver_, output);
+      5, *this->adam_solver_, output);
   }
 
-  // .deepflow.AdaDeltaSolverParam adadelta_solver = 5;
+  // .deepflow.AdaDeltaSolverParam adadelta_solver = 6;
   if (this->has_adadelta_solver()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      5, *this->adadelta_solver_, output);
+      6, *this->adadelta_solver_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:deepflow.SolverParam)
@@ -19681,32 +19717,43 @@ void SolverParam::SerializeWithCachedSizes(
         1, this->name(), target);
   }
 
-  // .deepflow.SGDSolverParam sgd_solver = 2;
+  // string enable_input = 2;
+  if (this->enable_input().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->enable_input().data(), this->enable_input().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "deepflow.SolverParam.enable_input");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->enable_input(), target);
+  }
+
+  // .deepflow.SGDSolverParam sgd_solver = 3;
   if (this->has_sgd_solver()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        2, *this->sgd_solver_, false, target);
+        3, *this->sgd_solver_, false, target);
   }
 
-  // .deepflow.GainSolverParam gain_solver = 3;
+  // .deepflow.GainSolverParam gain_solver = 4;
   if (this->has_gain_solver()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        3, *this->gain_solver_, false, target);
+        4, *this->gain_solver_, false, target);
   }
 
-  // .deepflow.AdamSolverParam adam_solver = 4;
+  // .deepflow.AdamSolverParam adam_solver = 5;
   if (this->has_adam_solver()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        4, *this->adam_solver_, false, target);
+        5, *this->adam_solver_, false, target);
   }
 
-  // .deepflow.AdaDeltaSolverParam adadelta_solver = 5;
+  // .deepflow.AdaDeltaSolverParam adadelta_solver = 6;
   if (this->has_adadelta_solver()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        5, *this->adadelta_solver_, false, target);
+        6, *this->adadelta_solver_, false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.SolverParam)
@@ -19724,28 +19771,35 @@ size_t SolverParam::ByteSizeLong() const {
         this->name());
   }
 
-  // .deepflow.SGDSolverParam sgd_solver = 2;
+  // string enable_input = 2;
+  if (this->enable_input().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->enable_input());
+  }
+
+  // .deepflow.SGDSolverParam sgd_solver = 3;
   if (this->has_sgd_solver()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->sgd_solver_);
   }
 
-  // .deepflow.GainSolverParam gain_solver = 3;
+  // .deepflow.GainSolverParam gain_solver = 4;
   if (this->has_gain_solver()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->gain_solver_);
   }
 
-  // .deepflow.AdamSolverParam adam_solver = 4;
+  // .deepflow.AdamSolverParam adam_solver = 5;
   if (this->has_adam_solver()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->adam_solver_);
   }
 
-  // .deepflow.AdaDeltaSolverParam adadelta_solver = 5;
+  // .deepflow.AdaDeltaSolverParam adadelta_solver = 6;
   if (this->has_adadelta_solver()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -19781,6 +19835,10 @@ void SolverParam::MergeFrom(const SolverParam& from) {
   if (from.name().size() > 0) {
 
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+  }
+  if (from.enable_input().size() > 0) {
+
+    enable_input_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.enable_input_);
   }
   if (from.has_sgd_solver()) {
     mutable_sgd_solver()->::deepflow::SGDSolverParam::MergeFrom(from.sgd_solver());
@@ -19820,6 +19878,7 @@ void SolverParam::Swap(SolverParam* other) {
 }
 void SolverParam::InternalSwap(SolverParam* other) {
   name_.Swap(&other->name_);
+  enable_input_.Swap(&other->enable_input_);
   std::swap(sgd_solver_, other->sgd_solver_);
   std::swap(gain_solver_, other->gain_solver_);
   std::swap(adam_solver_, other->adam_solver_);
@@ -19887,7 +19946,59 @@ void SolverParam::set_allocated_name(::std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.name)
 }
 
-// .deepflow.SGDSolverParam sgd_solver = 2;
+// string enable_input = 2;
+void SolverParam::clear_enable_input() {
+  enable_input_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& SolverParam::enable_input() const {
+  // @@protoc_insertion_point(field_get:deepflow.SolverParam.enable_input)
+  return enable_input_.GetNoArena();
+}
+void SolverParam::set_enable_input(const ::std::string& value) {
+  
+  enable_input_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:deepflow.SolverParam.enable_input)
+}
+#if LANG_CXX11
+void SolverParam::set_enable_input(::std::string&& value) {
+  
+  enable_input_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:deepflow.SolverParam.enable_input)
+}
+#endif
+void SolverParam::set_enable_input(const char* value) {
+  
+  enable_input_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:deepflow.SolverParam.enable_input)
+}
+void SolverParam::set_enable_input(const char* value, size_t size) {
+  
+  enable_input_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:deepflow.SolverParam.enable_input)
+}
+::std::string* SolverParam::mutable_enable_input() {
+  
+  // @@protoc_insertion_point(field_mutable:deepflow.SolverParam.enable_input)
+  return enable_input_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* SolverParam::release_enable_input() {
+  // @@protoc_insertion_point(field_release:deepflow.SolverParam.enable_input)
+  
+  return enable_input_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void SolverParam::set_allocated_enable_input(::std::string* enable_input) {
+  if (enable_input != NULL) {
+    
+  } else {
+    
+  }
+  enable_input_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), enable_input);
+  // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.enable_input)
+}
+
+// .deepflow.SGDSolverParam sgd_solver = 3;
 bool SolverParam::has_sgd_solver() const {
   return this != internal_default_instance() && sgd_solver_ != NULL;
 }
@@ -19926,7 +20037,7 @@ void SolverParam::set_allocated_sgd_solver(::deepflow::SGDSolverParam* sgd_solve
   // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.sgd_solver)
 }
 
-// .deepflow.GainSolverParam gain_solver = 3;
+// .deepflow.GainSolverParam gain_solver = 4;
 bool SolverParam::has_gain_solver() const {
   return this != internal_default_instance() && gain_solver_ != NULL;
 }
@@ -19965,7 +20076,7 @@ void SolverParam::set_allocated_gain_solver(::deepflow::GainSolverParam* gain_so
   // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.gain_solver)
 }
 
-// .deepflow.AdamSolverParam adam_solver = 4;
+// .deepflow.AdamSolverParam adam_solver = 5;
 bool SolverParam::has_adam_solver() const {
   return this != internal_default_instance() && adam_solver_ != NULL;
 }
@@ -20004,7 +20115,7 @@ void SolverParam::set_allocated_adam_solver(::deepflow::AdamSolverParam* adam_so
   // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.adam_solver)
 }
 
-// .deepflow.AdaDeltaSolverParam adadelta_solver = 5;
+// .deepflow.AdaDeltaSolverParam adadelta_solver = 6;
 bool SolverParam::has_adadelta_solver() const {
   return this != internal_default_instance() && adadelta_solver_ != NULL;
 }

@@ -104,10 +104,10 @@ public:
 	void euclidean_loss(std::string a, std::string b, std::string name = "euclideanloss", std::initializer_list<std::string> phases = {});
 		
 	// SOLVERS
-	std::string sgd_solver(float momentum, float learning_rate, std::string name = "sgd");
-	std::string gain_solver(float momentum = 0.99999, float learning_rate = 10e-3f, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f, std::string name = "gain");
-	std::string adam_solver(float learning_rate = 10e-2f, float beta1 = 0.99f, float beta2 = 0.999f, float eps = 10e-8f, std::string name = "adam");
-	std::string adadelta_solver(float learning_rate = 10e-1f, float momentum = 0.9f, float delta = 1e-6f, std::string name = "adadelta");	
+	std::string sgd_solver(float momentum, float learning_rate, std::string name = "sgd", std::string enable_input = "");
+	std::string gain_solver(float momentum = 0.98f, float learning_rate = 10e-2f, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f, std::string name = "gain", std::string enable_input = "");
+	std::string adam_solver(float learning_rate = 10e-2f, float beta1 = 0.5f, float beta2 = 0.5f, float eps = 10e-8f, std::string name = "adam",std::string enable_input = "");
+	std::string adadelta_solver(float learning_rate = 10e-2f, float momentum = 0.5f, float delta = 1e-6f, std::string name = "adadelta", std::string enable_input = "");
 	
 	// PRINTERS & DISPLAYS
 	void print(std::initializer_list<std::string> inputs, std::string message, ActionTime printTime = ActionTime::END_OF_EPOCH, ActionType = ActionType::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});

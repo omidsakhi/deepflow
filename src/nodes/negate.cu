@@ -32,10 +32,10 @@ void Negate::backward()
 {
 	auto size = _inputs[0]->value()->size();
 	if (_negate_type != deepflow::ActionType::VALUES) {
-		cpy(size, -1.0f, _inputs[0]->diff()->data(), 1.0f, _outputs[0]->diff()->mutableData());
+		cpy(size, -1.0f, _outputs[0]->diff()->data(), 1.0f, _inputs[0]->diff()->mutableData());
 	}
 	else {
-		cpy(size, 1.0f, _inputs[0]->diff()->data(), 1.0f, _outputs[0]->diff()->mutableData());
+		cpy(size, 1.0f, _outputs[0]->diff()->data(), 1.0f, _inputs[0]->diff()->mutableData());
 	}
 }
 
