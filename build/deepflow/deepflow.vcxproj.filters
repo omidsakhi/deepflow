@@ -64,11 +64,13 @@
     <CudaCompile Include="..\..\src\core\node.cu">
       <Filter>source\core</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\restructure.cu" />
     <CudaCompile Include="..\..\src\nodes\image_reader.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\negate.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\restructure.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
   </ItemGroup>
@@ -167,6 +169,9 @@
       <Filter>source\nodes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\nodes\multiplexer.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\batch_normalization.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -343,6 +348,9 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\negate.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\batch_normalization.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

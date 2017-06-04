@@ -454,6 +454,19 @@ void DeepFlow::psnr(std::string a, std::string b, ActionTime printTime, std::str
 	psnr_param->set_print_time((deepflow::ActionTime)printTime);
 }
 
+std::string DeepFlow::batch_normalization(std::string input, NormalizationMode mode, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto batch_norm_param = node_param->mutable_batch_normalization_param();
+	batch_norm_param->set_mode((deepflow::BatchNormalizationparam_Mode) mode);
+	return node_param->output(0);
+}
+
 std::string DeepFlow::softmax_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));

@@ -233,6 +233,14 @@ message CastFloatParam {
 	
 }
 
+message BatchNormalizationparam {
+	enum Mode {
+		CUDNN_BATCHNORM_PER_ACTIVATION = 0;    
+		CUDNN_BATCHNORM_SPATIAL        = 1;
+	}
+	Mode mode = 1;
+}
+
 message NodeParam {
   string name = 1;
   repeated string input = 2;
@@ -270,6 +278,7 @@ message NodeParam {
   ImageReaderParam image_reader_param = 124;
   MultiplexerParam multiplexer_param = 125;
   NegateParam negate_param = 126;
+  BatchNormalizationparam batch_normalization_param = 127;
 }
 
 message SquareParam {

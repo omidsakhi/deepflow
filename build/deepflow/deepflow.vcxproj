@@ -44,6 +44,7 @@
     <ClInclude Include="..\..\include\nodes\accumulator.h" />
     <ClInclude Include="..\..\include\nodes\activation.h" />
     <ClInclude Include="..\..\include\nodes\add.h" />
+    <ClInclude Include="..\..\include\nodes\batch_normalization.h" />
     <ClInclude Include="..\..\include\nodes\bias_add.h" />
     <ClInclude Include="..\..\include\nodes\block.h" />
     <ClInclude Include="..\..\include\nodes\cast_float.h" />
@@ -123,6 +124,7 @@
     </CudaCompile>
     <ClCompile Include="..\..\src\core\terminal.cpp" />
     <ClCompile Include="..\..\src\nodes\activation.cpp" />
+    <ClCompile Include="..\..\src\nodes\batch_normalization.cpp" />
     <ClCompile Include="..\..\src\nodes\block.cpp" />
     <ClCompile Include="..\..\src\nodes\convolution_2d.cpp" />
     <ClCompile Include="..\..\src\nodes\dropout.cpp" />

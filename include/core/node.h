@@ -69,6 +69,7 @@ public:
 	void setVisited(bool state);
 	void resetGradients();
 	void cpy(int n, const float alpha, const void *src, const float beta, void *dst);
+	void fill(int n, const float value, void *dst, const float beta = 0);
 	std::vector<NodeInputPtr> &inputs();
 	std::vector<NodeOutputPtr> &outputs();
 	NodeInputPtr input(int index);

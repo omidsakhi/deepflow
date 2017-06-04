@@ -46,6 +46,9 @@ extern AdamSolverParamDefaultTypeInternal _AdamSolverParam_default_instance_;
 class AddParam;
 class AddParamDefaultTypeInternal;
 extern AddParamDefaultTypeInternal _AddParam_default_instance_;
+class BatchNormalizationparam;
+class BatchNormalizationparamDefaultTypeInternal;
+extern BatchNormalizationparamDefaultTypeInternal _BatchNormalizationparam_default_instance_;
 class BiasAddParam;
 class BiasAddParamDefaultTypeInternal;
 extern BiasAddParamDefaultTypeInternal _BiasAddParam_default_instance_;
@@ -358,6 +361,27 @@ inline bool MnistParam_OutputType_Parse(
     const ::std::string& name, MnistParam_OutputType* value) {
   return ::google::protobuf::internal::ParseNamedEnum<MnistParam_OutputType>(
     MnistParam_OutputType_descriptor(), name, value);
+}
+enum BatchNormalizationparam_Mode {
+  BatchNormalizationparam_Mode_CUDNN_BATCHNORM_PER_ACTIVATION = 0,
+  BatchNormalizationparam_Mode_CUDNN_BATCHNORM_SPATIAL = 1,
+  BatchNormalizationparam_Mode_BatchNormalizationparam_Mode_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  BatchNormalizationparam_Mode_BatchNormalizationparam_Mode_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool BatchNormalizationparam_Mode_IsValid(int value);
+const BatchNormalizationparam_Mode BatchNormalizationparam_Mode_Mode_MIN = BatchNormalizationparam_Mode_CUDNN_BATCHNORM_PER_ACTIVATION;
+const BatchNormalizationparam_Mode BatchNormalizationparam_Mode_Mode_MAX = BatchNormalizationparam_Mode_CUDNN_BATCHNORM_SPATIAL;
+const int BatchNormalizationparam_Mode_Mode_ARRAYSIZE = BatchNormalizationparam_Mode_Mode_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* BatchNormalizationparam_Mode_descriptor();
+inline const ::std::string& BatchNormalizationparam_Mode_Name(BatchNormalizationparam_Mode value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    BatchNormalizationparam_Mode_descriptor(), value);
+}
+inline bool BatchNormalizationparam_Mode_Parse(
+    const ::std::string& name, BatchNormalizationparam_Mode* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<BatchNormalizationparam_Mode>(
+    BatchNormalizationparam_Mode_descriptor(), name, value);
 }
 enum PhaseParam_PhaseBehaviour {
   PhaseParam_PhaseBehaviour_TRAIN_AND_INFERENCE = 0,
@@ -3790,6 +3814,115 @@ class CastFloatParam : public ::google::protobuf::Message /* @@protoc_insertion_
 };
 // -------------------------------------------------------------------
 
+class BatchNormalizationparam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.BatchNormalizationparam) */ {
+ public:
+  BatchNormalizationparam();
+  virtual ~BatchNormalizationparam();
+
+  BatchNormalizationparam(const BatchNormalizationparam& from);
+
+  inline BatchNormalizationparam& operator=(const BatchNormalizationparam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const BatchNormalizationparam& default_instance();
+
+  static inline const BatchNormalizationparam* internal_default_instance() {
+    return reinterpret_cast<const BatchNormalizationparam*>(
+               &_BatchNormalizationparam_default_instance_);
+  }
+
+  void Swap(BatchNormalizationparam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline BatchNormalizationparam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  BatchNormalizationparam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const BatchNormalizationparam& from);
+  void MergeFrom(const BatchNormalizationparam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(BatchNormalizationparam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef BatchNormalizationparam_Mode Mode;
+  static const Mode CUDNN_BATCHNORM_PER_ACTIVATION =
+    BatchNormalizationparam_Mode_CUDNN_BATCHNORM_PER_ACTIVATION;
+  static const Mode CUDNN_BATCHNORM_SPATIAL =
+    BatchNormalizationparam_Mode_CUDNN_BATCHNORM_SPATIAL;
+  static inline bool Mode_IsValid(int value) {
+    return BatchNormalizationparam_Mode_IsValid(value);
+  }
+  static const Mode Mode_MIN =
+    BatchNormalizationparam_Mode_Mode_MIN;
+  static const Mode Mode_MAX =
+    BatchNormalizationparam_Mode_Mode_MAX;
+  static const int Mode_ARRAYSIZE =
+    BatchNormalizationparam_Mode_Mode_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  Mode_descriptor() {
+    return BatchNormalizationparam_Mode_descriptor();
+  }
+  static inline const ::std::string& Mode_Name(Mode value) {
+    return BatchNormalizationparam_Mode_Name(value);
+  }
+  static inline bool Mode_Parse(const ::std::string& name,
+      Mode* value) {
+    return BatchNormalizationparam_Mode_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // .deepflow.BatchNormalizationparam.Mode mode = 1;
+  void clear_mode();
+  static const int kModeFieldNumber = 1;
+  ::deepflow::BatchNormalizationparam_Mode mode() const;
+  void set_mode(::deepflow::BatchNormalizationparam_Mode value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.BatchNormalizationparam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  int mode_;
+  mutable int _cached_size_;
+  friend struct  protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.NodeParam) */ {
  public:
   NodeParam();
@@ -4207,6 +4340,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::NegateParam* release_negate_param();
   void set_allocated_negate_param(::deepflow::NegateParam* negate_param);
 
+  // .deepflow.BatchNormalizationparam batch_normalization_param = 127;
+  bool has_batch_normalization_param() const;
+  void clear_batch_normalization_param();
+  static const int kBatchNormalizationParamFieldNumber = 127;
+  const ::deepflow::BatchNormalizationparam& batch_normalization_param() const;
+  ::deepflow::BatchNormalizationparam* mutable_batch_normalization_param();
+  ::deepflow::BatchNormalizationparam* release_batch_normalization_param();
+  void set_allocated_batch_normalization_param(::deepflow::BatchNormalizationparam* batch_normalization_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -4245,6 +4387,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::ImageReaderParam* image_reader_param_;
   ::deepflow::MultiplexerParam* multiplexer_param_;
   ::deepflow::NegateParam* negate_param_;
+  ::deepflow::BatchNormalizationparam* batch_normalization_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -7762,6 +7905,24 @@ inline void MnistParam::set_batch_size(::google::protobuf::int32 value) {
 
 // -------------------------------------------------------------------
 
+// BatchNormalizationparam
+
+// .deepflow.BatchNormalizationparam.Mode mode = 1;
+inline void BatchNormalizationparam::clear_mode() {
+  mode_ = 0;
+}
+inline ::deepflow::BatchNormalizationparam_Mode BatchNormalizationparam::mode() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationparam.mode)
+  return static_cast< ::deepflow::BatchNormalizationparam_Mode >(mode_);
+}
+inline void BatchNormalizationparam::set_mode(::deepflow::BatchNormalizationparam_Mode value) {
+  
+  mode_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationparam.mode)
+}
+
+// -------------------------------------------------------------------
+
 // NodeParam
 
 // string name = 1;
@@ -9187,6 +9348,45 @@ inline void NodeParam::set_allocated_negate_param(::deepflow::NegateParam* negat
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.negate_param)
 }
 
+// .deepflow.BatchNormalizationparam batch_normalization_param = 127;
+inline bool NodeParam::has_batch_normalization_param() const {
+  return this != internal_default_instance() && batch_normalization_param_ != NULL;
+}
+inline void NodeParam::clear_batch_normalization_param() {
+  if (GetArenaNoVirtual() == NULL && batch_normalization_param_ != NULL) delete batch_normalization_param_;
+  batch_normalization_param_ = NULL;
+}
+inline const ::deepflow::BatchNormalizationparam& NodeParam::batch_normalization_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.batch_normalization_param)
+  return batch_normalization_param_ != NULL ? *batch_normalization_param_
+                         : *::deepflow::BatchNormalizationparam::internal_default_instance();
+}
+inline ::deepflow::BatchNormalizationparam* NodeParam::mutable_batch_normalization_param() {
+  
+  if (batch_normalization_param_ == NULL) {
+    batch_normalization_param_ = new ::deepflow::BatchNormalizationparam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.batch_normalization_param)
+  return batch_normalization_param_;
+}
+inline ::deepflow::BatchNormalizationparam* NodeParam::release_batch_normalization_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.batch_normalization_param)
+  
+  ::deepflow::BatchNormalizationparam* temp = batch_normalization_param_;
+  batch_normalization_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_batch_normalization_param(::deepflow::BatchNormalizationparam* batch_normalization_param) {
+  delete batch_normalization_param_;
+  batch_normalization_param_ = batch_normalization_param;
+  if (batch_normalization_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.batch_normalization_param)
+}
+
 // -------------------------------------------------------------------
 
 // SquareParam
@@ -10449,6 +10649,8 @@ BlockParam::initializer() const {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -10493,6 +10695,11 @@ template <> struct is_proto_enum< ::deepflow::MnistParam_OutputType> : ::google:
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::MnistParam_OutputType>() {
   return ::deepflow::MnistParam_OutputType_descriptor();
+}
+template <> struct is_proto_enum< ::deepflow::BatchNormalizationparam_Mode> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::BatchNormalizationparam_Mode>() {
+  return ::deepflow::BatchNormalizationparam_Mode_descriptor();
 }
 template <> struct is_proto_enum< ::deepflow::PhaseParam_PhaseBehaviour> : ::google::protobuf::internal::true_type {};
 template <>

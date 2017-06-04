@@ -45,6 +45,7 @@
 #include "nodes/image_reader.h"
 #include "nodes/multiplexer.h"
 #include "nodes/negate.h"
+#include "nodes/batch_normalization.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -179,6 +180,9 @@ std::shared_ptr<Node> Session::_create_node(const deepflow::NodeParam &node_para
 	}
 	else if (node_param.has_negate_param()) {
 		return std::make_shared<Negate>(node_param);
+	}
+	else if (node_param.has_batch_normalization_param()) {
+		return std::make_shared<BatchNormalization>(node_param);
 	}
 	else if (node_param.has_variable_param()) {
 		const deepflow::InitParam &init_param = node_param.variable_param().init_param();

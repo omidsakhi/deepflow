@@ -33,6 +33,7 @@ DEFINE_bool(x7, false, "Test convolution forward with bias");
 DEFINE_bool(x8, false, "Test color image display");
 DEFINE_bool(x9, false, "Test restructured image display");
 DEFINE_bool(x10, false, "Test dcgan generator image reconstruction");
+DEFINE_bool(x11, false, "Test batch normalization");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -193,6 +194,12 @@ void main(int argc, char** argv) {
 			auto conv4_f = df.variable(df.ones({ 1, 1, 3, 3 }));
 			auto conv4 = df.conv2d(conv3, conv2_f, 1, 1, 2, 2, 1, 1);
 			*/			
+		}
+		else if (FLAGS_x11) {
+			auto train = df.define_train_phase("Train");
+			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto norm = df.batch_normalization(image, DeepFlow::SPATIAL);
+			df.display(norm, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "disp", { train });
 		}
 	}
 	else {

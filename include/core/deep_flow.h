@@ -34,6 +34,10 @@ public:
 		DIFFS = 1,
 		VALUES_AND_DIFFS = 2
 	};
+	enum NormalizationMode {
+		PER_ACTIVATION = 0,
+		SPATIAL = 1
+	};
 
 	DeepFlow();
 	DeepFlow(std::shared_ptr<Block> block);
@@ -114,6 +118,9 @@ public:
 	void logger(std::initializer_list<std::string> inputs, std::string file_path, std::string message, ActionTime loggingTime = ActionTime::END_OF_EPOCH, ActionType loggingType = ActionType::VALUES, std::string name = "logger", std::initializer_list<std::string> phases = {});
 	std::string display(std::string input, int delay_msec = 100, ActionTime displayTime = ActionTime::EVERY_PASS, ActionType dislayType = ActionType::VALUES  , std::string name = "disp", std::initializer_list<std::string> phases = {});
 	void psnr(std::string a, std::string b, ActionTime printTime = ActionTime::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
+
+	// NORMALIZATION
+	std::string batch_normalization(std::string input, NormalizationMode mode, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
 
 	// OTHER
 	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});

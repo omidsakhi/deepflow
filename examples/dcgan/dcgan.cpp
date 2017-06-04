@@ -42,8 +42,8 @@ void main(int argc, char** argv) {
 		auto d_solver_enable = df.multiplexer({ solver_off, solver_on }, select, "d_solver_enable");
 		auto g_solver_enable = df.multiplexer({ solver_on, solver_off }, select, "d_solver_enable");
 
-		auto d_solver = df.gain_solver(0.999900, 0.00100, 10.000000, 0.000000, 0.050000, 0.950000, "d_solver", d_solver_enable);
-		auto g_solver = df.adam_solver(0.001f, 0.5f, 0.5f, 1.0e-7, "g_solver", g_solver_enable);
+		auto d_solver = df.gain_solver(0.9999f, 0.00100, 10.000000, 0.000000, 0.050000, 0.950000, "d_solver", d_solver_enable);
+		auto g_solver = df.adam_solver(0.001f, 0.5f, 0.98f, 1.0e-7, "g_solver", g_solver_enable);
 
 		auto mean = 0;
 		auto stddev = 0.002;
@@ -56,12 +56,12 @@ void main(int argc, char** argv) {
 
 		auto gconv1_f = df.variable(df.random_normal({ 1024, 512, 2, 2 }, mean, stddev), g_solver, "gconv1_f", { train });		
 		auto gconv1 = df.transposed_conv2d(gfc, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1", { train });					
-		
+		auto gconv1_relu = df.leaky_relu(gconv1);
 		auto gconv2_f = df.variable(df.random_normal({ 512, 128, 3, 3 }, mean, stddev), g_solver, "gconv2_f", { train });		
-		auto gconv2 = df.transposed_conv2d(gconv1, gconv2_f, 1, 1, 2, 2, 1, 1, "gconv2", { train });
-
+		auto gconv2 = df.transposed_conv2d(gconv1_relu, gconv2_f, 1, 1, 2, 2, 1, 1, "gconv2", { train });
+		auto gconv2_relu = df.leaky_relu(gconv2);
 		auto gconv3_f = df.variable(df.random_normal({ 128, 1, 3, 3 }, mean, stddev), g_solver, "gconv3_f", { train });		
-		auto gconv3 = df.transposed_conv2d(gconv2, gconv3_f, 1, 1, 2, 2, 1, 1, "gconv3", { train });
+		auto gconv3 = df.transposed_conv2d(gconv2_relu, gconv3_f, 1, 1, 2, 2, 1, 1, "gconv3", { train });
 		
 		auto gout = df.tanh(gconv3);				
 
