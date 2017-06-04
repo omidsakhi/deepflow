@@ -107,15 +107,44 @@ void * Tensor::mutableData() {
 	return d_data;
 }
 
-template <typename T>
 int Tensor::isValid() const {
-	auto h_data = cpyToHost();
-	for (int i = 0; i < _size; ++i) {
-		if (isinf(h_data[i]))
-			return -1;
-		else if (isnan(h_data[i]))
-			return -2;
+	switch (_reader_type) {	
+	case TensorType::Int8:
+	{
+		auto h_data = cpyToHost<unsigned char>();
+		for (int i = 0; i < h_data->size(); ++i) {
+			if (isinf((float)h_data->at(i)))
+				return -1;
+			else if (isnan((float)h_data->at(i)))
+				return -2;
+		}		
 	}
+	break;
+	case TensorType::Int32:
+	{
+		auto h_data = cpyToHost<int>();
+		for (int i = 0; i < h_data->size(); ++i) {
+			if (isinf((float)h_data->at(i)))
+				return -1;
+			else if (isnan((float)h_data->at(i)))
+				return -2;
+		}
+	}
+	break;
+	case TensorType::Float:
+	{
+		auto h_data = cpyToHost<float>();
+		for (int i = 0; i < h_data->size(); ++i) {
+			if (isinf(h_data->at(i)))
+				return -1;
+			else if (isnan(h_data->at(i)))
+				return -2;
+		}
+	}
+	break;
+	default:
+		LOG(FATAL) << "Unsupported type for toString() function";
+	};
 	return 0;
 }
 

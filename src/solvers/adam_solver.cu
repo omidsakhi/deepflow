@@ -24,13 +24,21 @@ AdamSolver::AdamSolver(const deepflow::SolverParam &param) : Solver(param) {
 }
 
 void AdamSolver::apply(std::shared_ptr<Variable> var) {
-	if (_initialized == false)
+	auto context = var->executionContext();
+	bool verbos = (context && context->debug_level > 3) ? true : false;
+	if (_initialized == false) {
+		LOG_IF(INFO, verbos) << "INITIALIZING SOLVER " << name() << " FOR VARIABLE " << var->name();
 		init(var);
-	if (_enable_input) {
-		bool is_enable = _enable_input->value()->toFloat() >= 1;
-		if (!is_enable)
-			return;
 	}
+	if (_enable_input) {
+		float value = _enable_input->value()->toFloat();
+		bool is_enable = value >= 1;
+		if (!is_enable) {
+			LOG_IF(INFO, verbos) << "SOLVER " << name() << " **NOT** APPLIED ON " << var->name();
+			return;
+		}
+	}
+	LOG_IF(INFO, verbos) << "APPLYING SOLVER " << name() << " ON " << var->name();
 	auto output = var->output(0);
 	auto size = output->value()->size();
 	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), (float*)output->diff()->data(), _m, _v, _my_param.beta1(), _my_param.beta2(), _my_param.eps(), _my_param.learning_rate());

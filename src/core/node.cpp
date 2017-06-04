@@ -137,6 +137,12 @@ void Node::_forward() {
 	}	
 	LOG_IF(INFO, verbos) << "FORWARD " << _name;
 	forward();
+	if (verbos) {
+		for (auto output : _outputs) {
+			int res = output->value()->isValid();
+			LOG_IF(FATAL, res != 0) << ((res == -1) ? "INF" : "NAN");
+		}
+	}
 }
 
 void Node::_backward() {
@@ -149,10 +155,13 @@ void Node::_backward() {
 	if (_propagate_back) {		
 		LOG_IF(INFO, verbos) << "BACKWARD " << _name;
 		backward();
+		if (verbos) {
+			for (auto input : _inputs) {
+				int res = input->diff()->isValid();
+				LOG_IF(FATAL, res != 0) << ((res == -1) ? "INF" : "NAN");
+			}
+		}
 	}
-	//else {
-	//	return;
-	//}
 	for (auto node : inputNodes()) {
 		LOG_IF(INFO, verbos) << "FROM " << _name << " GOING TO BACKWARD " << node->name();
 		node->_backward();
@@ -239,6 +248,11 @@ bool Node::includePhase(const std::string &phase) {
 
 void Node::setExecutionContext(ExecutionContextPtr context) {
 	_context = context;
+}
+
+ExecutionContextPtr Node::executionContext()
+{
+	return _context;
 }
 
 std::list<std::shared_ptr<Node>> Node::outputNodes() const

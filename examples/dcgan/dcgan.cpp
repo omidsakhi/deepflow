@@ -32,34 +32,38 @@ void main(int argc, char** argv) {
 		
 
 	if (FLAGS_i.empty()) {
-		auto train = df.define_train_phase("Train");
-		auto g_solver = df.adadelta_solver(0.01f, 0.999f);
-		auto select = df.data_generator(df.random_uniform({ 1,1,1,1 }, 0.5, 1.99), 10000, "", "select");
-		auto d_solver = df.sgd_solver(0.99f, 0.1f, "sgd", select);// df.gain_solver(0.999900, 0.0001f, 10.000000, 0.000000, 0.050000, 0.950000, "gain");
+		auto train = df.define_train_phase("Train");		
+		
+		auto solver_on = df.data_generator(df.fill({ 1,1,1,1 }, 2.0), 10000, "", "solver_on");
+		auto solver_off = df.data_generator(df.fill({ 1,1,1,1 }, 0.0), 10000, "", "solver_off");
+
+		auto select = df.data_generator(df.random_uniform({ 1,1,1,1 }, 0.6, 1.99), 10000, "", "select");
+		
+		auto d_solver_enable = df.multiplexer({ solver_off, solver_on }, select, "d_solver_enable");
+		auto g_solver_enable = df.multiplexer({ solver_on, solver_off }, select, "d_solver_enable");
+
+		auto d_solver = df.gain_solver(0.999900, 0.00100, 10.000000, 0.000000, 0.050000, 0.950000, "d_solver", d_solver_enable);
+		auto g_solver = df.adam_solver(0.001f, 0.5f, 0.5f, 1.0e-7, "g_solver", g_solver_enable);
 
 		auto mean = 0;
 		auto stddev = 0.002;
-		auto negative_slope = 0.02;
+		auto negative_slope = 0.1;
 
 		auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, mean, stddev, "random_input"), 10000, "", "input", { train });				
 
-		auto gfc_w = df.variable(df.random_normal({ 100, 1024, 4, 4 }, mean, stddev), g_solver, "gfc_w");
-		auto gfc_wt = df.tanh(gfc_w);
-		auto gfc = df.matmul(gin, gfc_wt, "gfc");				
+		auto gfc_w = df.variable(df.random_normal({ 100, 1024, 4, 4 }, mean, stddev), g_solver, "gfc_w");		
+		auto gfc = df.matmul(gin, gfc_w, "gfc");				
 
-		auto gconv1_f = df.variable(df.random_normal({ 1024, 512, 2, 2 }, mean, stddev), g_solver, "gconv1_f", { train });
-		auto gconv1_ft = df.tanh(gconv1_f);
-		auto gconv1 = df.transposed_conv2d(gfc, gconv1_ft, 1, 1, 2, 2, 1, 1, "gconv1", { train });					
+		auto gconv1_f = df.variable(df.random_normal({ 1024, 512, 2, 2 }, mean, stddev), g_solver, "gconv1_f", { train });		
+		auto gconv1 = df.transposed_conv2d(gfc, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1", { train });					
 		
-		auto gconv2_f = df.variable(df.random_normal({ 512, 128, 3, 3 }, mean, stddev), g_solver, "gconv2_f", { train });
-		auto gconv2_ft = df.tanh(gconv2_f);
-		auto gconv2 = df.transposed_conv2d(gconv1, gconv2_ft, 1, 1, 2, 2, 1, 1, "gconv2", { train });
+		auto gconv2_f = df.variable(df.random_normal({ 512, 128, 3, 3 }, mean, stddev), g_solver, "gconv2_f", { train });		
+		auto gconv2 = df.transposed_conv2d(gconv1, gconv2_f, 1, 1, 2, 2, 1, 1, "gconv2", { train });
 
-		auto gconv3_f = df.variable(df.random_normal({ 128, 1, 3, 3 }, mean, stddev), g_solver, "gconv3_f", { train });
-		auto gconv3_ft = df.tanh(gconv3_f);
-		auto gconv3 = df.transposed_conv2d(gconv2, gconv3_ft, 1, 1, 2, 2, 1, 1, "gconv3", { train });
-
-		auto gout = df.tanh(gconv3);		
+		auto gconv3_f = df.variable(df.random_normal({ 128, 1, 3, 3 }, mean, stddev), g_solver, "gconv3_f", { train });		
+		auto gconv3 = df.transposed_conv2d(gconv2, gconv3_f, 1, 1, 2, 2, 1, 1, "gconv3", { train });
+		
+		auto gout = df.tanh(gconv3);				
 
 		auto din = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::MNISTReaderType::Test, MNISTReader::Data);				
 		
@@ -69,12 +73,15 @@ void main(int argc, char** argv) {
 		
 		auto conv1_w = df.variable(df.random_uniform({ 16, 1, 3, 3 }, -0.100000, 0.100000), d_solver, "conv1_w", {});
 		auto conv1 = df.conv2d(data_selector, conv1_w, 1, 1, 2, 2, 1, 1, "conv1", {});
+		auto conv1_relu = df.leaky_relu(conv1, negative_slope);
 		auto conv2_w = df.variable(df.random_uniform({ 32, 16, 3, 3 }, -0.100000, 0.100000), d_solver, "conv2_w", {});
-		auto conv2 = df.conv2d(conv1, conv2_w, 1, 1, 2, 2, 1, 1, "conv2", {});
+		auto conv2 = df.conv2d(conv1_relu, conv2_w, 1, 1, 2, 2, 1, 1, "conv2", {});
+		auto conv2_relu = df.leaky_relu(conv2, negative_slope);
 		auto conv3_w = df.variable(df.random_uniform({ 64, 32, 3, 3 }, -0.100000, 0.100000), d_solver, "conv3_w", {});
-		auto conv3 = df.conv2d(conv2, conv3_w, 1, 1, 2, 2, 1, 1, "conv3", {});
+		auto conv3 = df.conv2d(conv2_relu, conv3_w, 1, 1, 2, 2, 1, 1, "conv3", {});
+		auto conv3_relu = df.leaky_relu(conv3, negative_slope); 
 		auto w1 = df.variable(df.random_uniform({ 1024, 500, 1, 1 }, -0.100000, 0.100000), d_solver, "w1", {});
-		auto m1 = df.matmul(conv3, w1, "m1", {});
+		auto m1 = df.matmul(conv3_relu, w1, "m1", {});
 		auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, -1.000000, 1.000000), d_solver, "b1", {});
 		auto bias1 = df.bias_add(m1, b1, "bias1", {});
 		auto relu1 = df.leaky_relu(bias1, negative_slope, "relu1", {});

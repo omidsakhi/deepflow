@@ -78,6 +78,7 @@ public:
 	deepflow::NodeParam &param();
 	bool includePhase(const std::string &phase);
 	void setExecutionContext(ExecutionContextPtr context);
+	ExecutionContextPtr executionContext();
 	virtual std::list<std::shared_ptr<Node>> inputNodes() const;
 	virtual std::list<std::shared_ptr<Node>> outputNodes() const;
 protected:	

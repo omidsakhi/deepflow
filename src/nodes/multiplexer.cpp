@@ -34,6 +34,7 @@ void Multiplexer::initBackward()
 void Multiplexer::forward()
 {	
 	_selected_input = floor(_inputs[_num_inputs]->value()->toFloat());
+	LOG_IF(INFO, (_context && _context->debug_level > 3)) << "MULTIPLEXER FORWARD " << _name << " - SELECTED INPUT " << _selected_input;
 	LOG_IF(FATAL, _selected_input >= _num_inputs) << "Input to selector must be between 0 and " << (_num_inputs - 1);
 	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[_selected_input]->value()->data(), _output_size_in_bytes, cudaMemcpyDeviceToDevice))
 }
@@ -42,6 +43,7 @@ void Multiplexer::backward()
 {	
 	auto input = _inputs[_selected_input];
 	if (input->connectedNode()->propagateBack()) {
+		LOG_IF(INFO, (_context && _context->debug_level > 3)) << "MULTIPLEXER BACKWARD " << _name << " - SELECTED INPUT " << _selected_input;
 		cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 1, input->diff()->mutableData());
 	}
 }

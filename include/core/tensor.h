@@ -42,8 +42,7 @@ public:
 	void * mutableData();
 	void reset();
 	void release();
-	
-	template <typename T>
+		
 	int isValid() const;
 
 	template <typename T>

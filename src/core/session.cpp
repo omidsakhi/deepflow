@@ -321,6 +321,17 @@ std::list<std::shared_ptr<Node>> Session::_get_end_nodes(std::string execution_p
 				list.push_back(node);
 		}
 	}
+	for (auto map_item : _solvers) {
+		auto solver = map_item.second;
+		if (solver) {
+			auto enable_input = solver->enable_input();
+			if (enable_input) {
+				auto node = enable_input->connectedNode();
+				if (node)
+					list.push_back(node);
+			}
+		}
+	}
 	return list;
 }
 
@@ -378,7 +389,7 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 			}
 			for (auto var : *variable_nodes) {
 				auto map_var_to_solver = _solvers.find(var);
-				if (map_var_to_solver != _solvers.end()) {					
+				if (map_var_to_solver != _solvers.end()) {										
 					map_var_to_solver->second->apply(var);
 				}
 			}
