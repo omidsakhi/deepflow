@@ -1,11 +1,10 @@
 # Deepflow
+A node based deep neural network library on top of CuDNN
 
 # Status
-
 A work in progress. Not mature enough for a release but cool enough for poking around.
 
 # Features
-
 - Node base like Tensorflow
 - Multiple execution phases per graph
 - Custom solver per variable
@@ -13,12 +12,10 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 - Create C++ code from Deepflow model
 
 # Requirments
-
 - NVIDIA Graphics Card
 - GPU Only
 
 # Dependencies
-
 - Visual Studio 2015
 - [CUDA 8](https://developer.nvidia.com/cuda-toolkit)
 - [OpenCV 3.0](http://opencv.org/opencv-3-0.html)
@@ -28,12 +25,10 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 - [gflags](https://github.com/gflags/gflags)
 
 # Working Examples
-
 - MNIST DCGAN (Deep Convolutional Generative Adversarial Network)
 - MNIST LeNet
 
 # Current Nodes
-
 | Nodes                 | Nodes                 | Nodes                 | Nodes                 |
 |-----------------------|-----------------------|-----------------------|-----------------------|
 | data_generator        | variable              | place_holder          | conv2d                |
@@ -51,7 +46,6 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 | softmax               |                       |                       |                       |
 
 # Current Solvers
-
 - AdaDelta
 - Adam
 - Gain
