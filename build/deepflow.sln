@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mnist_dcgan", "mnist_dcgan\
 		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB} = {DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "face_dcgan", "face_dcgan\face_dcgan.vcxproj", "{1423FC1C-4709-426A-B118-2EAD4C73FEE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -73,6 +75,14 @@ Global
 		{97CC7B56-9038-4A49-8A05-348E99FE848D}.Release|x64.Build.0 = Release|x64
 		{97CC7B56-9038-4A49-8A05-348E99FE848D}.Release|x86.ActiveCfg = Release|Win32
 		{97CC7B56-9038-4A49-8A05-348E99FE848D}.Release|x86.Build.0 = Release|Win32
+		{1423FC1C-4709-426A-B118-2EAD4C73FEE2}.Debug|x64.ActiveCfg = Debug|x64
+		{1423FC1C-4709-426A-B118-2EAD4C73FEE2}.Debug|x64.Build.0 = Debug|x64
+		{1423FC1C-4709-426A-B118-2EAD4C73FEE2}.Debug|x86.ActiveCfg = Debug|Win32
+		{1423FC1C-4709-426A-B118-2EAD4C73FEE2}.Debug|x86.Build.0 = Debug|Win32
+		{1423FC1C-4709-426A-B118-2EAD4C73FEE2}.Release|x64.ActiveCfg = Release|x64
+		{1423FC1C-4709-426A-B118-2EAD4C73FEE2}.Release|x64.Build.0 = Release|x64
+		{1423FC1C-4709-426A-B118-2EAD4C73FEE2}.Release|x86.ActiveCfg = Release|Win32
+		{1423FC1C-4709-426A-B118-2EAD4C73FEE2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
