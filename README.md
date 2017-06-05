@@ -27,6 +27,11 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 - [glog](https://github.com/google/glog)
 - [gflags](https://github.com/gflags/gflags)
 
+# Working Examples
+
+- MNIST DCGAN (Deep Convolutional Generative Adversarial Network)
+- MNIST LeNet
+
 # Current Nodes
 
 | Nodes                 | Nodes                 | Nodes                 | Nodes                 |
@@ -41,7 +46,9 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 | tanh                  | clipped_relu          | elu                   | phaseplexer           |
 | random_selector       | softmax_loss          | euclidean_loss        | print                 |
 | display               | psnr                  | softmax               | equal                 |
-| cast_float            | accumulator           |                       |                       |
+| cast_float            | accumulator           | batch_normalization   | logger                |
+| negate                | multiplexer           | random_selector       | restructure           |
+| softmax               |                       |                       |                       |
 
 # Current Solvers
 
