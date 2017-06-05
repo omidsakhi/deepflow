@@ -27,6 +27,9 @@ void BatchNormalization::initForward()
 		DF_NODE_CUDNN_CHECK(cudnnSetTensor4dDescriptor(_bnScaleBiasMeanVarDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, 1, inputDims[1], 1, 1));
 		_size = inputDims[1];
 	}
+	else {
+		LOG(FATAL) << "Unsupported batch normalization mode.";
+	}
 	LOG(INFO) << "Initializing Batch Normalization " << _name << " - " << _outputs[0]->value()->shape();
 	_eps = CUDNN_BN_MIN_EPSILON;
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
