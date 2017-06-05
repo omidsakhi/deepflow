@@ -51,6 +51,8 @@ public:
 	virtual int minNumOutputs() = 0;
 	virtual void forward() {}
 	virtual void backward() {}
+	virtual bool isGenerator() { return false; }
+	virtual bool isLastBatch() { return true; }
 	virtual ForwardType forwardType() = 0;
 	virtual BackwardType backwardType() = 0;
 	virtual std::string to_cpp() const = 0;
@@ -64,6 +66,8 @@ public:
 	void _propagateBack();	
 	bool propagateBack() const;	
 	void setShouldBackward(bool state);
+	void feed_forward(std::shared_ptr<Node> node, int output_terminal);
+	void feed_backward(std::shared_ptr<Node> node, int output_terminal);
 	void _traverse_up(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
 	void _traverse_down(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
 	void setVisited(bool state);

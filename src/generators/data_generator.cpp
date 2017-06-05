@@ -3,10 +3,10 @@
 #include "core/initializer.h"
 #include "core/common_cu.h"
 
-DataGenerator::DataGenerator(std::shared_ptr<Initializer> initializer, const deepflow::NodeParam &param) : Generator(param), Variable(initializer,param) {
-	LOG_IF(FATAL, param.generator_param().has_data_generator_param() == false) << "param.generator_param().has_data_generator_param() == false";
+DataGenerator::DataGenerator(std::shared_ptr<Initializer> initializer, const deepflow::NodeParam &param) : Variable(initializer,param) {
+	LOG_IF(FATAL, param.has_data_generator_param() == false) << "param.has_data_generator_param() == false";
 	_no_solver = param.variable_param().solver_name().empty();
-	_num_total_samples = param.generator_param().data_generator_param().num_samples();
+	_num_total_samples = param.data_generator_param().num_samples();
 	_batch_size = param.variable_param().init_param().tensor_param().dims(0);
 	LOG_IF(FATAL, _batch_size < 1) << "Data generator batch size must be more than 0";
 	LOG_IF(FATAL, _num_total_samples % _batch_size != 0) << "Number of total samples " << _num_total_samples << " must be dividable by the batch size " << _batch_size;
@@ -14,18 +14,9 @@ DataGenerator::DataGenerator(std::shared_ptr<Initializer> initializer, const dee
 	_last_batch = (_current_batch == (_num_batches - 1));
 }
 
-void DataGenerator::nextBatch() {
-	if (_no_solver) {
-		_initializer->apply(this);		
-		_last_batch = (_current_batch >= (_num_batches - 1));
-		if (_last_batch) {
-			_current_batch = 0;			
-		}
-		else {			
-			_current_batch++;
-		}		
-	}
-	LOG_IF(INFO, (_context && _context->debug_level > 2)) << "MNIST " << _name << " - BATCH @ " << _current_batch;
+bool DataGenerator::isGenerator()
+{	
+	return _no_solver;
 }
 
 void DataGenerator::initForward() {
@@ -52,7 +43,17 @@ void DataGenerator::initBackward() {
 }
 
 void DataGenerator::forward() {
-	
+	if (_no_solver) {
+		_initializer->apply(this);
+		_last_batch = (_current_batch >= (_num_batches - 1));
+		if (_last_batch) {
+			_current_batch = 0;
+		}
+		else {
+			_current_batch++;
+		}
+	}
+	LOG_IF(INFO, (_context && _context->debug_level > 2)) << "MNIST " << _name << " - BATCH @ " << _current_batch;
 }
 
 void DataGenerator::backward() {

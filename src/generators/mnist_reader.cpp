@@ -2,10 +2,9 @@
 
 #include <glog/logging.h>
 
-MNISTReader::MNISTReader(const deepflow::NodeParam &param) : Generator(param), Node(param) {
-	LOG_IF(FATAL, param.generator_param().has_mnist_param() == false) << "param.generator_param().has_mnist_param() == false";
-	auto generator_param = param.generator_param();
-	auto mnist_param = generator_param.mnist_param();	
+MNISTReader::MNISTReader(const deepflow::NodeParam &param) : Node(param) {
+	LOG_IF(FATAL, param.has_mnist_param() == false) << "param.has_mnist_param() == false";
+	auto mnist_param = param.mnist_param();	
 	_folder_path = mnist_param.folder_path();
 	_batch_size = mnist_param.batch_size();
 	_reader_type = (MNISTReaderType)mnist_param.reader_type();	
@@ -92,7 +91,8 @@ void MNISTReader::initBackward() {
 	
 }
 
-void MNISTReader::nextBatch() {
+void MNISTReader::forward()
+{
 	_last_batch = (_current_batch >= (_num_batches - 1));
 	if (_last_batch == true)
 	{
@@ -118,16 +118,16 @@ void MNISTReader::nextBatch() {
 			_buf[i] = 0.0f;
 		for (int i = 0; i < _batch_size; ++i)
 		{
-			_tx.read((char*)_temp, 1);			
+			_tx.read((char*)_temp, 1);
 			_buf[i * 10 + _temp[0]] = 1.0f;
 		}
 		/*
 		for (int i = 0; i < _num_batch_samples; ++i) {
-			for (int j = 0; j < 10; ++j)
-			{
-				std::cout << _buf[i * 10 + j] << " ";
-			}
-			std::cout << ", ";
+		for (int j = 0; j < 10; ++j)
+		{
+		std::cout << _buf[i * 10 + j] << " ";
+		}
+		std::cout << ", ";
 		}
 		std::cout << std::endl;
 		*/
@@ -135,8 +135,8 @@ void MNISTReader::nextBatch() {
 	else {
 		LOG(FATAL);
 	}
-	
-	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));				
+
+	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 	LOG_IF(INFO, (_context && _context->debug_level > 2)) << "MNIST " << _name << " - BATCH @ " << _current_batch;
 }
 

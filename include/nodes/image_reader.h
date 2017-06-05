@@ -1,7 +1,5 @@
 #pragma once
 
-
-#include "core/generator.h"
 #include "core/node.h"
 
 #include <filesystem>

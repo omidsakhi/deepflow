@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\examples\dcgan\dcgan.cpp" />
+    <ClCompile Include="..\..\examples\mnist_dcgan\mnist_dcgan.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{97CC7B56-9038-4A49-8A05-348E99FE848D}</ProjectGuid>
-    <RootNamespace>deepflow_style_transfer</RootNamespace>
-    <ProjectName>dcgan</ProjectName>
+    <RootNamespace>deepflow_mnist_dcgan</RootNamespace>
+    <ProjectName>mnist_dcgan</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

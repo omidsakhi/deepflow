@@ -132,7 +132,10 @@ void Display::forward() {
 		cv::imshow(name(), disp);		
 		int key = cv::waitKey(_delay_msec);
 		if (key == 27) {
-			_context->quit = true;
+			if (_context)
+				_context->quit = true;
+			else
+				exit(0);
 		}
 	}
 	if (_display_type == deepflow::ActionType::DIFFS) {
@@ -145,7 +148,10 @@ void Display::forward() {
 		cv::imshow(name(), disp);
 		int key = cv::waitKey(_delay_msec);
 		if (key == 27) {
-			_context->quit = true;
+			if (_context)
+				_context->quit = true;
+			else
+				exit(0);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/generator.h"
+#include "core/node.h"
 
 #include <string>
 #include <iostream>
@@ -12,7 +12,7 @@
 #include "cuda.h"
 #include "cudnn.h"
 
-class DeepFlowDllExport MNISTReader : public Generator, public Node {
+class DeepFlowDllExport MNISTReader : public Node {
 public:
 	enum MNISTReaderType {
 		Train,
@@ -24,10 +24,12 @@ public:
 	};
 	MNISTReader(const deepflow::NodeParam &param);
 	int minNumInputs() { return 0; }
-	int minNumOutputs() { return 1; }
-	void nextBatch();
+	int minNumOutputs() { return 1; }	
+	bool isGenerator() { return true; }
 	void initForward();
 	void initBackward();
+	void forward();
+	void backward() {}
 	void deinit();
 	bool isLastBatch();	
 	std::string to_cpp() const;

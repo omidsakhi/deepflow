@@ -1,16 +1,15 @@
 #pragma once
 
-#include "core/generator.h"
 #include "nodes/variable.h"
 
 class Initializer;
 
-class DeepFlowDllExport DataGenerator : public Generator, public Variable {
+class DeepFlowDllExport DataGenerator : public Variable {
 public:
 	DataGenerator(std::shared_ptr<Initializer> initializer, const deepflow::NodeParam &param);
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
-	void nextBatch();
+	bool isGenerator();
 	void initForward();
 	void initBackward();	
 	void forward();

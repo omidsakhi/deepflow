@@ -79,9 +79,6 @@ extern EuclideanLossParamDefaultTypeInternal _EuclideanLossParam_default_instanc
 class GainSolverParam;
 class GainSolverParamDefaultTypeInternal;
 extern GainSolverParamDefaultTypeInternal _GainSolverParam_default_instance_;
-class GeneratorParam;
-class GeneratorParamDefaultTypeInternal;
-extern GeneratorParamDefaultTypeInternal _GeneratorParam_default_instance_;
 class ImageBatchReaderParam;
 class ImageBatchReaderParamDefaultTypeInternal;
 extern ImageBatchReaderParamDefaultTypeInternal _ImageBatchReaderParam_default_instance_;
@@ -3468,112 +3465,6 @@ class ImageReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
 };
 // -------------------------------------------------------------------
 
-class GeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.GeneratorParam) */ {
- public:
-  GeneratorParam();
-  virtual ~GeneratorParam();
-
-  GeneratorParam(const GeneratorParam& from);
-
-  inline GeneratorParam& operator=(const GeneratorParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const GeneratorParam& default_instance();
-
-  static inline const GeneratorParam* internal_default_instance() {
-    return reinterpret_cast<const GeneratorParam*>(
-               &_GeneratorParam_default_instance_);
-  }
-
-  void Swap(GeneratorParam* other);
-
-  // implements Message ----------------------------------------------
-
-  inline GeneratorParam* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  GeneratorParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const GeneratorParam& from);
-  void MergeFrom(const GeneratorParam& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
-      const PROTOBUF_FINAL {
-    return InternalSerializeWithCachedSizesToArray(
-        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
-  }
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(GeneratorParam* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // .deepflow.MnistParam mnist_param = 1;
-  bool has_mnist_param() const;
-  void clear_mnist_param();
-  static const int kMnistParamFieldNumber = 1;
-  const ::deepflow::MnistParam& mnist_param() const;
-  ::deepflow::MnistParam* mutable_mnist_param();
-  ::deepflow::MnistParam* release_mnist_param();
-  void set_allocated_mnist_param(::deepflow::MnistParam* mnist_param);
-
-  // .deepflow.DataGeneratorParam data_generator_param = 2;
-  bool has_data_generator_param() const;
-  void clear_data_generator_param();
-  static const int kDataGeneratorParamFieldNumber = 2;
-  const ::deepflow::DataGeneratorParam& data_generator_param() const;
-  ::deepflow::DataGeneratorParam* mutable_data_generator_param();
-  ::deepflow::DataGeneratorParam* release_data_generator_param();
-  void set_allocated_data_generator_param(::deepflow::DataGeneratorParam* data_generator_param);
-
-  // .deepflow.ImageBatchReaderParam image_batch_reader_param = 4;
-  bool has_image_batch_reader_param() const;
-  void clear_image_batch_reader_param();
-  static const int kImageBatchReaderParamFieldNumber = 4;
-  const ::deepflow::ImageBatchReaderParam& image_batch_reader_param() const;
-  ::deepflow::ImageBatchReaderParam* mutable_image_batch_reader_param();
-  ::deepflow::ImageBatchReaderParam* release_image_batch_reader_param();
-  void set_allocated_image_batch_reader_param(::deepflow::ImageBatchReaderParam* image_batch_reader_param);
-
-  // @@protoc_insertion_point(class_scope:deepflow.GeneratorParam)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::deepflow::MnistParam* mnist_param_;
-  ::deepflow::DataGeneratorParam* data_generator_param_;
-  ::deepflow::ImageBatchReaderParam* image_batch_reader_param_;
-  mutable int _cached_size_;
-  friend struct  protobuf_deepflow_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
 class MnistParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.MnistParam) */ {
  public:
   MnistParam();
@@ -4088,15 +3979,6 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::LossParam* release_loss_param();
   void set_allocated_loss_param(::deepflow::LossParam* loss_param);
 
-  // .deepflow.GeneratorParam generator_param = 51;
-  bool has_generator_param() const;
-  void clear_generator_param();
-  static const int kGeneratorParamFieldNumber = 51;
-  const ::deepflow::GeneratorParam& generator_param() const;
-  ::deepflow::GeneratorParam* mutable_generator_param();
-  ::deepflow::GeneratorParam* release_generator_param();
-  void set_allocated_generator_param(::deepflow::GeneratorParam* generator_param);
-
   // .deepflow.VariableParam variable_param = 100;
   bool has_variable_param() const;
   void clear_variable_param();
@@ -4349,6 +4231,33 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::BatchNormalizationparam* release_batch_normalization_param();
   void set_allocated_batch_normalization_param(::deepflow::BatchNormalizationparam* batch_normalization_param);
 
+  // .deepflow.MnistParam mnist_param = 128;
+  bool has_mnist_param() const;
+  void clear_mnist_param();
+  static const int kMnistParamFieldNumber = 128;
+  const ::deepflow::MnistParam& mnist_param() const;
+  ::deepflow::MnistParam* mutable_mnist_param();
+  ::deepflow::MnistParam* release_mnist_param();
+  void set_allocated_mnist_param(::deepflow::MnistParam* mnist_param);
+
+  // .deepflow.DataGeneratorParam data_generator_param = 129;
+  bool has_data_generator_param() const;
+  void clear_data_generator_param();
+  static const int kDataGeneratorParamFieldNumber = 129;
+  const ::deepflow::DataGeneratorParam& data_generator_param() const;
+  ::deepflow::DataGeneratorParam* mutable_data_generator_param();
+  ::deepflow::DataGeneratorParam* release_data_generator_param();
+  void set_allocated_data_generator_param(::deepflow::DataGeneratorParam* data_generator_param);
+
+  // .deepflow.ImageBatchReaderParam image_batch_reader_param = 130;
+  bool has_image_batch_reader_param() const;
+  void clear_image_batch_reader_param();
+  static const int kImageBatchReaderParamFieldNumber = 130;
+  const ::deepflow::ImageBatchReaderParam& image_batch_reader_param() const;
+  ::deepflow::ImageBatchReaderParam* mutable_image_batch_reader_param();
+  ::deepflow::ImageBatchReaderParam* release_image_batch_reader_param();
+  void set_allocated_image_batch_reader_param(::deepflow::ImageBatchReaderParam* image_batch_reader_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -4359,7 +4268,6 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::deepflow::BlockParam* block_param_;
   ::deepflow::LossParam* loss_param_;
-  ::deepflow::GeneratorParam* generator_param_;
   ::deepflow::VariableParam* variable_param_;
   ::deepflow::PlaceHolderParam* place_holder_param_;
   ::deepflow::PhaseplexerParam* phaseplexer_param_;
@@ -4388,6 +4296,9 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::MultiplexerParam* multiplexer_param_;
   ::deepflow::NegateParam* negate_param_;
   ::deepflow::BatchNormalizationparam* batch_normalization_param_;
+  ::deepflow::MnistParam* mnist_param_;
+  ::deepflow::DataGeneratorParam* data_generator_param_;
+  ::deepflow::ImageBatchReaderParam* image_batch_reader_param_;
   mutable int _cached_size_;
   friend struct  protobuf_deepflow_2eproto::TableStruct;
 };
@@ -7682,127 +7593,6 @@ inline void ImageReaderParam::set_type(::deepflow::ImageReaderParam_Type value) 
 
 // -------------------------------------------------------------------
 
-// GeneratorParam
-
-// .deepflow.MnistParam mnist_param = 1;
-inline bool GeneratorParam::has_mnist_param() const {
-  return this != internal_default_instance() && mnist_param_ != NULL;
-}
-inline void GeneratorParam::clear_mnist_param() {
-  if (GetArenaNoVirtual() == NULL && mnist_param_ != NULL) delete mnist_param_;
-  mnist_param_ = NULL;
-}
-inline const ::deepflow::MnistParam& GeneratorParam::mnist_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.GeneratorParam.mnist_param)
-  return mnist_param_ != NULL ? *mnist_param_
-                         : *::deepflow::MnistParam::internal_default_instance();
-}
-inline ::deepflow::MnistParam* GeneratorParam::mutable_mnist_param() {
-  
-  if (mnist_param_ == NULL) {
-    mnist_param_ = new ::deepflow::MnistParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.GeneratorParam.mnist_param)
-  return mnist_param_;
-}
-inline ::deepflow::MnistParam* GeneratorParam::release_mnist_param() {
-  // @@protoc_insertion_point(field_release:deepflow.GeneratorParam.mnist_param)
-  
-  ::deepflow::MnistParam* temp = mnist_param_;
-  mnist_param_ = NULL;
-  return temp;
-}
-inline void GeneratorParam::set_allocated_mnist_param(::deepflow::MnistParam* mnist_param) {
-  delete mnist_param_;
-  mnist_param_ = mnist_param;
-  if (mnist_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.GeneratorParam.mnist_param)
-}
-
-// .deepflow.DataGeneratorParam data_generator_param = 2;
-inline bool GeneratorParam::has_data_generator_param() const {
-  return this != internal_default_instance() && data_generator_param_ != NULL;
-}
-inline void GeneratorParam::clear_data_generator_param() {
-  if (GetArenaNoVirtual() == NULL && data_generator_param_ != NULL) delete data_generator_param_;
-  data_generator_param_ = NULL;
-}
-inline const ::deepflow::DataGeneratorParam& GeneratorParam::data_generator_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.GeneratorParam.data_generator_param)
-  return data_generator_param_ != NULL ? *data_generator_param_
-                         : *::deepflow::DataGeneratorParam::internal_default_instance();
-}
-inline ::deepflow::DataGeneratorParam* GeneratorParam::mutable_data_generator_param() {
-  
-  if (data_generator_param_ == NULL) {
-    data_generator_param_ = new ::deepflow::DataGeneratorParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.GeneratorParam.data_generator_param)
-  return data_generator_param_;
-}
-inline ::deepflow::DataGeneratorParam* GeneratorParam::release_data_generator_param() {
-  // @@protoc_insertion_point(field_release:deepflow.GeneratorParam.data_generator_param)
-  
-  ::deepflow::DataGeneratorParam* temp = data_generator_param_;
-  data_generator_param_ = NULL;
-  return temp;
-}
-inline void GeneratorParam::set_allocated_data_generator_param(::deepflow::DataGeneratorParam* data_generator_param) {
-  delete data_generator_param_;
-  data_generator_param_ = data_generator_param;
-  if (data_generator_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.GeneratorParam.data_generator_param)
-}
-
-// .deepflow.ImageBatchReaderParam image_batch_reader_param = 4;
-inline bool GeneratorParam::has_image_batch_reader_param() const {
-  return this != internal_default_instance() && image_batch_reader_param_ != NULL;
-}
-inline void GeneratorParam::clear_image_batch_reader_param() {
-  if (GetArenaNoVirtual() == NULL && image_batch_reader_param_ != NULL) delete image_batch_reader_param_;
-  image_batch_reader_param_ = NULL;
-}
-inline const ::deepflow::ImageBatchReaderParam& GeneratorParam::image_batch_reader_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.GeneratorParam.image_batch_reader_param)
-  return image_batch_reader_param_ != NULL ? *image_batch_reader_param_
-                         : *::deepflow::ImageBatchReaderParam::internal_default_instance();
-}
-inline ::deepflow::ImageBatchReaderParam* GeneratorParam::mutable_image_batch_reader_param() {
-  
-  if (image_batch_reader_param_ == NULL) {
-    image_batch_reader_param_ = new ::deepflow::ImageBatchReaderParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.GeneratorParam.image_batch_reader_param)
-  return image_batch_reader_param_;
-}
-inline ::deepflow::ImageBatchReaderParam* GeneratorParam::release_image_batch_reader_param() {
-  // @@protoc_insertion_point(field_release:deepflow.GeneratorParam.image_batch_reader_param)
-  
-  ::deepflow::ImageBatchReaderParam* temp = image_batch_reader_param_;
-  image_batch_reader_param_ = NULL;
-  return temp;
-}
-inline void GeneratorParam::set_allocated_image_batch_reader_param(::deepflow::ImageBatchReaderParam* image_batch_reader_param) {
-  delete image_batch_reader_param_;
-  image_batch_reader_param_ = image_batch_reader_param;
-  if (image_batch_reader_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.GeneratorParam.image_batch_reader_param)
-}
-
-// -------------------------------------------------------------------
-
 // MnistParam
 
 // string folder_path = 1;
@@ -8254,45 +8044,6 @@ inline void NodeParam::set_allocated_loss_param(::deepflow::LossParam* loss_para
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.loss_param)
-}
-
-// .deepflow.GeneratorParam generator_param = 51;
-inline bool NodeParam::has_generator_param() const {
-  return this != internal_default_instance() && generator_param_ != NULL;
-}
-inline void NodeParam::clear_generator_param() {
-  if (GetArenaNoVirtual() == NULL && generator_param_ != NULL) delete generator_param_;
-  generator_param_ = NULL;
-}
-inline const ::deepflow::GeneratorParam& NodeParam::generator_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.NodeParam.generator_param)
-  return generator_param_ != NULL ? *generator_param_
-                         : *::deepflow::GeneratorParam::internal_default_instance();
-}
-inline ::deepflow::GeneratorParam* NodeParam::mutable_generator_param() {
-  
-  if (generator_param_ == NULL) {
-    generator_param_ = new ::deepflow::GeneratorParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.generator_param)
-  return generator_param_;
-}
-inline ::deepflow::GeneratorParam* NodeParam::release_generator_param() {
-  // @@protoc_insertion_point(field_release:deepflow.NodeParam.generator_param)
-  
-  ::deepflow::GeneratorParam* temp = generator_param_;
-  generator_param_ = NULL;
-  return temp;
-}
-inline void NodeParam::set_allocated_generator_param(::deepflow::GeneratorParam* generator_param) {
-  delete generator_param_;
-  generator_param_ = generator_param;
-  if (generator_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.generator_param)
 }
 
 // .deepflow.VariableParam variable_param = 100;
@@ -9385,6 +9136,123 @@ inline void NodeParam::set_allocated_batch_normalization_param(::deepflow::Batch
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.batch_normalization_param)
+}
+
+// .deepflow.MnistParam mnist_param = 128;
+inline bool NodeParam::has_mnist_param() const {
+  return this != internal_default_instance() && mnist_param_ != NULL;
+}
+inline void NodeParam::clear_mnist_param() {
+  if (GetArenaNoVirtual() == NULL && mnist_param_ != NULL) delete mnist_param_;
+  mnist_param_ = NULL;
+}
+inline const ::deepflow::MnistParam& NodeParam::mnist_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.mnist_param)
+  return mnist_param_ != NULL ? *mnist_param_
+                         : *::deepflow::MnistParam::internal_default_instance();
+}
+inline ::deepflow::MnistParam* NodeParam::mutable_mnist_param() {
+  
+  if (mnist_param_ == NULL) {
+    mnist_param_ = new ::deepflow::MnistParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.mnist_param)
+  return mnist_param_;
+}
+inline ::deepflow::MnistParam* NodeParam::release_mnist_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.mnist_param)
+  
+  ::deepflow::MnistParam* temp = mnist_param_;
+  mnist_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_mnist_param(::deepflow::MnistParam* mnist_param) {
+  delete mnist_param_;
+  mnist_param_ = mnist_param;
+  if (mnist_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.mnist_param)
+}
+
+// .deepflow.DataGeneratorParam data_generator_param = 129;
+inline bool NodeParam::has_data_generator_param() const {
+  return this != internal_default_instance() && data_generator_param_ != NULL;
+}
+inline void NodeParam::clear_data_generator_param() {
+  if (GetArenaNoVirtual() == NULL && data_generator_param_ != NULL) delete data_generator_param_;
+  data_generator_param_ = NULL;
+}
+inline const ::deepflow::DataGeneratorParam& NodeParam::data_generator_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.data_generator_param)
+  return data_generator_param_ != NULL ? *data_generator_param_
+                         : *::deepflow::DataGeneratorParam::internal_default_instance();
+}
+inline ::deepflow::DataGeneratorParam* NodeParam::mutable_data_generator_param() {
+  
+  if (data_generator_param_ == NULL) {
+    data_generator_param_ = new ::deepflow::DataGeneratorParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.data_generator_param)
+  return data_generator_param_;
+}
+inline ::deepflow::DataGeneratorParam* NodeParam::release_data_generator_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.data_generator_param)
+  
+  ::deepflow::DataGeneratorParam* temp = data_generator_param_;
+  data_generator_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_data_generator_param(::deepflow::DataGeneratorParam* data_generator_param) {
+  delete data_generator_param_;
+  data_generator_param_ = data_generator_param;
+  if (data_generator_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.data_generator_param)
+}
+
+// .deepflow.ImageBatchReaderParam image_batch_reader_param = 130;
+inline bool NodeParam::has_image_batch_reader_param() const {
+  return this != internal_default_instance() && image_batch_reader_param_ != NULL;
+}
+inline void NodeParam::clear_image_batch_reader_param() {
+  if (GetArenaNoVirtual() == NULL && image_batch_reader_param_ != NULL) delete image_batch_reader_param_;
+  image_batch_reader_param_ = NULL;
+}
+inline const ::deepflow::ImageBatchReaderParam& NodeParam::image_batch_reader_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.image_batch_reader_param)
+  return image_batch_reader_param_ != NULL ? *image_batch_reader_param_
+                         : *::deepflow::ImageBatchReaderParam::internal_default_instance();
+}
+inline ::deepflow::ImageBatchReaderParam* NodeParam::mutable_image_batch_reader_param() {
+  
+  if (image_batch_reader_param_ == NULL) {
+    image_batch_reader_param_ = new ::deepflow::ImageBatchReaderParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.image_batch_reader_param)
+  return image_batch_reader_param_;
+}
+inline ::deepflow::ImageBatchReaderParam* NodeParam::release_image_batch_reader_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.image_batch_reader_param)
+  
+  ::deepflow::ImageBatchReaderParam* temp = image_batch_reader_param_;
+  image_batch_reader_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_image_batch_reader_param(::deepflow::ImageBatchReaderParam* image_batch_reader_param) {
+  delete image_batch_reader_param_;
+  image_batch_reader_param_ = image_batch_reader_param;
+  if (image_batch_reader_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.image_batch_reader_param)
 }
 
 // -------------------------------------------------------------------
@@ -10549,8 +10417,6 @@ BlockParam::initializer() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

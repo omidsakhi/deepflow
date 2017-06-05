@@ -23,9 +23,8 @@ std::string DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNIS
 	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
-		node_param->add_phase(phase);
-	auto generator_param = node_param->mutable_generator_param();
-	auto mnistParam = generator_param->mutable_mnist_param();
+		node_param->add_phase(phase);	
+	auto mnistParam = node_param->mutable_mnist_param();
 	mnistParam->set_folder_path(folder_path);
 	mnistParam->set_reader_type((deepflow::MnistParam::ReaderType) reader_type);
 	mnistParam->set_output_type((deepflow::MnistParam::OutputType) output_type);
@@ -42,8 +41,7 @@ std::string DeepFlow::data_generator(std::string initializer, int num_samples, s
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	auto variable_param = node_param->mutable_variable_param();	
-	auto generator_param = node_param->mutable_generator_param();
-	auto data_generator_param = generator_param->mutable_data_generator_param();
+	auto data_generator_param = node_param->mutable_data_generator_param();	
 	data_generator_param->set_num_samples(num_samples);
 	if (!solver.empty())
 		variable_param->set_solver_name(solver);
@@ -72,8 +70,7 @@ std::string DeepFlow::image_batch_reader(std::string folder_path, std::initializ
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
-	auto generator_param = node_param->mutable_generator_param();
-	auto image_batch_reader_param = generator_param->mutable_image_batch_reader_param();
+	auto image_batch_reader_param = node_param->mutable_image_batch_reader_param();	
 	image_batch_reader_param->set_randomize(randomize);
 	image_batch_reader_param->set_folder_path(folder_path);	
 
@@ -726,8 +723,7 @@ std::shared_ptr<Block> DeepFlow::block() {
 
 std::shared_ptr<Session> DeepFlow::session()
 {	
-	auto session = std::make_shared<Session>();
-	session->setBlock(_block);
+	auto session = std::make_shared<Session>(_block);	
 	return session;
 }
 

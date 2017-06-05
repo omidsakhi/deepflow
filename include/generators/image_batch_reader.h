@@ -1,7 +1,5 @@
 #pragma once
 
-
-#include "core/generator.h"
 #include "core/node.h"
 
 #include <filesystem>
@@ -11,14 +9,16 @@ class Initializer;
 
 #include <opencv2/opencv.hpp>
 
-class DeepFlowDllExport ImageBatchReader : public Generator, public Node {
+class DeepFlowDllExport ImageBatchReader : public Node {
 public:
 	ImageBatchReader(const deepflow::NodeParam &param);
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
-	void nextBatch();
+	bool isGenerator() { return true; }
 	void initForward();
 	void initBackward() {}
+	void forward();
+	void backward() {}
 	bool isLastBatch();
 	std::string to_cpp() const;
 	ForwardType forwardType() { return ALWAYS_FORWARD; }

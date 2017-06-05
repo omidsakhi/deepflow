@@ -25,7 +25,7 @@ void Dropout::initBackward() {
 }
 
 void Dropout::forward() {
-	if (_train_only && _context->phase_behaviour != deepflow::PhaseParam_PhaseBehaviour_TRAIN) { 
+	if (_train_only && _context && _context->phase_behaviour != deepflow::PhaseParam_PhaseBehaviour_TRAIN) { 
 		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice));
 	}
 	else {
@@ -34,7 +34,7 @@ void Dropout::forward() {
 }
 
 void Dropout::backward() {
-	if (_train_only && _context->phase_behaviour != deepflow::PhaseParam_PhaseBehaviour_TRAIN) {
+	if (_train_only && _context && _context->phase_behaviour != deepflow::PhaseParam_PhaseBehaviour_TRAIN) {
 		DF_NODE_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), _inputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice));
 	} else {
 		DF_NODE_CUDNN_CHECK(cudnnDropoutBackward(_cudnnHandle, _dropoutDesc, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData(), d_reserve, _reserve_sizes_in_bytes));

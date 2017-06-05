@@ -12,7 +12,7 @@ public:
 	void initForward();
 	void initBackward();
 	void forward();
-	void backward();
+	void backward();	
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
 	std::string to_cpp() const;

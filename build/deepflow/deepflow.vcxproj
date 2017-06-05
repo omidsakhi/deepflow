@@ -28,7 +28,6 @@
     <ClInclude Include="..\..\include\core\initializer.h" />
     <ClInclude Include="..\..\include\core\loss.h" />
     <ClInclude Include="..\..\include\core\node.h" />
-    <ClInclude Include="..\..\include\core\generator.h" />
     <ClInclude Include="..\..\include\core\session.h" />
     <ClInclude Include="..\..\include\core\solver.h" />
     <ClInclude Include="..\..\include\core\tensor.h" />
@@ -117,7 +116,6 @@
     <CudaCompile Include="..\..\src\solvers\sgd_solver.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>
-    <ClCompile Include="..\..\src\core\generator.cpp" />
     <ClCompile Include="..\..\src\core\solver.cpp" />
     <CudaCompile Include="..\..\src\initializers\step.cu">
       <FileType>CppCode</FileType>

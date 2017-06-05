@@ -3,6 +3,7 @@
 #include "core/export.h"
 
 #include "core/deep_flow.h"
+#include "nodes/place_holder.h"
 
 class Solver;
 class Variable;
@@ -12,11 +13,19 @@ class DeepFlowDllExport Session {
 	friend class DeepFlow;
 	friend class Node;
 public:
-	void setBlock(std::shared_ptr<Block> block);
+	Session() {}
+	Session(std::shared_ptr<Block> block) { _block = block; }	
 	void initialize();
+	void set_execution_context(std::shared_ptr<ExecutionContext> execution_context);
 	void run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level);
 	void printMemory();
 	std::string to_cpp() const;
+	std::shared_ptr<PlaceHolder> get_placeholder(std::string name);	
+	std::shared_ptr<Node> get_node(std::string name);
+	void forward();
+	void backward();
+	void reset_gradients();
+	void apply_solvers();
 private:
 	template <class T>
 	std::list<std::shared_ptr<T>> _get_nodes(std::string execution_phase);
@@ -25,7 +34,7 @@ private:
 	std::shared_ptr<NodeOutput> _find_node_output_by_name(const std::string &name) const;
 	std::shared_ptr<Node> _create_node(const deepflow::NodeParam &);
 	std::shared_ptr<Solver> _create_solver(const deepflow::SolverParam &);
-	void _execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration);
+	void _execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Node>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration);
 private:
 	bool _initialized = false;
 	std::shared_ptr<Block> _block;

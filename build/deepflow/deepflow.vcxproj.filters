@@ -105,9 +105,6 @@
     <ClCompile Include="..\..\src\core\session.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\core\generator.cpp">
-      <Filter>source\core</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\generators\mnist_reader.cpp">
       <Filter>source\generators</Filter>
     </ClCompile>
@@ -238,9 +235,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\solvers\adadelta_solver.h">
       <Filter>include\solver</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\core\generator.h">
-      <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\generators\mnist_reader.h">
       <Filter>include\generators</Filter>

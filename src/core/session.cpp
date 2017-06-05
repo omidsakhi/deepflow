@@ -91,21 +91,16 @@ std::shared_ptr<Node> Session::_create_node(const deepflow::NodeParam &node_para
 
 	if (node_param.has_accumulator_param())
 		return std::make_shared<Accumulator>(node_param);	
-	else if (node_param.has_generator_param()) {
-		const deepflow::GeneratorParam &generator_param = node_param.generator_param();
-		if (generator_param.has_mnist_param()) {
-			return std::make_shared<MNISTReader>(node_param);
-		}
-		else if (generator_param.has_data_generator_param()) {
-			const deepflow::InitParam &init_param = node_param.variable_param().init_param();
-			std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
-			return std::make_shared<DataGenerator>(initializer, node_param);
-		}
-		else if (generator_param.has_image_batch_reader_param()) {
-			return std::make_shared<ImageBatchReader>(node_param);
-		}
-		else
-			LOG(FATAL) << "Unsupported Generator";
+	else if (node_param.has_mnist_param()) {
+		return std::make_shared<MNISTReader>(node_param);
+	}
+	else if (node_param.has_data_generator_param()) {
+		const deepflow::InitParam &init_param = node_param.variable_param().init_param();
+		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
+		return std::make_shared<DataGenerator>(initializer, node_param);
+	}
+	else if (node_param.has_image_batch_reader_param()) {
+		return std::make_shared<ImageBatchReader>(node_param);
 	}
 	else if (node_param.has_image_reader_param())
 		return std::make_shared<ImageReader>(node_param);
@@ -216,10 +211,6 @@ std::shared_ptr<Solver> Session::_create_solver(const deepflow::SolverParam &sol
 	return 0;
 }
 
-void Session::setBlock(std::shared_ptr<Block> block) {
-	_block = block;
-}
-
 void Session::initialize() {
 	if (_initialized == true)
 		return;
@@ -305,6 +296,12 @@ void Session::initialize() {
 	}
 }
 
+void Session::set_execution_context(std::shared_ptr<ExecutionContext> execution_context)
+{
+	for (auto node : _nodes)
+		node->setExecutionContext(execution_context);
+}
+
 std::shared_ptr<Node> Session::_find_node_by_name(const std::string &name) const {
 	for (auto node : _nodes) {
 		if (node->name() == name)
@@ -348,8 +345,46 @@ std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string
 	}
 	return 0;
 }
+void Session::forward()
+{
+	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
+	for (auto node : end_nodes) {
+		node->_unvisit();
+		node->_forward();
+	}
+}
 
-void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Generator>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration) {
+void Session::backward()
+{
+	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
+	for (auto node : end_nodes) {
+		node->_unvisit();
+		node->_propagateBack();
+	}
+	for (auto node : end_nodes) {
+		node->_unvisit();
+		node->_backward();
+	}
+}
+
+void Session::apply_solvers()
+{
+	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>("");
+	for (auto var : variable_nodes) {
+		auto map_var_to_solver = _solvers.find(var);
+		if (map_var_to_solver != _solvers.end()) {
+			map_var_to_solver->second->apply(var);
+		}
+	}
+}
+
+void Session::reset_gradients()
+{
+	for (auto node : _nodes)
+		node->resetGradients();
+}
+
+void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Node>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration) {
 	int iteration_per_epoch = 1;
 	bool last_batch = false;	
 	for (auto node : *nodes)
@@ -365,6 +400,7 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 	do {
 		if (generators->size() > 0) {
 			for (auto gen : *generators) {
+				LOG_IF(FATAL, gen->isGenerator() == false) << "NOT A GENERATOR";
 				if (gen->isLastBatch()) {
 					last_batch = true;
 					//LOG(INFO) << "LAST BATCH: " << std::dynamic_pointer_cast<Node>(gen)->name();
@@ -398,8 +434,6 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 				}
 			}
 		}
-		for (auto gen : *generators)
-			gen->nextBatch();
 		if (iteration)
 			(*iteration)++;
 		iteration_per_epoch++;
@@ -411,7 +445,13 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 void Session::run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level) {
 	LOG(INFO) << "Executing graph for phase " << phase;
 	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";	
-	std::list<std::shared_ptr<Generator>> execution_phase_generators = _get_nodes<Generator>(phase);	
+	std::list<std::shared_ptr<Node>> execution_phase_generators;
+	for (auto node : _nodes) {
+		if (!phase.empty() && node->includePhase(phase) == false)
+			continue;
+		if (node->isGenerator())
+			execution_phase_generators.push_back(node);
+	}	
 	std::list<std::shared_ptr<Node>> execution_end_nodes = _get_end_nodes(phase);
 	std::string end_node_names;
 	for (auto node : execution_end_nodes) {
@@ -432,7 +472,7 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 				break;
 			}
 		}
-		std::list<std::shared_ptr<Generator>> validation_phase_generators;
+		std::list<std::shared_ptr<Node>> validation_phase_generators;
 		std::list<std::shared_ptr<Node>> validation_end_nodes;
 		std::shared_ptr<ExecutionContext> validation_context;
 		if (!validation_phase.empty()) {
@@ -442,7 +482,12 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 			validation_context->debug_level = debug_level;
 			validation_context->phase = validation_phase;
 			validation_context->phase_behaviour = deepflow::PhaseParam_PhaseBehaviour_VALIDATION;
-			validation_phase_generators = _get_nodes<Generator>(validation_phase);
+			for (auto node : _nodes) {
+				if (node->includePhase(validation_phase) == false)
+					continue;
+				if (node->isGenerator())
+					validation_phase_generators.push_back(node);
+			}			
 			validation_end_nodes = _get_end_nodes(validation_phase);
 		}
 		int iteration = 1;
@@ -526,6 +571,22 @@ std::string Session::to_cpp() const
 	code += "\n";
 	
 	return code;
+}
+
+std::shared_ptr<PlaceHolder> Session::get_placeholder(std::string name)
+{
+	auto node = _find_node_by_name(name);
+	LOG_IF(FATAL, node == nullptr) << "Node " << name << " does not exist.";
+	auto placeholder = std::dynamic_pointer_cast<PlaceHolder>(node);
+	LOG_IF(FATAL, placeholder == nullptr) << name << " is not a placeholder.";
+	return placeholder;
+}
+
+std::shared_ptr<Node> Session::get_node(std::string name)
+{
+	auto node = _find_node_by_name(name);
+	LOG_IF(FATAL, node == nullptr) << "Node " << name << " does not exist.";
+	return node;
 }
 
 /*

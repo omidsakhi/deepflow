@@ -94,6 +94,24 @@ void Node::setShouldBackward(bool state)
 	_propagate_back = state;	
 }
 
+void Node::feed_forward(std::shared_ptr<Node> node, int output_terminal)
+{
+	auto feed_terminal = node->output(output_terminal);
+	auto feed_dim = feed_terminal->value()->dims();
+	auto my_dim = _outputs[0]->value()->dims();
+	LOG_IF(FATAL, feed_dim != my_dim) << "Feed dimension mismatch.";
+	cpy(_outputs[0]->value()->size(), 1.0f, feed_terminal->value()->data(), 0.0f, _outputs[0]->value()->mutableData());
+}
+
+void Node::feed_backward(std::shared_ptr<Node> node, int output_terminal)
+{
+	auto feed_terminal = node->output(output_terminal);
+	auto feed_dim = feed_terminal->diff()->dims();
+	auto my_dim = _outputs[0]->diff()->dims();
+	LOG_IF(FATAL, feed_dim != my_dim) << "Feed dimension mismatch.";
+	cpy(_outputs[0]->diff()->size(), 1.0f, feed_terminal->diff()->data(), 1.0f, _outputs[0]->diff()->mutableData());
+}
+
 void Node::_traverse_up(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition)
 {
 	if (_visited == visit_condition)
