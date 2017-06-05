@@ -1,0 +1,12 @@
+[submodule "third-party/gflags"]
+	path = third-party/gflags
+	url = https://github.com/gflags/gflags
+[submodule "third-party/glog"]
+	path = third-party/glog
+	url = https://github.com/google/glog
+[submodule "third-party/protobuf"]
+	path = third-party/protobuf
+	url = https://github.com/google/protobuf
+[submodule "third-party/opencv"]
+	path = third-party/opencv
+	url = https://github.com/opencv/opencv

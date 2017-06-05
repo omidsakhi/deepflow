@@ -97,13 +97,13 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\third-party\protobuf\src;..\..\include\proto;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\include;..\..\third-party\gflags\build\include;..\..\third-party\glog\src\windows;..\..\include;%(AdditionalIncludeDirectories);$(CudaToolkitIncludeDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\third-party\protobuf\src;..\..\include\proto;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\include;..\..\third-party\gflags\cmake-build\include;..\..\third-party\glog\src\windows;..\..\include;%(AdditionalIncludeDirectories);$(CudaToolkitIncludeDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>libprotobufd.lib;shlwapi.lib;gflags_static.lib;deepflow.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\third-party\protobuf\build\Debug;..\..\third-party\gflags\build\lib\Debug;..\..\build\x64\Debug;%(AdditionalLibraryDirectories);$(CudaToolkitLibDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\third-party\protobuf\cmake-build\Debug;..\..\third-party\gflags\cmake-build\lib\Debug;..\..\build\x64\Debug;%(AdditionalLibraryDirectories);$(CudaToolkitLibDir)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
@@ -141,7 +141,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>DEEPFLOW_DLL_IMPORT;WIN32;WIN64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\third-party\protobuf\src;..\..\include\proto;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\include;..\..\third-party\gflags\build\include;..\..\third-party\glog\src\windows;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\third-party\protobuf\src;..\..\include\proto;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\include;..\..\third-party\gflags\cmake-build\include;..\..\third-party\glog\src\windows;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
@@ -151,7 +151,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>libprotobuf.lib;glog.lib;shlwapi.lib;gflags_static.lib;deepflow.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\third-party\protobuf\src;..\..\third-party\protobuf\build\Release;..\..\third-party\glog\build\Release;..\..\third-party\gflags\build\lib\Release;..\..\build\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\third-party\protobuf\src;..\..\third-party\protobuf\cmake-build\Release;..\..\third-party\glog\cmake-build\Release;..\..\third-party\gflags\cmake-build\lib\Release;..\..\build\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"

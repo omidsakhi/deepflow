@@ -5,13 +5,8 @@
 /build/deepflow/src
 /build/deepflow/x64
 .vs
-/third-party/third-party.zip
 /build/deepflow.VC.db
 /third-party/cudnn-8.0-x64-v6.0
-/third-party/gflags
-/third-party/glog
-/third-party/opencv
-/third-party/protobuf
 /build/x64
 /build/Debug
 /build/image_approximation/x64

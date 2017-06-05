@@ -131,47 +131,119 @@ const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[11];
 
 }  // namespace
 
+PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTableField
+    const TableStruct::entries[] = {
+  {0, 0, 0, ::google::protobuf::internal::kInvalidMask, 0, 0},
+};
+
+PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::AuxillaryParseTableField
+    const TableStruct::aux[] = {
+  ::google::protobuf::internal::AuxillaryParseTableField(),
+};
+PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTable const
+    TableStruct::schema[] = {
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+};
+
 const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TensorData, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TensorData, weight_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TensorParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TensorParam, type_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TensorParam, dims_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiplexerParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiplexerParam, num_inputs_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PhaseplexerParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PhaseplexerParam, phase_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RandomSelectorParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RandomSelectorParam, probability_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccumulatorParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccumulatorParam, reset_time_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PsnrParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PsnrParam, print_time_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoggerParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoggerParam, file_path_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoggerParam, num_inputs_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoggerParam, message_),
@@ -181,6 +253,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PrintParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PrintParam, num_inputs_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PrintParam, message_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PrintParam, print_time_),
@@ -189,17 +262,20 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddParam, alpha_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddParam, beta_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NegateParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NegateParam, negate_type_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DisplayParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DisplayParam, delay_msec_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DisplayParam, display_time_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DisplayParam, display_type_),
@@ -207,14 +283,17 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EqualParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BiasAddParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PoolingParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PoolingParam, window_h_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PoolingParam, window_w_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PoolingParam, h_pad_),
@@ -225,6 +304,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TransposedConv2dParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TransposedConv2dParam, pad_h_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TransposedConv2dParam, pad_w_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TransposedConv2dParam, u_),
@@ -235,6 +315,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Conv2dParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Conv2dParam, pad_h_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Conv2dParam, pad_w_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Conv2dParam, u_),
@@ -246,21 +327,25 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DropoutParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DropoutParam, dropout_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DropoutParam, train_only_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MatMulParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LeakyReluParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LeakyReluParam, negative_slope_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReduceParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReduceParam, reduce_op_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReduceParam, reduce_dim_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReduceParam, output_type_),
@@ -268,6 +353,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SnapshotParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SnapshotParam, snapshot_interval_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SnapshotParam, snapshot_prefix_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SnapshotParam, per_image_height_),
@@ -276,17 +362,20 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlaceHolderParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlaceHolderParam, tensor_param_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RestructureParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RestructureParam, first_dim_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RestructureParam, second_dim_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(VariableParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(VariableParam, init_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(VariableParam, solver_name_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(VariableParam, weights_),
@@ -294,23 +383,27 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LossParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LossParam, softmax_loss_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LossParam, euclidean_loss_param_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DataGeneratorParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DataGeneratorParam, num_samples_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ActivationParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ActivationParam, type_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ActivationParam, coef_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageBatchReaderParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageBatchReaderParam, folder_path_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageBatchReaderParam, tensor_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageBatchReaderParam, randomize_),
@@ -318,12 +411,14 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageReaderParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageReaderParam, file_name_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImageReaderParam, type_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MnistParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MnistParam, folder_path_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MnistParam, reader_type_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MnistParam, output_type_),
@@ -332,15 +427,18 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CastFloatParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BatchNormalizationparam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BatchNormalizationparam, mode_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, name_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, input_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, output_),
@@ -382,50 +480,60 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SquareParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EuclideanLossParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SoftmaxLossParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SoftmaxParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitFillParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitFillParam, value_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitIndexFillParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitIndexFillParam, offset_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitRandomUniformParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitRandomUniformParam, min_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitRandomUniformParam, max_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitRandomNormalParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitRandomNormalParam, mean_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitRandomNormalParam, stddev_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitStepParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitStepParam, min_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitStepParam, max_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, name_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, tensor_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InitParam, init_data_),
@@ -438,12 +546,14 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SGDSolverParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SGDSolverParam, learning_rate_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SGDSolverParam, momentum_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GainSolverParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GainSolverParam, learning_rate_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GainSolverParam, momentum_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GainSolverParam, max_gain_),
@@ -454,6 +564,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AdaDeltaSolverParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AdaDeltaSolverParam, learning_rate_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AdaDeltaSolverParam, momentum_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AdaDeltaSolverParam, delta_),
@@ -461,6 +572,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AdamSolverParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AdamSolverParam, learning_rate_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AdamSolverParam, beta1_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AdamSolverParam, beta2_),
@@ -469,6 +581,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SolverParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SolverParam, name_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SolverParam, enable_input_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SolverParam, sgd_solver_),
@@ -479,12 +592,14 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PhaseParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PhaseParam, phase_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PhaseParam, behaviour_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BlockParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BlockParam, node_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BlockParam, solver_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BlockParam, phase_),
@@ -493,56 +608,56 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 0, -1, sizeof(TensorData)},
-  { 5, -1, sizeof(TensorParam)},
-  { 11, -1, sizeof(MultiplexerParam)},
-  { 16, -1, sizeof(PhaseplexerParam)},
-  { 21, -1, sizeof(RandomSelectorParam)},
-  { 26, -1, sizeof(AccumulatorParam)},
-  { 31, -1, sizeof(PsnrParam)},
-  { 36, -1, sizeof(LoggerParam)},
-  { 45, -1, sizeof(PrintParam)},
-  { 53, -1, sizeof(AddParam)},
-  { 59, -1, sizeof(NegateParam)},
-  { 64, -1, sizeof(DisplayParam)},
-  { 71, -1, sizeof(EqualParam)},
-  { 75, -1, sizeof(BiasAddParam)},
-  { 79, -1, sizeof(PoolingParam)},
-  { 89, -1, sizeof(TransposedConv2dParam)},
-  { 99, -1, sizeof(Conv2dParam)},
-  { 110, -1, sizeof(DropoutParam)},
-  { 116, -1, sizeof(MatMulParam)},
-  { 120, -1, sizeof(LeakyReluParam)},
-  { 125, -1, sizeof(ReduceParam)},
-  { 132, -1, sizeof(SnapshotParam)},
-  { 140, -1, sizeof(PlaceHolderParam)},
-  { 145, -1, sizeof(RestructureParam)},
-  { 151, -1, sizeof(VariableParam)},
-  { 158, -1, sizeof(LossParam)},
-  { 164, -1, sizeof(DataGeneratorParam)},
-  { 169, -1, sizeof(ActivationParam)},
-  { 175, -1, sizeof(ImageBatchReaderParam)},
-  { 182, -1, sizeof(ImageReaderParam)},
-  { 188, -1, sizeof(MnistParam)},
-  { 196, -1, sizeof(CastFloatParam)},
-  { 200, -1, sizeof(BatchNormalizationparam)},
-  { 205, -1, sizeof(NodeParam)},
-  { 246, -1, sizeof(SquareParam)},
-  { 250, -1, sizeof(EuclideanLossParam)},
-  { 254, -1, sizeof(SoftmaxLossParam)},
-  { 258, -1, sizeof(SoftmaxParam)},
-  { 262, -1, sizeof(InitFillParam)},
-  { 267, -1, sizeof(InitIndexFillParam)},
-  { 272, -1, sizeof(InitRandomUniformParam)},
-  { 278, -1, sizeof(InitRandomNormalParam)},
-  { 284, -1, sizeof(InitStepParam)},
-  { 290, -1, sizeof(InitParam)},
-  { 302, -1, sizeof(SGDSolverParam)},
-  { 308, -1, sizeof(GainSolverParam)},
-  { 318, -1, sizeof(AdaDeltaSolverParam)},
-  { 325, -1, sizeof(AdamSolverParam)},
-  { 333, -1, sizeof(SolverParam)},
-  { 343, -1, sizeof(PhaseParam)},
-  { 349, -1, sizeof(BlockParam)},
+  { 6, -1, sizeof(TensorParam)},
+  { 13, -1, sizeof(MultiplexerParam)},
+  { 19, -1, sizeof(PhaseplexerParam)},
+  { 25, -1, sizeof(RandomSelectorParam)},
+  { 31, -1, sizeof(AccumulatorParam)},
+  { 37, -1, sizeof(PsnrParam)},
+  { 43, -1, sizeof(LoggerParam)},
+  { 53, -1, sizeof(PrintParam)},
+  { 62, -1, sizeof(AddParam)},
+  { 69, -1, sizeof(NegateParam)},
+  { 75, -1, sizeof(DisplayParam)},
+  { 83, -1, sizeof(EqualParam)},
+  { 88, -1, sizeof(BiasAddParam)},
+  { 93, -1, sizeof(PoolingParam)},
+  { 104, -1, sizeof(TransposedConv2dParam)},
+  { 115, -1, sizeof(Conv2dParam)},
+  { 127, -1, sizeof(DropoutParam)},
+  { 134, -1, sizeof(MatMulParam)},
+  { 139, -1, sizeof(LeakyReluParam)},
+  { 145, -1, sizeof(ReduceParam)},
+  { 153, -1, sizeof(SnapshotParam)},
+  { 162, -1, sizeof(PlaceHolderParam)},
+  { 168, -1, sizeof(RestructureParam)},
+  { 175, -1, sizeof(VariableParam)},
+  { 183, -1, sizeof(LossParam)},
+  { 190, -1, sizeof(DataGeneratorParam)},
+  { 196, -1, sizeof(ActivationParam)},
+  { 203, -1, sizeof(ImageBatchReaderParam)},
+  { 211, -1, sizeof(ImageReaderParam)},
+  { 218, -1, sizeof(MnistParam)},
+  { 227, -1, sizeof(CastFloatParam)},
+  { 232, -1, sizeof(BatchNormalizationparam)},
+  { 238, -1, sizeof(NodeParam)},
+  { 280, -1, sizeof(SquareParam)},
+  { 285, -1, sizeof(EuclideanLossParam)},
+  { 290, -1, sizeof(SoftmaxLossParam)},
+  { 295, -1, sizeof(SoftmaxParam)},
+  { 300, -1, sizeof(InitFillParam)},
+  { 306, -1, sizeof(InitIndexFillParam)},
+  { 312, -1, sizeof(InitRandomUniformParam)},
+  { 319, -1, sizeof(InitRandomNormalParam)},
+  { 326, -1, sizeof(InitStepParam)},
+  { 333, -1, sizeof(InitParam)},
+  { 346, -1, sizeof(SGDSolverParam)},
+  { 353, -1, sizeof(GainSolverParam)},
+  { 364, -1, sizeof(AdaDeltaSolverParam)},
+  { 372, -1, sizeof(AdamSolverParam)},
+  { 381, -1, sizeof(SolverParam)},
+  { 392, -1, sizeof(PhaseParam)},
+  { 399, -1, sizeof(BlockParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -1371,7 +1486,7 @@ void TensorData::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* TensorData::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[0].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const TensorData& TensorData::default_instance() {
@@ -1444,6 +1559,9 @@ failure:
 void TensorData::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.TensorData)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // repeated float weight = 1;
   if (this->weight_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(1, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
@@ -1457,8 +1575,10 @@ void TensorData::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* TensorData::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.TensorData)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // repeated float weight = 1;
   if (this->weight_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
@@ -1467,10 +1587,8 @@ void TensorData::SerializeWithCachedSizes(
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
       _weight_cached_byte_size_, target);
-  }
-  for (int i = 0, n = this->weight_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteFloatNoTagToArray(this->weight(i), target);
+      WriteFloatNoTagToArray(this->weight_, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.TensorData)
@@ -1522,6 +1640,9 @@ void TensorData::MergeFrom(const TensorData& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.TensorData)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   weight_.MergeFrom(from.weight_);
 }
 
@@ -1548,13 +1669,13 @@ void TensorData::Swap(TensorData* other) {
   InternalSwap(other);
 }
 void TensorData::InternalSwap(TensorData* other) {
-  weight_.UnsafeArenaSwap(&other->weight_);
+  weight_.InternalSwap(&other->weight_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata TensorData::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[0];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -1637,7 +1758,7 @@ void TensorParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* TensorParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[1].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const TensorParam& TensorParam::default_instance() {
@@ -1726,6 +1847,9 @@ failure:
 void TensorParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.TensorParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.TensorParam.TensorType type = 1;
   if (this->type() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
@@ -1747,8 +1871,10 @@ void TensorParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* TensorParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.TensorParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.TensorParam.TensorType type = 1;
   if (this->type() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
@@ -1763,10 +1889,8 @@ void TensorParam::SerializeWithCachedSizes(
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
       _dims_cached_byte_size_, target);
-  }
-  for (int i = 0, n = this->dims_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteInt32NoTagToArray(this->dims(i), target);
+      WriteInt32NoTagToArray(this->dims_, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.TensorParam)
@@ -1824,6 +1948,9 @@ void TensorParam::MergeFrom(const TensorParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.TensorParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   dims_.MergeFrom(from.dims_);
   if (from.type() != 0) {
     set_type(from.type());
@@ -1853,14 +1980,14 @@ void TensorParam::Swap(TensorParam* other) {
   InternalSwap(other);
 }
 void TensorParam::InternalSwap(TensorParam* other) {
-  dims_.UnsafeArenaSwap(&other->dims_);
+  dims_.InternalSwap(&other->dims_);
   std::swap(type_, other->type_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata TensorParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[1];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -1955,7 +2082,7 @@ void MultiplexerParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* MultiplexerParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[2].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const MultiplexerParam& MultiplexerParam::default_instance() {
@@ -2024,6 +2151,9 @@ failure:
 void MultiplexerParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.MultiplexerParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 num_inputs = 1;
   if (this->num_inputs() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->num_inputs(), output);
@@ -2034,8 +2164,10 @@ void MultiplexerParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* MultiplexerParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.MultiplexerParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 num_inputs = 1;
   if (this->num_inputs() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->num_inputs(), target);
@@ -2082,6 +2214,9 @@ void MultiplexerParam::MergeFrom(const MultiplexerParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.MultiplexerParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.num_inputs() != 0) {
     set_num_inputs(from.num_inputs());
   }
@@ -2116,7 +2251,7 @@ void MultiplexerParam::InternalSwap(MultiplexerParam* other) {
 
 ::google::protobuf::Metadata MultiplexerParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[2];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -2180,7 +2315,7 @@ void PhaseplexerParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* PhaseplexerParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[3].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const PhaseplexerParam& PhaseplexerParam::default_instance() {
@@ -2252,6 +2387,9 @@ failure:
 void PhaseplexerParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.PhaseplexerParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // repeated string phase = 1;
   for (int i = 0, n = this->phase_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2267,8 +2405,10 @@ void PhaseplexerParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* PhaseplexerParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.PhaseplexerParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // repeated string phase = 1;
   for (int i = 0, n = this->phase_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2321,6 +2461,9 @@ void PhaseplexerParam::MergeFrom(const PhaseplexerParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.PhaseplexerParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   phase_.MergeFrom(from.phase_);
 }
 
@@ -2347,13 +2490,13 @@ void PhaseplexerParam::Swap(PhaseplexerParam* other) {
   InternalSwap(other);
 }
 void PhaseplexerParam::InternalSwap(PhaseplexerParam* other) {
-  phase_.UnsafeArenaSwap(&other->phase_);
+  phase_.InternalSwap(&other->phase_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata PhaseplexerParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[3];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -2385,6 +2528,7 @@ void PhaseplexerParam::set_phase(int index, ::std::string&& value) {
 }
 #endif
 void PhaseplexerParam::set_phase(int index, const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   phase_.Mutable(index)->assign(value);
   // @@protoc_insertion_point(field_set_char:deepflow.PhaseplexerParam.phase)
 }
@@ -2403,11 +2547,12 @@ void PhaseplexerParam::add_phase(const ::std::string& value) {
 }
 #if LANG_CXX11
 void PhaseplexerParam::add_phase(::std::string&& value) {
-  phase_.Add()->assign(std::move(value));
+  phase_.Add(std::move(value));
   // @@protoc_insertion_point(field_add:deepflow.PhaseplexerParam.phase)
 }
 #endif
 void PhaseplexerParam::add_phase(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   phase_.Add()->assign(value);
   // @@protoc_insertion_point(field_add_char:deepflow.PhaseplexerParam.phase)
 }
@@ -2471,7 +2616,7 @@ void RandomSelectorParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* RandomSelectorParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[4].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const RandomSelectorParam& RandomSelectorParam::default_instance() {
@@ -2540,6 +2685,9 @@ failure:
 void RandomSelectorParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.RandomSelectorParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float probability = 1;
   if (this->probability() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->probability(), output);
@@ -2550,8 +2698,10 @@ void RandomSelectorParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* RandomSelectorParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.RandomSelectorParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float probability = 1;
   if (this->probability() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->probability(), target);
@@ -2596,6 +2746,9 @@ void RandomSelectorParam::MergeFrom(const RandomSelectorParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.RandomSelectorParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.probability() != 0) {
     set_probability(from.probability());
   }
@@ -2630,7 +2783,7 @@ void RandomSelectorParam::InternalSwap(RandomSelectorParam* other) {
 
 ::google::protobuf::Metadata RandomSelectorParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[4];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -2695,7 +2848,7 @@ void AccumulatorParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AccumulatorParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[5].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const AccumulatorParam& AccumulatorParam::default_instance() {
@@ -2765,6 +2918,9 @@ failure:
 void AccumulatorParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.AccumulatorParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.ActionTime reset_time = 1;
   if (this->reset_time() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
@@ -2776,8 +2932,10 @@ void AccumulatorParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* AccumulatorParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.AccumulatorParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.ActionTime reset_time = 1;
   if (this->reset_time() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
@@ -2824,6 +2982,9 @@ void AccumulatorParam::MergeFrom(const AccumulatorParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.AccumulatorParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.reset_time() != 0) {
     set_reset_time(from.reset_time());
   }
@@ -2858,7 +3019,7 @@ void AccumulatorParam::InternalSwap(AccumulatorParam* other) {
 
 ::google::protobuf::Metadata AccumulatorParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[5];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -2923,7 +3084,7 @@ void PsnrParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* PsnrParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[6].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const PsnrParam& PsnrParam::default_instance() {
@@ -2993,6 +3154,9 @@ failure:
 void PsnrParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.PsnrParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.ActionTime print_time = 1;
   if (this->print_time() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
@@ -3004,8 +3168,10 @@ void PsnrParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* PsnrParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.PsnrParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.ActionTime print_time = 1;
   if (this->print_time() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
@@ -3052,6 +3218,9 @@ void PsnrParam::MergeFrom(const PsnrParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.PsnrParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.print_time() != 0) {
     set_print_time(from.print_time());
   }
@@ -3086,7 +3255,7 @@ void PsnrParam::InternalSwap(PsnrParam* other) {
 
 ::google::protobuf::Metadata PsnrParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[6];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -3170,7 +3339,7 @@ void LoggerParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* LoggerParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[7].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const LoggerParam& LoggerParam::default_instance() {
@@ -3304,6 +3473,9 @@ failure:
 void LoggerParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.LoggerParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string file_path = 1;
   if (this->file_path().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -3346,8 +3518,10 @@ void LoggerParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* LoggerParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.LoggerParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string file_path = 1;
   if (this->file_path().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -3454,6 +3628,9 @@ void LoggerParam::MergeFrom(const LoggerParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.LoggerParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.file_path().size() > 0) {
 
     file_path_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_path_);
@@ -3506,7 +3683,7 @@ void LoggerParam::InternalSwap(LoggerParam* other) {
 
 ::google::protobuf::Metadata LoggerParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[7];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -3534,6 +3711,7 @@ void LoggerParam::set_file_path(::std::string&& value) {
 }
 #endif
 void LoggerParam::set_file_path(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   file_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.LoggerParam.file_path)
@@ -3600,6 +3778,7 @@ void LoggerParam::set_message(::std::string&& value) {
 }
 #endif
 void LoggerParam::set_message(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.LoggerParam.message)
@@ -3715,7 +3894,7 @@ void PrintParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* PrintParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[8].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const PrintParam& PrintParam::default_instance() {
@@ -3832,6 +4011,9 @@ failure:
 void PrintParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.PrintParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 num_inputs = 1;
   if (this->num_inputs() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->num_inputs(), output);
@@ -3864,8 +4046,10 @@ void PrintParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* PrintParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.PrintParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 num_inputs = 1;
   if (this->num_inputs() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->num_inputs(), target);
@@ -3954,6 +4138,9 @@ void PrintParam::MergeFrom(const PrintParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.PrintParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.message().size() > 0) {
 
     message_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.message_);
@@ -4001,7 +4188,7 @@ void PrintParam::InternalSwap(PrintParam* other) {
 
 ::google::protobuf::Metadata PrintParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[8];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -4043,6 +4230,7 @@ void PrintParam::set_message(::std::string&& value) {
 }
 #endif
 void PrintParam::set_message(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.PrintParam.message)
@@ -4150,7 +4338,7 @@ void AddParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[9].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const AddParam& AddParam::default_instance() {
@@ -4234,6 +4422,9 @@ failure:
 void AddParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.AddParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float alpha = 1;
   if (this->alpha() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->alpha(), output);
@@ -4249,8 +4440,10 @@ void AddParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* AddParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.AddParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float alpha = 1;
   if (this->alpha() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->alpha(), target);
@@ -4305,6 +4498,9 @@ void AddParam::MergeFrom(const AddParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.AddParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.alpha() != 0) {
     set_alpha(from.alpha());
   }
@@ -4343,7 +4539,7 @@ void AddParam::InternalSwap(AddParam* other) {
 
 ::google::protobuf::Metadata AddParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[9];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -4422,7 +4618,7 @@ void NegateParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* NegateParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[10].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const NegateParam& NegateParam::default_instance() {
@@ -4492,6 +4688,9 @@ failure:
 void NegateParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.NegateParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.ActionType negate_type = 1;
   if (this->negate_type() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
@@ -4503,8 +4702,10 @@ void NegateParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* NegateParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.NegateParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.ActionType negate_type = 1;
   if (this->negate_type() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
@@ -4551,6 +4752,9 @@ void NegateParam::MergeFrom(const NegateParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.NegateParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.negate_type() != 0) {
     set_negate_type(from.negate_type());
   }
@@ -4585,7 +4789,7 @@ void NegateParam::InternalSwap(NegateParam* other) {
 
 ::google::protobuf::Metadata NegateParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[10];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -4655,7 +4859,7 @@ void DisplayParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DisplayParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[11].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const DisplayParam& DisplayParam::default_instance() {
@@ -4755,6 +4959,9 @@ failure:
 void DisplayParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.DisplayParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 delay_msec = 1;
   if (this->delay_msec() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->delay_msec(), output);
@@ -4777,8 +4984,10 @@ void DisplayParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* DisplayParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.DisplayParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 delay_msec = 1;
   if (this->delay_msec() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->delay_msec(), target);
@@ -4849,6 +5058,9 @@ void DisplayParam::MergeFrom(const DisplayParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.DisplayParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.delay_msec() != 0) {
     set_delay_msec(from.delay_msec());
   }
@@ -4891,7 +5103,7 @@ void DisplayParam::InternalSwap(DisplayParam* other) {
 
 ::google::protobuf::Metadata DisplayParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[11];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -4981,7 +5193,7 @@ void EqualParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* EqualParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[12].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const EqualParam& EqualParam::default_instance() {
@@ -5030,13 +5242,18 @@ failure:
 void EqualParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.EqualParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_end:deepflow.EqualParam)
 }
 
 ::google::protobuf::uint8* EqualParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.EqualParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.EqualParam)
   return target;
 }
@@ -5071,6 +5288,9 @@ void EqualParam::MergeFrom(const EqualParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.EqualParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
 }
 
 void EqualParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -5101,7 +5321,7 @@ void EqualParam::InternalSwap(EqualParam* other) {
 
 ::google::protobuf::Metadata EqualParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[12];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -5149,7 +5369,7 @@ void BiasAddParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* BiasAddParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[13].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const BiasAddParam& BiasAddParam::default_instance() {
@@ -5198,13 +5418,18 @@ failure:
 void BiasAddParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.BiasAddParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_end:deepflow.BiasAddParam)
 }
 
 ::google::protobuf::uint8* BiasAddParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.BiasAddParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.BiasAddParam)
   return target;
 }
@@ -5239,6 +5464,9 @@ void BiasAddParam::MergeFrom(const BiasAddParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.BiasAddParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
 }
 
 void BiasAddParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -5269,7 +5497,7 @@ void BiasAddParam::InternalSwap(BiasAddParam* other) {
 
 ::google::protobuf::Metadata BiasAddParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[13];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -5328,7 +5556,7 @@ void PoolingParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* PoolingParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[14].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const PoolingParam& PoolingParam::default_instance() {
@@ -5468,6 +5696,9 @@ failure:
 void PoolingParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.PoolingParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 window_h = 1;
   if (this->window_h() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->window_h(), output);
@@ -5503,8 +5734,10 @@ void PoolingParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* PoolingParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.PoolingParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 window_h = 1;
   if (this->window_h() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->window_h(), target);
@@ -5611,6 +5844,9 @@ void PoolingParam::MergeFrom(const PoolingParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.PoolingParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.window_h() != 0) {
     set_window_h(from.window_h());
   }
@@ -5665,7 +5901,7 @@ void PoolingParam::InternalSwap(PoolingParam* other) {
 
 ::google::protobuf::Metadata PoolingParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[14];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -5808,7 +6044,7 @@ void TransposedConv2dParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* TransposedConv2dParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[15].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const TransposedConv2dParam& TransposedConv2dParam::default_instance() {
@@ -5948,6 +6184,9 @@ failure:
 void TransposedConv2dParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.TransposedConv2dParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 pad_h = 1;
   if (this->pad_h() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->pad_h(), output);
@@ -5983,8 +6222,10 @@ void TransposedConv2dParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* TransposedConv2dParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.TransposedConv2dParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 pad_h = 1;
   if (this->pad_h() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->pad_h(), target);
@@ -6091,6 +6332,9 @@ void TransposedConv2dParam::MergeFrom(const TransposedConv2dParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.TransposedConv2dParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.pad_h() != 0) {
     set_pad_h(from.pad_h());
   }
@@ -6145,7 +6389,7 @@ void TransposedConv2dParam::InternalSwap(TransposedConv2dParam* other) {
 
 ::google::protobuf::Metadata TransposedConv2dParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[15];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -6289,7 +6533,7 @@ void Conv2dParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Conv2dParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[16].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const Conv2dParam& Conv2dParam::default_instance() {
@@ -6443,6 +6687,9 @@ failure:
 void Conv2dParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.Conv2dParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 pad_h = 1;
   if (this->pad_h() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->pad_h(), output);
@@ -6483,8 +6730,10 @@ void Conv2dParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* Conv2dParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.Conv2dParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 pad_h = 1;
   if (this->pad_h() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->pad_h(), target);
@@ -6601,6 +6850,9 @@ void Conv2dParam::MergeFrom(const Conv2dParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.Conv2dParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.pad_h() != 0) {
     set_pad_h(from.pad_h());
   }
@@ -6659,7 +6911,7 @@ void Conv2dParam::InternalSwap(Conv2dParam* other) {
 
 ::google::protobuf::Metadata Conv2dParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[16];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -6812,7 +7064,7 @@ void DropoutParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DropoutParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[17].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const DropoutParam& DropoutParam::default_instance() {
@@ -6896,6 +7148,9 @@ failure:
 void DropoutParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.DropoutParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float dropout = 1;
   if (this->dropout() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->dropout(), output);
@@ -6911,8 +7166,10 @@ void DropoutParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* DropoutParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.DropoutParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float dropout = 1;
   if (this->dropout() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->dropout(), target);
@@ -6967,6 +7224,9 @@ void DropoutParam::MergeFrom(const DropoutParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.DropoutParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.dropout() != 0) {
     set_dropout(from.dropout());
   }
@@ -7005,7 +7265,7 @@ void DropoutParam::InternalSwap(DropoutParam* other) {
 
 ::google::protobuf::Metadata DropoutParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[17];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -7081,7 +7341,7 @@ void MatMulParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* MatMulParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[18].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const MatMulParam& MatMulParam::default_instance() {
@@ -7130,13 +7390,18 @@ failure:
 void MatMulParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.MatMulParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_end:deepflow.MatMulParam)
 }
 
 ::google::protobuf::uint8* MatMulParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.MatMulParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.MatMulParam)
   return target;
 }
@@ -7171,6 +7436,9 @@ void MatMulParam::MergeFrom(const MatMulParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.MatMulParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
 }
 
 void MatMulParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -7201,7 +7469,7 @@ void MatMulParam::InternalSwap(MatMulParam* other) {
 
 ::google::protobuf::Metadata MatMulParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[18];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -7252,7 +7520,7 @@ void LeakyReluParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* LeakyReluParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[19].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const LeakyReluParam& LeakyReluParam::default_instance() {
@@ -7321,6 +7589,9 @@ failure:
 void LeakyReluParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.LeakyReluParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float negative_slope = 1;
   if (this->negative_slope() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->negative_slope(), output);
@@ -7331,8 +7602,10 @@ void LeakyReluParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* LeakyReluParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.LeakyReluParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float negative_slope = 1;
   if (this->negative_slope() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->negative_slope(), target);
@@ -7377,6 +7650,9 @@ void LeakyReluParam::MergeFrom(const LeakyReluParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.LeakyReluParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.negative_slope() != 0) {
     set_negative_slope(from.negative_slope());
   }
@@ -7411,7 +7687,7 @@ void LeakyReluParam::InternalSwap(LeakyReluParam* other) {
 
 ::google::protobuf::Metadata LeakyReluParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[19];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -7481,7 +7757,7 @@ void ReduceParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ReduceParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[20].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const ReduceParam& ReduceParam::default_instance() {
@@ -7581,6 +7857,9 @@ failure:
 void ReduceParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.ReduceParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.ReduceParam.ReduceOp reduce_op = 1;
   if (this->reduce_op() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
@@ -7603,8 +7882,10 @@ void ReduceParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* ReduceParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.ReduceParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.ReduceParam.ReduceOp reduce_op = 1;
   if (this->reduce_op() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
@@ -7675,6 +7956,9 @@ void ReduceParam::MergeFrom(const ReduceParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.ReduceParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.reduce_op() != 0) {
     set_reduce_op(from.reduce_op());
   }
@@ -7717,7 +8001,7 @@ void ReduceParam::InternalSwap(ReduceParam* other) {
 
 ::google::protobuf::Metadata ReduceParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[20];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -7822,7 +8106,7 @@ void SnapshotParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SnapshotParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[21].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const SnapshotParam& SnapshotParam::default_instance() {
@@ -7937,6 +8221,9 @@ failure:
 void SnapshotParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.SnapshotParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 snapshot_interval = 1;
   if (this->snapshot_interval() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->snapshot_interval(), output);
@@ -7967,8 +8254,10 @@ void SnapshotParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* SnapshotParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.SnapshotParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 snapshot_interval = 1;
   if (this->snapshot_interval() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->snapshot_interval(), target);
@@ -8057,6 +8346,9 @@ void SnapshotParam::MergeFrom(const SnapshotParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.SnapshotParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.snapshot_prefix().size() > 0) {
 
     snapshot_prefix_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.snapshot_prefix_);
@@ -8104,7 +8396,7 @@ void SnapshotParam::InternalSwap(SnapshotParam* other) {
 
 ::google::protobuf::Metadata SnapshotParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[21];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -8146,6 +8438,7 @@ void SnapshotParam::set_snapshot_prefix(::std::string&& value) {
 }
 #endif
 void SnapshotParam::set_snapshot_prefix(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   snapshot_prefix_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.SnapshotParam.snapshot_prefix)
@@ -8256,7 +8549,7 @@ void PlaceHolderParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* PlaceHolderParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[22].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const PlaceHolderParam& PlaceHolderParam::default_instance() {
@@ -8326,6 +8619,9 @@ failure:
 void PlaceHolderParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.PlaceHolderParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.TensorParam tensor_param = 1;
   if (this->has_tensor_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -8337,13 +8633,15 @@ void PlaceHolderParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* PlaceHolderParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.PlaceHolderParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.TensorParam tensor_param = 1;
   if (this->has_tensor_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        1, *this->tensor_param_, false, target);
+        1, *this->tensor_param_, deterministic, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.PlaceHolderParam)
@@ -8387,6 +8685,9 @@ void PlaceHolderParam::MergeFrom(const PlaceHolderParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.PlaceHolderParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.has_tensor_param()) {
     mutable_tensor_param()->::deepflow::TensorParam::MergeFrom(from.tensor_param());
   }
@@ -8421,7 +8722,7 @@ void PlaceHolderParam::InternalSwap(PlaceHolderParam* other) {
 
 ::google::protobuf::Metadata PlaceHolderParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[22];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -8515,7 +8816,7 @@ void RestructureParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* RestructureParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[23].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const RestructureParam& RestructureParam::default_instance() {
@@ -8599,6 +8900,9 @@ failure:
 void RestructureParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.RestructureParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 first_dim = 1;
   if (this->first_dim() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->first_dim(), output);
@@ -8614,8 +8918,10 @@ void RestructureParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* RestructureParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.RestructureParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 first_dim = 1;
   if (this->first_dim() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->first_dim(), target);
@@ -8674,6 +8980,9 @@ void RestructureParam::MergeFrom(const RestructureParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.RestructureParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.first_dim() != 0) {
     set_first_dim(from.first_dim());
   }
@@ -8712,7 +9021,7 @@ void RestructureParam::InternalSwap(RestructureParam* other) {
 
 ::google::protobuf::Metadata RestructureParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[23];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -8815,7 +9124,7 @@ void VariableParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* VariableParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[24].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const VariableParam& VariableParam::default_instance() {
@@ -8918,6 +9227,9 @@ failure:
 void VariableParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.VariableParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.InitParam init_param = 1;
   if (this->has_init_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -8945,13 +9257,15 @@ void VariableParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* VariableParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.VariableParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.InitParam init_param = 1;
   if (this->has_init_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        1, *this->init_param_, false, target);
+        1, *this->init_param_, deterministic, target);
   }
 
   // string solver_name = 2;
@@ -8969,7 +9283,7 @@ void VariableParam::SerializeWithCachedSizes(
   if (this->has_weights()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        3, *this->weights_, false, target);
+        3, *this->weights_, deterministic, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.VariableParam)
@@ -9027,6 +9341,9 @@ void VariableParam::MergeFrom(const VariableParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.VariableParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.solver_name().size() > 0) {
 
     solver_name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.solver_name_);
@@ -9070,7 +9387,7 @@ void VariableParam::InternalSwap(VariableParam* other) {
 
 ::google::protobuf::Metadata VariableParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[24];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -9137,6 +9454,7 @@ void VariableParam::set_solver_name(::std::string&& value) {
 }
 #endif
 void VariableParam::set_solver_name(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   solver_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.VariableParam.solver_name)
@@ -9268,7 +9586,7 @@ void LossParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* LossParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[25].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const LossParam& LossParam::default_instance() {
@@ -9354,6 +9672,9 @@ failure:
 void LossParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.LossParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.SoftmaxLossParam softmax_loss_param = 1;
   if (this->has_softmax_loss_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -9371,20 +9692,22 @@ void LossParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* LossParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.LossParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.SoftmaxLossParam softmax_loss_param = 1;
   if (this->has_softmax_loss_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        1, *this->softmax_loss_param_, false, target);
+        1, *this->softmax_loss_param_, deterministic, target);
   }
 
   // .deepflow.EuclideanLossParam euclidean_loss_param = 2;
   if (this->has_euclidean_loss_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        2, *this->euclidean_loss_param_, false, target);
+        2, *this->euclidean_loss_param_, deterministic, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.LossParam)
@@ -9435,6 +9758,9 @@ void LossParam::MergeFrom(const LossParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.LossParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.has_softmax_loss_param()) {
     mutable_softmax_loss_param()->::deepflow::SoftmaxLossParam::MergeFrom(from.softmax_loss_param());
   }
@@ -9473,7 +9799,7 @@ void LossParam::InternalSwap(LossParam* other) {
 
 ::google::protobuf::Metadata LossParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[25];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -9602,7 +9928,7 @@ void DataGeneratorParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DataGeneratorParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[26].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const DataGeneratorParam& DataGeneratorParam::default_instance() {
@@ -9671,6 +9997,9 @@ failure:
 void DataGeneratorParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.DataGeneratorParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 num_samples = 1;
   if (this->num_samples() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->num_samples(), output);
@@ -9681,8 +10010,10 @@ void DataGeneratorParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* DataGeneratorParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.DataGeneratorParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // int32 num_samples = 1;
   if (this->num_samples() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->num_samples(), target);
@@ -9729,6 +10060,9 @@ void DataGeneratorParam::MergeFrom(const DataGeneratorParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.DataGeneratorParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.num_samples() != 0) {
     set_num_samples(from.num_samples());
   }
@@ -9763,7 +10097,7 @@ void DataGeneratorParam::InternalSwap(DataGeneratorParam* other) {
 
 ::google::protobuf::Metadata DataGeneratorParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[26];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -9832,7 +10166,7 @@ void ActivationParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ActivationParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[27].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const ActivationParam& ActivationParam::default_instance() {
@@ -9917,6 +10251,9 @@ failure:
 void ActivationParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.ActivationParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.ActivationParam.Type type = 1;
   if (this->type() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
@@ -9933,8 +10270,10 @@ void ActivationParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* ActivationParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.ActivationParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.ActivationParam.Type type = 1;
   if (this->type() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
@@ -9991,6 +10330,9 @@ void ActivationParam::MergeFrom(const ActivationParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.ActivationParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.type() != 0) {
     set_type(from.type());
   }
@@ -10029,7 +10371,7 @@ void ActivationParam::InternalSwap(ActivationParam* other) {
 
 ::google::protobuf::Metadata ActivationParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[27];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -10125,7 +10467,7 @@ void ImageBatchReaderParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ImageBatchReaderParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[28].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const ImageBatchReaderParam& ImageBatchReaderParam::default_instance() {
@@ -10227,6 +10569,9 @@ failure:
 void ImageBatchReaderParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.ImageBatchReaderParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string folder_path = 1;
   if (this->folder_path().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -10253,8 +10598,10 @@ void ImageBatchReaderParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* ImageBatchReaderParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.ImageBatchReaderParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string folder_path = 1;
   if (this->folder_path().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -10270,7 +10617,7 @@ void ImageBatchReaderParam::SerializeWithCachedSizes(
   if (this->has_tensor_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        2, *this->tensor_param_, false, target);
+        2, *this->tensor_param_, deterministic, target);
   }
 
   // bool randomize = 3;
@@ -10331,6 +10678,9 @@ void ImageBatchReaderParam::MergeFrom(const ImageBatchReaderParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.ImageBatchReaderParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.folder_path().size() > 0) {
 
     folder_path_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.folder_path_);
@@ -10374,7 +10724,7 @@ void ImageBatchReaderParam::InternalSwap(ImageBatchReaderParam* other) {
 
 ::google::protobuf::Metadata ImageBatchReaderParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[28];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -10402,6 +10752,7 @@ void ImageBatchReaderParam::set_folder_path(::std::string&& value) {
 }
 #endif
 void ImageBatchReaderParam::set_folder_path(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   folder_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.ImageBatchReaderParam.folder_path)
@@ -10537,7 +10888,7 @@ void ImageReaderParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ImageReaderParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[29].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const ImageReaderParam& ImageReaderParam::default_instance() {
@@ -10624,6 +10975,9 @@ failure:
 void ImageReaderParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.ImageReaderParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string file_name = 1;
   if (this->file_name().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -10645,8 +10999,10 @@ void ImageReaderParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* ImageReaderParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.ImageReaderParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string file_name = 1;
   if (this->file_name().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -10711,6 +11067,9 @@ void ImageReaderParam::MergeFrom(const ImageReaderParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.ImageReaderParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.file_name().size() > 0) {
 
     file_name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_name_);
@@ -10750,7 +11109,7 @@ void ImageReaderParam::InternalSwap(ImageReaderParam* other) {
 
 ::google::protobuf::Metadata ImageReaderParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[29];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -10778,6 +11137,7 @@ void ImageReaderParam::set_file_name(::std::string&& value) {
 }
 #endif
 void ImageReaderParam::set_file_name(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   file_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.ImageReaderParam.file_name)
@@ -10879,7 +11239,7 @@ void MnistParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* MnistParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[30].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const MnistParam& MnistParam::default_instance() {
@@ -10996,6 +11356,9 @@ failure:
 void MnistParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.MnistParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string folder_path = 1;
   if (this->folder_path().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -11028,8 +11391,10 @@ void MnistParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* MnistParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.MnistParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string folder_path = 1;
   if (this->folder_path().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -11118,6 +11483,9 @@ void MnistParam::MergeFrom(const MnistParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.MnistParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.folder_path().size() > 0) {
 
     folder_path_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.folder_path_);
@@ -11165,7 +11533,7 @@ void MnistParam::InternalSwap(MnistParam* other) {
 
 ::google::protobuf::Metadata MnistParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[30];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -11193,6 +11561,7 @@ void MnistParam::set_folder_path(::std::string&& value) {
 }
 #endif
 void MnistParam::set_folder_path(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   folder_path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.MnistParam.folder_path)
@@ -11307,7 +11676,7 @@ void CastFloatParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* CastFloatParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[31].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const CastFloatParam& CastFloatParam::default_instance() {
@@ -11356,13 +11725,18 @@ failure:
 void CastFloatParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.CastFloatParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_end:deepflow.CastFloatParam)
 }
 
 ::google::protobuf::uint8* CastFloatParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.CastFloatParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.CastFloatParam)
   return target;
 }
@@ -11397,6 +11771,9 @@ void CastFloatParam::MergeFrom(const CastFloatParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.CastFloatParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
 }
 
 void CastFloatParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -11427,7 +11804,7 @@ void CastFloatParam::InternalSwap(CastFloatParam* other) {
 
 ::google::protobuf::Metadata CastFloatParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[31];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -11478,7 +11855,7 @@ void BatchNormalizationparam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* BatchNormalizationparam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[32].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const BatchNormalizationparam& BatchNormalizationparam::default_instance() {
@@ -11548,6 +11925,9 @@ failure:
 void BatchNormalizationparam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.BatchNormalizationparam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.BatchNormalizationparam.Mode mode = 1;
   if (this->mode() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
@@ -11559,8 +11939,10 @@ void BatchNormalizationparam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* BatchNormalizationparam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.BatchNormalizationparam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // .deepflow.BatchNormalizationparam.Mode mode = 1;
   if (this->mode() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
@@ -11607,6 +11989,9 @@ void BatchNormalizationparam::MergeFrom(const BatchNormalizationparam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.BatchNormalizationparam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.mode() != 0) {
     set_mode(from.mode());
   }
@@ -11641,7 +12026,7 @@ void BatchNormalizationparam::InternalSwap(BatchNormalizationparam* other) {
 
 ::google::protobuf::Metadata BatchNormalizationparam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[32];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -12015,7 +12400,7 @@ void NodeParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* NodeParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[33].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const NodeParam& NodeParam::default_instance() {
@@ -12668,6 +13053,9 @@ failure:
 void NodeParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.NodeParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string name = 1;
   if (this->name().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -12911,8 +13299,10 @@ void NodeParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* NodeParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.NodeParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string name = 1;
   if (this->name().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -12958,231 +13348,231 @@ void NodeParam::SerializeWithCachedSizes(
   if (this->has_block_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        5, *this->block_param_, false, target);
+        5, *this->block_param_, deterministic, target);
   }
 
   // .deepflow.LossParam loss_param = 50;
   if (this->has_loss_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        50, *this->loss_param_, false, target);
+        50, *this->loss_param_, deterministic, target);
   }
 
   // .deepflow.VariableParam variable_param = 100;
   if (this->has_variable_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        100, *this->variable_param_, false, target);
+        100, *this->variable_param_, deterministic, target);
   }
 
   // .deepflow.PlaceHolderParam place_holder_param = 101;
   if (this->has_place_holder_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        101, *this->place_holder_param_, false, target);
+        101, *this->place_holder_param_, deterministic, target);
   }
 
   // .deepflow.PhaseplexerParam phaseplexer_param = 102;
   if (this->has_phaseplexer_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        102, *this->phaseplexer_param_, false, target);
+        102, *this->phaseplexer_param_, deterministic, target);
   }
 
   // .deepflow.AddParam add_param = 103;
   if (this->has_add_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        103, *this->add_param_, false, target);
+        103, *this->add_param_, deterministic, target);
   }
 
   // .deepflow.BiasAddParam bias_add_param = 104;
   if (this->has_bias_add_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        104, *this->bias_add_param_, false, target);
+        104, *this->bias_add_param_, deterministic, target);
   }
 
   // .deepflow.Conv2dParam conv_2d_param = 105;
   if (this->has_conv_2d_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        105, *this->conv_2d_param_, false, target);
+        105, *this->conv_2d_param_, deterministic, target);
   }
 
   // .deepflow.TransposedConv2dParam transposed_conv_2d_param = 106;
   if (this->has_transposed_conv_2d_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        106, *this->transposed_conv_2d_param_, false, target);
+        106, *this->transposed_conv_2d_param_, deterministic, target);
   }
 
   // .deepflow.DropoutParam dropout_param = 107;
   if (this->has_dropout_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        107, *this->dropout_param_, false, target);
+        107, *this->dropout_param_, deterministic, target);
   }
 
   // .deepflow.LeakyReluParam leaky_relu_param = 108;
   if (this->has_leaky_relu_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        108, *this->leaky_relu_param_, false, target);
+        108, *this->leaky_relu_param_, deterministic, target);
   }
 
   // .deepflow.SoftmaxParam softmax_param = 109;
   if (this->has_softmax_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        109, *this->softmax_param_, false, target);
+        109, *this->softmax_param_, deterministic, target);
   }
 
   // .deepflow.SquareParam square_param = 110;
   if (this->has_square_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        110, *this->square_param_, false, target);
+        110, *this->square_param_, deterministic, target);
   }
 
   // .deepflow.MatMulParam matmul_param = 111;
   if (this->has_matmul_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        111, *this->matmul_param_, false, target);
+        111, *this->matmul_param_, deterministic, target);
   }
 
   // .deepflow.PoolingParam pooling_param = 112;
   if (this->has_pooling_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        112, *this->pooling_param_, false, target);
+        112, *this->pooling_param_, deterministic, target);
   }
 
   // .deepflow.ReduceParam reduce_param = 113;
   if (this->has_reduce_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        113, *this->reduce_param_, false, target);
+        113, *this->reduce_param_, deterministic, target);
   }
 
   // .deepflow.EqualParam equal_param = 114;
   if (this->has_equal_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        114, *this->equal_param_, false, target);
+        114, *this->equal_param_, deterministic, target);
   }
 
   // .deepflow.PrintParam print_param = 115;
   if (this->has_print_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        115, *this->print_param_, false, target);
+        115, *this->print_param_, deterministic, target);
   }
 
   // .deepflow.CastFloatParam cast_float_param = 116;
   if (this->has_cast_float_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        116, *this->cast_float_param_, false, target);
+        116, *this->cast_float_param_, deterministic, target);
   }
 
   // .deepflow.AccumulatorParam accumulator_param = 117;
   if (this->has_accumulator_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        117, *this->accumulator_param_, false, target);
+        117, *this->accumulator_param_, deterministic, target);
   }
 
   // .deepflow.DisplayParam display_param = 118;
   if (this->has_display_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        118, *this->display_param_, false, target);
+        118, *this->display_param_, deterministic, target);
   }
 
   // .deepflow.ActivationParam activation_param = 119;
   if (this->has_activation_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        119, *this->activation_param_, false, target);
+        119, *this->activation_param_, deterministic, target);
   }
 
   // .deepflow.PsnrParam psnr_param = 120;
   if (this->has_psnr_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        120, *this->psnr_param_, false, target);
+        120, *this->psnr_param_, deterministic, target);
   }
 
   // .deepflow.RandomSelectorParam random_selector_param = 121;
   if (this->has_random_selector_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        121, *this->random_selector_param_, false, target);
+        121, *this->random_selector_param_, deterministic, target);
   }
 
   // .deepflow.LoggerParam logger_param = 122;
   if (this->has_logger_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        122, *this->logger_param_, false, target);
+        122, *this->logger_param_, deterministic, target);
   }
 
   // .deepflow.RestructureParam restructure_param = 123;
   if (this->has_restructure_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        123, *this->restructure_param_, false, target);
+        123, *this->restructure_param_, deterministic, target);
   }
 
   // .deepflow.ImageReaderParam image_reader_param = 124;
   if (this->has_image_reader_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        124, *this->image_reader_param_, false, target);
+        124, *this->image_reader_param_, deterministic, target);
   }
 
   // .deepflow.MultiplexerParam multiplexer_param = 125;
   if (this->has_multiplexer_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        125, *this->multiplexer_param_, false, target);
+        125, *this->multiplexer_param_, deterministic, target);
   }
 
   // .deepflow.NegateParam negate_param = 126;
   if (this->has_negate_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        126, *this->negate_param_, false, target);
+        126, *this->negate_param_, deterministic, target);
   }
 
   // .deepflow.BatchNormalizationparam batch_normalization_param = 127;
   if (this->has_batch_normalization_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        127, *this->batch_normalization_param_, false, target);
+        127, *this->batch_normalization_param_, deterministic, target);
   }
 
   // .deepflow.MnistParam mnist_param = 128;
   if (this->has_mnist_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        128, *this->mnist_param_, false, target);
+        128, *this->mnist_param_, deterministic, target);
   }
 
   // .deepflow.DataGeneratorParam data_generator_param = 129;
   if (this->has_data_generator_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        129, *this->data_generator_param_, false, target);
+        129, *this->data_generator_param_, deterministic, target);
   }
 
   // .deepflow.ImageBatchReaderParam image_batch_reader_param = 130;
   if (this->has_image_batch_reader_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        130, *this->image_batch_reader_param_, false, target);
+        130, *this->image_batch_reader_param_, deterministic, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.NodeParam)
@@ -13481,6 +13871,9 @@ void NodeParam::MergeFrom(const NodeParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.NodeParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   input_.MergeFrom(from.input_);
   output_.MergeFrom(from.output_);
   phase_.MergeFrom(from.phase_);
@@ -13612,9 +14005,9 @@ void NodeParam::Swap(NodeParam* other) {
   InternalSwap(other);
 }
 void NodeParam::InternalSwap(NodeParam* other) {
-  input_.UnsafeArenaSwap(&other->input_);
-  output_.UnsafeArenaSwap(&other->output_);
-  phase_.UnsafeArenaSwap(&other->phase_);
+  input_.InternalSwap(&other->input_);
+  output_.InternalSwap(&other->output_);
+  phase_.InternalSwap(&other->phase_);
   name_.Swap(&other->name_);
   std::swap(block_param_, other->block_param_);
   std::swap(loss_param_, other->loss_param_);
@@ -13654,7 +14047,7 @@ void NodeParam::InternalSwap(NodeParam* other) {
 
 ::google::protobuf::Metadata NodeParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[33];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -13682,6 +14075,7 @@ void NodeParam::set_name(::std::string&& value) {
 }
 #endif
 void NodeParam::set_name(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.NodeParam.name)
@@ -13738,6 +14132,7 @@ void NodeParam::set_input(int index, ::std::string&& value) {
 }
 #endif
 void NodeParam::set_input(int index, const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   input_.Mutable(index)->assign(value);
   // @@protoc_insertion_point(field_set_char:deepflow.NodeParam.input)
 }
@@ -13756,11 +14151,12 @@ void NodeParam::add_input(const ::std::string& value) {
 }
 #if LANG_CXX11
 void NodeParam::add_input(::std::string&& value) {
-  input_.Add()->assign(std::move(value));
+  input_.Add(std::move(value));
   // @@protoc_insertion_point(field_add:deepflow.NodeParam.input)
 }
 #endif
 void NodeParam::add_input(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   input_.Add()->assign(value);
   // @@protoc_insertion_point(field_add_char:deepflow.NodeParam.input)
 }
@@ -13805,6 +14201,7 @@ void NodeParam::set_output(int index, ::std::string&& value) {
 }
 #endif
 void NodeParam::set_output(int index, const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   output_.Mutable(index)->assign(value);
   // @@protoc_insertion_point(field_set_char:deepflow.NodeParam.output)
 }
@@ -13823,11 +14220,12 @@ void NodeParam::add_output(const ::std::string& value) {
 }
 #if LANG_CXX11
 void NodeParam::add_output(::std::string&& value) {
-  output_.Add()->assign(std::move(value));
+  output_.Add(std::move(value));
   // @@protoc_insertion_point(field_add:deepflow.NodeParam.output)
 }
 #endif
 void NodeParam::add_output(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   output_.Add()->assign(value);
   // @@protoc_insertion_point(field_add_char:deepflow.NodeParam.output)
 }
@@ -13872,6 +14270,7 @@ void NodeParam::set_phase(int index, ::std::string&& value) {
 }
 #endif
 void NodeParam::set_phase(int index, const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   phase_.Mutable(index)->assign(value);
   // @@protoc_insertion_point(field_set_char:deepflow.NodeParam.phase)
 }
@@ -13890,11 +14289,12 @@ void NodeParam::add_phase(const ::std::string& value) {
 }
 #if LANG_CXX11
 void NodeParam::add_phase(::std::string&& value) {
-  phase_.Add()->assign(std::move(value));
+  phase_.Add(std::move(value));
   // @@protoc_insertion_point(field_add:deepflow.NodeParam.phase)
 }
 #endif
 void NodeParam::add_phase(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   phase_.Add()->assign(value);
   // @@protoc_insertion_point(field_add_char:deepflow.NodeParam.phase)
 }
@@ -15242,7 +15642,7 @@ void SquareParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SquareParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[34].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const SquareParam& SquareParam::default_instance() {
@@ -15291,13 +15691,18 @@ failure:
 void SquareParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.SquareParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_end:deepflow.SquareParam)
 }
 
 ::google::protobuf::uint8* SquareParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.SquareParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.SquareParam)
   return target;
 }
@@ -15332,6 +15737,9 @@ void SquareParam::MergeFrom(const SquareParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.SquareParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
 }
 
 void SquareParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -15362,7 +15770,7 @@ void SquareParam::InternalSwap(SquareParam* other) {
 
 ::google::protobuf::Metadata SquareParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[34];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -15410,7 +15818,7 @@ void EuclideanLossParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* EuclideanLossParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[35].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const EuclideanLossParam& EuclideanLossParam::default_instance() {
@@ -15459,13 +15867,18 @@ failure:
 void EuclideanLossParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.EuclideanLossParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_end:deepflow.EuclideanLossParam)
 }
 
 ::google::protobuf::uint8* EuclideanLossParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.EuclideanLossParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.EuclideanLossParam)
   return target;
 }
@@ -15500,6 +15913,9 @@ void EuclideanLossParam::MergeFrom(const EuclideanLossParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.EuclideanLossParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
 }
 
 void EuclideanLossParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -15530,7 +15946,7 @@ void EuclideanLossParam::InternalSwap(EuclideanLossParam* other) {
 
 ::google::protobuf::Metadata EuclideanLossParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[35];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -15578,7 +15994,7 @@ void SoftmaxLossParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SoftmaxLossParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[36].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const SoftmaxLossParam& SoftmaxLossParam::default_instance() {
@@ -15627,13 +16043,18 @@ failure:
 void SoftmaxLossParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.SoftmaxLossParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_end:deepflow.SoftmaxLossParam)
 }
 
 ::google::protobuf::uint8* SoftmaxLossParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.SoftmaxLossParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.SoftmaxLossParam)
   return target;
 }
@@ -15668,6 +16089,9 @@ void SoftmaxLossParam::MergeFrom(const SoftmaxLossParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.SoftmaxLossParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
 }
 
 void SoftmaxLossParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -15698,7 +16122,7 @@ void SoftmaxLossParam::InternalSwap(SoftmaxLossParam* other) {
 
 ::google::protobuf::Metadata SoftmaxLossParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[36];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -15746,7 +16170,7 @@ void SoftmaxParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SoftmaxParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[37].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const SoftmaxParam& SoftmaxParam::default_instance() {
@@ -15795,13 +16219,18 @@ failure:
 void SoftmaxParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.SoftmaxParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_end:deepflow.SoftmaxParam)
 }
 
 ::google::protobuf::uint8* SoftmaxParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.SoftmaxParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.SoftmaxParam)
   return target;
 }
@@ -15836,6 +16265,9 @@ void SoftmaxParam::MergeFrom(const SoftmaxParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.SoftmaxParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
 }
 
 void SoftmaxParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -15866,7 +16298,7 @@ void SoftmaxParam::InternalSwap(SoftmaxParam* other) {
 
 ::google::protobuf::Metadata SoftmaxParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[37];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -15917,7 +16349,7 @@ void InitFillParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InitFillParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[38].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const InitFillParam& InitFillParam::default_instance() {
@@ -15986,6 +16418,9 @@ failure:
 void InitFillParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.InitFillParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float value = 1;
   if (this->value() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->value(), output);
@@ -15996,8 +16431,10 @@ void InitFillParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* InitFillParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.InitFillParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float value = 1;
   if (this->value() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->value(), target);
@@ -16042,6 +16479,9 @@ void InitFillParam::MergeFrom(const InitFillParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.InitFillParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.value() != 0) {
     set_value(from.value());
   }
@@ -16076,7 +16516,7 @@ void InitFillParam::InternalSwap(InitFillParam* other) {
 
 ::google::protobuf::Metadata InitFillParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[38];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -16141,7 +16581,7 @@ void InitIndexFillParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InitIndexFillParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[39].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const InitIndexFillParam& InitIndexFillParam::default_instance() {
@@ -16210,6 +16650,9 @@ failure:
 void InitIndexFillParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.InitIndexFillParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float offset = 1;
   if (this->offset() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->offset(), output);
@@ -16220,8 +16663,10 @@ void InitIndexFillParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* InitIndexFillParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.InitIndexFillParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float offset = 1;
   if (this->offset() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->offset(), target);
@@ -16266,6 +16711,9 @@ void InitIndexFillParam::MergeFrom(const InitIndexFillParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.InitIndexFillParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.offset() != 0) {
     set_offset(from.offset());
   }
@@ -16300,7 +16748,7 @@ void InitIndexFillParam::InternalSwap(InitIndexFillParam* other) {
 
 ::google::protobuf::Metadata InitIndexFillParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[39];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -16369,7 +16817,7 @@ void InitRandomUniformParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InitRandomUniformParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[40].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const InitRandomUniformParam& InitRandomUniformParam::default_instance() {
@@ -16453,6 +16901,9 @@ failure:
 void InitRandomUniformParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.InitRandomUniformParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float min = 1;
   if (this->min() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->min(), output);
@@ -16468,8 +16919,10 @@ void InitRandomUniformParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* InitRandomUniformParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.InitRandomUniformParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float min = 1;
   if (this->min() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->min(), target);
@@ -16524,6 +16977,9 @@ void InitRandomUniformParam::MergeFrom(const InitRandomUniformParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.InitRandomUniformParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.min() != 0) {
     set_min(from.min());
   }
@@ -16562,7 +17018,7 @@ void InitRandomUniformParam::InternalSwap(InitRandomUniformParam* other) {
 
 ::google::protobuf::Metadata InitRandomUniformParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[40];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -16645,7 +17101,7 @@ void InitRandomNormalParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InitRandomNormalParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[41].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const InitRandomNormalParam& InitRandomNormalParam::default_instance() {
@@ -16729,6 +17185,9 @@ failure:
 void InitRandomNormalParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.InitRandomNormalParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float mean = 1;
   if (this->mean() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->mean(), output);
@@ -16744,8 +17203,10 @@ void InitRandomNormalParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* InitRandomNormalParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.InitRandomNormalParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float mean = 1;
   if (this->mean() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->mean(), target);
@@ -16800,6 +17261,9 @@ void InitRandomNormalParam::MergeFrom(const InitRandomNormalParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.InitRandomNormalParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.mean() != 0) {
     set_mean(from.mean());
   }
@@ -16838,7 +17302,7 @@ void InitRandomNormalParam::InternalSwap(InitRandomNormalParam* other) {
 
 ::google::protobuf::Metadata InitRandomNormalParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[41];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -16921,7 +17385,7 @@ void InitStepParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InitStepParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[42].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const InitStepParam& InitStepParam::default_instance() {
@@ -17005,6 +17469,9 @@ failure:
 void InitStepParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.InitStepParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float min = 1;
   if (this->min() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->min(), output);
@@ -17020,8 +17487,10 @@ void InitStepParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* InitStepParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.InitStepParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float min = 1;
   if (this->min() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->min(), target);
@@ -17076,6 +17545,9 @@ void InitStepParam::MergeFrom(const InitStepParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.InitStepParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.min() != 0) {
     set_min(from.min());
   }
@@ -17114,7 +17586,7 @@ void InitStepParam::InternalSwap(InitStepParam* other) {
 
 ::google::protobuf::Metadata InitStepParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[42];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -17262,7 +17734,7 @@ void InitParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InitParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[43].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const InitParam& InitParam::default_instance() {
@@ -17445,6 +17917,9 @@ failure:
 void InitParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.InitParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string name = 1;
   if (this->name().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -17502,8 +17977,10 @@ void InitParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* InitParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.InitParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string name = 1;
   if (this->name().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -17519,49 +17996,49 @@ void InitParam::SerializeWithCachedSizes(
   if (this->has_tensor_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        2, *this->tensor_param_, false, target);
+        2, *this->tensor_param_, deterministic, target);
   }
 
   // .deepflow.TensorData init_data = 3;
   if (this->has_init_data()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        3, *this->init_data_, false, target);
+        3, *this->init_data_, deterministic, target);
   }
 
   // .deepflow.InitFillParam fill_param = 4;
   if (this->has_fill_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        4, *this->fill_param_, false, target);
+        4, *this->fill_param_, deterministic, target);
   }
 
   // .deepflow.InitIndexFillParam index_fill_param = 5;
   if (this->has_index_fill_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        5, *this->index_fill_param_, false, target);
+        5, *this->index_fill_param_, deterministic, target);
   }
 
   // .deepflow.InitRandomUniformParam random_uniform_param = 6;
   if (this->has_random_uniform_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        6, *this->random_uniform_param_, false, target);
+        6, *this->random_uniform_param_, deterministic, target);
   }
 
   // .deepflow.InitStepParam step_param = 7;
   if (this->has_step_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        7, *this->step_param_, false, target);
+        7, *this->step_param_, deterministic, target);
   }
 
   // .deepflow.InitRandomNormalParam random_normal_param = 8;
   if (this->has_random_normal_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        8, *this->random_normal_param_, false, target);
+        8, *this->random_normal_param_, deterministic, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.InitParam)
@@ -17654,6 +18131,9 @@ void InitParam::MergeFrom(const InitParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.InitParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.name().size() > 0) {
 
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
@@ -17717,7 +18197,7 @@ void InitParam::InternalSwap(InitParam* other) {
 
 ::google::protobuf::Metadata InitParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[43];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -17745,6 +18225,7 @@ void InitParam::set_name(::std::string&& value) {
 }
 #endif
 void InitParam::set_name(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.InitParam.name)
@@ -18097,7 +18578,7 @@ void SGDSolverParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SGDSolverParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[44].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const SGDSolverParam& SGDSolverParam::default_instance() {
@@ -18181,6 +18662,9 @@ failure:
 void SGDSolverParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.SGDSolverParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float learning_rate = 1;
   if (this->learning_rate() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->learning_rate(), output);
@@ -18196,8 +18680,10 @@ void SGDSolverParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* SGDSolverParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.SGDSolverParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float learning_rate = 1;
   if (this->learning_rate() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->learning_rate(), target);
@@ -18252,6 +18738,9 @@ void SGDSolverParam::MergeFrom(const SGDSolverParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.SGDSolverParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.learning_rate() != 0) {
     set_learning_rate(from.learning_rate());
   }
@@ -18290,7 +18779,7 @@ void SGDSolverParam::InternalSwap(SGDSolverParam* other) {
 
 ::google::protobuf::Metadata SGDSolverParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[44];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18377,7 +18866,7 @@ void GainSolverParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GainSolverParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[45].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const GainSolverParam& GainSolverParam::default_instance() {
@@ -18517,6 +19006,9 @@ failure:
 void GainSolverParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.GainSolverParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float learning_rate = 1;
   if (this->learning_rate() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->learning_rate(), output);
@@ -18552,8 +19044,10 @@ void GainSolverParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* GainSolverParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.GainSolverParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float learning_rate = 1;
   if (this->learning_rate() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->learning_rate(), target);
@@ -18648,6 +19142,9 @@ void GainSolverParam::MergeFrom(const GainSolverParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.GainSolverParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.learning_rate() != 0) {
     set_learning_rate(from.learning_rate());
   }
@@ -18702,7 +19199,7 @@ void GainSolverParam::InternalSwap(GainSolverParam* other) {
 
 ::google::protobuf::Metadata GainSolverParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[45];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18842,7 +19339,7 @@ void AdaDeltaSolverParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AdaDeltaSolverParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[46].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const AdaDeltaSolverParam& AdaDeltaSolverParam::default_instance() {
@@ -18940,6 +19437,9 @@ failure:
 void AdaDeltaSolverParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.AdaDeltaSolverParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float learning_rate = 1;
   if (this->learning_rate() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->learning_rate(), output);
@@ -18960,8 +19460,10 @@ void AdaDeltaSolverParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* AdaDeltaSolverParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.AdaDeltaSolverParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float learning_rate = 1;
   if (this->learning_rate() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->learning_rate(), target);
@@ -19026,6 +19528,9 @@ void AdaDeltaSolverParam::MergeFrom(const AdaDeltaSolverParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.AdaDeltaSolverParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.learning_rate() != 0) {
     set_learning_rate(from.learning_rate());
   }
@@ -19068,7 +19573,7 @@ void AdaDeltaSolverParam::InternalSwap(AdaDeltaSolverParam* other) {
 
 ::google::protobuf::Metadata AdaDeltaSolverParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[46];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -19167,7 +19672,7 @@ void AdamSolverParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AdamSolverParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[47].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const AdamSolverParam& AdamSolverParam::default_instance() {
@@ -19279,6 +19784,9 @@ failure:
 void AdamSolverParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.AdamSolverParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float learning_rate = 1;
   if (this->learning_rate() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->learning_rate(), output);
@@ -19304,8 +19812,10 @@ void AdamSolverParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* AdamSolverParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.AdamSolverParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // float learning_rate = 1;
   if (this->learning_rate() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->learning_rate(), target);
@@ -19380,6 +19890,9 @@ void AdamSolverParam::MergeFrom(const AdamSolverParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.AdamSolverParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.learning_rate() != 0) {
     set_learning_rate(from.learning_rate());
   }
@@ -19426,7 +19939,7 @@ void AdamSolverParam::InternalSwap(AdamSolverParam* other) {
 
 ::google::protobuf::Metadata AdamSolverParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[47];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -19582,7 +20095,7 @@ void SolverParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SolverParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[48].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const SolverParam& SolverParam::default_instance() {
@@ -19734,6 +20247,9 @@ failure:
 void SolverParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.SolverParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string name = 1;
   if (this->name().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -19783,8 +20299,10 @@ void SolverParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* SolverParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.SolverParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string name = 1;
   if (this->name().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -19811,28 +20329,28 @@ void SolverParam::SerializeWithCachedSizes(
   if (this->has_sgd_solver()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        3, *this->sgd_solver_, false, target);
+        3, *this->sgd_solver_, deterministic, target);
   }
 
   // .deepflow.GainSolverParam gain_solver = 4;
   if (this->has_gain_solver()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        4, *this->gain_solver_, false, target);
+        4, *this->gain_solver_, deterministic, target);
   }
 
   // .deepflow.AdamSolverParam adam_solver = 5;
   if (this->has_adam_solver()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        5, *this->adam_solver_, false, target);
+        5, *this->adam_solver_, deterministic, target);
   }
 
   // .deepflow.AdaDeltaSolverParam adadelta_solver = 6;
   if (this->has_adadelta_solver()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        6, *this->adadelta_solver_, false, target);
+        6, *this->adadelta_solver_, deterministic, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.SolverParam)
@@ -19911,6 +20429,9 @@ void SolverParam::MergeFrom(const SolverParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.SolverParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.name().size() > 0) {
 
     name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
@@ -19967,7 +20488,7 @@ void SolverParam::InternalSwap(SolverParam* other) {
 
 ::google::protobuf::Metadata SolverParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[48];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -19995,6 +20516,7 @@ void SolverParam::set_name(::std::string&& value) {
 }
 #endif
 void SolverParam::set_name(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.SolverParam.name)
@@ -20047,6 +20569,7 @@ void SolverParam::set_enable_input(::std::string&& value) {
 }
 #endif
 void SolverParam::set_enable_input(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   enable_input_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.SolverParam.enable_input)
@@ -20285,7 +20808,7 @@ void PhaseParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* PhaseParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[49].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const PhaseParam& PhaseParam::default_instance() {
@@ -20372,6 +20895,9 @@ failure:
 void PhaseParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.PhaseParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string phase = 1;
   if (this->phase().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -20393,8 +20919,10 @@ void PhaseParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* PhaseParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.PhaseParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // string phase = 1;
   if (this->phase().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -20459,6 +20987,9 @@ void PhaseParam::MergeFrom(const PhaseParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.PhaseParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   if (from.phase().size() > 0) {
 
     phase_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.phase_);
@@ -20498,7 +21029,7 @@ void PhaseParam::InternalSwap(PhaseParam* other) {
 
 ::google::protobuf::Metadata PhaseParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[49];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -20526,6 +21057,7 @@ void PhaseParam::set_phase(::std::string&& value) {
 }
 #endif
 void PhaseParam::set_phase(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
   
   phase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:deepflow.PhaseParam.phase)
@@ -20620,7 +21152,7 @@ void BlockParam::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* BlockParam::descriptor() {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[50].descriptor;
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const BlockParam& BlockParam::default_instance() {
@@ -20658,13 +21190,11 @@ bool BlockParam::MergePartialFromCodedStream(
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u)) {
-          DO_(input->IncrementRecursionDepth());
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                 input, add_node()));
         } else {
           goto handle_unusual;
         }
-        input->UnsafeDecrementRecursionDepth();
         break;
       }
 
@@ -20672,13 +21202,11 @@ bool BlockParam::MergePartialFromCodedStream(
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u)) {
-          DO_(input->IncrementRecursionDepth());
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                 input, add_solver()));
         } else {
           goto handle_unusual;
         }
-        input->UnsafeDecrementRecursionDepth();
         break;
       }
 
@@ -20686,13 +21214,11 @@ bool BlockParam::MergePartialFromCodedStream(
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(26u)) {
-          DO_(input->IncrementRecursionDepth());
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                 input, add_phase()));
         } else {
           goto handle_unusual;
         }
-        input->UnsafeDecrementRecursionDepth();
         break;
       }
 
@@ -20700,13 +21226,11 @@ bool BlockParam::MergePartialFromCodedStream(
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(34u)) {
-          DO_(input->IncrementRecursionDepth());
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                 input, add_initializer()));
         } else {
           goto handle_unusual;
         }
-        input->UnsafeDecrementRecursionDepth();
         break;
       }
 
@@ -20734,6 +21258,9 @@ failure:
 void BlockParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:deepflow.BlockParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // repeated .deepflow.NodeParam node = 1;
   for (unsigned int i = 0, n = this->node_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -20763,34 +21290,36 @@ void BlockParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* BlockParam::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:deepflow.BlockParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   // repeated .deepflow.NodeParam node = 1;
   for (unsigned int i = 0, n = this->node_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        1, this->node(i), false, target);
+        1, this->node(i), deterministic, target);
   }
 
   // repeated .deepflow.SolverParam solver = 2;
   for (unsigned int i = 0, n = this->solver_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        2, this->solver(i), false, target);
+        2, this->solver(i), deterministic, target);
   }
 
   // repeated .deepflow.PhaseParam phase = 3;
   for (unsigned int i = 0, n = this->phase_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        3, this->phase(i), false, target);
+        3, this->phase(i), deterministic, target);
   }
 
   // repeated .deepflow.InitParam initializer = 4;
   for (unsigned int i = 0, n = this->initializer_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        4, this->initializer(i), false, target);
+        4, this->initializer(i), deterministic, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.BlockParam)
@@ -20871,6 +21400,9 @@ void BlockParam::MergeFrom(const BlockParam& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:deepflow.BlockParam)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
   node_.MergeFrom(from.node_);
   solver_.MergeFrom(from.solver_);
   phase_.MergeFrom(from.phase_);
@@ -20900,16 +21432,16 @@ void BlockParam::Swap(BlockParam* other) {
   InternalSwap(other);
 }
 void BlockParam::InternalSwap(BlockParam* other) {
-  node_.UnsafeArenaSwap(&other->node_);
-  solver_.UnsafeArenaSwap(&other->solver_);
-  phase_.UnsafeArenaSwap(&other->phase_);
-  initializer_.UnsafeArenaSwap(&other->initializer_);
+  node_.InternalSwap(&other->node_);
+  solver_.InternalSwap(&other->solver_);
+  phase_.InternalSwap(&other->phase_);
+  initializer_.InternalSwap(&other->initializer_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata BlockParam::GetMetadata() const {
   protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_deepflow_2eproto::file_level_metadata[50];
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
