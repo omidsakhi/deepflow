@@ -55,34 +55,38 @@ std::shared_ptr<Session> create_generator() {
 	auto mean = 0;
 	auto stddev = 0.02;
 
-	auto g_solver = df.adadelta_solver(0.01f, 0.4f);// gain_solver();// adam_solver(0.001f, 0.5f, 0.75f);
+	auto g_solver = df.adam_solver(0.001f, 0.5f, 0.75f);
 	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, mean, stddev, "random_input"), 240, "", "input");
 	
 	auto gfc_w = df.variable(df.random_normal({ 100, 256, 4, 4 }, mean, stddev), g_solver, "gfc_w");
 	auto gfc = df.matmul(gin, gfc_w, "gfc");
-	auto gfc_d = df.dropout(gfc, 0.2f);
+	auto gfc_d = df.dropout(gfc, 0.1f);
 	auto gfc_r = df.leaky_relu(gfc_d);
 
 	auto gconv1_f = df.variable(df.random_normal({ 256, 128, 3, 3 }, mean, stddev), g_solver, "gconv1_f");
 	auto gconv1_t = df.transposed_conv2d(gfc_r, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1");
-	auto gconv1_n = df.batch_normalization(gconv1_t, DeepFlow::PER_ACTIVATION);
+	auto gconv1_d = df.dropout(gconv1_t, 0.1f);
+	auto gconv1_n = df.batch_normalization(gconv1_d, DeepFlow::PER_ACTIVATION);
 	auto gconv1_r = df.leaky_relu(gconv1_n);
 	
 	auto gconv2_f = df.variable(df.random_normal({ 128, 64, 3, 3 }, mean, stddev), g_solver, "gconv2_f");
 	auto gconv2_t = df.transposed_conv2d(gconv1_r, gconv2_f, 1, 1, 2, 2, 1, 1, "gconv2");
-	auto gconv2_n = df.batch_normalization(gconv2_t, DeepFlow::PER_ACTIVATION);
+	auto gconv2_d = df.dropout(gconv2_t, 0.1f);
+	auto gconv2_n = df.batch_normalization(gconv2_d, DeepFlow::PER_ACTIVATION);
 	auto gconv2_r = df.leaky_relu(gconv2_n);
 
 	auto gconv3_f = df.variable(df.random_normal({ 64, 32, 3, 3 }, mean, stddev), g_solver, "gconv3_f");
 	auto gconv3_t = df.transposed_conv2d(gconv2_r, gconv3_f, 1, 1, 2, 2, 1, 1, "gconv3");	
-	auto gconv3_n = df.batch_normalization(gconv3_t, DeepFlow::PER_ACTIVATION);
+	auto gconv3_d = df.dropout(gconv3_t, 0.1f);
+	auto gconv3_n = df.batch_normalization(gconv3_d, DeepFlow::PER_ACTIVATION);
 	auto gconv3_r = df.leaky_relu(gconv3_n);
 
 	auto gconv4_f = df.variable(df.random_normal({ 32, 1, 3, 3 }, mean, stddev), g_solver, "gconv3_f");
 	auto gconv4_t = df.transposed_conv2d(gconv3_r, gconv4_f, 1, 1, 2, 2, 1, 1, "gconv3");
-	auto gconv4_n = df.batch_normalization(gconv4_t, DeepFlow::PER_ACTIVATION);
-
+	auto gconv4_d = df.dropout(gconv4_t, 0.1f);
+	auto gconv4_n = df.batch_normalization(gconv4_d, DeepFlow::PER_ACTIVATION);
 	auto gout = df.tanh(gconv4_n, "gout");
+
 	auto disp = df.display(gout, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
 
 	return df.session();
