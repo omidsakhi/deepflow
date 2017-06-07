@@ -30,3 +30,5 @@
 /models/VGG_ILSVRC_16_layers.caffemodel
 /models/VGG_ILSVRC_16_layers_deploy.prototxt
 *.idb
+/data/face64
+/data/face643
