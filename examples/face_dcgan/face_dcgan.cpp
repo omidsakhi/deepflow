@@ -5,36 +5,38 @@
 #include <random>
 #include <gflags/gflags.h>
 
-DEFINE_string(faces, "D:/Projects/deepflow/data/face64", "Path to face 64x64 dataset folder");
+DEFINE_string(faces, "D:/Projects/deepflow/data/face643", "Path to face 64x64 dataset folder");
 DEFINE_string(i, "", "Trained network model to load");
 DEFINE_string(o, "", "Trained network model to save");
 DEFINE_bool(text, false, "Save model as text");
 DEFINE_bool(includeweights, false, "Also save weights in text mode");
 DEFINE_bool(includeinits, false, "Also save initial values");
-DEFINE_int32(batch, 80, "Batch size");
+DEFINE_int32(batch, 98, "Batch size");
 DEFINE_string(run,"", "Phase to execute graph");
 DEFINE_bool(printiter, false, "Print iteration message");
 DEFINE_bool(printepoch, true, "Print epoch message");
 DEFINE_int32(debug, 0, "Level of debug");
 DEFINE_int32(epoch, 1000000, "Maximum epochs");
 DEFINE_int32(iter, -1, "Maximum iterations");
+DEFINE_int32(channels, 3, "Image channels");
+DEFINE_int32(total, 13230, "Image channels");
 DEFINE_bool(cpp, false, "Print C++ code");
 
 std::shared_ptr<Session> create_face_reader() {
 	DeepFlow df;
-	df.image_batch_reader(FLAGS_faces, { FLAGS_batch, 1, 64, 64 }, true, "face_data");
+	df.image_batch_reader(FLAGS_faces, { FLAGS_batch, FLAGS_channels, 64, 64 }, true, "face_data");
 	return df.session();
 }
 
 std::shared_ptr<Session> create_face_labels() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0.7, 1.0), 240, "", "face_labels");	
+	df.data_generator(df.random_normal({ FLAGS_batch, 1, 1, 1 }, 0.75, 0.25), FLAGS_total, "", "face_labels");	
 	return df.session();
 }
 
 std::shared_ptr<Session> create_generator_labels() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0, 0.3), 240, "", "generator_labels");
+	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0.25, 0.25), FLAGS_total, "", "generator_labels");
 	return df.session();
 }
 
@@ -57,11 +59,10 @@ std::shared_ptr<Session> create_generator() {
 	auto negative_slope = 0.05;
 
 	auto g_solver = df.adam_solver(0.001f, 0.5f, 0.75f);
-	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, mean, stddev, "random_input"), 240, "", "input");
+	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, mean, stddev, "random_input"), FLAGS_total, "", "input");
 	
 	auto gfc_w = df.variable(df.random_normal({ 100, 1024, 4, 4 }, mean, stddev), g_solver, "gfc_w");
-	auto gfc = df.matmul(gin, gfc_w, "gfc");
-	//auto gfc_d = df.dropout(gfc, 0.1f); 
+	auto gfc = df.matmul(gin, gfc_w, "gfc");	
 	auto gfc_r = df.leaky_relu(gfc, negative_slope);
 
 	auto gconv1_f = df.variable(df.random_normal({ 1024, 512, 3, 3 }, mean, stddev), g_solver, "gconv1_f");
@@ -79,7 +80,7 @@ std::shared_ptr<Session> create_generator() {
 	auto gconv3_n = df.batch_normalization(gconv3_t, DeepFlow::PER_ACTIVATION);
 	auto gconv3_r = df.leaky_relu(gconv3_n, negative_slope);
 
-	auto gconv4_f = df.variable(df.random_normal({ 64, 1, 3, 3 }, mean, stddev), g_solver, "gconv3_f");
+	auto gconv4_f = df.variable(df.random_normal({ 64, FLAGS_channels, 3, 3 }, mean, stddev), g_solver, "gconv3_f");
 	auto gconv4_t = df.transposed_conv2d(gconv3_r, gconv4_f, 1, 1, 2, 2, 1, 1, "gconv3");	
 	auto gconv4_n = df.batch_normalization(gconv4_t, DeepFlow::PER_ACTIVATION);
 	auto gout = df.tanh(gconv4_n, "gout");
@@ -94,33 +95,31 @@ std::shared_ptr<Session> create_discriminator() {
 	auto mean = 0;
 	auto stddev = 0.02;
 	auto d_solver = df.adam_solver(0.0002f, 0.5f, 0.999f);
-	auto negative_slope = 0.1;
-	auto input = df.place_holder({ FLAGS_batch , 1, 64, 64 }, Tensor::Float, "input");	
+	auto negative_slope = 0.05;
+	auto input = df.place_holder({ FLAGS_batch , FLAGS_channels, 64, 64 }, Tensor::Float, "input");
 	
-	auto conv1_w = df.variable(df.random_uniform({ 16, 1, 3, 3 }, -0.100000, 0.100000), d_solver, "conv1_w");
-	auto conv1 = df.conv2d(input, conv1_w, 1, 1, 2, 2, 1, 1, "conv1");
-	//auto conv1_n = df.batch_normalization(conv1, DeepFlow::PER_ACTIVATION);
+	auto conv1_w = df.variable(df.random_normal({ 16, FLAGS_channels, 3, 3 }, mean, stddev), d_solver, "conv1_w");
+	auto conv1 = df.conv2d(input, conv1_w, 1, 1, 2, 2, 1, 1, "conv1");	
 	auto conv1_r = df.leaky_relu(conv1, negative_slope);
 	
-	auto conv2_w = df.variable(df.random_uniform({ 32, 16, 3, 3 }, -0.100000, 0.100000), d_solver, "conv2_w");
-	auto conv2 = df.conv2d(conv1_r, conv2_w, 1, 1, 2, 2, 1, 1, "conv2");
-	//auto conv2_n = df.batch_normalization(conv2, DeepFlow::PER_ACTIVATION);
+	auto conv2_w = df.variable(df.random_normal({ 32, 16, 3, 3 }, mean, stddev), d_solver, "conv2_w");
+	auto conv2 = df.conv2d(conv1_r, conv2_w, 1, 1, 2, 2, 1, 1, "conv2");	
 	auto conv2_r = df.leaky_relu(conv2, negative_slope);
 
-	auto conv3_w = df.variable(df.random_uniform({ 64, 32, 3, 3 }, -0.100000, 0.100000), d_solver, "conv3_w");
-	auto conv3 = df.conv2d(conv2_r, conv3_w, 1, 1, 2, 2, 1, 1, "conv3");
-	//auto conv3_n = df.batch_normalization(conv3, DeepFlow::PER_ACTIVATION);
-	auto conv3_r = df.leaky_relu(conv3, negative_slope);
+	auto conv3_w = df.variable(df.random_normal({ 64, 32, 3, 3 }, mean, stddev), d_solver, "conv3_w");
+	auto conv3 = df.conv2d(conv2_r, conv3_w, 1, 1, 2, 2, 1, 1, "conv3");	
+	auto conv3_r = df.leaky_relu(conv3, negative_slope);	
 
-	auto w1 = df.variable(df.random_uniform({ 4096, 500, 1, 1 }, -0.100000, 0.100000), d_solver, "w1");
+	auto w1 = df.variable(df.random_normal({ 4096, 500, 1, 1 }, mean, stddev), d_solver, "w1");
 	auto m1 = df.matmul(conv3_r, w1, "m1");
-	auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, -1.000000, 1.000000), d_solver, "b1");
+	auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, mean, stddev), d_solver, "b1");
 	auto bias1 = df.bias_add(m1, b1, "bias1");
-	auto relu1 = df.leaky_relu(bias1, negative_slope, "relu1");
-	
-	auto w2 = df.variable(df.random_uniform({ 500, 1, 1, 1 }, -0.100000, 0.100000), d_solver, "w2");
-	auto m2 = df.matmul(relu1, w2, "m2");
-	auto b2 = df.variable(df.step({ 1, 1, 1, 1 }, -1.000000, 1.000000), d_solver, "b2");
+	auto relu1 = df.leaky_relu(bias1, negative_slope, "relu1");	
+	auto drop1 = df.dropout(relu1, 0.2f);
+
+	auto w2 = df.variable(df.random_normal({ 500, 1, 1, 1 }, mean, stddev), d_solver, "w2");
+	auto m2 = df.matmul(drop1, w2, "m2");
+	auto b2 = df.variable(df.step({ 1, 1, 1, 1 }, mean, stddev), d_solver, "b2");
 	auto bias2 = df.bias_add(m2, b2, "bias2");
 
 	auto dout = df.sigmoid(bias2, "dout");
