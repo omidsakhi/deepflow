@@ -100,6 +100,19 @@ std::string DeepFlow::add(std::string a, std::string b, std::string name, std::i
 	return add(a, b, 1.0f, 1.0f, name, phases);
 }
 
+std::string DeepFlow::dot(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	node_param->add_input(b);
+	node_param->mutable_dot_param();
+	return node_param->output(0);
+}
+
 std::string DeepFlow::subtract(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
 	return add(a, b, 1.0f, -1.0f, name, phases);
 }

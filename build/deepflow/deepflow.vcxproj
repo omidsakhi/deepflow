@@ -49,6 +49,7 @@
     <ClInclude Include="..\..\include\nodes\cast_float.h" />
     <ClInclude Include="..\..\include\nodes\convolution_2d.h" />
     <ClInclude Include="..\..\include\nodes\display.h" />
+    <ClInclude Include="..\..\include\nodes\dot.h" />
     <ClInclude Include="..\..\include\nodes\dropout.h" />
     <ClInclude Include="..\..\include\nodes\equal.h" />
     <ClInclude Include="..\..\include\nodes\euclidean_loss.h" />
@@ -125,6 +126,7 @@
     <ClCompile Include="..\..\src\nodes\batch_normalization.cpp" />
     <ClCompile Include="..\..\src\nodes\block.cpp" />
     <ClCompile Include="..\..\src\nodes\convolution_2d.cpp" />
+    <ClCompile Include="..\..\src\nodes\dot.cpp" />
     <ClCompile Include="..\..\src\nodes\dropout.cpp" />
     <ClCompile Include="..\..\src\nodes\logger.cpp" />
     <ClCompile Include="..\..\src\nodes\matmul.cpp" />

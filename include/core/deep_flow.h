@@ -71,6 +71,7 @@ public:
 	// MATH
 	std::string add(std::string a, std::string b, float alpha, float beta, std::string name = "add", std::initializer_list<std::string> phases = {});
 	std::string add(std::string a, std::string b, std::string name = "add", std::initializer_list<std::string> phases = {});
+	std::string dot(std::string a, std::string b, std::string name = "dot", std::initializer_list<std::string> phases = {});
 	std::string square(std::string a, std::string name = "square", std::initializer_list<std::string> phases = {});
 	std::string matmul(std::string a, std::string b, std::string name = "ip", std::initializer_list<std::string> phases = {});
 	std::string subtract(std::string a, std::string b, std::string name = "sub", std::initializer_list<std::string> phases = {});

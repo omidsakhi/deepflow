@@ -9,9 +9,23 @@ void CpyAddKernel(const int n, const float alpha, const float *src, const float 
 		dst[i] = beta * dst[i] + alpha * src[i];
 }
 
+__global__
+void DotKernel(const int n, const float alpha, const float *a, const float *b, const float beta, float *dst)
+{
+	int i = blockIdx.x*blockDim.x + threadIdx.x;
+	if (i < n)
+		dst[i] = beta * dst[i] + alpha * a[i] * b[i];
+}
+
 void Node::cpy(int n, const float alpha, const void * src, const float beta, void * dst)
 {
 	CpyAddKernel <<< numOfBlocks(n), maxThreadsPerBlock >>> (n, alpha, (float*) src, beta, (float*) dst);
+	DF_KERNEL_CHECK();
+}
+
+void Node::dot(const int n, const float alpha, const void *a, const void *b, const float beta, void *dst)
+{
+	DotKernel << < numOfBlocks(n), maxThreadsPerBlock >> > (n, alpha, (float*)a, (float*)b, beta, (float*)dst);
 	DF_KERNEL_CHECK();
 }
 

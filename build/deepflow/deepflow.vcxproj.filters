@@ -171,6 +171,9 @@
     <ClCompile Include="..\..\src\nodes\batch_normalization.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\nodes\dot.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -345,6 +348,9 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\batch_normalization.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\dot.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

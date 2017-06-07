@@ -67,6 +67,10 @@ message PrintParam {
 	ActionType print_type = 4;
 }
 
+message DotParam {
+
+}
+
 message AddParam {
 	float alpha = 1;
 	float beta = 2;
@@ -275,6 +279,7 @@ message NodeParam {
   MnistParam mnist_param = 128;
   DataGeneratorParam data_generator_param = 129;	
   ImageBatchReaderParam image_batch_reader_param = 130;
+  DotParam dot_param = 131;
 }
 
 message SquareParam {

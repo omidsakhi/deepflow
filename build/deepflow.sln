@@ -26,6 +26,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mnist_dcgan", "mnist_dcgan\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "face_dcgan", "face_dcgan\face_dcgan.vcxproj", "{1423FC1C-4709-426A-B118-2EAD4C73FEE2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB} = {DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
