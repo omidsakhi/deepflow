@@ -18,7 +18,7 @@ public:
 	void initialize();
 	void set_execution_context(std::shared_ptr<ExecutionContext> execution_context);
 	void run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level);
-	void printMemory();
+	void mem_usage(size_t *free_byte, size_t *total_byte, float *used_byte_percentage);
 	std::string to_cpp() const;
 	std::shared_ptr<PlaceHolder> get_placeholder(std::string name);	
 	std::shared_ptr<Node> get_node(std::string name);

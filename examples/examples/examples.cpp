@@ -216,9 +216,6 @@ void main(int argc, char** argv) {
 	if (FLAGS_cpp) {
 		session->initialize();
 		std::cout << session->to_cpp() << std::endl;
-		if (FLAGS_debug == 1) {
-			session->printMemory();
-		}
 	}
 
 	if (!FLAGS_run.empty()) {

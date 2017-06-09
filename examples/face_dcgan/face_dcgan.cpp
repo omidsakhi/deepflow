@@ -30,13 +30,13 @@ std::shared_ptr<Session> create_face_reader() {
 
 std::shared_ptr<Session> create_face_labels() {
 	DeepFlow df;
-	df.data_generator(df.random_normal({ FLAGS_batch, 1, 1, 1 }, 0.75, 0.25), FLAGS_total, "", "face_labels");	
+	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0.75, 1.0), FLAGS_total, "", "face_labels");	
 	return df.session();
 }
 
 std::shared_ptr<Session> create_generator_labels() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0.25, 0.25), FLAGS_total, "", "generator_labels");
+	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0, 0.1), FLAGS_total, "", "generator_labels");
 	return df.session();
 }
 
@@ -95,7 +95,7 @@ std::shared_ptr<Session> create_discriminator() {
 	auto mean = 0;
 	auto stddev = 0.02;
 	auto d_solver = df.adam_solver(0.0002f, 0.5f, 0.999f);
-	auto negative_slope = 0.05;
+	auto negative_slope = 0.1;
 	auto input = df.place_holder({ FLAGS_batch , FLAGS_channels, 64, 64 }, Tensor::Float, "input");
 	
 	auto conv1_w = df.variable(df.random_normal({ 16, FLAGS_channels, 3, 3 }, mean, stddev), d_solver, "conv1_w");
@@ -114,11 +114,10 @@ std::shared_ptr<Session> create_discriminator() {
 	auto m1 = df.matmul(conv3_r, w1, "m1");
 	auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, mean, stddev), d_solver, "b1");
 	auto bias1 = df.bias_add(m1, b1, "bias1");
-	auto relu1 = df.leaky_relu(bias1, negative_slope, "relu1");	
-	auto drop1 = df.dropout(relu1, 0.2f);
+	auto relu1 = df.leaky_relu(bias1, negative_slope, "relu1");		
 
 	auto w2 = df.variable(df.random_normal({ 500, 1, 1, 1 }, mean, stddev), d_solver, "w2");
-	auto m2 = df.matmul(drop1, w2, "m2");
+	auto m2 = df.matmul(relu1, w2, "m2");
 	auto b2 = df.variable(df.step({ 1, 1, 1, 1 }, mean, stddev), d_solver, "b2");
 	auto bias2 = df.bias_add(m2, b2, "bias2");
 

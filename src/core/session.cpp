@@ -271,6 +271,9 @@ void Session::initialize() {
 		}
 	}
 
+	size_t free_byte;
+	size_t total_byte;
+	float used_byte_percentage;
 	std::srand(std::time(0));
 	std::list<std::shared_ptr<Node>> queue = _nodes;
 	while (!queue.empty()) {
@@ -292,7 +295,10 @@ void Session::initialize() {
 			node->initForward();
 			node->initBackward();
 			node->setInitialized(true);
-			//printMemory();
+			mem_usage(&free_byte, &total_byte, &used_byte_percentage);
+			if (used_byte_percentage > 80) {
+				LOG(WARNING) << "**WARN** - LOW MEMORY - USED: " << used_byte_percentage << "%";
+			}
 		}
 		else {
 			queue.push_back(node);
@@ -521,15 +527,13 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 	}
 }
 
-void Session::printMemory()
+void Session::mem_usage(size_t * free_byte, size_t * total_byte, float *used_byte_percentage)
 {
-	size_t free_byte;
-	size_t total_byte;
-	cudaError_t cuda_status = cudaMemGetInfo(&free_byte, &total_byte);
-	if (cudaSuccess != cuda_status) {		
-		LOG(FATAL) << "cudaMemGetInfo fails, " << cudaGetErrorString(cuda_status);		
+	cudaError_t cuda_status = cudaMemGetInfo(free_byte, total_byte);
+	if (cudaSuccess != cuda_status) {
+		LOG(FATAL) << "cudaMemGetInfo fails, " << cudaGetErrorString(cuda_status);
 	}
-	LOG(INFO) << "CUDA MEM - Free: " << free_byte << " - Total: " << total_byte << " Used (%): " << (((float)total_byte - (float) free_byte) / total_byte * 100.0f);
+	*used_byte_percentage = ((float)*total_byte - (float)*free_byte) / (*total_byte) * 100;
 }
 
 void generate_cpp_code(Node *node, std::string *code) {	
