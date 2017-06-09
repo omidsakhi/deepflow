@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/loss.h"
+#include "core/node.h"
 
-class DeepFlowDllExport EuclideanLoss : public Loss {
+class DeepFlowDllExport EuclideanLoss : public Node {
 public:
 	EuclideanLoss(const deepflow::NodeParam &param);
 	int minNumInputs() { return 2; }

@@ -47,6 +47,7 @@
 #include "nodes/negate.h"
 #include "nodes/batch_normalization.h"
 #include "nodes/dot.h"
+#include "nodes/replay_memory.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -90,104 +91,82 @@ std::shared_ptr<Initializer> _create_initializer(const deepflow::InitParam &init
 
 std::shared_ptr<Node> Session::_create_node(const deepflow::NodeParam &node_param) {
 
-	if (node_param.has_accumulator_param())
-		return std::make_shared<Accumulator>(node_param);	
-	else if (node_param.has_mnist_param()) {
-		return std::make_shared<MNISTReader>(node_param);
+	if (node_param.has_variable_param()) {
+		const deepflow::InitParam &init_param = node_param.variable_param().init_param();
+		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
+		return std::make_shared<Variable>(initializer, node_param);
 	}
+	else if (node_param.has_batch_normalization_param())
+		return std::make_shared<BatchNormalization>(node_param);
+	else if (node_param.has_image_batch_reader_param())
+		return std::make_shared<ImageBatchReader>(node_param);
+	else if (node_param.has_mnist_param())
+		return std::make_shared<MNISTReader>(node_param);
 	else if (node_param.has_data_generator_param()) {
 		const deepflow::InitParam &init_param = node_param.variable_param().init_param();
 		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
 		return std::make_shared<DataGenerator>(initializer, node_param);
 	}
-	else if (node_param.has_image_batch_reader_param()) {
-		return std::make_shared<ImageBatchReader>(node_param);
-	}
 	else if (node_param.has_image_reader_param())
 		return std::make_shared<ImageReader>(node_param);
+	else if (node_param.has_transposed_conv_2d_param())
+		return std::make_shared<TransposedConvolution2D>(node_param);
+	else if (node_param.has_matmul_param())
+		return std::make_shared<MatMul>(node_param);
+	else if (node_param.has_conv_2d_param())
+		return std::make_shared<Convolution2D>(node_param);
+	else if (node_param.has_softmax_loss_param())
+		return std::make_shared<SoftmaxLoss>(node_param);
+	else if (node_param.has_euclidean_loss_param())
+		return std::make_shared<EuclideanLoss>(node_param);
+	else if (node_param.has_pooling_param())
+		return std::make_shared<Pooling>(node_param);
+	else if (node_param.has_reduce_param())
+		return std::make_shared<Reduce>(node_param);
+	else if (node_param.has_display_param())
+		return std::make_shared<Display>(node_param);
+	else if (node_param.has_leaky_relu_param())
+		return std::make_shared<LeakyRelu>(node_param);
+	else if (node_param.has_softmax_param())
+		return std::make_shared<Softmax>(node_param);
+	else if (node_param.has_dropout_param())
+		return std::make_shared<Dropout>(node_param);
+	else if (node_param.has_replay_memory_param())
+		return std::make_shared<ReplayMemory>(node_param);
 	else if (node_param.has_add_param())
 		return std::make_shared<Add>(node_param);
 	else if (node_param.has_bias_add_param())
 		return std::make_shared<BiasAdd>(node_param);
 	else if (node_param.has_cast_float_param())
 		return std::make_shared<CastFloat>(node_param);
-	else if (node_param.has_conv_2d_param())
-		return std::make_shared<Convolution2D>(node_param);
-	else if (node_param.has_dropout_param())
-		return std::make_shared<Dropout>(node_param);
 	else if (node_param.has_equal_param())
 		return std::make_shared<Equal>(node_param);
-	else if (node_param.has_loss_param()) {
-		if (node_param.loss_param().has_softmax_loss_param())
-			return std::make_shared<SoftmaxLoss>(node_param);
-		else if (node_param.loss_param().has_euclidean_loss_param())
-			return std::make_shared<EuclideanLoss>(node_param);
-	}
-	else if (node_param.has_activation_param()) {
+	else if (node_param.has_activation_param())
 		return std::make_shared<Activation>(node_param);
-	}
-	else if (node_param.has_matmul_param()) {
-		return std::make_shared<MatMul>(node_param);
-	}
-	else if (node_param.has_phaseplexer_param()) {
+	else if (node_param.has_phaseplexer_param())
 		return std::make_shared<Phaseplexer>(node_param);
-	}
-	else if (node_param.has_place_holder_param()) {
+	else if (node_param.has_place_holder_param())
 		return std::make_shared<PlaceHolder>(node_param);
-	}
-	else if (node_param.has_pooling_param()) {
-		return std::make_shared<Pooling>(node_param);
-	}
-	else if (node_param.has_print_param()) {
+	else if (node_param.has_print_param())
 		return std::make_shared<Print>(node_param);
-	}
-	else if (node_param.has_logger_param()) {
+	else if (node_param.has_logger_param())
 		return std::make_shared<Logger>(node_param);
-	}
-	else if (node_param.has_display_param()) {
-		return std::make_shared<Display>(node_param);
-	}
-	else if (node_param.has_reduce_param()) {
-		return std::make_shared<Reduce>(node_param);
-	}
-	else if (node_param.has_leaky_relu_param()) {
-		return std::make_shared<LeakyRelu>(node_param);
-	}
-	else if (node_param.has_softmax_param()) {
-		return std::make_shared<Softmax>(node_param);
-	}
-	else if (node_param.has_square_param()) {
+	else if (node_param.has_square_param())
 		return std::make_shared<Square>(node_param);
-	}
-	else if (node_param.has_transposed_conv_2d_param()) {
-		return std::make_shared<TransposedConvolution2D>(node_param);
-	}
-	else if (node_param.has_restructure_param()) {
+	else if (node_param.has_restructure_param())
 		return std::make_shared<Restructure>(node_param);
-	}
-	else if (node_param.has_psnr_param()) {
+	else if (node_param.has_psnr_param())
 		return std::make_shared<Psnr>(node_param);
-	}
-	else if (node_param.has_random_selector_param()) {
+	else if (node_param.has_random_selector_param())
 		return std::make_shared<RandomSelector>(node_param);
-	}
-	else if (node_param.has_multiplexer_param()) {
+	else if (node_param.has_multiplexer_param())
 		return std::make_shared<Multiplexer>(node_param);
-	}
-	else if (node_param.has_negate_param()) {
+	else if (node_param.has_negate_param())
 		return std::make_shared<Negate>(node_param);
-	}
-	else if (node_param.has_batch_normalization_param()) {
-		return std::make_shared<BatchNormalization>(node_param);
-	}
-	else if (node_param.has_dot_param()) {
+	else if (node_param.has_accumulator_param())
+		return std::make_shared<Accumulator>(node_param);
+	else if (node_param.has_dot_param())
 		return std::make_shared<Dot>(node_param);
-	}
-	else if (node_param.has_variable_param()) {
-		const deepflow::InitParam &init_param = node_param.variable_param().init_param();
-		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
-		return std::make_shared<Variable>(initializer, node_param);
-	}
 	else {
 		LOG(FATAL) << "Unsupported Node";
 	}

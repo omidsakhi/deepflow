@@ -99,9 +99,6 @@
     <ClCompile Include="..\..\src\core\tensor.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\core\loss.cpp">
-      <Filter>source\core</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\core\session.cpp">
       <Filter>source\core</Filter>
     </ClCompile>
@@ -174,6 +171,9 @@
     <ClCompile Include="..\..\src\nodes\dot.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\nodes\replay_memory.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -222,9 +222,6 @@
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\core\tensor.h">
-      <Filter>include\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\core\loss.h">
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\core\execution_context.h">
@@ -351,6 +348,9 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\dot.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\replay_memory.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

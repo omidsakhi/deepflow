@@ -46,7 +46,7 @@ std::shared_ptr<Session> create_loss() {
 	auto labels_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "labels_input");
 	df.euclidean_loss(discriminator_input, labels_input);
 	auto sub = df.subtract(discriminator_input, labels_input);
-	auto reduce = df.reduce_norm1(sub, 0);
+	auto reduce = df.reduce_norm2(sub, 0);
 	df.print({ reduce }, " NORM {0}\n", DeepFlow::EVERY_PASS); 
 	return df.session();
 }
@@ -58,7 +58,7 @@ std::shared_ptr<Session> create_generator() {
 	auto stddev = 0.02;
 	auto negative_slope = 0.05;
 
-	auto g_solver = df.adam_solver(0.001f, 0.5f, 0.75f);
+	auto g_solver = df.gain_solver(0.98f, 0.0001f, 2.0f, 0.000000001f);
 	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, mean, stddev, "random_input"), FLAGS_total, "", "input");
 	
 	auto gfc_w = df.variable(df.random_normal({ 100, 1024, 4, 4 }, mean, stddev), g_solver, "gfc_w");

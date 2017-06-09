@@ -129,6 +129,7 @@ public:
 	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});
 	std::string negate(std::string input, ActionType negateType = ActionType::VALUES_AND_DIFFS, std::string name = "negate", std::initializer_list<std::string> phases = {});
 	std::array<std::string,2> accumulator(std::string input, ActionTime resetTime = ActionTime::END_OF_EPOCH, std::string name = "acc", std::initializer_list<std::string> phases = {});
+	std::string replay_memory(std::string input, int capacity, std::string name = "replay_memory", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
 	std::string define_phase(std::string phase, PhaseBehaviour behaviour = TRAIN_AND_INFERENCE);

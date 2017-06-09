@@ -30,7 +30,7 @@ void CastFloat::forward() {
 }
 
 void CastFloat::backward() {
-
+	LOG(FATAL);
 }
 
 std::string CastFloat::to_cpp() const

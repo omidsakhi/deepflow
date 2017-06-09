@@ -32,7 +32,7 @@ void Equal::forward() {
 }
 
 void Equal::backward() {
-
+	LOG(FATAL);
 }
 
 std::string Equal::to_cpp() const

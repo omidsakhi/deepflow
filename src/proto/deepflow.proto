@@ -176,11 +176,6 @@ message VariableParam {
 	TensorData weights = 3;	
 }
 
-message LossParam {
-	SoftmaxLossParam softmax_loss_param = 1;
-	EuclideanLossParam euclidean_loss_param = 2;
-}
-
 message DataGeneratorParam {	
 	int32 num_samples = 1;	
 }
@@ -231,7 +226,7 @@ message CastFloatParam {
 	
 }
 
-message BatchNormalizationparam {
+message BatchNormalizationParam {
 	enum Mode {
 		CUDNN_BATCHNORM_PER_ACTIVATION = 0;    
 		CUDNN_BATCHNORM_SPATIAL        = 1;
@@ -239,14 +234,16 @@ message BatchNormalizationparam {
 	Mode mode = 1;
 }
 
+message ReplayMemoryParam {
+	int32 capacity = 1;
+}
+
 message NodeParam {
   string name = 1;
   repeated string input = 2;
   repeated string output = 3;  
   repeated string phase = 4;  
-  BlockParam block_param = 5;
-
-  LossParam loss_param = 50;  
+  BlockParam block_param = 5;  
 
   VariableParam variable_param = 100;  
   PlaceHolderParam place_holder_param = 101;  
@@ -275,11 +272,14 @@ message NodeParam {
   ImageReaderParam image_reader_param = 124;
   MultiplexerParam multiplexer_param = 125;
   NegateParam negate_param = 126;
-  BatchNormalizationparam batch_normalization_param = 127;
+  BatchNormalizationParam batch_normalization_param = 127;
   MnistParam mnist_param = 128;
   DataGeneratorParam data_generator_param = 129;	
   ImageBatchReaderParam image_batch_reader_param = 130;
   DotParam dot_param = 131;
+  ReplayMemoryParam replay_memory_param = 132;
+  SoftmaxLossParam softmax_loss_param = 133;
+  EuclideanLossParam euclidean_loss_param = 134;
 }
 
 message SquareParam {

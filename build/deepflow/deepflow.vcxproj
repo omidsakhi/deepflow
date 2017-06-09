@@ -26,7 +26,6 @@
     <ClInclude Include="..\..\include\core\execution_context.h" />
     <ClInclude Include="..\..\include\core\export.h" />
     <ClInclude Include="..\..\include\core\initializer.h" />
-    <ClInclude Include="..\..\include\core\loss.h" />
     <ClInclude Include="..\..\include\core\node.h" />
     <ClInclude Include="..\..\include\core\session.h" />
     <ClInclude Include="..\..\include\core\solver.h" />
@@ -66,6 +65,7 @@
     <ClInclude Include="..\..\include\nodes\psnr.h" />
     <ClInclude Include="..\..\include\nodes\random_selector.h" />
     <ClInclude Include="..\..\include\nodes\reduce.h" />
+    <ClInclude Include="..\..\include\nodes\replay_memory.h" />
     <ClInclude Include="..\..\include\nodes\restructure.h" />
     <ClInclude Include="..\..\include\nodes\softmax.h" />
     <ClInclude Include="..\..\include\nodes\softmax_loss.h" />
@@ -86,7 +86,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\core\deep_flow.cpp" />
     <ClCompile Include="..\..\src\core\initializer.cpp" />
-    <ClCompile Include="..\..\src\core\loss.cpp" />
     <ClCompile Include="..\..\src\core\node.cpp" />
     <ClCompile Include="..\..\src\core\session.cpp" />
     <ClCompile Include="..\..\src\core\tensor.cpp" />
@@ -140,6 +139,7 @@
     <CudaCompile Include="..\..\src\nodes\restructure.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>
+    <ClCompile Include="..\..\src\nodes\replay_memory.cpp" />
     <ClCompile Include="..\..\src\nodes\softmax.cpp" />
     <ClCompile Include="..\..\src\nodes\transposed_conv_2d.cpp" />
     <ClCompile Include="..\..\src\proto\caffe.pb.cc" />

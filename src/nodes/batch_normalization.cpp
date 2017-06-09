@@ -17,12 +17,12 @@ void BatchNormalization::initForward()
 	_x = (float*)input->value()->mutableData();
 	_y = (float*)output->value()->mutableData();
 	DF_NODE_CUDNN_CHECK(cudnnCreateTensorDescriptor(&_bnScaleBiasMeanVarDesc));
-	if (param.mode() == deepflow::BatchNormalizationparam_Mode_CUDNN_BATCHNORM_PER_ACTIVATION) {
+	if (param.mode() == deepflow::BatchNormalizationParam_Mode_CUDNN_BATCHNORM_PER_ACTIVATION) {
 		_batchNormMode = CUDNN_BATCHNORM_PER_ACTIVATION;
 		DF_NODE_CUDNN_CHECK(cudnnSetTensor4dDescriptor(_bnScaleBiasMeanVarDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, 1, inputDims[1], inputDims[2], inputDims[3]));
 		_size = inputDims[1] * inputDims[2] * inputDims[3];
 	}
-	else if (param.mode() == deepflow::BatchNormalizationparam_Mode_CUDNN_BATCHNORM_SPATIAL) {
+	else if (param.mode() == deepflow::BatchNormalizationParam_Mode_CUDNN_BATCHNORM_SPATIAL) {
 		_batchNormMode = CUDNN_BATCHNORM_SPATIAL;
 		DF_NODE_CUDNN_CHECK(cudnnSetTensor4dDescriptor(_bnScaleBiasMeanVarDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, 1, inputDims[1], 1, 1));
 		_size = inputDims[1];

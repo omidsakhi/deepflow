@@ -39,7 +39,7 @@ void Accumulator::forward() {
 }
 
 void Accumulator::backward() {
-
+	LOG(FATAL);
 }
 
 std::string Accumulator::to_cpp() const

@@ -157,6 +157,7 @@ void Display::forward() {
 }
 
 void Display::backward() {
+	LOG(FATAL);
 }
 
 std::string Display::to_cpp() const

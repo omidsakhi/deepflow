@@ -403,6 +403,19 @@ std::array<std::string, 2> DeepFlow::accumulator(std::string input, ActionTime r
 	return outputs;	
 }
 
+std::string DeepFlow::replay_memory(std::string input, int capacity, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto replay_memory_param = node_param->mutable_replay_memory_param();
+	replay_memory_param->set_capacity(capacity);
+	return node_param->output(0);
+}
+
 void DeepFlow::print(std::initializer_list<std::string> inputs, std::string message, ActionTime printTime, ActionType printType, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -473,7 +486,7 @@ std::string DeepFlow::batch_normalization(std::string input, NormalizationMode m
 		node_param->add_phase(phase);
 	node_param->add_input(input);
 	auto batch_norm_param = node_param->mutable_batch_normalization_param();
-	batch_norm_param->set_mode((deepflow::BatchNormalizationparam_Mode) mode);
+	batch_norm_param->set_mode((deepflow::BatchNormalizationParam_Mode) mode);
 	return node_param->output(0);
 }
 
@@ -484,9 +497,8 @@ std::string DeepFlow::softmax_loss(std::string a, std::string b, std::string nam
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(a);
-	node_param->add_input(b);
-	auto loss_param = node_param->mutable_loss_param();
-	auto softmax_loss_param = loss_param->mutable_softmax_loss_param();
+	node_param->add_input(b);	
+	auto softmax_loss_param = node_param->mutable_softmax_loss_param();
 	return node_param->output(0);	
 }
 
@@ -497,9 +509,8 @@ void DeepFlow::euclidean_loss(std::string a, std::string b, std::string name, st
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(a);
-	node_param->add_input(b);
-	auto loss_param = node_param->mutable_loss_param();
-	auto euclidean_loss_param = loss_param->mutable_euclidean_loss_param();	
+	node_param->add_input(b);	
+	auto euclidean_loss_param = node_param->mutable_euclidean_loss_param();	
 }
 
 std::string DeepFlow::sgd_solver(float momentum, float learning_rate, std::string name, std::string enable_input) {

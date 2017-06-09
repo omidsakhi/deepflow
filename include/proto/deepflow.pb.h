@@ -47,9 +47,9 @@ extern AdamSolverParamDefaultTypeInternal _AdamSolverParam_default_instance_;
 class AddParam;
 class AddParamDefaultTypeInternal;
 extern AddParamDefaultTypeInternal _AddParam_default_instance_;
-class BatchNormalizationparam;
-class BatchNormalizationparamDefaultTypeInternal;
-extern BatchNormalizationparamDefaultTypeInternal _BatchNormalizationparam_default_instance_;
+class BatchNormalizationParam;
+class BatchNormalizationParamDefaultTypeInternal;
+extern BatchNormalizationParamDefaultTypeInternal _BatchNormalizationParam_default_instance_;
 class BiasAddParam;
 class BiasAddParamDefaultTypeInternal;
 extern BiasAddParamDefaultTypeInternal _BiasAddParam_default_instance_;
@@ -113,9 +113,6 @@ extern LeakyReluParamDefaultTypeInternal _LeakyReluParam_default_instance_;
 class LoggerParam;
 class LoggerParamDefaultTypeInternal;
 extern LoggerParamDefaultTypeInternal _LoggerParam_default_instance_;
-class LossParam;
-class LossParamDefaultTypeInternal;
-extern LossParamDefaultTypeInternal _LossParam_default_instance_;
 class MatMulParam;
 class MatMulParamDefaultTypeInternal;
 extern MatMulParamDefaultTypeInternal _MatMulParam_default_instance_;
@@ -155,6 +152,9 @@ extern RandomSelectorParamDefaultTypeInternal _RandomSelectorParam_default_insta
 class ReduceParam;
 class ReduceParamDefaultTypeInternal;
 extern ReduceParamDefaultTypeInternal _ReduceParam_default_instance_;
+class ReplayMemoryParam;
+class ReplayMemoryParamDefaultTypeInternal;
+extern ReplayMemoryParamDefaultTypeInternal _ReplayMemoryParam_default_instance_;
 class RestructureParam;
 class RestructureParamDefaultTypeInternal;
 extern RestructureParamDefaultTypeInternal _RestructureParam_default_instance_;
@@ -366,26 +366,26 @@ inline bool MnistParam_OutputType_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<MnistParam_OutputType>(
     MnistParam_OutputType_descriptor(), name, value);
 }
-enum BatchNormalizationparam_Mode {
-  BatchNormalizationparam_Mode_CUDNN_BATCHNORM_PER_ACTIVATION = 0,
-  BatchNormalizationparam_Mode_CUDNN_BATCHNORM_SPATIAL = 1,
-  BatchNormalizationparam_Mode_BatchNormalizationparam_Mode_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  BatchNormalizationparam_Mode_BatchNormalizationparam_Mode_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+enum BatchNormalizationParam_Mode {
+  BatchNormalizationParam_Mode_CUDNN_BATCHNORM_PER_ACTIVATION = 0,
+  BatchNormalizationParam_Mode_CUDNN_BATCHNORM_SPATIAL = 1,
+  BatchNormalizationParam_Mode_BatchNormalizationParam_Mode_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  BatchNormalizationParam_Mode_BatchNormalizationParam_Mode_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
-bool BatchNormalizationparam_Mode_IsValid(int value);
-const BatchNormalizationparam_Mode BatchNormalizationparam_Mode_Mode_MIN = BatchNormalizationparam_Mode_CUDNN_BATCHNORM_PER_ACTIVATION;
-const BatchNormalizationparam_Mode BatchNormalizationparam_Mode_Mode_MAX = BatchNormalizationparam_Mode_CUDNN_BATCHNORM_SPATIAL;
-const int BatchNormalizationparam_Mode_Mode_ARRAYSIZE = BatchNormalizationparam_Mode_Mode_MAX + 1;
+bool BatchNormalizationParam_Mode_IsValid(int value);
+const BatchNormalizationParam_Mode BatchNormalizationParam_Mode_Mode_MIN = BatchNormalizationParam_Mode_CUDNN_BATCHNORM_PER_ACTIVATION;
+const BatchNormalizationParam_Mode BatchNormalizationParam_Mode_Mode_MAX = BatchNormalizationParam_Mode_CUDNN_BATCHNORM_SPATIAL;
+const int BatchNormalizationParam_Mode_Mode_ARRAYSIZE = BatchNormalizationParam_Mode_Mode_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* BatchNormalizationparam_Mode_descriptor();
-inline const ::std::string& BatchNormalizationparam_Mode_Name(BatchNormalizationparam_Mode value) {
+const ::google::protobuf::EnumDescriptor* BatchNormalizationParam_Mode_descriptor();
+inline const ::std::string& BatchNormalizationParam_Mode_Name(BatchNormalizationParam_Mode value) {
   return ::google::protobuf::internal::NameOfEnum(
-    BatchNormalizationparam_Mode_descriptor(), value);
+    BatchNormalizationParam_Mode_descriptor(), value);
 }
-inline bool BatchNormalizationparam_Mode_Parse(
-    const ::std::string& name, BatchNormalizationparam_Mode* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<BatchNormalizationparam_Mode>(
-    BatchNormalizationparam_Mode_descriptor(), name, value);
+inline bool BatchNormalizationParam_Mode_Parse(
+    const ::std::string& name, BatchNormalizationParam_Mode* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<BatchNormalizationParam_Mode>(
+    BatchNormalizationParam_Mode_descriptor(), name, value);
 }
 enum PhaseParam_PhaseBehaviour {
   PhaseParam_PhaseBehaviour_TRAIN_AND_INFERENCE = 0,
@@ -2937,99 +2937,6 @@ class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
-class LossParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.LossParam) */ {
- public:
-  LossParam();
-  virtual ~LossParam();
-
-  LossParam(const LossParam& from);
-
-  inline LossParam& operator=(const LossParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const LossParam& default_instance();
-
-  static inline const LossParam* internal_default_instance() {
-    return reinterpret_cast<const LossParam*>(
-               &_LossParam_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    26;
-
-  void Swap(LossParam* other);
-
-  // implements Message ----------------------------------------------
-
-  inline LossParam* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  LossParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const LossParam& from);
-  void MergeFrom(const LossParam& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(LossParam* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // .deepflow.SoftmaxLossParam softmax_loss_param = 1;
-  bool has_softmax_loss_param() const;
-  void clear_softmax_loss_param();
-  static const int kSoftmaxLossParamFieldNumber = 1;
-  const ::deepflow::SoftmaxLossParam& softmax_loss_param() const;
-  ::deepflow::SoftmaxLossParam* mutable_softmax_loss_param();
-  ::deepflow::SoftmaxLossParam* release_softmax_loss_param();
-  void set_allocated_softmax_loss_param(::deepflow::SoftmaxLossParam* softmax_loss_param);
-
-  // .deepflow.EuclideanLossParam euclidean_loss_param = 2;
-  bool has_euclidean_loss_param() const;
-  void clear_euclidean_loss_param();
-  static const int kEuclideanLossParamFieldNumber = 2;
-  const ::deepflow::EuclideanLossParam& euclidean_loss_param() const;
-  ::deepflow::EuclideanLossParam* mutable_euclidean_loss_param();
-  ::deepflow::EuclideanLossParam* release_euclidean_loss_param();
-  void set_allocated_euclidean_loss_param(::deepflow::EuclideanLossParam* euclidean_loss_param);
-
-  // @@protoc_insertion_point(class_scope:deepflow.LossParam)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::deepflow::SoftmaxLossParam* softmax_loss_param_;
-  ::deepflow::EuclideanLossParam* euclidean_loss_param_;
-  mutable int _cached_size_;
-  friend struct protobuf_deepflow_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
 class DataGeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.DataGeneratorParam) */ {
  public:
   DataGeneratorParam();
@@ -3050,7 +2957,7 @@ class DataGeneratorParam : public ::google::protobuf::Message /* @@protoc_insert
                &_DataGeneratorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    27;
+    26;
 
   void Swap(DataGeneratorParam* other);
 
@@ -3130,7 +3037,7 @@ class ActivationParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_ActivationParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    28;
+    27;
 
   void Swap(ActivationParam* other);
 
@@ -3249,7 +3156,7 @@ class ImageBatchReaderParam : public ::google::protobuf::Message /* @@protoc_ins
                &_ImageBatchReaderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    29;
+    28;
 
   void Swap(ImageBatchReaderParam* other);
 
@@ -3354,7 +3261,7 @@ class ImageReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_ImageReaderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    30;
+    29;
 
   void Swap(ImageReaderParam* other);
 
@@ -3475,7 +3382,7 @@ class MnistParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_MnistParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    31;
+    30;
 
   void Swap(MnistParam* other);
 
@@ -3636,7 +3543,7 @@ class CastFloatParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_CastFloatParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    32;
+    31;
 
   void Swap(CastFloatParam* other);
 
@@ -3689,39 +3596,39 @@ class CastFloatParam : public ::google::protobuf::Message /* @@protoc_insertion_
 };
 // -------------------------------------------------------------------
 
-class BatchNormalizationparam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.BatchNormalizationparam) */ {
+class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.BatchNormalizationParam) */ {
  public:
-  BatchNormalizationparam();
-  virtual ~BatchNormalizationparam();
+  BatchNormalizationParam();
+  virtual ~BatchNormalizationParam();
 
-  BatchNormalizationparam(const BatchNormalizationparam& from);
+  BatchNormalizationParam(const BatchNormalizationParam& from);
 
-  inline BatchNormalizationparam& operator=(const BatchNormalizationparam& from) {
+  inline BatchNormalizationParam& operator=(const BatchNormalizationParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const BatchNormalizationparam& default_instance();
+  static const BatchNormalizationParam& default_instance();
 
-  static inline const BatchNormalizationparam* internal_default_instance() {
-    return reinterpret_cast<const BatchNormalizationparam*>(
-               &_BatchNormalizationparam_default_instance_);
+  static inline const BatchNormalizationParam* internal_default_instance() {
+    return reinterpret_cast<const BatchNormalizationParam*>(
+               &_BatchNormalizationParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    33;
+    32;
 
-  void Swap(BatchNormalizationparam* other);
+  void Swap(BatchNormalizationParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline BatchNormalizationparam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline BatchNormalizationParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  BatchNormalizationparam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  BatchNormalizationParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const BatchNormalizationparam& from);
-  void MergeFrom(const BatchNormalizationparam& from);
+  void CopyFrom(const BatchNormalizationParam& from);
+  void MergeFrom(const BatchNormalizationParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -3737,7 +3644,7 @@ class BatchNormalizationparam : public ::google::protobuf::Message /* @@protoc_i
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(BatchNormalizationparam* other);
+  void InternalSwap(BatchNormalizationParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -3751,45 +3658,125 @@ class BatchNormalizationparam : public ::google::protobuf::Message /* @@protoc_i
 
   // nested types ----------------------------------------------------
 
-  typedef BatchNormalizationparam_Mode Mode;
+  typedef BatchNormalizationParam_Mode Mode;
   static const Mode CUDNN_BATCHNORM_PER_ACTIVATION =
-    BatchNormalizationparam_Mode_CUDNN_BATCHNORM_PER_ACTIVATION;
+    BatchNormalizationParam_Mode_CUDNN_BATCHNORM_PER_ACTIVATION;
   static const Mode CUDNN_BATCHNORM_SPATIAL =
-    BatchNormalizationparam_Mode_CUDNN_BATCHNORM_SPATIAL;
+    BatchNormalizationParam_Mode_CUDNN_BATCHNORM_SPATIAL;
   static inline bool Mode_IsValid(int value) {
-    return BatchNormalizationparam_Mode_IsValid(value);
+    return BatchNormalizationParam_Mode_IsValid(value);
   }
   static const Mode Mode_MIN =
-    BatchNormalizationparam_Mode_Mode_MIN;
+    BatchNormalizationParam_Mode_Mode_MIN;
   static const Mode Mode_MAX =
-    BatchNormalizationparam_Mode_Mode_MAX;
+    BatchNormalizationParam_Mode_Mode_MAX;
   static const int Mode_ARRAYSIZE =
-    BatchNormalizationparam_Mode_Mode_ARRAYSIZE;
+    BatchNormalizationParam_Mode_Mode_ARRAYSIZE;
   static inline const ::google::protobuf::EnumDescriptor*
   Mode_descriptor() {
-    return BatchNormalizationparam_Mode_descriptor();
+    return BatchNormalizationParam_Mode_descriptor();
   }
   static inline const ::std::string& Mode_Name(Mode value) {
-    return BatchNormalizationparam_Mode_Name(value);
+    return BatchNormalizationParam_Mode_Name(value);
   }
   static inline bool Mode_Parse(const ::std::string& name,
       Mode* value) {
-    return BatchNormalizationparam_Mode_Parse(name, value);
+    return BatchNormalizationParam_Mode_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
 
-  // .deepflow.BatchNormalizationparam.Mode mode = 1;
+  // .deepflow.BatchNormalizationParam.Mode mode = 1;
   void clear_mode();
   static const int kModeFieldNumber = 1;
-  ::deepflow::BatchNormalizationparam_Mode mode() const;
-  void set_mode(::deepflow::BatchNormalizationparam_Mode value);
+  ::deepflow::BatchNormalizationParam_Mode mode() const;
+  void set_mode(::deepflow::BatchNormalizationParam_Mode value);
 
-  // @@protoc_insertion_point(class_scope:deepflow.BatchNormalizationparam)
+  // @@protoc_insertion_point(class_scope:deepflow.BatchNormalizationParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   int mode_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ReplayMemoryParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.ReplayMemoryParam) */ {
+ public:
+  ReplayMemoryParam();
+  virtual ~ReplayMemoryParam();
+
+  ReplayMemoryParam(const ReplayMemoryParam& from);
+
+  inline ReplayMemoryParam& operator=(const ReplayMemoryParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ReplayMemoryParam& default_instance();
+
+  static inline const ReplayMemoryParam* internal_default_instance() {
+    return reinterpret_cast<const ReplayMemoryParam*>(
+               &_ReplayMemoryParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    33;
+
+  void Swap(ReplayMemoryParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ReplayMemoryParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ReplayMemoryParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ReplayMemoryParam& from);
+  void MergeFrom(const ReplayMemoryParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ReplayMemoryParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // int32 capacity = 1;
+  void clear_capacity();
+  static const int kCapacityFieldNumber = 1;
+  ::google::protobuf::int32 capacity() const;
+  void set_capacity(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.ReplayMemoryParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 capacity_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3947,15 +3934,6 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::BlockParam* mutable_block_param();
   ::deepflow::BlockParam* release_block_param();
   void set_allocated_block_param(::deepflow::BlockParam* block_param);
-
-  // .deepflow.LossParam loss_param = 50;
-  bool has_loss_param() const;
-  void clear_loss_param();
-  static const int kLossParamFieldNumber = 50;
-  const ::deepflow::LossParam& loss_param() const;
-  ::deepflow::LossParam* mutable_loss_param();
-  ::deepflow::LossParam* release_loss_param();
-  void set_allocated_loss_param(::deepflow::LossParam* loss_param);
 
   // .deepflow.VariableParam variable_param = 100;
   bool has_variable_param() const;
@@ -4200,14 +4178,14 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::NegateParam* release_negate_param();
   void set_allocated_negate_param(::deepflow::NegateParam* negate_param);
 
-  // .deepflow.BatchNormalizationparam batch_normalization_param = 127;
+  // .deepflow.BatchNormalizationParam batch_normalization_param = 127;
   bool has_batch_normalization_param() const;
   void clear_batch_normalization_param();
   static const int kBatchNormalizationParamFieldNumber = 127;
-  const ::deepflow::BatchNormalizationparam& batch_normalization_param() const;
-  ::deepflow::BatchNormalizationparam* mutable_batch_normalization_param();
-  ::deepflow::BatchNormalizationparam* release_batch_normalization_param();
-  void set_allocated_batch_normalization_param(::deepflow::BatchNormalizationparam* batch_normalization_param);
+  const ::deepflow::BatchNormalizationParam& batch_normalization_param() const;
+  ::deepflow::BatchNormalizationParam* mutable_batch_normalization_param();
+  ::deepflow::BatchNormalizationParam* release_batch_normalization_param();
+  void set_allocated_batch_normalization_param(::deepflow::BatchNormalizationParam* batch_normalization_param);
 
   // .deepflow.MnistParam mnist_param = 128;
   bool has_mnist_param() const;
@@ -4245,6 +4223,33 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::DotParam* release_dot_param();
   void set_allocated_dot_param(::deepflow::DotParam* dot_param);
 
+  // .deepflow.ReplayMemoryParam replay_memory_param = 132;
+  bool has_replay_memory_param() const;
+  void clear_replay_memory_param();
+  static const int kReplayMemoryParamFieldNumber = 132;
+  const ::deepflow::ReplayMemoryParam& replay_memory_param() const;
+  ::deepflow::ReplayMemoryParam* mutable_replay_memory_param();
+  ::deepflow::ReplayMemoryParam* release_replay_memory_param();
+  void set_allocated_replay_memory_param(::deepflow::ReplayMemoryParam* replay_memory_param);
+
+  // .deepflow.SoftmaxLossParam softmax_loss_param = 133;
+  bool has_softmax_loss_param() const;
+  void clear_softmax_loss_param();
+  static const int kSoftmaxLossParamFieldNumber = 133;
+  const ::deepflow::SoftmaxLossParam& softmax_loss_param() const;
+  ::deepflow::SoftmaxLossParam* mutable_softmax_loss_param();
+  ::deepflow::SoftmaxLossParam* release_softmax_loss_param();
+  void set_allocated_softmax_loss_param(::deepflow::SoftmaxLossParam* softmax_loss_param);
+
+  // .deepflow.EuclideanLossParam euclidean_loss_param = 134;
+  bool has_euclidean_loss_param() const;
+  void clear_euclidean_loss_param();
+  static const int kEuclideanLossParamFieldNumber = 134;
+  const ::deepflow::EuclideanLossParam& euclidean_loss_param() const;
+  ::deepflow::EuclideanLossParam* mutable_euclidean_loss_param();
+  ::deepflow::EuclideanLossParam* release_euclidean_loss_param();
+  void set_allocated_euclidean_loss_param(::deepflow::EuclideanLossParam* euclidean_loss_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -4254,7 +4259,6 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::deepflow::BlockParam* block_param_;
-  ::deepflow::LossParam* loss_param_;
   ::deepflow::VariableParam* variable_param_;
   ::deepflow::PlaceHolderParam* place_holder_param_;
   ::deepflow::PhaseplexerParam* phaseplexer_param_;
@@ -4282,11 +4286,14 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::ImageReaderParam* image_reader_param_;
   ::deepflow::MultiplexerParam* multiplexer_param_;
   ::deepflow::NegateParam* negate_param_;
-  ::deepflow::BatchNormalizationparam* batch_normalization_param_;
+  ::deepflow::BatchNormalizationParam* batch_normalization_param_;
   ::deepflow::MnistParam* mnist_param_;
   ::deepflow::DataGeneratorParam* data_generator_param_;
   ::deepflow::ImageBatchReaderParam* image_batch_reader_param_;
   ::deepflow::DotParam* dot_param_;
+  ::deepflow::ReplayMemoryParam* replay_memory_param_;
+  ::deepflow::SoftmaxLossParam* softmax_loss_param_;
+  ::deepflow::EuclideanLossParam* euclidean_loss_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -7230,88 +7237,6 @@ inline void VariableParam::set_allocated_weights(::deepflow::TensorData* weights
 
 // -------------------------------------------------------------------
 
-// LossParam
-
-// .deepflow.SoftmaxLossParam softmax_loss_param = 1;
-inline bool LossParam::has_softmax_loss_param() const {
-  return this != internal_default_instance() && softmax_loss_param_ != NULL;
-}
-inline void LossParam::clear_softmax_loss_param() {
-  if (GetArenaNoVirtual() == NULL && softmax_loss_param_ != NULL) delete softmax_loss_param_;
-  softmax_loss_param_ = NULL;
-}
-inline const ::deepflow::SoftmaxLossParam& LossParam::softmax_loss_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.LossParam.softmax_loss_param)
-  return softmax_loss_param_ != NULL ? *softmax_loss_param_
-                         : *::deepflow::SoftmaxLossParam::internal_default_instance();
-}
-inline ::deepflow::SoftmaxLossParam* LossParam::mutable_softmax_loss_param() {
-  
-  if (softmax_loss_param_ == NULL) {
-    softmax_loss_param_ = new ::deepflow::SoftmaxLossParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.LossParam.softmax_loss_param)
-  return softmax_loss_param_;
-}
-inline ::deepflow::SoftmaxLossParam* LossParam::release_softmax_loss_param() {
-  // @@protoc_insertion_point(field_release:deepflow.LossParam.softmax_loss_param)
-  
-  ::deepflow::SoftmaxLossParam* temp = softmax_loss_param_;
-  softmax_loss_param_ = NULL;
-  return temp;
-}
-inline void LossParam::set_allocated_softmax_loss_param(::deepflow::SoftmaxLossParam* softmax_loss_param) {
-  delete softmax_loss_param_;
-  softmax_loss_param_ = softmax_loss_param;
-  if (softmax_loss_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.LossParam.softmax_loss_param)
-}
-
-// .deepflow.EuclideanLossParam euclidean_loss_param = 2;
-inline bool LossParam::has_euclidean_loss_param() const {
-  return this != internal_default_instance() && euclidean_loss_param_ != NULL;
-}
-inline void LossParam::clear_euclidean_loss_param() {
-  if (GetArenaNoVirtual() == NULL && euclidean_loss_param_ != NULL) delete euclidean_loss_param_;
-  euclidean_loss_param_ = NULL;
-}
-inline const ::deepflow::EuclideanLossParam& LossParam::euclidean_loss_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.LossParam.euclidean_loss_param)
-  return euclidean_loss_param_ != NULL ? *euclidean_loss_param_
-                         : *::deepflow::EuclideanLossParam::internal_default_instance();
-}
-inline ::deepflow::EuclideanLossParam* LossParam::mutable_euclidean_loss_param() {
-  
-  if (euclidean_loss_param_ == NULL) {
-    euclidean_loss_param_ = new ::deepflow::EuclideanLossParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.LossParam.euclidean_loss_param)
-  return euclidean_loss_param_;
-}
-inline ::deepflow::EuclideanLossParam* LossParam::release_euclidean_loss_param() {
-  // @@protoc_insertion_point(field_release:deepflow.LossParam.euclidean_loss_param)
-  
-  ::deepflow::EuclideanLossParam* temp = euclidean_loss_param_;
-  euclidean_loss_param_ = NULL;
-  return temp;
-}
-inline void LossParam::set_allocated_euclidean_loss_param(::deepflow::EuclideanLossParam* euclidean_loss_param) {
-  delete euclidean_loss_param_;
-  euclidean_loss_param_ = euclidean_loss_param;
-  if (euclidean_loss_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.LossParam.euclidean_loss_param)
-}
-
-// -------------------------------------------------------------------
-
 // DataGeneratorParam
 
 // int32 num_samples = 1;
@@ -7646,20 +7571,38 @@ inline void MnistParam::set_batch_size(::google::protobuf::int32 value) {
 
 // -------------------------------------------------------------------
 
-// BatchNormalizationparam
+// BatchNormalizationParam
 
-// .deepflow.BatchNormalizationparam.Mode mode = 1;
-inline void BatchNormalizationparam::clear_mode() {
+// .deepflow.BatchNormalizationParam.Mode mode = 1;
+inline void BatchNormalizationParam::clear_mode() {
   mode_ = 0;
 }
-inline ::deepflow::BatchNormalizationparam_Mode BatchNormalizationparam::mode() const {
-  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationparam.mode)
-  return static_cast< ::deepflow::BatchNormalizationparam_Mode >(mode_);
+inline ::deepflow::BatchNormalizationParam_Mode BatchNormalizationParam::mode() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.mode)
+  return static_cast< ::deepflow::BatchNormalizationParam_Mode >(mode_);
 }
-inline void BatchNormalizationparam::set_mode(::deepflow::BatchNormalizationparam_Mode value) {
+inline void BatchNormalizationParam::set_mode(::deepflow::BatchNormalizationParam_Mode value) {
   
   mode_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationparam.mode)
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.mode)
+}
+
+// -------------------------------------------------------------------
+
+// ReplayMemoryParam
+
+// int32 capacity = 1;
+inline void ReplayMemoryParam::clear_capacity() {
+  capacity_ = 0;
+}
+inline ::google::protobuf::int32 ReplayMemoryParam::capacity() const {
+  // @@protoc_insertion_point(field_get:deepflow.ReplayMemoryParam.capacity)
+  return capacity_;
+}
+inline void ReplayMemoryParam::set_capacity(::google::protobuf::int32 value) {
+  
+  capacity_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.ReplayMemoryParam.capacity)
 }
 
 // -------------------------------------------------------------------
@@ -7963,45 +7906,6 @@ inline void NodeParam::set_allocated_block_param(::deepflow::BlockParam* block_p
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.block_param)
-}
-
-// .deepflow.LossParam loss_param = 50;
-inline bool NodeParam::has_loss_param() const {
-  return this != internal_default_instance() && loss_param_ != NULL;
-}
-inline void NodeParam::clear_loss_param() {
-  if (GetArenaNoVirtual() == NULL && loss_param_ != NULL) delete loss_param_;
-  loss_param_ = NULL;
-}
-inline const ::deepflow::LossParam& NodeParam::loss_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.NodeParam.loss_param)
-  return loss_param_ != NULL ? *loss_param_
-                         : *::deepflow::LossParam::internal_default_instance();
-}
-inline ::deepflow::LossParam* NodeParam::mutable_loss_param() {
-  
-  if (loss_param_ == NULL) {
-    loss_param_ = new ::deepflow::LossParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.loss_param)
-  return loss_param_;
-}
-inline ::deepflow::LossParam* NodeParam::release_loss_param() {
-  // @@protoc_insertion_point(field_release:deepflow.NodeParam.loss_param)
-  
-  ::deepflow::LossParam* temp = loss_param_;
-  loss_param_ = NULL;
-  return temp;
-}
-inline void NodeParam::set_allocated_loss_param(::deepflow::LossParam* loss_param) {
-  delete loss_param_;
-  loss_param_ = loss_param;
-  if (loss_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.loss_param)
 }
 
 // .deepflow.VariableParam variable_param = 100;
@@ -9057,7 +8961,7 @@ inline void NodeParam::set_allocated_negate_param(::deepflow::NegateParam* negat
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.negate_param)
 }
 
-// .deepflow.BatchNormalizationparam batch_normalization_param = 127;
+// .deepflow.BatchNormalizationParam batch_normalization_param = 127;
 inline bool NodeParam::has_batch_normalization_param() const {
   return this != internal_default_instance() && batch_normalization_param_ != NULL;
 }
@@ -9065,27 +8969,27 @@ inline void NodeParam::clear_batch_normalization_param() {
   if (GetArenaNoVirtual() == NULL && batch_normalization_param_ != NULL) delete batch_normalization_param_;
   batch_normalization_param_ = NULL;
 }
-inline const ::deepflow::BatchNormalizationparam& NodeParam::batch_normalization_param() const {
+inline const ::deepflow::BatchNormalizationParam& NodeParam::batch_normalization_param() const {
   // @@protoc_insertion_point(field_get:deepflow.NodeParam.batch_normalization_param)
   return batch_normalization_param_ != NULL ? *batch_normalization_param_
-                         : *::deepflow::BatchNormalizationparam::internal_default_instance();
+                         : *::deepflow::BatchNormalizationParam::internal_default_instance();
 }
-inline ::deepflow::BatchNormalizationparam* NodeParam::mutable_batch_normalization_param() {
+inline ::deepflow::BatchNormalizationParam* NodeParam::mutable_batch_normalization_param() {
   
   if (batch_normalization_param_ == NULL) {
-    batch_normalization_param_ = new ::deepflow::BatchNormalizationparam;
+    batch_normalization_param_ = new ::deepflow::BatchNormalizationParam;
   }
   // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.batch_normalization_param)
   return batch_normalization_param_;
 }
-inline ::deepflow::BatchNormalizationparam* NodeParam::release_batch_normalization_param() {
+inline ::deepflow::BatchNormalizationParam* NodeParam::release_batch_normalization_param() {
   // @@protoc_insertion_point(field_release:deepflow.NodeParam.batch_normalization_param)
   
-  ::deepflow::BatchNormalizationparam* temp = batch_normalization_param_;
+  ::deepflow::BatchNormalizationParam* temp = batch_normalization_param_;
   batch_normalization_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_batch_normalization_param(::deepflow::BatchNormalizationparam* batch_normalization_param) {
+inline void NodeParam::set_allocated_batch_normalization_param(::deepflow::BatchNormalizationParam* batch_normalization_param) {
   delete batch_normalization_param_;
   batch_normalization_param_ = batch_normalization_param;
   if (batch_normalization_param) {
@@ -9250,6 +9154,123 @@ inline void NodeParam::set_allocated_dot_param(::deepflow::DotParam* dot_param) 
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.dot_param)
+}
+
+// .deepflow.ReplayMemoryParam replay_memory_param = 132;
+inline bool NodeParam::has_replay_memory_param() const {
+  return this != internal_default_instance() && replay_memory_param_ != NULL;
+}
+inline void NodeParam::clear_replay_memory_param() {
+  if (GetArenaNoVirtual() == NULL && replay_memory_param_ != NULL) delete replay_memory_param_;
+  replay_memory_param_ = NULL;
+}
+inline const ::deepflow::ReplayMemoryParam& NodeParam::replay_memory_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.replay_memory_param)
+  return replay_memory_param_ != NULL ? *replay_memory_param_
+                         : *::deepflow::ReplayMemoryParam::internal_default_instance();
+}
+inline ::deepflow::ReplayMemoryParam* NodeParam::mutable_replay_memory_param() {
+  
+  if (replay_memory_param_ == NULL) {
+    replay_memory_param_ = new ::deepflow::ReplayMemoryParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.replay_memory_param)
+  return replay_memory_param_;
+}
+inline ::deepflow::ReplayMemoryParam* NodeParam::release_replay_memory_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.replay_memory_param)
+  
+  ::deepflow::ReplayMemoryParam* temp = replay_memory_param_;
+  replay_memory_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_replay_memory_param(::deepflow::ReplayMemoryParam* replay_memory_param) {
+  delete replay_memory_param_;
+  replay_memory_param_ = replay_memory_param;
+  if (replay_memory_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.replay_memory_param)
+}
+
+// .deepflow.SoftmaxLossParam softmax_loss_param = 133;
+inline bool NodeParam::has_softmax_loss_param() const {
+  return this != internal_default_instance() && softmax_loss_param_ != NULL;
+}
+inline void NodeParam::clear_softmax_loss_param() {
+  if (GetArenaNoVirtual() == NULL && softmax_loss_param_ != NULL) delete softmax_loss_param_;
+  softmax_loss_param_ = NULL;
+}
+inline const ::deepflow::SoftmaxLossParam& NodeParam::softmax_loss_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.softmax_loss_param)
+  return softmax_loss_param_ != NULL ? *softmax_loss_param_
+                         : *::deepflow::SoftmaxLossParam::internal_default_instance();
+}
+inline ::deepflow::SoftmaxLossParam* NodeParam::mutable_softmax_loss_param() {
+  
+  if (softmax_loss_param_ == NULL) {
+    softmax_loss_param_ = new ::deepflow::SoftmaxLossParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.softmax_loss_param)
+  return softmax_loss_param_;
+}
+inline ::deepflow::SoftmaxLossParam* NodeParam::release_softmax_loss_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.softmax_loss_param)
+  
+  ::deepflow::SoftmaxLossParam* temp = softmax_loss_param_;
+  softmax_loss_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_softmax_loss_param(::deepflow::SoftmaxLossParam* softmax_loss_param) {
+  delete softmax_loss_param_;
+  softmax_loss_param_ = softmax_loss_param;
+  if (softmax_loss_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.softmax_loss_param)
+}
+
+// .deepflow.EuclideanLossParam euclidean_loss_param = 134;
+inline bool NodeParam::has_euclidean_loss_param() const {
+  return this != internal_default_instance() && euclidean_loss_param_ != NULL;
+}
+inline void NodeParam::clear_euclidean_loss_param() {
+  if (GetArenaNoVirtual() == NULL && euclidean_loss_param_ != NULL) delete euclidean_loss_param_;
+  euclidean_loss_param_ = NULL;
+}
+inline const ::deepflow::EuclideanLossParam& NodeParam::euclidean_loss_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.euclidean_loss_param)
+  return euclidean_loss_param_ != NULL ? *euclidean_loss_param_
+                         : *::deepflow::EuclideanLossParam::internal_default_instance();
+}
+inline ::deepflow::EuclideanLossParam* NodeParam::mutable_euclidean_loss_param() {
+  
+  if (euclidean_loss_param_ == NULL) {
+    euclidean_loss_param_ = new ::deepflow::EuclideanLossParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.euclidean_loss_param)
+  return euclidean_loss_param_;
+}
+inline ::deepflow::EuclideanLossParam* NodeParam::release_euclidean_loss_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.euclidean_loss_param)
+  
+  ::deepflow::EuclideanLossParam* temp = euclidean_loss_param_;
+  euclidean_loss_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_euclidean_loss_param(::deepflow::EuclideanLossParam* euclidean_loss_param) {
+  delete euclidean_loss_param_;
+  euclidean_loss_param_ = euclidean_loss_param;
+  if (euclidean_loss_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.euclidean_loss_param)
 }
 
 // -------------------------------------------------------------------
@@ -10565,10 +10586,10 @@ template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::MnistParam_OutputType>() {
   return ::deepflow::MnistParam_OutputType_descriptor();
 }
-template <> struct is_proto_enum< ::deepflow::BatchNormalizationparam_Mode> : ::google::protobuf::internal::true_type {};
+template <> struct is_proto_enum< ::deepflow::BatchNormalizationParam_Mode> : ::google::protobuf::internal::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::BatchNormalizationparam_Mode>() {
-  return ::deepflow::BatchNormalizationparam_Mode_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::BatchNormalizationParam_Mode>() {
+  return ::deepflow::BatchNormalizationParam_Mode_descriptor();
 }
 template <> struct is_proto_enum< ::deepflow::PhaseParam_PhaseBehaviour> : ::google::protobuf::internal::true_type {};
 template <>
