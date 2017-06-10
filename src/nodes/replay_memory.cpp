@@ -1,18 +1,21 @@
 #include "nodes/replay_memory.h"
 
-ReplayMemory::ReplayMemory(const deepflow::NodeParam & param)
+ReplayMemory::ReplayMemory(const deepflow::NodeParam & param) : Node(param)
 {
 	LOG_IF(FATAL, param.has_replay_memory_param() == false) << "param.has_replay_memory_param() == false";
 }
 
 void ReplayMemory::initForward()
 {
-	auto capacity = _param.replay_memory_param().capacity();
+	_capacity = _param.replay_memory_param().capacity();
 	auto inputDims = _inputs[0]->value()->dims();
-	_batch_size = inputDims[0];
-	LOG_IF(FATAL, capacity % _batch_size != 0) << "Memory capacity must be dividable by the batch size.";
-	size_t mem_size = capacity * inputDims[1] * inputDims[2] * inputDims[3];
-	DF_NODE_CUDA_CHECK(cudaMalloc(&dev_memory, mem_size * sizeof(float)));
+	_num_samples_per_batch = inputDims[0];
+	LOG_IF(FATAL, _capacity % _num_samples_per_batch != 0) << "Memory capacity must be dividable by the batch size.";
+	_size_per_sample = inputDims[1] * inputDims[2] * inputDims[3];
+	_mem_size = _capacity * _size_per_sample;
+	DF_NODE_CUDA_CHECK(cudaMalloc(&dev_memory, _mem_size * sizeof(float)));
+	_outputs[0]->initValue(inputDims);
+	LOG(INFO) << "Initializing ReplayMemory " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void ReplayMemory::initBackward()
@@ -22,15 +25,19 @@ void ReplayMemory::initBackward()
 void ReplayMemory::forward()
 {	
 	size_t n = _inputs[0]->value()->size();
+	LOG_IF(INFO, (_context && _context->debug_level > 2)) << " INPUT HEAD: " << _input_head;
 	cpy(n, 1.0f, _inputs[0]->value()->data(), 0.0f, dev_memory + _input_head);
-	if ((_input_head + _batch_size) >= _capacity) {
+	if ((_input_head + _num_samples_per_batch * _size_per_sample) >= _mem_size) {
 		_input_head = 0;
-		_output_head = rand() % (_capacity - _batch_size);
+		_available_samples = _capacity;
 	}
-	else {
-		_output_head = rand() % _input_head;
-		_input_head += _batch_size;		
+	else {		
+		_input_head += _num_samples_per_batch * _size_per_sample;
+		_available_samples += _num_samples_per_batch;
+		_available_samples = (_available_samples >= _capacity) ? _capacity : _available_samples;
 	}
+	_output_head = (rand() % (_available_samples - _num_samples_per_batch + 1)) * _size_per_sample;
+	LOG_IF(INFO, (_context && _context->debug_level > 2)) << " OUTPUT HEAD: " << _output_head;
 	cpy(n, 1.0, dev_memory + _output_head, 0.0f, _outputs[0]->value()->mutableData());
 }
 

@@ -54,31 +54,34 @@ std::shared_ptr<Session> create_generator() {
 	
 	auto mean = 0;
 	auto stddev = 0.02;
+	auto negative_slope = 0.02;
 
-	auto g_solver = df.gain_solver();// df.adam_solver(0.002f, 0.5f, 0.75f);
+	auto g_solver = df.adam_solver(0.00001f, 0.5f, 0.999f);
 	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, mean, stddev, "random_input"), 10000, "", "input");
 	
 	auto gfc_w = df.variable(df.random_normal({ 100, 128, 4, 4 }, mean, stddev), g_solver, "gfc_w");
 	auto gfc = df.matmul(gin, gfc_w, "gfc");
-	auto gfc_r = df.relu(gfc);
+	auto gfc_r = df.leaky_relu(gfc, negative_slope);
 
 	auto gconv1_f = df.variable(df.random_normal({ 128, 64, 2, 2 }, mean, stddev), g_solver, "gconv1_f");
 	auto gconv1_t = df.transposed_conv2d(gfc_r, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1");
 	auto gconv1_n = df.batch_normalization(gconv1_t, DeepFlow::PER_ACTIVATION);
-	auto gconv1_r = df.relu(gconv1_n);
+	auto gconv1_r = df.leaky_relu(gconv1_n, negative_slope);
 	
 	auto gconv2_f = df.variable(df.random_normal({ 64, 32, 3, 3 }, mean, stddev), g_solver, "gconv2_f");
 	auto gconv2_t = df.transposed_conv2d(gconv1_r, gconv2_f, 1, 1, 2, 2, 1, 1, "gconv2");
 	auto gconv2_n = df.batch_normalization(gconv2_t, DeepFlow::PER_ACTIVATION);
-	auto gconv2_r = df.relu(gconv2_n);
+	auto gconv2_r = df.leaky_relu(gconv2_n, negative_slope);
 
 	auto gconv3_f = df.variable(df.random_normal({ 32, 1, 3, 3 }, mean, stddev), g_solver, "gconv3_f");
-	auto gconv3_t = df.transposed_conv2d(gconv2_r, gconv3_f, 1, 1, 2, 2, 1, 1, "gconv3");
-	//auto gconv3_n = df.batch_normalization(gconv3_t, DeepFlow::PER_ACTIVATION);
-	
-	auto gout = df.tanh(gconv3_t, "gout");
-	auto disp = df.display(gout, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
+	auto gconv3_t = df.transposed_conv2d(gconv2_r, gconv3_f, 1, 1, 2, 2, 1, 1, "gconv3");	
+	auto gconv3_n = df.batch_normalization(gconv3_t, DeepFlow::PER_ACTIVATION);
 
+	auto gout = df.tanh(gconv3_n, "gout");
+	auto disp = df.display(gout, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
+	
+	//auto replay_memory = df.replay_memory(gout, 10000, "replay_memory");
+	
 	return df.session();
 }
 
@@ -88,8 +91,8 @@ std::shared_ptr<Session> create_discriminator() {
 	auto stddev = 0.02;
 	auto d_solver = df.adam_solver(0.0002f, 0.5f, 0.999f);
 	auto negative_slope = 0.1;
-	auto input = df.place_holder({ FLAGS_batch , 1, 28, 28 }, Tensor::Float, "input");	
-	
+	auto input = df.place_holder({ FLAGS_batch , 1, 28, 28 }, Tensor::Float, "input");		
+
 	auto conv1_w = df.variable(df.random_uniform({ 16, 1, 3, 3 }, -0.100000, 0.100000), d_solver, "conv1_w");
 	auto conv1 = df.conv2d(input, conv1_w, 1, 1, 2, 2, 1, 1, "conv1");
 	//auto conv1_n = df.batch_normalization(conv1, DeepFlow::PER_ACTIVATION);
@@ -149,6 +152,7 @@ void main(int argc, char** argv) {
 
 	auto mnist_reader_data = mnist_reader->get_node("mnist_data");
 	auto generator_output = generator->get_node("gout");
+	//auto replay_memory_output = generator->get_node("replay_memory");
 	auto discriminator_input = discriminator->get_placeholder("input");
 	auto discriminator_output = discriminator->get_node("dout");
 	auto generator_labels_output = generator_labels->get_node("generator_labels");
@@ -162,11 +166,10 @@ void main(int argc, char** argv) {
 
 	for (int i = 1; i <= FLAGS_epoch && execution_context->quit != true; ++i) {
 		std::cout << "Epoch: " << i << std::endl;		
-		for (int k = 1; k <= 2; ++k) {			
+		for (int k = 0; k <= 2; ++k) {			
 			discriminator->reset_gradients();
-			loss->reset_gradients();
-			auto select = select_dist(gen);
-			if (select == 0) { 
+			loss->reset_gradients();			
+			if (k == 1) { 
 				// GENERATOR
 				std::cout << " GENERATOR INPUT " << std::endl;
 				generator->forward();

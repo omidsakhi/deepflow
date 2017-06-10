@@ -15,9 +15,12 @@ public:
 	ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
 	BackwardType backwardType() { return NEVER_BACKWARD; }
 private:
-	int _batch_size;
-	int _capacity;	
-	int _input_head = 0;
-	int _output_head = 0;
+	int _num_samples_per_batch = 0;
+	int _capacity = 0;	
+	size_t _input_head = 0;
+	size_t _output_head = 0;
+	size_t _mem_size;
+	int _available_samples = 0;
+	int _size_per_sample = 0;
 	float *dev_memory;
 };
