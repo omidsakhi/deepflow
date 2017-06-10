@@ -232,6 +232,7 @@ message BatchNormalizationParam {
 		CUDNN_BATCHNORM_SPATIAL        = 1;
 	}
 	Mode mode = 1;
+	float exp_avg_factor = 2;
 }
 
 message ReplayMemoryParam {

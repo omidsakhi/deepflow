@@ -490,7 +490,7 @@ void DeepFlow::psnr(std::string a, std::string b, ActionTime printTime, std::str
 	psnr_param->set_print_time((deepflow::ActionTime)printTime);
 }
 
-std::string DeepFlow::batch_normalization(std::string input, NormalizationMode mode, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::batch_normalization(std::string input, NormalizationMode mode, float exponential_average_factor, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -500,6 +500,7 @@ std::string DeepFlow::batch_normalization(std::string input, NormalizationMode m
 	node_param->add_input(input);
 	auto batch_norm_param = node_param->mutable_batch_normalization_param();
 	batch_norm_param->set_mode((deepflow::BatchNormalizationParam_Mode) mode);
+	batch_norm_param->set_exp_avg_factor(exponential_average_factor);
 	return node_param->output(0);
 }
 

@@ -122,7 +122,7 @@ public:
 	void psnr(std::string a, std::string b, ActionTime printTime = ActionTime::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
 
 	// NORMALIZATION
-	std::string batch_normalization(std::string input, NormalizationMode mode, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
+	std::string batch_normalization(std::string input, NormalizationMode mode, float exponential_average_factor = 0.0f, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
 
 	// OTHER
 	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});

@@ -8,6 +8,7 @@ BatchNormalization::BatchNormalization(const deepflow::NodeParam & param) : Node
 void BatchNormalization::initForward()
 {
 	auto param = _param.batch_normalization_param();
+	_exp_avg_factor = param.exp_avg_factor();
 	auto input = _inputs[0];
 	auto output = _outputs[0];
 	auto inputDims = input->value()->dims();
@@ -39,6 +40,10 @@ void BatchNormalization::initForward()
 	fill(_size, 1, _bnScale);
 	DF_NODE_CUDA_CHECK(cudaMalloc(&_resultSaveMean, _size * sizeof(float)));
 	DF_NODE_CUDA_CHECK(cudaMalloc(&_resultSaveInvVariance, _size * sizeof(float)));
+	if (_exp_avg_factor != 0) {		
+		DF_NODE_CUDA_CHECK(cudaMalloc(&_resultRunningMean, _size * sizeof(float)));
+		DF_NODE_CUDA_CHECK(cudaMalloc(&_resultRunningVariance, _size * sizeof(float)));
+	}
 }
 
 void BatchNormalization::initBackward()
@@ -64,9 +69,9 @@ void BatchNormalization::forward()
 				_bnScaleBiasMeanVarDesc,
 				_bnScale,
 				_bnBias,
-				0,
-				nullptr,
-				nullptr,
+				_exp_avg_factor,
+				_resultRunningMean,
+				_resultRunningVariance,
 				_eps,
 				_resultSaveMean,
 				_resultSaveInvVariance
