@@ -56,7 +56,7 @@ std::shared_ptr<Session> create_generator() {
 	auto stddev = 0.02;
 	auto negative_slope = 0.02;
 
-	auto g_solver = df.adam_solver(0.00001f, 0.5f, 0.999f);
+	auto g_solver = df.adam_solver(0.00002f, 0.5f, 0.999f);
 	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, mean, stddev, "random_input"), 10000, "", "input");
 	
 	auto gfc_w = df.variable(df.random_normal({ 100, 128, 4, 4 }, mean, stddev), g_solver, "gfc_w");
@@ -65,19 +65,19 @@ std::shared_ptr<Session> create_generator() {
 
 	auto gconv1_f = df.variable(df.random_normal({ 128, 64, 2, 2 }, mean, stddev), g_solver, "gconv1_f");
 	auto gconv1_t = df.transposed_conv2d(gfc_r, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1");
-	auto gconv1_n = df.batch_normalization(gconv1_t, DeepFlow::PER_ACTIVATION);
+	auto gconv1_n = df.batch_normalization(gconv1_t, DeepFlow::SPATIAL);
 	auto gconv1_r = df.leaky_relu(gconv1_n, negative_slope);
 	
 	auto gconv2_f = df.variable(df.random_normal({ 64, 32, 3, 3 }, mean, stddev), g_solver, "gconv2_f");
 	auto gconv2_t = df.transposed_conv2d(gconv1_r, gconv2_f, 1, 1, 2, 2, 1, 1, "gconv2");
-	auto gconv2_n = df.batch_normalization(gconv2_t, DeepFlow::PER_ACTIVATION);
+	auto gconv2_n = df.batch_normalization(gconv2_t, DeepFlow::SPATIAL);
 	auto gconv2_r = df.leaky_relu(gconv2_n, negative_slope);
 
 	auto gconv3_f = df.variable(df.random_normal({ 32, 1, 3, 3 }, mean, stddev), g_solver, "gconv3_f");
 	auto gconv3_t = df.transposed_conv2d(gconv2_r, gconv3_f, 1, 1, 2, 2, 1, 1, "gconv3");	
-	auto gconv3_n = df.batch_normalization(gconv3_t, DeepFlow::PER_ACTIVATION);
+	auto gconv3_n = df.batch_normalization(gconv3_t, DeepFlow::SPATIAL);
 
-	auto gout = df.tanh(gconv3_n, "gout");
+	auto gout = df.tanh(gconv3_t, "gout");
 	auto disp = df.display(gout, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
 	
 	//auto replay_memory = df.replay_memory(gout, 10000, "replay_memory");
