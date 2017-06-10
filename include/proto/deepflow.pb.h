@@ -3695,11 +3695,18 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
   ::deepflow::BatchNormalizationParam_Mode mode() const;
   void set_mode(::deepflow::BatchNormalizationParam_Mode value);
 
+  // float exp_avg_factor = 2;
+  void clear_exp_avg_factor();
+  static const int kExpAvgFactorFieldNumber = 2;
+  float exp_avg_factor() const;
+  void set_exp_avg_factor(float value);
+
   // @@protoc_insertion_point(class_scope:deepflow.BatchNormalizationParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   int mode_;
+  float exp_avg_factor_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -7671,6 +7678,20 @@ inline void BatchNormalizationParam::set_mode(::deepflow::BatchNormalizationPara
   
   mode_ = value;
   // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.mode)
+}
+
+// float exp_avg_factor = 2;
+inline void BatchNormalizationParam::clear_exp_avg_factor() {
+  exp_avg_factor_ = 0;
+}
+inline float BatchNormalizationParam::exp_avg_factor() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.exp_avg_factor)
+  return exp_avg_factor_;
+}
+inline void BatchNormalizationParam::set_exp_avg_factor(float value) {
+  
+  exp_avg_factor_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.exp_avg_factor)
 }
 
 // -------------------------------------------------------------------
