@@ -57,7 +57,7 @@ std::shared_ptr<Session> create_generator() {
 	auto negative_slope = 0.02;
 
 	auto g_solver = df.adam_solver(0.00002f, 0.5f, 0.999f);
-	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, mean, stddev, "random_input"), 10000, "", "input");
+	auto gin = df.data_generator(df.three_state({ FLAGS_batch, 100, 1, 1 }, "random_input"), 10000, "", "input");
 	
 	auto gfc_w = df.variable(df.random_normal({ 100, 128, 4, 4 }, mean, stddev), g_solver, "gfc_w");
 	auto gfc = df.matmul(gin, gfc_w, "gfc");

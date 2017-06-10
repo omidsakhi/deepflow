@@ -107,6 +107,9 @@ extern InitRandomUniformParamDefaultTypeInternal _InitRandomUniformParam_default
 class InitStepParam;
 class InitStepParamDefaultTypeInternal;
 extern InitStepParamDefaultTypeInternal _InitStepParam_default_instance_;
+class InitThreeStateParam;
+class InitThreeStateParamDefaultTypeInternal;
+extern InitThreeStateParamDefaultTypeInternal _InitThreeStateParam_default_instance_;
 class LeakyReluParam;
 class LeakyReluParamDefaultTypeInternal;
 extern LeakyReluParamDefaultTypeInternal _LeakyReluParam_default_instance_;
@@ -5012,6 +5015,79 @@ class InitStepParam : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
+class InitThreeStateParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.InitThreeStateParam) */ {
+ public:
+  InitThreeStateParam();
+  virtual ~InitThreeStateParam();
+
+  InitThreeStateParam(const InitThreeStateParam& from);
+
+  inline InitThreeStateParam& operator=(const InitThreeStateParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const InitThreeStateParam& default_instance();
+
+  static inline const InitThreeStateParam* internal_default_instance() {
+    return reinterpret_cast<const InitThreeStateParam*>(
+               &_InitThreeStateParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    44;
+
+  void Swap(InitThreeStateParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline InitThreeStateParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  InitThreeStateParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const InitThreeStateParam& from);
+  void MergeFrom(const InitThreeStateParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(InitThreeStateParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:deepflow.InitThreeStateParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.InitParam) */ {
  public:
   InitParam();
@@ -5032,7 +5108,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_InitParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    44;
+    45;
 
   void Swap(InitParam* other);
 
@@ -5153,6 +5229,15 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::InitRandomNormalParam* release_random_normal_param();
   void set_allocated_random_normal_param(::deepflow::InitRandomNormalParam* random_normal_param);
 
+  // .deepflow.InitThreeStateParam three_state_param = 9;
+  bool has_three_state_param() const;
+  void clear_three_state_param();
+  static const int kThreeStateParamFieldNumber = 9;
+  const ::deepflow::InitThreeStateParam& three_state_param() const;
+  ::deepflow::InitThreeStateParam* mutable_three_state_param();
+  ::deepflow::InitThreeStateParam* release_three_state_param();
+  void set_allocated_three_state_param(::deepflow::InitThreeStateParam* three_state_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.InitParam)
  private:
 
@@ -5165,6 +5250,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::InitRandomUniformParam* random_uniform_param_;
   ::deepflow::InitStepParam* step_param_;
   ::deepflow::InitRandomNormalParam* random_normal_param_;
+  ::deepflow::InitThreeStateParam* three_state_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -5190,7 +5276,7 @@ class SGDSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_SGDSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    45;
+    46;
 
   void Swap(SGDSolverParam* other);
 
@@ -5277,7 +5363,7 @@ class GainSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_GainSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    46;
+    47;
 
   void Swap(GainSolverParam* other);
 
@@ -5392,7 +5478,7 @@ class AdaDeltaSolverParam : public ::google::protobuf::Message /* @@protoc_inser
                &_AdaDeltaSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    47;
+    48;
 
   void Swap(AdaDeltaSolverParam* other);
 
@@ -5486,7 +5572,7 @@ class AdamSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_AdamSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    48;
+    49;
 
   void Swap(AdamSolverParam* other);
 
@@ -5587,7 +5673,7 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    49;
+    50;
 
   void Swap(SolverParam* other);
 
@@ -5730,7 +5816,7 @@ class PhaseParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_PhaseParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    50;
+    51;
 
   void Swap(PhaseParam* other);
 
@@ -5855,7 +5941,7 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_BlockParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    51;
+    52;
 
   void Swap(BlockParam* other);
 
@@ -9423,6 +9509,10 @@ inline void InitStepParam::set_max(float value) {
 
 // -------------------------------------------------------------------
 
+// InitThreeStateParam
+
+// -------------------------------------------------------------------
+
 // InitParam
 
 // string name = 1;
@@ -9749,6 +9839,45 @@ inline void InitParam::set_allocated_random_normal_param(::deepflow::InitRandomN
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.random_normal_param)
+}
+
+// .deepflow.InitThreeStateParam three_state_param = 9;
+inline bool InitParam::has_three_state_param() const {
+  return this != internal_default_instance() && three_state_param_ != NULL;
+}
+inline void InitParam::clear_three_state_param() {
+  if (GetArenaNoVirtual() == NULL && three_state_param_ != NULL) delete three_state_param_;
+  three_state_param_ = NULL;
+}
+inline const ::deepflow::InitThreeStateParam& InitParam::three_state_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.InitParam.three_state_param)
+  return three_state_param_ != NULL ? *three_state_param_
+                         : *::deepflow::InitThreeStateParam::internal_default_instance();
+}
+inline ::deepflow::InitThreeStateParam* InitParam::mutable_three_state_param() {
+  
+  if (three_state_param_ == NULL) {
+    three_state_param_ = new ::deepflow::InitThreeStateParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.InitParam.three_state_param)
+  return three_state_param_;
+}
+inline ::deepflow::InitThreeStateParam* InitParam::release_three_state_param() {
+  // @@protoc_insertion_point(field_release:deepflow.InitParam.three_state_param)
+  
+  ::deepflow::InitThreeStateParam* temp = three_state_param_;
+  three_state_param_ = NULL;
+  return temp;
+}
+inline void InitParam::set_allocated_three_state_param(::deepflow::InitThreeStateParam* three_state_param) {
+  delete three_state_param_;
+  three_state_param_ = three_state_param;
+  if (three_state_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.three_state_param)
 }
 
 // -------------------------------------------------------------------
@@ -10439,6 +10568,8 @@ BlockParam::initializer() const {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

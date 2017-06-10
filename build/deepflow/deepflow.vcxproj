@@ -39,6 +39,7 @@
     <ClInclude Include="..\..\include\initializers\random_normal.h" />
     <ClInclude Include="..\..\include\initializers\random_uniform.h" />
     <ClInclude Include="..\..\include\initializers\step.h" />
+    <ClInclude Include="..\..\include\initializers\three_state.h" />
     <ClInclude Include="..\..\include\nodes\accumulator.h" />
     <ClInclude Include="..\..\include\nodes\activation.h" />
     <ClInclude Include="..\..\include\nodes\add.h" />
@@ -121,6 +122,7 @@
       <FileType>CppCode</FileType>
     </CudaCompile>
     <ClCompile Include="..\..\src\core\terminal.cpp" />
+    <ClCompile Include="..\..\src\initializers\three_state.cpp" />
     <ClCompile Include="..\..\src\nodes\activation.cpp" />
     <ClCompile Include="..\..\src\nodes\batch_normalization.cpp" />
     <ClCompile Include="..\..\src\nodes\block.cpp" />

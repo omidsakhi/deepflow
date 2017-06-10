@@ -1,4 +1,3 @@
-#include "core/common_cu.h"
 
 #include "initializers/random_normal.h"
 #include "nodes/variable.h"

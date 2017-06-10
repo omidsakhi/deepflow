@@ -318,6 +318,10 @@ message InitStepParam {
 	float max = 2;	
 }
 
+message InitThreeStateParam {
+
+}
+
 message InitParam {
   string name = 1;
   TensorParam tensor_param = 2;
@@ -327,6 +331,7 @@ message InitParam {
   InitRandomUniformParam random_uniform_param = 6;
   InitStepParam step_param = 7;
   InitRandomNormalParam random_normal_param = 8;
+  InitThreeStateParam three_state_param = 9;
 }
 
 message SGDSolverParam {

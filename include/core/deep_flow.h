@@ -56,6 +56,7 @@ public:
 	std::string random_uniform(std::initializer_list<int> dims, float min, float max, std::string name = "random_uniform");
 	std::string random_normal(std::initializer_list<int> dims, float mean, float stddev, std::string name = "random_normal");
 	std::string step(std::initializer_list<int> dims, float min, float max, std::string name = "step");
+	std::string three_state(std::initializer_list<int> dims, std::string name = "three_state");
 
 	// VARIABLES & PLACE HOLDER
 	std::string variable(std::string initializer, std::string solver = "", std::string name = "var", std::initializer_list<std::string> phases = {});
