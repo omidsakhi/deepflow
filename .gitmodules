@@ -14,3 +14,7 @@
 	path = third-party/opencv
 	url = https://github.com/opencv/opencv
 	ignore = dirty
+[submodule "third-party/socket.io-client-cpp"]
+	path = third-party/socket.io-client-cpp
+	url = https://github.com/socketio/socket.io-client-cpp
+	ignore = dirty
