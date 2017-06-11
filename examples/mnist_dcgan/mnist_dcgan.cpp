@@ -90,27 +90,27 @@ std::shared_ptr<Session> create_discriminator() {
 	DeepFlow df;
 	auto mean = 0;
 	auto stddev = 0.02;
-	auto d_solver = df.adam_solver(0.0002f, 0.5f, 0.999f);
+	auto d_solver = df.adam_solver(0.0002f, 0.9f, 0.999f);
 	auto negative_slope = 0.1;
 	auto input = df.place_holder({ FLAGS_batch , 1, 28, 28 }, Tensor::Float, "input");		
 
-	auto conv1_w = df.variable(df.random_uniform({ 16, 1, 3, 3 }, -0.100000, 0.100000), d_solver, "conv1_w");
-	auto conv1 = df.conv2d(input, conv1_w, 1, 1, 2, 2, 1, 1, "conv1");
-	//auto conv1_n = df.batch_normalization(conv1, DeepFlow::PER_ACTIVATION);
+	auto conv1_w = df.variable(df.random_uniform({ 64, 1, 3, 3 }, -0.100000, 0.100000), d_solver, "conv1_w");
+	auto conv1 = df.conv2d(input, conv1_w, 1, 1, 2, 2, 1, 1, "conv1");	
 	auto conv1_r = df.leaky_relu(conv1, negative_slope);
+	//auto conv1_n = df.batch_normalization(conv1_r, DeepFlow::SPATIAL);
 	
-	auto conv2_w = df.variable(df.random_uniform({ 32, 16, 3, 3 }, -0.100000, 0.100000), d_solver, "conv2_w");
-	auto conv2 = df.conv2d(conv1_r, conv2_w, 1, 1, 2, 2, 1, 1, "conv2");
-	//auto conv2_n = df.batch_normalization(conv2, DeepFlow::PER_ACTIVATION);
+	auto conv2_w = df.variable(df.random_uniform({ 64, 64, 3, 3 }, -0.100000, 0.100000), d_solver, "conv2_w");
+	auto conv2 = df.conv2d(conv1_r, conv2_w, 1, 1, 2, 2, 1, 1, "conv2");	
 	auto conv2_r = df.leaky_relu(conv2, negative_slope);
+	//auto conv2_n = df.batch_normalization(conv2_r, DeepFlow::SPATIAL);
 
-	auto conv3_w = df.variable(df.random_uniform({ 64, 32, 3, 3 }, -0.100000, 0.100000), d_solver, "conv3_w");
+	auto conv3_w = df.variable(df.random_uniform({ 128, 64, 3, 3 }, -0.100000, 0.100000), d_solver, "conv3_w");
 	auto conv3 = df.conv2d(conv2_r, conv3_w, 1, 1, 2, 2, 1, 1, "conv3");
-	//auto conv3_n = df.batch_normalization(conv3, DeepFlow::PER_ACTIVATION);
 	auto conv3_r = df.leaky_relu(conv3, negative_slope);
+	//auto conv3_n = df.batch_normalization(conv3_r, DeepFlow::SPATIAL);			
 	auto drop1 = df.dropout(conv3_r);
 
-	auto w1 = df.variable(df.random_uniform({ 1024, 500, 1, 1 }, -0.100000, 0.100000), d_solver, "w1");
+	auto w1 = df.variable(df.random_uniform({ 2048, 500, 1, 1 }, -0.100000, 0.100000), d_solver, "w1");
 	auto m1 = df.matmul(drop1, w1, "m1");
 	auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, -1.000000, 1.000000), d_solver, "b1");
 	auto bias1 = df.bias_add(m1, b1, "bias1");
@@ -123,6 +123,9 @@ std::shared_ptr<Session> create_discriminator() {
 	auto bias2 = df.bias_add(m2, b2, "bias2");
 
 	auto dout = df.sigmoid(bias2, "dout");
+
+	//df.logger({ conv1_r, conv1_n}, "./log.txt", "R -> {0}\nN -> {0}\n\n", DeepFlow::EVERY_PASS);
+
 	return df.session();
 }
 
