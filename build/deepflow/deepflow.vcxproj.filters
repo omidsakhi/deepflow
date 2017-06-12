@@ -177,6 +177,9 @@
     <ClCompile Include="..\..\src\initializers\three_state.cpp">
       <Filter>source\initializers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\nodes\sio_output.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -358,6 +361,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\initializers\three_state.h">
       <Filter>include\initializers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\sio_output.h">
+      <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

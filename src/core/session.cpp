@@ -49,6 +49,7 @@
 #include "nodes/batch_normalization.h"
 #include "nodes/dot.h"
 #include "nodes/replay_memory.h"
+#include "nodes/sio_output.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -171,6 +172,8 @@ std::shared_ptr<Node> Session::_create_node(const deepflow::NodeParam &node_para
 		return std::make_shared<Accumulator>(node_param);
 	else if (node_param.has_dot_param())
 		return std::make_shared<Dot>(node_param);
+	else if (node_param.has_sio_output_param())
+		return std::make_shared<SIOOutput>(node_param);
 	else {
 		LOG(FATAL) << "Unsupported Node";
 	}

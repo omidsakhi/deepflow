@@ -504,6 +504,23 @@ std::string DeepFlow::batch_normalization(std::string input, NormalizationMode m
 	return node_param->output(0);
 }
 
+void DeepFlow::sio_output(std::initializer_list<std::string> inputs, ActionTime printTime, std::string host, int port, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	std::vector<std::string> inputsVec(inputs.size());
+	std::copy(inputs.begin(), inputs.end(), inputsVec.begin());
+	for (int i = 0; i < inputsVec.size(); ++i)
+		node_param->add_input(inputsVec[i]);
+	auto sio_output_param = node_param->mutable_sio_output_param();	
+	sio_output_param->set_num_inputs(inputs.size());
+	sio_output_param->set_print_time((deepflow::ActionTime)printTime);
+	sio_output_param->set_host(host);
+	sio_output_param->set_port(port);
+}
+
 std::string DeepFlow::softmax_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));

@@ -17,4 +17,5 @@
 [submodule "third-party/socket.io-client-cpp"]
 	path = third-party/socket.io-client-cpp
 	url = https://github.com/socketio/socket.io-client-cpp
+	fetchRecurseSubmodules = yes
 	ignore = dirty

@@ -3,3 +3,4 @@ gflags
 glog
 opencv 
 protobuf
+socket.io-client-cpp

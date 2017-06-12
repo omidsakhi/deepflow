@@ -32,3 +32,4 @@
 *.idb
 /data/face64
 /data/face643
+/third-party/boost_1_64_0

@@ -67,6 +67,13 @@ message PrintParam {
 	ActionType print_type = 4;
 }
 
+message SIOOutputParam {
+	int32 num_inputs = 1;
+	ActionTime print_time = 2;
+	string host = 3;
+	int32 port = 4;
+}
+
 message DotParam {
 
 }
@@ -281,6 +288,7 @@ message NodeParam {
   ReplayMemoryParam replay_memory_param = 132;
   SoftmaxLossParam softmax_loss_param = 133;
   EuclideanLossParam euclidean_loss_param = 134;
+  SIOOutputParam sio_output_param = 135;
 }
 
 message SquareParam {

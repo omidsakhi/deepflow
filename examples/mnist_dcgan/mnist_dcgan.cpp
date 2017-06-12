@@ -44,12 +44,21 @@ std::shared_ptr<Session> create_loss() {
 	auto labels_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "labels_input");
 	df.euclidean_loss(discriminator_input, labels_input);
 	auto sub = df.subtract(discriminator_input, labels_input);
-	auto reduce = df.reduce_norm1(sub, 0);
+	auto reduce = df.reduce_norm1(sub, 0, "reduce");
 	df.print({ reduce }, " NORM {0}\n", DeepFlow::EVERY_PASS); 
 	return df.session();
 }
 
-std::shared_ptr<Session> create_generator() {
+std::shared_ptr<Session> create_socket_io_sender() {
+	DeepFlow df;
+	auto d1 = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "d1");
+	auto d2 = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "d2");
+	auto g = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "g");
+	df.sio_output({ d1,d2,g });
+	return df.session();
+}
+
+std::shared_ptr<Session> create_generator_session() {
 	DeepFlow df;
 	
 	auto mean = 0;
@@ -137,7 +146,7 @@ void main(int argc, char** argv) {
 	auto execution_context = std::make_shared<ExecutionContext>();
 	execution_context->debug_level = FLAGS_debug;
 
-	auto generator = create_generator();
+	auto generator = create_generator_session();
 	generator->initialize();
 	generator->set_execution_context(execution_context);
 	auto discriminator = create_discriminator();	
@@ -155,6 +164,9 @@ void main(int argc, char** argv) {
 	auto loss = create_loss();
 	loss->initialize();
 	loss->set_execution_context(execution_context);
+	auto socket_io_sender_session = create_socket_io_sender();
+	socket_io_sender_session->initialize();
+
 
 	auto mnist_reader_data = mnist_reader->get_node("mnist_data");
 	auto generator_output = generator->get_node("gout");
@@ -165,6 +177,10 @@ void main(int argc, char** argv) {
 	auto mnist_labels_output = mnist_labels->get_node("mnist_labels");
 	auto loss_discriminator_input = loss->get_placeholder("discriminator_input");
 	auto loss_labels_input = loss->get_placeholder("labels_input");
+	auto loss_output = loss->get_node("reduce");
+	auto sio_sender_d1 = socket_io_sender_session->get_node("d1");
+	auto sio_sender_d2 = socket_io_sender_session->get_node("d2");
+	auto sio_sender_g = socket_io_sender_session->get_node("g");
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -196,6 +212,13 @@ void main(int argc, char** argv) {
 				loss_labels_input->feed_forward(mnist_labels_output, 0);				
 			}			
 			loss->forward();
+			if (k == 1) {
+				sio_sender_d2->feed_forward(loss_output, 0);
+			}
+			else {
+				sio_sender_d1->feed_forward(loss_output, 0);
+			}			
+			socket_io_sender_session->forward();
 			loss->backward();
 			discriminator_output->feed_backward(loss_discriminator_input, 0);
 			discriminator->backward();
@@ -212,6 +235,8 @@ void main(int argc, char** argv) {
 		loss_discriminator_input->feed_forward(discriminator_output, 0);
 		loss_labels_input->feed_forward(mnist_labels_output, 0);
 		loss->forward();
+		sio_sender_g->feed_forward(loss_output, 0);
+		socket_io_sender_session->forward();
 		loss->backward();
 		discriminator_output->feed_backward(loss_discriminator_input, 0);
 		discriminator->backward();
