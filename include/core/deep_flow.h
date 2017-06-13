@@ -125,7 +125,7 @@ public:
 	std::string batch_normalization(std::string input, NormalizationMode mode, float exponential_average_factor = 0.0f, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
 
 	// SOCKET IO
-	void sio_output(std::initializer_list<std::string> inputs, ActionTime printTime = ActionTime::EVERY_PASS, std::string host = "127.0.0.1", int port = 3000, std::string name = "sio_output", std::initializer_list<std::string> phases = {});
+	void sio_output(std::initializer_list<std::string> inputs, ActionTime printTime = ActionTime::EVERY_PASS, std::string host = "127.0.0.1", int port = 8080, std::string name = "sio_output", std::initializer_list<std::string> phases = {});
 
 	// OTHER
 	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});

@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis--y path {
+  display: none;
+}
+
+.line path {
+  fill: none;
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+}
+
+.line text {
+  font: bold 12px sans-serif;
+  text-shadow: 1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+}
+
+.area {
+  fill: steelblue;
+  clip-path: url(#clip);
+}

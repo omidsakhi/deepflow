@@ -51,10 +51,10 @@ std::shared_ptr<Session> create_loss() {
 
 std::shared_ptr<Session> create_socket_io_sender() {
 	DeepFlow df;
-	auto d1 = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "d1");
-	auto d2 = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "d2");
-	auto g = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "g");
-	df.sio_output({ d1,d2,g });
+	auto dtrue = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "dtrue");
+	auto dfake = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "dfake");
+	auto gfake = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "gfake");
+	df.sio_output({ dtrue, dfake, gfake });
 	return df.session();
 }
 
@@ -62,7 +62,7 @@ std::shared_ptr<Session> create_generator_session() {
 	DeepFlow df;
 	
 	auto mean = 0;
-	auto stddev = 0.02;
+	auto stddev = 0.1;
 	auto negative_slope = 0.05;
 
 	auto g_solver = df.adam_solver(0.00002f, 0.5f, 0.999f);
@@ -165,8 +165,8 @@ void main(int argc, char** argv) {
 	loss->initialize();
 	loss->set_execution_context(execution_context);
 	auto socket_io_sender_session = create_socket_io_sender();
+	socket_io_sender_session->set_execution_context(execution_context);
 	socket_io_sender_session->initialize();
-
 
 	auto mnist_reader_data = mnist_reader->get_node("mnist_data");
 	auto generator_output = generator->get_node("gout");
@@ -178,52 +178,45 @@ void main(int argc, char** argv) {
 	auto loss_discriminator_input = loss->get_placeholder("discriminator_input");
 	auto loss_labels_input = loss->get_placeholder("labels_input");
 	auto loss_output = loss->get_node("reduce");
-	auto sio_sender_d1 = socket_io_sender_session->get_node("d1");
-	auto sio_sender_d2 = socket_io_sender_session->get_node("d2");
-	auto sio_sender_g = socket_io_sender_session->get_node("g");
-
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> select_dist(0, 2);
+	auto sio_sender_dtrue = socket_io_sender_session->get_node("dtrue");
+	auto sio_sender_dfake = socket_io_sender_session->get_node("dfake");
+	auto sio_sender_gfake = socket_io_sender_session->get_node("gfake");
 
 	for (int i = 1; i <= FLAGS_epoch && execution_context->quit != true; ++i) {
 		std::cout << "Epoch: " << i << std::endl;		
-		for (int k = 0; k <= 2; ++k) {			
-			discriminator->reset_gradients();
-			loss->reset_gradients();			
-			if (k == 1) { 
-				// GENERATOR
-				std::cout << " GENERATOR INPUT " << std::endl;
-				generator->forward();
-				discriminator_input->feed_forward(generator_output, 0);
-				discriminator->forward();
-				generator_labels->forward();
-				loss_discriminator_input->feed_forward(discriminator_output, 0);
-				loss_labels_input->feed_forward(generator_labels_output, 0);
-			}
-			else { 
-				// MNIST
-				std::cout << " MNIST INPUT " << std::endl;
-				mnist_reader_data->forward();
-				discriminator_input->feed_forward(mnist_reader_data, 0);
-				discriminator->forward();
-				mnist_labels->forward();
-				loss_discriminator_input->feed_forward(discriminator_output, 0);
-				loss_labels_input->feed_forward(mnist_labels_output, 0);				
-			}			
-			loss->forward();
-			if (k == 1) {
-				sio_sender_d2->feed_forward(loss_output, 0);
-			}
-			else {
-				sio_sender_d1->feed_forward(loss_output, 0);
-			}			
-			socket_io_sender_session->forward();
-			loss->backward();
-			discriminator_output->feed_backward(loss_discriminator_input, 0);
-			discriminator->backward();
-			discriminator->apply_solvers();
-		}
+		
+		std::cout << " MNIST INPUT " << std::endl;
+		discriminator->reset_gradients();
+		loss->reset_gradients();		
+		mnist_reader_data->forward();
+		discriminator_input->feed_forward(mnist_reader_data, 0);
+		discriminator->forward();
+		mnist_labels->forward();
+		loss_discriminator_input->feed_forward(discriminator_output, 0);
+		loss_labels_input->feed_forward(mnist_labels_output, 0);
+		loss->forward();
+		sio_sender_dtrue->feed_forward(loss_output, 0);
+		loss->backward();
+		discriminator_output->feed_backward(loss_discriminator_input, 0);
+		discriminator->backward();
+		discriminator->apply_solvers();
+
+		std::cout << " GENERATOR INPUT " << std::endl;
+		discriminator->reset_gradients();
+		loss->reset_gradients();		
+		generator->forward();
+		discriminator_input->feed_forward(generator_output, 0);
+		discriminator->forward();
+		generator_labels->forward();
+		loss_discriminator_input->feed_forward(discriminator_output, 0);
+		loss_labels_input->feed_forward(generator_labels_output, 0);
+		loss->forward();
+		sio_sender_dfake->feed_forward(loss_output, 0);
+		loss->backward();
+		discriminator_output->feed_backward(loss_discriminator_input, 0);
+		discriminator->backward();
+		discriminator->apply_solvers();
+
 		std::cout << " TRAINING GENERATOR " << std::endl;
 		generator->reset_gradients();
 		discriminator->reset_gradients();
@@ -235,14 +228,15 @@ void main(int argc, char** argv) {
 		loss_discriminator_input->feed_forward(discriminator_output, 0);
 		loss_labels_input->feed_forward(mnist_labels_output, 0);
 		loss->forward();
-		sio_sender_g->feed_forward(loss_output, 0);
-		socket_io_sender_session->forward();
+		sio_sender_gfake->feed_forward(loss_output, 0);		
 		loss->backward();
 		discriminator_output->feed_backward(loss_discriminator_input, 0);
 		discriminator->backward();
 		generator_output->feed_backward(discriminator_input, 0);
 		generator->backward();
 		generator->apply_solvers();
+
+		socket_io_sender_session->forward();
 	}
 
 }

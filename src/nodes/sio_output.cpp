@@ -61,7 +61,7 @@ void SIOOutput::forward()
 			}
 		}		
 		outgoing_message->get_map()["inputs"] = input_array;
-		_socket->emit("session-data", outgoing_message);
+		_socket->emit("sio-output", outgoing_message);
 	}
 }
 

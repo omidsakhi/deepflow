@@ -1,19 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 declare var io: any;
 
 @Injectable()
 export class DataService {
   
-  public socket : any = null;
+  public io : any = null;
+  public message : EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
-  connect() {
-    this.socket = io();
-    this.socket.on('session_data', (data) => {
-      console.log(data);
-    })    
+  connect() {    
+    this.io = io('http://localhost:8080');
+    this.io.on('connect', (socket) => {      
+      console.log('connection established.');
+    });
+    this.io.on('sio-output', (message)=> {
+      this.message.emit(message);
+    })      
   }
 
 }
