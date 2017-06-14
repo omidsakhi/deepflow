@@ -4,7 +4,7 @@
 
 #include <gflags/gflags.h>
 
-DEFINE_string(mnist, "D:/Projects/deepflow/data/mnist", "Path to MNIST data folder");
+DEFINE_string(mnist, "C:/Projects/deepflow/data/mnist", "Path to MNIST data folder");
 DEFINE_string(i, "", "Trained network model to load");
 DEFINE_string(o, "", "Trained network model to save");
 DEFINE_bool(text, false, "Save model as text");

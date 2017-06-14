@@ -65,8 +65,8 @@ std::shared_ptr<Session> create_generator_session() {
 	auto stddev = 0.1;
 	auto negative_slope = 0;
 	auto alpha_param = 0.05;
-	auto dropout = 0.3;
-	auto exp_avg_factor = 0.1;
+	auto dropout = 0.5;
+	auto exp_avg_factor = 0;
 	int depth = 1024;
 
 	auto g_solver = df.adam_solver(0.0002f, 0.5f, 0.9999f);

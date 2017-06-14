@@ -99,7 +99,7 @@ void Node::feed_forward(std::shared_ptr<Node> node, int output_terminal)
 	auto feed_terminal = node->output(output_terminal);
 	auto feed_dim = feed_terminal->value()->dims();
 	auto my_dim = _outputs[0]->value()->dims();
-	LOG_IF(FATAL, feed_dim != my_dim) << "Feed dimension mismatch.";
+	LOG_IF(FATAL, feed_dim != my_dim) << "Forward feed dimension mismatch between " << _name << " (src - " << _outputs[0]->value()->shape() << " ) and " << node->name() << " (dst - " << feed_terminal->value()->shape() << " )";
 	cpy(_outputs[0]->value()->size(), 1.0f, feed_terminal->value()->data(), 0.0f, _outputs[0]->value()->mutableData());
 }
 
@@ -108,7 +108,7 @@ void Node::feed_backward(std::shared_ptr<Node> node, int output_terminal)
 	auto feed_terminal = node->output(output_terminal);
 	auto feed_dim = feed_terminal->diff()->dims();
 	auto my_dim = _outputs[0]->diff()->dims();
-	LOG_IF(FATAL, feed_dim != my_dim) << "Feed dimension mismatch.";
+	LOG_IF(FATAL, feed_dim != my_dim) << "Backward feed dimension mismatch between " << _name << " (src - " << _outputs[0]->value()->shape() << " ) and " << node->name() << " (dst - " << feed_terminal->value()->shape() << " )";
 	cpy(_outputs[0]->diff()->size(), 1.0f, feed_terminal->diff()->data(), 1.0f, _outputs[0]->diff()->mutableData());
 }
 
