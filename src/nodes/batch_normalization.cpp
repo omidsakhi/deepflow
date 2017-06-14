@@ -39,10 +39,14 @@ void BatchNormalization::initForward()
 	DF_NODE_CUDA_CHECK(cudaMalloc(&_bnScale, _size * sizeof(float)));
 	fill(_size, 1, _bnScale);
 	DF_NODE_CUDA_CHECK(cudaMalloc(&_resultSaveMean, _size * sizeof(float)));
+	fill(_size, 0, _resultSaveMean);
 	DF_NODE_CUDA_CHECK(cudaMalloc(&_resultSaveInvVariance, _size * sizeof(float)));
+	fill(_size, 0, _resultSaveInvVariance);
 	if (_exp_avg_factor != 0) {		
 		DF_NODE_CUDA_CHECK(cudaMalloc(&_resultRunningMean, _size * sizeof(float)));
+		fill(_size, 0, _resultRunningMean);
 		DF_NODE_CUDA_CHECK(cudaMalloc(&_resultRunningVariance, _size * sizeof(float)));
+		fill(_size, 0, _resultRunningVariance);
 	}
 }
 
@@ -81,15 +85,18 @@ void BatchNormalization::forward()
 
 void BatchNormalization::backward()
 {
+	auto param = _param.batch_normalization_param();
+	float ad = param.alpha_data();
+	float bd = param.beta_data();
+	float ap = param.alpha_param();
+	float bp = param.beta_param();
 	if (_inputs[0]->connectedNode()->propagateBack()) {
 		DF_NODE_CUDNN_CHECK(
 			cudnnBatchNormalizationBackward(
 				_cudnnHandle,
 				_batchNormMode,
-				&one,
-				&zero,
-				&one,
-				&one,
+				//&one,&zero,&one,&one,
+				&ad,&bd,&ap,&bp,
 				_xDesc, _x, _yDesc, _dy, _xDesc, _dx, _bnScaleBiasMeanVarDesc, _bnScale, _bnScale, _bnBias, _eps, _resultSaveMean, _resultSaveInvVariance));
 	}
 }

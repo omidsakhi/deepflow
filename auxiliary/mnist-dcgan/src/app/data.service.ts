@@ -11,7 +11,7 @@ export class DataService {
   constructor() { }
 
   connect() {    
-    this.io = io('http://localhost:8080');
+    this.io = io('http://localhost:6643');
     this.io.on('connect', (socket) => {      
       console.log('connection established.');
     });

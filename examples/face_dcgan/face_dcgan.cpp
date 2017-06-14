@@ -5,7 +5,7 @@
 #include <random>
 #include <gflags/gflags.h>
 
-DEFINE_string(faces, "D:/Projects/deepflow/data/face643", "Path to face 64x64 dataset folder");
+DEFINE_string(faces, "C:/Projects/deepflow/data/face643", "Path to face 64x64 dataset folder");
 DEFINE_string(i, "", "Trained network model to load");
 DEFINE_string(o, "", "Trained network model to save");
 DEFINE_bool(text, false, "Save model as text");

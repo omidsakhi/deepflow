@@ -240,6 +240,10 @@ message BatchNormalizationParam {
 	}
 	Mode mode = 1;
 	float exp_avg_factor = 2;
+	float alpha_data = 3;
+	float beta_data = 4;
+	float alpha_param = 5;
+	float beta_param = 6;
 }
 
 message ReplayMemoryParam {

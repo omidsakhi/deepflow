@@ -3813,12 +3813,40 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
   float exp_avg_factor() const;
   void set_exp_avg_factor(float value);
 
+  // float alpha_data = 3;
+  void clear_alpha_data();
+  static const int kAlphaDataFieldNumber = 3;
+  float alpha_data() const;
+  void set_alpha_data(float value);
+
+  // float beta_data = 4;
+  void clear_beta_data();
+  static const int kBetaDataFieldNumber = 4;
+  float beta_data() const;
+  void set_beta_data(float value);
+
+  // float alpha_param = 5;
+  void clear_alpha_param();
+  static const int kAlphaParamFieldNumber = 5;
+  float alpha_param() const;
+  void set_alpha_param(float value);
+
+  // float beta_param = 6;
+  void clear_beta_param();
+  static const int kBetaParamFieldNumber = 6;
+  float beta_param() const;
+  void set_beta_param(float value);
+
   // @@protoc_insertion_point(class_scope:deepflow.BatchNormalizationParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   int mode_;
   float exp_avg_factor_;
+  float alpha_data_;
+  float beta_data_;
+  float alpha_param_;
+  float beta_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -7913,6 +7941,62 @@ inline void BatchNormalizationParam::set_exp_avg_factor(float value) {
   
   exp_avg_factor_ = value;
   // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.exp_avg_factor)
+}
+
+// float alpha_data = 3;
+inline void BatchNormalizationParam::clear_alpha_data() {
+  alpha_data_ = 0;
+}
+inline float BatchNormalizationParam::alpha_data() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.alpha_data)
+  return alpha_data_;
+}
+inline void BatchNormalizationParam::set_alpha_data(float value) {
+  
+  alpha_data_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.alpha_data)
+}
+
+// float beta_data = 4;
+inline void BatchNormalizationParam::clear_beta_data() {
+  beta_data_ = 0;
+}
+inline float BatchNormalizationParam::beta_data() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.beta_data)
+  return beta_data_;
+}
+inline void BatchNormalizationParam::set_beta_data(float value) {
+  
+  beta_data_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.beta_data)
+}
+
+// float alpha_param = 5;
+inline void BatchNormalizationParam::clear_alpha_param() {
+  alpha_param_ = 0;
+}
+inline float BatchNormalizationParam::alpha_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.alpha_param)
+  return alpha_param_;
+}
+inline void BatchNormalizationParam::set_alpha_param(float value) {
+  
+  alpha_param_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.alpha_param)
+}
+
+// float beta_param = 6;
+inline void BatchNormalizationParam::clear_beta_param() {
+  beta_param_ = 0;
+}
+inline float BatchNormalizationParam::beta_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.beta_param)
+  return beta_param_;
+}
+inline void BatchNormalizationParam::set_beta_param(float value) {
+  
+  beta_param_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.beta_param)
 }
 
 // -------------------------------------------------------------------

@@ -5,7 +5,7 @@
 #include <random>
 #include <gflags/gflags.h>
 
-DEFINE_string(mnist, "D:/Projects/deepflow/data/mnist", "Path to mnist folder dataset");
+DEFINE_string(mnist, "C:/Projects/deepflow/data/mnist", "Path to mnist folder dataset");
 DEFINE_string(i, "", "Trained network model to load");
 DEFINE_string(o, "", "Trained network model to save");
 DEFINE_bool(text, false, "Save model as text");
@@ -63,31 +63,37 @@ std::shared_ptr<Session> create_generator_session() {
 	
 	auto mean = 0;
 	auto stddev = 0.1;
-	auto negative_slope = 0.05;
+	auto negative_slope = 0;
+	auto alpha_param = 0.05;
+	auto dropout = 0.3;
+	auto exp_avg_factor = 0.1;
+	int depth = 1024;
 
-	auto g_solver = df.adam_solver(0.00002f, 0.5f, 0.999f);
-	auto gin = df.data_generator(df.three_state({ FLAGS_batch, 100, 1, 1 }, "random_input"), 10000, "", "input");
+	auto g_solver = df.adam_solver(0.0002f, 0.5f, 0.9999f);
+	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, mean, stddev, "random_input"), 10000, "", "input");
 	
-	auto gfc_w = df.variable(df.random_normal({ 100, 256, 4, 4 }, mean, stddev), g_solver, "gfc_w");
+	auto gfc_w = df.variable(df.random_normal({ 100, depth, 4, 4 }, mean, stddev), g_solver, "gfc_w");
 	auto gfc = df.matmul(gin, gfc_w, "gfc");
 	auto gfc_r = df.leaky_relu(gfc, negative_slope);
-	auto gfc_drop = df.dropout(gfc_r);
+	auto gfc_drop = df.dropout(gfc_r, dropout);
 
-	auto gconv1_f = df.variable(df.random_normal({ 256, 128, 2, 2 }, mean, stddev), g_solver, "gconv1_f");
+	auto gconv1_f = df.variable(df.random_normal({ depth, depth/2, 2, 2 }, mean, stddev), g_solver, "gconv1_f");
 	auto gconv1_t = df.transposed_conv2d(gfc_drop, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1");
-	auto gconv1_n = df.batch_normalization(gconv1_t, DeepFlow::SPATIAL, 0.01f);
+	auto gconv1_n = df.batch_normalization(gconv1_t, DeepFlow::SPATIAL, exp_avg_factor, 1, 0, alpha_param, 1);
 	auto gconv1_r = df.leaky_relu(gconv1_n, negative_slope);	
+	auto gconv1_d = df.dropout(gconv1_r, dropout);
 
-	auto gconv2_f = df.variable(df.random_normal({ 128, 64, 3, 3 }, mean, stddev), g_solver, "gconv2_f");
-	auto gconv2_t = df.transposed_conv2d(gconv1_r, gconv2_f, 1, 1, 2, 2, 1, 1, "gconv2");
-	auto gconv2_n = df.batch_normalization(gconv2_t, DeepFlow::SPATIAL, 0.01f);
+	auto gconv2_f = df.variable(df.random_normal({ depth/2, depth/4, 3, 3 }, mean, stddev), g_solver, "gconv2_f");
+	auto gconv2_t = df.transposed_conv2d(gconv1_d, gconv2_f, 1, 1, 2, 2, 1, 1, "gconv2");
+	auto gconv2_n = df.batch_normalization(gconv2_t, DeepFlow::SPATIAL, exp_avg_factor, 1, 0, alpha_param, 1);
 	auto gconv2_r = df.leaky_relu(gconv2_n, negative_slope);
+	auto gconv2_d = df.dropout(gconv2_r, dropout);
 
-	auto gconv3_f = df.variable(df.random_normal({ 64, 1, 3, 3 }, mean, stddev), g_solver, "gconv3_f");
-	auto gconv3_t = df.transposed_conv2d(gconv2_r, gconv3_f, 1, 1, 2, 2, 1, 1, "gconv3");	
-	auto gconv3_n = df.batch_normalization(gconv3_t, DeepFlow::SPATIAL, 0.01f);
+	auto gconv3_f = df.variable(df.random_normal({ depth/4, 1, 3, 3 }, mean, stddev), g_solver, "gconv3_f");
+	auto gconv3_t = df.transposed_conv2d(gconv2_d, gconv3_f, 1, 1, 2, 2, 1, 1, "gconv3");	
+	auto gconv3_n = df.batch_normalization(gconv3_t, DeepFlow::SPATIAL, exp_avg_factor, 1, 0, alpha_param, 1);
 
-	auto gout = df.tanh(gconv3_t, "gout");
+	auto gout = df.tanh(gconv3_n, "gout");
 	auto disp = df.display(gout, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
 	
 	//auto replay_memory = df.replay_memory(gout, 10000, "replay_memory");

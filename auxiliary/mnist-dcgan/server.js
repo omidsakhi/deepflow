@@ -1,14 +1,5 @@
-//var express = require('express')
-//var app = express()
-//var http = require('http').Server(app);
-//var io = require('socket.io')(http);
-var io = require('socket.io')(8080);
-
-//app.use(express.static('public'))
-
-//app.get('/', function (req, res) {
-//	res.sendfile('index.html');
-//});
+var port = 6643;
+var io = require('socket.io')(port);
 
 var sockets = [];
 
@@ -34,9 +25,5 @@ io.on('connection', function (socket) {
 	});
 });
 
-console.log('http://localhost:8080/socket.io/socket.io.js');
-
-//http.listen(3000, function () {
-//	console.log('listening on *:3000');
-//});
+console.log('http://localhost:' + port + '/socket.io/socket.io.js');
 

@@ -451,6 +451,10 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BatchNormalizationParam, mode_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BatchNormalizationParam, exp_avg_factor_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BatchNormalizationParam, alpha_data_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BatchNormalizationParam, beta_data_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BatchNormalizationParam, alpha_param_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BatchNormalizationParam, beta_param_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReplayMemoryParam, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -674,26 +678,26 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 225, -1, sizeof(MnistParam)},
   { 234, -1, sizeof(CastFloatParam)},
   { 239, -1, sizeof(BatchNormalizationParam)},
-  { 246, -1, sizeof(ReplayMemoryParam)},
-  { 252, -1, sizeof(NodeParam)},
-  { 298, -1, sizeof(SquareParam)},
-  { 303, -1, sizeof(EuclideanLossParam)},
-  { 308, -1, sizeof(SoftmaxLossParam)},
-  { 313, -1, sizeof(SoftmaxParam)},
-  { 318, -1, sizeof(InitFillParam)},
-  { 324, -1, sizeof(InitIndexFillParam)},
-  { 330, -1, sizeof(InitRandomUniformParam)},
-  { 337, -1, sizeof(InitRandomNormalParam)},
-  { 344, -1, sizeof(InitStepParam)},
-  { 351, -1, sizeof(InitThreeStateParam)},
-  { 356, -1, sizeof(InitParam)},
-  { 370, -1, sizeof(SGDSolverParam)},
-  { 377, -1, sizeof(GainSolverParam)},
-  { 388, -1, sizeof(AdaDeltaSolverParam)},
-  { 396, -1, sizeof(AdamSolverParam)},
-  { 405, -1, sizeof(SolverParam)},
-  { 416, -1, sizeof(PhaseParam)},
-  { 423, -1, sizeof(BlockParam)},
+  { 250, -1, sizeof(ReplayMemoryParam)},
+  { 256, -1, sizeof(NodeParam)},
+  { 302, -1, sizeof(SquareParam)},
+  { 307, -1, sizeof(EuclideanLossParam)},
+  { 312, -1, sizeof(SoftmaxLossParam)},
+  { 317, -1, sizeof(SoftmaxParam)},
+  { 322, -1, sizeof(InitFillParam)},
+  { 328, -1, sizeof(InitIndexFillParam)},
+  { 334, -1, sizeof(InitRandomUniformParam)},
+  { 341, -1, sizeof(InitRandomNormalParam)},
+  { 348, -1, sizeof(InitStepParam)},
+  { 355, -1, sizeof(InitThreeStateParam)},
+  { 360, -1, sizeof(InitParam)},
+  { 374, -1, sizeof(SGDSolverParam)},
+  { 381, -1, sizeof(GainSolverParam)},
+  { 392, -1, sizeof(AdaDeltaSolverParam)},
+  { 400, -1, sizeof(AdamSolverParam)},
+  { 409, -1, sizeof(SolverParam)},
+  { 420, -1, sizeof(PhaseParam)},
+  { 427, -1, sizeof(BlockParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -1135,9 +1139,11 @@ void AddDescriptorsImpl() {
       "am.OutputType\022\022\n\nbatch_size\030\004 \001(\005\"!\n\nRea"
       "derType\022\t\n\005TRAIN\020\000\022\010\n\004TEST\020\001\"\"\n\nOutputTy"
       "pe\022\010\n\004DATA\020\000\022\n\n\006LABELS\020\001\"\020\n\016CastFloatPar"
-      "am\"\260\001\n\027BatchNormalizationParam\0224\n\004mode\030\001"
+      "am\"\200\002\n\027BatchNormalizationParam\0224\n\004mode\030\001"
       " \001(\0162&.deepflow.BatchNormalizationParam."
-      "Mode\022\026\n\016exp_avg_factor\030\002 \001(\002\"G\n\004Mode\022\"\n\036"
+      "Mode\022\026\n\016exp_avg_factor\030\002 \001(\002\022\022\n\nalpha_da"
+      "ta\030\003 \001(\002\022\021\n\tbeta_data\030\004 \001(\002\022\023\n\013alpha_par"
+      "am\030\005 \001(\002\022\022\n\nbeta_param\030\006 \001(\002\"G\n\004Mode\022\"\n\036"
       "CUDNN_BATCHNORM_PER_ACTIVATION\020\000\022\033\n\027CUDN"
       "N_BATCHNORM_SPATIAL\020\001\"%\n\021ReplayMemoryPar"
       "am\022\020\n\010capacity\030\001 \001(\005\"\257\017\n\tNodeParam\022\014\n\004na"
@@ -1238,7 +1244,7 @@ void AddDescriptorsImpl() {
       "UES_AND_DIFFS\020\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 7023);
+      descriptor, 7103);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -12147,6 +12153,10 @@ void CastFloatParam::InternalSwap(CastFloatParam* other) {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int BatchNormalizationParam::kModeFieldNumber;
 const int BatchNormalizationParam::kExpAvgFactorFieldNumber;
+const int BatchNormalizationParam::kAlphaDataFieldNumber;
+const int BatchNormalizationParam::kBetaDataFieldNumber;
+const int BatchNormalizationParam::kAlphaParamFieldNumber;
+const int BatchNormalizationParam::kBetaParamFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 BatchNormalizationParam::BatchNormalizationParam()
@@ -12163,14 +12173,14 @@ BatchNormalizationParam::BatchNormalizationParam(const BatchNormalizationParam& 
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&mode_, &from.mode_,
-    reinterpret_cast<char*>(&exp_avg_factor_) -
-    reinterpret_cast<char*>(&mode_) + sizeof(exp_avg_factor_));
+    reinterpret_cast<char*>(&beta_param_) -
+    reinterpret_cast<char*>(&mode_) + sizeof(beta_param_));
   // @@protoc_insertion_point(copy_constructor:deepflow.BatchNormalizationParam)
 }
 
 void BatchNormalizationParam::SharedCtor() {
-  ::memset(&mode_, 0, reinterpret_cast<char*>(&exp_avg_factor_) -
-    reinterpret_cast<char*>(&mode_) + sizeof(exp_avg_factor_));
+  ::memset(&mode_, 0, reinterpret_cast<char*>(&beta_param_) -
+    reinterpret_cast<char*>(&mode_) + sizeof(beta_param_));
   _cached_size_ = 0;
 }
 
@@ -12207,8 +12217,8 @@ BatchNormalizationParam* BatchNormalizationParam::New(::google::protobuf::Arena*
 
 void BatchNormalizationParam::Clear() {
 // @@protoc_insertion_point(message_clear_start:deepflow.BatchNormalizationParam)
-  ::memset(&mode_, 0, reinterpret_cast<char*>(&exp_avg_factor_) -
-    reinterpret_cast<char*>(&mode_) + sizeof(exp_avg_factor_));
+  ::memset(&mode_, 0, reinterpret_cast<char*>(&beta_param_) -
+    reinterpret_cast<char*>(&mode_) + sizeof(beta_param_));
 }
 
 bool BatchNormalizationParam::MergePartialFromCodedStream(
@@ -12244,6 +12254,62 @@ bool BatchNormalizationParam::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &exp_avg_factor_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float alpha_data = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(29u)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &alpha_data_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float beta_data = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(37u)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &beta_data_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float alpha_param = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(45u)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &alpha_param_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float beta_param = 6;
+      case 6: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(53u)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &beta_param_)));
         } else {
           goto handle_unusual;
         }
@@ -12288,6 +12354,26 @@ void BatchNormalizationParam::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->exp_avg_factor(), output);
   }
 
+  // float alpha_data = 3;
+  if (this->alpha_data() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->alpha_data(), output);
+  }
+
+  // float beta_data = 4;
+  if (this->beta_data() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(4, this->beta_data(), output);
+  }
+
+  // float alpha_param = 5;
+  if (this->alpha_param() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(5, this->alpha_param(), output);
+  }
+
+  // float beta_param = 6;
+  if (this->beta_param() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(6, this->beta_param(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:deepflow.BatchNormalizationParam)
 }
 
@@ -12308,6 +12394,26 @@ void BatchNormalizationParam::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->exp_avg_factor(), target);
   }
 
+  // float alpha_data = 3;
+  if (this->alpha_data() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->alpha_data(), target);
+  }
+
+  // float beta_data = 4;
+  if (this->beta_data() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->beta_data(), target);
+  }
+
+  // float alpha_param = 5;
+  if (this->alpha_param() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(5, this->alpha_param(), target);
+  }
+
+  // float beta_param = 6;
+  if (this->beta_param() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(6, this->beta_param(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.BatchNormalizationParam)
   return target;
 }
@@ -12324,6 +12430,26 @@ size_t BatchNormalizationParam::ByteSizeLong() const {
 
   // float exp_avg_factor = 2;
   if (this->exp_avg_factor() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float alpha_data = 3;
+  if (this->alpha_data() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float beta_data = 4;
+  if (this->beta_data() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float alpha_param = 5;
+  if (this->alpha_param() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float beta_param = 6;
+  if (this->beta_param() != 0) {
     total_size += 1 + 4;
   }
 
@@ -12362,6 +12488,18 @@ void BatchNormalizationParam::MergeFrom(const BatchNormalizationParam& from) {
   if (from.exp_avg_factor() != 0) {
     set_exp_avg_factor(from.exp_avg_factor());
   }
+  if (from.alpha_data() != 0) {
+    set_alpha_data(from.alpha_data());
+  }
+  if (from.beta_data() != 0) {
+    set_beta_data(from.beta_data());
+  }
+  if (from.alpha_param() != 0) {
+    set_alpha_param(from.alpha_param());
+  }
+  if (from.beta_param() != 0) {
+    set_beta_param(from.beta_param());
+  }
 }
 
 void BatchNormalizationParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -12389,6 +12527,10 @@ void BatchNormalizationParam::Swap(BatchNormalizationParam* other) {
 void BatchNormalizationParam::InternalSwap(BatchNormalizationParam* other) {
   std::swap(mode_, other->mode_);
   std::swap(exp_avg_factor_, other->exp_avg_factor_);
+  std::swap(alpha_data_, other->alpha_data_);
+  std::swap(beta_data_, other->beta_data_);
+  std::swap(alpha_param_, other->alpha_param_);
+  std::swap(beta_param_, other->beta_param_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -12426,6 +12568,62 @@ void BatchNormalizationParam::set_exp_avg_factor(float value) {
   
   exp_avg_factor_ = value;
   // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.exp_avg_factor)
+}
+
+// float alpha_data = 3;
+void BatchNormalizationParam::clear_alpha_data() {
+  alpha_data_ = 0;
+}
+float BatchNormalizationParam::alpha_data() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.alpha_data)
+  return alpha_data_;
+}
+void BatchNormalizationParam::set_alpha_data(float value) {
+  
+  alpha_data_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.alpha_data)
+}
+
+// float beta_data = 4;
+void BatchNormalizationParam::clear_beta_data() {
+  beta_data_ = 0;
+}
+float BatchNormalizationParam::beta_data() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.beta_data)
+  return beta_data_;
+}
+void BatchNormalizationParam::set_beta_data(float value) {
+  
+  beta_data_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.beta_data)
+}
+
+// float alpha_param = 5;
+void BatchNormalizationParam::clear_alpha_param() {
+  alpha_param_ = 0;
+}
+float BatchNormalizationParam::alpha_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.alpha_param)
+  return alpha_param_;
+}
+void BatchNormalizationParam::set_alpha_param(float value) {
+  
+  alpha_param_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.alpha_param)
+}
+
+// float beta_param = 6;
+void BatchNormalizationParam::clear_beta_param() {
+  beta_param_ = 0;
+}
+float BatchNormalizationParam::beta_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.beta_param)
+  return beta_param_;
+}
+void BatchNormalizationParam::set_beta_param(float value) {
+  
+  beta_param_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.beta_param)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
