@@ -49,8 +49,8 @@ public:
 	virtual void initBackward() = 0;
 	virtual int minNumInputs() = 0;
 	virtual int minNumOutputs() = 0;
-	virtual void forward() {}
-	virtual void backward() {}
+	virtual void forward() = 0;
+	virtual void backward() = 0;
 	virtual bool isGenerator() { return false; }
 	virtual bool isLastBatch() { return true; }
 	virtual ForwardType forwardType() = 0;

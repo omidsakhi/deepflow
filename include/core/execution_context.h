@@ -8,7 +8,7 @@
 class DeepFlowDllExport ExecutionContext {
 public:
 	std::string phase;
-	deepflow::PhaseParam_PhaseBehaviour phase_behaviour;
+	deepflow::PhaseParam_PhaseBehaviour phase_behaviour = deepflow::PhaseParam_PhaseBehaviour_TRAIN;
 	int current_epoch = 0;
 	int current_iteration_per_epoch = 0;
 	int current_iteration = 0;

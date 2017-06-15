@@ -96,12 +96,7 @@ std::shared_ptr<Initializer> _create_initializer(const deepflow::InitParam &init
 
 std::shared_ptr<Node> Session::_create_node(const deepflow::NodeParam &node_param) {
 
-	if (node_param.has_variable_param()) {
-		const deepflow::InitParam &init_param = node_param.variable_param().init_param();
-		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
-		return std::make_shared<Variable>(initializer, node_param);
-	}
-	else if (node_param.has_batch_normalization_param())
+	if (node_param.has_batch_normalization_param())
 		return std::make_shared<BatchNormalization>(node_param);
 	else if (node_param.has_image_batch_reader_param())
 		return std::make_shared<ImageBatchReader>(node_param);
@@ -111,6 +106,11 @@ std::shared_ptr<Node> Session::_create_node(const deepflow::NodeParam &node_para
 		const deepflow::InitParam &init_param = node_param.variable_param().init_param();
 		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
 		return std::make_shared<DataGenerator>(initializer, node_param);
+	}
+	else if (node_param.has_variable_param()) {
+		const deepflow::InitParam &init_param = node_param.variable_param().init_param();
+		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
+		return std::make_shared<Variable>(initializer, node_param);
 	}
 	else if (node_param.has_image_reader_param())
 		return std::make_shared<ImageReader>(node_param);

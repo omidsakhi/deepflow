@@ -13,7 +13,9 @@ public:
 	virtual void initForward();
 	virtual void initBackward();		
 	virtual int minNumInputs() { return 0;  }
-	virtual int minNumOutputs() { return 1; }	
+	virtual int minNumOutputs() { return 1; }
+	virtual void forward() {}
+	virtual void backward() {}
 	void transferDataToParam();
 	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
 	virtual BackwardType backwardType() { return ALWAYS_BACKWARD; }

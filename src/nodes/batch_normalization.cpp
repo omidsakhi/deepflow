@@ -94,8 +94,7 @@ void BatchNormalization::backward()
 		DF_NODE_CUDNN_CHECK(
 			cudnnBatchNormalizationBackward(
 				_cudnnHandle,
-				_batchNormMode,
-				//&one,&zero,&one,&one,
+				_batchNormMode,				
 				&ad,&bd,&ap,&bp,
 				_xDesc, _x, _yDesc, _dy, _xDesc, _dx, _bnScaleBiasMeanVarDesc, _bnScale, _bnScale, _bnBias, _eps, _resultSaveMean, _resultSaveInvVariance));
 	}
