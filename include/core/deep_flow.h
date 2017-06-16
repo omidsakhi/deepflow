@@ -118,7 +118,7 @@ public:
 	// PRINTERS & DISPLAYS
 	void print(std::initializer_list<std::string> inputs, std::string message, ActionTime printTime = ActionTime::END_OF_EPOCH, ActionType = ActionType::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
 	void logger(std::initializer_list<std::string> inputs, std::string file_path, std::string message, ActionTime loggingTime = ActionTime::END_OF_EPOCH, ActionType loggingType = ActionType::VALUES, std::string name = "logger", std::initializer_list<std::string> phases = {});
-	std::string display(std::string input, int delay_msec = 100, ActionTime displayTime = ActionTime::EVERY_PASS, ActionType dislayType = ActionType::VALUES  , std::string name = "disp", std::initializer_list<std::string> phases = {});
+	std::string display(std::string input, int delay_msec = 100, ActionTime displayTime = ActionTime::EVERY_PASS, ActionType dislayType = ActionType::VALUES, int epoch_frequency = 1, std::string name = "disp", std::initializer_list<std::string> phases = {});
 	void psnr(std::string a, std::string b, ActionTime printTime = ActionTime::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
 
 	// NORMALIZATION

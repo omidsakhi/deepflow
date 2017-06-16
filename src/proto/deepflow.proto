@@ -91,6 +91,7 @@ message DisplayParam {
 	int32 delay_msec = 1;
 	ActionTime display_time = 2;
 	ActionType display_type = 3;
+	int32 epoch_frequency = 4;
 }
 
 message EqualParam {

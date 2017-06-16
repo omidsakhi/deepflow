@@ -95,6 +95,7 @@ void Display::initForward() {
 	_delay_msec = display_param.delay_msec();
 	_display_type = display_param.display_type();
 	_display_time = display_param.display_time();
+	_epoch_frequency = display_param.epoch_frequency();
 	auto dims = _inputs[0]->value()->dims();	
 	input_size = _inputs[0]->value()->size();
 	input_size_in_bytes = _inputs[0]->value()->sizeInBytes();
@@ -119,8 +120,12 @@ void Display::initBackward() {
 }
 
 void Display::forward() {
-	if (_display_time == deepflow::ActionTime::END_OF_EPOCH && _context->last_batch == false)
-		return;
+	if (_context) {
+		if (_display_time == deepflow::ActionTime::END_OF_EPOCH && _context->last_batch == false)
+			return;
+		if (_context->current_epoch % _epoch_frequency != 0)
+			return;
+	}
 	if (_display_type == deepflow::ActionType::VALUES) {
 		if (num_channels == 3) {
 			ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, (float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col,(unsigned char*) _outputs[0]->value()->mutableData());

@@ -52,8 +52,8 @@ void main(int argc, char** argv) {
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
 			df.euclidean_loss(generator, image);
-			df.display(image, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "input", { train });
-			df.display(generator, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "approximation", { train });
+			df.display(image, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1,  "input", { train });
+			df.display(generator, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approximation", { train });
 			df.psnr(image, generator, DeepFlow::EVERY_PASS);
 		}
 		else if (FLAGS_x2) {
@@ -66,7 +66,7 @@ void main(int argc, char** argv) {
 			auto f2 = df.variable(df.step({ 1,11,5,5 }, 0, 1), "", "w");
 			auto tconv = df.transposed_conv2d(recon, f2, 2, 2, 1, 1, 1, 1);
 			df.euclidean_loss(conv, tconv);
-			df.display(recon, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "input", { train });
+			df.display(recon, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "input", { train });
 			df.psnr(recon, image, DeepFlow::EVERY_PASS, "psnr", { train });
 		}
 		else if (FLAGS_x3) {			
@@ -79,7 +79,7 @@ void main(int argc, char** argv) {
 			auto conv = df.conv2d(image, f1, "", 1, 1, 1, 1, 1, 1);			
 			auto tconv = df.transposed_conv2d(recon, f2, 1, 1, 1, 1, 1, 1);
 			df.euclidean_loss(tconv, conv);
-			df.display(recon, 2, DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, "input", { train });
+			df.display(recon, 2, DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, 1, "input", { train });
 			df.psnr(recon, image, DeepFlow::END_OF_EPOCH, "psnr", { train });
 		}
 		else if (FLAGS_x4) {
@@ -90,13 +90,13 @@ void main(int argc, char** argv) {
 			auto generator2 = df.data_generator(df.random_normal({ 1, 3, 256, 256 }, 0, 0.1), 1, solver, "gen2");
 			auto selector = df.random_selector(generator1, generator2, 0.5);
 			df.euclidean_loss(selector, image);
-			df.display(generator1, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "approx1", { train });
-			df.display(generator2, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "approx2", { train });
+			df.display(generator1, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approx1", { train });
+			df.display(generator2, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approx2", { train });
 		}
 		else if (FLAGS_x5) {
 			auto train = df.define_train_phase("Train");
 			auto imbar = df.image_batch_reader(FLAGS_image_folder, { 6, 1, 27, 18 }, true);
-			df.display(imbar, 500, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "approx1", { train });
+			df.display(imbar, 500, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approx1", { train });
 		}
 		else if (FLAGS_x6) {
 			df.load_from_caffe_model(FLAGS_model, { std::pair<std::string, std::array<int,4>>("data", {4,3,224,224}) }, FLAGS_debug > 0);			
@@ -112,22 +112,22 @@ void main(int argc, char** argv) {
 			auto b = df.variable(df.ones({ 1,1,1,1 }), "", "b", {});
 			auto f = df.variable(df.ones({ 1,1,5,5 }), "", "f", {});
 			auto conv1 = df.conv2d(image, f, b, -1.0, 0, 0, 1, 1, 1, 1, "conv");
-			df.display(conv1, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "input", { train });
+			df.display(conv1, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "input", { train });
 			auto conv2 = df.conv2d(image, f, b, 0.0, 0, 0, 1, 1, 1, 1, "conv");
-			df.display(conv2, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "input", { train });
+			df.display(conv2, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "input", { train });
 			df.logger({ conv1 }, "log.txt", "{0}\n", DeepFlow::EVERY_PASS);
 			df.logger({ conv2 }, "log.txt", "{0}\n", DeepFlow::EVERY_PASS);
 		}
 		else if (FLAGS_x8) {
 			auto train = df.define_train_phase("Train");
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
-			df.display(image, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "input", { train });
+			df.display(image, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "input", { train });
 		}
 		else if (FLAGS_x9) {
 			auto train = df.define_train_phase("Train");
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto rotate = df.restructure(image, 2, 3);
-			df.display(rotate, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "rotate", { train });
+			df.display(rotate, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1,  "rotate", { train });
 		}
 		else if (FLAGS_x10) {
 		}
@@ -135,7 +135,7 @@ void main(int argc, char** argv) {
 			auto train = df.define_train_phase("Train");
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto norm = df.batch_normalization(image, DeepFlow::SPATIAL);
-			df.display(norm, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, "disp", { train });
+			df.display(norm, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp", { train });
 		}
 	}
 	else {

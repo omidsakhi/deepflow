@@ -1757,6 +1757,12 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::deepflow::ActionType display_type() const;
   void set_display_type(::deepflow::ActionType value);
 
+  // int32 epoch_frequency = 4;
+  void clear_epoch_frequency();
+  static const int kEpochFrequencyFieldNumber = 4;
+  ::google::protobuf::int32 epoch_frequency() const;
+  void set_epoch_frequency(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:deepflow.DisplayParam)
  private:
 
@@ -1764,6 +1770,7 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::int32 delay_msec_;
   int display_time_;
   int display_type_;
+  ::google::protobuf::int32 epoch_frequency_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -6880,6 +6887,20 @@ inline void DisplayParam::set_display_type(::deepflow::ActionType value) {
   
   display_type_ = value;
   // @@protoc_insertion_point(field_set:deepflow.DisplayParam.display_type)
+}
+
+// int32 epoch_frequency = 4;
+inline void DisplayParam::clear_epoch_frequency() {
+  epoch_frequency_ = 0;
+}
+inline ::google::protobuf::int32 DisplayParam::epoch_frequency() const {
+  // @@protoc_insertion_point(field_get:deepflow.DisplayParam.epoch_frequency)
+  return epoch_frequency_;
+}
+inline void DisplayParam::set_epoch_frequency(::google::protobuf::int32 value) {
+  
+  epoch_frequency_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.DisplayParam.epoch_frequency)
 }
 
 // -------------------------------------------------------------------

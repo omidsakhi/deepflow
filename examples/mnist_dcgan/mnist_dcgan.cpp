@@ -62,39 +62,37 @@ std::shared_ptr<Session> create_generator_session() {
 	DeepFlow df;
 	
 	auto mean = 0;
-	auto stddev = 0.1;
-	auto negative_slope = 0;
-	auto alpha_param = 0.05;
-	auto dropout = 0.5;
-	auto exp_avg_factor = 0;
-	int depth = 1024;
+	auto stddev = 0.01;
+	auto negative_slope = 0.01;
+	auto alpha_param = 1.0f;
+	auto decay = 0.01f;
+	auto dropout = 0.4;	
+	int depth = 512;
 
-	auto g_solver = df.adam_solver(0.0002f, 0.5f, 0.9999f);
-	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, mean, stddev, "random_input"), 10000, "", "input");
+	auto g_solver = df.adam_solver(0.0002f, 0.5f, 0.999f);
+	auto gin = df.data_generator(df.random_uniform({ FLAGS_batch, 100, 1, 1 }, -1, 1, "random_input"), 10000, "", "input");
 	
 	auto gfc_w = df.variable(df.random_normal({ 100, depth, 4, 4 }, mean, stddev), g_solver, "gfc_w");
 	auto gfc = df.matmul(gin, gfc_w, "gfc");
-	auto gfc_r = df.leaky_relu(gfc, negative_slope);
-	auto gfc_drop = df.dropout(gfc_r, dropout);
 
 	auto gconv1_f = df.variable(df.random_normal({ depth, depth/2, 2, 2 }, mean, stddev), g_solver, "gconv1_f");
-	auto gconv1_t = df.transposed_conv2d(gfc_drop, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1");
-	auto gconv1_n = df.batch_normalization(gconv1_t, DeepFlow::SPATIAL, exp_avg_factor, 1, 0, alpha_param, 1);
+	auto gconv1_t = df.transposed_conv2d(gfc, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1");
+	auto gconv1_n = df.batch_normalization(gconv1_t, DeepFlow::PER_ACTIVATION, 0, 1, 0, alpha_param, 1 - decay);
 	auto gconv1_r = df.leaky_relu(gconv1_n, negative_slope);	
 	auto gconv1_d = df.dropout(gconv1_r, dropout);
 
-	auto gconv2_f = df.variable(df.random_normal({ depth/2, depth/4, 3, 3 }, mean, stddev), g_solver, "gconv2_f");
-	auto gconv2_t = df.transposed_conv2d(gconv1_d, gconv2_f, 1, 1, 2, 2, 1, 1, "gconv2");
-	auto gconv2_n = df.batch_normalization(gconv2_t, DeepFlow::SPATIAL, exp_avg_factor, 1, 0, alpha_param, 1);
+	auto gconv2_f = df.variable(df.random_normal({ depth/2, depth/4, 5, 5 }, mean, stddev), g_solver, "gconv2_f");
+	auto gconv2_t = df.transposed_conv2d(gconv1_d, gconv2_f, 2, 2, 2, 2, 1, 1, "gconv2");
+	auto gconv2_n = df.batch_normalization(gconv2_t, DeepFlow::PER_ACTIVATION, 0, 1, 0, alpha_param, 1 - decay);
 	auto gconv2_r = df.leaky_relu(gconv2_n, negative_slope);
 	auto gconv2_d = df.dropout(gconv2_r, dropout);
 
-	auto gconv3_f = df.variable(df.random_normal({ depth/4, 1, 3, 3 }, mean, stddev), g_solver, "gconv3_f");
-	auto gconv3_t = df.transposed_conv2d(gconv2_d, gconv3_f, 1, 1, 2, 2, 1, 1, "gconv3");	
-	auto gconv3_n = df.batch_normalization(gconv3_t, DeepFlow::SPATIAL, exp_avg_factor, 1, 0, alpha_param, 1);
+	auto gconv3_f = df.variable(df.random_normal({ depth/4, 1, 5, 5 }, mean, stddev), g_solver, "gconv3_f");
+	auto gconv3_t = df.transposed_conv2d(gconv2_d, gconv3_f, 2, 2, 2, 2, 1, 1, "gconv3");	
+	auto gconv3_n = df.batch_normalization(gconv3_t, DeepFlow::PER_ACTIVATION, 0, 1, 0, alpha_param, 1 - decay);
 
 	auto gout = df.tanh(gconv3_n, "gout");
-	auto disp = df.display(gout, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
+	auto disp = df.display(gout, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 10);
 	
 	//auto replay_memory = df.replay_memory(gout, 10000, "replay_memory");
 	
@@ -104,33 +102,33 @@ std::shared_ptr<Session> create_generator_session() {
 std::shared_ptr<Session> create_discriminator() {
 	DeepFlow df;
 	auto mean = 0;
-	auto stddev = 0.02;
-	auto d_solver = df.adam_solver(0.0002f, 0.9f, 0.999f);
+	auto stddev = 0.1;
+	auto d_solver = df.adam_solver(0.0002f, 0.5f, 0.999f);
 	auto negative_slope = 0.1;
+	auto dropout = 0.2;
+	auto depth = 64;
+
 	auto input = df.place_holder({ FLAGS_batch , 1, 28, 28 }, Tensor::Float, "input");		
 
-	auto conv1_w = df.variable(df.random_uniform({ 64, 1, 3, 3 }, -0.100000, 0.100000), d_solver, "conv1_w");
-	auto conv1 = df.conv2d(input, conv1_w, 1, 1, 2, 2, 1, 1, "conv1");	
-	auto conv1_r = df.leaky_relu(conv1, negative_slope);
-	//auto conv1_n = df.batch_normalization(conv1_r, DeepFlow::SPATIAL);
+	auto conv1_w = df.variable(df.random_uniform({ depth, 1, 5, 5 }, -0.100000, 0.100000), d_solver, "conv1_w");
+	auto conv1 = df.conv2d(input, conv1_w, 2, 2, 2, 2, 1, 1, "conv1");	
+	auto conv1_r = df.leaky_relu(conv1, negative_slope);	
 	
-	auto conv2_w = df.variable(df.random_uniform({ 64, 64, 3, 3 }, -0.100000, 0.100000), d_solver, "conv2_w");
+	auto conv2_w = df.variable(df.random_uniform({ depth*2, depth, 3, 3 }, -0.100000, 0.100000), d_solver, "conv2_w");
 	auto conv2 = df.conv2d(conv1_r, conv2_w, 1, 1, 2, 2, 1, 1, "conv2");	
-	auto conv2_r = df.leaky_relu(conv2, negative_slope);
-	//auto conv2_n = df.batch_normalization(conv2_r, DeepFlow::SPATIAL);
+	auto conv2_r = df.leaky_relu(conv2, negative_slope);	
 
-	auto conv3_w = df.variable(df.random_uniform({ 128, 64, 3, 3 }, -0.100000, 0.100000), d_solver, "conv3_w");
+	auto conv3_w = df.variable(df.random_uniform({ depth*2, depth*2, 3, 3 }, -0.100000, 0.100000), d_solver, "conv3_w");
 	auto conv3 = df.conv2d(conv2_r, conv3_w, 1, 1, 2, 2, 1, 1, "conv3");
-	auto conv3_r = df.leaky_relu(conv3, negative_slope);
-	//auto conv3_n = df.batch_normalization(conv3_r, DeepFlow::SPATIAL);			
-	auto drop1 = df.dropout(conv3_r);
+	auto conv3_r = df.leaky_relu(conv3, negative_slope);	
+	auto drop1 = df.dropout(conv3_r, dropout);
 
-	auto w1 = df.variable(df.random_uniform({ 2048, 500, 1, 1 }, -0.100000, 0.100000), d_solver, "w1");
+	auto w1 = df.variable(df.random_uniform({ depth*2*4*4, 500, 1, 1 }, -0.100000, 0.100000), d_solver, "w1");
 	auto m1 = df.matmul(drop1, w1, "m1");
 	auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, -1.000000, 1.000000), d_solver, "b1");
 	auto bias1 = df.bias_add(m1, b1, "bias1");
 	auto relu1 = df.leaky_relu(bias1, negative_slope, "relu1");
-	auto drop2 = df.dropout(relu1);
+	auto drop2 = df.dropout(relu1, dropout);
 
 	auto w2 = df.variable(df.random_uniform({ 500, 1, 1, 1 }, -0.100000, 0.100000), d_solver, "w2");
 	auto m2 = df.matmul(drop2, w2, "m2");
@@ -189,6 +187,9 @@ void main(int argc, char** argv) {
 	auto sio_sender_gfake = socket_io_sender_session->get_node("gfake");
 
 	for (int i = 1; i <= FLAGS_epoch && execution_context->quit != true; ++i) {
+		
+		execution_context->current_epoch = i;
+
 		std::cout << "Epoch: " << i << std::endl;		
 		
 		std::cout << " MNIST INPUT " << std::endl;

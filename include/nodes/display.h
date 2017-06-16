@@ -30,6 +30,7 @@ private:
 	int num_pic_pixels;	
 	cv::Mat disp;
 	int _delay_msec = 100;
+	int _epoch_frequency = 1;
 	deepflow::ActionType _display_type;
 	deepflow::ActionTime _display_time;
 };

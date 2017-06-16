@@ -463,7 +463,7 @@ void DeepFlow::logger(std::initializer_list<std::string> inputs, std::string fil
 	logger_param->set_logging_type((deepflow::ActionType)loggingType);
 }
 
-std::string DeepFlow::display(std::string input, int delay_msec, ActionTime dislayTime, ActionType displayType, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::display(std::string input, int delay_msec, ActionTime dislayTime, ActionType displayType, int epoch_frequency, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -475,6 +475,7 @@ std::string DeepFlow::display(std::string input, int delay_msec, ActionTime disl
 	display_param->set_delay_msec(delay_msec);
 	display_param->set_display_type((deepflow::ActionType)displayType);
 	display_param->set_display_time((deepflow::ActionTime)dislayTime);
+	display_param->set_epoch_frequency(epoch_frequency);
 	return node_param->output(0);
 }
 
