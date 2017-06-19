@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport Reduce : public Node {
 public:
-	Reduce(const deepflow::NodeParam &param);
+	Reduce(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 2; }
 	void initForward();

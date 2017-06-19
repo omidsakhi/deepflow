@@ -18,8 +18,8 @@ void AddKernelBackward(const int n, const float *dy, const float scale, float * 
 	}
 }
 
-Add::Add(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_add_param() == false) << "param.has_add_param() == false";	
+Add::Add(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_add_param() == false) << "param.has_add_param() == false";	
 }
 
 void Add::initForward() {
@@ -30,8 +30,8 @@ void Add::initForward() {
 	auto b = _inputs[1];
 	auto bd = b->dims();
 
-	_alpha = _param.add_param().alpha();
-	_beta = _param.add_param().beta();
+	_alpha = _param->add_param().alpha();
+	_beta = _param->add_param().beta();
 
 	LOG_IF(FATAL, a->value()->size() != b->value()->size()) << "Different input sizes";		
 	_outputs[0]->initValue(_inputs[0]->value()->dims());

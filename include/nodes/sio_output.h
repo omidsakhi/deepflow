@@ -6,7 +6,7 @@
 
 class DeepFlowDllExport SIOOutput : public Node {
 public:
-	SIOOutput(const deepflow::NodeParam &param);
+	SIOOutput(deepflow::NodeParam *param);
 	int minNumInputs();
 	int minNumOutputs() { return 0; }
 	void initForward();

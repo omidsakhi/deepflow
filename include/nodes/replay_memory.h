@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport ReplayMemory : public Node {
 public:
-	ReplayMemory(const deepflow::NodeParam &param);
+	ReplayMemory(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();

@@ -9,8 +9,8 @@ void EqualKernel(int n, const int * __restrict__ a,  const int * __restrict__ b,
 }
 
 
-Equal::Equal(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_equal_param() == false) << "param.has_equal_param() == false";
+Equal::Equal(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_equal_param() == false) << "param.has_equal_param() == false";
 }
 
 void Equal::initForward() {

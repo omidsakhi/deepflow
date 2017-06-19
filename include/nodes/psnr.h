@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport Psnr : public Node {
 public:
-	Psnr(const deepflow::NodeParam &param);
+	Psnr(deepflow::NodeParam *param);
 	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 0; }
 	void initForward();

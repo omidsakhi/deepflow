@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport Accumulator : public Node {
 public:
-	Accumulator(const deepflow::NodeParam &param);
+	Accumulator(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 2; }
 	void initForward();

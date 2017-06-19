@@ -6,7 +6,7 @@ class Initializer;
 
 class DeepFlowDllExport DataGenerator : public Variable {
 public:
-	DataGenerator(std::shared_ptr<Initializer> initializer, const deepflow::NodeParam &param);
+	DataGenerator(std::shared_ptr<Initializer> initializer, deepflow::NodeParam *param);
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
 	bool isGenerator();

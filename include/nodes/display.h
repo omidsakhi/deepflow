@@ -6,7 +6,7 @@
 
 class DeepFlowDllExport Display : public Node {
 public:
-	Display(const deepflow::NodeParam &param);
+	Display(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();

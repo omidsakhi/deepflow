@@ -11,9 +11,9 @@ void SquareErrorKernel(const int n, const float * __restrict__ a, const float * 
 	}
 }
 
-Psnr::Psnr(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_psnr_param() == false) << "param.has_psnr_param() == false";
-	auto psnrParam = _param.psnr_param();	
+Psnr::Psnr(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_psnr_param() == false) << "param.has_psnr_param() == false";
+	auto psnrParam = _param->psnr_param();	
 	_print_time = psnrParam.print_time();	
 }
 

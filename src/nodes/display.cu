@@ -86,12 +86,12 @@ void ColorPictureGeneratorKernel(const int num_images, const float *in, const in
 	}
 }
 
-Display::Display(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_display_param() == false) << "param.has_display_param() == false";
+Display::Display(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_display_param() == false) << "param.has_display_param() == false";
 }
 
 void Display::initForward() {
-	auto display_param = _param.display_param();
+	auto display_param = _param->display_param();
 	_delay_msec = display_param.delay_msec();
 	_display_type = display_param.display_type();
 	_display_time = display_param.display_time();

@@ -5,24 +5,24 @@ Tensor::Tensor() {
 	d_data = NULL;
 }
 
-Tensor::Tensor(const deepflow::TensorParam &param) {
-	switch (param.dims_size()) {
+Tensor::Tensor(deepflow::TensorParam *param) {
+	switch (param->dims_size()) {
 	case 1:
-		_dims = { 1,param.dims(0),1,1 };
+		_dims = { 1,param->dims(0),1,1 };
 		break;
 	case 2:
-		_dims = { param.dims(0),param.dims(1),1,1 };
+		_dims = { param->dims(0),param->dims(1),1,1 };
 		break;
 	case 3:
-		_dims = { param.dims(0), 1, param.dims(1),param.dims(2) };
+		_dims = { param->dims(0), 1, param->dims(1),param->dims(2) };
 		break;
 	case 4:
-		_dims = { param.dims(0),param.dims(1),param.dims(2),param.dims(3) };
+		_dims = { param->dims(0),param->dims(1),param->dims(2),param->dims(3) };
 		break;
 	default:
 		LOG(FATAL) << "Unsupported shape.";
 	}
-	_reader_type = (Tensor::TensorType) param.type();
+	_reader_type = (Tensor::TensorType) param->type();
 	init();
 }
 

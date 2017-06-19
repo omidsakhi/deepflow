@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport Logger : public Node {
 public:
-	Logger(const deepflow::NodeParam &param);
+	Logger(deepflow::NodeParam *param);
 	int minNumInputs();
 	int minNumOutputs() { return 0; }
 	void initForward();

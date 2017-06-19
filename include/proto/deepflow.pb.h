@@ -526,24 +526,24 @@ class TensorData : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   // accessors -------------------------------------------------------
 
-  // repeated float weight = 1;
-  int weight_size() const;
-  void clear_weight();
-  static const int kWeightFieldNumber = 1;
-  float weight(int index) const;
-  void set_weight(int index, float value);
-  void add_weight(float value);
+  // repeated float data = 1 [packed = true];
+  int data_size() const;
+  void clear_data();
+  static const int kDataFieldNumber = 1;
+  float data(int index) const;
+  void set_data(int index, float value);
+  void add_data(float value);
   const ::google::protobuf::RepeatedField< float >&
-      weight() const;
+      data() const;
   ::google::protobuf::RepeatedField< float >*
-      mutable_weight();
+      mutable_data();
 
   // @@protoc_insertion_point(class_scope:deepflow.TensorData)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedField< float > weight_;
-  mutable int _weight_cached_byte_size_;
+  ::google::protobuf::RepeatedField< float > data_;
+  mutable int _data_cached_byte_size_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2504,11 +2504,18 @@ class LeakyReluParam : public ::google::protobuf::Message /* @@protoc_insertion_
   float negative_slope() const;
   void set_negative_slope(float value);
 
+  // bool randomize = 2;
+  void clear_randomize();
+  static const int kRandomizeFieldNumber = 2;
+  bool randomize() const;
+  void set_randomize(bool value);
+
   // @@protoc_insertion_point(class_scope:deepflow.LeakyReluParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   float negative_slope_;
+  bool randomize_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3808,6 +3815,42 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
 
   // accessors -------------------------------------------------------
 
+  // .deepflow.TensorData scale = 7;
+  bool has_scale() const;
+  void clear_scale();
+  static const int kScaleFieldNumber = 7;
+  const ::deepflow::TensorData& scale() const;
+  ::deepflow::TensorData* mutable_scale();
+  ::deepflow::TensorData* release_scale();
+  void set_allocated_scale(::deepflow::TensorData* scale);
+
+  // .deepflow.TensorData bias = 8;
+  bool has_bias() const;
+  void clear_bias();
+  static const int kBiasFieldNumber = 8;
+  const ::deepflow::TensorData& bias() const;
+  ::deepflow::TensorData* mutable_bias();
+  ::deepflow::TensorData* release_bias();
+  void set_allocated_bias(::deepflow::TensorData* bias);
+
+  // .deepflow.TensorData mean = 9;
+  bool has_mean() const;
+  void clear_mean();
+  static const int kMeanFieldNumber = 9;
+  const ::deepflow::TensorData& mean() const;
+  ::deepflow::TensorData* mutable_mean();
+  ::deepflow::TensorData* release_mean();
+  void set_allocated_mean(::deepflow::TensorData* mean);
+
+  // .deepflow.TensorData var = 10;
+  bool has_var() const;
+  void clear_var();
+  static const int kVarFieldNumber = 10;
+  const ::deepflow::TensorData& var() const;
+  ::deepflow::TensorData* mutable_var();
+  ::deepflow::TensorData* release_var();
+  void set_allocated_var(::deepflow::TensorData* var);
+
   // .deepflow.BatchNormalizationParam.Mode mode = 1;
   void clear_mode();
   static const int kModeFieldNumber = 1;
@@ -3848,6 +3891,10 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::deepflow::TensorData* scale_;
+  ::deepflow::TensorData* bias_;
+  ::deepflow::TensorData* mean_;
+  ::deepflow::TensorData* var_;
   int mode_;
   float exp_avg_factor_;
   float alpha_data_;
@@ -6216,34 +6263,34 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
 // TensorData
 
-// repeated float weight = 1;
-inline int TensorData::weight_size() const {
-  return weight_.size();
+// repeated float data = 1 [packed = true];
+inline int TensorData::data_size() const {
+  return data_.size();
 }
-inline void TensorData::clear_weight() {
-  weight_.Clear();
+inline void TensorData::clear_data() {
+  data_.Clear();
 }
-inline float TensorData::weight(int index) const {
-  // @@protoc_insertion_point(field_get:deepflow.TensorData.weight)
-  return weight_.Get(index);
+inline float TensorData::data(int index) const {
+  // @@protoc_insertion_point(field_get:deepflow.TensorData.data)
+  return data_.Get(index);
 }
-inline void TensorData::set_weight(int index, float value) {
-  weight_.Set(index, value);
-  // @@protoc_insertion_point(field_set:deepflow.TensorData.weight)
+inline void TensorData::set_data(int index, float value) {
+  data_.Set(index, value);
+  // @@protoc_insertion_point(field_set:deepflow.TensorData.data)
 }
-inline void TensorData::add_weight(float value) {
-  weight_.Add(value);
-  // @@protoc_insertion_point(field_add:deepflow.TensorData.weight)
+inline void TensorData::add_data(float value) {
+  data_.Add(value);
+  // @@protoc_insertion_point(field_add:deepflow.TensorData.data)
 }
 inline const ::google::protobuf::RepeatedField< float >&
-TensorData::weight() const {
-  // @@protoc_insertion_point(field_list:deepflow.TensorData.weight)
-  return weight_;
+TensorData::data() const {
+  // @@protoc_insertion_point(field_list:deepflow.TensorData.data)
+  return data_;
 }
 inline ::google::protobuf::RepeatedField< float >*
-TensorData::mutable_weight() {
-  // @@protoc_insertion_point(field_mutable_list:deepflow.TensorData.weight)
-  return &weight_;
+TensorData::mutable_data() {
+  // @@protoc_insertion_point(field_mutable_list:deepflow.TensorData.data)
+  return &data_;
 }
 
 // -------------------------------------------------------------------
@@ -7243,6 +7290,20 @@ inline void LeakyReluParam::set_negative_slope(float value) {
   // @@protoc_insertion_point(field_set:deepflow.LeakyReluParam.negative_slope)
 }
 
+// bool randomize = 2;
+inline void LeakyReluParam::clear_randomize() {
+  randomize_ = false;
+}
+inline bool LeakyReluParam::randomize() const {
+  // @@protoc_insertion_point(field_get:deepflow.LeakyReluParam.randomize)
+  return randomize_;
+}
+inline void LeakyReluParam::set_randomize(bool value) {
+  
+  randomize_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.LeakyReluParam.randomize)
+}
+
 // -------------------------------------------------------------------
 
 // ReduceParam
@@ -8018,6 +8079,162 @@ inline void BatchNormalizationParam::set_beta_param(float value) {
   
   beta_param_ = value;
   // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.beta_param)
+}
+
+// .deepflow.TensorData scale = 7;
+inline bool BatchNormalizationParam::has_scale() const {
+  return this != internal_default_instance() && scale_ != NULL;
+}
+inline void BatchNormalizationParam::clear_scale() {
+  if (GetArenaNoVirtual() == NULL && scale_ != NULL) delete scale_;
+  scale_ = NULL;
+}
+inline const ::deepflow::TensorData& BatchNormalizationParam::scale() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.scale)
+  return scale_ != NULL ? *scale_
+                         : *::deepflow::TensorData::internal_default_instance();
+}
+inline ::deepflow::TensorData* BatchNormalizationParam::mutable_scale() {
+  
+  if (scale_ == NULL) {
+    scale_ = new ::deepflow::TensorData;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.BatchNormalizationParam.scale)
+  return scale_;
+}
+inline ::deepflow::TensorData* BatchNormalizationParam::release_scale() {
+  // @@protoc_insertion_point(field_release:deepflow.BatchNormalizationParam.scale)
+  
+  ::deepflow::TensorData* temp = scale_;
+  scale_ = NULL;
+  return temp;
+}
+inline void BatchNormalizationParam::set_allocated_scale(::deepflow::TensorData* scale) {
+  delete scale_;
+  scale_ = scale;
+  if (scale) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.BatchNormalizationParam.scale)
+}
+
+// .deepflow.TensorData bias = 8;
+inline bool BatchNormalizationParam::has_bias() const {
+  return this != internal_default_instance() && bias_ != NULL;
+}
+inline void BatchNormalizationParam::clear_bias() {
+  if (GetArenaNoVirtual() == NULL && bias_ != NULL) delete bias_;
+  bias_ = NULL;
+}
+inline const ::deepflow::TensorData& BatchNormalizationParam::bias() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.bias)
+  return bias_ != NULL ? *bias_
+                         : *::deepflow::TensorData::internal_default_instance();
+}
+inline ::deepflow::TensorData* BatchNormalizationParam::mutable_bias() {
+  
+  if (bias_ == NULL) {
+    bias_ = new ::deepflow::TensorData;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.BatchNormalizationParam.bias)
+  return bias_;
+}
+inline ::deepflow::TensorData* BatchNormalizationParam::release_bias() {
+  // @@protoc_insertion_point(field_release:deepflow.BatchNormalizationParam.bias)
+  
+  ::deepflow::TensorData* temp = bias_;
+  bias_ = NULL;
+  return temp;
+}
+inline void BatchNormalizationParam::set_allocated_bias(::deepflow::TensorData* bias) {
+  delete bias_;
+  bias_ = bias;
+  if (bias) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.BatchNormalizationParam.bias)
+}
+
+// .deepflow.TensorData mean = 9;
+inline bool BatchNormalizationParam::has_mean() const {
+  return this != internal_default_instance() && mean_ != NULL;
+}
+inline void BatchNormalizationParam::clear_mean() {
+  if (GetArenaNoVirtual() == NULL && mean_ != NULL) delete mean_;
+  mean_ = NULL;
+}
+inline const ::deepflow::TensorData& BatchNormalizationParam::mean() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.mean)
+  return mean_ != NULL ? *mean_
+                         : *::deepflow::TensorData::internal_default_instance();
+}
+inline ::deepflow::TensorData* BatchNormalizationParam::mutable_mean() {
+  
+  if (mean_ == NULL) {
+    mean_ = new ::deepflow::TensorData;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.BatchNormalizationParam.mean)
+  return mean_;
+}
+inline ::deepflow::TensorData* BatchNormalizationParam::release_mean() {
+  // @@protoc_insertion_point(field_release:deepflow.BatchNormalizationParam.mean)
+  
+  ::deepflow::TensorData* temp = mean_;
+  mean_ = NULL;
+  return temp;
+}
+inline void BatchNormalizationParam::set_allocated_mean(::deepflow::TensorData* mean) {
+  delete mean_;
+  mean_ = mean;
+  if (mean) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.BatchNormalizationParam.mean)
+}
+
+// .deepflow.TensorData var = 10;
+inline bool BatchNormalizationParam::has_var() const {
+  return this != internal_default_instance() && var_ != NULL;
+}
+inline void BatchNormalizationParam::clear_var() {
+  if (GetArenaNoVirtual() == NULL && var_ != NULL) delete var_;
+  var_ = NULL;
+}
+inline const ::deepflow::TensorData& BatchNormalizationParam::var() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.var)
+  return var_ != NULL ? *var_
+                         : *::deepflow::TensorData::internal_default_instance();
+}
+inline ::deepflow::TensorData* BatchNormalizationParam::mutable_var() {
+  
+  if (var_ == NULL) {
+    var_ = new ::deepflow::TensorData;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.BatchNormalizationParam.var)
+  return var_;
+}
+inline ::deepflow::TensorData* BatchNormalizationParam::release_var() {
+  // @@protoc_insertion_point(field_release:deepflow.BatchNormalizationParam.var)
+  
+  ::deepflow::TensorData* temp = var_;
+  var_ = NULL;
+  return temp;
+}
+inline void BatchNormalizationParam::set_allocated_var(::deepflow::TensorData* var) {
+  delete var_;
+  var_ = var;
+  if (var) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.BatchNormalizationParam.var)
 }
 
 // -------------------------------------------------------------------

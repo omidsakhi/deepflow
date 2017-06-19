@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport TransposedConvolution2D : public Node {
 public:
-	TransposedConvolution2D(const deepflow::NodeParam &param);
+	TransposedConvolution2D(deepflow::NodeParam *param);
 	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 1; }
 	void initForward();

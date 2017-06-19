@@ -13,9 +13,9 @@ void ApplyGradientKernel(const int n, const float momentum, const float learning
 		w[i] = momentum * w[i] + learning_rate * grad[i];
 }
 
-SGDSolver::SGDSolver(const deepflow::SolverParam &param) : Solver(param) {
-	LOG_IF(FATAL, param.has_sgd_solver() == false) << "param.has_sgd_solver() == false";
-	_my_param = _param.sgd_solver();
+SGDSolver::SGDSolver(deepflow::SolverParam *param) : Solver(param) {
+	LOG_IF(FATAL, param->has_sgd_solver() == false) << "param.has_sgd_solver() == false";
+	_my_param = _param->mutable_sgd_solver();
 }
 
 void SGDSolver::apply(std::shared_ptr<Variable> var) {
@@ -35,7 +35,7 @@ void SGDSolver::apply(std::shared_ptr<Variable> var) {
 	LOG_IF(INFO, verbos) << "APPLYING SOLVER " << name() << " ON " << var->name();
 	auto output = var->output(0);
 	auto size = output->value()->size();						
-	ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, _my_param.momentum(), _my_param.learning_rate(), (float*) output->value()->mutableData(), (float*) output->diff()->data());
+	ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, _my_param->momentum(), _my_param->learning_rate(), (float*) output->value()->mutableData(), (float*) output->diff()->data());
 	DF_KERNEL_CHECK();
 }
 
@@ -46,8 +46,8 @@ void SGDSolver::init(std::shared_ptr<Variable> var) {
 std::string SGDSolver::to_cpp() const
 {
 	std::string cpp = "auto " + name() + " = df.sgd_solver(";
-	cpp += std::to_string(_my_param.momentum()) + ", ";
-	cpp += std::to_string(_my_param.learning_rate()) + ", ";	
+	cpp += std::to_string(_my_param->momentum()) + ", ";
+	cpp += std::to_string(_my_param->learning_rate()) + ", ";	
 	cpp += "\"" + name() + "\"";
 	cpp += ");";
 	return cpp;

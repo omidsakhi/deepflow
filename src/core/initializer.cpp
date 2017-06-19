@@ -2,10 +2,10 @@
 
 #include <glog/logging.h>
 
-Initializer::Initializer(const deepflow::InitParam &param) : CudaHelper() {
+Initializer::Initializer(deepflow::InitParam *param) : CudaHelper() {
 	_param = param;
-	LOG_IF(FATAL, param.has_tensor_param() == false) << "param.has_tensor_param() == false [FAILED]";
-	const deepflow::TensorParam &tensorParam = param.tensor_param();
+	LOG_IF(FATAL, param->has_tensor_param() == false) << "param.has_tensor_param() == false [FAILED]";
+	const deepflow::TensorParam &tensorParam = param->tensor_param();
 	switch (tensorParam.dims_size()) {
 	case 1:
 		_dims = { 1,tensorParam.dims(0),1,1 };
@@ -24,19 +24,19 @@ Initializer::Initializer(const deepflow::InitParam &param) : CudaHelper() {
 	}
 	_reader_type = (Tensor::TensorType) tensorParam.type();
 }
+/*
 Initializer::Initializer(std::array<int, 4> dims, Tensor::TensorType type) {
 	_dims = dims;
 	_reader_type = type;
+	_param = new deepflow::InitParam;
 }
+*/
 
 std::array<int, 4> Initializer::dims() const {
 	return _dims;
 }
 
-const deepflow::InitParam &Initializer::param() const {
+deepflow::InitParam * Initializer::param()
+{
 	return _param;
-}
-
-deepflow::InitParam *Initializer::mutableParam() {
-	return &_param;
 }

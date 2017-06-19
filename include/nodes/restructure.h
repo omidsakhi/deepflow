@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport Restructure : public Node {
 public:
-	Restructure(const deepflow::NodeParam &param);
+	Restructure(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();

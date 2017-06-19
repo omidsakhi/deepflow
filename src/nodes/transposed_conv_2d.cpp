@@ -1,13 +1,13 @@
 #include "nodes/transposed_conv_2d.h"
 
 
-TransposedConvolution2D::TransposedConvolution2D(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_transposed_conv_2d_param() == false) << "param.has_transposed_conv_2d_param() [FAILED]";
+TransposedConvolution2D::TransposedConvolution2D(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_transposed_conv_2d_param() == false) << "param.has_transposed_conv_2d_param() [FAILED]";
 	d_workspace = 0;
 }
 
 void TransposedConvolution2D::initForward() {	
-	auto transposed_conv2d_param = _param.transposed_conv_2d_param();
+	auto transposed_conv2d_param = _param->transposed_conv_2d_param();
 	int pad_h = transposed_conv2d_param.pad_h();
 	int pad_w = transposed_conv2d_param.pad_w();
 	int u = transposed_conv2d_param.u();
@@ -79,7 +79,7 @@ void TransposedConvolution2D::backward() {
 
 std::string TransposedConvolution2D::to_cpp() const
 {	
-	auto param = _param.transposed_conv_2d_param();
+	auto param = _param->transposed_conv_2d_param();
 	std::string cpp = "auto " + _name + " = df.transposed_conv2d(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
 	auto dims = _outputs[0]->value()->dims();
 	cpp += "{" + std::to_string(dims[0]) + ", " + std::to_string(dims[1]) + ", " + std::to_string(dims[2]) + ", " + std::to_string(dims[3]) + "}";

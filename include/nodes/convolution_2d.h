@@ -4,7 +4,7 @@
 
 class DeepFlowDllExport Convolution2D : public Node {
 public:
-	Convolution2D(const deepflow::NodeParam &param);
+	Convolution2D(deepflow::NodeParam *param);
 	int minNumInputs();
 	int minNumOutputs() { return 1; }
 	void initForward();

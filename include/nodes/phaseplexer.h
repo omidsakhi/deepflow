@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport Phaseplexer : public Node {
 public:
-	Phaseplexer(const deepflow::NodeParam &param);
+	Phaseplexer(deepflow::NodeParam *param);
 	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 1; }
 	void initForward();

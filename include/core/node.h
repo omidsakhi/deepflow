@@ -43,7 +43,7 @@ public:
 		NEVER_BACKWARD
 	};
 	Node();
-	Node(const deepflow::NodeParam &param);
+	Node(deepflow::NodeParam *param);
 	void createIO();
 	virtual void initForward() = 0;
 	virtual void initBackward() = 0;
@@ -56,6 +56,7 @@ public:
 	virtual ForwardType forwardType() = 0;
 	virtual BackwardType backwardType() = 0;
 	virtual std::string to_cpp() const = 0;
+	virtual void prep_for_saving() {}
 	std::string name() const;	
 	std::string _to_cpp_phases() const;
 	std::string _input_name_for_cpp(int i) const;
@@ -69,7 +70,7 @@ public:
 	void feed_forward(std::shared_ptr<Node> node, int output_terminal);
 	void feed_backward(std::shared_ptr<Node> node, int output_terminal);
 	void _traverse_up(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
-	void _traverse_down(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
+	void _traverse_down(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);	
 	void setVisited(bool state);
 	void resetGradients();
 	void cpy(int n, const float alpha, const void *src, const float beta, void *dst);
@@ -81,7 +82,7 @@ public:
 	NodeOutputPtr output(int index);
 	bool isInitialized() const;
 	void setInitialized(bool status);
-	deepflow::NodeParam &param();
+	deepflow::NodeParam *param();
 	bool includePhase(const std::string &phase);
 	void setExecutionContext(ExecutionContextPtr context);
 	ExecutionContextPtr executionContext();
@@ -94,8 +95,8 @@ protected:
 	bool _visited = false;	
 	bool _propagate_back = false;
 	bool _initialized = false;	
-	deepflow::NodeParam _param;
-	ExecutionContextPtr _context;
+	deepflow::NodeParam *_param = nullptr;
+	ExecutionContextPtr _context = nullptr;
 	const float one = 1.0f;
 	const float zero = 0.0f;
 };

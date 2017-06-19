@@ -32,9 +32,9 @@ void GainStepKernel(const int n, float *w, const float *g, float *m, float *gain
 	}
 }
 
-GainSolver::GainSolver(const deepflow::SolverParam &param): Solver(param) {
-	LOG_IF(FATAL, param.has_gain_solver() == false) << "param.has_gain_solver() == false";
-	_my_param = param.gain_solver();
+GainSolver::GainSolver(deepflow::SolverParam *param): Solver(param) {
+	LOG_IF(FATAL, param->has_gain_solver() == false) << "param.has_gain_solver() == false";
+	_my_param = param->mutable_gain_solver();
 }
 
 void GainSolver::apply(std::shared_ptr<Variable> var) {
@@ -55,7 +55,7 @@ void GainSolver::apply(std::shared_ptr<Variable> var) {
 	LOG_IF(INFO, verbos) << "APPLYING SOLVER " << name() << " ON " << var->name();
 	auto output = var->output(0);
 	auto size = output->value()->size();	
-	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->data(), _previous_gradient, _gain, _my_param.max_gain(), _my_param.min_gain(), _my_param.gain_plus(), _my_param.gain_mult(), _my_param.momentum(), _my_param.learning_rate());
+	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->data(), _previous_gradient, _gain, _my_param->max_gain(), _my_param->min_gain(), _my_param->gain_plus(), _my_param->gain_mult(), _my_param->momentum(), _my_param->learning_rate());
 	DF_KERNEL_CHECK();
 }
 
@@ -73,12 +73,12 @@ void GainSolver::init(std::shared_ptr<Variable> var) {
 std::string GainSolver::to_cpp() const
 {	
 	std::string cpp = "auto " + name() + " = df.gain_solver(";
-	cpp += std::to_string(_my_param.momentum()) + ", ";
-	cpp += std::to_string(_my_param.learning_rate()) + ", ";
-	cpp += std::to_string(_my_param.max_gain()) + ", ";
-	cpp += std::to_string(_my_param.min_gain()) + ", ";
-	cpp += std::to_string(_my_param.gain_plus()) + ", ";
-	cpp += std::to_string(_my_param.gain_mult()) + ", ";
+	cpp += std::to_string(_my_param->momentum()) + ", ";
+	cpp += std::to_string(_my_param->learning_rate()) + ", ";
+	cpp += std::to_string(_my_param->max_gain()) + ", ";
+	cpp += std::to_string(_my_param->min_gain()) + ", ";
+	cpp += std::to_string(_my_param->gain_plus()) + ", ";
+	cpp += std::to_string(_my_param->gain_mult()) + ", ";
 	cpp += "\"" + name() + "\"";
 	cpp += ");";
 	return cpp;

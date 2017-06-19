@@ -24,9 +24,9 @@ void AdaDeltaKernel(const int n, float *w, const float *g, float *h1, float *h2,
 	}
 }
 
-AdaDeltaSolver::AdaDeltaSolver(const deepflow::SolverParam &param) : Solver(param) {
-	LOG_IF(FATAL, param.has_adadelta_solver() == false) << "param.has_adadelta_solver() == false";
-	_my_param = param.adadelta_solver();
+AdaDeltaSolver::AdaDeltaSolver(deepflow::SolverParam *param) : Solver(param) {
+	LOG_IF(FATAL, param->has_adadelta_solver() == false) << "param.has_adadelta_solver() == false";
+	_my_param = param->mutable_adadelta_solver();
 }
 
 void AdaDeltaSolver::apply(std::shared_ptr<Variable> var) {
@@ -46,7 +46,7 @@ void AdaDeltaSolver::apply(std::shared_ptr<Variable> var) {
 	LOG_IF(INFO, verbos) << "APPLYING SOLVER " << name() << " ON " << var->name();
 	auto output = var->output(0);
 	auto size = output->value()->size();
-	AdaDeltaKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), (float*)output->diff()->data(), _h1, _h2, _my_param.momentum(), _my_param.learning_rate(), _my_param.delta());
+	AdaDeltaKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), (float*)output->diff()->data(), _h1, _h2, _my_param->momentum(), _my_param->learning_rate(), _my_param->delta());
 	DF_KERNEL_CHECK();
 }
 
@@ -65,9 +65,9 @@ void AdaDeltaSolver::init(std::shared_ptr<Variable> var) {
 std::string AdaDeltaSolver::to_cpp() const
 {	
 	std::string cpp = "auto " + name() + " = df.adadelta_solver(";
-	cpp += std::to_string(_my_param.learning_rate()) + ", ";
-	cpp += std::to_string(_my_param.momentum()) + ", ";
-	cpp += std::to_string(_my_param.delta()) + ", ";
+	cpp += std::to_string(_my_param->learning_rate()) + ", ";
+	cpp += std::to_string(_my_param->momentum()) + ", ";
+	cpp += std::to_string(_my_param->delta()) + ", ";
 	cpp += "\"" + name() + "\"";
 	cpp += ");";
 	return cpp;

@@ -1,9 +1,9 @@
 #include "nodes/multiplexer.h"
 
-Multiplexer::Multiplexer(const deepflow::NodeParam & param) : Node(param)
+Multiplexer::Multiplexer(deepflow::NodeParam *param) : Node(param)
 {
-	LOG_IF(FATAL, param.has_multiplexer_param() == false) << "param.has_multiplexer_param() == false";
-	auto multiplexer_param = _param.multiplexer_param();
+	LOG_IF(FATAL, param->has_multiplexer_param() == false) << "param.has_multiplexer_param() == false";
+	auto multiplexer_param = _param->multiplexer_param();
 	_num_inputs = multiplexer_param.num_inputs();
 	LOG_IF(FATAL, _num_inputs == 0) << "_num_inputs == 0";
 }

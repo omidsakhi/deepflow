@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport Negate : public Node {
 public:
-	Negate(const deepflow::NodeParam &param);
+	Negate(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();

@@ -10,8 +10,8 @@ void StepFillKernel(const int n, float *out, const float min, const float step)
 	if (i < n) out[i] = min + i * step;
 }
 
-Step::Step(const deepflow::InitParam &param) : Initializer(param) {
-	LOG_IF(FATAL, param.has_step_param() == false) << "param.has_step_param() == false";
+Step::Step(deepflow::InitParam *param) : Initializer(param) {
+	LOG_IF(FATAL, param->has_step_param() == false) << "param.has_step_param() == false";
 }
 
 void Step::init() {
@@ -22,8 +22,8 @@ std::string Step::to_cpp() const
 {
 	std::string cpp = "df.step(";
 	cpp += "{" + std::to_string(_dims[0]) + ", " + std::to_string(_dims[1]) + ", " + std::to_string(_dims[2]) + ", " + std::to_string(_dims[3]) + "}, ";
-	float min = _param.step_param().min();
-	float max = _param.step_param().max();
+	float min = _param->step_param().min();
+	float max = _param->step_param().max();
 	LOG_IF(FATAL, max < min) << "max < min";
 	cpp += std::to_string(min) + ", ";
 	cpp += std::to_string(max);
@@ -33,8 +33,8 @@ std::string Step::to_cpp() const
 
 void Step::apply(Variable *variable) {	
 	int size = variable->output(0)->value()->size();
-	float min = _param.step_param().min();
-	float max = _param.step_param().max();
+	float min = _param->step_param().min();
+	float max = _param->step_param().max();
 	LOG(INFO) << "Step fill " << variable->name() << " - " << variable->output(0)->value()->shape();
 	StepFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)variable->output(0)->value()->mutableData(), min, (max-min)/size);
 	DF_KERNEL_CHECK();

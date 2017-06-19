@@ -171,7 +171,7 @@ std::string Caffe::_parse_relu_param(const caffe::ReLUParameter & param, const c
 {
 	LOG_IF(INFO, _verbose) << "  -> ReLUParameter";
 	LOG_IF(INFO, _verbose) << "     .negative_slope = " << param.negative_slope() << " [default: 0]";
-	return df->leaky_relu(layer.bottom(0) + "_output_0", param.negative_slope(), layer.name(), {});
+	return df->leaky_relu(layer.bottom(0) + "_output_0", param.negative_slope(), false, layer.name(), {});
 }
 
 std::string Caffe::_parse_dropout_param(const caffe::DropoutParameter & param, const caffe::V1LayerParameter &layer)
@@ -201,7 +201,7 @@ std::string Caffe::_parse_inner_product_param(const caffe::InnerProductParameter
 	auto weights_node = df->block()->find_node_param_by_output_name(weight);
 	auto weight_mutable_weights = weights_node->mutable_variable_param()->mutable_weights();
 	for (auto d : layer.blobs(0).data())
-		weight_mutable_weights->add_weight(d);
+		weight_mutable_weights->add_data(d);
 	if (param.bias_term() == false) {
 		return df->matmul(layer.bottom(0) + "_output_0", weight, layer.name(), {});
 	}
@@ -211,7 +211,7 @@ std::string Caffe::_parse_inner_product_param(const caffe::InnerProductParameter
 		auto bias_node = df->block()->find_node_param_by_output_name(bias);		
 		auto bias_mutable_weights = bias_node->mutable_variable_param()->mutable_weights();
 		for (auto d : layer.blobs(1).data())
-			bias_mutable_weights->add_weight(d);		
+			bias_mutable_weights->add_data(d);		
 		std::string m = df->matmul(layer.bottom(0) + "_output_0", weight, layer.name() + "_ip", {});
 		return df->bias_add(m, bias, layer.name());
 	}
@@ -310,7 +310,7 @@ std::string Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, 
 	auto filter_node = df->block()->find_node_param_by_output_name(filter);
 	auto filter_mutable_weights = filter_node->mutable_variable_param()->mutable_weights();
 	for (auto d : layer.blobs(0).data())
-		filter_mutable_weights->add_weight(d);
+		filter_mutable_weights->add_data(d);
 	std::string bias;
 	LOG_IF(INFO, _verbose) << "     .bias_term = " << param.bias_term();
 	if (param.bias_term() == true) {
@@ -323,7 +323,7 @@ std::string Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, 
 		auto bias_node = df->block()->find_node_param_by_output_name(bias);
 		auto bias_mutable_weights = bias_node->mutable_variable_param()->mutable_weights();
 		for (auto d : layer.blobs(1).data())
-			bias_mutable_weights->add_weight(d);
+			bias_mutable_weights->add_data(d);
 	}
 	return df->conv2d(layer.bottom(0) + "_output_0", filter, bias, 1.0, pad_h, pad_w, stride_h, stride_w, dilation_h, dilation_w, layer.name(), {});
 }

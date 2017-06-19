@@ -6,13 +6,13 @@
 
 Block::Block()
 {	
-	_block_param = _param.mutable_block_param();
+	_block_param = new deepflow::BlockParam;
 }
 
-Block::Block(deepflow::NodeParam & param) : Node(param)
+Block::Block(deepflow::NodeParam *param) : Node(param)
 {
-	LOG_IF(FATAL, param.has_block_param() == false) << "param.has_block_param() == false";	
-	_block_param = param.mutable_block_param();
+	LOG_IF(FATAL, param->has_block_param() == false) << "param.has_block_param() == false";	
+	_block_param = param->mutable_block_param();
 }
 
 deepflow::NodeParam* Block::find_node_param_by_name(const std::string & name) const
@@ -302,6 +302,11 @@ google::protobuf::RepeatedPtrField<deepflow::SolverParam> Block::solver_params()
 google::protobuf::RepeatedPtrField<deepflow::InitParam> Block::initializer_params()
 {
 	return _block_param->initializer();
+}
+
+deepflow::BlockParam * Block::block_param()
+{
+	return _block_param;
 }
 
 int Block::minNumInputs()

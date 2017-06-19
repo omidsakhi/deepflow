@@ -2,15 +2,15 @@
 
 #include "nodes/dropout.h"
 
-Dropout::Dropout(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_dropout_param() == false) << "param.has_dropout_param() == false";
+Dropout::Dropout(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_dropout_param() == false) << "param.has_dropout_param() == false";
 }
 
 void Dropout::initForward() {	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
 	LOG(INFO) << "Initializing Dropout " << _name << " - " << _outputs[0]->value()->shape();
-	_dropout = _param.dropout_param().dropout();	
-	_train_only = _param.dropout_param().train_only();
+	_dropout = _param->dropout_param().dropout();	
+	_train_only = _param->dropout_param().train_only();
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 	DF_NODE_CUDNN_CHECK(cudnnCreateDropoutDescriptor(&_dropoutDesc));
 	DF_NODE_CUDNN_CHECK(cudnnDropoutGetStatesSize(_cudnnHandle, &_state_sizes_in_bytes));

@@ -4,12 +4,12 @@
 
 class DeepFlowDllExport AdamSolver : public Solver {
 public:
-	AdamSolver(const deepflow::SolverParam &param);
+	AdamSolver(deepflow::SolverParam *param);
 	void apply(std::shared_ptr<Variable> var);
 	void init(std::shared_ptr<Variable> var);
 	std::string to_cpp() const;
 private:
 	float * _m = NULL;
 	float * _v = NULL;	
-	deepflow::AdamSolverParam _my_param;
+	deepflow::AdamSolverParam *_my_param;
 };

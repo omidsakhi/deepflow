@@ -1,13 +1,13 @@
 #include "nodes/replay_memory.h"
 
-ReplayMemory::ReplayMemory(const deepflow::NodeParam & param) : Node(param)
+ReplayMemory::ReplayMemory(deepflow::NodeParam *param) : Node(param)
 {
-	LOG_IF(FATAL, param.has_replay_memory_param() == false) << "param.has_replay_memory_param() == false";
+	LOG_IF(FATAL, param->has_replay_memory_param() == false) << "param.has_replay_memory_param() == false";
 }
 
 void ReplayMemory::initForward()
 {
-	_capacity = _param.replay_memory_param().capacity();
+	_capacity = _param->replay_memory_param().capacity();
 	auto inputDims = _inputs[0]->value()->dims();
 	_num_samples_per_batch = inputDims[0];
 	LOG_IF(FATAL, _capacity % _num_samples_per_batch != 0) << "Memory capacity must be dividable by the batch size.";

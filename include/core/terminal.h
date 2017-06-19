@@ -26,7 +26,7 @@ public :
 	const int& index() const;
 protected:
 	std::shared_ptr<Node> _parentNode;
-	int _index;		
+	int _index = -1;		
 	TerminalType _reader_type;
 };
 

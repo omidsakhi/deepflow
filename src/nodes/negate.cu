@@ -1,9 +1,9 @@
 #include "nodes\negate.h"
 
-Negate::Negate(const deepflow::NodeParam & param) : Node(param)
+Negate::Negate(deepflow::NodeParam *param) : Node(param)
 {
-	LOG_IF(FATAL, param.has_negate_param() == false) << "param.has_negate_param() == false";
-	_negate_type = _param.negate_param().negate_type();
+	LOG_IF(FATAL, param->has_negate_param() == false) << "param.has_negate_param() == false";
+	_negate_type = _param->negate_param().negate_type();
 }
 
 void Negate::initForward()

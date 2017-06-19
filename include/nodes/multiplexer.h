@@ -5,7 +5,7 @@
 
 class DeepFlowDllExport Multiplexer : public Node {
 public:
-	Multiplexer(const deepflow::NodeParam &param);
+	Multiplexer(deepflow::NodeParam *param);
 	int minNumInputs();
 	int minNumOutputs() { return 1; }
 	void initForward();

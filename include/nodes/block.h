@@ -17,7 +17,7 @@ public: // Node
 
 public: // Block
 	Block();
-	Block(deepflow::NodeParam &param);
+	Block(deepflow::NodeParam *param);
 	deepflow::NodeParam* find_node_param_by_name(const std::string &node_name) const;
 	int find_node_param_index_by_name(const std::string & output_name) const;
 	deepflow::SolverParam* find_solver_param_by_name(const std::string &name) const;
@@ -46,6 +46,7 @@ public: // Block
 	google::protobuf::RepeatedPtrField<deepflow::NodeParam> node_params();
 	google::protobuf::RepeatedPtrField<deepflow::SolverParam> solver_params();
 	google::protobuf::RepeatedPtrField<deepflow::InitParam> initializer_params();
+	deepflow::BlockParam *block_param();
 
 private:
 	deepflow::BlockParam *_block_param;

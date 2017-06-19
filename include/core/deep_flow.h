@@ -93,7 +93,7 @@ public:
 	std::string reduce_norm2(std::string input, int reduceDimension, std::string name = "absmax", std::initializer_list<std::string> phases = {});
 
 	//ACTIVATIONS
-	std::string leaky_relu(std::string a, float negative_slope = 0.01f, std::string name = "leaky_relu", std::initializer_list<std::string> phases = {});
+	std::string leaky_relu(std::string a, float negative_slope = 0.01f, bool randomize = false, std::string name = "leaky_relu", std::initializer_list<std::string> phases = {});
 	std::string sigmoid(std::string a, std::string name = "sigmoid", std::initializer_list<std::string> phases = {});
 	std::string relu(std::string a, std::string name = "relu", std::initializer_list<std::string> phases = {});
 	std::string tanh(std::string a, std::string name = "tanh", std::initializer_list<std::string> phases = {});

@@ -1,7 +1,7 @@
 #include "nodes/dot.h"
 
-Dot::Dot(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_dot_param() == false) << "param.has_dot_param() == false";
+Dot::Dot(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_dot_param() == false) << "param.has_dot_param() == false";
 }
 
 void Dot::initForward() {

@@ -19,3 +19,7 @@
 	url = https://github.com/socketio/socket.io-client-cpp
 	fetchRecurseSubmodules = yes
 	ignore = dirty
+[submodule "third-party/googletest"]
+	path = third-party/googletest
+	url = https://github.com/google/googletest.git
+	ignore = dirty

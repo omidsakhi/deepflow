@@ -2,9 +2,9 @@
 
 #include "nodes/variable.h"
 
-ThreeState::ThreeState(const deepflow::InitParam & param) : Initializer(param)
+ThreeState::ThreeState(deepflow::InitParam *param) : Initializer(param)
 {
-	LOG_IF(FATAL, param.has_three_state_param() == false) << "param.has_three_state_param() == false";
+	LOG_IF(FATAL, param->has_three_state_param() == false) << "param.has_three_state_param() == false";
 }
 
 void ThreeState::apply(Variable * variable)

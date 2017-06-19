@@ -10,12 +10,12 @@ void AccumulatorKernel(int n, const float * __restrict__ x, float * __restrict__
 		out1[i] += x[i];
 }
 
-Accumulator::Accumulator(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_accumulator_param() == false) << "param.has_accumulator_param() == false";
+Accumulator::Accumulator(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_accumulator_param() == false) << "param.has_accumulator_param() == false";
 }
 
 void Accumulator::initForward() {	
-	const deepflow::AccumulatorParam &accParam = _param.accumulator_param();
+	const deepflow::AccumulatorParam &accParam = _param->accumulator_param();
 	_reset_time = (deepflow::ActionTime)accParam.reset_time();
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
 	_outputs[1]->initValue({ 1,1,1,1 });

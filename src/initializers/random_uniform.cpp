@@ -5,14 +5,14 @@
 
 #include <random>
 
-RandomUniform::RandomUniform(const deepflow::InitParam &param) : Initializer(param) {
-	LOG_IF(FATAL, param.has_random_uniform_param() == false) << "param.has_random_uniform_param() == false";
+RandomUniform::RandomUniform(deepflow::InitParam *param) : Initializer(param) {
+	LOG_IF(FATAL, param->has_random_uniform_param() == false) << "param.has_random_uniform_param() == false";
 }
 
 void RandomUniform::apply(Variable *variable) {	
 	auto size = variable->output(0)->value()->size();
-	float min = _param.random_uniform_param().min();
-	float max = _param.random_uniform_param().max();
+	float min = _param->random_uniform_param().min();
+	float max = _param->random_uniform_param().max();
 	LOG_IF(FATAL, max < min) << "max < min";
 	std::mt19937 generator;
 	generator.seed(std::random_device()());
@@ -27,8 +27,8 @@ std::string RandomUniform::to_cpp() const
 {
 	std::string cpp = "df.random_uniform(";
 	cpp += "{" + std::to_string(_dims[0]) + ", " + std::to_string(_dims[1]) + ", " + std::to_string(_dims[2]) + ", " + std::to_string(_dims[3]) + "}, ";
-	float min = _param.random_uniform_param().min();
-	float max = _param.random_uniform_param().max();
+	float min = _param->random_uniform_param().min();
+	float max = _param->random_uniform_param().max();
 	cpp += std::to_string(min) + ", " + std::to_string(max) + ")";
 	return cpp;
 }

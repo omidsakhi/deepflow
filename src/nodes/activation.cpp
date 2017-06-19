@@ -1,14 +1,14 @@
 #include "core/common_cu.h"
 #include "nodes/activation.h"
 
-Activation::Activation(const deepflow::NodeParam & param) : Node(param)
+Activation::Activation(deepflow::NodeParam *param) : Node(param)
 {
-	LOG_IF(FATAL, param.has_activation_param() == false) << "param.has_activation_param() == false";
+	LOG_IF(FATAL, param->has_activation_param() == false) << "param.has_activation_param() == false";
 }
 
 void Activation::initForward()
 {	
-	auto activation_param = _param.activation_param();
+	auto activation_param = _param->activation_param();
 	cudnnActivationMode_t _activation_mode =  (cudnnActivationMode_t) activation_param.type();
 	float coef = activation_param.coef();
 	DF_NODE_CUDNN_CHECK(cudnnCreateActivationDescriptor(&_activation_desc));
@@ -55,7 +55,7 @@ void Activation::backward()
 
 std::string Activation::to_cpp() const
 {
-	auto activation_param = _param.activation_param();
+	auto activation_param = _param->activation_param();
 	cudnnActivationMode_t _activation_mode = (cudnnActivationMode_t)activation_param.type();
 	float coef = activation_param.coef();
 	std::string op;

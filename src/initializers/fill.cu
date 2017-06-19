@@ -10,12 +10,12 @@ void FillKernel(const int n, float *a, const float v)
 	if (i < n) a[i] = v;
 }
 
-Fill::Fill(const deepflow::InitParam &param) : Initializer(param) {
-	LOG_IF(FATAL, param.has_fill_param() == false) << "param.has_fill_param() == false";		
+Fill::Fill(deepflow::InitParam *param) : Initializer(param) {
+	LOG_IF(FATAL, param->has_fill_param() == false) << "param.has_fill_param() == false";		
 }
 
 void Fill::apply(Variable *variable) {
-	float value = _param.fill_param().value();
+	float value = _param->fill_param().value();
 	auto size = variable->output(0)->value()->size();	
 	FillKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*)variable->output(0)->value()->mutableData(), value);
 	DF_KERNEL_CHECK();
@@ -23,7 +23,7 @@ void Fill::apply(Variable *variable) {
 
 std::string Fill::to_cpp() const
 {	
-	float value = _param.fill_param().value();
+	float value = _param->fill_param().value();
 	std::string op;
 	bool omit_value = true;
 	if (value == 0)

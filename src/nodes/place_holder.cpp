@@ -1,13 +1,13 @@
 #include "nodes/place_holder.h"
 
-PlaceHolder::PlaceHolder(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_place_holder_param() == false) << "param.has_place_holder_param() == false";
+PlaceHolder::PlaceHolder(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_place_holder_param() == false) << "param.has_place_holder_param() == false";
 }
 
 void PlaceHolder::initForward() {
 		
 	std::array<int, 4> dims;
-	auto placeHolderParam = _param.place_holder_param();
+	auto placeHolderParam = _param->place_holder_param();
 	auto tensorParam = placeHolderParam.tensor_param();
 	switch (tensorParam.dims_size()) {
 	case 1:
@@ -55,7 +55,7 @@ void PlaceHolder::backward() {
 
 std::string PlaceHolder::to_cpp() const
 {
-	auto placeHolderParam = _param.place_holder_param();
+	auto placeHolderParam = _param->place_holder_param();
 	auto tensorParam = placeHolderParam.tensor_param();
 	std::string dims;
 	switch (tensorParam.dims_size()) {

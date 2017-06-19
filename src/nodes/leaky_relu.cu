@@ -15,13 +15,15 @@ void ReluKernel(int n, const float * __restrict__ x, const float * __restrict__ 
 	}
 }
 
-LeakyRelu::LeakyRelu(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_leaky_relu_param() == false) << "param.has_leaky_relu_param() == false";	
+LeakyRelu::LeakyRelu(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_leaky_relu_param() == false) << "param.has_leaky_relu_param() == false";	
 }
 
 void LeakyRelu::initForward() {	
-	_negative_slope = _param.leaky_relu_param().negative_slope();
-	LOG_IF(FATAL, _negative_slope < 0) << " negative_slope < 0";
+	_initial_negative_slope = _param->leaky_relu_param().negative_slope();	
+	LOG_IF(FATAL, _initial_negative_slope < 0) << " negative_slope < 0";
+	_negative_slope = _initial_negative_slope;
+	_randomize = _param->leaky_relu_param().randomize();
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
 	LOG(INFO) << "Initializing LeakyRelu " << _name << " - " << _outputs[0]->value()->shape();
 }
@@ -31,7 +33,12 @@ void LeakyRelu::initBackward() {
 }
 
 void LeakyRelu::forward() {	
-	auto size = _inputs[0]->value()->size();	
+	auto size = _inputs[0]->value()->size();
+	if (_randomize) {
+		std::mt19937 gen(_random_device());
+		std::uniform_real_distribution<> dis(0, _initial_negative_slope);
+		_negative_slope = dis(gen);				
+	}	
 	ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_inputs[0]->value()->data(), 0.0f, (float*)_outputs[0]->value()->mutableData(), _negative_slope);
 	DF_KERNEL_CHECK();	
 }

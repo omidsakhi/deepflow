@@ -1,12 +1,12 @@
 #include "nodes/reduce.h"
 
-Reduce::Reduce(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_reduce_param() == false) << "param.has_reduce_param() == false [FAILED]";
+Reduce::Reduce(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_reduce_param() == false) << "param.has_reduce_param() == false [FAILED]";
 }
 
 void Reduce::initForward() {
 	
-	auto reduceParam = _param.reduce_param();
+	auto reduceParam = _param->reduce_param();
 	int reduceDim = reduceParam.reduce_dim();
 	LOG_IF(FATAL, reduceDim > 3) << "reduceDim > 3 [FAILED]";
 	_reduceTensorOp = (cudnnReduceTensorOp_t) reduceParam.reduce_op();
@@ -102,7 +102,7 @@ std::string Reduce::to_cpp() const
 		break;
 	};
 
-	auto reduceParam = _param.reduce_param();
+	auto reduceParam = _param->reduce_param();
 	int reduceDim = reduceParam.reduce_dim();
 
 	std::string cpp = "auto " + _name + " = df." + op + "(" + _input_name_for_cpp(0) + ", " + std::to_string(reduceDim) + ", ";

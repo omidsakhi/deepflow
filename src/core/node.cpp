@@ -7,19 +7,19 @@ Node::Node() : CudaHelper()
 {	
 }
 
-Node::Node(const deepflow::NodeParam &param) : CudaHelper() {
+Node::Node(deepflow::NodeParam *param) : CudaHelper() {
 	_param = param;	
-	_name = param.name();	
+	_name = param->name();	
 }
 
 void Node::createIO() {
 	for (int i = 0; i < minNumInputs(); ++i)
 		_inputs.push_back(std::make_shared<NodeInput>(shared_from_this(), i));		
-	LOG_IF(FATAL, _param.input_size() != _inputs.size()) << name() << " _param.input_size() != minNumInputs() | " << _param.input_size() << " != " << _inputs.size();
+	LOG_IF(FATAL, _param->input_size() != _inputs.size()) << name() << " _param->input_size() != minNumInputs() | " << _param->input_size() << " != " << _inputs.size();
 
 	for (int i = 0; i < minNumOutputs(); ++i)
 		_outputs.push_back(std::make_shared<NodeOutput>(shared_from_this(), i, name() + std::string("_output_") + std::to_string(i)));		
-	LOG_IF(FATAL, _param.output_size() != _outputs.size()) << name() << " _param.output_size() != minNumOutputs()";
+	LOG_IF(FATAL, _param->output_size() != _outputs.size()) << name() << " _param->output_size() != minNumOutputs()";
 }
 
 void Node::setVisited(bool state) {
@@ -193,10 +193,10 @@ std::string Node::name() const {
 std::string Node::_to_cpp_phases() const
 {
 	std::string phases;
-	if (_param.phase_size() > 0)
-		phases += "\"" + _param.phase(0) + "\"";
-	for (int i = 1; i < _param.phase_size(); ++i) {
-		phases = phases + ", " + "\"" + _param.phase(i) + "\"";
+	if (_param->phase_size() > 0)
+		phases += "\"" + _param->phase(0) + "\"";
+	for (int i = 1; i < _param->phase_size(); ++i) {
+		phases = phases + ", " + "\"" + _param->phase(i) + "\"";
 	}
 	return phases;
 }
@@ -208,7 +208,7 @@ std::string Node::_input_name_for_cpp(int i) const
 	if (inputNode->outputs().size() > 1) {
 		int index = 0;
 		for (index = 0; index < inputNode->outputs().size(); ++index) {
-			if (inputNode->output(index)->name() == _param.input(i))
+			if (inputNode->output(index)->name() == _param->input(i))
 				break;
 		}
 		name += "[" + std::to_string(index) + "]";
@@ -249,17 +249,17 @@ void Node::setInitialized(bool status) {
 	_initialized = status;
 }
 
-deepflow::NodeParam &Node::param() {
+deepflow::NodeParam *Node::param() {
 	return _param;
 }
 
 bool Node::includePhase(const std::string &phase) {
 	if (phase.empty())
 		return true;
-	if (_param.phase_size() == 0)
+	if (_param->phase_size() == 0)
 		return true;
-	for (int i = 0; i < _param.phase_size(); ++i)
-		if (_param.phase(i) == phase)
+	for (int i = 0; i < _param->phase_size(); ++i)
+		if (_param->phase(i) == phase)
 			return true;
 	return false;
 }

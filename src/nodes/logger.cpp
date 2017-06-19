@@ -2,9 +2,9 @@
 
 #include <fstream>
 
-Logger::Logger(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_logger_param() == false) << "param.has_logger_param() == false";
-	auto loggingParam = _param.logger_param();
+Logger::Logger(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_logger_param() == false) << "param.has_logger_param() == false";
+	auto loggingParam = _param->logger_param();
 	_filePath = loggingParam.file_path();
 	_num_inputs = loggingParam.num_inputs();
 	_logging_time = loggingParam.logging_time();
@@ -16,7 +16,7 @@ int Logger::minNumInputs() {
 }
 
 void Logger::initForward() {
-	auto loggingParam = _param.logger_param();
+	auto loggingParam = _param->logger_param();
 	_raw_message = loggingParam.message();
 }
 

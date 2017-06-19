@@ -39,9 +39,9 @@ void RestructureKernel(int n, const float * __restrict__ x, const int N, const i
 
 }
 
-Restructure::Restructure(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_restructure_param() == false) << "param.restructure_param() == false";
-	auto restructure_param = _param.restructure_param();
+Restructure::Restructure(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_restructure_param() == false) << "param.restructure_param() == false";
+	auto restructure_param = _param->restructure_param();
 	_first_dim = restructure_param.first_dim();
 	_second_dim = restructure_param.second_dim();
 

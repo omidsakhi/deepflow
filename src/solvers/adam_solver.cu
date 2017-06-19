@@ -18,9 +18,9 @@ void AdamKernel(const int n, float *w, const float *g, float *m, float *v, const
 	}
 }
 
-AdamSolver::AdamSolver(const deepflow::SolverParam &param) : Solver(param) {
-	LOG_IF(FATAL, param.has_adam_solver() == false) << "param.has_adam_solver() == false";
-	_my_param = param.adam_solver();
+AdamSolver::AdamSolver(deepflow::SolverParam *param) : Solver(param) {
+	LOG_IF(FATAL, param->has_adam_solver() == false) << "param.has_adam_solver() == false";
+	_my_param = param->mutable_adam_solver();
 }
 
 void AdamSolver::apply(std::shared_ptr<Variable> var) {
@@ -41,7 +41,7 @@ void AdamSolver::apply(std::shared_ptr<Variable> var) {
 	LOG_IF(INFO, verbos) << "APPLYING SOLVER " << name() << " ON " << var->name();
 	auto output = var->output(0);
 	auto size = output->value()->size();
-	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), (float*)output->diff()->data(), _m, _v, _my_param.beta1(), _my_param.beta2(), _my_param.eps(), _my_param.learning_rate());
+	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), (float*)output->diff()->data(), _m, _v, _my_param->beta1(), _my_param->beta2(), _my_param->eps(), _my_param->learning_rate());
 	DF_KERNEL_CHECK();	
 }
 
@@ -58,10 +58,10 @@ void AdamSolver::init(std::shared_ptr<Variable> var) {
 std::string AdamSolver::to_cpp() const
 {	
 	std::string cpp = "auto " + name() + " = df.adam_solver(";
-	cpp += std::to_string(_my_param.learning_rate()) + ", ";
-	cpp += std::to_string(_my_param.beta1()) + ", ";
-	cpp += std::to_string(_my_param.beta2()) + ", ";
-	cpp += std::to_string(_my_param.eps()) + ", ";
+	cpp += std::to_string(_my_param->learning_rate()) + ", ";
+	cpp += std::to_string(_my_param->beta1()) + ", ";
+	cpp += std::to_string(_my_param->beta2()) + ", ";
+	cpp += std::to_string(_my_param->eps()) + ", ";
 	cpp += "\"" + name() + "\"";
 	cpp += ");";
 	return cpp;

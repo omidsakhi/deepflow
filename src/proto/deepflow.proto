@@ -3,7 +3,7 @@ syntax = "proto3";
 package deepflow;
 
 message TensorData {
-	repeated float weight = 1;
+	repeated float data = 1 [packed=true];
 }
 
 enum ActionTime {
@@ -139,7 +139,8 @@ message MatMulParam {
 }
 
 message LeakyReluParam {
-	float negative_slope = 1;	
+	float negative_slope = 1;
+	bool randomize = 2;
 }
 
 message ReduceParam {
@@ -245,6 +246,10 @@ message BatchNormalizationParam {
 	float beta_data = 4;
 	float alpha_param = 5;
 	float beta_param = 6;
+	TensorData scale = 7;	
+	TensorData bias = 8;
+	TensorData mean = 9;
+	TensorData var = 10;	
 }
 
 message ReplayMemoryParam {

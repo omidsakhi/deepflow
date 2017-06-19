@@ -25,12 +25,12 @@ void ColorImageReaderKernel(const unsigned char *in, const int width, const int 
 }
 
 
-ImageReader::ImageReader(const deepflow::NodeParam &param) : Node(param) {
-	LOG_IF(FATAL, param.has_image_reader_param() == false) << "param.generator_param().has_image_reader_param() == false";
+ImageReader::ImageReader(deepflow::NodeParam *param) : Node(param) {
+	LOG_IF(FATAL, param->has_image_reader_param() == false) << "param.generator_param().has_image_reader_param() == false";
 }
 
 void ImageReader::initForward() {
-	auto image_reader_param = _param.image_reader_param();
+	auto image_reader_param = _param->image_reader_param();
 	auto file_name = image_reader_param.file_name();
 	auto type = image_reader_param.type();
 	if (type == deepflow::ImageReaderParam_Type_GRAY_ONLY)
@@ -60,7 +60,7 @@ void ImageReader::initForward() {
 
 std::string ImageReader::to_cpp() const
 {
-	auto image_reader_param = _param.image_reader_param();
+	auto image_reader_param = _param->image_reader_param();
 	auto file_name = image_reader_param.file_name();
 	auto type = image_reader_param.type();	
 	std::string cpp = "auto " + _name + " = df.image_reader(\"" + file_name + "\", ";

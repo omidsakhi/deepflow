@@ -25,8 +25,7 @@ public:
 	};
 
 	Tensor();
-	Tensor(const deepflow::TensorParam &param);
-	//Tensor(std::initializer_list<int> dims, TensorType type);
+	Tensor(deepflow::TensorParam *param);	
 	Tensor(std::array<int, 4> dims, TensorType type);	
 	cudnnDataType_t cudnnType() const;
 	TensorType type() const;
@@ -56,12 +55,12 @@ public:
 	std::string toString() const;
 protected:
 	std::array<int, 4> _dims;
-	size_t _size;
-	size_t _sizeInBytes;
+	size_t _size = 0;
+	size_t _sizeInBytes = 0;
 	cudnnTensorDescriptor_t _desc = 0;
 	TensorType _reader_type;
 	std::string _shapeString;
-	void *d_data;
+	void *d_data = nullptr;
 };
 
 

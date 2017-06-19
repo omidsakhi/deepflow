@@ -26,19 +26,20 @@ public:
 	void backward();
 	void reset_gradients();
 	void apply_solvers();
+	void save(std::string file_path, bool as_text = false);
 private:
 	template <class T>
 	std::list<std::shared_ptr<T>> _get_nodes(std::string execution_phase);
 	std::list<std::shared_ptr<Node>> _get_end_nodes(std::string execution_phase) const;
 	std::shared_ptr<Node> _find_node_by_name(const std::string &name) const;
 	std::shared_ptr<NodeOutput> _find_node_output_by_name(const std::string &name) const;
-	std::shared_ptr<Node> _create_node(const deepflow::NodeParam &);
-	std::shared_ptr<Solver> _create_solver(const deepflow::SolverParam &);
+	std::shared_ptr<Node> _create_node(deepflow::NodeParam *);
+	std::shared_ptr<Solver> _create_solver(deepflow::SolverParam *);
 	void _execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Node>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration);
 private:
 	bool _initialized = false;
 	std::shared_ptr<Block> _block;
-	std::list<std::shared_ptr<Node>> _nodes;	
+	std::list<std::shared_ptr<Node>> _nodes;
 	std::list<std::shared_ptr<Variable>> _variables;
 	std::map<std::string, deepflow::PhaseParam_PhaseBehaviour> _phases;
 	std::map<std::shared_ptr<Variable>, std::shared_ptr<Solver>> _solvers;

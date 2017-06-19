@@ -67,24 +67,24 @@
 
 #include <ctime>
 
-std::shared_ptr<Initializer> _create_initializer(const deepflow::InitParam &init_param) {
+std::shared_ptr<Initializer> _create_initializer(deepflow::InitParam *init_param) {
 	
-	if (init_param.has_fill_param()) {
+	if (init_param->has_fill_param()) {
 		return std::make_shared<Fill>(init_param);
 	}
-	else if (init_param.has_index_fill_param()) {
+	else if (init_param->has_index_fill_param()) {
 		return std::make_shared<IndexFill>(init_param);
 	}
-	else if (init_param.has_random_uniform_param()) {
+	else if (init_param->has_random_uniform_param()) {
 		return std::make_shared<RandomUniform>(init_param);
 	}
-	else if (init_param.has_step_param()) {
+	else if (init_param->has_step_param()) {
 		return std::make_shared<Step>(init_param);
 	}
-	else if (init_param.has_random_normal_param()) {
+	else if (init_param->has_random_normal_param()) {
 		return std::make_shared<RandomNormal>(init_param);
 	}
-	else if (init_param.has_three_state_param()) {
+	else if (init_param->has_three_state_param()) {
 		return std::make_shared<ThreeState>(init_param);
 	}
 	else {
@@ -94,85 +94,85 @@ std::shared_ptr<Initializer> _create_initializer(const deepflow::InitParam &init
 	return NULL;
 }
 
-std::shared_ptr<Node> Session::_create_node(const deepflow::NodeParam &node_param) {
+std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 
-	if (node_param.has_batch_normalization_param())
+	if (node_param->has_batch_normalization_param())
 		return std::make_shared<BatchNormalization>(node_param);
-	else if (node_param.has_image_batch_reader_param())
+	else if (node_param->has_image_batch_reader_param())
 		return std::make_shared<ImageBatchReader>(node_param);
-	else if (node_param.has_mnist_param())
+	else if (node_param->has_mnist_param())
 		return std::make_shared<MNISTReader>(node_param);
-	else if (node_param.has_data_generator_param()) {
-		const deepflow::InitParam &init_param = node_param.variable_param().init_param();
+	else if (node_param->has_data_generator_param()) {
+		auto init_param = node_param->mutable_variable_param()->mutable_init_param();
 		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
 		return std::make_shared<DataGenerator>(initializer, node_param);
 	}
-	else if (node_param.has_variable_param()) {
-		const deepflow::InitParam &init_param = node_param.variable_param().init_param();
+	else if (node_param->has_variable_param()) {
+		auto init_param = node_param->mutable_variable_param()->mutable_init_param();		
 		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
 		return std::make_shared<Variable>(initializer, node_param);
 	}
-	else if (node_param.has_image_reader_param())
+	else if (node_param->has_image_reader_param())
 		return std::make_shared<ImageReader>(node_param);
-	else if (node_param.has_transposed_conv_2d_param())
+	else if (node_param->has_transposed_conv_2d_param())
 		return std::make_shared<TransposedConvolution2D>(node_param);
-	else if (node_param.has_matmul_param())
+	else if (node_param->has_matmul_param())
 		return std::make_shared<MatMul>(node_param);
-	else if (node_param.has_conv_2d_param())
+	else if (node_param->has_conv_2d_param())
 		return std::make_shared<Convolution2D>(node_param);
-	else if (node_param.has_softmax_loss_param())
+	else if (node_param->has_softmax_loss_param())
 		return std::make_shared<SoftmaxLoss>(node_param);
-	else if (node_param.has_euclidean_loss_param())
+	else if (node_param->has_euclidean_loss_param())
 		return std::make_shared<EuclideanLoss>(node_param);
-	else if (node_param.has_pooling_param())
+	else if (node_param->has_pooling_param())
 		return std::make_shared<Pooling>(node_param);
-	else if (node_param.has_reduce_param())
+	else if (node_param->has_reduce_param())
 		return std::make_shared<Reduce>(node_param);
-	else if (node_param.has_display_param())
+	else if (node_param->has_display_param())
 		return std::make_shared<Display>(node_param);
-	else if (node_param.has_leaky_relu_param())
+	else if (node_param->has_leaky_relu_param())
 		return std::make_shared<LeakyRelu>(node_param);
-	else if (node_param.has_softmax_param())
+	else if (node_param->has_softmax_param())
 		return std::make_shared<Softmax>(node_param);
-	else if (node_param.has_dropout_param())
+	else if (node_param->has_dropout_param())
 		return std::make_shared<Dropout>(node_param);
-	else if (node_param.has_replay_memory_param())
+	else if (node_param->has_replay_memory_param())
 		return std::make_shared<ReplayMemory>(node_param);
-	else if (node_param.has_add_param())
+	else if (node_param->has_add_param())
 		return std::make_shared<Add>(node_param);
-	else if (node_param.has_bias_add_param())
+	else if (node_param->has_bias_add_param())
 		return std::make_shared<BiasAdd>(node_param);
-	else if (node_param.has_cast_float_param())
+	else if (node_param->has_cast_float_param())
 		return std::make_shared<CastFloat>(node_param);
-	else if (node_param.has_equal_param())
+	else if (node_param->has_equal_param())
 		return std::make_shared<Equal>(node_param);
-	else if (node_param.has_activation_param())
+	else if (node_param->has_activation_param())
 		return std::make_shared<Activation>(node_param);
-	else if (node_param.has_phaseplexer_param())
+	else if (node_param->has_phaseplexer_param())
 		return std::make_shared<Phaseplexer>(node_param);
-	else if (node_param.has_place_holder_param())
+	else if (node_param->has_place_holder_param())
 		return std::make_shared<PlaceHolder>(node_param);
-	else if (node_param.has_print_param())
+	else if (node_param->has_print_param())
 		return std::make_shared<Print>(node_param);
-	else if (node_param.has_logger_param())
+	else if (node_param->has_logger_param())
 		return std::make_shared<Logger>(node_param);
-	else if (node_param.has_square_param())
+	else if (node_param->has_square_param())
 		return std::make_shared<Square>(node_param);
-	else if (node_param.has_restructure_param())
+	else if (node_param->has_restructure_param())
 		return std::make_shared<Restructure>(node_param);
-	else if (node_param.has_psnr_param())
+	else if (node_param->has_psnr_param())
 		return std::make_shared<Psnr>(node_param);
-	else if (node_param.has_random_selector_param())
+	else if (node_param->has_random_selector_param())
 		return std::make_shared<RandomSelector>(node_param);
-	else if (node_param.has_multiplexer_param())
+	else if (node_param->has_multiplexer_param())
 		return std::make_shared<Multiplexer>(node_param);
-	else if (node_param.has_negate_param())
+	else if (node_param->has_negate_param())
 		return std::make_shared<Negate>(node_param);
-	else if (node_param.has_accumulator_param())
+	else if (node_param->has_accumulator_param())
 		return std::make_shared<Accumulator>(node_param);
-	else if (node_param.has_dot_param())
+	else if (node_param->has_dot_param())
 		return std::make_shared<Dot>(node_param);
-	else if (node_param.has_sio_output_param())
+	else if (node_param->has_sio_output_param())
 		return std::make_shared<SIOOutput>(node_param);
 	else {
 		LOG(FATAL) << "Unsupported Node";
@@ -181,17 +181,17 @@ std::shared_ptr<Node> Session::_create_node(const deepflow::NodeParam &node_para
 	return 0;
 }
 
-std::shared_ptr<Solver> Session::_create_solver(const deepflow::SolverParam &solver_param) {
-	if (solver_param.has_gain_solver()) {
+std::shared_ptr<Solver> Session::_create_solver(deepflow::SolverParam *solver_param) {
+	if (solver_param->has_gain_solver()) {
 		return std::make_shared<GainSolver>(solver_param);
 	}
-	else if (solver_param.has_sgd_solver()) {
+	else if (solver_param->has_sgd_solver()) {
 		return std::make_shared<SGDSolver>(solver_param);
 	}
-	else if (solver_param.has_adam_solver()) {
+	else if (solver_param->has_adam_solver()) {
 		return std::make_shared<AdamSolver>(solver_param);
 	}
-	else if (solver_param.has_adadelta_solver()) {
+	else if (solver_param->has_adadelta_solver()) {
 		return std::make_shared<AdaDeltaSolver>(solver_param);
 	}
 	else {
@@ -209,17 +209,19 @@ void Session::initialize() {
 
 	for (auto phase_param : _block->phase_params())
 		_phases.insert(std::pair<std::string, deepflow::PhaseParam_PhaseBehaviour>(phase_param.phase(), phase_param.behaviour()));
-
-	for (auto node_param : _block->node_params()) {
+	
+	for (int i=0; i < _block->block_param()->node_size(); ++i)
+	{
+		auto node_param = _block->block_param()->mutable_node(i);
 		auto node = _create_node(node_param);
 		node->createIO();
-		LOG_IF(FATAL, node->inputs().size() != node->param().input_size()) << "Node " << node->name() << "'s input size " << node->inputs().size() << " does not match the one specified in proto (" << node->param().input_size() << ")";
+		LOG_IF(FATAL, node->inputs().size() != node->param()->input_size()) << "Node " << node->name() << "'s input size " << node->inputs().size() << " does not match the one specified in proto (" << node->param()->input_size() << ")";		
 		_nodes.push_back(node);
 	}
 
 	for (auto node : _nodes) {
-		for (int i = 0; i < node->param().input_size(); ++i) {
-			const std::string terminal_name = node->param().input(i);
+		for (int i = 0; i < node->param()->input_size(); ++i) {			
+			const std::string terminal_name = node->param()->input(i);
 			auto terminal = _find_node_output_by_name(terminal_name);
 			LOG_IF(FATAL, terminal == 0) << "Failed to find " << terminal_name << " for node " << node->name() ;
 			node->input(i)->connect(terminal);
@@ -230,9 +232,11 @@ void Session::initialize() {
 
 	for (auto var : _variables) {
 		std::shared_ptr<Solver> solver;
-		std::string var_solver_name = var->param().variable_param().solver_name();
-		for (auto solver_param : _block->solver_params()) {
-			if (var_solver_name == solver_param.name()) {
+		std::string var_solver_name = var->param()->variable_param().solver_name();
+		for (int i=0; i < _block->block_param()->solver_size(); ++i) 
+		{
+			auto solver_param = _block->block_param()->mutable_solver(i);
+			if (var_solver_name == solver_param->name()) {
 				solver = _create_solver(solver_param);
 				break;
 			}
@@ -243,10 +247,10 @@ void Session::initialize() {
 		else if (solver) {
 			_solvers.insert(std::pair<std::shared_ptr<Variable>, std::shared_ptr<Solver>>(var, solver));
 			LOG(INFO) << "Variable " << var->name() << " <-> Solver " << solver->name();
-			auto enable_input = solver->param().enable_input();
+			auto enable_input = solver->param()->enable_input();
 			if (!enable_input.empty()) {
 				auto terminal = _find_node_output_by_name(enable_input);
-				LOG_IF(FATAL, terminal == 0) << "Failed to find " << enable_input << " as the input for solver " << solver->param().name() << " in variable " << var_solver_name;
+				LOG_IF(FATAL, terminal == 0) << "Failed to find " << enable_input << " as the input for solver " << solver->param()->name() << " in variable " << var_solver_name;
 				solver->create_enable_input();
 				solver->enable_input()->connect(terminal);
 				LOG(INFO) << "Solver " << solver->name() << " Enable <-> Node " << terminal->parentNode()->name();
@@ -372,6 +376,16 @@ void Session::apply_solvers()
 			map_var_to_solver->second->apply(var);
 		}
 	}
+}
+
+void Session::save(std::string file_path, bool as_text)
+{
+	for (auto node : _nodes)
+		node->prep_for_saving();		
+	if (as_text)
+		_block->save_as_text(file_path);
+	else
+		_block->save_as_binary(file_path);
 }
 
 void Session::reset_gradients()
