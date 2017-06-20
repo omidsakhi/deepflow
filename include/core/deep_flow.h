@@ -39,6 +39,11 @@ public:
 		SPATIAL = 1
 	};
 
+	enum ReduceOp {
+		SUM = 0,
+		AVG = 5,
+	};
+
 	DeepFlow();
 	DeepFlow(std::shared_ptr<Block> block);
 
@@ -74,8 +79,11 @@ public:
 	std::string add(std::string a, std::string b, std::string name = "add", std::initializer_list<std::string> phases = {});
 	std::string dot(std::string a, std::string b, std::string name = "dot", std::initializer_list<std::string> phases = {});
 	std::string square(std::string a, std::string name = "square", std::initializer_list<std::string> phases = {});
+	std::string log(std::string a, float coef = -1, std::string name = "log", std::initializer_list<std::string> phases = {});
 	std::string matmul(std::string a, std::string b, std::string name = "ip", std::initializer_list<std::string> phases = {});
 	std::string subtract(std::string a, std::string b, std::string name = "sub", std::initializer_list<std::string> phases = {});
+	std::string euclidean_distance(std::string a, std::string b, std::string name = "EuclideanDistance", std::initializer_list<std::string> phases = {});
+	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});
 
 	// NEURAL NETS
 	std::string bias_add(std::string a, std::string b, std::string name = "bias", std::initializer_list<std::string> phases = {});
@@ -104,11 +112,7 @@ public:
 	std::string phaseplexer(std::string input_1, std::string phase_1, std::string input_2, std::string phase_2, std::string name = "plex", std::initializer_list<std::string> phases = {});
 	std::string random_selector(std::string input_1, std::string input_2, float probability = 0.5f, std::string name = "selector", std::initializer_list<std::string> phases = {});
 	std::string multiplexer(std::initializer_list<std::string> inputs, std::string selector, std::string name = "multiplexer", std::initializer_list<std::string> phases = {});
-
-	// LOSS
-	std::string softmax_loss(std::string a, std::string b, std::string name = "softmaxloss", std::initializer_list<std::string> phases = {});
-	void euclidean_loss(std::string a, std::string b, std::string name = "euclideanloss", std::initializer_list<std::string> phases = {});
-		
+				
 	// SOLVERS
 	std::string sgd_solver(float momentum, float learning_rate, std::string name = "sgd", std::string enable_input = "");
 	std::string gain_solver(float momentum = 0.98f, float learning_rate = 10e-2f, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f, std::string name = "gain", std::string enable_input = "");
@@ -127,8 +131,8 @@ public:
 	// SOCKET IO
 	void sio_output(std::initializer_list<std::string> inputs, ActionTime printTime = ActionTime::EVERY_PASS, std::string host = "127.0.0.1", int port = 6643, std::string name = "sio_output", std::initializer_list<std::string> phases = {});
 
-	// OTHER
-	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});
+	// OTHER	
+	std::string loss(std::string a, ReduceOp op, std::string name = "loss", std::initializer_list<std::string> phases = {});
 	std::string equal(std::string a, std::string b, std::string name = "Equal", std::initializer_list<std::string> phases = {});
 	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});
 	std::string negate(std::string input, ActionType negateType = ActionType::VALUES_AND_DIFFS, std::string name = "negate", std::initializer_list<std::string> phases = {});

@@ -94,6 +94,24 @@ message DisplayParam {
 	int32 epoch_frequency = 4;
 }
 
+message LogParam {
+	float coef = 1;
+}
+
+message LossParam {
+	enum ReduceOp {
+		ADD = 0;
+		MUL = 1;
+		MIN = 2;
+		MAX = 3;
+		AMAX = 4;
+		AVG = 5;
+		NORM1 = 6;
+		NORM2 = 7;
+	}
+	ReduceOp reduce_op = 1;	
+}
+
 message EqualParam {
 
 }
@@ -295,23 +313,23 @@ message NodeParam {
   DataGeneratorParam data_generator_param = 129;	
   ImageBatchReaderParam image_batch_reader_param = 130;
   DotParam dot_param = 131;
-  ReplayMemoryParam replay_memory_param = 132;
-  SoftmaxLossParam softmax_loss_param = 133;
-  EuclideanLossParam euclidean_loss_param = 134;
+  ReplayMemoryParam replay_memory_param = 132;  
+  EuclideanDistanceParam euclidean_distance_param = 134;
   SIOOutputParam sio_output_param = 135;
+  LogParam log_param = 136;
+  LossParam loss_param = 137;
 }
 
 message SquareParam {
 	
 }
 
-message EuclideanLossParam {
-}
+message EuclideanDistanceParam {
 
-message SoftmaxLossParam {
 }
 
 message SoftmaxParam {
+
 }
 
 message InitFillParam {

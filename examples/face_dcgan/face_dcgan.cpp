@@ -44,10 +44,9 @@ std::shared_ptr<Session> create_loss() {
 	DeepFlow df;
 	auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "discriminator_input");
 	auto labels_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "labels_input");
-	df.euclidean_loss(discriminator_input, labels_input);
-	auto sub = df.subtract(discriminator_input, labels_input);
-	auto reduce = df.reduce_norm2(sub, 0);
-	df.print({ reduce }, " NORM {0}\n", DeepFlow::EVERY_PASS); 
+	auto euclidean = df.euclidean_distance(discriminator_input, labels_input);
+	auto loss = df.loss(euclidean, DeepFlow::SUM);	
+	df.print({ loss }, " NORM {0}\n", DeepFlow::EVERY_PASS); 
 	return df.session();
 }
 

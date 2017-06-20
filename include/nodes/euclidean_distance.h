@@ -2,11 +2,11 @@
 
 #include "core/node.h"
 
-class DeepFlowDllExport EuclideanLoss : public Node {
+class DeepFlowDllExport EuclideanDistance : public Node {
 public:
-	EuclideanLoss(deepflow::NodeParam *param);
+	EuclideanDistance(deepflow::NodeParam *param);
 	int minNumInputs() { return 2; }
-	int minNumOutputs() { return 0; }
+	int minNumOutputs() { return 1; }
 	void initForward();
 	void initBackward();
 	void forward();

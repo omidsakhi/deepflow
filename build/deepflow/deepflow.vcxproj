@@ -52,10 +52,12 @@
     <ClInclude Include="..\..\include\nodes\dot.h" />
     <ClInclude Include="..\..\include\nodes\dropout.h" />
     <ClInclude Include="..\..\include\nodes\equal.h" />
-    <ClInclude Include="..\..\include\nodes\euclidean_loss.h" />
+    <ClInclude Include="..\..\include\nodes\euclidean_distance.h" />
     <ClInclude Include="..\..\include\nodes\image_reader.h" />
     <ClInclude Include="..\..\include\nodes\leaky_relu.h" />
+    <ClInclude Include="..\..\include\nodes\log.h" />
     <ClInclude Include="..\..\include\nodes\logger.h" />
+    <ClInclude Include="..\..\include\nodes\loss.h" />
     <ClInclude Include="..\..\include\nodes\matmul.h" />
     <ClInclude Include="..\..\include\nodes\multiplexer.h" />
     <ClInclude Include="..\..\include\nodes\negate.h" />
@@ -70,7 +72,6 @@
     <ClInclude Include="..\..\include\nodes\restructure.h" />
     <ClInclude Include="..\..\include\nodes\sio_output.h" />
     <ClInclude Include="..\..\include\nodes\softmax.h" />
-    <ClInclude Include="..\..\include\nodes\softmax_loss.h" />
     <ClInclude Include="..\..\include\nodes\square.h" />
     <ClInclude Include="..\..\include\nodes\transposed_conv_2d.h" />
     <ClInclude Include="..\..\include\nodes\variable.h" />
@@ -104,12 +105,11 @@
     <CudaCompile Include="..\..\src\nodes\cast_float.cu" />
     <CudaCompile Include="..\..\src\nodes\display.cu" />
     <CudaCompile Include="..\..\src\nodes\equal.cu" />
-    <CudaCompile Include="..\..\src\nodes\euclidean_loss.cu" />
+    <CudaCompile Include="..\..\src\nodes\euclidean_distance.cu" />
     <CudaCompile Include="..\..\src\nodes\image_reader.cu" />
     <CudaCompile Include="..\..\src\nodes\leaky_relu.cu" />
     <CudaCompile Include="..\..\src\nodes\negate.cu" />
     <CudaCompile Include="..\..\src\nodes\psnr.cu" />
-    <CudaCompile Include="..\..\src\nodes\softmax_loss.cu" />
     <CudaCompile Include="..\..\src\nodes\square.cu" />
     <CudaCompile Include="..\..\src\nodes\variable.cu" />
     <CudaCompile Include="..\..\src\solvers\adadelta_solver.cu" />
@@ -130,7 +130,11 @@
     <ClCompile Include="..\..\src\nodes\convolution_2d.cpp" />
     <ClCompile Include="..\..\src\nodes\dot.cpp" />
     <ClCompile Include="..\..\src\nodes\dropout.cpp" />
+    <CudaCompile Include="..\..\src\nodes\log.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
     <ClCompile Include="..\..\src\nodes\logger.cpp" />
+    <ClCompile Include="..\..\src\nodes\loss.cpp" />
     <ClCompile Include="..\..\src\nodes\matmul.cpp" />
     <ClCompile Include="..\..\src\nodes\multiplexer.cpp" />
     <ClCompile Include="..\..\src\nodes\phaseplexer.cpp" />

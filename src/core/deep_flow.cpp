@@ -265,6 +265,19 @@ std::string DeepFlow::square(std::string a, std::string name, std::initializer_l
 	return node_param->output(0);
 }
 
+std::string DeepFlow::log(std::string a, float coef, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	auto log_param = node_param->mutable_log_param();
+	log_param->set_coef(coef);
+	return node_param->output(0);
+}
+
 std::string DeepFlow::place_holder(std::array<int, 4> dims, Tensor::TensorType type, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -527,27 +540,18 @@ void DeepFlow::sio_output(std::initializer_list<std::string> inputs, ActionTime 
 	sio_output_param->set_port(port);
 }
 
-std::string DeepFlow::softmax_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
-	auto node_param = _block->add_node_param();
+
+std::string DeepFlow::euclidean_distance(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();	
 	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(a);
 	node_param->add_input(b);	
-	auto softmax_loss_param = node_param->mutable_softmax_loss_param();
-	return node_param->output(0);	
-}
-
-void DeepFlow::euclidean_loss(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases)
-{
-	auto node_param = _block->add_node_param();	
-	node_param->set_name(_block->get_unique_node_param_name(name));
-	for (auto phase : phases)
-		node_param->add_phase(phase);
-	node_param->add_input(a);
-	node_param->add_input(b);	
-	auto euclidean_loss_param = node_param->mutable_euclidean_loss_param();	
+	node_param->mutable_euclidean_distance_param();
+	return node_param->output(0);
 }
 
 std::string DeepFlow::sgd_solver(float momentum, float learning_rate, std::string name, std::string enable_input) {
@@ -766,6 +770,19 @@ std::string DeepFlow::multiplexer(std::initializer_list<std::string> inputs, std
 	return node_param->output(0);
 }
 
+std::string DeepFlow::loss(std::string a, ReduceOp op, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	auto loss_param = node_param->mutable_loss_param();
+	loss_param->set_reduce_op((deepflow::LossParam_ReduceOp)op);
+	return node_param->output(0);
+}
+
 std::string DeepFlow::equal(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -774,7 +791,7 @@ std::string DeepFlow::equal(std::string a, std::string b, std::string name, std:
 		node_param->add_phase(phase);
 	node_param->add_input(a);
 	node_param->add_input(b);
-	auto equal_param = node_param->mutable_equal_param();	
+	node_param->mutable_equal_param();	
 	return node_param->output(0);
 }
 

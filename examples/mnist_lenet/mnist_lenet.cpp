@@ -34,7 +34,8 @@ void main(int argc, char** argv) {
 		df.define_phase("Train", DeepFlow::TRAIN);
 		df.define_phase("Validation", DeepFlow::VALIDATION);
 
-		auto solver = df.gain_solver(0.999900, 0.000100, 10.000000, 0.000000, 0.050000, 0.950000, "solver");
+		auto solver = df.adam_solver(0.001f);
+		//auto solver = gain_solver(0.999900, 0.000100, 10.000000, 0.000000, 0.050000, 0.950000, "solver");
 		//auto solver = df.adadelta_solver();
 
 		auto test_data = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });		
@@ -42,20 +43,20 @@ void main(int argc, char** argv) {
 		auto data_selector = df.phaseplexer(train_data, "Train", test_data, "Validation", "data_selector", {});
 				
 		
-		auto conv1_w = df.variable(df.random_uniform({ 16, 1, 3, 3 }, -0.100000, 0.100000), solver, "conv1_w", {});
-		auto conv1 = df.conv2d(data_selector, conv1_w, 1, 1, 2, 2, 1, 1, "conv1", {});
-		//auto conv1_relu = df.sigmoid(conv1);
+		auto conv1_w = df.variable(df.random_uniform({ 16, 1, 5, 5 }, -0.100000, 0.100000), solver, "conv1_w", {});
+		auto conv1 = df.conv2d(data_selector, conv1_w, 2, 2, 2, 2, 1, 1, "conv1", {});		
+		auto conv1_r = df.leaky_relu(conv1, 0.01, true);		
 
-		auto conv2_w = df.variable(df.random_uniform({ 32, 16, 3, 3 }, -0.100000, 0.100000), solver, "conv2_w", {});
-		auto conv2 = df.conv2d(conv1, conv2_w, 1, 1, 2, 2, 1, 1, "conv2", {});
-		//auto conv2_relu = df.sigmoid(conv2);
+		auto conv2_w = df.variable(df.random_uniform({ 32, 16, 5, 5 }, -0.100000, 0.100000), solver, "conv2_w", {});
+		auto conv2 = df.conv2d(conv1_r, conv2_w, 2, 2, 2, 2, 1, 1, "conv2", {});
+		auto conv2_r = df.leaky_relu(conv2, 0.01, true);		
 
-		auto conv3_w = df.variable(df.random_uniform({ 64, 32, 3, 3 }, -0.100000, 0.100000), solver, "conv3_w", {});
-		auto conv3 = df.conv2d(conv2, conv3_w, 1, 1, 2, 2, 1, 1, "conv3", {});
-		//auto conv3_relu = df.sigmoid(conv3);
+		auto conv3_w = df.variable(df.random_uniform({ 64, 32, 5, 5 }, -0.100000, 0.100000), solver, "conv3_w", {});
+		auto conv3 = df.conv2d(conv2_r, conv3_w, 2, 2, 2, 2, 1, 1, "conv3", {});
+		auto conv3_r = df.leaky_relu(conv3, 0.01, true);		
 
 		auto w1 = df.variable(df.random_uniform({ 1024, 500, 1, 1 }, -0.100000, 0.100000), solver, "w1", {});
-		auto m1 = df.matmul(conv3, w1, "m1", {});
+		auto m1 = df.matmul(conv3_r, w1, "m1", {});
 		
 
 		/*
@@ -71,21 +72,23 @@ void main(int argc, char** argv) {
 
 
 		
-		auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, -1.000000, 1.000000), solver, "b1", {});
+		auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, 0, 1.000000), solver, "b1", {});
 		auto bias1 = df.bias_add(m1, b1, "bias1", {});
 		auto relu1 = df.leaky_relu(bias1, 0.010000, "relu1", {});
 		auto dropout = df.dropout(relu1, 0.500000, true, "dropout", {});
-		auto w2 = df.variable(df.random_uniform({ 500, 10, 1, 1 }, -0.100000, 0.100000), solver, "w2", {});
-		auto m2 = df.matmul(dropout, w2, "m2", {});
-		auto b2 = df.variable(df.step({ 1, 10, 1, 1 }, -1.000000, 1.000000), solver, "b2", {});
-		auto bias2 = df.bias_add(m2, b2, "bias2", {});
-		auto relu2 = df.leaky_relu(bias2, 0.010000, "relu2", {});
-		
+		auto w2 = df.variable(df.random_uniform({ 500, 10, 1, 1 }, -0.100000, 0.100000), solver, "w2");
+		auto m2 = df.matmul(dropout, w2, "m2");
+		auto b2 = df.variable(df.step({ 1, 10, 1, 1 }, 0, 1.000000), solver, "b2");
+		auto bias2 = df.bias_add(m2, b2, "bias2");
+		auto relu2 = df.leaky_relu(bias2, 0.010000, "relu2");
+		auto softmax = df.softmax(relu2);
+		auto softmax_log = df.log(softmax);
 		auto train_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Train, MNISTReader::Labels, "train_labels", { "Train" });
 		auto test_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Labels, "test_labels", { "Validation" });
-		auto label_selector = df.phaseplexer(train_labels, "Train", test_labels, "Validation", "label_selector", {});
-		auto loss = df.softmax_loss(relu2, label_selector, "loss", {});
-		auto predict = df.argmax(loss, 1, "predict", {});
+		auto label_selector = df.phaseplexer(train_labels, "Train", test_labels, "Validation", "label_selector", {});		
+		auto softmax_dot = df.dot(softmax_log, label_selector);
+		auto loss = df.loss(softmax_dot, DeepFlow::AVG, "loss");
+		auto predict = df.argmax(softmax, 1, "predict", {});
 		auto target = df.argmax(label_selector, 1, "target", {});
 		auto equal = df.equal(predict, target, "equal", {});
 		auto acc = df.accumulator(equal, DeepFlow::END_OF_EPOCH, "acc", {});

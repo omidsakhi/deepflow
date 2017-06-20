@@ -4,11 +4,11 @@
 
 #include <gflags/gflags.h>
 
-DEFINE_string(mnist, "D:/Projects/deepflow/data/mnist", "Path to MNIST data folder");
-DEFINE_string(image1, "D:/Projects/deepflow/data/image/lena-256x256.jpg", "Input test image");
-DEFINE_string(image2, "D:/Projects/deepflow/data/style_transfer/sanfrancisco.jpg", "Another input test image");
-DEFINE_string(image_folder, "D:/Projects/deepflow/data/face", "Path to image folder");
-DEFINE_string(model, "D:/Projects/deepflow/models/VGG_ILSVRC_16_layers.caffemodel", "Caffe model to load");
+DEFINE_string(mnist, "C:/Projects/deepflow/data/mnist", "Path to MNIST data folder");
+DEFINE_string(image1, "C:/Projects/deepflow/data/image/lena-256x256.jpg", "Input test image");
+DEFINE_string(image2, "C:/Projects/deepflow/data/style_transfer/sanfrancisco.jpg", "Another input test image");
+DEFINE_string(image_folder, "C:/Projects/deepflow/data/face", "Path to image folder");
+DEFINE_string(model, "C:/Projects/deepflow/models/VGG_ILSVRC_16_layers.caffemodel", "Caffe model to load");
 
 DEFINE_string(i, "", "Trained network model to load");
 DEFINE_string(o, "", "Trained network model to save");
@@ -32,8 +32,7 @@ DEFINE_bool(x6, false, "Test reading caffe model");
 DEFINE_bool(x7, false, "Test convolution forward with bias");
 DEFINE_bool(x8, false, "Test color image display");
 DEFINE_bool(x9, false, "Test restructured image display");
-DEFINE_bool(x10, false, "Test dcgan generator image reconstruction");
-DEFINE_bool(x11, false, "Test batch normalization");
+DEFINE_bool(x10, false, "Test batch normalization");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -51,21 +50,23 @@ void main(int argc, char** argv) {
 			auto solver = df.adam_solver(0.1f, 0.5f, 0.5f);
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
-			df.euclidean_loss(generator, image);
+			auto euclidean = df.euclidean_distance(generator, image);
+			auto loss = df.loss(euclidean, DeepFlow::SUM);
 			df.display(image, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1,  "input", { train });
 			df.display(generator, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approximation", { train });
 			df.psnr(image, generator, DeepFlow::EVERY_PASS);
 		}
 		else if (FLAGS_x2) {
 			auto train = df.define_train_phase("Train");						
-			auto solver = df.gain_solver(0.98, 0.001f);
+			auto solver = df.gain_solver(0.98, 0.000001f);
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY, "image");
 			auto recon = df.variable(df.random_normal({ 1,1,256,256 }, 0, 0.1), solver, "recon");
 			auto f1 = df.variable(df.step({ 11,1,5,5 }, 0, 1), "" , "w");
 			auto conv = df.conv2d(image, f1, 2, 2, 1, 1, 1, 1);			
 			auto f2 = df.variable(df.step({ 1,11,5,5 }, 0, 1), "", "w");
 			auto tconv = df.transposed_conv2d(recon, f2, 2, 2, 1, 1, 1, 1);
-			df.euclidean_loss(conv, tconv);
+			auto euclidean = df.euclidean_distance(conv, tconv);
+			auto loss = df.loss(euclidean, DeepFlow::SUM);			
 			df.display(recon, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "input", { train });
 			df.psnr(recon, image, DeepFlow::EVERY_PASS, "psnr", { train });
 		}
@@ -78,18 +79,20 @@ void main(int argc, char** argv) {
 			auto f2 = df.restructure(f1, 0, 1);
 			auto conv = df.conv2d(image, f1, "", 1, 1, 1, 1, 1, 1);			
 			auto tconv = df.transposed_conv2d(recon, f2, 1, 1, 1, 1, 1, 1);
-			df.euclidean_loss(tconv, conv);
+			auto euclidean = df.euclidean_distance(conv, tconv);
+			auto loss = df.loss(euclidean, DeepFlow::SUM);
 			df.display(recon, 2, DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, 1, "input", { train });
 			df.psnr(recon, image, DeepFlow::END_OF_EPOCH, "psnr", { train });
 		}
 		else if (FLAGS_x4) {
 			auto train = df.define_train_phase("Train");			
-			auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.000000001f, 0.05f, 0.95f);
+			auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.0000001f, 0.05f, 0.95f);
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto generator1 = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -0.1, 0.1), 1, solver, "gen1");
 			auto generator2 = df.data_generator(df.random_normal({ 1, 3, 256, 256 }, 0, 0.1), 1, solver, "gen2");
 			auto selector = df.random_selector(generator1, generator2, 0.5);
-			df.euclidean_loss(selector, image);
+			auto euclidean = df.euclidean_distance(selector, image);
+			auto loss = df.loss(euclidean, DeepFlow::SUM);			
 			df.display(generator1, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approx1", { train });
 			df.display(generator2, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approx2", { train });
 		}
@@ -130,8 +133,6 @@ void main(int argc, char** argv) {
 			df.display(rotate, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1,  "rotate", { train });
 		}
 		else if (FLAGS_x10) {
-		}
-		else if (FLAGS_x11) {
 			auto train = df.define_train_phase("Train");
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto norm = df.batch_normalization(image, DeepFlow::SPATIAL);

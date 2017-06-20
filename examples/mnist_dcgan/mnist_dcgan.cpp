@@ -50,10 +50,9 @@ std::shared_ptr<Session> create_loss() {
 	DeepFlow df;
 	auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "discriminator_input");
 	auto labels_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "labels_input");
-	df.euclidean_loss(discriminator_input, labels_input);
-	auto sub = df.subtract(discriminator_input, labels_input);
-	auto reduce = df.reduce_norm1(sub, 0, "reduce");
-	df.print({ reduce }, " NORM {0}\n", DeepFlow::EVERY_PASS); 
+	auto euc = df.euclidean_distance(discriminator_input, labels_input);
+	auto loss = df.loss(euc, DeepFlow::SUM, "loss");
+	df.print({ loss }, " NORM {0}\n", DeepFlow::EVERY_PASS); 
 	return df.session();
 }
 
@@ -204,7 +203,7 @@ void main(int argc, char** argv) {
 	auto mnist_labels_output = mnist_labels->get_node("mnist_labels");
 	auto loss_discriminator_input = loss->get_placeholder("discriminator_input");
 	auto loss_labels_input = loss->get_placeholder("labels_input");
-	auto loss_output = loss->get_node("reduce");
+	auto loss_output = loss->get_node("loss");
 	auto sio_sender_dtrue = socket_io_sender_session->get_node("dtrue");
 	auto sio_sender_dfake = socket_io_sender_session->get_node("dfake");
 	auto sio_sender_gfake = socket_io_sender_session->get_node("gfake");

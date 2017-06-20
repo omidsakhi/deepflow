@@ -24,7 +24,6 @@
 #include "nodes/softmax.h"
 #include "nodes/square.h"
 #include "nodes/bias_add.h"
-#include "nodes/softmax_loss.h"
 #include "nodes/dropout.h"
 #include "nodes/convolution_2d.h"
 #include "nodes/pooling.h"
@@ -33,7 +32,7 @@
 #include "nodes/cast_float.h"
 #include "nodes/display.h"
 #include "nodes/transposed_conv_2d.h"
-#include "nodes/euclidean_loss.h"
+#include "nodes/euclidean_distance.h"
 #include "nodes/activation.h"
 #include "nodes/psnr.h"
 #include "nodes/random_selector.h"
@@ -50,6 +49,8 @@
 #include "nodes/dot.h"
 #include "nodes/replay_memory.h"
 #include "nodes/sio_output.h"
+#include "nodes/loss.h"
+#include "nodes/log.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -120,10 +121,12 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<MatMul>(node_param);
 	else if (node_param->has_conv_2d_param())
 		return std::make_shared<Convolution2D>(node_param);
-	else if (node_param->has_softmax_loss_param())
-		return std::make_shared<SoftmaxLoss>(node_param);
-	else if (node_param->has_euclidean_loss_param())
-		return std::make_shared<EuclideanLoss>(node_param);
+	else if (node_param->has_log_param())
+		return std::make_shared<Log>(node_param);
+	else if (node_param->has_loss_param())
+		return std::make_shared<Loss>(node_param);
+	else if (node_param->has_euclidean_distance_param())
+		return std::make_shared<EuclideanDistance>(node_param);
 	else if (node_param->has_pooling_param())
 		return std::make_shared<Pooling>(node_param);
 	else if (node_param->has_reduce_param())

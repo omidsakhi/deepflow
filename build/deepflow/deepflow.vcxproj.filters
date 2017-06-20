@@ -25,9 +25,6 @@
     <CudaCompile Include="..\..\src\nodes\psnr.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\softmax_loss.cu">
-      <Filter>source\nodes</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\square.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
@@ -52,9 +49,6 @@
     <CudaCompile Include="..\..\src\nodes\equal.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\euclidean_loss.cu">
-      <Filter>source\nodes</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\leaky_relu.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
@@ -71,6 +65,12 @@
       <Filter>source\nodes</Filter>
     </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\restructure.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\log.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\euclidean_distance.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
   </ItemGroup>
@@ -180,6 +180,9 @@
     <ClCompile Include="..\..\src\nodes\sio_output.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\nodes\loss.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -257,9 +260,6 @@
     <ClInclude Include="..\..\include\nodes\equal.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\nodes\euclidean_loss.h">
-      <Filter>include\nodes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\nodes\leaky_relu.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
@@ -288,9 +288,6 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\softmax.h">
-      <Filter>include\nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\nodes\softmax_loss.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\square.h">
@@ -363,6 +360,15 @@
       <Filter>include\initializers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\sio_output.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\log.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\euclidean_distance.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\loss.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

@@ -77,9 +77,9 @@ extern DropoutParamDefaultTypeInternal _DropoutParam_default_instance_;
 class EqualParam;
 class EqualParamDefaultTypeInternal;
 extern EqualParamDefaultTypeInternal _EqualParam_default_instance_;
-class EuclideanLossParam;
-class EuclideanLossParamDefaultTypeInternal;
-extern EuclideanLossParamDefaultTypeInternal _EuclideanLossParam_default_instance_;
+class EuclideanDistanceParam;
+class EuclideanDistanceParamDefaultTypeInternal;
+extern EuclideanDistanceParamDefaultTypeInternal _EuclideanDistanceParam_default_instance_;
 class GainSolverParam;
 class GainSolverParamDefaultTypeInternal;
 extern GainSolverParamDefaultTypeInternal _GainSolverParam_default_instance_;
@@ -113,9 +113,15 @@ extern InitThreeStateParamDefaultTypeInternal _InitThreeStateParam_default_insta
 class LeakyReluParam;
 class LeakyReluParamDefaultTypeInternal;
 extern LeakyReluParamDefaultTypeInternal _LeakyReluParam_default_instance_;
+class LogParam;
+class LogParamDefaultTypeInternal;
+extern LogParamDefaultTypeInternal _LogParam_default_instance_;
 class LoggerParam;
 class LoggerParamDefaultTypeInternal;
 extern LoggerParamDefaultTypeInternal _LoggerParam_default_instance_;
+class LossParam;
+class LossParamDefaultTypeInternal;
+extern LossParamDefaultTypeInternal _LossParam_default_instance_;
 class MatMulParam;
 class MatMulParamDefaultTypeInternal;
 extern MatMulParamDefaultTypeInternal _MatMulParam_default_instance_;
@@ -170,9 +176,6 @@ extern SIOOutputParamDefaultTypeInternal _SIOOutputParam_default_instance_;
 class SnapshotParam;
 class SnapshotParamDefaultTypeInternal;
 extern SnapshotParamDefaultTypeInternal _SnapshotParam_default_instance_;
-class SoftmaxLossParam;
-class SoftmaxLossParamDefaultTypeInternal;
-extern SoftmaxLossParamDefaultTypeInternal _SoftmaxLossParam_default_instance_;
 class SoftmaxParam;
 class SoftmaxParamDefaultTypeInternal;
 extern SoftmaxParamDefaultTypeInternal _SoftmaxParam_default_instance_;
@@ -236,6 +239,33 @@ inline bool TensorParam_TensorType_Parse(
     const ::std::string& name, TensorParam_TensorType* value) {
   return ::google::protobuf::internal::ParseNamedEnum<TensorParam_TensorType>(
     TensorParam_TensorType_descriptor(), name, value);
+}
+enum LossParam_ReduceOp {
+  LossParam_ReduceOp_ADD = 0,
+  LossParam_ReduceOp_MUL = 1,
+  LossParam_ReduceOp_MIN = 2,
+  LossParam_ReduceOp_MAX = 3,
+  LossParam_ReduceOp_AMAX = 4,
+  LossParam_ReduceOp_AVG = 5,
+  LossParam_ReduceOp_NORM1 = 6,
+  LossParam_ReduceOp_NORM2 = 7,
+  LossParam_ReduceOp_LossParam_ReduceOp_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  LossParam_ReduceOp_LossParam_ReduceOp_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool LossParam_ReduceOp_IsValid(int value);
+const LossParam_ReduceOp LossParam_ReduceOp_ReduceOp_MIN = LossParam_ReduceOp_ADD;
+const LossParam_ReduceOp LossParam_ReduceOp_ReduceOp_MAX = LossParam_ReduceOp_NORM2;
+const int LossParam_ReduceOp_ReduceOp_ARRAYSIZE = LossParam_ReduceOp_ReduceOp_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* LossParam_ReduceOp_descriptor();
+inline const ::std::string& LossParam_ReduceOp_Name(LossParam_ReduceOp value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    LossParam_ReduceOp_descriptor(), value);
+}
+inline bool LossParam_ReduceOp_Parse(
+    const ::std::string& name, LossParam_ReduceOp* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<LossParam_ReduceOp>(
+    LossParam_ReduceOp_descriptor(), name, value);
 }
 enum ReduceParam_ReduceOp {
   ReduceParam_ReduceOp_ADD = 0,
@@ -1776,6 +1806,204 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 };
 // -------------------------------------------------------------------
 
+class LogParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.LogParam) */ {
+ public:
+  LogParam();
+  virtual ~LogParam();
+
+  LogParam(const LogParam& from);
+
+  inline LogParam& operator=(const LogParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const LogParam& default_instance();
+
+  static inline const LogParam* internal_default_instance() {
+    return reinterpret_cast<const LogParam*>(
+               &_LogParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    14;
+
+  void Swap(LogParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline LogParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  LogParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const LogParam& from);
+  void MergeFrom(const LogParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(LogParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float coef = 1;
+  void clear_coef();
+  static const int kCoefFieldNumber = 1;
+  float coef() const;
+  void set_coef(float value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.LogParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float coef_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class LossParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.LossParam) */ {
+ public:
+  LossParam();
+  virtual ~LossParam();
+
+  LossParam(const LossParam& from);
+
+  inline LossParam& operator=(const LossParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const LossParam& default_instance();
+
+  static inline const LossParam* internal_default_instance() {
+    return reinterpret_cast<const LossParam*>(
+               &_LossParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    15;
+
+  void Swap(LossParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline LossParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  LossParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const LossParam& from);
+  void MergeFrom(const LossParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(LossParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef LossParam_ReduceOp ReduceOp;
+  static const ReduceOp ADD =
+    LossParam_ReduceOp_ADD;
+  static const ReduceOp MUL =
+    LossParam_ReduceOp_MUL;
+  static const ReduceOp MIN =
+    LossParam_ReduceOp_MIN;
+  static const ReduceOp MAX =
+    LossParam_ReduceOp_MAX;
+  static const ReduceOp AMAX =
+    LossParam_ReduceOp_AMAX;
+  static const ReduceOp AVG =
+    LossParam_ReduceOp_AVG;
+  static const ReduceOp NORM1 =
+    LossParam_ReduceOp_NORM1;
+  static const ReduceOp NORM2 =
+    LossParam_ReduceOp_NORM2;
+  static inline bool ReduceOp_IsValid(int value) {
+    return LossParam_ReduceOp_IsValid(value);
+  }
+  static const ReduceOp ReduceOp_MIN =
+    LossParam_ReduceOp_ReduceOp_MIN;
+  static const ReduceOp ReduceOp_MAX =
+    LossParam_ReduceOp_ReduceOp_MAX;
+  static const int ReduceOp_ARRAYSIZE =
+    LossParam_ReduceOp_ReduceOp_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  ReduceOp_descriptor() {
+    return LossParam_ReduceOp_descriptor();
+  }
+  static inline const ::std::string& ReduceOp_Name(ReduceOp value) {
+    return LossParam_ReduceOp_Name(value);
+  }
+  static inline bool ReduceOp_Parse(const ::std::string& name,
+      ReduceOp* value) {
+    return LossParam_ReduceOp_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // .deepflow.LossParam.ReduceOp reduce_op = 1;
+  void clear_reduce_op();
+  static const int kReduceOpFieldNumber = 1;
+  ::deepflow::LossParam_ReduceOp reduce_op() const;
+  void set_reduce_op(::deepflow::LossParam_ReduceOp value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.LossParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  int reduce_op_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class EqualParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.EqualParam) */ {
  public:
   EqualParam();
@@ -1796,7 +2024,7 @@ class EqualParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_EqualParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    14;
+    16;
 
   void Swap(EqualParam* other);
 
@@ -1869,7 +2097,7 @@ class BiasAddParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_BiasAddParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    15;
+    17;
 
   void Swap(BiasAddParam* other);
 
@@ -1942,7 +2170,7 @@ class PoolingParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_PoolingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    16;
+    18;
 
   void Swap(PoolingParam* other);
 
@@ -2057,7 +2285,7 @@ class TransposedConv2dParam : public ::google::protobuf::Message /* @@protoc_ins
                &_TransposedConv2dParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    17;
+    19;
 
   void Swap(TransposedConv2dParam* other);
 
@@ -2172,7 +2400,7 @@ class Conv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_Conv2dParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    18;
+    20;
 
   void Swap(Conv2dParam* other);
 
@@ -2294,7 +2522,7 @@ class DropoutParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_DropoutParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    19;
+    21;
 
   void Swap(DropoutParam* other);
 
@@ -2381,7 +2609,7 @@ class MatMulParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_MatMulParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    20;
+    22;
 
   void Swap(MatMulParam* other);
 
@@ -2454,7 +2682,7 @@ class LeakyReluParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_LeakyReluParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    21;
+    23;
 
   void Swap(LeakyReluParam* other);
 
@@ -2541,7 +2769,7 @@ class ReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_ReduceParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    22;
+    24;
 
   void Swap(ReduceParam* other);
 
@@ -2699,7 +2927,7 @@ class SnapshotParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_SnapshotParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    23;
+    25;
 
   void Swap(SnapshotParam* other);
 
@@ -2808,7 +3036,7 @@ class PlaceHolderParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_PlaceHolderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    24;
+    26;
 
   void Swap(PlaceHolderParam* other);
 
@@ -2891,7 +3119,7 @@ class RestructureParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_RestructureParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    25;
+    27;
 
   void Swap(RestructureParam* other);
 
@@ -2978,7 +3206,7 @@ class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_VariableParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    26;
+    28;
 
   void Swap(VariableParam* other);
 
@@ -3086,7 +3314,7 @@ class DataGeneratorParam : public ::google::protobuf::Message /* @@protoc_insert
                &_DataGeneratorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    27;
+    29;
 
   void Swap(DataGeneratorParam* other);
 
@@ -3166,7 +3394,7 @@ class ActivationParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_ActivationParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    28;
+    30;
 
   void Swap(ActivationParam* other);
 
@@ -3285,7 +3513,7 @@ class ImageBatchReaderParam : public ::google::protobuf::Message /* @@protoc_ins
                &_ImageBatchReaderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    29;
+    31;
 
   void Swap(ImageBatchReaderParam* other);
 
@@ -3390,7 +3618,7 @@ class ImageReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_ImageReaderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    30;
+    32;
 
   void Swap(ImageReaderParam* other);
 
@@ -3511,7 +3739,7 @@ class MnistParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_MnistParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    31;
+    33;
 
   void Swap(MnistParam* other);
 
@@ -3672,7 +3900,7 @@ class CastFloatParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_CastFloatParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    32;
+    34;
 
   void Swap(CastFloatParam* other);
 
@@ -3745,7 +3973,7 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
                &_BatchNormalizationParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    33;
+    35;
 
   void Swap(BatchNormalizationParam* other);
 
@@ -3926,7 +4154,7 @@ class ReplayMemoryParam : public ::google::protobuf::Message /* @@protoc_inserti
                &_ReplayMemoryParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    34;
+    36;
 
   void Swap(ReplayMemoryParam* other);
 
@@ -4006,7 +4234,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NodeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    35;
+    37;
 
   void Swap(NodeParam* other);
 
@@ -4436,23 +4664,14 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::ReplayMemoryParam* release_replay_memory_param();
   void set_allocated_replay_memory_param(::deepflow::ReplayMemoryParam* replay_memory_param);
 
-  // .deepflow.SoftmaxLossParam softmax_loss_param = 133;
-  bool has_softmax_loss_param() const;
-  void clear_softmax_loss_param();
-  static const int kSoftmaxLossParamFieldNumber = 133;
-  const ::deepflow::SoftmaxLossParam& softmax_loss_param() const;
-  ::deepflow::SoftmaxLossParam* mutable_softmax_loss_param();
-  ::deepflow::SoftmaxLossParam* release_softmax_loss_param();
-  void set_allocated_softmax_loss_param(::deepflow::SoftmaxLossParam* softmax_loss_param);
-
-  // .deepflow.EuclideanLossParam euclidean_loss_param = 134;
-  bool has_euclidean_loss_param() const;
-  void clear_euclidean_loss_param();
-  static const int kEuclideanLossParamFieldNumber = 134;
-  const ::deepflow::EuclideanLossParam& euclidean_loss_param() const;
-  ::deepflow::EuclideanLossParam* mutable_euclidean_loss_param();
-  ::deepflow::EuclideanLossParam* release_euclidean_loss_param();
-  void set_allocated_euclidean_loss_param(::deepflow::EuclideanLossParam* euclidean_loss_param);
+  // .deepflow.EuclideanDistanceParam euclidean_distance_param = 134;
+  bool has_euclidean_distance_param() const;
+  void clear_euclidean_distance_param();
+  static const int kEuclideanDistanceParamFieldNumber = 134;
+  const ::deepflow::EuclideanDistanceParam& euclidean_distance_param() const;
+  ::deepflow::EuclideanDistanceParam* mutable_euclidean_distance_param();
+  ::deepflow::EuclideanDistanceParam* release_euclidean_distance_param();
+  void set_allocated_euclidean_distance_param(::deepflow::EuclideanDistanceParam* euclidean_distance_param);
 
   // .deepflow.SIOOutputParam sio_output_param = 135;
   bool has_sio_output_param() const;
@@ -4462,6 +4681,24 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::SIOOutputParam* mutable_sio_output_param();
   ::deepflow::SIOOutputParam* release_sio_output_param();
   void set_allocated_sio_output_param(::deepflow::SIOOutputParam* sio_output_param);
+
+  // .deepflow.LogParam log_param = 136;
+  bool has_log_param() const;
+  void clear_log_param();
+  static const int kLogParamFieldNumber = 136;
+  const ::deepflow::LogParam& log_param() const;
+  ::deepflow::LogParam* mutable_log_param();
+  ::deepflow::LogParam* release_log_param();
+  void set_allocated_log_param(::deepflow::LogParam* log_param);
+
+  // .deepflow.LossParam loss_param = 137;
+  bool has_loss_param() const;
+  void clear_loss_param();
+  static const int kLossParamFieldNumber = 137;
+  const ::deepflow::LossParam& loss_param() const;
+  ::deepflow::LossParam* mutable_loss_param();
+  ::deepflow::LossParam* release_loss_param();
+  void set_allocated_loss_param(::deepflow::LossParam* loss_param);
 
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
@@ -4505,9 +4742,10 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::ImageBatchReaderParam* image_batch_reader_param_;
   ::deepflow::DotParam* dot_param_;
   ::deepflow::ReplayMemoryParam* replay_memory_param_;
-  ::deepflow::SoftmaxLossParam* softmax_loss_param_;
-  ::deepflow::EuclideanLossParam* euclidean_loss_param_;
+  ::deepflow::EuclideanDistanceParam* euclidean_distance_param_;
   ::deepflow::SIOOutputParam* sio_output_param_;
+  ::deepflow::LogParam* log_param_;
+  ::deepflow::LossParam* loss_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4533,7 +4771,7 @@ class SquareParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SquareParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    36;
+    38;
 
   void Swap(SquareParam* other);
 
@@ -4586,39 +4824,39 @@ class SquareParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 };
 // -------------------------------------------------------------------
 
-class EuclideanLossParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.EuclideanLossParam) */ {
+class EuclideanDistanceParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.EuclideanDistanceParam) */ {
  public:
-  EuclideanLossParam();
-  virtual ~EuclideanLossParam();
+  EuclideanDistanceParam();
+  virtual ~EuclideanDistanceParam();
 
-  EuclideanLossParam(const EuclideanLossParam& from);
+  EuclideanDistanceParam(const EuclideanDistanceParam& from);
 
-  inline EuclideanLossParam& operator=(const EuclideanLossParam& from) {
+  inline EuclideanDistanceParam& operator=(const EuclideanDistanceParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const EuclideanLossParam& default_instance();
+  static const EuclideanDistanceParam& default_instance();
 
-  static inline const EuclideanLossParam* internal_default_instance() {
-    return reinterpret_cast<const EuclideanLossParam*>(
-               &_EuclideanLossParam_default_instance_);
+  static inline const EuclideanDistanceParam* internal_default_instance() {
+    return reinterpret_cast<const EuclideanDistanceParam*>(
+               &_EuclideanDistanceParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    37;
+    39;
 
-  void Swap(EuclideanLossParam* other);
+  void Swap(EuclideanDistanceParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline EuclideanLossParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline EuclideanDistanceParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  EuclideanLossParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  EuclideanDistanceParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const EuclideanLossParam& from);
-  void MergeFrom(const EuclideanLossParam& from);
+  void CopyFrom(const EuclideanDistanceParam& from);
+  void MergeFrom(const EuclideanDistanceParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -4634,7 +4872,7 @@ class EuclideanLossParam : public ::google::protobuf::Message /* @@protoc_insert
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(EuclideanLossParam* other);
+  void InternalSwap(EuclideanDistanceParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -4650,80 +4888,7 @@ class EuclideanLossParam : public ::google::protobuf::Message /* @@protoc_insert
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:deepflow.EuclideanLossParam)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  mutable int _cached_size_;
-  friend struct protobuf_deepflow_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
-class SoftmaxLossParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.SoftmaxLossParam) */ {
- public:
-  SoftmaxLossParam();
-  virtual ~SoftmaxLossParam();
-
-  SoftmaxLossParam(const SoftmaxLossParam& from);
-
-  inline SoftmaxLossParam& operator=(const SoftmaxLossParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const SoftmaxLossParam& default_instance();
-
-  static inline const SoftmaxLossParam* internal_default_instance() {
-    return reinterpret_cast<const SoftmaxLossParam*>(
-               &_SoftmaxLossParam_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    38;
-
-  void Swap(SoftmaxLossParam* other);
-
-  // implements Message ----------------------------------------------
-
-  inline SoftmaxLossParam* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  SoftmaxLossParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const SoftmaxLossParam& from);
-  void MergeFrom(const SoftmaxLossParam& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(SoftmaxLossParam* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:deepflow.SoftmaxLossParam)
+  // @@protoc_insertion_point(class_scope:deepflow.EuclideanDistanceParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -4752,7 +4917,7 @@ class SoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_SoftmaxParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    39;
+    40;
 
   void Swap(SoftmaxParam* other);
 
@@ -4825,7 +4990,7 @@ class InitFillParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_InitFillParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    40;
+    41;
 
   void Swap(InitFillParam* other);
 
@@ -4905,7 +5070,7 @@ class InitIndexFillParam : public ::google::protobuf::Message /* @@protoc_insert
                &_InitIndexFillParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    41;
+    42;
 
   void Swap(InitIndexFillParam* other);
 
@@ -4985,7 +5150,7 @@ class InitRandomUniformParam : public ::google::protobuf::Message /* @@protoc_in
                &_InitRandomUniformParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    42;
+    43;
 
   void Swap(InitRandomUniformParam* other);
 
@@ -5072,7 +5237,7 @@ class InitRandomNormalParam : public ::google::protobuf::Message /* @@protoc_ins
                &_InitRandomNormalParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    43;
+    44;
 
   void Swap(InitRandomNormalParam* other);
 
@@ -5159,7 +5324,7 @@ class InitStepParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_InitStepParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    44;
+    45;
 
   void Swap(InitStepParam* other);
 
@@ -5246,7 +5411,7 @@ class InitThreeStateParam : public ::google::protobuf::Message /* @@protoc_inser
                &_InitThreeStateParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    45;
+    46;
 
   void Swap(InitThreeStateParam* other);
 
@@ -5319,7 +5484,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_InitParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    46;
+    47;
 
   void Swap(InitParam* other);
 
@@ -5487,7 +5652,7 @@ class SGDSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_SGDSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    47;
+    48;
 
   void Swap(SGDSolverParam* other);
 
@@ -5574,7 +5739,7 @@ class GainSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_GainSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    48;
+    49;
 
   void Swap(GainSolverParam* other);
 
@@ -5689,7 +5854,7 @@ class AdaDeltaSolverParam : public ::google::protobuf::Message /* @@protoc_inser
                &_AdaDeltaSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    49;
+    50;
 
   void Swap(AdaDeltaSolverParam* other);
 
@@ -5783,7 +5948,7 @@ class AdamSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_AdamSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    50;
+    51;
 
   void Swap(AdamSolverParam* other);
 
@@ -5884,7 +6049,7 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    51;
+    52;
 
   void Swap(SolverParam* other);
 
@@ -6027,7 +6192,7 @@ class PhaseParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_PhaseParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    52;
+    53;
 
   void Swap(PhaseParam* other);
 
@@ -6152,7 +6317,7 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_BlockParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    53;
+    54;
 
   void Swap(BlockParam* other);
 
@@ -6948,6 +7113,42 @@ inline void DisplayParam::set_epoch_frequency(::google::protobuf::int32 value) {
   
   epoch_frequency_ = value;
   // @@protoc_insertion_point(field_set:deepflow.DisplayParam.epoch_frequency)
+}
+
+// -------------------------------------------------------------------
+
+// LogParam
+
+// float coef = 1;
+inline void LogParam::clear_coef() {
+  coef_ = 0;
+}
+inline float LogParam::coef() const {
+  // @@protoc_insertion_point(field_get:deepflow.LogParam.coef)
+  return coef_;
+}
+inline void LogParam::set_coef(float value) {
+  
+  coef_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.LogParam.coef)
+}
+
+// -------------------------------------------------------------------
+
+// LossParam
+
+// .deepflow.LossParam.ReduceOp reduce_op = 1;
+inline void LossParam::clear_reduce_op() {
+  reduce_op_ = 0;
+}
+inline ::deepflow::LossParam_ReduceOp LossParam::reduce_op() const {
+  // @@protoc_insertion_point(field_get:deepflow.LossParam.reduce_op)
+  return static_cast< ::deepflow::LossParam_ReduceOp >(reduce_op_);
+}
+inline void LossParam::set_reduce_op(::deepflow::LossParam_ReduceOp value) {
+  
+  reduce_op_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.LossParam.reduce_op)
 }
 
 // -------------------------------------------------------------------
@@ -9845,82 +10046,43 @@ inline void NodeParam::set_allocated_replay_memory_param(::deepflow::ReplayMemor
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.replay_memory_param)
 }
 
-// .deepflow.SoftmaxLossParam softmax_loss_param = 133;
-inline bool NodeParam::has_softmax_loss_param() const {
-  return this != internal_default_instance() && softmax_loss_param_ != NULL;
+// .deepflow.EuclideanDistanceParam euclidean_distance_param = 134;
+inline bool NodeParam::has_euclidean_distance_param() const {
+  return this != internal_default_instance() && euclidean_distance_param_ != NULL;
 }
-inline void NodeParam::clear_softmax_loss_param() {
-  if (GetArenaNoVirtual() == NULL && softmax_loss_param_ != NULL) delete softmax_loss_param_;
-  softmax_loss_param_ = NULL;
+inline void NodeParam::clear_euclidean_distance_param() {
+  if (GetArenaNoVirtual() == NULL && euclidean_distance_param_ != NULL) delete euclidean_distance_param_;
+  euclidean_distance_param_ = NULL;
 }
-inline const ::deepflow::SoftmaxLossParam& NodeParam::softmax_loss_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.NodeParam.softmax_loss_param)
-  return softmax_loss_param_ != NULL ? *softmax_loss_param_
-                         : *::deepflow::SoftmaxLossParam::internal_default_instance();
+inline const ::deepflow::EuclideanDistanceParam& NodeParam::euclidean_distance_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.euclidean_distance_param)
+  return euclidean_distance_param_ != NULL ? *euclidean_distance_param_
+                         : *::deepflow::EuclideanDistanceParam::internal_default_instance();
 }
-inline ::deepflow::SoftmaxLossParam* NodeParam::mutable_softmax_loss_param() {
+inline ::deepflow::EuclideanDistanceParam* NodeParam::mutable_euclidean_distance_param() {
   
-  if (softmax_loss_param_ == NULL) {
-    softmax_loss_param_ = new ::deepflow::SoftmaxLossParam;
+  if (euclidean_distance_param_ == NULL) {
+    euclidean_distance_param_ = new ::deepflow::EuclideanDistanceParam;
   }
-  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.softmax_loss_param)
-  return softmax_loss_param_;
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.euclidean_distance_param)
+  return euclidean_distance_param_;
 }
-inline ::deepflow::SoftmaxLossParam* NodeParam::release_softmax_loss_param() {
-  // @@protoc_insertion_point(field_release:deepflow.NodeParam.softmax_loss_param)
+inline ::deepflow::EuclideanDistanceParam* NodeParam::release_euclidean_distance_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.euclidean_distance_param)
   
-  ::deepflow::SoftmaxLossParam* temp = softmax_loss_param_;
-  softmax_loss_param_ = NULL;
+  ::deepflow::EuclideanDistanceParam* temp = euclidean_distance_param_;
+  euclidean_distance_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_softmax_loss_param(::deepflow::SoftmaxLossParam* softmax_loss_param) {
-  delete softmax_loss_param_;
-  softmax_loss_param_ = softmax_loss_param;
-  if (softmax_loss_param) {
+inline void NodeParam::set_allocated_euclidean_distance_param(::deepflow::EuclideanDistanceParam* euclidean_distance_param) {
+  delete euclidean_distance_param_;
+  euclidean_distance_param_ = euclidean_distance_param;
+  if (euclidean_distance_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.softmax_loss_param)
-}
-
-// .deepflow.EuclideanLossParam euclidean_loss_param = 134;
-inline bool NodeParam::has_euclidean_loss_param() const {
-  return this != internal_default_instance() && euclidean_loss_param_ != NULL;
-}
-inline void NodeParam::clear_euclidean_loss_param() {
-  if (GetArenaNoVirtual() == NULL && euclidean_loss_param_ != NULL) delete euclidean_loss_param_;
-  euclidean_loss_param_ = NULL;
-}
-inline const ::deepflow::EuclideanLossParam& NodeParam::euclidean_loss_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.NodeParam.euclidean_loss_param)
-  return euclidean_loss_param_ != NULL ? *euclidean_loss_param_
-                         : *::deepflow::EuclideanLossParam::internal_default_instance();
-}
-inline ::deepflow::EuclideanLossParam* NodeParam::mutable_euclidean_loss_param() {
-  
-  if (euclidean_loss_param_ == NULL) {
-    euclidean_loss_param_ = new ::deepflow::EuclideanLossParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.euclidean_loss_param)
-  return euclidean_loss_param_;
-}
-inline ::deepflow::EuclideanLossParam* NodeParam::release_euclidean_loss_param() {
-  // @@protoc_insertion_point(field_release:deepflow.NodeParam.euclidean_loss_param)
-  
-  ::deepflow::EuclideanLossParam* temp = euclidean_loss_param_;
-  euclidean_loss_param_ = NULL;
-  return temp;
-}
-inline void NodeParam::set_allocated_euclidean_loss_param(::deepflow::EuclideanLossParam* euclidean_loss_param) {
-  delete euclidean_loss_param_;
-  euclidean_loss_param_ = euclidean_loss_param;
-  if (euclidean_loss_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.euclidean_loss_param)
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.euclidean_distance_param)
 }
 
 // .deepflow.SIOOutputParam sio_output_param = 135;
@@ -9962,17 +10124,91 @@ inline void NodeParam::set_allocated_sio_output_param(::deepflow::SIOOutputParam
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.sio_output_param)
 }
 
+// .deepflow.LogParam log_param = 136;
+inline bool NodeParam::has_log_param() const {
+  return this != internal_default_instance() && log_param_ != NULL;
+}
+inline void NodeParam::clear_log_param() {
+  if (GetArenaNoVirtual() == NULL && log_param_ != NULL) delete log_param_;
+  log_param_ = NULL;
+}
+inline const ::deepflow::LogParam& NodeParam::log_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.log_param)
+  return log_param_ != NULL ? *log_param_
+                         : *::deepflow::LogParam::internal_default_instance();
+}
+inline ::deepflow::LogParam* NodeParam::mutable_log_param() {
+  
+  if (log_param_ == NULL) {
+    log_param_ = new ::deepflow::LogParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.log_param)
+  return log_param_;
+}
+inline ::deepflow::LogParam* NodeParam::release_log_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.log_param)
+  
+  ::deepflow::LogParam* temp = log_param_;
+  log_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_log_param(::deepflow::LogParam* log_param) {
+  delete log_param_;
+  log_param_ = log_param;
+  if (log_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.log_param)
+}
+
+// .deepflow.LossParam loss_param = 137;
+inline bool NodeParam::has_loss_param() const {
+  return this != internal_default_instance() && loss_param_ != NULL;
+}
+inline void NodeParam::clear_loss_param() {
+  if (GetArenaNoVirtual() == NULL && loss_param_ != NULL) delete loss_param_;
+  loss_param_ = NULL;
+}
+inline const ::deepflow::LossParam& NodeParam::loss_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.loss_param)
+  return loss_param_ != NULL ? *loss_param_
+                         : *::deepflow::LossParam::internal_default_instance();
+}
+inline ::deepflow::LossParam* NodeParam::mutable_loss_param() {
+  
+  if (loss_param_ == NULL) {
+    loss_param_ = new ::deepflow::LossParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.loss_param)
+  return loss_param_;
+}
+inline ::deepflow::LossParam* NodeParam::release_loss_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.loss_param)
+  
+  ::deepflow::LossParam* temp = loss_param_;
+  loss_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_loss_param(::deepflow::LossParam* loss_param) {
+  delete loss_param_;
+  loss_param_ = loss_param;
+  if (loss_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.loss_param)
+}
+
 // -------------------------------------------------------------------
 
 // SquareParam
 
 // -------------------------------------------------------------------
 
-// EuclideanLossParam
-
-// -------------------------------------------------------------------
-
-// SoftmaxLossParam
+// EuclideanDistanceParam
 
 // -------------------------------------------------------------------
 
@@ -11277,6 +11513,8 @@ BlockParam::initializer() const {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -11291,6 +11529,11 @@ template <> struct is_proto_enum< ::deepflow::TensorParam_TensorType> : ::google
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::TensorParam_TensorType>() {
   return ::deepflow::TensorParam_TensorType_descriptor();
+}
+template <> struct is_proto_enum< ::deepflow::LossParam_ReduceOp> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::LossParam_ReduceOp>() {
+  return ::deepflow::LossParam_ReduceOp_descriptor();
 }
 template <> struct is_proto_enum< ::deepflow::ReduceParam_ReduceOp> : ::google::protobuf::internal::true_type {};
 template <>
