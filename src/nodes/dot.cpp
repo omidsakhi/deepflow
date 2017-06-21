@@ -12,7 +12,8 @@ void Dot::initForward() {
 	auto b = _inputs[1];
 	auto bd = b->dims();
 
-	LOG_IF(FATAL, a->value()->size() != b->value()->size()) << "Different input sizes";
+	LOG_IF(FATAL, a->value()->size() != b->value()->size()) 
+		<< "Different sizes " << a->value()->shape() << "(" << a->connectedNode()->name() << ") vs " << b->value()->shape() << " (" << b->connectedNode()->name() << ")";
 	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
 	LOG(INFO) << "Initializing Dot " << _name << " - " << _outputs[0]->value()->shape();

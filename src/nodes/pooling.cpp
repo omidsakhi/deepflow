@@ -11,14 +11,10 @@ void Pooling::initForward() {
 	LOG_IF(FATAL, param.window_h() < 1);
 	LOG_IF(FATAL, param.v_pad() < 0);
 	LOG_IF(FATAL, param.h_pad() < 0);
-	DF_NODE_CUDNN_CHECK(cudnnCreatePoolingDescriptor(&_poolingDesc));
-	int n, c, h, w;
+	DF_NODE_CUDNN_CHECK(cudnnCreatePoolingDescriptor(&_poolingDesc));	
 	DF_NODE_CUDNN_CHECK(cudnnSetPooling2dDescriptor(_poolingDesc, CUDNN_POOLING_MAX, CUDNN_PROPAGATE_NAN, param.window_h(), param.window_w(), param.v_pad(), param.h_pad(), param.v_stride(), param.h_stride()));
-	auto dims = _inputs[0]->dims();
-	n = dims[0];
-	c = dims[1];
-	h = floor((float)dims[2] / param.v_stride());
-	w = floor((float)dims[3] / param.h_stride());	
+	int n, c, h, w;
+	DF_NODE_CUDNN_CHECK(cudnnGetPooling2dForwardOutputDim(_poolingDesc, _inputs[0]->value()->descriptor(), &n, &c, &h, &w));
 	_outputs[0]->initValue({ n, c, h, w }, Tensor::Float);	
 	LOG(INFO) << "Initializing Pooling " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape();	
 }

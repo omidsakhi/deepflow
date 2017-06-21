@@ -38,6 +38,18 @@ void Print::forward() {
 		}
 		message.replace(start_pos, 3, std::to_string(a / b * 100.0f));
 	}
+
+	if (_context) {
+		start_pos = message.find("{ep}");
+		if (start_pos != std::string::npos) {
+			message.replace(start_pos, 4, std::to_string(_context->current_epoch));
+		}
+		start_pos = message.find("{it}");
+		if (start_pos != std::string::npos) {
+			message.replace(start_pos, 4, std::to_string(_context->current_iteration));
+		}
+	}
+
 	for (int i = 0; i < _inputs.size(); ++i) {
 		size_t start_pos = message.find("{" + std::to_string(i) + "}");
 		if (start_pos == std::string::npos)
@@ -47,6 +59,7 @@ void Print::forward() {
 		else
 			message.replace(start_pos, 3, _inputs[i]->value()->toString());
 	}
+	
 	std::cout << message;
 }
 
