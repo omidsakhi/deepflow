@@ -339,6 +339,21 @@ std::list<std::shared_ptr<Node>> Session::_get_end_nodes(std::string execution_p
 	return list;
 }
 
+std::list<std::shared_ptr<Node>> Session::_get_head_nodes(std::string execution_phase) const
+{
+	std::list<std::shared_ptr<Node>> list;
+	for (auto node : _nodes) {
+		if (node->includePhase(execution_phase)) {
+			int num_connected_inputs = 0;
+			for (auto input : node->inputs())
+				num_connected_inputs += input->connectedNode() ? 1 : 0;
+			if (num_connected_inputs == 0)
+				list.push_back(node);
+		}
+	}
+	return list;
+}
+
 std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string &name) const {
 	for (auto node : _nodes) {
 		for (auto terminal : node->outputs()) {
@@ -353,21 +368,35 @@ void Session::forward()
 	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
 	for (auto node : end_nodes) {
 		node->_unvisit();
+	}
+	for (auto node : end_nodes) {
 		node->_forward();
 	}
 }
 
-void Session::backward()
+void Session::backward(bool reset_gradients, bool propagation_order)
 {
 	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
-	for (auto node : end_nodes) {
-		node->_unvisit();
-		node->_propagateBack();
+	std::list<std::shared_ptr<Node>> head_nodes = _get_head_nodes("");
+	if (propagation_order) {
+		for (auto node : end_nodes) {
+			node->_unvisit();
+		}
+		for (auto node : end_nodes) {
+			node->_propagateBack();
+		}
+	}
+	if (reset_gradients) {
+		for (auto node : _nodes)
+			node->resetGradients();
 	}
 	for (auto node : end_nodes) {
 		node->_unvisit();
+	}
+	for (auto node : head_nodes) {
 		node->_backward();
 	}
+
 }
 
 void Session::apply_solvers()
@@ -391,12 +420,6 @@ void Session::save(std::string file_path, bool as_text)
 		_block->save_as_binary(file_path);
 }
 
-void Session::reset_gradients()
-{
-	for (auto node : _nodes)
-		node->resetGradients();
-}
-
 void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Node>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration) {
 	int iteration_per_epoch = 1;
 	bool last_batch = false;	
@@ -407,6 +430,8 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 	if (train || validation) {
 		for (auto node : *end_nodes) {
 			node->_unvisit();
+		}
+		for (auto node : *end_nodes) {
 			node->_propagateBack();
 		}
 	}
@@ -431,6 +456,8 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 			std::cout << "  Iteration " << *iteration << std::endl;
 		for (auto node : *end_nodes) {
 			node->_unvisit();
+		}
+		for (auto node : *end_nodes) {
 			node->_forward();
 		}
 		if (train) {
@@ -438,6 +465,8 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 				node->resetGradients();			
 			for (auto node : *end_nodes) {
 				node->_unvisit();
+			}
+			for (auto node : *end_nodes) {
 				node->_backward();
 			}
 			for (auto var : *variable_nodes) {

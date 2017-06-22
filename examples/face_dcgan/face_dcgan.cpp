@@ -183,8 +183,6 @@ void main(int argc, char** argv) {
 	for (int i = 1; i <= FLAGS_epoch && execution_context->quit != true; ++i) {
 		std::cout << "Epoch: " << i << std::endl;		
 		for (int k = 1; k <= 2; ++k) {			
-			discriminator->reset_gradients();
-			loss->reset_gradients();
 			auto select = select_dist(gen);
 			if (select == 0) { 
 				// GENERATOR
@@ -213,9 +211,6 @@ void main(int argc, char** argv) {
 			discriminator->apply_solvers();
 		}
 		std::cout << " TRAINING GENERATOR " << std::endl;
-		generator->reset_gradients();
-		discriminator->reset_gradients();
-		loss->reset_gradients();
 		generator->forward();
 		discriminator_input->feed_forward(generator_output, 0);
 		discriminator->forward();

@@ -24,48 +24,51 @@ std::shared_ptr<Session> create_autoencoder_session() {
 	DeepFlow df;
 	auto mean = 0;
 	auto stddev = 0.02;
-	auto enc_solver = df.adam_solver(0.0001f, 0.5f);
-	auto dec_solver = df.adam_solver(0.0001f, 0.5f);
-	auto enc_negative_slope = 0.01;
-	auto dec_negative_slope = 0.01;		
-	auto alpha_param = 1.0f;
-	auto decay = 0.001f;
+	auto enc_solver = df.adam_solver(0.0002f, 0.5f);
+	auto dec_solver = df.adam_solver(0.0002f, 0.5f);
+	auto enc_negative_slope = 0.05;
+	auto dec_negative_slope = 0;		
+	auto alpha_param = 0.98f;
+	auto decay = 0.01f;
 
 	auto input = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::MNISTReaderType::Train, MNISTReader::Data, "mnist_data");	 
 
-	df.display(input, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "input");
+	//df.display(input, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "input");
 
-	auto conv1_w = df.variable(df.random_normal({ 16, 1, 3, 3 }, mean, stddev), enc_solver, "conv1_w");
+	auto conv1_w = df.variable(df.random_normal({ 128, 1, 3, 3 }, mean, stddev), enc_solver, "conv1_w");
 	auto conv1 = df.conv2d(input, conv1_w, 1, 1, 1, 1, 1, 1, "conv1");	
 	auto conv1_r = df.leaky_relu(conv1, enc_negative_slope);
 	auto conv1_p = df.pooling(conv1_r, 2, 2, 0, 0, 2, 2, "conv1_p");
 	
-	auto conv2_w = df.variable(df.random_normal({ 8, 16, 3, 3 }, mean, stddev), enc_solver, "conv2_w");
+	auto conv2_w = df.variable(df.random_normal({ 128, 128, 3, 3 }, mean, stddev), enc_solver, "conv2_w");
 	auto conv2 = df.conv2d(conv1_p, conv2_w, 1, 1, 1, 1, 1, 1, "conv2");	
 	auto conv2_r = df.leaky_relu(conv2, enc_negative_slope);
 	auto conv2_p = df.pooling(conv2_r, 2, 2, 0, 0, 2, 2, "conv2_p");
 
-	auto conv3_w = df.variable(df.random_normal({ 8, 8, 3, 3 }, mean, stddev), enc_solver, "conv3_w");
+	auto conv3_w = df.variable(df.random_normal({ 8, 128, 3, 3 }, mean, stddev), enc_solver, "conv3_w");
 	auto conv3 = df.conv2d(conv2_p, conv3_w, 1, 1, 1, 1, 1, 1, "conv3");
 	auto conv3_r = df.leaky_relu(conv3, enc_negative_slope);
 	auto conv3_p = df.pooling(conv3_r, 2, 2, 1, 1, 2, 2, "conv3_p");
 
-	auto tconv1_f = df.variable(df.random_normal({ 8, 8, 2, 2 }, mean, stddev), dec_solver, "tconv1_f");
+	auto tconv1_f = df.variable(df.random_normal({ 8, 128, 2, 2 }, mean, stddev), dec_solver, "tconv1_f");
 	auto tconv1_t = df.transposed_conv2d(conv3_p, tconv1_f, 1, 1, 2, 2, 1, 1, "tconv1_t");
-	auto tconv1_r = df.leaky_relu(tconv1_t, dec_negative_slope);
+	auto tconv1_b = df.batch_normalization(tconv1_t, DeepFlow::PER_ACTIVATION, 0, 1, 0, alpha_param, 1 - decay);
+	auto tconv1_r = df.leaky_relu(tconv1_b, dec_negative_slope);
 
-	auto tconv2_f = df.variable(df.random_normal({ 8, 16, 3, 3 }, mean, stddev), dec_solver, "tconv2_f");
+	auto tconv2_f = df.variable(df.random_normal({ 128, 128, 3, 3 }, mean, stddev), dec_solver, "tconv2_f");
 	auto tconv2_t = df.transposed_conv2d(tconv1_r, tconv2_f, 1, 1, 2, 2, 1, 1, "tconv2_t");
-	auto tconv2_r = df.leaky_relu(tconv2_t, dec_negative_slope);
+	auto tconv2_b = df.batch_normalization(tconv2_t, DeepFlow::PER_ACTIVATION, 0, 1, 0, alpha_param, 1 - decay);
+	auto tconv2_r = df.leaky_relu(tconv2_b, dec_negative_slope);
 
-	auto tconv3_f = df.variable(df.random_normal({ 16, 1, 3, 3 }, mean, stddev), dec_solver, "tconv3_f");
-	auto tconv3_t = df.transposed_conv2d(tconv2_r, tconv3_f, 1, 1, 2, 2, 1, 1, "tconv3_t");
-	auto tconv3_r = df.leaky_relu(tconv3_t, dec_negative_slope);
+	auto tconv3_f = df.variable(df.random_normal({ 128, 1, 3, 3 }, mean, stddev), dec_solver, "tconv3_f");
+	auto tconv3_t = df.transposed_conv2d(tconv2_r, tconv3_f, 1, 1, 2, 2, 1, 1, "tconv3_t");		
+
+	auto output = df.tanh(tconv3_t);	
 	
-	auto output = df.tanh(tconv3_r);
-	df.display(output, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "output");
+	df.display(output, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 10, "output");
+
 	auto euc = df.euclidean_distance(output, input);
-	auto loss = df.loss(euc, DeepFlow::AVG);
+	auto loss = df.loss(euc, DeepFlow::AVG);	
 	
 	df.print({ loss }, "Epoch: {ep} - Loss: {0}\n", DeepFlow::EVERY_PASS);
 
@@ -92,12 +95,10 @@ void main(int argc, char** argv) {
 	int epoch;
 	for (epoch = 1; epoch <= FLAGS_epoch && execution_context->quit != true; ++epoch) {
 		
-		execution_context->current_epoch = epoch;		
-		
-		autoencoder_session->reset_gradients();
-		autoencoder_session->forward();
-		autoencoder_session->backward();
-		autoencoder_session->apply_solvers();
+		execution_context->current_epoch = epoch;				
+		autoencoder_session->forward();			
+		autoencoder_session->backward(true, true);		
+		autoencoder_session->apply_solvers();		
 
 		if (FLAGS_save != 0 && epoch % FLAGS_save == 0) {
 			autoencoder_session->save("mnist_ac" + std::to_string(epoch) + ".bin");			

@@ -23,14 +23,14 @@ public:
 	std::shared_ptr<PlaceHolder> get_placeholder(std::string name);	
 	std::shared_ptr<Node> get_node(std::string name);
 	void forward();
-	void backward();
-	void reset_gradients();
+	void backward(bool reset_gradients = true, bool propagation_order = true);	
 	void apply_solvers();
 	void save(std::string file_path, bool as_text = false);
 private:
 	template <class T>
 	std::list<std::shared_ptr<T>> _get_nodes(std::string execution_phase);
 	std::list<std::shared_ptr<Node>> _get_end_nodes(std::string execution_phase) const;
+	std::list<std::shared_ptr<Node>> _get_head_nodes(std::string execution_phase) const;
 	std::shared_ptr<Node> _find_node_by_name(const std::string &name) const;
 	std::shared_ptr<NodeOutput> _find_node_output_by_name(const std::string &name) const;
 	std::shared_ptr<Node> _create_node(deepflow::NodeParam *);

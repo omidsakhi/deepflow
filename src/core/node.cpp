@@ -28,6 +28,8 @@ void Node::setVisited(bool state) {
 
 void Node::resetGradients()
 {
+	bool verbos = (_context && _context->debug_level == 4) ? true : false;
+	LOG_IF(INFO, verbos) << "RESET GRADIENTS " << _name;
 	for (auto output: _outputs)
 		output->resetDiff();
 }
@@ -143,12 +145,16 @@ void Node::_traverse_down(std::function<void(Node*)> fun, TraverseOrder order, b
 }
 
 void Node::_forward() {
-	if (_visited == true)
-		return;
-	if (_context && includePhase(_context->phase) == false)
-		return;
-	_visited = true;
 	bool verbos = (_context && _context->debug_level == 4) ? true : false;
+	if (_visited == true) {
+		LOG_IF(INFO, verbos) << "SKIP FORWARD" << _name << " DUE TO VISITED = true ";
+		return;
+	}
+	if (_context && includePhase(_context->phase) == false) {
+		LOG_IF(INFO, verbos) << "SKIP FORWARD " << _name << " DUE TO PHASE";
+		return;
+	}
+	_visited = true;	
 	for (auto node : inputNodes()) {
 		LOG_IF(INFO, verbos) << "FROM " << _name << " GOING TO FORWARD " << node->name();
 		node->_forward();
@@ -157,32 +163,40 @@ void Node::_forward() {
 	forward();
 	if (verbos) {
 		for (auto output : _outputs) {
-			int res = output->value()->isValid();
-			LOG_IF(FATAL, res != 0) << ((res == -1) ? "INF" : "NAN");
+			if (output->value()) {
+				int res = output->value()->isValid();
+				LOG_IF(FATAL, res != 0) << ((res == -1) ? "INF" : "NAN");
+			}
 		}
 	}
 }
 
 void Node::_backward() {
-	if (_visited == true)
-		return;	
-	if (_context && includePhase(_context->phase) == false)
-		return;
-	_visited = true;	
 	bool verbos = (_context && _context->debug_level == 4) ? true : false;
-	if (_propagate_back) {		
+	if (_visited == true) {
+		LOG_IF(INFO, verbos) << "SKIP BACKWARD " << _name << " DUE TO VISITED = true ";
+		return;
+	}
+	if (_context && includePhase(_context->phase) == false) {
+		LOG_IF(INFO, verbos) << "SKIP BACKWARD " << _name << " DUE TO PHASE";
+		return;
+	}
+	_visited = true;		
+	for (auto node : outputNodes()) {
+		LOG_IF(INFO, verbos) << "FROM " << _name << " GOING TO BACKWARD " << node->name();
+		node->_backward();
+	}
+	if (_propagate_back) {
 		LOG_IF(INFO, verbos) << "BACKWARD " << _name;
 		backward();
 		if (verbos) {
 			for (auto input : _inputs) {
-				int res = input->diff()->isValid();
-				LOG_IF(FATAL, res != 0) << ((res == -1) ? "INF" : "NAN");
+				if (input->diff()) {
+					int res = input->diff()->isValid();
+					LOG_IF(FATAL, res != 0) << ((res == -1) ? "INF" : "NAN");
+				}
 			}
 		}
-	}
-	for (auto node : inputNodes()) {
-		LOG_IF(INFO, verbos) << "FROM " << _name << " GOING TO BACKWARD " << node->name();
-		node->_backward();
 	}
 }
 

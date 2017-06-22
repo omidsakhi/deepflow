@@ -216,8 +216,6 @@ void main(int argc, char** argv) {
 		std::cout << "Epoch: " << iter << std::endl;		
 		
 		std::cout << " MNIST INPUT " << std::endl;
-		discriminator->reset_gradients();
-		loss->reset_gradients();		
 		mnist_reader_data->forward();
 		discriminator_input->feed_forward(mnist_reader_data, 0);
 		discriminator->forward();
@@ -232,8 +230,6 @@ void main(int argc, char** argv) {
 		discriminator->apply_solvers();
 
 		std::cout << " GENERATOR INPUT " << std::endl;
-		discriminator->reset_gradients();
-		loss->reset_gradients();		
 		generator->forward();
 		discriminator_input->feed_forward(generator_output, 0);
 		discriminator->forward();
@@ -248,9 +244,6 @@ void main(int argc, char** argv) {
 		discriminator->apply_solvers(); 
 
 		std::cout << " TRAINING GENERATOR " << std::endl;
-		generator->reset_gradients();
-		discriminator->reset_gradients();
-		loss->reset_gradients();
 		generator->forward();
 		discriminator_input->feed_forward(generator_output, 0);
 		discriminator->forward();
