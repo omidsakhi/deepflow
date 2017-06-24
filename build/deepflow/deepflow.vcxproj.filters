@@ -70,7 +70,7 @@
     <CudaCompile Include="..\..\src\nodes\log.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\euclidean_distance.cu">
+    <CudaCompile Include="..\..\src\nodes\square_error.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
   </ItemGroup>
@@ -365,10 +365,10 @@
     <ClInclude Include="..\..\include\nodes\log.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\nodes\euclidean_distance.h">
+    <ClInclude Include="..\..\include\nodes\loss.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\nodes\loss.h">
+    <ClInclude Include="..\..\include\nodes\square_error.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

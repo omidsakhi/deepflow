@@ -66,7 +66,7 @@ void ImageBatchReader::initForward() {
 	_num_batches = _num_total_samples / _batch_size;
 	_last_batch = (_current_batch == (_num_batches - 1));
 	_outputs[0]->initValue(_dims);
-	LOG(INFO) << "Initializing image_batch_reader from folder " << _folder_path << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "image_batch_reader from folder " << _folder_path << " - " << _outputs[0]->value()->shape();
 	size_t img_size = _dims[1] * _dims[2] * _dims[3];
 	DF_NODE_CUDA_CHECK(cudaMalloc(&d_img, img_size ));
 	_indices.resize(_batch_size);	

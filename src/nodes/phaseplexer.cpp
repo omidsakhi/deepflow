@@ -12,7 +12,7 @@ void Phaseplexer::initForward()
 	LOG_IF(FATAL, _map.size() < 2);
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size());
 	_outputs[0]->initValue(_inputs[0]->dims());
-	LOG(INFO) << "Initializing Phaseplexer " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Phaseplexer " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Phaseplexer::initBackward()

@@ -39,7 +39,7 @@ void ImageReader::initForward() {
 		img = cv::imread(file_name);
 	LOG_IF(FATAL, img.empty()) << "Image " << file_name << " does not exist.";
 	_outputs[0]->initValue({ 1, img.channels(), img.rows , img.cols });
-	LOG(INFO) << "Initializing image_readr for image " << file_name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "image_readr for image " << file_name << " - " << _outputs[0]->value()->shape();
 	size_t size = _outputs[0]->value()->size();
 	unsigned char *d_img;
 	DF_NODE_CUDA_CHECK(cudaMalloc(&d_img, size));

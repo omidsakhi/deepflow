@@ -18,7 +18,7 @@ void Equal::initForward() {
 	LOG_IF(FATAL, _inputs[1]->value()->type() != Tensor::Int32) << "Inputs must be of type int32.";
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[0]->value()->size()) << "Size mismatch [FAILED]";
 	_outputs[0]->initValue(_inputs[0]->value()->dims(), Tensor::TensorType::Float);
-	LOG(INFO) << "Initializing Equal " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Equal " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Equal::initBackward() {

@@ -27,9 +27,8 @@ void Node::setVisited(bool state) {
 }
 
 void Node::resetGradients()
-{
-	bool verbos = (_context && _context->debug_level == 4) ? true : false;
-	LOG_IF(INFO, verbos) << "RESET GRADIENTS " << _name;
+{	
+	LOG_IF(INFO, _verbose > 2) << "RESET GRADIENTS " << _name;
 	for (auto output: _outputs)
 		output->resetDiff();
 }
@@ -56,29 +55,28 @@ void Node::_unvisit() {
 void Node::_propagateBack() {
 	if (_visited == true)
 		return;
-	_visited = true;
-	bool verbos = (_context && _context->debug_level == 4) ? true : false;
-	LOG_IF(INFO, verbos) << "RESOLVING BP - VISITING " << _name;
+	_visited = true;	
+	LOG_IF(INFO, _verbose > 3) << "RESOLVING BP - VISITING " << _name;
 	if (backwardType() == ALWAYS_BACKWARD) {				
-		LOG_IF(INFO, verbos) << "RESOLVING BP - ALWAYS BACKWARD " << _name;
+		LOG_IF(INFO, _verbose > 3) << "RESOLVING BP - ALWAYS BACKWARD " << _name;
 		setShouldBackward(true);
 	}
 	else if (backwardType() == NEVER_BACKWARD) {
-		LOG_IF(INFO, verbos) << "RESOLVING BP - NEVER BACKWARD " << _name;
+		LOG_IF(INFO, _verbose > 3) << "RESOLVING BP - NEVER BACKWARD " << _name;
 		setShouldBackward(false);
 	}
 	else {
 		bool _should_backward = false;
 		auto list = inputNodes();
 		for (auto node : list) {
-			LOG_IF(INFO, verbos) << "RESOLVING BP - INSPECTING INPUT " << node->name();
+			LOG_IF(INFO, _verbose > 3) << "RESOLVING BP - INSPECTING INPUT " << node->name();
 			node->_propagateBack();
 			if (node->_propagate_back == true) {
 				_should_backward = true;				
 				break;
 			}
 		}
-		LOG_IF(INFO, verbos) << "RESOLVING BP - " << _name << (_should_backward?" SHOULD PROPAGATE." : " SHOULD **NOT** PROPAGATE.");
+		LOG_IF(INFO, _verbose > 3) << "RESOLVING BP - " << _name << (_should_backward?" SHOULD PROPAGATE." : " SHOULD **NOT** PROPAGATE.");
 		setShouldBackward(_should_backward);
 	}	
 	for (auto node : inputNodes()) {
@@ -97,7 +95,8 @@ void Node::setShouldBackward(bool state)
 }
 
 void Node::feed_forward(std::shared_ptr<Node> node, int output_terminal)
-{
+{	
+	LOG_IF(INFO, _verbose > 2) << "FEEDING VALUES FROM " << node->name() << " (" << output_terminal << ") TO " << _name;
 	auto feed_terminal = node->output(output_terminal);
 	auto feed_dim = feed_terminal->value()->dims();
 	auto my_dim = _outputs[0]->value()->dims();
@@ -106,7 +105,8 @@ void Node::feed_forward(std::shared_ptr<Node> node, int output_terminal)
 }
 
 void Node::feed_backward(std::shared_ptr<Node> node, int output_terminal)
-{
+{	
+	LOG_IF(INFO, _verbose > 2) << "FEEDING GRADIENTS FROM " << node->name() << " (" << output_terminal << ") TO " << _name;
 	auto feed_terminal = node->output(output_terminal);
 	auto feed_dim = feed_terminal->diff()->dims();
 	auto my_dim = _outputs[0]->diff()->dims();
@@ -144,24 +144,23 @@ void Node::_traverse_down(std::function<void(Node*)> fun, TraverseOrder order, b
 	_visited = visit_condition;
 }
 
-void Node::_forward() {
-	bool verbos = (_context && _context->debug_level == 4) ? true : false;
+void Node::_forward() {	
 	if (_visited == true) {
-		LOG_IF(INFO, verbos) << "SKIP FORWARD" << _name << " DUE TO VISITED = true ";
+		LOG_IF(INFO, _verbose > 2) << "SKIP FORWARD" << _name << " DUE TO VISITED = true ";
 		return;
 	}
 	if (_context && includePhase(_context->phase) == false) {
-		LOG_IF(INFO, verbos) << "SKIP FORWARD " << _name << " DUE TO PHASE";
+		LOG_IF(INFO, _verbose > 2) << "SKIP FORWARD " << _name << " DUE TO PHASE";
 		return;
 	}
 	_visited = true;	
 	for (auto node : inputNodes()) {
-		LOG_IF(INFO, verbos) << "FROM " << _name << " GOING TO FORWARD " << node->name();
+		LOG_IF(INFO, _verbose > 3) << "FROM " << _name << " GOING TO FORWARD " << node->name();
 		node->_forward();
 	}	
-	LOG_IF(INFO, verbos) << "FORWARD " << _name;
+	LOG_IF(INFO, _verbose > 2) << "FORWARD " << _name;
 	forward();
-	if (verbos) {
+	if (_verbose > 3) {
 		for (auto output : _outputs) {
 			if (output->value()) {
 				int res = output->value()->isValid();
@@ -171,25 +170,24 @@ void Node::_forward() {
 	}
 }
 
-void Node::_backward() {
-	bool verbos = (_context && _context->debug_level == 4) ? true : false;
+void Node::_backward() {	
 	if (_visited == true) {
-		LOG_IF(INFO, verbos) << "SKIP BACKWARD " << _name << " DUE TO VISITED = true ";
+		LOG_IF(INFO, _verbose > 2) << "SKIP BACKWARD " << _name << " DUE TO VISITED = true ";
 		return;
 	}
 	if (_context && includePhase(_context->phase) == false) {
-		LOG_IF(INFO, verbos) << "SKIP BACKWARD " << _name << " DUE TO PHASE";
+		LOG_IF(INFO, _verbose > 2) << "SKIP BACKWARD " << _name << " DUE TO PHASE";
 		return;
 	}
 	_visited = true;		
 	for (auto node : outputNodes()) {
-		LOG_IF(INFO, verbos) << "FROM " << _name << " GOING TO BACKWARD " << node->name();
+		LOG_IF(INFO, _verbose > 3) << "FROM " << _name << " GOING TO BACKWARD " << node->name();
 		node->_backward();
 	}
 	if (_propagate_back) {
-		LOG_IF(INFO, verbos) << "BACKWARD " << _name;
+		LOG_IF(INFO, _verbose > 2) << "BACKWARD " << _name;
 		backward();
-		if (verbos) {
+		if (_verbose > 3) {
 			for (auto input : _inputs) {
 				if (input->diff()) {
 					int res = input->diff()->isValid();
@@ -280,6 +278,7 @@ bool Node::includePhase(const std::string &phase) {
 
 void Node::setExecutionContext(ExecutionContextPtr context) {
 	_context = context;
+	_verbose = _context->debug_level;
 }
 
 ExecutionContextPtr Node::executionContext()

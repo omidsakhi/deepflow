@@ -27,7 +27,7 @@ void AdamSolver::apply(std::shared_ptr<Variable> var) {
 	auto context = var->executionContext();
 	bool verbos = (context && context->debug_level > 3) ? true : false;
 	if (_initialized == false) {
-		LOG_IF(INFO, verbos) << "INITIALIZING SOLVER " << name() << " FOR VARIABLE " << var->name();
+		LOG_IF(INFO, verbos) << "SOLVER " << name() << " FOR VARIABLE " << var->name();
 		init(var);
 	}
 	if (_enable_input) {

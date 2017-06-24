@@ -23,7 +23,7 @@ Log::Log(deepflow::NodeParam *param) : Node(param) {
 
 void Log::initForward() {
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Initializing Log " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Log " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Log::initBackward() {

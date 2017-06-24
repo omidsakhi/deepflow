@@ -32,7 +32,7 @@
 #include "nodes/cast_float.h"
 #include "nodes/display.h"
 #include "nodes/transposed_conv_2d.h"
-#include "nodes/euclidean_distance.h"
+#include "nodes/square_error.h"
 #include "nodes/activation.h"
 #include "nodes/psnr.h"
 #include "nodes/random_selector.h"
@@ -125,8 +125,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Log>(node_param);
 	else if (node_param->has_loss_param())
 		return std::make_shared<Loss>(node_param);
-	else if (node_param->has_euclidean_distance_param())
-		return std::make_shared<EuclideanDistance>(node_param);
+	else if (node_param->has_square_error_param())
+		return std::make_shared<SquareError>(node_param);
 	else if (node_param->has_pooling_param())
 		return std::make_shared<Pooling>(node_param);
 	else if (node_param->has_reduce_param())

@@ -50,7 +50,7 @@ void main(int argc, char** argv) {
 			auto solver = df.adam_solver(0.1f, 0.5f, 0.5f);
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
-			auto euclidean = df.euclidean_distance(generator, image);
+			auto euclidean = df.square_error(generator, image);
 			auto loss = df.loss(euclidean, DeepFlow::SUM);
 			df.display(image, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1,  "input", { train });
 			df.display(generator, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approximation", { train });
@@ -65,7 +65,7 @@ void main(int argc, char** argv) {
 			auto conv = df.conv2d(image, f1, 2, 2, 1, 1, 1, 1);			
 			auto f2 = df.variable(df.step({ 1,11,5,5 }, 0, 1), "", "w");
 			auto tconv = df.transposed_conv2d(recon, f2, 2, 2, 1, 1, 1, 1);
-			auto euclidean = df.euclidean_distance(conv, tconv);
+			auto euclidean = df.square_error(conv, tconv);
 			auto loss = df.loss(euclidean, DeepFlow::SUM);			
 			df.display(recon, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "input", { train });
 			df.psnr(recon, image, DeepFlow::EVERY_PASS, "psnr", { train });
@@ -79,7 +79,7 @@ void main(int argc, char** argv) {
 			auto f2 = df.restructure(f1, 0, 1);
 			auto conv = df.conv2d(image, f1, "", 1, 1, 1, 1, 1, 1);			
 			auto tconv = df.transposed_conv2d(recon, f2, 1, 1, 1, 1, 1, 1);
-			auto euclidean = df.euclidean_distance(conv, tconv);
+			auto euclidean = df.square_error(conv, tconv);
 			auto loss = df.loss(euclidean, DeepFlow::SUM);
 			df.display(recon, 2, DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, 1, "input", { train });
 			df.psnr(recon, image, DeepFlow::END_OF_EPOCH, "psnr", { train });
@@ -91,7 +91,7 @@ void main(int argc, char** argv) {
 			auto generator1 = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -0.1, 0.1), 1, solver, "gen1");
 			auto generator2 = df.data_generator(df.random_normal({ 1, 3, 256, 256 }, 0, 0.1), 1, solver, "gen2");
 			auto selector = df.random_selector(generator1, generator2, 0.5);
-			auto euclidean = df.euclidean_distance(selector, image);
+			auto euclidean = df.square_error(selector, image);
 			auto loss = df.loss(euclidean, DeepFlow::SUM);			
 			df.display(generator1, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approx1", { train });
 			df.display(generator2, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approx2", { train });

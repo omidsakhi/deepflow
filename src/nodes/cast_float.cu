@@ -16,7 +16,7 @@ CastFloat::CastFloat(deepflow::NodeParam *param) : Node(param) {
 void CastFloat::initForward() {
 	LOG_IF(FATAL, _inputs[0]->value()->type() != Tensor::Int32) << "Input tensor must be of Int32 type.";	
 	_outputs[0]->initValue(_inputs[0]->value()->dims(), Tensor::Float);		
-	LOG(INFO) << "Initializing CastFloat " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "CastFloat " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void CastFloat::initBackward() {

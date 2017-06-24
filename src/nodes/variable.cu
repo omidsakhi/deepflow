@@ -19,7 +19,7 @@ Variable::Variable(std::shared_ptr<Initializer> initializer, deepflow::NodeParam
 void Variable::initForward() {	
 	_initializer->init();
 	_outputs[0]->initValue(_initializer->dims());
-	LOG(INFO) << "Initializing Variable " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Variable " << _name << " - " << _outputs[0]->value()->shape();
 	if (_param->variable_param().has_weights()) {		
 		auto weights = _param->variable_param().weights();
 		LOG_IF(FATAL, weights.data_size() != _outputs[0]->value()->size()) << "weights.weight_size() != _outputs[0]->value()->size() in " << _name << " - " << weights.data_size() << " != " << _outputs[0]->value()->size();
@@ -58,6 +58,11 @@ void Variable::prep_for_saving()
 	mutable_weights_data->Resize(_outputs[0]->value()->size(),0.0f);
 	LOG_IF(FATAL, mutable_weights_data->size() != _outputs[0]->value()->size());
 	DF_NODE_CUDA_CHECK(cudaMemcpy(mutable_weights_data->mutable_data(), _outputs[0]->value()->data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToHost));
+}
+
+Node::BackwardType Variable::backwardType()
+{
+	return _param->mutable_variable_param()->solver_name().empty() ? NEVER_BACKWARD : ALWAYS_BACKWARD;
 }
 
 std::string Variable::to_cpp() const

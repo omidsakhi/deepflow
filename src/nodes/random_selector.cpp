@@ -10,7 +10,7 @@ void RandomSelector::initForward()
 	_outputs[0]->initValue(_inputs[0]->dims());
 	auto param = _param->random_selector_param();
 	_probability = param.probability();
-	LOG(INFO) << "Initializing RandomSelector " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "RandomSelector " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void RandomSelector::initBackward()

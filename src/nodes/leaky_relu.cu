@@ -25,7 +25,7 @@ void LeakyRelu::initForward() {
 	_negative_slope = _initial_negative_slope;
 	_randomize = _param->leaky_relu_param().randomize();
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Initializing LeakyRelu " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "LeakyRelu " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void LeakyRelu::initBackward() {

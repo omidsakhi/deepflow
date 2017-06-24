@@ -2,9 +2,9 @@
 
 #include "core/node.h"
 
-class DeepFlowDllExport EuclideanDistance : public Node {
+class DeepFlowDllExport SquareError : public Node {
 public:
-	EuclideanDistance(deepflow::NodeParam *param);
+	SquareError(deepflow::NodeParam *param);
 	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 1; }
 	void initForward();

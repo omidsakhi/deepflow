@@ -110,7 +110,7 @@ void Display::initForward() {
 	num_pic_pixels = pic_width * pic_height * (num_channels == 3 ? 3 : 1);	
 
 	_outputs[0]->initValue({ 1 , (num_channels == 3 ? 3 : 1), pic_height, pic_width }, Tensor::Int8);	
-	LOG(INFO) << "Initializing Display " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape() << "(" << (num_channels == 3? "COLOR": "GRAY") <<  ")";
+	LOG(INFO) << "Display " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape() << "(" << (num_channels == 3? "COLOR": "GRAY") <<  ")";
 
 	disp = cv::Mat(pic_height, pic_width, (num_channels == 3 ? CV_8UC3 : CV_8U));	
 }

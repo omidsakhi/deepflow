@@ -9,7 +9,7 @@ Negate::Negate(deepflow::NodeParam *param) : Node(param)
 void Negate::initForward()
 {
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Initializing Negate " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Negate " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Negate::initBackward()

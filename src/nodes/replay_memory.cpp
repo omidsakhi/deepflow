@@ -15,7 +15,7 @@ void ReplayMemory::initForward()
 	_mem_size = _capacity * _size_per_sample;
 	DF_NODE_CUDA_CHECK(cudaMalloc(&dev_memory, _mem_size * sizeof(float)));
 	_outputs[0]->initValue(inputDims);
-	LOG(INFO) << "Initializing ReplayMemory " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "ReplayMemory " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void ReplayMemory::initBackward()
@@ -25,7 +25,7 @@ void ReplayMemory::initBackward()
 void ReplayMemory::forward()
 {	
 	size_t n = _inputs[0]->value()->size();
-	LOG_IF(INFO, (_context && _context->debug_level > 2)) << " INPUT HEAD: " << _input_head;
+	LOG_IF(INFO, _verbose > 3) << " INPUT HEAD: " << _input_head;
 	cpy(n, 1.0f, _inputs[0]->value()->data(), 0.0f, dev_memory + _input_head);
 	if ((_input_head + _num_samples_per_batch * _size_per_sample) >= _mem_size) {
 		_input_head = 0;
@@ -37,7 +37,7 @@ void ReplayMemory::forward()
 		_available_samples = (_available_samples >= _capacity) ? _capacity : _available_samples;
 	}
 	_output_head = (rand() % (_available_samples - _num_samples_per_batch + 1)) * _size_per_sample;
-	LOG_IF(INFO, (_context && _context->debug_level > 2)) << " OUTPUT HEAD: " << _output_head;
+	LOG_IF(INFO, _verbose > 3) << " OUTPUT HEAD: " << _output_head;
 	cpy(n, 1.0, dev_memory + _output_head, 0.0f, _outputs[0]->value()->mutableData());
 }
 

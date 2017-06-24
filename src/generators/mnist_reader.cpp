@@ -137,7 +137,7 @@ void MNISTReader::forward()
 	}
 
 	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _buf, _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
-	LOG_IF(INFO, (_context && _context->debug_level > 2)) << "MNIST " << _name << " - BATCH @ " << _current_batch;
+	LOG_IF(INFO, _verbose > 2) << "MNIST " << _name << " - BATCH @ " << _current_batch;
 }
 
 void MNISTReader::deinit() {

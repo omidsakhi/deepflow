@@ -53,7 +53,7 @@ void Restructure::initForward() {
 	ou_dim[_first_dim] = in_dim[_second_dim];
 	ou_dim[_second_dim] = in_dim[_first_dim];
 	_outputs[0]->initValue(ou_dim);
-	LOG(INFO) << "Initializing Restructure " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Restructure " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape();
 }
 
 void Restructure::initBackward() {

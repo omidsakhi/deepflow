@@ -8,7 +8,7 @@ Dropout::Dropout(deepflow::NodeParam *param) : Node(param) {
 
 void Dropout::initForward() {	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Initializing Dropout " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Dropout " << _name << " - " << _outputs[0]->value()->shape();
 	_dropout = _param->dropout_param().dropout();	
 	_train_only = _param->dropout_param().train_only();
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));

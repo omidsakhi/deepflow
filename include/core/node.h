@@ -92,13 +92,14 @@ protected:
 	std::vector<NodeInputPtr> _inputs;
 	std::vector<NodeOutputPtr> _outputs;
 	std::string _name = "Unknown";	
-	bool _visited = false;	
+	bool _visited = false;
 	bool _propagate_back = false;
-	bool _initialized = false;	
+	bool _initialized = false;
 	deepflow::NodeParam *_param = nullptr;
 	ExecutionContextPtr _context = nullptr;
 	const float one = 1.0f;
 	const float zero = 0.0f;
+	int _verbose = 0;
 };
 
 using NodePtr = std::shared_ptr<Node>;

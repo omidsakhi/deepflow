@@ -23,7 +23,7 @@ void DataGenerator::initForward() {
 	_initializer->init();
 	
 	_outputs[0]->initValue(_initializer->dims());
-	LOG(INFO) << "Initializing Data Generator " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Data Generator " << _name << " - " << _outputs[0]->value()->shape();
 	if (_param->variable_param().has_weights()) {
 		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _param->variable_param().weights().data().data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 	}
@@ -53,7 +53,7 @@ void DataGenerator::forward() {
 			_current_batch++;
 		}
 	}
-	LOG_IF(INFO, (_context && _context->debug_level > 2)) << "MNIST " << _name << " - BATCH @ " << _current_batch;
+	LOG_IF(INFO, _verbose > 3) << "MNIST " << _name << " - BATCH @ " << _current_batch;
 }
 
 void DataGenerator::backward() {
@@ -73,3 +73,8 @@ std::string DataGenerator::to_cpp() const
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;
 }
+
+Node::BackwardType DataGenerator::backwardType()
+{
+	return _no_solver ? NEVER_BACKWARD : ALWAYS_BACKWARD;
+} 

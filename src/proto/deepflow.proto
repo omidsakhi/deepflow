@@ -314,7 +314,7 @@ message NodeParam {
   ImageBatchReaderParam image_batch_reader_param = 130;
   DotParam dot_param = 131;
   ReplayMemoryParam replay_memory_param = 132;  
-  EuclideanDistanceParam euclidean_distance_param = 134;
+  SquareErrorParam square_error_param = 134;
   SIOOutputParam sio_output_param = 135;
   LogParam log_param = 136;
   LossParam loss_param = 137;
@@ -324,7 +324,7 @@ message SquareParam {
 	
 }
 
-message EuclideanDistanceParam {
+message SquareErrorParam {
 
 }
 

@@ -32,7 +32,7 @@ void BatchNormalization::initForward()
 	else {
 		LOG(FATAL) << "Unsupported batch normalization mode.";
 	}
-	LOG(INFO) << "Initializing Batch Normalization " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Batch Normalization " << _name << " - " << _outputs[0]->value()->shape();
 	_eps = CUDNN_BN_MIN_EPSILON;
 	_bnScaleBiasMeanVarSizeInBytes = _bnScaleBiasMeanVarSize * sizeof(float);
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));

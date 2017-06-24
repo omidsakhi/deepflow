@@ -52,7 +52,7 @@
     <ClInclude Include="..\..\include\nodes\dot.h" />
     <ClInclude Include="..\..\include\nodes\dropout.h" />
     <ClInclude Include="..\..\include\nodes\equal.h" />
-    <ClInclude Include="..\..\include\nodes\euclidean_distance.h" />
+    <ClInclude Include="..\..\include\nodes\square_error.h" />
     <ClInclude Include="..\..\include\nodes\image_reader.h" />
     <ClInclude Include="..\..\include\nodes\leaky_relu.h" />
     <ClInclude Include="..\..\include\nodes\log.h" />
@@ -105,7 +105,7 @@
     <CudaCompile Include="..\..\src\nodes\cast_float.cu" />
     <CudaCompile Include="..\..\src\nodes\display.cu" />
     <CudaCompile Include="..\..\src\nodes\equal.cu" />
-    <CudaCompile Include="..\..\src\nodes\euclidean_distance.cu" />
+    <CudaCompile Include="..\..\src\nodes\square_error.cu" />
     <CudaCompile Include="..\..\src\nodes\image_reader.cu" />
     <CudaCompile Include="..\..\src\nodes\leaky_relu.cu" />
     <CudaCompile Include="..\..\src\nodes\negate.cu" />

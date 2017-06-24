@@ -18,7 +18,7 @@ public:
 	virtual void backward();
 	void prep_for_saving();
 	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
-	virtual BackwardType backwardType() { return ALWAYS_BACKWARD; }
+	virtual BackwardType backwardType();
 	virtual std::string to_cpp() const;
 protected:		
 	std::shared_ptr<Initializer> _initializer;	

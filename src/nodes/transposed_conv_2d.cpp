@@ -44,7 +44,7 @@ void TransposedConvolution2D::initForward() {
 	DF_NODE_CUDNN_CHECK(cudnnSetConvolution2dDescriptor(_convDesc, pad_h, pad_w, u, v, dilation_h, dilation_w, CUDNN_CROSS_CORRELATION, CUDNN_DATA_FLOAT));
 	int n, c, h, w;	
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolution2dForwardOutputDim(_convDesc, _outputs[0]->value()->descriptor(), _wDesc, &n, &c, &h, &w));	
-	LOG(INFO) << "Initializing Transposed Convolution " << _name << " - " << _inputs[0]->value()->shape() << " * " << _inputs[1]->value()->shape() << " -> " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Transposed Convolution " << _name << " - " << _inputs[0]->value()->shape() << " * " << _inputs[1]->value()->shape() << " -> " << _outputs[0]->value()->shape();
 	LOG_IF(FATAL, n != input_n || c != input_c || h != input_h || w != input_w) << _name << " - Input shape must be " << n << "*" << c << "*" << h << "*" << w;			
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionForwardAlgorithm(_cudnnHandle, _outputs[0]->value()->descriptor(), _wDesc, _convDesc, _inputs[0]->value()->descriptor(), CUDNN_CONVOLUTION_FWD_PREFER_FASTEST, 0, &_fwdAlgo));
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionForwardWorkspaceSize(_cudnnHandle, _outputs[0]->value()->descriptor(), _wDesc, _convDesc, _inputs[0]->value()->descriptor(), _fwdAlgo, &_fwdWorkspaceSize));

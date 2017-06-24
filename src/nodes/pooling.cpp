@@ -16,7 +16,7 @@ void Pooling::initForward() {
 	int n, c, h, w;
 	DF_NODE_CUDNN_CHECK(cudnnGetPooling2dForwardOutputDim(_poolingDesc, _inputs[0]->value()->descriptor(), &n, &c, &h, &w));
 	_outputs[0]->initValue({ n, c, h, w }, Tensor::Float);	
-	LOG(INFO) << "Initializing Pooling " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape();	
+	LOG(INFO) << "Pooling " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape();	
 }
 
 void Pooling::initBackward() {

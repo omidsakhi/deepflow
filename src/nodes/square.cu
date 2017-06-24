@@ -23,7 +23,7 @@ Square::Square(deepflow::NodeParam *param) : Node(param) {
 
 void Square::initForward() {		
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Initializing Square " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Square " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Square::initBackward() {

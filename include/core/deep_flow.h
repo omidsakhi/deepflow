@@ -82,7 +82,7 @@ public:
 	std::string log(std::string a, float coef = -1, std::string name = "log", std::initializer_list<std::string> phases = {});
 	std::string matmul(std::string a, std::string b, std::string name = "ip", std::initializer_list<std::string> phases = {});
 	std::string subtract(std::string a, std::string b, std::string name = "sub", std::initializer_list<std::string> phases = {});
-	std::string euclidean_distance(std::string a, std::string b, std::string name = "EuclideanDistance", std::initializer_list<std::string> phases = {});
+	std::string square_error(std::string a, std::string b, std::string name = "EuclideanDistance", std::initializer_list<std::string> phases = {});
 	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});
 
 	// NEURAL NETS

@@ -35,7 +35,7 @@ void Activation::initForward()
 
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
 
-	LOG(INFO) << "Initializing " << opString << " " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "" << opString << " " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Activation::initBackward()

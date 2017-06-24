@@ -22,7 +22,7 @@ void MatMul::initForward() {
 	
 	_outputs[0]->initValue({ _row_A, bd[1], bd[2], bd[3] });
 
-	LOG(INFO) << "Initializing InnerProduct " << _name << " - " << _outputs[0]->value()->shape();	
+	LOG(INFO) << "InnerProduct " << _name << " - " << _outputs[0]->value()->shape();	
 	
 	cublasCreate(&_handle);	
 }

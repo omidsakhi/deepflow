@@ -316,7 +316,8 @@ std::string DeepFlow::variable(std::string initializer, std::string solver, std:
 	if (!solver.empty())
 		variable_param->set_solver_name(solver);
 	auto init_param = variable_param->mutable_init_param();
-	init_param->CopyFrom(*_block->find_initializer_param_by_name(initializer));
+	auto init = _block->find_initializer_param_by_name(initializer);
+	init_param->CopyFrom(*init);
 	return node_param->output(0);
 }
 
@@ -541,7 +542,7 @@ void DeepFlow::sio_output(std::initializer_list<std::string> inputs, ActionTime 
 }
 
 
-std::string DeepFlow::euclidean_distance(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::square_error(std::string a, std::string b, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();	
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -550,7 +551,7 @@ std::string DeepFlow::euclidean_distance(std::string a, std::string b, std::stri
 		node_param->add_phase(phase);
 	node_param->add_input(a);
 	node_param->add_input(b);	
-	node_param->mutable_euclidean_distance_param();
+	node_param->mutable_square_error_param();
 	return node_param->output(0);
 }
 

@@ -77,9 +77,6 @@ extern DropoutParamDefaultTypeInternal _DropoutParam_default_instance_;
 class EqualParam;
 class EqualParamDefaultTypeInternal;
 extern EqualParamDefaultTypeInternal _EqualParam_default_instance_;
-class EuclideanDistanceParam;
-class EuclideanDistanceParamDefaultTypeInternal;
-extern EuclideanDistanceParamDefaultTypeInternal _EuclideanDistanceParam_default_instance_;
 class GainSolverParam;
 class GainSolverParamDefaultTypeInternal;
 extern GainSolverParamDefaultTypeInternal _GainSolverParam_default_instance_;
@@ -182,6 +179,9 @@ extern SoftmaxParamDefaultTypeInternal _SoftmaxParam_default_instance_;
 class SolverParam;
 class SolverParamDefaultTypeInternal;
 extern SolverParamDefaultTypeInternal _SolverParam_default_instance_;
+class SquareErrorParam;
+class SquareErrorParamDefaultTypeInternal;
+extern SquareErrorParamDefaultTypeInternal _SquareErrorParam_default_instance_;
 class SquareParam;
 class SquareParamDefaultTypeInternal;
 extern SquareParamDefaultTypeInternal _SquareParam_default_instance_;
@@ -4664,14 +4664,14 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::ReplayMemoryParam* release_replay_memory_param();
   void set_allocated_replay_memory_param(::deepflow::ReplayMemoryParam* replay_memory_param);
 
-  // .deepflow.EuclideanDistanceParam euclidean_distance_param = 134;
-  bool has_euclidean_distance_param() const;
-  void clear_euclidean_distance_param();
-  static const int kEuclideanDistanceParamFieldNumber = 134;
-  const ::deepflow::EuclideanDistanceParam& euclidean_distance_param() const;
-  ::deepflow::EuclideanDistanceParam* mutable_euclidean_distance_param();
-  ::deepflow::EuclideanDistanceParam* release_euclidean_distance_param();
-  void set_allocated_euclidean_distance_param(::deepflow::EuclideanDistanceParam* euclidean_distance_param);
+  // .deepflow.SquareErrorParam square_error_param = 134;
+  bool has_square_error_param() const;
+  void clear_square_error_param();
+  static const int kSquareErrorParamFieldNumber = 134;
+  const ::deepflow::SquareErrorParam& square_error_param() const;
+  ::deepflow::SquareErrorParam* mutable_square_error_param();
+  ::deepflow::SquareErrorParam* release_square_error_param();
+  void set_allocated_square_error_param(::deepflow::SquareErrorParam* square_error_param);
 
   // .deepflow.SIOOutputParam sio_output_param = 135;
   bool has_sio_output_param() const;
@@ -4742,7 +4742,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::ImageBatchReaderParam* image_batch_reader_param_;
   ::deepflow::DotParam* dot_param_;
   ::deepflow::ReplayMemoryParam* replay_memory_param_;
-  ::deepflow::EuclideanDistanceParam* euclidean_distance_param_;
+  ::deepflow::SquareErrorParam* square_error_param_;
   ::deepflow::SIOOutputParam* sio_output_param_;
   ::deepflow::LogParam* log_param_;
   ::deepflow::LossParam* loss_param_;
@@ -4824,39 +4824,39 @@ class SquareParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 };
 // -------------------------------------------------------------------
 
-class EuclideanDistanceParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.EuclideanDistanceParam) */ {
+class SquareErrorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.SquareErrorParam) */ {
  public:
-  EuclideanDistanceParam();
-  virtual ~EuclideanDistanceParam();
+  SquareErrorParam();
+  virtual ~SquareErrorParam();
 
-  EuclideanDistanceParam(const EuclideanDistanceParam& from);
+  SquareErrorParam(const SquareErrorParam& from);
 
-  inline EuclideanDistanceParam& operator=(const EuclideanDistanceParam& from) {
+  inline SquareErrorParam& operator=(const SquareErrorParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const EuclideanDistanceParam& default_instance();
+  static const SquareErrorParam& default_instance();
 
-  static inline const EuclideanDistanceParam* internal_default_instance() {
-    return reinterpret_cast<const EuclideanDistanceParam*>(
-               &_EuclideanDistanceParam_default_instance_);
+  static inline const SquareErrorParam* internal_default_instance() {
+    return reinterpret_cast<const SquareErrorParam*>(
+               &_SquareErrorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     39;
 
-  void Swap(EuclideanDistanceParam* other);
+  void Swap(SquareErrorParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline EuclideanDistanceParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline SquareErrorParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  EuclideanDistanceParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  SquareErrorParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const EuclideanDistanceParam& from);
-  void MergeFrom(const EuclideanDistanceParam& from);
+  void CopyFrom(const SquareErrorParam& from);
+  void MergeFrom(const SquareErrorParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -4872,7 +4872,7 @@ class EuclideanDistanceParam : public ::google::protobuf::Message /* @@protoc_in
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(EuclideanDistanceParam* other);
+  void InternalSwap(SquareErrorParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -4888,7 +4888,7 @@ class EuclideanDistanceParam : public ::google::protobuf::Message /* @@protoc_in
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:deepflow.EuclideanDistanceParam)
+  // @@protoc_insertion_point(class_scope:deepflow.SquareErrorParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -10046,43 +10046,43 @@ inline void NodeParam::set_allocated_replay_memory_param(::deepflow::ReplayMemor
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.replay_memory_param)
 }
 
-// .deepflow.EuclideanDistanceParam euclidean_distance_param = 134;
-inline bool NodeParam::has_euclidean_distance_param() const {
-  return this != internal_default_instance() && euclidean_distance_param_ != NULL;
+// .deepflow.SquareErrorParam square_error_param = 134;
+inline bool NodeParam::has_square_error_param() const {
+  return this != internal_default_instance() && square_error_param_ != NULL;
 }
-inline void NodeParam::clear_euclidean_distance_param() {
-  if (GetArenaNoVirtual() == NULL && euclidean_distance_param_ != NULL) delete euclidean_distance_param_;
-  euclidean_distance_param_ = NULL;
+inline void NodeParam::clear_square_error_param() {
+  if (GetArenaNoVirtual() == NULL && square_error_param_ != NULL) delete square_error_param_;
+  square_error_param_ = NULL;
 }
-inline const ::deepflow::EuclideanDistanceParam& NodeParam::euclidean_distance_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.NodeParam.euclidean_distance_param)
-  return euclidean_distance_param_ != NULL ? *euclidean_distance_param_
-                         : *::deepflow::EuclideanDistanceParam::internal_default_instance();
+inline const ::deepflow::SquareErrorParam& NodeParam::square_error_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.square_error_param)
+  return square_error_param_ != NULL ? *square_error_param_
+                         : *::deepflow::SquareErrorParam::internal_default_instance();
 }
-inline ::deepflow::EuclideanDistanceParam* NodeParam::mutable_euclidean_distance_param() {
+inline ::deepflow::SquareErrorParam* NodeParam::mutable_square_error_param() {
   
-  if (euclidean_distance_param_ == NULL) {
-    euclidean_distance_param_ = new ::deepflow::EuclideanDistanceParam;
+  if (square_error_param_ == NULL) {
+    square_error_param_ = new ::deepflow::SquareErrorParam;
   }
-  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.euclidean_distance_param)
-  return euclidean_distance_param_;
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.square_error_param)
+  return square_error_param_;
 }
-inline ::deepflow::EuclideanDistanceParam* NodeParam::release_euclidean_distance_param() {
-  // @@protoc_insertion_point(field_release:deepflow.NodeParam.euclidean_distance_param)
+inline ::deepflow::SquareErrorParam* NodeParam::release_square_error_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.square_error_param)
   
-  ::deepflow::EuclideanDistanceParam* temp = euclidean_distance_param_;
-  euclidean_distance_param_ = NULL;
+  ::deepflow::SquareErrorParam* temp = square_error_param_;
+  square_error_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_euclidean_distance_param(::deepflow::EuclideanDistanceParam* euclidean_distance_param) {
-  delete euclidean_distance_param_;
-  euclidean_distance_param_ = euclidean_distance_param;
-  if (euclidean_distance_param) {
+inline void NodeParam::set_allocated_square_error_param(::deepflow::SquareErrorParam* square_error_param) {
+  delete square_error_param_;
+  square_error_param_ = square_error_param;
+  if (square_error_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.euclidean_distance_param)
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.square_error_param)
 }
 
 // .deepflow.SIOOutputParam sio_output_param = 135;
@@ -10208,7 +10208,7 @@ inline void NodeParam::set_allocated_loss_param(::deepflow::LossParam* loss_para
 
 // -------------------------------------------------------------------
 
-// EuclideanDistanceParam
+// SquareErrorParam
 
 // -------------------------------------------------------------------
 

@@ -35,7 +35,7 @@ void Add::initForward() {
 
 	LOG_IF(FATAL, a->value()->size() != b->value()->size()) << "Different input sizes";		
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Initializing Add " << _name << " - " << _outputs[0]->value()->shape();
+	LOG(INFO) << "Add " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Add::initBackward() {

@@ -50,7 +50,7 @@ std::shared_ptr<Session> create_loss() {
 	DeepFlow df;
 	auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "discriminator_input");
 	auto labels_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "labels_input");
-	auto euc = df.euclidean_distance(discriminator_input, labels_input);
+	auto euc = df.square_error(discriminator_input, labels_input);
 	auto loss = df.loss(euc, DeepFlow::SUM, "loss");
 	df.print({ loss }, " NORM {0}\n", DeepFlow::EVERY_PASS); 
 	return df.session();
@@ -86,13 +86,13 @@ std::shared_ptr<Session> create_generator_session() {
 
 	auto gconv1_f = df.variable(df.random_normal({ depth, depth/2, 2, 2 }, mean, stddev), g_solver, "gconv1_f");
 	auto gconv1_t = df.transposed_conv2d(gfc_r, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1");
-	auto gconv1_n = df.batch_normalization(gconv1_t, DeepFlow::SPATIAL, 0, 1, 0, alpha_param, 1 - decay);
+	auto gconv1_n = df.batch_normalization(gconv1_t, DeepFlow::PER_ACTIVATION, 0, 1, 0, alpha_param, 1 - decay);
 	auto gconv1_r = df.leaky_relu(gconv1_n, negative_slope, true);	
 	//auto gconv1_d = df.dropout(gconv1_r, dropout);
 
 	auto gconv2_f = df.variable(df.random_normal({ depth/2, depth/4, 3, 3 }, mean, stddev), g_solver, "gconv2_f");
 	auto gconv2_t = df.transposed_conv2d(gconv1_r, gconv2_f, 1, 1, 2, 2, 1, 1, "gconv2");
-	auto gconv2_n = df.batch_normalization(gconv2_t, DeepFlow::SPATIAL, 0, 1, 0, alpha_param, 1 - decay);
+	auto gconv2_n = df.batch_normalization(gconv2_t, DeepFlow::PER_ACTIVATION, 0, 1, 0, alpha_param, 1 - decay);
 	auto gconv2_r = df.leaky_relu(gconv2_n, negative_slope, true);
 	//auto gconv2_d = df.dropout(gconv2_r, dropout);
 
