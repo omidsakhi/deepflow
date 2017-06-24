@@ -135,6 +135,7 @@ void main(int argc, char** argv) {
 		mnist_session->forward();
 		input->feed_forward(mnist_node, 0);		
 		autoencoder_session->forward();
+
 		if (FLAGS_train) {
 			avg_loss += loss_node->output(0)->value()->toFloat();
 			autoencoder_session->backward(true, true);
@@ -151,14 +152,6 @@ void main(int argc, char** argv) {
 	}
 
 	std::cout << "Average Loss: " << (avg_loss / epoch) << std::endl;
-
-	
-	execution_context->quit = false;
-	input->feed_forward(noise_node, 0);
-	for (int i = 0; i < 100000 && execution_context->quit != true; i++) {
-		autoencoder_session->forward();
-		input->feed_forward(output, 0);
-	}
 	
 }
 
