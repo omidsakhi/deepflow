@@ -139,6 +139,10 @@ void BatchNormalization::backward()
 	float bd = param.beta_data();
 	float ap = param.alpha_param();
 	float bp = param.beta_param();
+	if (_context && _context->stop_training == true) {
+		ap = 0;
+		bp = 1;
+	}
 	if (_inputs[0]->connectedNode()->propagateBack()) {
 		DF_NODE_CUDNN_CHECK(
 			cudnnBatchNormalizationBackward(

@@ -59,7 +59,7 @@ std::shared_ptr<Session> create_generator() {
 	auto alpha_param = 0.01;
 	auto dropout = 0.7;
 	auto exp_avg_factor = 0;
-	int depth = 1024;
+	int depth = 128;
 	int z = 100;
 
 	auto g_solver = df.adam_solver(0.0001f, 0.5f, 0.9999f);
@@ -188,40 +188,43 @@ void main(int argc, char** argv) {
 				// GENERATOR
 				std::cout << " GENERATOR INPUT " << std::endl;
 				generator->forward();
-				discriminator_input->feed_forward(generator_output, 0);
+				discriminator_input->write_values(generator_output->output(0)->value());
 				discriminator->forward();
 				generator_labels->forward();
-				loss_discriminator_input->feed_forward(discriminator_output, 0);
-				loss_labels_input->feed_forward(generator_labels_output, 0);
+				loss_discriminator_input->write_values(discriminator_output->output(0)->value());
+				loss_labels_input->write_values(generator_labels_output->output(0)->value());
 			}
 			else { 
 				// FACE
 				std::cout << " FACE INPUT " << std::endl;
 				face_reader->forward();
-				discriminator_input->feed_forward(face_reader_data, 0);
+				discriminator_input->write_values(face_reader_data->output(0)->value());
 				discriminator->forward();
 				face_labels->forward();
-				loss_discriminator_input->feed_forward(discriminator_output, 0);
-				loss_labels_input->feed_forward(face_labels_output, 0);				
+				loss_discriminator_input->write_values(discriminator_output->output(0)->value());
+				loss_labels_input->write_values(face_labels_output->output(0)->value());
 			}			
 			loss->forward();
 			loss->backward();
-			discriminator_output->feed_backward(loss_discriminator_input, 0);
+			discriminator->reset_gradients();
+			discriminator_output->write_diffs(loss_discriminator_input->output(0)->diff());
 			discriminator->backward();
 			discriminator->apply_solvers();
 		}
 		std::cout << " TRAINING GENERATOR " << std::endl;
 		generator->forward();
-		discriminator_input->feed_forward(generator_output, 0);
+		discriminator_input->write_values(generator_output->output(0)->value());
 		discriminator->forward();
 		face_labels->forward();		
-		loss_discriminator_input->feed_forward(discriminator_output, 0);
-		loss_labels_input->feed_forward(face_labels_output, 0);
+		loss_discriminator_input->write_values(discriminator_output->output(0)->value());
+		loss_labels_input->write_values(face_labels_output->output(0)->value());
 		loss->forward();
 		loss->backward();
-		discriminator_output->feed_backward(loss_discriminator_input, 0);
+		discriminator->reset_gradients();
+		discriminator_output->write_diffs(loss_discriminator_input->output(0)->diff());
 		discriminator->backward();
-		generator_output->feed_backward(discriminator_input, 0);
+		generator->reset_gradients();
+		generator_output->write_diffs(discriminator_input->output(0)->diff());
 		generator->backward();
 		generator->apply_solvers();
 	}

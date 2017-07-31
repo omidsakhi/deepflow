@@ -15,6 +15,7 @@ public:
 	bool last_batch = false;
 	int debug_level = 0;
 	bool quit = false;
+	bool stop_training = false;
 };
 
 using ExecutionContextPtr = std::shared_ptr<ExecutionContext>;

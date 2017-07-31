@@ -15,7 +15,7 @@ class DeepFlowDllExport Session {
 public:
 	Session() {}
 	Session(std::shared_ptr<Block> block) { _block = block; }	
-	void initialize();
+	void initialize(std::shared_ptr<ExecutionContext> execution_context = nullptr);
 	void set_execution_context(std::shared_ptr<ExecutionContext> execution_context);
 	void run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level);
 	void mem_usage(size_t *free_byte, size_t *total_byte, float *used_byte_percentage);
@@ -23,7 +23,9 @@ public:
 	std::shared_ptr<PlaceHolder> get_placeholder(std::string name);	
 	std::shared_ptr<Node> get_node(std::string name);
 	void forward();
-	void backward(bool reset_gradients = true, bool propagation_order = true);	
+	void reset_gradients();
+	void resove_propagation();
+	void backward();
 	void apply_solvers();
 	void save(std::string file_path, bool as_text = false);
 private:

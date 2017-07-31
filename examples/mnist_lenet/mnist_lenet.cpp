@@ -34,8 +34,8 @@ void main(int argc, char** argv) {
 		df.define_phase("Train", DeepFlow::TRAIN);
 		df.define_phase("Validation", DeepFlow::VALIDATION);
 
-		auto solver = df.adam_solver(0.001f);
-		//auto solver = gain_solver(0.999900, 0.000100, 10.000000, 0.000000, 0.050000, 0.950000, "solver");
+		//auto solver = df.adam_solver(0.001f);
+		auto solver = df.gain_solver(0.999900, 0.000100, 10.000000, 0.000000, 0.050000, 0.950000, "solver");
 		//auto solver = df.adadelta_solver();
 
 		auto test_data = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });		

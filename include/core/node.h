@@ -64,11 +64,11 @@ public:
 	void _unvisit();
 	void _forward();
 	void _backward();	
-	void _propagateBack();	
+	void _resolve_propagation();	
 	bool propagateBack() const;	
 	void setShouldBackward(bool state);
-	void feed_forward(std::shared_ptr<Node> node, int output_terminal);
-	void feed_backward(std::shared_ptr<Node> node, int output_terminal);
+	void write_values(std::shared_ptr<Tensor> tensor, float alpha = 1.0, float beta = 0.0f);
+	void write_diffs(std::shared_ptr<Tensor> tensor, float alpha = 1.0, float beta = 0.0f);
 	void _traverse_up(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
 	void _traverse_down(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);	
 	void setVisited(bool state);

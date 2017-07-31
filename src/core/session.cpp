@@ -204,7 +204,7 @@ std::shared_ptr<Solver> Session::_create_solver(deepflow::SolverParam *solver_pa
 	return 0;
 }
 
-void Session::initialize() {
+void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 	if (_initialized == true)
 		return;
 	
@@ -297,6 +297,11 @@ void Session::initialize() {
 			queue.push_back(node);
 		}
 	}
+
+	if (execution_context)
+		set_execution_context(execution_context);
+
+	resove_propagation();
 }
 
 void Session::set_execution_context(std::shared_ptr<ExecutionContext> execution_context)
@@ -374,22 +379,27 @@ void Session::forward()
 	}
 }
 
-void Session::backward(bool reset_gradients, bool propagation_order)
+void Session::reset_gradients()
+{
+	for (auto node : _nodes)
+		node->resetGradients();
+}
+
+void Session::resove_propagation()
+{
+	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
+	for (auto node : end_nodes) {
+		node->_unvisit();
+	}
+	for (auto node : end_nodes) {
+		node->_resolve_propagation();
+	}
+}
+
+void Session::backward()
 {
 	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
 	std::list<std::shared_ptr<Node>> head_nodes = _get_head_nodes("");
-	if (propagation_order) {
-		for (auto node : end_nodes) {
-			node->_unvisit();
-		}
-		for (auto node : end_nodes) {
-			node->_propagateBack();
-		}
-	}
-	if (reset_gradients) {
-		for (auto node : _nodes)
-			node->resetGradients();
-	}
 	for (auto node : end_nodes) {
 		node->_unvisit();
 	}
@@ -432,7 +442,7 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 			node->_unvisit();
 		}
 		for (auto node : *end_nodes) {
-			node->_propagateBack();
+			node->_resolve_propagation();
 		}
 	}
 	do {

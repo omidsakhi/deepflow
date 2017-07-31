@@ -52,7 +52,7 @@ void Node::_unvisit() {
 		node->_unvisit();
 }
 
-void Node::_propagateBack() {
+void Node::_resolve_propagation() {
 	if (_visited == true)
 		return;
 	_visited = true;	
@@ -70,7 +70,7 @@ void Node::_propagateBack() {
 		auto list = inputNodes();
 		for (auto node : list) {
 			LOG_IF(INFO, _verbose > 3) << "RESOLVING BP - INSPECTING INPUT " << node->name();
-			node->_propagateBack();
+			node->_resolve_propagation();
 			if (node->_propagate_back == true) {
 				_should_backward = true;				
 				break;
@@ -80,7 +80,7 @@ void Node::_propagateBack() {
 		setShouldBackward(_should_backward);
 	}	
 	for (auto node : inputNodes()) {
-		node->_propagateBack();
+		node->_resolve_propagation();
 	}
 }
 
@@ -94,24 +94,22 @@ void Node::setShouldBackward(bool state)
 	_propagate_back = state;	
 }
 
-void Node::feed_forward(std::shared_ptr<Node> node, int output_terminal)
+void Node::write_values(std::shared_ptr<Tensor> tensor, float alpha, float beta)
 {	
-	LOG_IF(INFO, _verbose > 2) << "FEEDING VALUES FROM " << node->name() << " (" << output_terminal << ") TO " << _name;
-	auto feed_terminal = node->output(output_terminal);
-	auto feed_dim = feed_terminal->value()->dims();
+	LOG_IF(INFO, _verbose > 2) << "FEEDING VALUES TO " << _name;		
+	auto feed_dim = tensor->dims();
 	auto my_dim = _outputs[0]->value()->dims();
-	LOG_IF(FATAL, feed_dim != my_dim) << "Forward feed dimension mismatch between " << _name << " (src - " << _outputs[0]->value()->shape() << " ) and " << node->name() << " (dst - " << feed_terminal->value()->shape() << " )";
-	cpy(_outputs[0]->value()->size(), 1.0f, feed_terminal->value()->data(), 0.0f, _outputs[0]->value()->mutableData());
+	LOG_IF(FATAL, feed_dim != my_dim) << "Forward feed dimension mismatch between " << _name << " (src - " << _outputs[0]->value()->shape() << " ) and dst - " << tensor->shape();
+	cpy(_outputs[0]->value()->size(), alpha, tensor->data(), beta, _outputs[0]->value()->mutableData());
 }
 
-void Node::feed_backward(std::shared_ptr<Node> node, int output_terminal)
+void Node::write_diffs(std::shared_ptr<Tensor> tensor, float alpha, float beta)
 {	
-	LOG_IF(INFO, _verbose > 2) << "FEEDING GRADIENTS FROM " << node->name() << " (" << output_terminal << ") TO " << _name;
-	auto feed_terminal = node->output(output_terminal);
-	auto feed_dim = feed_terminal->diff()->dims();
+	LOG_IF(INFO, _verbose > 2) << "FEEDING GRADIENTS FROM TO " << _name;	
+	auto feed_dim = tensor->dims();
 	auto my_dim = _outputs[0]->diff()->dims();
-	LOG_IF(FATAL, feed_dim != my_dim) << "Backward feed dimension mismatch between " << _name << " (src - " << _outputs[0]->value()->shape() << " ) and " << node->name() << " (dst - " << feed_terminal->value()->shape() << " )";
-	cpy(_outputs[0]->diff()->size(), 1.0f, feed_terminal->diff()->data(), 1.0f, _outputs[0]->diff()->mutableData());
+	LOG_IF(FATAL, feed_dim != my_dim) << "Backward feed dimension mismatch between " << _name << " (src - " << _outputs[0]->value()->shape() << " ) and dst - " << tensor->shape();
+	cpy(_outputs[0]->diff()->size(), alpha, tensor->data(), beta, _outputs[0]->diff()->mutableData());
 }
 
 void Node::_traverse_up(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition)
