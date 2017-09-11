@@ -22,6 +22,7 @@
 #include "nodes/matmul.h"
 #include "nodes/leaky_relu.h"
 #include "nodes/softmax.h"
+#include "nodes/exp.h"
 #include "nodes/square.h"
 #include "nodes/bias_add.h"
 #include "nodes/dropout.h"
@@ -51,6 +52,7 @@
 #include "nodes/sio_output.h"
 #include "nodes/loss.h"
 #include "nodes/log.h"
+#include "nodes/lifting.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -109,7 +111,7 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<DataGenerator>(initializer, node_param);
 	}
 	else if (node_param->has_variable_param()) {
-		auto init_param = node_param->mutable_variable_param()->mutable_init_param();		
+		auto init_param = node_param->mutable_variable_param()->mutable_init_param();
 		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
 		return std::make_shared<Variable>(initializer, node_param);
 	}
@@ -127,6 +129,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Loss>(node_param);
 	else if (node_param->has_square_error_param())
 		return std::make_shared<SquareError>(node_param);
+	else if (node_param->has_lifting_param())
+		return std::make_shared<Lifting>(node_param);
 	else if (node_param->has_pooling_param())
 		return std::make_shared<Pooling>(node_param);
 	else if (node_param->has_reduce_param())
@@ -143,6 +147,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<ReplayMemory>(node_param);
 	else if (node_param->has_add_param())
 		return std::make_shared<Add>(node_param);
+	else if (node_param->has_exp_param())
+		return std::make_shared<Exp>(node_param);
 	else if (node_param->has_bias_add_param())
 		return std::make_shared<BiasAdd>(node_param);
 	else if (node_param->has_cast_float_param())
@@ -368,14 +374,20 @@ std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string
 	}
 	return 0;
 }
-void Session::forward()
+void Session::forward(std::string end_node_output)
 {
-	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
-	for (auto node : end_nodes) {
-		node->_unvisit();
+	if (end_node_output == "ALL") {
+		std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
+		for (auto node : end_nodes) {
+			node->_unvisit();
+		}
+		for (auto node : end_nodes) {
+			node->_forward();
+		}
 	}
-	for (auto node : end_nodes) {
-		node->_forward();
+	else {
+		auto term = _find_node_output_by_name(end_node_output);
+		term->parentNode()->_unvisit();
 	}
 }
 
@@ -396,7 +408,7 @@ void Session::resove_propagation()
 	}
 }
 
-void Session::backward()
+void Session::backward(std::string node)
 {
 	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
 	std::list<std::shared_ptr<Node>> head_nodes = _get_head_nodes("");

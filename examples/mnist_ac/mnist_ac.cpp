@@ -16,13 +16,13 @@ DEFINE_int32(bottleneck, 16, "Bottleneck Channel Size");
 
 std::shared_ptr<Session> create_mnist_train_session() {
 	DeepFlow df;
-	df.mnist_reader(FLAGS_mnist, 100, MNISTReader::MNISTReaderType::Train, MNISTReader::Data, "mnist_data");
+	df.mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::MNISTReaderType::Train, MNISTReader::Data, "mnist_data");
 	return df.session();
 }
 
 std::shared_ptr<Session> create_mnist_test_session() {
 	DeepFlow df;
-	df.mnist_reader(FLAGS_mnist, 100, MNISTReader::MNISTReaderType::Test, MNISTReader::Data, "mnist_data");
+	df.mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::MNISTReaderType::Test, MNISTReader::Data, "mnist_data");
 	return df.session();
 }
 
@@ -30,8 +30,8 @@ std::shared_ptr<Session> create_loss_session() {
 	
 	DeepFlow df;
 	
-	auto loss_t1 = df.place_holder({ 100, 1, 28, 28 }, Tensor::Float, "loss_t1");
-	auto loss_t2 = df.place_holder({ 100, 1, 28, 28 }, Tensor::Float, "loss_t2");
+	auto loss_t1 = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "loss_t1");
+	auto loss_t2 = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "loss_t2");
 	auto sqerr = df.square_error(loss_t1, loss_t2);
 	auto loss = df.loss(sqerr, DeepFlow::AVG);
 
@@ -42,49 +42,51 @@ std::shared_ptr<Session> create_loss_session() {
 
 std::shared_ptr<Session> create_display_session() {
 	DeepFlow df;
-	auto input = df.place_holder({ 100, 1, 28, 28 }, Tensor::Float, "input");
+	auto input = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "input");
 	df.display(input, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp");
 	return df.session();
 }
 
+std::string conv(DeepFlow *df, std::string name, std::string input, std::string solver, int depth1, int depth2, bool activation) {
+	auto mean = 0;
+	auto stddev = 0.001;
+	auto conv_w = df->variable(df->random_normal({ depth1, depth2, 3, 3 }, mean, stddev), solver, name + "_w");
+	auto conv_ = df->conv2d(input, conv_w, 1, 1, 1, 1, 1, 1, name);
+	auto conv_p = df->pooling(conv_, 2, 2, 0, 0, 2, 2, name + "_p");
+	if (activation)
+		return  df->elu(conv_p, 0.01);
+	return conv_p;
+}
+
+std::string tconv(DeepFlow *df, std::string name, std::string input, std::string solver, int depth1, int depth2, int kernel, int pad, bool activation) {
+
+	auto mean = 0;
+	auto stddev = 0.001;
+	auto tconv_l = df->lifting(input, DeepFlow::LIFT_UP, name + "_l");
+	auto tconv_f = df->variable(df->random_normal({ depth1, depth2, kernel, kernel }, mean, stddev), solver, name + "_f");
+	auto tconv_t = df->conv2d(tconv_l, tconv_f, pad, pad, 1, 1, 1, 1, name + "_t");
+	auto tconv_b = df->batch_normalization(tconv_t, DeepFlow::SPATIAL, 0.2, 1, 0, 0, 1);
+	if (activation)
+		return  df->relu(tconv_b);
+	return tconv_b;
+
+}
+
 std::shared_ptr<Session> create_encoder_session() {
 	DeepFlow df;
-	auto mean = 0;
-	auto stddev = 0.01;
-	auto enc_solver = df.adam_solver(0.0002f, 0.5f);
-	auto enc_negative_slope = 0;
-	auto alpha_param = 1.0f;
-	auto decay = 0.01f;
-	auto depth = 16;
+	auto solver = df.adam_solver(0.00005f, 0.9f);
 
+	auto input = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "enc_input");
+	auto conv1 = conv(&df, "conv1", input, solver, 256, 1, true);
+	auto conv2 = conv(&df, "conv2", conv1, solver, 512, 256, true);
+	auto conv3 = conv(&df, "conv3", conv2, solver, 1024, 512, true);
+	
+	auto drop = df.dropout(conv3, 0.1f);
+	
+	auto fc_w = df.variable(df.random_normal({ 1024 * 3 * 3, FLAGS_bottleneck, 1, 1 }, 0, 0.1), solver, "fc_w");
+	auto fc = df.matmul(drop, fc_w, "fc");
 
-
-	auto enc_input = df.place_holder({ 100, 1, 28, 28 }, Tensor::Float, "enc_input");
-
-	auto conv1_w = df.variable(df.random_normal({ depth, 1, 3, 3 }, mean, stddev), enc_solver, "conv1_w");
-	auto conv1 = df.conv2d(enc_input, conv1_w, 1, 1, 1, 1, 1, 1, "conv1");
-	auto conv1_r = df.leaky_relu(conv1, enc_negative_slope);
-
-	auto conv11_w = df.variable(df.random_normal({ depth * 2, depth, 3, 3 }, mean, stddev), enc_solver, "conv1_w");
-	auto conv11 = df.conv2d(conv1_r, conv11_w, 1, 1, 1, 1, 1, 1, "conv1");
-	auto conv11_r = df.leaky_relu(conv11, enc_negative_slope);
-
-	auto conv1_p = df.pooling(conv11_r, 2, 2, 0, 0, 2, 2, "conv1_p");
-
-	auto conv2_w = df.variable(df.random_normal({ depth * 4, depth * 2, 3, 3 }, mean, stddev), enc_solver, "conv2_w");
-	auto conv2 = df.conv2d(conv1_p, conv2_w, 1, 1, 1, 1, 1, 1, "conv2");
-	auto conv2_r = df.leaky_relu(conv2, enc_negative_slope);
-
-	auto conv21_w = df.variable(df.random_normal({ depth * 8, depth * 4, 3, 3 }, mean, stddev), enc_solver, "conv2_w");
-	auto conv21 = df.conv2d(conv2_r, conv21_w, 1, 1, 1, 1, 1, 1, "conv2");
-	auto conv21_r = df.leaky_relu(conv21, enc_negative_slope);
-
-	auto conv2_p = df.pooling(conv21_r, 2, 2, 0, 0, 2, 2, "conv2_p");
-
-	auto conv3_w = df.variable(df.random_normal({ FLAGS_bottleneck, depth * 8, 3, 3 }, mean, stddev), enc_solver, "conv3_w");
-	auto conv3 = df.conv2d(conv2_p, conv3_w, 1, 1, 1, 1, 1, 1, "conv3");
-	auto conv3_r = df.leaky_relu(conv3, enc_negative_slope);
-	auto conv3_p = df.pooling(conv3_r, 2, 2, 1, 1, 2, 2, "enc_output");
+	auto enc_out = df.tanh(fc, "enc_output");
 
 	return df.session();
 }
@@ -92,30 +94,21 @@ std::shared_ptr<Session> create_encoder_session() {
 std::shared_ptr<Session> create_decoder_session() {
 
 	DeepFlow df;
-	auto mean = 0;
-	auto stddev = 0.02;	
-	auto dec_solver = df.adam_solver(0.0002f, 0.5f);
-	auto dec_negative_slope = 0.05;		
-	auto alpha_param = 1.0f;
-	auto decay = 0.01f;
-	auto depth = 32;
+	auto solver = df.adam_solver(0.00005f, 0.9f);
 
-	auto dec_input = df.place_holder({ 100, FLAGS_bottleneck, 4, 4 }, Tensor::Float, "dec_input");
+	auto dec_input = df.place_holder({ FLAGS_batch, FLAGS_bottleneck, 1, 1 }, Tensor::Float, "dec_input");
 
-	auto tconv1_f = df.variable(df.random_normal({ FLAGS_bottleneck, depth, 2, 2 }, mean, stddev), dec_solver, "tconv1_f");
-	auto tconv1_t = df.transposed_conv2d(dec_input, tconv1_f, 1, 1, 2, 2, 1, 1, "tconv1_t");
-	auto tconv1_b = df.batch_normalization(tconv1_t, DeepFlow::PER_ACTIVATION, 0, 1, 0, alpha_param, 1 - decay);
-	auto tconv1_r = df.leaky_relu(tconv1_b, dec_negative_slope);
+	auto fc_w = df.variable(df.random_normal({ FLAGS_bottleneck, 1024, 3, 3 }, 0, 0.01), solver, "fc_w");
+	auto fc = df.matmul(dec_input, fc_w, "fc");
+	
+	auto drop = df.dropout(fc, 0.1f);
 
-	auto tconv2_f = df.variable(df.random_normal({ depth, depth, 3, 3 }, mean, stddev), dec_solver, "tconv2_f");
-	auto tconv2_t = df.transposed_conv2d(tconv1_r, tconv2_f, 1, 1, 2, 2, 1, 1, "tconv2_t");
-	auto tconv2_b = df.batch_normalization(tconv2_t, DeepFlow::PER_ACTIVATION, 0, 1, 0, alpha_param, 1 - decay);
-	auto tconv2_r = df.leaky_relu(tconv2_b, dec_negative_slope);
+	auto tconv1 = tconv(&df, "tconv1", drop, solver, 512, 256, 2, 0, true);
+	auto tconv2 = tconv(&df, "tconv2", tconv1, solver, 512, 128, 2, 0, true);
+	auto tconv3 = tconv(&df, "tconv3", tconv2, solver, 256, 128, 3, 0, true);
+	auto tconv4 = tconv(&df, "tconv4", tconv3, solver, 1, 64, 5, 0, false);
 
-	auto tconv3_f = df.variable(df.random_normal({ depth, 1, 9, 9 }, mean, stddev), dec_solver, "tconv3_f");
-	auto tconv3_t = df.transposed_conv2d(tconv2_r, tconv3_f, 4, 4, 2, 2, 1, 1, "tconv3_t");
-
-	auto output = df.tanh(tconv3_t, "dec_output");	
+	auto output = df.tanh(tconv4, "dec_output");	
 
 	return df.session();
 }
@@ -130,29 +123,23 @@ void main(int argc, char** argv) {
 
 	std::shared_ptr<Session> encoder_session;
 	encoder_session = create_encoder_session();
-	encoder_session->initialize();
-	encoder_session->set_execution_context(execution_context);
+	encoder_session->initialize(execution_context);	
 
 	std::shared_ptr<Session> decoder_session;
 	decoder_session = create_decoder_session();
-	decoder_session->initialize();
-	decoder_session->set_execution_context(execution_context);
+	decoder_session->initialize(execution_context);	
 
 	std::shared_ptr<Session> mnist_train_session = create_mnist_train_session();
-	mnist_train_session->initialize();
-	mnist_train_session->set_execution_context(execution_context);
+	mnist_train_session->initialize(execution_context);	
 
 	std::shared_ptr<Session> mnist_test_session = create_mnist_test_session();
-	mnist_test_session->initialize();
-	mnist_test_session->set_execution_context(execution_context);
+	mnist_test_session->initialize(execution_context);	
 
 	std::shared_ptr<Session> loss_session = create_loss_session();
-	loss_session->initialize();
-	loss_session->set_execution_context(execution_context);
+	loss_session->initialize(execution_context);	
 	
 	auto display_session = create_display_session();
-	display_session->initialize();
-	display_session->set_execution_context(execution_context);
+	display_session->initialize(execution_context);	
 	
 	auto mnist_train_data = mnist_train_session->get_node("mnist_data");
 	auto mnist_test_data = mnist_test_session->get_node("mnist_data");
@@ -175,6 +162,10 @@ void main(int argc, char** argv) {
 		encoder_session->forward();
 		dec_input->write_values(enc_output->output(0)->value());
 		decoder_session->forward();
+
+		//disp_input->write_values(dec_output->output(0)->value());
+		//display_session->forward();
+
 		loss_session->reset_gradients();
 		loss_t1->write_values(dec_output->output(0)->value());
 		loss_t2->write_values(mnist_train_data->output(0)->value());
@@ -196,8 +187,6 @@ void main(int argc, char** argv) {
 		decoder_session->forward();
 		disp_input->write_values(dec_output->output(0)->value());
 		display_session->forward();
-
 	}
-	
-}
 
+}

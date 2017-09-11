@@ -265,6 +265,18 @@ std::string DeepFlow::square(std::string a, std::string name, std::initializer_l
 	return node_param->output(0);
 }
 
+std::string DeepFlow::exp(std::string a, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	auto square_param = node_param->mutable_exp_param();
+	return node_param->output(0);
+}
+
 std::string DeepFlow::log(std::string a, float coef, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();
@@ -333,7 +345,7 @@ std::string DeepFlow::matmul(std::string a, std::string b, std::string name, std
 	return node_param->output(0);
 }
 
-std::string DeepFlow::leaky_relu(std::string a, float negative_slope, bool randomize, std::string name, std::initializer_list<std::string> phases) {
+std::string DeepFlow::leaky_relu(std::string a, float negative_slope, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
@@ -342,7 +354,7 @@ std::string DeepFlow::leaky_relu(std::string a, float negative_slope, bool rando
 	node_param->add_input(a);	
 	auto relu_param = node_param->mutable_leaky_relu_param();
 	relu_param->set_negative_slope(negative_slope);
-	relu_param->set_randomize(randomize);
+	relu_param->set_randomize(false);
 	return node_param->output(0);
 }
 
@@ -672,6 +684,19 @@ std::string DeepFlow::pooling(std::string input, int windowHeight, int windowWid
 	pooling_param->set_v_stride(verticalStride);
 	pooling_param->set_window_h(windowHeight);
 	pooling_param->set_window_w(windowWidth);	
+	return node_param->output(0);
+}
+
+std::string DeepFlow::lifting(std::string input, LiftingMode mode, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto lifting_param = node_param->mutable_lifting_param();
+	lifting_param->set_mode((deepflow::LiftingParam_Mode) mode);
 	return node_param->output(0);
 }
 

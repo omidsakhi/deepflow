@@ -12,7 +12,7 @@ int Convolution2D::minNumInputs()
 }
 
 void Convolution2D::initForward() {
-	LOG_IF(FATAL, _num_inputs != 2 && _num_inputs != 3) << "_num_inputs != 2 && _num_inputs != 3";
+	LOG_IF(FATAL, _num_inputs != 2 && _num_inputs != 3) << _name << " _num_inputs != 2 && _num_inputs != 3";
 	_xDesc = _inputs[0]->value()->descriptor();
 	_x = _inputs[0]->value()->mutableData();
 	auto inputDims = _inputs[0]->dims();	
@@ -20,7 +20,7 @@ void Convolution2D::initForward() {
 	DF_NODE_CUDNN_CHECK(cudnnCreateFilterDescriptor(&_wDesc));
 	_w = _inputs[1]->value()->mutableData();
 	auto filterDims = _inputs[1]->dims();	
-	LOG_IF(FATAL, filterDims[1] != inputDims[1]) << "Input channels " << inputDims[1] << " != Filter channels " << filterDims[1];	
+	LOG_IF(FATAL, filterDims[1] != inputDims[1]) << _name << " Input channels " << inputDims[1] << " != Filter channels " << filterDims[1];	
 	DF_NODE_CUDNN_CHECK(cudnnSetFilter4dDescriptor(_wDesc, CUDNN_DATA_FLOAT, CUDNN_TENSOR_NCHW, filterDims[0], filterDims[1], filterDims[2], filterDims[3]));	
 	deepflow::Conv2dParam *param = _param->mutable_conv_2d_param();
 	DF_NODE_CUDNN_CHECK(cudnnCreateConvolutionDescriptor(&_convDesc));	

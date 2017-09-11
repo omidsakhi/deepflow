@@ -22,10 +22,10 @@ public:
 	std::string to_cpp() const;
 	std::shared_ptr<PlaceHolder> get_placeholder(std::string name);	
 	std::shared_ptr<Node> get_node(std::string name);
-	void forward();
+	void forward(std::string end_node_output = "ALL");
 	void reset_gradients();
 	void resove_propagation();
-	void backward();
+	void backward(std::string node = "ALL");
 	void apply_solvers();
 	void save(std::string file_path, bool as_text = false);
 private:

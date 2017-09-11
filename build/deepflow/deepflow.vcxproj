@@ -52,6 +52,8 @@
     <ClInclude Include="..\..\include\nodes\dot.h" />
     <ClInclude Include="..\..\include\nodes\dropout.h" />
     <ClInclude Include="..\..\include\nodes\equal.h" />
+    <ClInclude Include="..\..\include\nodes\exp.h" />
+    <ClInclude Include="..\..\include\nodes\lifting.h" />
     <ClInclude Include="..\..\include\nodes\square_error.h" />
     <ClInclude Include="..\..\include\nodes\image_reader.h" />
     <ClInclude Include="..\..\include\nodes\leaky_relu.h" />
@@ -105,6 +107,7 @@
     <CudaCompile Include="..\..\src\nodes\cast_float.cu" />
     <CudaCompile Include="..\..\src\nodes\display.cu" />
     <CudaCompile Include="..\..\src\nodes\equal.cu" />
+    <CudaCompile Include="..\..\src\nodes\lifting.cu" />
     <CudaCompile Include="..\..\src\nodes\square_error.cu" />
     <CudaCompile Include="..\..\src\nodes\image_reader.cu" />
     <CudaCompile Include="..\..\src\nodes\leaky_relu.cu" />
@@ -131,6 +134,9 @@
     <ClCompile Include="..\..\src\nodes\dot.cpp" />
     <ClCompile Include="..\..\src\nodes\dropout.cpp" />
     <CudaCompile Include="..\..\src\nodes\log.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\exp.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>
     <ClCompile Include="..\..\src\nodes\logger.cpp" />

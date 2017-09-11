@@ -30,19 +30,25 @@ std::shared_ptr<Session> load_disc_session(std::string suffix) {
 
 std::shared_ptr<Session> create_mnist_reader() {
 	DeepFlow df;
-	df.mnist_reader(FLAGS_mnist, 100, MNISTReader::MNISTReaderType::Train, MNISTReader::Data, "mnist_data");
+	df.mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::MNISTReaderType::Train, MNISTReader::Data, "mnist_data");
 	return df.session();
 }
 
-std::shared_ptr<Session> create_mnist_labels() {
+std::shared_ptr<Session> create_disc_pos_labels() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0.75, 1.0), 10000, "", "mnist_labels");	
+	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0.9, 1.0), 60000, "", "labels");	
 	return df.session();
 }
 
-std::shared_ptr<Session> create_generator_labels() {
+std::shared_ptr<Session> create_disc_neg_labels() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0, 0.25), 10000, "", "generator_labels");
+	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0, 0.1), 60000, "", "labels");
+	return df.session();
+}
+
+std::shared_ptr<Session> create_gen_labels() {
+	DeepFlow df;
+	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0, 0.05), 60000, "", "labels");
 	return df.session();
 }
 
@@ -67,92 +73,66 @@ std::shared_ptr<Session> create_socket_io_sender() {
 
 std::shared_ptr<Session> create_display_session() {
 	DeepFlow df;
-	auto input = df.place_holder({ 100, 1, 28, 28 }, Tensor::Float, "input");
+	auto input = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "input");
 	df.display(input, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp");
 	return df.session();
 }
 
+std::string conv(DeepFlow *df, std::string name, std::string input, std::string solver, int depth1, int depth2, bool activation) {
+	auto mean = 0;
+	auto stddev = 0.001;
+	auto conv_w = df->variable(df->random_normal({ depth1, depth2, 3, 3 }, mean, stddev), solver, name + "_w");	
+	auto conv_ = df->conv2d(input, conv_w, 1, 1, 1, 1, 1, 1, name);	
+	auto conv_p = df->pooling(conv_, 2, 2, 0, 0, 2, 2, name + "_p");	
+	if (activation)
+		return  df->leaky_relu(conv_p, 0.1);
+	return conv_p;
+}
+
+std::string tconv(DeepFlow *df, std::string name, std::string input, std::string solver, int depth1, int depth2, int kernel, int pad, bool activation) {
+	auto mean = 0;
+	auto stddev = 0.001;
+	auto tconv_l = df->lifting(input, DeepFlow::LIFT_UP, name + "_l");
+	auto tconv_f = df->variable(df->random_normal({ depth1, depth2, kernel, kernel }, mean, stddev), solver, name + "_f");	
+	auto tconv_t = df->conv2d(tconv_l, tconv_f, pad, pad, 1, 1, 1, 1, name + "_t");
+	auto tconv_b = df->batch_normalization(tconv_t, DeepFlow::SPATIAL, 0.2, 1, 0, 0, 1, name + "_b");	
+	if (activation)
+		return df->relu(tconv_b);
+	return tconv_b;
+}
+
 std::shared_ptr<Session> create_generator_session() {
 	DeepFlow df;
+	auto solver = df.adam_solver(0.00002f, 0.5f);
 
-	auto mean = 0;
-	auto stddev = 0.1;
-	auto negative_slope = 0;
-	auto alpha_param = 0.05;
-	auto dropout = 0.3;
-	auto exp_avg_factor = 0.1;
-	int depth = 1024;
+	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1, "random_input"), 60000, "", "input");
 
-	auto g_solver = df.adam_solver(0.0002f, 0.5f, 0.9999f);
-	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, mean, stddev, "random_input"), 10000, "", "input");
+	auto fc_w = df.variable(df.random_normal({ 100, 512, 3, 3 }, 0, 0.001), solver, "fc_w");
+	auto fc = df.matmul(gin, fc_w, "fc");
 
-	auto gfc_w = df.variable(df.random_normal({ 100, depth, 4, 4 }, mean, stddev), g_solver, "gfc_w");
-	auto gfc = df.matmul(gin, gfc_w, "gfc");
-	auto gfc_r = df.leaky_relu(gfc, negative_slope);
-	auto gfc_drop = df.dropout(gfc_r, dropout);
+	auto tconv1 = tconv(&df, "tconv1", fc, solver, 256, 128, 2, 0, true);
+	auto tconv2 = tconv(&df, "tconv2", tconv1, solver, 256, 64, 2, 0, true);
+	auto tconv3 = tconv(&df, "tconv3", tconv2, solver, 256, 64, 3, 0, true);
+	auto tconv4 = tconv(&df, "tconv4", tconv3, solver, 1, 64, 5, 0, false);
 
-	auto gconv1_f = df.variable(df.random_normal({ depth, depth / 2, 2, 2 }, mean, stddev), g_solver, "gconv1_f");
-	auto gconv1_t = df.transposed_conv2d(gfc_drop, gconv1_f, 1, 1, 2, 2, 1, 1, "gconv1");
-	auto gconv1_n = df.batch_normalization(gconv1_t, DeepFlow::SPATIAL, exp_avg_factor, 1, 0, alpha_param, 1);
-	auto gconv1_r = df.leaky_relu(gconv1_n, negative_slope);
-	auto gconv1_d = df.dropout(gconv1_r, dropout);
-
-	auto gconv2_f = df.variable(df.random_normal({ depth / 2, depth / 4, 5, 5 }, mean, stddev), g_solver, "gconv2_f");
-	auto gconv2_t = df.transposed_conv2d(gconv1_d, gconv2_f, 2, 2, 2, 2, 1, 1, "gconv2");
-	auto gconv2_n = df.batch_normalization(gconv2_t, DeepFlow::SPATIAL, exp_avg_factor, 1, 0, alpha_param, 1);
-	auto gconv2_r = df.leaky_relu(gconv2_n, negative_slope);
-	auto gconv2_d = df.dropout(gconv2_r, dropout);
-
-	auto gconv3_f = df.variable(df.random_normal({ depth / 4, 1, 5, 5 }, mean, stddev), g_solver, "gconv3_f");
-	auto gconv3_t = df.transposed_conv2d(gconv2_d, gconv3_f, 2, 2, 2, 2, 1, 1, "gconv3");
-	auto gconv3_n = df.batch_normalization(gconv3_t, DeepFlow::SPATIAL, exp_avg_factor, 1, 0, alpha_param, 1);
-
-	auto gout = df.tanh(gconv3_n, "gout");	
-
-	//auto replay_memory = df.replay_memory(gout, 10000, "replay_memory");
+	auto output = df.tanh(tconv4, "gout");
 
 	return df.session();
 }
 
 std::shared_ptr<Session> create_discriminator() {
-	DeepFlow df;
-	auto mean = 0;
-	auto stddev = 0.02;
-	auto d_solver = df.adam_solver(0.0002f, 0.9f, 0.999f);
-	auto negative_slope = 0.1;
-	auto input = df.place_holder({ FLAGS_batch , 1, 28, 28 }, Tensor::Float, "input");
+	DeepFlow df;	
+	auto solver = df.adam_solver(0.00002f, 0.5f);
 
-	auto conv1_w = df.variable(df.random_uniform({ 64, 1, 3, 3 }, -0.100000, 0.100000), d_solver, "conv1_w");
-	auto conv1 = df.conv2d(input, conv1_w, 1, 1, 2, 2, 1, 1, "conv1");
-	auto conv1_r = df.leaky_relu(conv1, negative_slope);
-	//auto conv1_n = df.batch_normalization(conv1_r, DeepFlow::SPATIAL);
+	auto input = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "input");
+	auto conv1 = conv(&df, "conv1", input, solver, 128, 1, true);
+	auto conv2 = conv(&df, "conv2", conv1, solver, 256, 128, true);
+	auto conv3 = conv(&df, "conv3", conv2, solver, 1024, 256, true);
+	
+	auto fc_w = df.variable(df.random_normal({ 1024 * 3 * 3, 1, 1, 1 }, 0, 0.001), solver, "fc_w");
+	auto fc = df.matmul(conv3, fc_w, "fc");
 
-	auto conv2_w = df.variable(df.random_uniform({ 64, 64, 3, 3 }, -0.100000, 0.100000), d_solver, "conv2_w");
-	auto conv2 = df.conv2d(conv1_r, conv2_w, 1, 1, 2, 2, 1, 1, "conv2");
-	auto conv2_r = df.leaky_relu(conv2, negative_slope);
-	//auto conv2_n = df.batch_normalization(conv2_r, DeepFlow::SPATIAL);
-
-	auto conv3_w = df.variable(df.random_uniform({ 128, 64, 3, 3 }, -0.100000, 0.100000), d_solver, "conv3_w");
-	auto conv3 = df.conv2d(conv2_r, conv3_w, 1, 1, 2, 2, 1, 1, "conv3");
-	auto conv3_r = df.leaky_relu(conv3, negative_slope);
-	//auto conv3_n = df.batch_normalization(conv3_r, DeepFlow::SPATIAL);			
-	auto drop1 = df.dropout(conv3_r);
-
-	auto w1 = df.variable(df.random_uniform({ 2048, 500, 1, 1 }, -0.100000, 0.100000), d_solver, "w1");
-	auto m1 = df.matmul(drop1, w1, "m1");
-	auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, -1.000000, 1.000000), d_solver, "b1");
-	auto bias1 = df.bias_add(m1, b1, "bias1");
-	auto relu1 = df.leaky_relu(bias1, negative_slope, "relu1");
-	auto drop2 = df.dropout(relu1);
-
-	auto w2 = df.variable(df.random_uniform({ 500, 1, 1, 1 }, -0.100000, 0.100000), d_solver, "w2");
-	auto m2 = df.matmul(drop2, w2, "m2");
-	auto b2 = df.variable(df.step({ 1, 1, 1, 1 }, -1.000000, 1.000000), d_solver, "b2");
-	auto bias2 = df.bias_add(m2, b2, "bias2");
-
-	auto dout = df.sigmoid(bias2, "dout");
-
-	//df.logger({ conv1_r, conv1_n}, "./log.txt", "R -> {0}\nN -> {0}\n\n", DeepFlow::EVERY_PASS);
+	auto enc_out = df.sigmoid(fc, "dout");
 
 	return df.session();
 }
@@ -183,11 +163,14 @@ void main(int argc, char** argv) {
 	auto mnist_reader = create_mnist_reader();
 	mnist_reader->initialize(execution_context);	
 
-	auto mnist_labels = create_mnist_labels();
-	mnist_labels->initialize(execution_context);	
+	auto disc_pos_labels = create_disc_pos_labels();
+	disc_pos_labels->initialize(execution_context);
 
-	auto generator_labels = create_generator_labels();
-	generator_labels->initialize(execution_context);	
+	auto disc_neg_labels = create_disc_neg_labels();
+	disc_neg_labels->initialize(execution_context);
+
+	auto gen_labels = create_gen_labels();
+	gen_labels->initialize(execution_context);
 
 	auto loss = create_loss();
 	loss->initialize(execution_context);	
@@ -203,8 +186,9 @@ void main(int argc, char** argv) {
 	auto generator_output = generator->get_node("gout");	
 	auto discriminator_input = discriminator->get_placeholder("input");
 	auto discriminator_output = discriminator->get_node("dout");
-	auto generator_labels_output = generator_labels->get_node("generator_labels");
-	auto mnist_labels_output = mnist_labels->get_node("mnist_labels");
+	auto disc_neg_labels_output = disc_neg_labels->get_node("labels");
+	auto disc_pos_labels_output = disc_pos_labels->get_node("labels");
+	auto gen_labels_output = gen_labels->get_node("labels");	
 	auto loss_discriminator_input = loss->get_placeholder("discriminator_input");
 	auto loss_labels_input = loss->get_placeholder("labels_input");
 	auto loss_output = loss->get_node("loss");
@@ -220,58 +204,58 @@ void main(int argc, char** argv) {
 
 		std::cout << "Epoch: " << iter << std::endl;		
 		
-		std::cout << " MNIST INPUT " << std::endl;
+		std::cout << " DISC POS " << std::endl;
 		mnist_reader_data->forward();
 		discriminator_input->write_values(mnist_reader_data->output(0)->value());
 		discriminator->forward();
-		mnist_labels->forward();
+		disc_pos_labels_output->forward();
 		loss->reset_gradients();
 		loss_discriminator_input->write_values(discriminator_output->output(0)->value());
-		loss_labels_input->write_values(mnist_labels_output->output(0)->value());
+		loss_labels_input->write_values(disc_pos_labels_output->output(0)->value());
 		loss->forward();
 		sio_sender_dtrue->write_values(loss_output->output(0)->value());
-		loss->backward();
+		loss->backward();		
 		discriminator->reset_gradients();
 		discriminator_output->write_diffs(loss_discriminator_input->output(0)->diff());
 		discriminator->backward();
-		discriminator->apply_solvers();
+		discriminator->apply_solvers();		
 
-		std::cout << " GENERATOR INPUT " << std::endl;
+		std::cout << " DISC NEG " << std::endl;
 		generator->forward();
 		disp->write_values(generator_output->output(0)->value());
 		disp_session->forward();
 		discriminator_input->write_values(generator_output->output(0)->value());
 		discriminator->forward();
-		generator_labels->forward();
+		disc_neg_labels_output->forward();
 		loss->reset_gradients();
 		loss_discriminator_input->write_values(discriminator_output->output(0)->value());
-		loss_labels_input->write_values(generator_labels_output->output(0)->value());
+		loss_labels_input->write_values(disc_neg_labels_output->output(0)->value());
 		loss->forward();
 		sio_sender_dfake->write_values(loss_output->output(0)->value());
-		loss->backward();
+		loss->backward();		
 		discriminator->reset_gradients();
 		discriminator_output->write_diffs(loss_discriminator_input->output(0)->diff());
 		discriminator->backward();
-		discriminator->apply_solvers(); 
+		discriminator->apply_solvers(); 		
 
-		std::cout << " TRAINING GENERATOR " << std::endl;
+		std::cout << " GEN " << std::endl;
 		generator->forward();
 		discriminator_input->write_values(generator_output->output(0)->value());
 		discriminator->forward();
-		mnist_labels->forward();
+		gen_labels_output->forward();
 		loss->reset_gradients();
 		loss_discriminator_input->write_values(discriminator_output->output(0)->value());
-		loss_labels_input->write_values(mnist_labels_output->output(0)->value());
+		loss_labels_input->write_values(gen_labels_output->output(0)->value());
 		loss->forward();
 		sio_sender_gfake->write_values(loss_output->output(0)->value());
 		loss->backward();
 		discriminator->reset_gradients();
 		discriminator_output->write_diffs(loss_discriminator_input->output(0)->diff());
-		discriminator->backward();
+		discriminator->backward();	
 		generator->reset_gradients();
 		generator_output->write_diffs(discriminator_input->output(0)->diff());
 		generator->backward();
-		generator->apply_solvers();
+		generator->apply_solvers();		
 
 		socket_io_sender_session->forward();
 

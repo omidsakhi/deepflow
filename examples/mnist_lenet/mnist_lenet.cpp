@@ -45,15 +45,15 @@ void main(int argc, char** argv) {
 		
 		auto conv1_w = df.variable(df.random_uniform({ 16, 1, 5, 5 }, -0.100000, 0.100000), solver, "conv1_w", {});
 		auto conv1 = df.conv2d(data_selector, conv1_w, 2, 2, 2, 2, 1, 1, "conv1", {});		
-		auto conv1_r = df.leaky_relu(conv1, 0.01, true);		
+		auto conv1_r = df.leaky_relu(conv1, 0.01);		
 
 		auto conv2_w = df.variable(df.random_uniform({ 32, 16, 5, 5 }, -0.100000, 0.100000), solver, "conv2_w", {});
 		auto conv2 = df.conv2d(conv1_r, conv2_w, 2, 2, 2, 2, 1, 1, "conv2", {});
-		auto conv2_r = df.leaky_relu(conv2, 0.01, true);		
+		auto conv2_r = df.leaky_relu(conv2, 0.01);		
 
 		auto conv3_w = df.variable(df.random_uniform({ 64, 32, 5, 5 }, -0.100000, 0.100000), solver, "conv3_w", {});
 		auto conv3 = df.conv2d(conv2_r, conv3_w, 2, 2, 2, 2, 1, 1, "conv3", {});
-		auto conv3_r = df.leaky_relu(conv3, 0.01, true);		
+		auto conv3_r = df.leaky_relu(conv3, 0.01);		
 
 		auto w1 = df.variable(df.random_uniform({ 1024, 500, 1, 1 }, -0.100000, 0.100000), solver, "w1", {});
 		auto m1 = df.matmul(conv3_r, w1, "m1", {});

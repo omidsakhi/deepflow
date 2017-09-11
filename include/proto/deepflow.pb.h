@@ -77,6 +77,9 @@ extern DropoutParamDefaultTypeInternal _DropoutParam_default_instance_;
 class EqualParam;
 class EqualParamDefaultTypeInternal;
 extern EqualParamDefaultTypeInternal _EqualParam_default_instance_;
+class ExpParam;
+class ExpParamDefaultTypeInternal;
+extern ExpParamDefaultTypeInternal _ExpParam_default_instance_;
 class GainSolverParam;
 class GainSolverParamDefaultTypeInternal;
 extern GainSolverParamDefaultTypeInternal _GainSolverParam_default_instance_;
@@ -110,6 +113,9 @@ extern InitThreeStateParamDefaultTypeInternal _InitThreeStateParam_default_insta
 class LeakyReluParam;
 class LeakyReluParamDefaultTypeInternal;
 extern LeakyReluParamDefaultTypeInternal _LeakyReluParam_default_instance_;
+class LiftingParam;
+class LiftingParamDefaultTypeInternal;
+extern LiftingParamDefaultTypeInternal _LiftingParam_default_instance_;
 class LogParam;
 class LogParamDefaultTypeInternal;
 extern LogParamDefaultTypeInternal _LogParam_default_instance_;
@@ -422,6 +428,27 @@ inline bool BatchNormalizationParam_Mode_Parse(
     const ::std::string& name, BatchNormalizationParam_Mode* value) {
   return ::google::protobuf::internal::ParseNamedEnum<BatchNormalizationParam_Mode>(
     BatchNormalizationParam_Mode_descriptor(), name, value);
+}
+enum LiftingParam_Mode {
+  LiftingParam_Mode_UP = 0,
+  LiftingParam_Mode_DOWN = 1,
+  LiftingParam_Mode_LiftingParam_Mode_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  LiftingParam_Mode_LiftingParam_Mode_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool LiftingParam_Mode_IsValid(int value);
+const LiftingParam_Mode LiftingParam_Mode_Mode_MIN = LiftingParam_Mode_UP;
+const LiftingParam_Mode LiftingParam_Mode_Mode_MAX = LiftingParam_Mode_DOWN;
+const int LiftingParam_Mode_Mode_ARRAYSIZE = LiftingParam_Mode_Mode_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* LiftingParam_Mode_descriptor();
+inline const ::std::string& LiftingParam_Mode_Name(LiftingParam_Mode value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    LiftingParam_Mode_descriptor(), value);
+}
+inline bool LiftingParam_Mode_Parse(
+    const ::std::string& name, LiftingParam_Mode* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<LiftingParam_Mode>(
+    LiftingParam_Mode_descriptor(), name, value);
 }
 enum PhaseParam_PhaseBehaviour {
   PhaseParam_PhaseBehaviour_TRAIN_AND_INFERENCE = 0,
@@ -2150,6 +2177,79 @@ class BiasAddParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 };
 // -------------------------------------------------------------------
 
+class ExpParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.ExpParam) */ {
+ public:
+  ExpParam();
+  virtual ~ExpParam();
+
+  ExpParam(const ExpParam& from);
+
+  inline ExpParam& operator=(const ExpParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ExpParam& default_instance();
+
+  static inline const ExpParam* internal_default_instance() {
+    return reinterpret_cast<const ExpParam*>(
+               &_ExpParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    18;
+
+  void Swap(ExpParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ExpParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ExpParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ExpParam& from);
+  void MergeFrom(const ExpParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ExpParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:deepflow.ExpParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class PoolingParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.PoolingParam) */ {
  public:
   PoolingParam();
@@ -2170,7 +2270,7 @@ class PoolingParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_PoolingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    18;
+    19;
 
   void Swap(PoolingParam* other);
 
@@ -2285,7 +2385,7 @@ class TransposedConv2dParam : public ::google::protobuf::Message /* @@protoc_ins
                &_TransposedConv2dParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    19;
+    20;
 
   void Swap(TransposedConv2dParam* other);
 
@@ -2400,7 +2500,7 @@ class Conv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_Conv2dParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    20;
+    21;
 
   void Swap(Conv2dParam* other);
 
@@ -2522,7 +2622,7 @@ class DropoutParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_DropoutParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    21;
+    22;
 
   void Swap(DropoutParam* other);
 
@@ -2609,7 +2709,7 @@ class MatMulParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_MatMulParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    22;
+    23;
 
   void Swap(MatMulParam* other);
 
@@ -2682,7 +2782,7 @@ class LeakyReluParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_LeakyReluParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    23;
+    24;
 
   void Swap(LeakyReluParam* other);
 
@@ -2769,7 +2869,7 @@ class ReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_ReduceParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    24;
+    25;
 
   void Swap(ReduceParam* other);
 
@@ -2927,7 +3027,7 @@ class SnapshotParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_SnapshotParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    25;
+    26;
 
   void Swap(SnapshotParam* other);
 
@@ -3036,7 +3136,7 @@ class PlaceHolderParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_PlaceHolderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    26;
+    27;
 
   void Swap(PlaceHolderParam* other);
 
@@ -3119,7 +3219,7 @@ class RestructureParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_RestructureParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    27;
+    28;
 
   void Swap(RestructureParam* other);
 
@@ -3206,7 +3306,7 @@ class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_VariableParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    28;
+    29;
 
   void Swap(VariableParam* other);
 
@@ -3314,7 +3414,7 @@ class DataGeneratorParam : public ::google::protobuf::Message /* @@protoc_insert
                &_DataGeneratorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    29;
+    30;
 
   void Swap(DataGeneratorParam* other);
 
@@ -3394,7 +3494,7 @@ class ActivationParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_ActivationParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    30;
+    31;
 
   void Swap(ActivationParam* other);
 
@@ -3513,7 +3613,7 @@ class ImageBatchReaderParam : public ::google::protobuf::Message /* @@protoc_ins
                &_ImageBatchReaderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    31;
+    32;
 
   void Swap(ImageBatchReaderParam* other);
 
@@ -3618,7 +3718,7 @@ class ImageReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_ImageReaderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    32;
+    33;
 
   void Swap(ImageReaderParam* other);
 
@@ -3739,7 +3839,7 @@ class MnistParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_MnistParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    33;
+    34;
 
   void Swap(MnistParam* other);
 
@@ -3900,7 +4000,7 @@ class CastFloatParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_CastFloatParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    34;
+    35;
 
   void Swap(CastFloatParam* other);
 
@@ -3973,7 +4073,7 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
                &_BatchNormalizationParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    35;
+    36;
 
   void Swap(BatchNormalizationParam* other);
 
@@ -4154,7 +4254,7 @@ class ReplayMemoryParam : public ::google::protobuf::Message /* @@protoc_inserti
                &_ReplayMemoryParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    36;
+    37;
 
   void Swap(ReplayMemoryParam* other);
 
@@ -4234,7 +4334,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NodeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    37;
+    38;
 
   void Swap(NodeParam* other);
 
@@ -4700,6 +4800,24 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::LossParam* release_loss_param();
   void set_allocated_loss_param(::deepflow::LossParam* loss_param);
 
+  // .deepflow.ExpParam exp_param = 138;
+  bool has_exp_param() const;
+  void clear_exp_param();
+  static const int kExpParamFieldNumber = 138;
+  const ::deepflow::ExpParam& exp_param() const;
+  ::deepflow::ExpParam* mutable_exp_param();
+  ::deepflow::ExpParam* release_exp_param();
+  void set_allocated_exp_param(::deepflow::ExpParam* exp_param);
+
+  // .deepflow.LiftingParam lifting_param = 139;
+  bool has_lifting_param() const;
+  void clear_lifting_param();
+  static const int kLiftingParamFieldNumber = 139;
+  const ::deepflow::LiftingParam& lifting_param() const;
+  ::deepflow::LiftingParam* mutable_lifting_param();
+  ::deepflow::LiftingParam* release_lifting_param();
+  void set_allocated_lifting_param(::deepflow::LiftingParam* lifting_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -4746,6 +4864,8 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::SIOOutputParam* sio_output_param_;
   ::deepflow::LogParam* log_param_;
   ::deepflow::LossParam* loss_param_;
+  ::deepflow::ExpParam* exp_param_;
+  ::deepflow::LiftingParam* lifting_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4771,7 +4891,7 @@ class SquareParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SquareParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    38;
+    39;
 
   void Swap(SquareParam* other);
 
@@ -4844,7 +4964,7 @@ class SquareErrorParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_SquareErrorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    39;
+    40;
 
   void Swap(SquareErrorParam* other);
 
@@ -4917,7 +5037,7 @@ class SoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_SoftmaxParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    40;
+    41;
 
   void Swap(SoftmaxParam* other);
 
@@ -4970,6 +5090,112 @@ class SoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 };
 // -------------------------------------------------------------------
 
+class LiftingParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.LiftingParam) */ {
+ public:
+  LiftingParam();
+  virtual ~LiftingParam();
+
+  LiftingParam(const LiftingParam& from);
+
+  inline LiftingParam& operator=(const LiftingParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const LiftingParam& default_instance();
+
+  static inline const LiftingParam* internal_default_instance() {
+    return reinterpret_cast<const LiftingParam*>(
+               &_LiftingParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    42;
+
+  void Swap(LiftingParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline LiftingParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  LiftingParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const LiftingParam& from);
+  void MergeFrom(const LiftingParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(LiftingParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef LiftingParam_Mode Mode;
+  static const Mode UP =
+    LiftingParam_Mode_UP;
+  static const Mode DOWN =
+    LiftingParam_Mode_DOWN;
+  static inline bool Mode_IsValid(int value) {
+    return LiftingParam_Mode_IsValid(value);
+  }
+  static const Mode Mode_MIN =
+    LiftingParam_Mode_Mode_MIN;
+  static const Mode Mode_MAX =
+    LiftingParam_Mode_Mode_MAX;
+  static const int Mode_ARRAYSIZE =
+    LiftingParam_Mode_Mode_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  Mode_descriptor() {
+    return LiftingParam_Mode_descriptor();
+  }
+  static inline const ::std::string& Mode_Name(Mode value) {
+    return LiftingParam_Mode_Name(value);
+  }
+  static inline bool Mode_Parse(const ::std::string& name,
+      Mode* value) {
+    return LiftingParam_Mode_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // .deepflow.LiftingParam.Mode mode = 1;
+  void clear_mode();
+  static const int kModeFieldNumber = 1;
+  ::deepflow::LiftingParam_Mode mode() const;
+  void set_mode(::deepflow::LiftingParam_Mode value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.LiftingParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  int mode_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class InitFillParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.InitFillParam) */ {
  public:
   InitFillParam();
@@ -4990,7 +5216,7 @@ class InitFillParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_InitFillParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    41;
+    43;
 
   void Swap(InitFillParam* other);
 
@@ -5070,7 +5296,7 @@ class InitIndexFillParam : public ::google::protobuf::Message /* @@protoc_insert
                &_InitIndexFillParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    42;
+    44;
 
   void Swap(InitIndexFillParam* other);
 
@@ -5150,7 +5376,7 @@ class InitRandomUniformParam : public ::google::protobuf::Message /* @@protoc_in
                &_InitRandomUniformParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    43;
+    45;
 
   void Swap(InitRandomUniformParam* other);
 
@@ -5237,7 +5463,7 @@ class InitRandomNormalParam : public ::google::protobuf::Message /* @@protoc_ins
                &_InitRandomNormalParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    44;
+    46;
 
   void Swap(InitRandomNormalParam* other);
 
@@ -5324,7 +5550,7 @@ class InitStepParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_InitStepParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    45;
+    47;
 
   void Swap(InitStepParam* other);
 
@@ -5411,7 +5637,7 @@ class InitThreeStateParam : public ::google::protobuf::Message /* @@protoc_inser
                &_InitThreeStateParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    46;
+    48;
 
   void Swap(InitThreeStateParam* other);
 
@@ -5484,7 +5710,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_InitParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    47;
+    49;
 
   void Swap(InitParam* other);
 
@@ -5652,7 +5878,7 @@ class SGDSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_SGDSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    48;
+    50;
 
   void Swap(SGDSolverParam* other);
 
@@ -5739,7 +5965,7 @@ class GainSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_GainSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    49;
+    51;
 
   void Swap(GainSolverParam* other);
 
@@ -5854,7 +6080,7 @@ class AdaDeltaSolverParam : public ::google::protobuf::Message /* @@protoc_inser
                &_AdaDeltaSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    50;
+    52;
 
   void Swap(AdaDeltaSolverParam* other);
 
@@ -5948,7 +6174,7 @@ class AdamSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_AdamSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    51;
+    53;
 
   void Swap(AdamSolverParam* other);
 
@@ -6049,7 +6275,7 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    52;
+    54;
 
   void Swap(SolverParam* other);
 
@@ -6192,7 +6418,7 @@ class PhaseParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_PhaseParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    53;
+    55;
 
   void Swap(PhaseParam* other);
 
@@ -6317,7 +6543,7 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_BlockParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    54;
+    56;
 
   void Swap(BlockParam* other);
 
@@ -7158,6 +7384,10 @@ inline void LossParam::set_reduce_op(::deepflow::LossParam_ReduceOp value) {
 // -------------------------------------------------------------------
 
 // BiasAddParam
+
+// -------------------------------------------------------------------
+
+// ExpParam
 
 // -------------------------------------------------------------------
 
@@ -10202,6 +10432,84 @@ inline void NodeParam::set_allocated_loss_param(::deepflow::LossParam* loss_para
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.loss_param)
 }
 
+// .deepflow.ExpParam exp_param = 138;
+inline bool NodeParam::has_exp_param() const {
+  return this != internal_default_instance() && exp_param_ != NULL;
+}
+inline void NodeParam::clear_exp_param() {
+  if (GetArenaNoVirtual() == NULL && exp_param_ != NULL) delete exp_param_;
+  exp_param_ = NULL;
+}
+inline const ::deepflow::ExpParam& NodeParam::exp_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.exp_param)
+  return exp_param_ != NULL ? *exp_param_
+                         : *::deepflow::ExpParam::internal_default_instance();
+}
+inline ::deepflow::ExpParam* NodeParam::mutable_exp_param() {
+  
+  if (exp_param_ == NULL) {
+    exp_param_ = new ::deepflow::ExpParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.exp_param)
+  return exp_param_;
+}
+inline ::deepflow::ExpParam* NodeParam::release_exp_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.exp_param)
+  
+  ::deepflow::ExpParam* temp = exp_param_;
+  exp_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_exp_param(::deepflow::ExpParam* exp_param) {
+  delete exp_param_;
+  exp_param_ = exp_param;
+  if (exp_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.exp_param)
+}
+
+// .deepflow.LiftingParam lifting_param = 139;
+inline bool NodeParam::has_lifting_param() const {
+  return this != internal_default_instance() && lifting_param_ != NULL;
+}
+inline void NodeParam::clear_lifting_param() {
+  if (GetArenaNoVirtual() == NULL && lifting_param_ != NULL) delete lifting_param_;
+  lifting_param_ = NULL;
+}
+inline const ::deepflow::LiftingParam& NodeParam::lifting_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.lifting_param)
+  return lifting_param_ != NULL ? *lifting_param_
+                         : *::deepflow::LiftingParam::internal_default_instance();
+}
+inline ::deepflow::LiftingParam* NodeParam::mutable_lifting_param() {
+  
+  if (lifting_param_ == NULL) {
+    lifting_param_ = new ::deepflow::LiftingParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.lifting_param)
+  return lifting_param_;
+}
+inline ::deepflow::LiftingParam* NodeParam::release_lifting_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.lifting_param)
+  
+  ::deepflow::LiftingParam* temp = lifting_param_;
+  lifting_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_lifting_param(::deepflow::LiftingParam* lifting_param) {
+  delete lifting_param_;
+  lifting_param_ = lifting_param;
+  if (lifting_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.lifting_param)
+}
+
 // -------------------------------------------------------------------
 
 // SquareParam
@@ -10213,6 +10521,24 @@ inline void NodeParam::set_allocated_loss_param(::deepflow::LossParam* loss_para
 // -------------------------------------------------------------------
 
 // SoftmaxParam
+
+// -------------------------------------------------------------------
+
+// LiftingParam
+
+// .deepflow.LiftingParam.Mode mode = 1;
+inline void LiftingParam::clear_mode() {
+  mode_ = 0;
+}
+inline ::deepflow::LiftingParam_Mode LiftingParam::mode() const {
+  // @@protoc_insertion_point(field_get:deepflow.LiftingParam.mode)
+  return static_cast< ::deepflow::LiftingParam_Mode >(mode_);
+}
+inline void LiftingParam::set_mode(::deepflow::LiftingParam_Mode value) {
+  
+  mode_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.LiftingParam.mode)
+}
 
 // -------------------------------------------------------------------
 
@@ -11515,6 +11841,10 @@ BlockParam::initializer() const {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -11569,6 +11899,11 @@ template <> struct is_proto_enum< ::deepflow::BatchNormalizationParam_Mode> : ::
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::BatchNormalizationParam_Mode>() {
   return ::deepflow::BatchNormalizationParam_Mode_descriptor();
+}
+template <> struct is_proto_enum< ::deepflow::LiftingParam_Mode> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::LiftingParam_Mode>() {
+  return ::deepflow::LiftingParam_Mode_descriptor();
 }
 template <> struct is_proto_enum< ::deepflow::PhaseParam_PhaseBehaviour> : ::google::protobuf::internal::true_type {};
 template <>

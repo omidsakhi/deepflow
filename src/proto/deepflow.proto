@@ -120,6 +120,10 @@ message BiasAddParam {
 	
 }
 
+message ExpParam {
+	
+}
+
 message PoolingParam {
 	int32 window_h = 1;
 	int32 window_w = 2;		
@@ -318,6 +322,8 @@ message NodeParam {
   SIOOutputParam sio_output_param = 135;
   LogParam log_param = 136;
   LossParam loss_param = 137;
+  ExpParam exp_param = 138;
+  LiftingParam lifting_param = 139;  
 }
 
 message SquareParam {
@@ -330,6 +336,14 @@ message SquareErrorParam {
 
 message SoftmaxParam {
 
+}
+
+message LiftingParam {
+	enum Mode {
+		UP = 0;    
+		DOWN = 1;
+	}
+	Mode mode = 1;	
 }
 
 message InitFillParam {

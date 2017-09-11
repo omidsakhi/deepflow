@@ -171,7 +171,7 @@ std::string Caffe::_parse_relu_param(const caffe::ReLUParameter & param, const c
 {
 	LOG_IF(INFO, _verbose) << "  -> ReLUParameter";
 	LOG_IF(INFO, _verbose) << "     .negative_slope = " << param.negative_slope() << " [default: 0]";
-	return df->leaky_relu(layer.bottom(0) + "_output_0", param.negative_slope(), false, layer.name(), {});
+	return df->leaky_relu(layer.bottom(0) + "_output_0", param.negative_slope(), layer.name(), {});
 }
 
 std::string Caffe::_parse_dropout_param(const caffe::DropoutParameter & param, const caffe::V1LayerParameter &layer)

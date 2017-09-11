@@ -19,7 +19,7 @@ private:
 	cudnnHandle_t _cudnnHandle;
 	cudnnBatchNormMode_t _bnMode;
 	cudnnTensorDescriptor_t _xDesc, _yDesc, _bnScaleBiasMeanVarDesc;
-	double _eps = 0;
+	double _eps = CUDNN_BN_MIN_EPSILON;
 	double _exp_avg_factor = 0;
 	float * _bnMean = nullptr;
 	float * _bnInvVariance = nullptr;
