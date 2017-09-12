@@ -177,7 +177,7 @@ void Node::_backward() {
 		LOG_IF(INFO, _verbose > 2) << "SKIP BACKWARD " << _name << " DUE TO PHASE";
 		return;
 	}
-	_visited = true;		
+	_visited = true;
 	for (auto node : outputNodes()) {
 		LOG_IF(INFO, _verbose > 3) << "FROM " << _name << " GOING TO BACKWARD " << node->name();
 		node->_backward();

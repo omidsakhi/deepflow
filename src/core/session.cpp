@@ -442,7 +442,7 @@ void Session::save(std::string file_path, bool as_text)
 		_block->save_as_binary(file_path);
 }
 
-void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Node>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration) {
+void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Node>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Node>> *head_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration) {
 	int iteration_per_epoch = 1;
 	bool last_batch = false;	
 	for (auto node : *nodes)
@@ -488,7 +488,7 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 			for (auto node : *end_nodes) {
 				node->_unvisit();
 			}
-			for (auto node : *end_nodes) {
+			for (auto node : *head_nodes) {
 				node->_backward();
 			}
 			for (auto var : *variable_nodes) {
@@ -517,6 +517,7 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 			execution_phase_generators.push_back(node);
 	}	
 	std::list<std::shared_ptr<Node>> execution_end_nodes = _get_end_nodes(phase);
+	std::list<std::shared_ptr<Node>> execution_head_nodes = _get_head_nodes(phase);
 	std::string end_node_names;
 	for (auto node : execution_end_nodes) {
 		end_node_names += node->name() + " ";
@@ -537,7 +538,7 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 			}
 		}
 		std::list<std::shared_ptr<Node>> validation_phase_generators;
-		std::list<std::shared_ptr<Node>> validation_end_nodes;
+		std::list<std::shared_ptr<Node>> validation_end_nodes, validation_head_nodes;
 		std::shared_ptr<ExecutionContext> validation_context;
 		if (!validation_phase.empty()) {
 			LOG(INFO) << "Graph has validation phase (name: " << validation_phase << ")";
@@ -553,6 +554,7 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 					validation_phase_generators.push_back(node);
 			}			
 			validation_end_nodes = _get_end_nodes(validation_phase);
+			validation_head_nodes = _get_head_nodes(validation_phase);
 		}
 		int iteration = 1;
 		for (int epoch = 1; epoch <= max_epoch; ++epoch) {
@@ -560,11 +562,11 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 				std::cout << "Epoch " << epoch << " -->" << std::endl;
 			auto epoch_start = std::chrono::high_resolution_clock::now();
 			execution_context->current_epoch = epoch;
-			_execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_phase_variable_nodes, max_iter, print_iteration);
+			_execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_head_nodes, &execution_phase_variable_nodes, max_iter, print_iteration);
 			if (!validation_phase.empty()) {
 				validation_context->current_iteration = 1;
 				validation_context->current_epoch = epoch;
-				_execute_one_pass(validation_context, 0, &_nodes, &validation_phase_generators, &validation_end_nodes, 0, max_iter, false);
+				_execute_one_pass(validation_context, 0, &_nodes, &validation_phase_generators, &validation_end_nodes, &validation_head_nodes, 0, max_iter, false);
 			}
 			auto epoch_end = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
@@ -577,7 +579,7 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 		}
 	}
 	else {
-		_execute_one_pass(execution_context, 0, &_nodes, &execution_phase_generators, &execution_end_nodes,0, max_iter, false);
+		_execute_one_pass(execution_context, 0, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_head_nodes, 0, max_iter, false);
 	}
 }
 

@@ -26,7 +26,7 @@ SquareError::SquareError(deepflow::NodeParam *param) : Node(param) {
 }
 
 void SquareError::initForward() {
-	LOG(INFO) << "Euclidean Distance " << _name << " - " << _inputs[0]->value()->shape();
+	LOG(INFO) << "SquareError " << _name << " - " << _inputs[0]->value()->shape();
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input " << _inputs[0]->value()->shape() << " != " << " Target " << _inputs[1]->value()->shape();	
 	_outputs[0]->initValue(_inputs[0]->dims());
 }

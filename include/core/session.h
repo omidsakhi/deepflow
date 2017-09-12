@@ -37,7 +37,7 @@ private:
 	std::shared_ptr<NodeOutput> _find_node_output_by_name(const std::string &name) const;
 	std::shared_ptr<Node> _create_node(deepflow::NodeParam *);
 	std::shared_ptr<Solver> _create_solver(deepflow::SolverParam *);
-	void _execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Node>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration);
+	void _execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Node>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Node>> *head_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration);
 private:
 	bool _initialized = false;
 	std::shared_ptr<Block> _block;

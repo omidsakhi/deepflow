@@ -73,8 +73,10 @@
     <CudaCompile Include="..\..\src\nodes\square_error.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\exp.cu" />
     <CudaCompile Include="..\..\src\nodes\lifting.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\exp.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
   </ItemGroup>
