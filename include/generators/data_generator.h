@@ -10,10 +10,7 @@ public:
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
 	bool isGenerator();
-	void initForward();
-	void initBackward();	
 	void forward();
-	void backward();
 	bool isLastBatch();
 	std::string to_cpp() const;
 	ForwardType forwardType() { return ALWAYS_FORWARD; }

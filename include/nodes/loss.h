@@ -5,7 +5,7 @@
 class DeepFlowDllExport Loss : public Node {
 public:
 	Loss(deepflow::NodeParam *param);
-	int minNumInputs() { return 1; }
+	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 1; }
 	void initForward();
 	void initBackward();

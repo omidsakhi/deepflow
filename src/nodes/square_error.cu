@@ -8,17 +8,17 @@ void SquareErrorForwardKernel(const int n, const float * __restrict__ x1, const 
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
-		float tmp = x2[i] - x1[i];
+		float tmp = x1[i] - x2[i];
 		y[i] = tmp * tmp;
 	}
 }
 
 __global__
-void SquareErrorBackwardKernel(const int n, const float * __restrict__ x1, const float * __restrict__ x2, const float * __restrict__ d, float * __restrict__ y)
+void SquareErrorBackwardKernel(const int n, const float sign, const float * __restrict__ x1, const float * __restrict__ x2, const float * __restrict__ d, float * __restrict__ y)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n)
-		y[i] += 2 * (x2[i] - x1[i]) * d[i];
+		y[i] = sign * (x1[i] - x2[i]) * d[i];
 }
 
 SquareError::SquareError(deepflow::NodeParam *param) : Node(param) {
@@ -44,11 +44,11 @@ void SquareError::forward() {
 void SquareError::backward() {
 	auto size = _inputs[0]->value()->size();
 	if (_inputs[0]->connectedNode()->propagateBack()) {
-		SquareErrorBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data() , (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
+		SquareErrorBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, 1.0f, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data() , (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}
 	if (_inputs[1]->connectedNode()->propagateBack()) {
-		SquareErrorBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[1]->value()->data(), (float*)_inputs[0]->value()->data() , (float*)_outputs[0]->diff()->data(), (float*)_inputs[1]->diff()->mutableData());
+		SquareErrorBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, -1.0f, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data() , (float*)_outputs[0]->diff()->data(), (float*)_inputs[1]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}
 }

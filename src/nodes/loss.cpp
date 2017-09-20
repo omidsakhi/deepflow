@@ -24,26 +24,35 @@ void Loss::initBackward() {
 
 void Loss::forward() {
 	if (_outputs[0]->connectedNodes().size() > 0) {
-		DF_NODE_CUDNN_CHECK(
-			cudnnReduceTensor(
-				_cudnnHandle,
-				_reduceTensorDesciptor,
-				nullptr,
-				0,
-				_d_workspace,
-				_workspaceSizeInBytes,
-				&one,
-				_inputs[0]->value()->descriptor(),
-				_inputs[0]->value()->data(),
-				&zero,
-				_outputs[0]->value()->descriptor(),
-				_outputs[0]->value()->mutableData())
-		);
+		if (_inputs[0]->value()->size() == 1) {
+			cpy(1, 1, _inputs[0]->value()->data(), 0, _outputs[0]->value()->mutableData());
+		}
+		else {
+			DF_NODE_CUDNN_CHECK(
+				cudnnReduceTensor(
+					_cudnnHandle,
+					_reduceTensorDesciptor,
+					nullptr,
+					0,
+					_d_workspace,
+					_workspaceSizeInBytes,
+					&one,
+					_inputs[0]->value()->descriptor(),
+					_inputs[0]->value()->data(),
+					&zero,
+					_outputs[0]->value()->descriptor(),
+					_outputs[0]->value()->mutableData())
+			);
+		}
 	}	
 }
 
 void Loss::backward() {
-	cpy(_inputs[0]->value()->size(), 1.0, _inputs[0]->value()->data(), 1.0, _inputs[0]->diff()->mutableData());	
+	float coef = 1.0f;
+	if (_inputs[1]->connectedTerminal()) {
+		coef = _inputs[1]->value()->toFloat();
+	}	
+	cpy(_inputs[0]->value()->size(), coef, _inputs[0]->value()->data(), 0.0, _inputs[0]->diff()->mutableData());	
 }
 
 std::string Loss::to_cpp() const

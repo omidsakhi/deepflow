@@ -32,11 +32,11 @@ void Dot::forward() {
 void Dot::backward() {
 	auto size = _outputs[0]->diff()->size();
 	if (_inputs[0]->connectedNode()->propagateBack()) {
-		dot(size, 1.0, _outputs[0]->diff()->data(), _inputs[1]->value()->data(), 1.0, _inputs[0]->diff()->mutableData());
+		dot(size, 1.0, _outputs[0]->diff()->data(), _inputs[1]->value()->data(), 0.0, _inputs[0]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}
 	if (_inputs[1]->connectedNode()->propagateBack()) {
-		dot(size, 1.0, _outputs[0]->diff()->data(), _inputs[0]->value()->data(), 1.0, _inputs[1]->diff()->mutableData());
+		dot(size, 1.0, _outputs[0]->diff()->data(), _inputs[0]->value()->data(), 0.0, _inputs[1]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}
 }

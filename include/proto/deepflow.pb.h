@@ -32,6 +32,9 @@
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 namespace deepflow {
+class AbsParam;
+class AbsParamDefaultTypeInternal;
+extern AbsParamDefaultTypeInternal _AbsParam_default_instance_;
 class AccumulatorParam;
 class AccumulatorParamDefaultTypeInternal;
 extern AccumulatorParamDefaultTypeInternal _AccumulatorParam_default_instance_;
@@ -140,6 +143,9 @@ extern NegateParamDefaultTypeInternal _NegateParam_default_instance_;
 class NodeParam;
 class NodeParamDefaultTypeInternal;
 extern NodeParamDefaultTypeInternal _NodeParam_default_instance_;
+class PatchingParam;
+class PatchingParamDefaultTypeInternal;
+extern PatchingParamDefaultTypeInternal _PatchingParam_default_instance_;
 class PhaseParam;
 class PhaseParamDefaultTypeInternal;
 extern PhaseParamDefaultTypeInternal _PhaseParam_default_instance_;
@@ -161,6 +167,9 @@ extern PsnrParamDefaultTypeInternal _PsnrParam_default_instance_;
 class RandomSelectorParam;
 class RandomSelectorParamDefaultTypeInternal;
 extern RandomSelectorParamDefaultTypeInternal _RandomSelectorParam_default_instance_;
+class ReduceAllParam;
+class ReduceAllParamDefaultTypeInternal;
+extern ReduceAllParamDefaultTypeInternal _ReduceAllParam_default_instance_;
 class ReduceParam;
 class ReduceParamDefaultTypeInternal;
 extern ReduceParamDefaultTypeInternal _ReduceParam_default_instance_;
@@ -272,6 +281,27 @@ inline bool LossParam_ReduceOp_Parse(
     const ::std::string& name, LossParam_ReduceOp* value) {
   return ::google::protobuf::internal::ParseNamedEnum<LossParam_ReduceOp>(
     LossParam_ReduceOp_descriptor(), name, value);
+}
+enum ReduceAllParam_ReduceAllOp {
+  ReduceAllParam_ReduceAllOp_SUM = 0,
+  ReduceAllParam_ReduceAllOp_AVG = 1,
+  ReduceAllParam_ReduceAllOp_ReduceAllParam_ReduceAllOp_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  ReduceAllParam_ReduceAllOp_ReduceAllParam_ReduceAllOp_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool ReduceAllParam_ReduceAllOp_IsValid(int value);
+const ReduceAllParam_ReduceAllOp ReduceAllParam_ReduceAllOp_ReduceAllOp_MIN = ReduceAllParam_ReduceAllOp_SUM;
+const ReduceAllParam_ReduceAllOp ReduceAllParam_ReduceAllOp_ReduceAllOp_MAX = ReduceAllParam_ReduceAllOp_AVG;
+const int ReduceAllParam_ReduceAllOp_ReduceAllOp_ARRAYSIZE = ReduceAllParam_ReduceAllOp_ReduceAllOp_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ReduceAllParam_ReduceAllOp_descriptor();
+inline const ::std::string& ReduceAllParam_ReduceAllOp_Name(ReduceAllParam_ReduceAllOp value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ReduceAllParam_ReduceAllOp_descriptor(), value);
+}
+inline bool ReduceAllParam_ReduceAllOp_Parse(
+    const ::std::string& name, ReduceAllParam_ReduceAllOp* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ReduceAllParam_ReduceAllOp>(
+    ReduceAllParam_ReduceAllOp_descriptor(), name, value);
 }
 enum ReduceParam_ReduceOp {
   ReduceParam_ReduceOp_ADD = 0,
@@ -428,6 +458,27 @@ inline bool BatchNormalizationParam_Mode_Parse(
     const ::std::string& name, BatchNormalizationParam_Mode* value) {
   return ::google::protobuf::internal::ParseNamedEnum<BatchNormalizationParam_Mode>(
     BatchNormalizationParam_Mode_descriptor(), name, value);
+}
+enum PatchingParam_Mode {
+  PatchingParam_Mode_UP = 0,
+  PatchingParam_Mode_DOWN = 1,
+  PatchingParam_Mode_PatchingParam_Mode_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  PatchingParam_Mode_PatchingParam_Mode_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool PatchingParam_Mode_IsValid(int value);
+const PatchingParam_Mode PatchingParam_Mode_Mode_MIN = PatchingParam_Mode_UP;
+const PatchingParam_Mode PatchingParam_Mode_Mode_MAX = PatchingParam_Mode_DOWN;
+const int PatchingParam_Mode_Mode_ARRAYSIZE = PatchingParam_Mode_Mode_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* PatchingParam_Mode_descriptor();
+inline const ::std::string& PatchingParam_Mode_Name(PatchingParam_Mode value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    PatchingParam_Mode_descriptor(), value);
+}
+inline bool PatchingParam_Mode_Parse(
+    const ::std::string& name, PatchingParam_Mode* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PatchingParam_Mode>(
+    PatchingParam_Mode_descriptor(), name, value);
 }
 enum LiftingParam_Mode {
   LiftingParam_Mode_UP = 0,
@@ -2849,6 +2900,112 @@ class LeakyReluParam : public ::google::protobuf::Message /* @@protoc_insertion_
 };
 // -------------------------------------------------------------------
 
+class ReduceAllParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.ReduceAllParam) */ {
+ public:
+  ReduceAllParam();
+  virtual ~ReduceAllParam();
+
+  ReduceAllParam(const ReduceAllParam& from);
+
+  inline ReduceAllParam& operator=(const ReduceAllParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ReduceAllParam& default_instance();
+
+  static inline const ReduceAllParam* internal_default_instance() {
+    return reinterpret_cast<const ReduceAllParam*>(
+               &_ReduceAllParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    25;
+
+  void Swap(ReduceAllParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ReduceAllParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ReduceAllParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ReduceAllParam& from);
+  void MergeFrom(const ReduceAllParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ReduceAllParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef ReduceAllParam_ReduceAllOp ReduceAllOp;
+  static const ReduceAllOp SUM =
+    ReduceAllParam_ReduceAllOp_SUM;
+  static const ReduceAllOp AVG =
+    ReduceAllParam_ReduceAllOp_AVG;
+  static inline bool ReduceAllOp_IsValid(int value) {
+    return ReduceAllParam_ReduceAllOp_IsValid(value);
+  }
+  static const ReduceAllOp ReduceAllOp_MIN =
+    ReduceAllParam_ReduceAllOp_ReduceAllOp_MIN;
+  static const ReduceAllOp ReduceAllOp_MAX =
+    ReduceAllParam_ReduceAllOp_ReduceAllOp_MAX;
+  static const int ReduceAllOp_ARRAYSIZE =
+    ReduceAllParam_ReduceAllOp_ReduceAllOp_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  ReduceAllOp_descriptor() {
+    return ReduceAllParam_ReduceAllOp_descriptor();
+  }
+  static inline const ::std::string& ReduceAllOp_Name(ReduceAllOp value) {
+    return ReduceAllParam_ReduceAllOp_Name(value);
+  }
+  static inline bool ReduceAllOp_Parse(const ::std::string& name,
+      ReduceAllOp* value) {
+    return ReduceAllParam_ReduceAllOp_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // .deepflow.ReduceAllParam.ReduceAllOp reduce_op = 1;
+  void clear_reduce_op();
+  static const int kReduceOpFieldNumber = 1;
+  ::deepflow::ReduceAllParam_ReduceAllOp reduce_op() const;
+  void set_reduce_op(::deepflow::ReduceAllParam_ReduceAllOp value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.ReduceAllParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  int reduce_op_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class ReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.ReduceParam) */ {
  public:
   ReduceParam();
@@ -2869,7 +3026,7 @@ class ReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_ReduceParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    25;
+    26;
 
   void Swap(ReduceParam* other);
 
@@ -3027,7 +3184,7 @@ class SnapshotParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_SnapshotParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    26;
+    27;
 
   void Swap(SnapshotParam* other);
 
@@ -3136,7 +3293,7 @@ class PlaceHolderParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_PlaceHolderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    27;
+    28;
 
   void Swap(PlaceHolderParam* other);
 
@@ -3219,7 +3376,7 @@ class RestructureParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_RestructureParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    28;
+    29;
 
   void Swap(RestructureParam* other);
 
@@ -3306,7 +3463,7 @@ class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_VariableParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    29;
+    30;
 
   void Swap(VariableParam* other);
 
@@ -3414,7 +3571,7 @@ class DataGeneratorParam : public ::google::protobuf::Message /* @@protoc_insert
                &_DataGeneratorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    30;
+    31;
 
   void Swap(DataGeneratorParam* other);
 
@@ -3494,7 +3651,7 @@ class ActivationParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_ActivationParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    31;
+    32;
 
   void Swap(ActivationParam* other);
 
@@ -3613,7 +3770,7 @@ class ImageBatchReaderParam : public ::google::protobuf::Message /* @@protoc_ins
                &_ImageBatchReaderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    32;
+    33;
 
   void Swap(ImageBatchReaderParam* other);
 
@@ -3718,7 +3875,7 @@ class ImageReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_ImageReaderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    33;
+    34;
 
   void Swap(ImageReaderParam* other);
 
@@ -3839,7 +3996,7 @@ class MnistParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_MnistParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    34;
+    35;
 
   void Swap(MnistParam* other);
 
@@ -4000,7 +4157,7 @@ class CastFloatParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_CastFloatParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    35;
+    36;
 
   void Swap(CastFloatParam* other);
 
@@ -4073,7 +4230,7 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
                &_BatchNormalizationParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    36;
+    37;
 
   void Swap(BatchNormalizationParam* other);
 
@@ -4254,7 +4411,7 @@ class ReplayMemoryParam : public ::google::protobuf::Message /* @@protoc_inserti
                &_ReplayMemoryParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    37;
+    38;
 
   void Swap(ReplayMemoryParam* other);
 
@@ -4334,7 +4491,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NodeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    38;
+    39;
 
   void Swap(NodeParam* other);
 
@@ -4818,6 +4975,33 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::LiftingParam* release_lifting_param();
   void set_allocated_lifting_param(::deepflow::LiftingParam* lifting_param);
 
+  // .deepflow.PatchingParam patching_param = 140;
+  bool has_patching_param() const;
+  void clear_patching_param();
+  static const int kPatchingParamFieldNumber = 140;
+  const ::deepflow::PatchingParam& patching_param() const;
+  ::deepflow::PatchingParam* mutable_patching_param();
+  ::deepflow::PatchingParam* release_patching_param();
+  void set_allocated_patching_param(::deepflow::PatchingParam* patching_param);
+
+  // .deepflow.AbsParam abs_param = 141;
+  bool has_abs_param() const;
+  void clear_abs_param();
+  static const int kAbsParamFieldNumber = 141;
+  const ::deepflow::AbsParam& abs_param() const;
+  ::deepflow::AbsParam* mutable_abs_param();
+  ::deepflow::AbsParam* release_abs_param();
+  void set_allocated_abs_param(::deepflow::AbsParam* abs_param);
+
+  // .deepflow.ReduceAllParam reduce_all_param = 142;
+  bool has_reduce_all_param() const;
+  void clear_reduce_all_param();
+  static const int kReduceAllParamFieldNumber = 142;
+  const ::deepflow::ReduceAllParam& reduce_all_param() const;
+  ::deepflow::ReduceAllParam* mutable_reduce_all_param();
+  ::deepflow::ReduceAllParam* release_reduce_all_param();
+  void set_allocated_reduce_all_param(::deepflow::ReduceAllParam* reduce_all_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -4866,6 +5050,9 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::LossParam* loss_param_;
   ::deepflow::ExpParam* exp_param_;
   ::deepflow::LiftingParam* lifting_param_;
+  ::deepflow::PatchingParam* patching_param_;
+  ::deepflow::AbsParam* abs_param_;
+  ::deepflow::ReduceAllParam* reduce_all_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4891,7 +5078,7 @@ class SquareParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SquareParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    39;
+    40;
 
   void Swap(SquareParam* other);
 
@@ -4944,6 +5131,79 @@ class SquareParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 };
 // -------------------------------------------------------------------
 
+class AbsParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.AbsParam) */ {
+ public:
+  AbsParam();
+  virtual ~AbsParam();
+
+  AbsParam(const AbsParam& from);
+
+  inline AbsParam& operator=(const AbsParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AbsParam& default_instance();
+
+  static inline const AbsParam* internal_default_instance() {
+    return reinterpret_cast<const AbsParam*>(
+               &_AbsParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    41;
+
+  void Swap(AbsParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AbsParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AbsParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AbsParam& from);
+  void MergeFrom(const AbsParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AbsParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:deepflow.AbsParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class SquareErrorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.SquareErrorParam) */ {
  public:
   SquareErrorParam();
@@ -4964,7 +5224,7 @@ class SquareErrorParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_SquareErrorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    40;
+    42;
 
   void Swap(SquareErrorParam* other);
 
@@ -5037,7 +5297,7 @@ class SoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_SoftmaxParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    41;
+    43;
 
   void Swap(SoftmaxParam* other);
 
@@ -5090,6 +5350,126 @@ class SoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 };
 // -------------------------------------------------------------------
 
+class PatchingParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.PatchingParam) */ {
+ public:
+  PatchingParam();
+  virtual ~PatchingParam();
+
+  PatchingParam(const PatchingParam& from);
+
+  inline PatchingParam& operator=(const PatchingParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PatchingParam& default_instance();
+
+  static inline const PatchingParam* internal_default_instance() {
+    return reinterpret_cast<const PatchingParam*>(
+               &_PatchingParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    44;
+
+  void Swap(PatchingParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PatchingParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PatchingParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PatchingParam& from);
+  void MergeFrom(const PatchingParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PatchingParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef PatchingParam_Mode Mode;
+  static const Mode UP =
+    PatchingParam_Mode_UP;
+  static const Mode DOWN =
+    PatchingParam_Mode_DOWN;
+  static inline bool Mode_IsValid(int value) {
+    return PatchingParam_Mode_IsValid(value);
+  }
+  static const Mode Mode_MIN =
+    PatchingParam_Mode_Mode_MIN;
+  static const Mode Mode_MAX =
+    PatchingParam_Mode_Mode_MAX;
+  static const int Mode_ARRAYSIZE =
+    PatchingParam_Mode_Mode_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  Mode_descriptor() {
+    return PatchingParam_Mode_descriptor();
+  }
+  static inline const ::std::string& Mode_Name(Mode value) {
+    return PatchingParam_Mode_Name(value);
+  }
+  static inline bool Mode_Parse(const ::std::string& name,
+      Mode* value) {
+    return PatchingParam_Mode_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // .deepflow.PatchingParam.Mode mode = 1;
+  void clear_mode();
+  static const int kModeFieldNumber = 1;
+  ::deepflow::PatchingParam_Mode mode() const;
+  void set_mode(::deepflow::PatchingParam_Mode value);
+
+  // int32 num_vertical_patch = 2;
+  void clear_num_vertical_patch();
+  static const int kNumVerticalPatchFieldNumber = 2;
+  ::google::protobuf::int32 num_vertical_patch() const;
+  void set_num_vertical_patch(::google::protobuf::int32 value);
+
+  // int32 num_horizontal_patch = 3;
+  void clear_num_horizontal_patch();
+  static const int kNumHorizontalPatchFieldNumber = 3;
+  ::google::protobuf::int32 num_horizontal_patch() const;
+  void set_num_horizontal_patch(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.PatchingParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  int mode_;
+  ::google::protobuf::int32 num_vertical_patch_;
+  ::google::protobuf::int32 num_horizontal_patch_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class LiftingParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.LiftingParam) */ {
  public:
   LiftingParam();
@@ -5110,7 +5490,7 @@ class LiftingParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_LiftingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    42;
+    45;
 
   void Swap(LiftingParam* other);
 
@@ -5216,7 +5596,7 @@ class InitFillParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_InitFillParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    43;
+    46;
 
   void Swap(InitFillParam* other);
 
@@ -5296,7 +5676,7 @@ class InitIndexFillParam : public ::google::protobuf::Message /* @@protoc_insert
                &_InitIndexFillParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    44;
+    47;
 
   void Swap(InitIndexFillParam* other);
 
@@ -5376,7 +5756,7 @@ class InitRandomUniformParam : public ::google::protobuf::Message /* @@protoc_in
                &_InitRandomUniformParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    45;
+    48;
 
   void Swap(InitRandomUniformParam* other);
 
@@ -5463,7 +5843,7 @@ class InitRandomNormalParam : public ::google::protobuf::Message /* @@protoc_ins
                &_InitRandomNormalParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    46;
+    49;
 
   void Swap(InitRandomNormalParam* other);
 
@@ -5550,7 +5930,7 @@ class InitStepParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_InitStepParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    47;
+    50;
 
   void Swap(InitStepParam* other);
 
@@ -5637,7 +6017,7 @@ class InitThreeStateParam : public ::google::protobuf::Message /* @@protoc_inser
                &_InitThreeStateParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    48;
+    51;
 
   void Swap(InitThreeStateParam* other);
 
@@ -5710,7 +6090,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_InitParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    49;
+    52;
 
   void Swap(InitParam* other);
 
@@ -5878,7 +6258,7 @@ class SGDSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_SGDSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    50;
+    53;
 
   void Swap(SGDSolverParam* other);
 
@@ -5965,7 +6345,7 @@ class GainSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_GainSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    51;
+    54;
 
   void Swap(GainSolverParam* other);
 
@@ -6080,7 +6460,7 @@ class AdaDeltaSolverParam : public ::google::protobuf::Message /* @@protoc_inser
                &_AdaDeltaSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    52;
+    55;
 
   void Swap(AdaDeltaSolverParam* other);
 
@@ -6174,7 +6554,7 @@ class AdamSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_AdamSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    53;
+    56;
 
   void Swap(AdamSolverParam* other);
 
@@ -6275,7 +6655,7 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    54;
+    57;
 
   void Swap(SolverParam* other);
 
@@ -6418,7 +6798,7 @@ class PhaseParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_PhaseParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    55;
+    58;
 
   void Swap(PhaseParam* other);
 
@@ -6543,7 +6923,7 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_BlockParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    56;
+    59;
 
   void Swap(BlockParam* other);
 
@@ -7733,6 +8113,24 @@ inline void LeakyReluParam::set_randomize(bool value) {
   
   randomize_ = value;
   // @@protoc_insertion_point(field_set:deepflow.LeakyReluParam.randomize)
+}
+
+// -------------------------------------------------------------------
+
+// ReduceAllParam
+
+// .deepflow.ReduceAllParam.ReduceAllOp reduce_op = 1;
+inline void ReduceAllParam::clear_reduce_op() {
+  reduce_op_ = 0;
+}
+inline ::deepflow::ReduceAllParam_ReduceAllOp ReduceAllParam::reduce_op() const {
+  // @@protoc_insertion_point(field_get:deepflow.ReduceAllParam.reduce_op)
+  return static_cast< ::deepflow::ReduceAllParam_ReduceAllOp >(reduce_op_);
+}
+inline void ReduceAllParam::set_reduce_op(::deepflow::ReduceAllParam_ReduceAllOp value) {
+  
+  reduce_op_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.ReduceAllParam.reduce_op)
 }
 
 // -------------------------------------------------------------------
@@ -10510,9 +10908,130 @@ inline void NodeParam::set_allocated_lifting_param(::deepflow::LiftingParam* lif
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.lifting_param)
 }
 
+// .deepflow.PatchingParam patching_param = 140;
+inline bool NodeParam::has_patching_param() const {
+  return this != internal_default_instance() && patching_param_ != NULL;
+}
+inline void NodeParam::clear_patching_param() {
+  if (GetArenaNoVirtual() == NULL && patching_param_ != NULL) delete patching_param_;
+  patching_param_ = NULL;
+}
+inline const ::deepflow::PatchingParam& NodeParam::patching_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.patching_param)
+  return patching_param_ != NULL ? *patching_param_
+                         : *::deepflow::PatchingParam::internal_default_instance();
+}
+inline ::deepflow::PatchingParam* NodeParam::mutable_patching_param() {
+  
+  if (patching_param_ == NULL) {
+    patching_param_ = new ::deepflow::PatchingParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.patching_param)
+  return patching_param_;
+}
+inline ::deepflow::PatchingParam* NodeParam::release_patching_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.patching_param)
+  
+  ::deepflow::PatchingParam* temp = patching_param_;
+  patching_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_patching_param(::deepflow::PatchingParam* patching_param) {
+  delete patching_param_;
+  patching_param_ = patching_param;
+  if (patching_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.patching_param)
+}
+
+// .deepflow.AbsParam abs_param = 141;
+inline bool NodeParam::has_abs_param() const {
+  return this != internal_default_instance() && abs_param_ != NULL;
+}
+inline void NodeParam::clear_abs_param() {
+  if (GetArenaNoVirtual() == NULL && abs_param_ != NULL) delete abs_param_;
+  abs_param_ = NULL;
+}
+inline const ::deepflow::AbsParam& NodeParam::abs_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.abs_param)
+  return abs_param_ != NULL ? *abs_param_
+                         : *::deepflow::AbsParam::internal_default_instance();
+}
+inline ::deepflow::AbsParam* NodeParam::mutable_abs_param() {
+  
+  if (abs_param_ == NULL) {
+    abs_param_ = new ::deepflow::AbsParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.abs_param)
+  return abs_param_;
+}
+inline ::deepflow::AbsParam* NodeParam::release_abs_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.abs_param)
+  
+  ::deepflow::AbsParam* temp = abs_param_;
+  abs_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_abs_param(::deepflow::AbsParam* abs_param) {
+  delete abs_param_;
+  abs_param_ = abs_param;
+  if (abs_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.abs_param)
+}
+
+// .deepflow.ReduceAllParam reduce_all_param = 142;
+inline bool NodeParam::has_reduce_all_param() const {
+  return this != internal_default_instance() && reduce_all_param_ != NULL;
+}
+inline void NodeParam::clear_reduce_all_param() {
+  if (GetArenaNoVirtual() == NULL && reduce_all_param_ != NULL) delete reduce_all_param_;
+  reduce_all_param_ = NULL;
+}
+inline const ::deepflow::ReduceAllParam& NodeParam::reduce_all_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.reduce_all_param)
+  return reduce_all_param_ != NULL ? *reduce_all_param_
+                         : *::deepflow::ReduceAllParam::internal_default_instance();
+}
+inline ::deepflow::ReduceAllParam* NodeParam::mutable_reduce_all_param() {
+  
+  if (reduce_all_param_ == NULL) {
+    reduce_all_param_ = new ::deepflow::ReduceAllParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.reduce_all_param)
+  return reduce_all_param_;
+}
+inline ::deepflow::ReduceAllParam* NodeParam::release_reduce_all_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.reduce_all_param)
+  
+  ::deepflow::ReduceAllParam* temp = reduce_all_param_;
+  reduce_all_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_reduce_all_param(::deepflow::ReduceAllParam* reduce_all_param) {
+  delete reduce_all_param_;
+  reduce_all_param_ = reduce_all_param;
+  if (reduce_all_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.reduce_all_param)
+}
+
 // -------------------------------------------------------------------
 
 // SquareParam
+
+// -------------------------------------------------------------------
+
+// AbsParam
 
 // -------------------------------------------------------------------
 
@@ -10521,6 +11040,52 @@ inline void NodeParam::set_allocated_lifting_param(::deepflow::LiftingParam* lif
 // -------------------------------------------------------------------
 
 // SoftmaxParam
+
+// -------------------------------------------------------------------
+
+// PatchingParam
+
+// .deepflow.PatchingParam.Mode mode = 1;
+inline void PatchingParam::clear_mode() {
+  mode_ = 0;
+}
+inline ::deepflow::PatchingParam_Mode PatchingParam::mode() const {
+  // @@protoc_insertion_point(field_get:deepflow.PatchingParam.mode)
+  return static_cast< ::deepflow::PatchingParam_Mode >(mode_);
+}
+inline void PatchingParam::set_mode(::deepflow::PatchingParam_Mode value) {
+  
+  mode_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.PatchingParam.mode)
+}
+
+// int32 num_vertical_patch = 2;
+inline void PatchingParam::clear_num_vertical_patch() {
+  num_vertical_patch_ = 0;
+}
+inline ::google::protobuf::int32 PatchingParam::num_vertical_patch() const {
+  // @@protoc_insertion_point(field_get:deepflow.PatchingParam.num_vertical_patch)
+  return num_vertical_patch_;
+}
+inline void PatchingParam::set_num_vertical_patch(::google::protobuf::int32 value) {
+  
+  num_vertical_patch_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.PatchingParam.num_vertical_patch)
+}
+
+// int32 num_horizontal_patch = 3;
+inline void PatchingParam::clear_num_horizontal_patch() {
+  num_horizontal_patch_ = 0;
+}
+inline ::google::protobuf::int32 PatchingParam::num_horizontal_patch() const {
+  // @@protoc_insertion_point(field_get:deepflow.PatchingParam.num_horizontal_patch)
+  return num_horizontal_patch_;
+}
+inline void PatchingParam::set_num_horizontal_patch(::google::protobuf::int32 value) {
+  
+  num_horizontal_patch_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.PatchingParam.num_horizontal_patch)
+}
 
 // -------------------------------------------------------------------
 
@@ -11845,6 +12410,12 @@ BlockParam::initializer() const {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -11864,6 +12435,11 @@ template <> struct is_proto_enum< ::deepflow::LossParam_ReduceOp> : ::google::pr
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::LossParam_ReduceOp>() {
   return ::deepflow::LossParam_ReduceOp_descriptor();
+}
+template <> struct is_proto_enum< ::deepflow::ReduceAllParam_ReduceAllOp> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::ReduceAllParam_ReduceAllOp>() {
+  return ::deepflow::ReduceAllParam_ReduceAllOp_descriptor();
 }
 template <> struct is_proto_enum< ::deepflow::ReduceParam_ReduceOp> : ::google::protobuf::internal::true_type {};
 template <>
@@ -11899,6 +12475,11 @@ template <> struct is_proto_enum< ::deepflow::BatchNormalizationParam_Mode> : ::
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::BatchNormalizationParam_Mode>() {
   return ::deepflow::BatchNormalizationParam_Mode_descriptor();
+}
+template <> struct is_proto_enum< ::deepflow::PatchingParam_Mode> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::PatchingParam_Mode>() {
+  return ::deepflow::PatchingParam_Mode_descriptor();
 }
 template <> struct is_proto_enum< ::deepflow::LiftingParam_Mode> : ::google::protobuf::internal::true_type {};
 template <>

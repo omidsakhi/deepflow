@@ -14,7 +14,7 @@ void AdamKernel(const int n, float *w, const float *g, float *m, float *v, const
 		float mi = m[i] = m[i] * beta1 + gi*(1 - beta1);
 		float vi = v[i] = v[i] * beta2 + gi*gi*(1 - beta2);
 		gi = learning_rate * mi / (sqrt(vi) + eps);
-		w[i] += gi;
+		w[i] -= gi;
 	}
 }
 
@@ -39,10 +39,10 @@ void AdamSolver::apply(std::shared_ptr<Variable> var) {
 		}
 	}
 	LOG_IF(INFO, verbos) << "APPLYING SOLVER " << name() << " ON " << var->name();
-	auto output = var->output(0);
-	auto size = output->value()->size();
-	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), (float*)output->diff()->data(), _m, _v, _my_param->beta1(), _my_param->beta2(), _my_param->eps(), _my_param->learning_rate());
+	auto size = var->output(0)->value()->size();	
+	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _m, _v, _my_param->beta1(), _my_param->beta2(), _my_param->eps(), _my_param->learning_rate());	
 	DF_KERNEL_CHECK();	
+	var->reset_gradients();
 }
 
 void AdamSolver::init(std::shared_ptr<Variable> var) {

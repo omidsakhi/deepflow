@@ -14,7 +14,7 @@ void ExpKernelBackward(const int n, const float *x, const float *diff, float *ou
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n)
-		out[i] += exp(x[i]) * diff[i];
+		out[i] = exp(x[i]) * diff[i];
 }
 
 Exp::Exp(deepflow::NodeParam *param) : Node(param) {

@@ -20,7 +20,7 @@ void AdaDeltaKernel(const int n, float *w, const float *g, float *h1, float *h2,
 		float hi = h1[i] = momentum * h1[i] + (1 - momentum) * gi * gi;
 		gi = gi * sqrt((h2[i] + delta) / (hi + delta));
 		h2[i] = momentum * h2[i] + (1 - momentum) * gi * gi;
-		w[i] += learning_rate * gi;
+		w[i] -= learning_rate * gi;
 	}
 }
 
@@ -43,11 +43,11 @@ void AdaDeltaSolver::apply(std::shared_ptr<Variable> var) {
 			return;
 		}
 	}
-	LOG_IF(INFO, verbos) << "APPLYING SOLVER " << name() << " ON " << var->name();
-	auto output = var->output(0);
-	auto size = output->value()->size();
-	AdaDeltaKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), (float*)output->diff()->data(), _h1, _h2, _my_param->momentum(), _my_param->learning_rate(), _my_param->delta());
+	LOG_IF(INFO, verbos) << "APPLYING SOLVER " << name() << " ON " << var->name();	
+	auto size = var->output(0)->value()->size();
+	AdaDeltaKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _h1, _h2, _my_param->momentum(), _my_param->learning_rate(), _my_param->delta());	
 	DF_KERNEL_CHECK();
+	var->reset_gradients();
 }
 
 void AdaDeltaSolver::init(std::shared_ptr<Variable> var) {

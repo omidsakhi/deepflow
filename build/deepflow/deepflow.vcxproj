@@ -40,6 +40,7 @@
     <ClInclude Include="..\..\include\initializers\random_uniform.h" />
     <ClInclude Include="..\..\include\initializers\step.h" />
     <ClInclude Include="..\..\include\initializers\three_state.h" />
+    <ClInclude Include="..\..\include\nodes\abs.h" />
     <ClInclude Include="..\..\include\nodes\accumulator.h" />
     <ClInclude Include="..\..\include\nodes\activation.h" />
     <ClInclude Include="..\..\include\nodes\add.h" />
@@ -54,6 +55,8 @@
     <ClInclude Include="..\..\include\nodes\equal.h" />
     <ClInclude Include="..\..\include\nodes\exp.h" />
     <ClInclude Include="..\..\include\nodes\lifting.h" />
+    <ClInclude Include="..\..\include\nodes\patching.h" />
+    <ClInclude Include="..\..\include\nodes\reduce_all.h" />
     <ClInclude Include="..\..\include\nodes\square_error.h" />
     <ClInclude Include="..\..\include\nodes\image_reader.h" />
     <ClInclude Include="..\..\include\nodes\leaky_relu.h" />
@@ -101,6 +104,7 @@
     </CudaCompile>
     <ClCompile Include="..\..\src\generators\mnist_reader.cpp" />
     <ClCompile Include="..\..\src\initializers\random_normal.cpp" />
+    <CudaCompile Include="..\..\src\nodes\abs.cu" />
     <CudaCompile Include="..\..\src\nodes\accumulator.cu" />
     <CudaCompile Include="..\..\src\nodes\add.cu" />
     <CudaCompile Include="..\..\src\nodes\bias_add.cu" />
@@ -108,6 +112,8 @@
     <CudaCompile Include="..\..\src\nodes\display.cu" />
     <CudaCompile Include="..\..\src\nodes\equal.cu" />
     <CudaCompile Include="..\..\src\nodes\lifting.cu" />
+    <CudaCompile Include="..\..\src\nodes\patching.cu" />
+    <CudaCompile Include="..\..\src\nodes\reduce_all.cu" />
     <CudaCompile Include="..\..\src\nodes\square_error.cu" />
     <CudaCompile Include="..\..\src\nodes\image_reader.cu" />
     <CudaCompile Include="..\..\src\nodes\leaky_relu.cu" />
@@ -256,8 +262,8 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <AdditionalLibraryDirectories>..\..\third-party\boost_1_64_0\stage\lib;..\..\third-party\protobuf\src;..\..\third-party\protobuf\cmake-build\Debug;..\..\third-party\opencv\build\lib\Debug;..\..\third-party\glog\cmake-build\Debug;..\..\third-party\socket.io-client-cpp\cmake-build\Debug;..\..\third-party\gflags\cmake-build\lib\Debug;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
-copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
@@ -311,8 +317,8 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <AdditionalLibraryDirectories>..\..\third-party\boost_1_64_0\stage\lib;..\..\third-party\protobuf\src;..\..\third-party\protobuf\cmake-build\Release;..\..\third-party\opencv\build\lib\Release;..\..\third-party\glog\cmake-build\Release;..\..\third-party\socket.io-client-cpp\cmake-build\Release;..\..\third-party\gflags\cmake-build\lib\Release;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
-copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>

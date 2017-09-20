@@ -24,6 +24,7 @@ public:
 	std::shared_ptr<Node> get_node(std::string name);
 	void forward(std::string end_node_output = "ALL");
 	void reset_gradients();
+	void clamp(float min, float max);	
 	void resove_propagation();
 	void backward(std::string node = "ALL");
 	void apply_solvers();

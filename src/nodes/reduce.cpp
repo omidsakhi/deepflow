@@ -112,7 +112,7 @@ std::string Reduce::to_cpp() const
 }
 
 void Reduce::initBackward() {
-	
+	//LOG(FATAL);
 }
 
 void Reduce::forward() {		

@@ -49,6 +49,16 @@ public:
 		LIFT_DOWN = 1
 	};
 
+	enum PatchingMode {
+		PATCHING_UP = 0,
+		PATCHING_DOWN = 1
+	};
+
+	enum ReduceAllOp {
+		REDUCE_ALL_SUM,
+		REDUCE_ALL_AVG
+	};
+
 	DeepFlow();
 	DeepFlow(std::shared_ptr<Block> block);
 
@@ -77,7 +87,8 @@ public:
 	std::string conv2d(std::string input, std::string filter, std::string bias, float negative_slope /* NOT SUPPORTED YET BY CUDNN */, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string conv2d(std::string input, std::string filter, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string pooling(std::string input, int windowHeight = 3, int windowWidth = 3, int verticalPadding = 0, int horizontalPadding = 0, int verticalStride = 1, int horizontalStride = 1, std::string name = "maxpool", std::initializer_list<std::string> phases = {});
-	std::string lifting(std::string input, LiftingMode mode, std::string name = "lift", std::initializer_list<std::string> phases = {});
+	std::string lifting(std::string input, LiftingMode mode, std::string name = "lifting", std::initializer_list<std::string> phases = {});
+	std::string patching(std::string input, PatchingMode mode, int num_vertical_patches, int num_horizontal_patches, std::string name = "patching", std::initializer_list<std::string> phases = {});
 	std::string transposed_conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
 
 	// MATH
@@ -85,8 +96,9 @@ public:
 	std::string add(std::string a, std::string b, std::string name = "add", std::initializer_list<std::string> phases = {});
 	std::string dot(std::string a, std::string b, std::string name = "dot", std::initializer_list<std::string> phases = {});
 	std::string square(std::string a, std::string name = "square", std::initializer_list<std::string> phases = {});
+	std::string abs(std::string a, std::string name = "abs", std::initializer_list<std::string> phases = {});
 	std::string exp(std::string a, std::string name = "exp", std::initializer_list<std::string> phases = {});
-	std::string log(std::string a, float coef = -1, std::string name = "log", std::initializer_list<std::string> phases = {});
+	std::string log(std::string a, float coef = 1.0f, std::string name = "log", std::initializer_list<std::string> phases = {});
 	std::string matmul(std::string a, std::string b, std::string name = "ip", std::initializer_list<std::string> phases = {});
 	std::string subtract(std::string a, std::string b, std::string name = "sub", std::initializer_list<std::string> phases = {});
 	std::string square_error(std::string a, std::string b, std::string name = "SquareError", std::initializer_list<std::string> phases = {});
@@ -97,6 +109,7 @@ public:
 	std::string dropout(std::string a, float dropout = 0.5f, bool train_only = true, std::string name = "dropout", std::initializer_list<std::string> phases = {});
 
 	//REDUCTION
+	
 	std::string argmax(std::string input, int reduceDimension, std::string name = "argmax", std::initializer_list<std::string> phases = {});
 	std::string argmin(std::string input, int reduceDimension, std::string name = "argmin", std::initializer_list<std::string> phases = {});
 	std::string reduce_max(std::string input, int reduceDimension, std::string name = "max", std::initializer_list<std::string> phases = {});
@@ -106,6 +119,9 @@ public:
 	std::string reduce_absmax(std::string input, int reduceDimension, std::string name = "absmax", std::initializer_list<std::string> phases = {});
 	std::string reduce_norm1(std::string input, int reduceDimension, std::string name = "absmax", std::initializer_list<std::string> phases = {});
 	std::string reduce_norm2(std::string input, int reduceDimension, std::string name = "absmax", std::initializer_list<std::string> phases = {});
+	std::string reduce_mean(std::string input, std::string name = "mean", std::initializer_list<std::string> phases = {});
+	std::string reduce_sum(std::string input, std::string name = "mean", std::initializer_list<std::string> phases = {});
+	
 
 	//ACTIVATIONS
 	std::string leaky_relu(std::string a, float negative_slope = 0.01f, std::string name = "leaky_relu", std::initializer_list<std::string> phases = {});
@@ -123,7 +139,7 @@ public:
 	// SOLVERS
 	std::string sgd_solver(float momentum, float learning_rate, std::string name = "sgd", std::string enable_input = "");
 	std::string gain_solver(float momentum = 0.98f, float learning_rate = 10e-2f, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f, std::string name = "gain", std::string enable_input = "");
-	std::string adam_solver(float learning_rate = 10e-2f, float beta1 = 0.5f, float beta2 = 0.5f, float eps = 10e-8f, std::string name = "adam",std::string enable_input = "");
+	std::string adam_solver(float learning_rate = 10e-2f, float beta1 = 0.5f, float beta2 = 0.999f, float eps = 10e-8f, std::string name = "adam",std::string enable_input = "");
 	std::string adadelta_solver(float learning_rate = 10e-2f, float momentum = 0.5f, float delta = 1e-6f, std::string name = "adadelta", std::string enable_input = "");
 	
 	// PRINTERS & DISPLAYS
@@ -133,13 +149,13 @@ public:
 	void psnr(std::string a, std::string b, ActionTime printTime = ActionTime::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
 
 	// NORMALIZATION
-	std::string batch_normalization(std::string input, NormalizationMode mode, float exponential_average_factor = 0.0f, float alpha_data = 1.0f, float beta_data = 0.0f, float alpha_param = 1.0f, float beta_param = 1.0f, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
+	std::string batch_normalization(std::string input, NormalizationMode mode = DeepFlow::SPATIAL, float exponential_average_factor = 0.1f, float alpha_data = 1.0f, float beta_data = 1.0f, float alpha_param = 0.0f, float beta_param = 1.0f, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
 
 	// SOCKET IO
 	void sio_output(std::initializer_list<std::string> inputs, ActionTime printTime = ActionTime::EVERY_PASS, std::string host = "127.0.0.1", int port = 6643, std::string name = "sio_output", std::initializer_list<std::string> phases = {});
 
 	// OTHER	
-	std::string loss(std::string a, ReduceOp op, std::string name = "loss", std::initializer_list<std::string> phases = {});
+	std::string loss(std::string a, std::string coef, ReduceOp op, std::string name = "loss", std::initializer_list<std::string> phases = {});
 	std::string equal(std::string a, std::string b, std::string name = "Equal", std::initializer_list<std::string> phases = {});
 	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});
 	std::string negate(std::string input, ActionType negateType = ActionType::VALUES_AND_DIFFS, std::string name = "negate", std::initializer_list<std::string> phases = {});
@@ -160,6 +176,8 @@ public:
 
 private:
 	std::string _reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, deepflow::ReduceParam::OutputType type, int output, std::string name, std::initializer_list<std::string> phases);	
+	std::string _reduce_all(std::string input, ReduceAllOp op, std::string name, std::initializer_list<std::string> phases);
+
 
 private:		
 	std::shared_ptr<Block> _block;

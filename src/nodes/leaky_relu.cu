@@ -45,7 +45,7 @@ void LeakyRelu::forward() {
 
 void LeakyRelu::backward() {	
 	auto size = _inputs[0]->value()->size();	
-	ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), 1.0f, (float*)_inputs[0]->diff()->mutableData(), _negative_slope);
+	ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), 0.0f, (float*)_inputs[0]->diff()->mutableData(), _negative_slope);
 	DF_KERNEL_CHECK();	
 }
 

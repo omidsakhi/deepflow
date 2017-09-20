@@ -59,7 +59,7 @@ std::shared_ptr<Session> create_loss_session() {
 	auto loss_t1 = df.place_holder({ FLAGS_batch, FLAGS_channels, 64, 64 }, Tensor::Float, "loss_t1");
 	auto loss_t2 = df.place_holder({ FLAGS_batch, FLAGS_channels, 64, 64 }, Tensor::Float, "loss_t2");
 	auto sqerr = df.square_error(loss_t1, loss_t2);
-	auto loss = df.loss(sqerr, DeepFlow::AVG);
+	auto loss = df.loss(sqerr, "", DeepFlow::AVG);
 
 	df.print({ loss }, "Epoch: {ep} - Loss: {0}\n", DeepFlow::EVERY_PASS);
 

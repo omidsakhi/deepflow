@@ -165,6 +165,14 @@ message LeakyReluParam {
 	bool randomize = 2;
 }
 
+message ReduceAllParam {
+	enum ReduceAllOp {
+		SUM = 0;
+		AVG = 1;
+	}
+	ReduceAllOp reduce_op = 1;
+}
+
 message ReduceParam {
 	enum ReduceOp {
 		ADD = 0;
@@ -324,9 +332,16 @@ message NodeParam {
   LossParam loss_param = 137;
   ExpParam exp_param = 138;
   LiftingParam lifting_param = 139;  
+  PatchingParam patching_param = 140;
+  AbsParam abs_param = 141;
+  ReduceAllParam reduce_all_param = 142;
 }
 
 message SquareParam {
+	
+}
+
+message AbsParam {
 	
 }
 
@@ -336,6 +351,16 @@ message SquareErrorParam {
 
 message SoftmaxParam {
 
+}
+
+message PatchingParam {
+	enum Mode {
+		UP = 0;    
+		DOWN = 1;
+	}
+	Mode mode = 1;	
+	int32 num_vertical_patch = 2;
+	int32 num_horizontal_patch = 3;
 }
 
 message LiftingParam {

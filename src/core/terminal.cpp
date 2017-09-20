@@ -24,7 +24,9 @@ void NodeInput::connectTerminal(std::shared_ptr<Terminal> terminal)
 
 std::shared_ptr<Node> NodeInput::connectedNode() const
 {
-	return _connected_terminal->parentNode();
+	if (_connected_terminal)
+		return _connected_terminal->parentNode();
+	return NULL;
 }
 
 std::shared_ptr<Terminal> NodeInput::connectedTerminal() const
@@ -110,6 +112,11 @@ void NodeOutput::resetDiff()
 	if (_diff) {
 		DF_NODE_CUDA_CHECK(cudaMemset(_diff->mutableData(), 0, _diff->sizeInBytes()));
 	}
+}
+
+void NodeOutput::resetValue()
+{
+	DF_NODE_CUDA_CHECK(cudaMemset(_value->mutableData(), 0, _value->sizeInBytes()));
 }
 
 void NodeOutput::cpyValueToDiff() {

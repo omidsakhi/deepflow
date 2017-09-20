@@ -10,11 +10,11 @@ void LogKernelForward(const int n, const float coef, const float * __restrict__ 
 }
 
 __global__
-void LogKernelBackward(const int n, const float *x, const float *diff, float *out)
+void LogKernelBackward(const int n, const float coef, const float *x, const float *diff, float *out)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n)
-		out[i] += diff[i] / x[i];
+		out[i] = coef * diff[i] / x[i];
 }
 
 Log::Log(deepflow::NodeParam *param) : Node(param) {
@@ -39,7 +39,8 @@ void Log::forward() {
 
 void Log::backward() {
 	auto size = _inputs[0]->value()->size();
-	LogKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
+	auto coef = _param->log_param().coef();
+	LogKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, coef, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
 	DF_KERNEL_CHECK();
 }
 

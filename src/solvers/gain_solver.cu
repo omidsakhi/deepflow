@@ -28,7 +28,7 @@ void GainStepKernel(const int n, float *w, const float *g, float *m, float *gain
 			_gain = min_gain;
 		gain[i] = _gain;
 		m[i] = _g;
-		w[i] = momentum * w[i] + learning_rate * _g * _gain;
+		w[i] = momentum * w[i] - learning_rate * _g * _gain;
 	}
 }
 
@@ -52,11 +52,11 @@ void GainSolver::apply(std::shared_ptr<Variable> var) {
 			return;
 		}
 	}
-	LOG_IF(INFO, verbos) << "APPLYING SOLVER " << name() << " ON " << var->name();
-	auto output = var->output(0);
-	auto size = output->value()->size();	
-	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*) output->value()->mutableData(), (float*) output->diff()->data(), _previous_gradient, _gain, _my_param->max_gain(), _my_param->min_gain(), _my_param->gain_plus(), _my_param->gain_mult(), _my_param->momentum(), _my_param->learning_rate());
+	LOG_IF(INFO, verbos) << "APPLYING SOLVER " << name() << " ON " << var->name();	
+	auto size = var->output(0)->value()->size();	
+	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _previous_gradient, _gain, _my_param->max_gain(), _my_param->min_gain(), _my_param->gain_plus(), _my_param->gain_mult(), _my_param->momentum(), _my_param->learning_rate());	
 	DF_KERNEL_CHECK();
+	var->reset_gradients();
 }
 
 void GainSolver::init(std::shared_ptr<Variable> var) {

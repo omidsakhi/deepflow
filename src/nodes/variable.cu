@@ -11,6 +11,19 @@
 
 #include <glog/logging.h>
 
+__global__
+void VariableClampKernel(const int n, float *x, const float min, const float max)
+{
+	int i = blockIdx.x*blockDim.x + threadIdx.x;
+	if (i < n) {
+		float val = x[i];
+		if (val < min)
+			x[i] = min;
+		else if (val > max)
+			x[i] = max;
+	}
+}
+
 Variable::Variable(std::shared_ptr<Initializer> initializer, deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_variable_param() == false) << "param.has_variable_param() == false";
 	_initializer = initializer;			
@@ -40,6 +53,9 @@ void Variable::initForward() {
 
 void Variable::initBackward() {	
 	_outputs[0]->initDiff();
+	int size = _outputs[0]->value()->sizeInBytes();
+	DF_CUDA_CHECK(cudaMalloc(&_grad, size));
+	DF_CUDA_CHECK(cudaMemset(_grad, 0, size));
 }
 
 inline void Variable::forward() {
@@ -47,7 +63,17 @@ inline void Variable::forward() {
 }
 
 inline void Variable::backward() {
+	cpy(_outputs[0]->value()->size(), 1.0, _outputs[0]->diff()->data(), 1.0, _grad);
+}
 
+float * Variable::gradients()
+{
+	return _grad;
+}
+
+void Variable::reset_gradients()
+{	
+	DF_CUDA_CHECK(cudaMemset(_grad, 0, _outputs[0]->value()->sizeInBytes()));
 }
 
 void Variable::prep_for_saving()
@@ -58,6 +84,13 @@ void Variable::prep_for_saving()
 	mutable_weights_data->Resize(_outputs[0]->value()->size(),0.0f);
 	LOG_IF(FATAL, mutable_weights_data->size() != _outputs[0]->value()->size());
 	DF_NODE_CUDA_CHECK(cudaMemcpy(mutable_weights_data->mutable_data(), _outputs[0]->value()->data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToHost));
+}
+
+void Variable::clamp(float min, float max)
+{
+	auto size = _outputs[0]->value()->size();
+	VariableClampKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*) _outputs[0]->value()->mutableData(), min, max);
+	DF_KERNEL_CHECK();
 }
 
 Node::BackwardType Variable::backwardType()

@@ -19,29 +19,6 @@ bool DataGenerator::isGenerator()
 	return _no_solver;
 }
 
-void DataGenerator::initForward() {
-	_initializer->init();
-	
-	_outputs[0]->initValue(_initializer->dims());
-	LOG(INFO) << "Data Generator " << _name << " - " << _outputs[0]->value()->shape();
-	if (_param->variable_param().has_weights()) {
-		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _param->variable_param().weights().data().data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
-	}
-	else if (_initializer->param()->has_init_data()) {
-		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _initializer->param()->init_data().data().data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyHostToDevice));
-	}
-	else {
-		_initializer->apply(this);
-		for (int i = 0; i < _outputs[0]->value()->size(); ++i)
-			_param->mutable_variable_param()->mutable_init_param()->mutable_init_data()->add_data(0);
-		DF_NODE_CUDA_CHECK(cudaMemcpy(_param->mutable_variable_param()->mutable_init_param()->mutable_init_data()->mutable_data()->mutable_data(), _outputs[0]->value()->data(), _outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToHost));
-	}	
-}
-
-void DataGenerator::initBackward() {
-	_outputs[0]->initDiff();
-}
-
 void DataGenerator::forward() {
 	if (_no_solver) {
 		_initializer->apply(this);
@@ -54,10 +31,6 @@ void DataGenerator::forward() {
 		}
 	}
 	LOG_IF(INFO, _verbose > 3) << "MNIST " << _name << " - BATCH @ " << _current_batch;
-}
-
-void DataGenerator::backward() {
-	
 }
 
 bool DataGenerator::isLastBatch() {

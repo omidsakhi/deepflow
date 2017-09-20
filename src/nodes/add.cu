@@ -14,7 +14,7 @@ void AddKernelBackward(const int n, const float *dy, const float scale, float * 
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
-		dx[i] += scale * dy[i];		
+		dx[i] = scale * dy[i];		
 	}
 }
 

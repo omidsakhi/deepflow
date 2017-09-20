@@ -23,6 +23,7 @@
 #include "nodes/leaky_relu.h"
 #include "nodes/softmax.h"
 #include "nodes/exp.h"
+#include "nodes/abs.h"
 #include "nodes/square.h"
 #include "nodes/bias_add.h"
 #include "nodes/dropout.h"
@@ -53,6 +54,8 @@
 #include "nodes/loss.h"
 #include "nodes/log.h"
 #include "nodes/lifting.h"
+#include "nodes/patching.h"
+#include "nodes/reduce_all.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -123,12 +126,18 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<MatMul>(node_param);
 	else if (node_param->has_conv_2d_param())
 		return std::make_shared<Convolution2D>(node_param);
+	else if (node_param->has_abs_param())
+		return std::make_shared<Abs>(node_param);
 	else if (node_param->has_log_param())
 		return std::make_shared<Log>(node_param);
 	else if (node_param->has_loss_param())
 		return std::make_shared<Loss>(node_param);
+	else if (node_param->has_reduce_all_param())
+		return std::make_shared<ReduceAll>(node_param);
 	else if (node_param->has_square_error_param())
 		return std::make_shared<SquareError>(node_param);
+	else if (node_param->has_patching_param())
+		return std::make_shared<Patching>(node_param);
 	else if (node_param->has_lifting_param())
 		return std::make_shared<Lifting>(node_param);
 	else if (node_param->has_pooling_param())
@@ -231,9 +240,11 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 	for (auto node : _nodes) {
 		for (int i = 0; i < node->param()->input_size(); ++i) {			
 			const std::string terminal_name = node->param()->input(i);
-			auto terminal = _find_node_output_by_name(terminal_name);
-			LOG_IF(FATAL, terminal == 0) << "Failed to find " << terminal_name << " for node " << node->name() ;
-			node->input(i)->connect(terminal);
+			if (!terminal_name.empty()) {
+				auto terminal = _find_node_output_by_name(terminal_name);
+				LOG_IF(FATAL, terminal == 0) << "Failed to find " << terminal_name << " for node " << node->name();
+				node->input(i)->connect(terminal);
+			}
 		}
 	}
 	
@@ -295,7 +306,7 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 			node->initBackward();
 			node->setInitialized(true);
 			mem_usage(&free_byte, &total_byte, &used_byte_percentage);
-			if (used_byte_percentage > 80) {
+			if (used_byte_percentage > 50) {
 				LOG(WARNING) << "**WARN** - LOW MEMORY - USED: " << used_byte_percentage << "%";
 			}
 		}
@@ -393,8 +404,15 @@ void Session::forward(std::string end_node_output)
 
 void Session::reset_gradients()
 {
-	for (auto node : _nodes)
-		node->resetGradients();
+	for (auto var : _variables)
+		var->reset_gradients();
+}
+
+void Session::clamp(float min, float max)
+{
+	for (auto var : _variables) {		
+		var->clamp(min, max);
+	}
 }
 
 void Session::resove_propagation()
@@ -483,8 +501,8 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 			node->_forward();
 		}
 		if (train) {
-			for (auto node : *nodes)
-				node->resetGradients();			
+			for (auto node : *variable_nodes)
+				node->reset_gradients();			
 			for (auto node : *end_nodes) {
 				node->_unvisit();
 			}

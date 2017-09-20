@@ -71,11 +71,11 @@ public:
 	void write_diffs(std::shared_ptr<Tensor> tensor, float alpha = 1.0, float beta = 0.0f);
 	void _traverse_up(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
 	void _traverse_down(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);	
-	void setVisited(bool state);
-	void resetGradients();
+	void setVisited(bool state);		
 	void cpy(int n, const float alpha, const void *src, const float beta, void *dst);
 	void dot(const int n, const float alpha, const void *a, const void *b, const float beta, void *dst);
 	void fill(int n, const float value, void *dst, const float beta = 0);
+	void fill(const float value);
 	std::vector<NodeInputPtr> &inputs();
 	std::vector<NodeOutputPtr> &outputs();
 	NodeInputPtr input(int index);

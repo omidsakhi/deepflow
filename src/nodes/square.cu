@@ -14,7 +14,7 @@ void SquareKernelBackward(const int n, const float *x, const float *diff, float 
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) 
-		out[i] += 2.0f * x[i] * diff[i];
+		out[i] = 2.0f * x[i] * diff[i];
 }
 
 Square::Square(deepflow::NodeParam *param) : Node(param) {

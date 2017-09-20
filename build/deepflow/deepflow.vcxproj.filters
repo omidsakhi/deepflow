@@ -79,6 +79,15 @@
     <CudaCompile Include="..\..\src\nodes\exp.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\patching.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\abs.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\reduce_all.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -381,6 +390,15 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\lifting.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\patching.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\abs.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\reduce_all.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

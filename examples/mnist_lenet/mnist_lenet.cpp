@@ -53,6 +53,8 @@ void main(int argc, char** argv) {
 
 		auto conv3_w = df.variable(df.random_uniform({ 64, 32, 5, 5 }, -0.100000, 0.100000), solver, "conv3_w", {});
 		auto conv3 = df.conv2d(conv2_r, conv3_w, 2, 2, 2, 2, 1, 1, "conv3", {});
+		auto conv3_bias = df.variable(df.random_uniform({ 1, 64, 1, 1 }, -0.100000, 0.100000), solver, "conv3_bias", {});
+		auto conv3_b = df.bias_add(conv3, conv3_bias);
 		auto conv3_r = df.elu(conv3, 0.01);
 
 		auto w1 = df.variable(df.random_uniform({ 1024, 500, 1, 1 }, -0.100000, 0.100000), solver, "w1", {});
@@ -82,12 +84,12 @@ void main(int argc, char** argv) {
 		auto bias2 = df.bias_add(m2, b2, "bias2");
 		auto relu2 = df.leaky_relu(bias2, 0.010000, "relu2");
 		auto softmax = df.softmax(relu2);
-		auto softmax_log = df.log(softmax);
+		auto softmax_log = df.log(softmax, -1.0f);
 		auto train_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Train, MNISTReader::Labels, "train_labels", { "Train" });
 		auto test_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Labels, "test_labels", { "Validation" });
 		auto label_selector = df.phaseplexer(train_labels, "Train", test_labels, "Validation", "label_selector", {});		
 		auto softmax_dot = df.dot(softmax_log, label_selector);
-		auto loss = df.loss(softmax_dot, DeepFlow::AVG, "loss");
+		auto loss = df.loss(softmax_dot,"", DeepFlow::AVG, "loss");
 		auto predict = df.argmax(softmax, 1, "predict", {});
 		auto target = df.argmax(label_selector, 1, "target", {});
 		auto equal = df.equal(predict, target, "equal", {});

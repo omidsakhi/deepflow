@@ -111,7 +111,8 @@ void BatchNormalization::forward()
 				_bnInvVariance
 			));		
 	}
-	else {		
+	else {
+		LOG(FATAL);
 		DF_NODE_CUDNN_CHECK(
 			cudnnBatchNormalizationForwardInference(
 				_cudnnHandle,
@@ -148,8 +149,8 @@ void BatchNormalization::backward()
 			cudnnBatchNormalizationBackward(
 				_cudnnHandle,
 				_bnMode,
-				&ad,
-				&bd,
+				&one,
+				&zero,
 				&ap,
 				&bp,
 				_xDesc,

@@ -265,6 +265,18 @@ std::string DeepFlow::square(std::string a, std::string name, std::initializer_l
 	return node_param->output(0);
 }
 
+std::string DeepFlow::abs(std::string a, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(a);
+	auto abs_param = node_param->mutable_abs_param();
+	return node_param->output(0);
+}
+
 std::string DeepFlow::exp(std::string a, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();
@@ -700,6 +712,22 @@ std::string DeepFlow::lifting(std::string input, LiftingMode mode, std::string n
 	return node_param->output(0);
 }
 
+std::string DeepFlow::patching(std::string input, PatchingMode mode, int num_vertical_patches, int num_horizontal_patches, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto patching_param = node_param->mutable_patching_param();
+	patching_param->set_mode((deepflow::PatchingParam_Mode) mode);
+	patching_param->set_num_horizontal_patch(num_horizontal_patches);
+	patching_param->set_num_vertical_patch(num_vertical_patches);
+	return node_param->output(0);
+}
+
+
 std::string DeepFlow::_reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, deepflow::ReduceParam::OutputType type, int output, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -712,6 +740,19 @@ std::string DeepFlow::_reduce(std::string input, int reduce_dimention, deepflow:
 	reduce_param->set_output_type(type);
 	reduce_param->set_reduce_op(op);	
 	return node_param->output(output);
+}
+
+std::string DeepFlow::_reduce_all(std::string input, ReduceAllOp op, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto reduce_param = node_param->mutable_reduce_all_param();
+	reduce_param->set_reduce_op((deepflow::ReduceAllParam_ReduceAllOp) op);
+	return node_param->output(0);
 }
 
 std::string DeepFlow::argmax(std::string input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
@@ -740,6 +781,16 @@ std::string DeepFlow::reduce_norm1(std::string input, int reduceDimension, std::
 
 std::string DeepFlow::reduce_norm2(std::string input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
 	return _reduce(input, reduceDimension, deepflow::ReduceParam_ReduceOp_NORM2, deepflow::ReduceParam::VALUES, 0, name, phases);
+}
+
+std::string DeepFlow::reduce_mean(std::string input, std::string name, std::initializer_list<std::string> phases)
+{
+	return _reduce_all(input, DeepFlow::ReduceAllOp::REDUCE_ALL_AVG, name, phases);
+}
+
+std::string DeepFlow::reduce_sum(std::string input, std::string name, std::initializer_list<std::string> phases)
+{
+	return _reduce_all(input, DeepFlow::ReduceAllOp::REDUCE_ALL_SUM, name, phases);
 }
 
 std::string DeepFlow::reduce_sum(std::string input, int reduceDimension, std::string name, std::initializer_list<std::string> phases) {
@@ -796,7 +847,7 @@ std::string DeepFlow::multiplexer(std::initializer_list<std::string> inputs, std
 	return node_param->output(0);
 }
 
-std::string DeepFlow::loss(std::string a, ReduceOp op, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::loss(std::string a, std::string coef, ReduceOp op, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -804,6 +855,7 @@ std::string DeepFlow::loss(std::string a, ReduceOp op, std::string name, std::in
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(a);
+	node_param->add_input(coef);
 	auto loss_param = node_param->mutable_loss_param();
 	loss_param->set_reduce_op((deepflow::LossParam_ReduceOp)op);
 	return node_param->output(0);

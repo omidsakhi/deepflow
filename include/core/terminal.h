@@ -55,6 +55,7 @@ public:
 	void feed(std::shared_ptr<NodeOutput> t);
 	void initDiff();
 	void resetDiff();
+	void resetValue();
 	void cpyValueToDiff();
 	std::shared_ptr<Tensor> value();
 	std::shared_ptr<Tensor> diff();

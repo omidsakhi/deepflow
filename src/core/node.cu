@@ -42,3 +42,8 @@ void Node::fill(int n, const float value, void * dst, const float beta)
 	DF_KERNEL_CHECK();
 }
 
+void Node::fill(const float value)
+{
+	fill(_outputs[0]->value()->size(), value, _outputs[0]->value()->mutableData(), 0.0f);	
+}
+

@@ -33,7 +33,7 @@ std::shared_ptr<Session> create_loss_session() {
 	auto loss_t1 = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "loss_t1");
 	auto loss_t2 = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "loss_t2");
 	auto sqerr = df.square_error(loss_t1, loss_t2);
-	auto loss = df.loss(sqerr, DeepFlow::AVG);
+	auto loss = df.loss(sqerr,"", DeepFlow::AVG);
 
 	df.print({ loss }, "Epoch: {ep} - Loss: {0}\n", DeepFlow::EVERY_PASS);
 
@@ -49,26 +49,30 @@ std::shared_ptr<Session> create_display_session() {
 
 std::string conv(DeepFlow *df, std::string name, std::string input, std::string solver, int depth1, int depth2, bool activation) {
 	auto mean = 0;
-	auto stddev = 0.001;
+	auto stddev = 0.01;
 	auto conv_w = df->variable(df->random_normal({ depth1, depth2, 3, 3 }, mean, stddev), solver, name + "_w");
 	auto conv_ = df->conv2d(input, conv_w, 1, 1, 1, 1, 1, 1, name);
 	auto conv_p = df->pooling(conv_, 2, 2, 0, 0, 2, 2, name + "_p");
-	if (activation)
-		return  df->elu(conv_p, 0.01);
+	if (activation) {
+		auto drop = df->dropout(conv_p, 0.5f);
+		return  df->elu(drop, 0.01);
+	}
 	return conv_p;
 }
 
 std::string tconv(DeepFlow *df, std::string name, std::string input, std::string solver, int depth1, int depth2, int kernel, int pad, bool activation) {
 
 	auto mean = 0;
-	auto stddev = 0.001;
+	auto stddev = 0.01;
 	auto tconv_l = df->lifting(input, DeepFlow::LIFT_UP, name + "_l");
 	auto tconv_f = df->variable(df->random_normal({ depth1, depth2, kernel, kernel }, mean, stddev), solver, name + "_f");
 	auto tconv_t = df->conv2d(tconv_l, tconv_f, pad, pad, 1, 1, 1, 1, name + "_t");
-	auto tconv_b = df->batch_normalization(tconv_t, DeepFlow::SPATIAL, 0.2, 1, 0, 0, 1);
-	if (activation)
-		return  df->relu(tconv_b);
-	return tconv_b;
+	//auto tconv_b = df->batch_normalization(tconv_t, DeepFlow::SPATIAL, 0, 0, 0, 0, 0.1);
+	if (activation) {
+		auto drop = df->dropout(tconv_t, 0.5f);
+		return  df->elu(drop, 0.01);
+	}
+	return tconv_t;
 
 }
 
@@ -77,16 +81,14 @@ std::shared_ptr<Session> create_encoder_session() {
 	auto solver = df.adam_solver(0.00005f, 0.9f);
 
 	auto input = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "enc_input");
-	auto conv1 = conv(&df, "conv1", input, solver, 256, 1, true);
-	auto conv2 = conv(&df, "conv2", conv1, solver, 512, 256, true);
-	auto conv3 = conv(&df, "conv3", conv2, solver, 1024, 512, true);
+	auto conv1 = conv(&df, "conv1", input, solver, 64, 1, true);
+	auto conv2 = conv(&df, "conv2", conv1, solver, 128, 64, true);
+	auto conv3 = conv(&df, "conv3", conv2, solver, 256, 128, true);		
 	
-	auto drop = df.dropout(conv3, 0.1f);
-	
-	auto fc_w = df.variable(df.random_normal({ 1024 * 3 * 3, FLAGS_bottleneck, 1, 1 }, 0, 0.1), solver, "fc_w");
-	auto fc = df.matmul(drop, fc_w, "fc");
+	auto fc_w = df.variable(df.random_normal({ 256 * 3 * 3, FLAGS_bottleneck, 1, 1 }, 0, 0.1), solver, "fc_w");
+	auto fc = df.matmul(conv3, fc_w, "enc_output");
 
-	auto enc_out = df.tanh(fc, "enc_output");
+	//auto enc_out = df.tanh(fc, "enc_output");
 
 	return df.session();
 }
@@ -98,14 +100,14 @@ std::shared_ptr<Session> create_decoder_session() {
 
 	auto dec_input = df.place_holder({ FLAGS_batch, FLAGS_bottleneck, 1, 1 }, Tensor::Float, "dec_input");
 
-	auto fc_w = df.variable(df.random_normal({ FLAGS_bottleneck, 1024, 3, 3 }, 0, 0.01), solver, "fc_w");
+	auto fc_w = df.variable(df.random_normal({ FLAGS_bottleneck, 256, 3, 3 }, 0, 0.1), solver, "fc_w");
 	auto fc = df.matmul(dec_input, fc_w, "fc");
 	
-	auto drop = df.dropout(fc, 0.1f);
+	auto drop = df.dropout(fc, 0.5f);
 
-	auto tconv1 = tconv(&df, "tconv1", drop, solver, 512, 256, 2, 0, true);
-	auto tconv2 = tconv(&df, "tconv2", tconv1, solver, 512, 128, 2, 0, true);
-	auto tconv3 = tconv(&df, "tconv3", tconv2, solver, 256, 128, 3, 0, true);
+	auto tconv1 = tconv(&df, "tconv1", drop, solver, 256, 64, 2, 0, true);
+	auto tconv2 = tconv(&df, "tconv2", tconv1, solver, 256, 64, 2, 0, true);
+	auto tconv3 = tconv(&df, "tconv3", tconv2, solver, 256, 64, 3, 0, true);
 	auto tconv4 = tconv(&df, "tconv4", tconv3, solver, 1, 64, 5, 0, false);
 
 	auto output = df.tanh(tconv4, "dec_output");	
@@ -165,21 +167,18 @@ void main(int argc, char** argv) {
 
 		//disp_input->write_values(dec_output->output(0)->value());
 		//display_session->forward();
-
-		loss_session->reset_gradients();
+		
 		loss_t1->write_values(dec_output->output(0)->value());
 		loss_t2->write_values(mnist_train_data->output(0)->value());
 		loss_session->forward();
-		loss_session->backward();
-		decoder_session->reset_gradients();
+		loss_session->backward();		
 		dec_output->write_diffs(loss_t1->output(0)->diff());
 		decoder_session->backward();
-		decoder_session->apply_solvers();
-		encoder_session->reset_gradients();
+		decoder_session->apply_solvers();		
 		enc_output->write_diffs(dec_input->output(0)->diff());
 		encoder_session->backward();
 		encoder_session->apply_solvers();
-
+		
 		mnist_test_session->forward();
 		enc_input->write_values(mnist_test_data->output(0)->value());
 		encoder_session->forward();

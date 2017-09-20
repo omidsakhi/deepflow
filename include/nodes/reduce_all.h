@@ -2,10 +2,10 @@
 
 #include "core/node.h"
 
-class DeepFlowDllExport BiasAdd : public Node {
+class DeepFlowDllExport ReduceAll : public Node {
 public:
-	BiasAdd(deepflow::NodeParam *param);
-	int minNumInputs() { return 2; }
+	ReduceAll(deepflow::NodeParam *param);
+	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
 	void initForward();
 	void initBackward();
@@ -15,7 +15,6 @@ public:
 	ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
 	BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 private:
-	int _inner_dim = 0;
-	int _bias_dim = 0;
-	int _sample_dim = 0;
+	deepflow::ReduceAllParam_ReduceAllOp _reduce_op;
 };
+
