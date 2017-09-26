@@ -88,6 +88,7 @@ public:
 	std::string conv2d(std::string input, std::string filter, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string pooling(std::string input, int windowHeight = 3, int windowWidth = 3, int verticalPadding = 0, int horizontalPadding = 0, int verticalStride = 1, int horizontalStride = 1, std::string name = "maxpool", std::initializer_list<std::string> phases = {});
 	std::string lifting(std::string input, LiftingMode mode, std::string name = "lifting", std::initializer_list<std::string> phases = {});
+	std::string upsample(std::string input, std::string name = "upsample", std::initializer_list<std::string> phases = {});
 	std::string patching(std::string input, PatchingMode mode, int num_vertical_patches, int num_horizontal_patches, std::string name = "patching", std::initializer_list<std::string> phases = {});
 	std::string transposed_conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
 
@@ -149,7 +150,7 @@ public:
 	void psnr(std::string a, std::string b, ActionTime printTime = ActionTime::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
 
 	// NORMALIZATION
-	std::string batch_normalization(std::string input, NormalizationMode mode = DeepFlow::SPATIAL, float exponential_average_factor = 0.1f, float alpha_data = 1.0f, float beta_data = 1.0f, float alpha_param = 0.0f, float beta_param = 1.0f, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
+	std::string batch_normalization(std::string input, std::string scale, std::string bias, NormalizationMode mode = DeepFlow::SPATIAL, bool cache = true, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
 
 	// SOCKET IO
 	void sio_output(std::initializer_list<std::string> inputs, ActionTime printTime = ActionTime::EVERY_PASS, std::string host = "127.0.0.1", int port = 6643, std::string name = "sio_output", std::initializer_list<std::string> phases = {});
@@ -161,6 +162,7 @@ public:
 	std::string negate(std::string input, ActionType negateType = ActionType::VALUES_AND_DIFFS, std::string name = "negate", std::initializer_list<std::string> phases = {});
 	std::array<std::string,2> accumulator(std::string input, ActionTime resetTime = ActionTime::END_OF_EPOCH, std::string name = "acc", std::initializer_list<std::string> phases = {});
 	std::string replay_memory(std::string input, int capacity, std::string name = "replay_memory", std::initializer_list<std::string> phases = {});
+	std::string agc(std::string input, float sensitivity = 0.001f, std::string name = "agc", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
 	std::string define_phase(std::string phase, PhaseBehaviour behaviour = TRAIN_AND_INFERENCE);

@@ -102,10 +102,11 @@ void ImageBatchReader::forward()
 		if (_dims[1] == 1)
 			img = cv::imread(file_name, 0);
 		else if (_dims[1] == 3)
-			img = cv::imread(file_name);
+			img = cv::imread(file_name);		
 		else
-			LOG(FATAL) << "Unsupported channel size.";
+			LOG(FATAL) << "Unsupported channel size.";		
 		LOG_IF(FATAL, img.empty()) << "Image " << file_name << " does not exist.";
+		//cv::copyMakeBorder(img, img, 2, 2, 2, 2, cv::BORDER_CONSTANT, 0);
 		LOG_IF(FATAL, img.channels() != _dims[1]) << "Provided channels doesn't match for " << file_name;
 		LOG_IF(FATAL, img.rows != _dims[2]) << "Provided height doesn't match for " << file_name;
 		LOG_IF(FATAL, img.cols != _dims[3]) << "Provided width doesn't match for " << file_name;

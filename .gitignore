@@ -32,6 +32,7 @@
 *.idb
 /data/face64
 /data/face643
+/data/celeba
 /data/mnist/*.gz
 /third-party/boost_1_64_0
 /auxiliary/mnist-dcgan/dist/server.js

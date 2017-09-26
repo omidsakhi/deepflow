@@ -11,11 +11,10 @@ void ReduceAllKernelForward(const int n, bool average, const float *x, float *y)
 }
 
 __global__
-void ReduceAllKernelBackward(const int n, bool average, const float *x, const float *dY, float *dX)
+void ReduceAllKernelBackward(const int n, bool average, const float *dY, float *dX)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
-		//dX[i] = dY[0];
 		dX[i] = (average ? dY[0] / n : dY[0]);
 	}
 		
@@ -45,7 +44,7 @@ void ReduceAll::forward() {
 
 void ReduceAll::backward() {
 	auto size = _inputs[0]->value()->size();
-	ReduceAllKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _reduce_op == deepflow::ReduceAllParam_ReduceAllOp_AVG, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
+	ReduceAllKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _reduce_op == deepflow::ReduceAllParam_ReduceAllOp_AVG, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
 	DF_KERNEL_CHECK();
 }
 

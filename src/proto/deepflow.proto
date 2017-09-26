@@ -271,15 +271,9 @@ message BatchNormalizationParam {
 		CUDNN_BATCHNORM_SPATIAL        = 1;
 	}
 	Mode mode = 1;
-	float exp_avg_factor = 2;
-	float alpha_data = 3;
-	float beta_data = 4;
-	float alpha_param = 5;
-	float beta_param = 6;
-	TensorData scale = 7;	
-	TensorData bias = 8;
-	TensorData mean = 9;
-	TensorData var = 10;	
+	bool cache_meanvar = 2;
+	TensorData mean = 3;
+	TensorData var = 4;
 }
 
 message ReplayMemoryParam {
@@ -335,6 +329,11 @@ message NodeParam {
   PatchingParam patching_param = 140;
   AbsParam abs_param = 141;
   ReduceAllParam reduce_all_param = 142;
+  UpsampleParam upsample_param = 143;  
+}
+
+message UpsampleParam {
+
 }
 
 message SquareParam {

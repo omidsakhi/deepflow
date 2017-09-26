@@ -468,6 +468,19 @@ std::string DeepFlow::replay_memory(std::string input, int capacity, std::string
 	return node_param->output(0);
 }
 
+std::string DeepFlow::agc(std::string input, float sensitivity, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);	
+	auto agc_param = node_param->mutable_agc_param();
+	agc_param->set_sensitivity(sensitivity);	
+	return node_param->output(0);
+}
+
 void DeepFlow::print(std::initializer_list<std::string> inputs, std::string message, ActionTime printTime, ActionType printType, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -530,7 +543,7 @@ void DeepFlow::psnr(std::string a, std::string b, ActionTime printTime, std::str
 	psnr_param->set_print_time((deepflow::ActionTime)printTime);
 }
 
-std::string DeepFlow::batch_normalization(std::string input, NormalizationMode mode, float exponential_average_factor, float alpha_data, float beta_data, float alpha_param, float beta_param, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::batch_normalization(std::string input, std::string scale, std::string bias, NormalizationMode mode, bool cache, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -538,13 +551,11 @@ std::string DeepFlow::batch_normalization(std::string input, NormalizationMode m
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(input);
+	node_param->add_input(scale);
+	node_param->add_input(bias);
 	auto batch_norm_param = node_param->mutable_batch_normalization_param();
 	batch_norm_param->set_mode((deepflow::BatchNormalizationParam_Mode) mode);
-	batch_norm_param->set_exp_avg_factor(exponential_average_factor);
-	batch_norm_param->set_alpha_data(alpha_data);
-	batch_norm_param->set_beta_data(beta_data);
-	batch_norm_param->set_alpha_param(alpha_param);
-	batch_norm_param->set_beta_param(beta_param);
+	batch_norm_param->set_cache_meanvar(cache);
 	return node_param->output(0);
 }
 
@@ -709,6 +720,18 @@ std::string DeepFlow::lifting(std::string input, LiftingMode mode, std::string n
 	node_param->add_input(input);
 	auto lifting_param = node_param->mutable_lifting_param();
 	lifting_param->set_mode((deepflow::LiftingParam_Mode) mode);
+	return node_param->output(0);
+}
+
+std::string DeepFlow::upsample(std::string input, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	node_param->mutable_upsample_param();	
 	return node_param->output(0);
 }
 

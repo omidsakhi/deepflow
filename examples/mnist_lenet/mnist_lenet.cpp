@@ -19,6 +19,22 @@ DEFINE_int32(epoch, 1000, "Maximum epochs");
 DEFINE_int32(iter, -1, "Maximum iterations");
 DEFINE_bool(cpp, false, "Print C++ code");
 
+std::string conv(DeepFlow *df, std::string name, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool activation) {
+	auto w = df->variable(df->random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.1), solver, name + "_w");
+	auto node = df->conv2d(input, w, pad, pad, 1, 1, 1, 1, name);
+	//auto bns = df->variable(df->random_uniform({ 1, output_channels, 1, 1 }, -0.1, 0.1), solver, name + "_bns");
+	auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_bnb");
+	node = df->bias_add(node, bnb);
+	//node = df->batch_normalization(node, bns, bnb, DeepFlow::SPATIAL, false, name + "_b");
+	node = df->pooling(node, 2, 2, 0, 0, 2, 2);
+	if (activation) {
+		node = df->elu(node, 0.1);
+		//node = df->dropout(node, 0.5f);
+		return node; 
+	}
+	return node;
+}
+
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -34,56 +50,27 @@ void main(int argc, char** argv) {
 		df.define_phase("Train", DeepFlow::TRAIN);
 		df.define_phase("Validation", DeepFlow::VALIDATION);
 
-		auto solver = df.adam_solver(0.0002f, 0.5f);
-		//auto solver = df.gain_solver(0.999900, 0.000100, 10.000000, 0.000000, 0.050000, 0.950000, "solver");
-		//auto solver = df.adadelta_solver();
-
+		auto solver = df.adam_solver(0.0001f, 0.5f);
+		
 		auto test_data = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });		
 		auto train_data = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Train, MNISTReader::Data, "train_data", { "Train" });
 		auto data_selector = df.phaseplexer(train_data, "Train", test_data, "Validation", "data_selector", {});
 				
-		
-		auto conv1_w = df.variable(df.random_uniform({ 16, 1, 5, 5 }, -0.100000, 0.100000), solver, "conv1_w", {});
-		auto conv1 = df.conv2d(data_selector, conv1_w, 2, 2, 2, 2, 1, 1, "conv1", {});		
-		auto conv1_r = df.elu(conv1, 0.01);		
+		auto conv1 = conv(&df, "conv1", data_selector, solver, 1, 32, 5,2, true);
+		//auto agc = df.agc(conv1, 1.0);
+		auto conv2 = conv(&df, "conv2", conv1, solver, 32, 64, 5,2, true);
 
-		auto conv2_w = df.variable(df.random_uniform({ 32, 16, 5, 5 }, -0.100000, 0.100000), solver, "conv2_w", {});
-		auto conv2 = df.conv2d(conv1_r, conv2_w, 2, 2, 2, 2, 1, 1, "conv2", {});
-		auto conv2_r = df.elu(conv2, 0.01);
+		auto w1 = df.variable(df.random_uniform({ 7 * 7 * 64, 1024, 1, 1 }, -0.1, 0.1), solver, "w1", {});		
+		auto b1 = df.variable(df.fill({ 1, 1024, 1, 1 }, 0), solver, "b1");
+		auto m1 = df.bias_add(df.matmul(conv2, w1, "m1", {}), b1);
 
-		auto conv3_w = df.variable(df.random_uniform({ 64, 32, 5, 5 }, -0.100000, 0.100000), solver, "conv3_w", {});
-		auto conv3 = df.conv2d(conv2_r, conv3_w, 2, 2, 2, 2, 1, 1, "conv3", {});
-		auto conv3_bias = df.variable(df.random_uniform({ 1, 64, 1, 1 }, -0.100000, 0.100000), solver, "conv3_bias", {});
-		auto conv3_b = df.bias_add(conv3, conv3_bias);
-		auto conv3_r = df.elu(conv3, 0.01);
+		auto r1 = df.relu(m1);
+		auto d1 = df.dropout(r1);
 
-		auto w1 = df.variable(df.random_uniform({ 1024, 500, 1, 1 }, -0.100000, 0.100000), solver, "w1", {});
-		auto m1 = df.matmul(conv3_r, w1, "m1", {});
-		
+		auto w2 = df.variable(df.random_uniform({ 1024, 10, 1, 1 }, -0.1, 0.1), solver, "w2");
+		auto m2 = df.matmul(d1, w2, "m2");
 
-		/*
-		auto conv1_w = df.variable(df.random_uniform({ 20, 1, 5, 5 }, -0.100000, 0.100000), solver, "conv1_w", {});		
-		auto conv1 = df.conv2d(data_selector, conv1_w, 2, 2, 1, 1, 1, 1, "conv1", {});
-		auto pool1 = df.pooling(conv1, 2, 2, 0, 0, 2, 2, "pool1", {});
-		auto conv2_w = df.variable(df.random_uniform({ 50, 20, 5, 5 }, -0.100000, 0.100000), solver, "conv2_w", {});		
-		auto conv2 = df.conv2d(pool1, conv2_w, 0, 0, 1, 1, 1, 1, "conv2", {});
-		auto pool2 = df.pooling(conv2, 2, 2, 0, 0, 2, 2, "pool2", {});
-		auto w1 = df.variable(df.random_uniform({ 1250, 500, 1, 1 }, -0.100000, 0.100000), solver, "w1", {});
-		auto m1 = df.matmul(pool2, w1, "m1", {});
-		*/
-
-
-		
-		auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, 0, 1.000000), solver, "b1", {});
-		auto bias1 = df.bias_add(m1, b1, "bias1", {});
-		auto relu1 = df.leaky_relu(bias1, 0.010000, "relu1", {});
-		auto dropout = df.dropout(relu1, 0.500000, true, "dropout", {});
-		auto w2 = df.variable(df.random_uniform({ 500, 10, 1, 1 }, -0.100000, 0.100000), solver, "w2");
-		auto m2 = df.matmul(dropout, w2, "m2");
-		auto b2 = df.variable(df.step({ 1, 10, 1, 1 }, 0, 1.000000), solver, "b2");
-		auto bias2 = df.bias_add(m2, b2, "bias2");
-		auto relu2 = df.leaky_relu(bias2, 0.010000, "relu2");
-		auto softmax = df.softmax(relu2);
+		auto softmax = df.softmax(m2);
 		auto softmax_log = df.log(softmax, -1.0f);
 		auto train_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Train, MNISTReader::Labels, "train_labels", { "Train" });
 		auto test_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Labels, "test_labels", { "Validation" });

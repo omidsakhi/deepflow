@@ -189,6 +189,11 @@ void Node::_backward() {
 	}
 }
 
+void Node::reset_gradients()
+{
+	LOG(FATAL);
+}
+
 std::string Node::name() const {
 	return _name;	
 }

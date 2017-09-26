@@ -79,6 +79,7 @@
     <ClInclude Include="..\..\include\nodes\softmax.h" />
     <ClInclude Include="..\..\include\nodes\square.h" />
     <ClInclude Include="..\..\include\nodes\transposed_conv_2d.h" />
+    <ClInclude Include="..\..\include\nodes\upsample.h" />
     <ClInclude Include="..\..\include\nodes\variable.h" />
     <ClInclude Include="..\..\include\proto\caffe.pb.h" />
     <ClInclude Include="..\..\include\proto\deepflow.pb.h" />
@@ -120,6 +121,7 @@
     <CudaCompile Include="..\..\src\nodes\negate.cu" />
     <CudaCompile Include="..\..\src\nodes\psnr.cu" />
     <CudaCompile Include="..\..\src\nodes\square.cu" />
+    <CudaCompile Include="..\..\src\nodes\upsample.cu" />
     <CudaCompile Include="..\..\src\nodes\variable.cu" />
     <CudaCompile Include="..\..\src\solvers\adadelta_solver.cu" />
     <CudaCompile Include="..\..\src\solvers\adam_solver.cu" />

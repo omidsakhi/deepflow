@@ -39,7 +39,7 @@ void BiasAdd::initForward() {
 }
 
 void BiasAdd::initBackward() {
-	_outputs[0]->initDiff();
+	_outputs[0]->initDiff();	
 }
 
 void BiasAdd::forward() {
@@ -53,7 +53,7 @@ void BiasAdd::backward() {
 	if (_inputs[0]->connectedNode()->propagateBack()) {
 		cpy(_inputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 0, _inputs[0]->diff()->mutableData());		
 	}
-	if (_inputs[1]->connectedNode()->propagateBack()) {		
+	if (_inputs[1]->connectedNode()->propagateBack()) {
 		auto size = _outputs[0]->diff()->size();
 		DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
 		BiasAddKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), _inner_dim, _sample_dim, _bias_dim, (float*)_inputs[1]->diff()->mutableData());

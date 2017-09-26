@@ -5,10 +5,10 @@
 #include <random>
 #include <gflags/gflags.h>
 
-DEFINE_string(faces, "C:/Projects/deepflow/data/face643", "Path to face 64x64 dataset folder");
+DEFINE_string(faces, "C:/Projects/deepflow/data/celeba", "Path to face 64x64 dataset folder");
 DEFINE_int32(channels, 3, "Image channels");
-DEFINE_int32(total, 13230, "Image channels");
-DEFINE_int32(batch, 49, "Batch size");
+DEFINE_int32(total, 2000000, "Image channels"); // 13230
+DEFINE_int32(batch, 40, "Batch size");
 DEFINE_int32(debug, 0, "Level of debug");
 DEFINE_int32(iter, 1000000, "Maximum iterations");
 DEFINE_string(load, "", "Load from gXXXX.bin and dXXXX.bin");
@@ -32,19 +32,19 @@ std::shared_ptr<Session> load_disc_session(std::string suffix) {
 
 std::shared_ptr<Session> create_face_reader() {
 	DeepFlow df;
-	df.image_batch_reader(FLAGS_faces, { FLAGS_batch, FLAGS_channels, 64, 64 }, true, "face_data");
+	df.image_batch_reader(FLAGS_faces, { FLAGS_batch, FLAGS_channels, 64, 64 }, false, "face_data");
 	return df.session();
 }
 
 std::shared_ptr<Session> create_face_labels() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0.8, 1.0), FLAGS_total, "", "face_labels");	
+	df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1), FLAGS_total, "", "face_labels");	
 	return df.session();
 }
 
 std::shared_ptr<Session> create_generator_labels() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0, 0.2), FLAGS_total, "", "generator_labels");
+	df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), FLAGS_total, "", "generator_labels");
 	return df.session();
 }
 
@@ -52,97 +52,97 @@ std::shared_ptr<Session> create_l2_loss() {
 	DeepFlow df;
 	auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "discriminator_input");
 	auto labels_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "labels_input");
-	auto coef = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "coef");
-	auto sqerr = df.square_error(discriminator_input, labels_input);
-	auto loss = df.loss(sqerr, coef, DeepFlow::AVG);	
+	auto coef = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "coef");	
+	auto red = df.reduce_mean(df.square_error(discriminator_input, labels_input));
+	//auto red = df.reduce_mean(df.abs(df.subtract(discriminator_input, labels_input)));
+	auto loss = df.loss(red, coef, DeepFlow::AVG);	
 	df.print({ loss }, " NORM {0}\n", DeepFlow::EVERY_PASS); 
 	return df.session();
 }
 
-std::string tconv(DeepFlow *df, std::string name, std::string input, std::string solver, int depth1, int depth2, int kernel, int pad, bool patching, bool activation) {
-	auto mean = 0;
-	auto stddev = 0.01;
-	auto dropout = 0.5;	
-	std::string tconv_l;
-	if (patching)
-		tconv_l = df->patching(input, DeepFlow::PATCHING_UP, 2, 2, name + "_l");
-	else
-		tconv_l = df->lifting(input, DeepFlow::LIFT_UP, name + "_l");
-	auto tconv_f = df->variable(df->random_uniform({ depth1, depth2, kernel, kernel }, -stddev, stddev), solver, name + "_f");
-	auto tconv_t = df->conv2d(tconv_l, tconv_f, pad, pad, 1, 1, 1, 1, name + "_t");
-	auto tconv_b = df->batch_normalization(tconv_t, DeepFlow::SPATIAL, 0.0f, 1.0f, 0.0f, -0.05f, 1.0f, name + "_b");
-	if (activation) {
-		auto drop = df->dropout(tconv_b, dropout);
-		return df->relu(drop);
-	}
-	return tconv_b;
+std::string batchnorm(DeepFlow *df, std::string input, std::string solver, int output_channels, std::string name) {
+	auto bns = df->variable(df->random_normal({ 1, output_channels, 1, 1 }, 1, 0.02), solver, name + "_bns");
+	auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_bnb");
+	return df->batch_normalization(input, bns, bnb, DeepFlow::SPATIAL, true, name + "_bn");
 }
 
-std::string conv(DeepFlow *df, std::string name, std::string input, std::string solver, int depth1, int depth2, bool activation) {
-	auto mean = 0;
-	auto stddev = 0.01;
-	auto negative_slope = 0.1;
-	auto dropout = 0.5;
-	auto conv_w = df->variable(df->random_uniform({ depth1, depth2, 3, 3 }, -stddev, stddev), solver, name + "_w");
-	auto conv_ = df->conv2d(input, conv_w, 1, 1, 2, 2, 1, 1, name);
-	if (activation) {
-		auto relu = df->elu(conv_, negative_slope);
-		return df->dropout(relu, dropout);
+std::string dense(DeepFlow *df, std::string input, std::initializer_list<int> dims, std::string solver, std::string name) {
+	auto w = df->variable(df->random_normal( dims, 0, 0.02), solver, name + "_w");
+	return df->matmul(input, w);
+}
+
+std::string deconv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool upsample, bool activation, std::string name) {		
+	
+	auto node = input;
+	auto f = df->variable(df->random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
+	if (upsample)
+		node = df->upsample(node);
+	node = df->conv2d(node, f, pad, pad, 1, 1, 1, 1, name + "_conv");		
+	node = batchnorm(df, node, solver, output_channels, name + "_bn");
+	if (activation) {		
+		return df->relu(node);
 	}
-	return conv_;
+	return node;
+}
+
+std::string conv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, int stride, bool activation, std::string name) {
+	auto f = df->variable(df->random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
+	auto node = df->conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_conv");	
+	auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_bnb");
+	node = df->bias_add(node, bnb);
+	if (activation) {
+		return df->leaky_relu(node, 0.2, name + "_relu");		
+	}
+	return node;
 }
 
 std::shared_ptr<Session> create_generator() {
 	DeepFlow df;
+	
+	int gf = 64;
 
-	auto mean = 0;
-	auto stddev = 0.01;
-	auto dropout = 0.2;
+	auto solver = df.adam_solver(0.0002f, 0.5f, 0.9f);
 
-	auto g_solver = df.adam_solver(0.0002f, 0.0f, 0.99f);
-	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1, "random_input"), FLAGS_total, "", "input");
+	auto node = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1), FLAGS_total, "", "input");
 
-	auto gfc_w = df.variable(df.random_uniform({ 100, 512, 4, 4 }, -stddev, stddev), g_solver, "gfc_w");
-	auto gfc = df.matmul(gin, gfc_w, "gfc");
-	auto gfc_r = df.relu(gfc);
-	auto gfc_drop = df.dropout(gfc_r, dropout);
+	node = dense(&df, node, { 100, gf * 8 , 4 , 4 }, solver, "gfc1");
+	node = batchnorm(&df, node, solver, gf * 8, "gbn1");	
 
-	auto tconv1 = tconv(&df, "tconv1", gfc_drop, g_solver, 512, 128, 2, 0,false, true);
-	auto tconv2 = tconv(&df, "tconv2", tconv1, g_solver, 256, 128, 3, 0,false, true);
-	auto tconv3 = tconv(&df, "tconv3", tconv2, g_solver, 256, 64, 5, 0,false, true);
-	auto tconv4 = tconv(&df, "tconv4", tconv3, g_solver, 128, 64, 6, 0,false, true);
-	auto tconv5 = tconv(&df, "tconv5", tconv4, g_solver, 3, 32, 7, 0,false, false);
+	node = deconv(&df, node, solver, gf * 8, gf * 4, 5, 2, 1, 1, "gc2");
 
-	auto gout = df.tanh(tconv5, "gout");
-	auto disp = df.display(gout, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
+	node = deconv(&df, node, solver, gf * 4, gf * 2, 5, 2, 1, 1, "gc3");
+
+	node = deconv(&df, node, solver, gf * 2, gf, 5, 2, 1, 1, "gc4");
+
+	node = deconv(&df, node, solver, gf, 3, 5, 2, 1, 0, "gc5");
+
+	node = df.tanh(node, "gout");	
+	
+	df.display(node, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
 
 	return df.session();
 }
 
 std::shared_ptr<Session> create_discriminator() {
 	DeepFlow df;
-	auto mean = 0;
-	auto stddev = 0.01;
-	auto d_solver = df.adam_solver(0.0002f, 0.0f, 0.99f);
-	auto negative_slope = 0.1;
-	auto input = df.place_holder({ FLAGS_batch , FLAGS_channels, 64, 64 }, Tensor::Float, "input");
 
-	auto conv1 = conv(&df, "conv1", input, d_solver, 64, 3, true);
-	auto conv2 = conv(&df, "conv2", conv1, d_solver, 64, 64, true);
-	auto conv3 = conv(&df, "conv3", conv2, d_solver, 128, 64, true);
-	auto conv4 = conv(&df, "conv4", conv3, d_solver, 256, 128, true);	
+	int dfs = 64;
 
-	auto w1 = df.variable(df.random_uniform({ 4096, 500, 1, 1 }, -0.100000, 0.100000), d_solver, "w1");
-	auto m1 = df.matmul(conv4, w1, "m1");
-	auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, -1.000000, 1.000000), d_solver, "b1");
-	auto bias1 = df.bias_add(m1, b1, "bias1");
-	auto relu1 = df.leaky_relu(bias1, negative_slope, "relu1");
-	auto drop2 = df.dropout(relu1);
+	auto solver = df.adam_solver(0.0002f, 0.5f, 0.9f);
+	
+	auto node = df.place_holder({ FLAGS_batch , 3, 64, 64 }, Tensor::Float, "input");	
 
-	auto w2 = df.variable(df.random_uniform({ 500, 1, 1, 1 }, -0.100000, 0.100000), d_solver, "w2");
-	auto m2 = df.matmul(drop2, w2, "m2");
+	node = conv(&df, node, solver, 3, dfs, 5, 2, 2, true, "dc1");	
 
-	auto dout = df.sigmoid(m2, "dout");
+	node = conv(&df, node, solver, dfs, dfs * 2, 5, 2, 2, true, "dc2");		
+	
+	node = conv(&df, node, solver, dfs * 2, dfs * 4, 5, 2, 2, true, "dc3");		
+	
+	node = conv(&df, node, solver, dfs * 4, dfs * 8, 5, 2, 2, true, "dc4");		
+	
+	node = dense(&df, node, { (dfs * 8) * 4 * 4, 1, 1, 1 }, solver, "dfc1");
+
+	node = df.sigmoid(node, "dout");
 
 	return df.session();
 }
@@ -237,7 +237,7 @@ void main(int argc, char** argv) {
 		generator->backward();
 		generator->apply_solvers();
 		discriminator->reset_gradients();
-
+		
 		if (FLAGS_save != 0 && iter % FLAGS_save == 0) {
 			discriminator->save("d" + std::to_string(iter) + ".bin");
 			generator->save("g" + std::to_string(iter) + ".bin");

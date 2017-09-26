@@ -57,6 +57,7 @@ public:
 	virtual BackwardType backwardType() = 0;
 	virtual std::string to_cpp() const = 0;
 	virtual void prep_for_saving() {}
+	virtual void reset_gradients();
 	std::string name() const;	
 	std::string _to_cpp_phases() const;
 	std::string _input_name_for_cpp(int i) const;

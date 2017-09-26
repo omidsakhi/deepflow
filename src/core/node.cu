@@ -9,7 +9,7 @@ void CpyAddKernel(const int n, const float alpha, const float *src, const float 
 		dst[i] = beta * dst[i] + alpha * src[i];
 }
 
-__global__
+__global__ 
 void DotKernel(const int n, const float alpha, const float *a, const float *b, const float beta, float *dst)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;

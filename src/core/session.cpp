@@ -56,6 +56,7 @@
 #include "nodes/lifting.h"
 #include "nodes/patching.h"
 #include "nodes/reduce_all.h"
+#include "nodes/upsample.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -142,6 +143,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Lifting>(node_param);
 	else if (node_param->has_pooling_param())
 		return std::make_shared<Pooling>(node_param);
+	else if (node_param->has_upsample_param())
+		return std::make_shared<Upsample>(node_param);
 	else if (node_param->has_reduce_param())
 		return std::make_shared<Reduce>(node_param);
 	else if (node_param->has_display_param())

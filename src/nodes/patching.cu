@@ -5,22 +5,20 @@ void PatchingDownKernel(const int n, const float * __restrict__ x, float * __res
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
-		int in_hw = IH * IW;
-		int in_chw = IC * in_hw;
-		int in_chw_r = i % in_chw;
-		int in = (i - in_chw_r) / in_chw; // sample #
-		int in_hw_r = in_chw_r % in_hw;
-		int ic = (in_chw_r - in_hw_r) / in_hw; // channel #
-		int icolumn = in_hw_r % IW; // input column
-		int irow = (in_hw_r - icolumn) / IW; // input row
-		int pcp = icolumn % PW; // pixel column in patch
-		int prp = irow % PH; // pixel row in patch
-		int pcolumn = (icolumn - pcp) / PW; // patch column
-		int prow = (irow-prp) / PH; // patch row
+		int in = i;
+		int iw = i % IW;
+		in /= IW;
+		int ih = in % IH;
+		in /= IH;
+		int ic = in % IC;
+		in /= IC;
+		int pcp = iw % PW; // pixel column in patch
+		int prp = ih % PH; // pixel row in patch
+		int pcolumn = (iw - pcp) / PW; // patch column
+		int prow = (ih-prp) / PH; // patch row
 		int THP = IH / PH; // total number of patches h
 		int TWP = IW / PW; // total number of patches w
-		int OC = IC * THP * TWP;
-		int oi = in * (OC * PW * PH) + (ic * THP * TWP + prow * TWP + pcolumn) * PH * PW + prp * PW + pcp;
+		int oi = (in * THP * TWP + prow * TWP + pcolumn) * (IC * PW * PH) + ic * PH * PW + prp * PW + pcp;
 		y[oi] = x[i];
 	}
 }
@@ -30,24 +28,24 @@ void PatchingUpKernel(const int n, const float * __restrict__ x, float * __restr
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
-		int in_hw = IH * IW;
-		int in_chw = IC * in_hw;
-		int in_chw_r = i % in_chw;
-		int in = (i - in_chw_r) / in_chw;
-		int in_hw_r = in_chw_r % in_hw;
-		int ic = (in_chw_r - in_hw_r) / in_hw;
-		int iw = in_hw_r % IW;
-		int ih = (in_hw_r - iw) / IW;
-		int OC = IC / THP / TWP;
+		int in = i;
+		int iw = i % IW;
+		in /= IW;
+		int ih = in % IH;
+		in /= IH;
+		int ic = in % IC;
+		in /= IC;
+		
 		int OH = IH * THP;
 		int OW = IW * TWP;
-		int fc = ic % (THP * TWP);
-		int oc = (ic - fc) / (THP*TWP);
-		int ph = fc % TWP;
-		int pw = (fc - ph) / TWP;
+		int fn = in % (THP * TWP);
+		int on = (in - fn) / (THP*TWP);
+
+		int ph = fn % TWP;
+		int pw = (fn - ph) / TWP;
 		int oh = pw * IH + ih;
 		int ow = ph * IW + iw;
-		y[in * (OC * OW *OH) + oc * (OW * OH) + oh * OW + ow] = x[i];
+		y[on * (IC * OW *OH) + ic * (OW * OH) + oh * OW + ow] = x[i];
 	}
 }
 
@@ -65,8 +63,8 @@ void Patching::initForward()
 	int input_width = dims[3];
 	int input_height = dims[2];
 	if (_mode == deepflow::PatchingParam_Mode_UP) {		
-		LOG_IF(FATAL, dims[1] % (_num_horizontal_patches * _num_vertical_patches) != 0) << "Input channels must be a multiple of number of patches" << (_num_horizontal_patches * _num_vertical_patches);
-		_outputs[0]->initValue({ dims[0] , dims[1] / (_num_horizontal_patches * _num_vertical_patches), input_height * _num_vertical_patches, input_width * _num_horizontal_patches});
+		LOG_IF(FATAL, dims[0] % (_num_horizontal_patches * _num_vertical_patches) != 0) << "Input samples must be a multiple of number of patches" << (_num_horizontal_patches * _num_vertical_patches);
+		_outputs[0]->initValue({ dims[0] / (_num_horizontal_patches * _num_vertical_patches), dims[1], input_height * _num_vertical_patches, input_width * _num_horizontal_patches});
 		LOG(INFO) << "Patching Up " << _name << " - " << _outputs[0]->value()->shape();
 	}
 	else if (_mode == deepflow::PatchingParam_Mode_DOWN) {
@@ -74,7 +72,7 @@ void Patching::initForward()
 		LOG_IF(FATAL, dims[3] % _num_horizontal_patches != 0) << _name << " Input width must be a multiple of number of horizontal patchs " << _num_horizontal_patches;
 		int patch_h = input_height / _num_vertical_patches;
 		int patch_w = input_width / _num_horizontal_patches;
-		_outputs[0]->initValue({ dims[0] , dims[1] * _num_horizontal_patches * _num_vertical_patches, patch_h, patch_w });
+		_outputs[0]->initValue({ dims[0] * _num_horizontal_patches * _num_vertical_patches, dims[1], patch_h, patch_w });
 		LOG(INFO) << "Patching Down " << _name << " - " << _outputs[0]->value()->shape();
 	}
 }

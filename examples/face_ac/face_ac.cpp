@@ -86,14 +86,12 @@ std::shared_ptr<Session> create_decoder_session() {
 	auto dec_input = df.place_holder({ FLAGS_batch, 8, 8, 8 }, Tensor::Float, "dec_input");
 
 	auto tconv1_f = df.variable(df.random_normal({ 8, depth, 3, 3 }, mean, stddev), dec_solver, "tconv1_f");
-	auto tconv1_t = df.transposed_conv2d(dec_input, tconv1_f, 1, 1, 2, 2, 1, 1, "tconv1_t");
-	auto tconv1_b = df.batch_normalization(tconv1_t, DeepFlow::PER_ACTIVATION, 0, 1, 0, alpha_param, 1 - decay);
-	auto tconv1_r = df.leaky_relu(tconv1_b, dec_negative_slope);
+	auto tconv1_t = df.transposed_conv2d(dec_input, tconv1_f, 1, 1, 2, 2, 1, 1, "tconv1_t");	
+	auto tconv1_r = df.leaky_relu(tconv1_t, dec_negative_slope);
 
 	auto tconv2_f = df.variable(df.random_normal({ depth, depth, 3, 3 }, mean, stddev), dec_solver, "tconv2_f");
-	auto tconv2_t = df.transposed_conv2d(tconv1_r, tconv2_f, 1, 1, 2, 2, 1, 1, "tconv2_t");
-	auto tconv2_b = df.batch_normalization(tconv2_t, DeepFlow::PER_ACTIVATION, 0, 1, 0, alpha_param, 1 - decay);
-	auto tconv2_r = df.leaky_relu(tconv2_b, dec_negative_slope);
+	auto tconv2_t = df.transposed_conv2d(tconv1_r, tconv2_f, 1, 1, 2, 2, 1, 1, "tconv2_t");	
+	auto tconv2_r = df.leaky_relu(tconv2_t, dec_negative_slope);
 
 	auto tconv3_f = df.variable(df.random_normal({ depth, FLAGS_channels, 3, 3 }, mean, stddev), dec_solver, "tconv3_f");
 	auto tconv3_t = df.transposed_conv2d(tconv2_r, tconv3_f, 1, 1, 2, 2, 1, 1, "tconv3_t");

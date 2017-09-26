@@ -30,7 +30,7 @@ void DataGenerator::forward() {
 			_current_batch++;
 		}
 	}
-	LOG_IF(INFO, _verbose > 3) << "MNIST " << _name << " - BATCH @ " << _current_batch;
+	LOG_IF(INFO, _verbose > 3) << "DataGenerator " << _name << " - BATCH @ " << _current_batch;
 }
 
 bool DataGenerator::isLastBatch() {

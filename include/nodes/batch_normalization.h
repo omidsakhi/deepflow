@@ -5,7 +5,7 @@
 class DeepFlowDllExport BatchNormalization : public Node {
 public:
 	BatchNormalization(deepflow::NodeParam *param);
-	int minNumInputs() { return 1; }
+	int minNumInputs() { return 3; }
 	int minNumOutputs() { return 1; }
 	void initForward();
 	void initBackward();
@@ -20,13 +20,12 @@ private:
 	cudnnBatchNormMode_t _bnMode;
 	cudnnTensorDescriptor_t _xDesc, _yDesc, _bnScaleBiasMeanVarDesc;
 	double _eps = CUDNN_BN_MIN_EPSILON;
-	double _exp_avg_factor = 0;
-	float * _bnMean = nullptr;
-	float * _bnInvVariance = nullptr;
-	float *_resultRunningMean = nullptr;
-	float *_resultRunningVariance = nullptr;
+	float * _resultSaveMean = nullptr;
+	float * _resultSaveInvVariance = nullptr;
 	float *_bnScale = nullptr;
 	float *_bnBias = nullptr;
+	float *_resultBnScaleDiff = nullptr;
+	float *_resultBnBiasDiff = nullptr;
 	float *_x = nullptr;
 	float *_y = nullptr;
 	float *_dy = nullptr;

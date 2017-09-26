@@ -85,8 +85,11 @@ std::shared_ptr<Tensor> NodeInput::value() {
 	return _connected_terminal->value();
 }
 
-std::shared_ptr<Tensor> NodeInput::diff() {	
-	return _connected_terminal->diff();
+std::shared_ptr<Tensor> NodeInput::diff() {
+	if (_connected_terminal)
+		return _connected_terminal->diff();
+	else
+		return nullptr;
 }
 
 std::shared_ptr<Tensor> NodeOutput::value() {	
@@ -100,6 +103,11 @@ std::shared_ptr<Tensor> NodeOutput::diff() {
 void NodeOutput::initValue(std::array<int, 4> dims, Tensor::TensorType type) {
 	LOG_IF(FATAL, _value != nullptr) << "_value != nullptr";
 	_value = std::make_shared<Tensor>(dims,type);
+}
+
+void NodeOutput::initValue(std::shared_ptr<Tensor> tensor)
+{
+	_value = tensor;
 }
 
 void NodeOutput::initDiff() {
