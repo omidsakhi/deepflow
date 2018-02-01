@@ -45,7 +45,7 @@ void TransposedConvolution2D::initForward() {
 	int n, c, h, w;	
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolution2dForwardOutputDim(_convDesc, _outputs[0]->value()->descriptor(), _wDesc, &n, &c, &h, &w));	
 	LOG(INFO) << "Transposed Convolution " << _name << " - " << _inputs[0]->value()->shape() << " * " << _inputs[1]->value()->shape() << " -> " << _outputs[0]->value()->shape();
-	LOG_IF(FATAL, n != input_n || c != input_c || h != input_h || w != input_w) << _name << " - Input shape must be " << n << "*" << c << "*" << h << "*" << w;			
+	LOG_IF(FATAL, n != input_n || c != input_c || h != input_h || w != input_w) << _name << " - Input shape must be " << n << "*" << c << "*" << h << "*" << w << " but it was " << _inputs[0]->value()->shape();
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionForwardAlgorithm(_cudnnHandle, _outputs[0]->value()->descriptor(), _wDesc, _convDesc, _inputs[0]->value()->descriptor(), CUDNN_CONVOLUTION_FWD_PREFER_FASTEST, 0, &_fwdAlgo));
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionForwardWorkspaceSize(_cudnnHandle, _outputs[0]->value()->descriptor(), _wDesc, _convDesc, _inputs[0]->value()->descriptor(), _fwdAlgo, &_fwdWorkspaceSize));
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardDataAlgorithm(_cudnnHandle, _wDesc, _inputs[0]->value()->descriptor(), _convDesc, _outputs[0]->value()->descriptor(), CUDNN_CONVOLUTION_BWD_DATA_PREFER_FASTEST, 0, &_bwdDataAlgo));

@@ -46,7 +46,6 @@
 #include "nodes/logger.h"
 #include "nodes/image_reader.h"
 #include "nodes/multiplexer.h"
-#include "nodes/negate.h"
 #include "nodes/batch_normalization.h"
 #include "nodes/dot.h"
 #include "nodes/replay_memory.h"
@@ -57,6 +56,9 @@
 #include "nodes/patching.h"
 #include "nodes/reduce_all.h"
 #include "nodes/upsample.h"
+#include "nodes/image_writer.h"
+#include "nodes/resize.h"
+#include "nodes/split.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -141,6 +143,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Patching>(node_param);
 	else if (node_param->has_lifting_param())
 		return std::make_shared<Lifting>(node_param);
+	else if (node_param->has_resize_param())
+		return std::make_shared<Resize>(node_param);
 	else if (node_param->has_pooling_param())
 		return std::make_shared<Pooling>(node_param);
 	else if (node_param->has_upsample_param())
@@ -155,6 +159,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Softmax>(node_param);
 	else if (node_param->has_dropout_param())
 		return std::make_shared<Dropout>(node_param);
+	else if (node_param->has_image_writer_param())
+		return std::make_shared<ImageWriter>(node_param);
 	else if (node_param->has_replay_memory_param())
 		return std::make_shared<ReplayMemory>(node_param);
 	else if (node_param->has_add_param())
@@ -187,14 +193,14 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<RandomSelector>(node_param);
 	else if (node_param->has_multiplexer_param())
 		return std::make_shared<Multiplexer>(node_param);
-	else if (node_param->has_negate_param())
-		return std::make_shared<Negate>(node_param);
 	else if (node_param->has_accumulator_param())
 		return std::make_shared<Accumulator>(node_param);
 	else if (node_param->has_dot_param())
 		return std::make_shared<Dot>(node_param);
 	else if (node_param->has_sio_output_param())
 		return std::make_shared<SIOOutput>(node_param);
+	else if (node_param->has_split_param())
+		return std::make_shared<Split>(node_param);
 	else {
 		LOG(FATAL) << "Unsupported Node";
 	}
@@ -231,6 +237,7 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 	for (auto phase_param : _block->phase_params())
 		_phases.insert(std::pair<std::string, deepflow::PhaseParam_PhaseBehaviour>(phase_param.phase(), phase_param.behaviour()));
 	
+	// creating nodes
 	for (int i=0; i < _block->block_param()->node_size(); ++i)
 	{
 		auto node_param = _block->block_param()->mutable_node(i);
@@ -240,6 +247,7 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 		_nodes.push_back(node);
 	}
 
+	// connecting node inputs/outputs
 	for (auto node : _nodes) {
 		for (int i = 0; i < node->param()->input_size(); ++i) {			
 			const std::string terminal_name = node->param()->input(i);
@@ -251,6 +259,7 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 		}
 	}
 	
+	// caching the name of all variables
 	_variables = _get_nodes<Variable>("");
 
 	for (auto var : _variables) {
@@ -283,6 +292,8 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 			LOG(INFO) << "Variable " << var->name() << " <-> Constant";
 		}
 	}
+
+	_insert_splits();
 
 	size_t free_byte;
 	size_t total_byte;
@@ -322,6 +333,54 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 		set_execution_context(execution_context);
 
 	resove_propagation();
+}
+
+void Session::_insert_splits()
+{
+	int total_split_nodes = 0;
+
+	for (auto node : _nodes) {
+		for (auto output : node->outputs()) {			
+			auto connected_terminals = output->connectedTerminals();
+			LOG_IF(FATAL, connected_terminals.size() > 2) << "We don't support more than 2 connected nodes to one output at this time.";
+			if (connected_terminals.size() == 2) {
+
+				auto node_param = deepflow::NodeParam();
+				node_param.set_name("split_" + output->name());
+				node_param.add_output(node_param.name() + "_output_0");
+				node_param.add_output(node_param.name() + "_output_1");				
+				node_param.add_input(node_param.name() + "_input");
+				node_param.mutable_split_param();
+
+				auto new_split_node = _create_node(&node_param);
+				new_split_node->createIO();
+
+				output->disconnect();
+				new_split_node->input(0)->connect(output);				
+
+				int i = 0;
+				for (auto t : connected_terminals) {
+					auto tcast = std::dynamic_pointer_cast<NodeInput>(t);
+					if (tcast) {
+						tcast->disconnect();
+						tcast->connect(new_split_node->output(i++));
+					}
+				}
+
+				_nodes.push_back(new_split_node);
+				total_split_nodes++;
+			}
+		}
+	}
+
+	for (auto node : _nodes) {
+		for (auto output : node->outputs()) {
+			auto connected_terminals = output->connectedTerminals();
+			LOG_IF(FATAL, connected_terminals.size() > 1);
+		}
+	}
+
+	LOG(INFO) << total_split_nodes << " total split nodes.";
 }
 
 void Session::set_execution_context(std::shared_ptr<ExecutionContext> execution_context)
@@ -388,20 +447,12 @@ std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string
 	}
 	return 0;
 }
-void Session::forward(std::string end_node_output)
+void Session::forward()
 {
-	if (end_node_output == "ALL") {
-		std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
-		for (auto node : end_nodes) {
-			node->_unvisit();
-		}
-		for (auto node : end_nodes) {
-			node->_forward();
-		}
-	}
-	else {
-		auto term = _find_node_output_by_name(end_node_output);
-		term->parentNode()->_unvisit();
+	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
+	int token = rand();
+	for (auto node : end_nodes) {
+		node->_forward(token);
 	}
 }
 
@@ -421,23 +472,19 @@ void Session::clamp(float min, float max)
 void Session::resove_propagation()
 {
 	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
+	int token = rand();
 	for (auto node : end_nodes) {
-		node->_unvisit();
-	}
-	for (auto node : end_nodes) {
-		node->_resolve_propagation();
+		node->_resolve_propagation(token);
 	}
 }
 
-void Session::backward(std::string node)
+void Session::backward()
 {
 	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
 	std::list<std::shared_ptr<Node>> head_nodes = _get_head_nodes("");
-	for (auto node : end_nodes) {
-		node->_unvisit();
-	}
+	int token = rand();
 	for (auto node : head_nodes) {
-		node->_backward();
+		node->_backward(token);
 	}
 
 }
@@ -471,11 +518,9 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 	bool train = _phases.find(context->phase)->second == deepflow::PhaseParam_PhaseBehaviour_TRAIN;
 	bool validation = _phases.find(context->phase)->second == deepflow::PhaseParam_PhaseBehaviour_VALIDATION;
 	if (train || validation) {
+		int token = rand();
 		for (auto node : *end_nodes) {
-			node->_unvisit();
-		}
-		for (auto node : *end_nodes) {
-			node->_resolve_propagation();
+			node->_resolve_propagation(token);
 		}
 	}
 	do {
@@ -497,20 +542,16 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 		context->last_batch = last_batch;
 		if (iteration && print_iteration)
 			std::cout << "  Iteration " << *iteration << std::endl;
+		int token = rand();
 		for (auto node : *end_nodes) {
-			node->_unvisit();
-		}
-		for (auto node : *end_nodes) {
-			node->_forward();
+			node->_forward(token);
 		}
 		if (train) {
 			for (auto node : *variable_nodes)
-				node->reset_gradients();			
-			for (auto node : *end_nodes) {
-				node->_unvisit();
-			}
+				node->reset_gradients();
+			int token = rand();
 			for (auto node : *head_nodes) {
-				node->_backward();
+				node->_backward(token);
 			}
 			for (auto var : *variable_nodes) {
 				auto map_var_to_solver = _solvers.find(var);
@@ -647,11 +688,11 @@ std::string Session::to_cpp() const
 	if (solvers_set.size() > 0)
 		code += "\n";
 
-	std::function<void(Node*)> foo = std::bind(generate_cpp_code, std::placeholders::_1, &code);	
+	std::function<void(Node*)> foo = std::bind(generate_cpp_code, std::placeholders::_1, &code);
+	
+	int token = rand();
 	for (auto end : ends)
-		end->_unvisit();
-	for (auto end : ends)
-		end->_traverse_up(foo, Node::POST_ORDER, true);
+		end->_traverse_up(foo, Node::POST_ORDER, token);
 	
 	code += "\n";
 	

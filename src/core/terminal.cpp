@@ -22,6 +22,11 @@ void NodeInput::connectTerminal(std::shared_ptr<Terminal> terminal)
 	_connected_terminal = terminal;
 }
 
+void NodeInput::disconnect()
+{
+	_connected_terminal = nullptr;
+}
+
 std::shared_ptr<Node> NodeInput::connectedNode() const
 {
 	if (_connected_terminal)
@@ -41,6 +46,11 @@ const std::string& NodeOutput::name() const {
 void NodeOutput::connectTerminal(std::shared_ptr<Terminal> terminal)
 {
 	_connected_terminals.insert(terminal);
+}
+
+void NodeOutput::disconnect()
+{
+	_connected_terminals.clear();
 }
 
 std::set<std::shared_ptr<Node>> NodeOutput::connectedNodes() const
@@ -110,9 +120,13 @@ void NodeOutput::initValue(std::shared_ptr<Tensor> tensor)
 	_value = tensor;
 }
 
-void NodeOutput::initDiff() {
+void NodeOutput::initDiff(std::shared_ptr<Tensor> tensor) {
 	LOG_IF(FATAL, _diff != nullptr) << "_diff != nullptr";
-	_diff = std::make_shared<Tensor>(_value->dims(),_value->type());
+	if (tensor)
+		_diff = tensor;
+	else {		
+		_diff = std::make_shared<Tensor>(_value->dims(), _value->type());
+	}
 }
 
 void NodeOutput::resetDiff()

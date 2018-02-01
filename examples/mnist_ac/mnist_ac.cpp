@@ -102,10 +102,9 @@ std::shared_ptr<Session> create_session() {
 
 	int flt = 64;
 
-	auto solver = df.adam_solver(0.00002f, 0.5f, 0.99f);
+	auto solver = df.adam_solver(0.00002f, 0.7f, 0.99f);
 
 	auto input = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "enc_input");
-	
 	auto node = conv(&df, input, solver, 1, flt, 5, 2, 2, 1, "e1"); // 14 * 14 
 	auto c1 = node;
 	node = conv(&df, node, solver, flt, flt * 2, 5, 2, 2, 1, "e2"); // 7 * 7
@@ -116,12 +115,9 @@ std::shared_ptr<Session> create_session() {
 	node = bias(&df, node, solver, 100, "e4");
 	node = df.tanh(node, "h");
 	node = dense(&df, node, { 100, flt * 4, 4, 4 }, solver, "d1");
-	//node = batchnorm(&df, node, solver, flt * 4, "d2");
-	//node = df.add(node, c3, "d3");
+	node = batchnorm(&df, node, solver, flt * 4, "d2");
 	node = deconv(&df, node, solver, flt * 4, flt * 2, 2, 0, 1, 1, 0, 1, "d4");
-	//node = df.add(node, c2, "d5");
 	node = deconv(&df, node, solver, flt * 2, flt, 5, 2, 1, 1, 0, 1, "d6");
-	//node = df.add(node, c1, "d7");
 	node = deconv(&df, node, solver, flt, 1, 5, 2, 1, 1, 0, 0, "d8");
 
 	auto output = df.tanh(node, "dec_output");	

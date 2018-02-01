@@ -116,20 +116,16 @@ void main(int argc, char** argv) {
 
 	std::shared_ptr<Session> decoder_session;
 	decoder_session = create_decoder_session();
-	decoder_session->initialize();
-	decoder_session->set_execution_context(execution_context);
+	decoder_session->initialize(execution_context);	
 
 	std::shared_ptr<Session> face_session = create_face_reader_session();
-	face_session->initialize();
-	face_session->set_execution_context(execution_context);
+	face_session->initialize(execution_context);	
 
 	std::shared_ptr<Session> loss_session = create_loss_session();
-	loss_session->initialize();
-	loss_session->set_execution_context(execution_context);
+	loss_session->initialize(execution_context);	
 	
 	auto display_session = create_display_session();
-	display_session->initialize();
-	display_session->set_execution_context(execution_context);
+	display_session->initialize(execution_context);	
 	
 	auto face_data = face_session->get_node("face_data");
 	auto enc_input = encoder_session->get_node("enc_input");

@@ -50,14 +50,13 @@ void main(int argc, char** argv) {
 		df.define_phase("Train", DeepFlow::TRAIN);
 		df.define_phase("Validation", DeepFlow::VALIDATION);
 
-		auto solver = df.adam_solver(0.0001f, 0.5f);
+		auto solver = df.adam_solver(0.00001f, 0.9f);
 		
 		auto test_data = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });		
 		auto train_data = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Train, MNISTReader::Data, "train_data", { "Train" });
 		auto data_selector = df.phaseplexer(train_data, "Train", test_data, "Validation", "data_selector", {});
 				
-		auto conv1 = conv(&df, "conv1", data_selector, solver, 1, 32, 5,2, true);
-		//auto agc = df.agc(conv1, 1.0);
+		auto conv1 = conv(&df, "conv1", data_selector, solver, 1, 32, 5,2, true);		
 		auto conv2 = conv(&df, "conv2", conv1, solver, 32, 64, 5,2, true);
 
 		auto w1 = df.variable(df.random_uniform({ 7 * 7 * 64, 1024, 1, 1 }, -0.1, 0.1), solver, "w1", {});		

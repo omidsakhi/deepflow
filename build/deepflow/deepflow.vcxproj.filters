@@ -37,9 +37,6 @@
     <CudaCompile Include="..\..\src\nodes\add.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\bias_add.cu">
-      <Filter>source\nodes</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\cast_float.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
@@ -59,9 +56,6 @@
       <Filter>source\core</Filter>
     </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\image_reader.cu">
-      <Filter>source\nodes</Filter>
-    </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\negate.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\restructure.cu">
@@ -89,6 +83,15 @@
       <Filter>source\nodes</Filter>
     </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\upsample.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\image_writer.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\bias_add.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\resize.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
   </ItemGroup>
@@ -199,6 +202,9 @@
       <Filter>source\nodes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\nodes\loss.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\split.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -362,9 +368,6 @@
     <ClInclude Include="..\..\include\nodes\multiplexer.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\nodes\negate.h">
-      <Filter>include\nodes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\nodes\batch_normalization.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
@@ -405,6 +408,15 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\upsample.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\image_writer.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\resize.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\split.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

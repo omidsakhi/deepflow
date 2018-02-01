@@ -61,7 +61,7 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x2) {
 			auto train = df.define_train_phase("Train");		
-			auto solver = df.adam_solver(0.02f, 0.9f, 0.9f);
+			auto solver = df.adam_solver(0.002f, 0.9f, 0.99f);
 			//auto solver = df.gain_solver(0.98, 0.000001f);
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY, "image");
 			auto recon = df.variable(df.random_normal({ 1,1,256,256 }, 0, 0.1), solver, "recon");
@@ -149,9 +149,10 @@ void main(int argc, char** argv) {
 		else if (FLAGS_x11) {
 			auto train = df.define_train_phase("Train");
 			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
-			auto liftdown = df.lifting(image, DeepFlow::LIFT_DOWN);			
-			auto liftup = df.lifting(liftdown, DeepFlow::LIFT_UP);			
-			df.display(liftup, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp2", { train });
+			auto liftdown = df.lifting(image, DeepFlow::LIFT_DOWN_FLIP);			
+			df.display(liftdown, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "DOWN", { train });
+			auto liftup = df.lifting(liftdown, DeepFlow::LIFT_UP_FLIP);			
+			df.display(liftup, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "UP", { train });
 		}
 		else if (FLAGS_x12) {
 			
@@ -167,8 +168,8 @@ void main(int argc, char** argv) {
 			
 			auto train = df.define_train_phase("Train");
 			auto images = df.image_batch_reader(FLAGS_image_folder, { 6, 1, 27, 18 }, true);
-			auto patchdown = df.patching(images, DeepFlow::PATCHING_DOWN, 3, 2);
-			auto patchup = df.patching(patchdown, DeepFlow::PATCHING_UP, 3, 2);
+			auto patchdown = df.patching(images, DeepFlow::PATCHING_DOWNCHANNELS, 3, 2);
+			auto patchup = df.patching(patchdown, DeepFlow::PATCHING_UPCHANNELS, 3, 2);
 			df.display(patchup, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp1", { train });
 			
 		}

@@ -22,10 +22,6 @@ void Node::createIO() {
 	LOG_IF(FATAL, _param->output_size() != _outputs.size()) << name() << " _param->output_size() != minNumOutputs()";
 }
 
-void Node::setVisited(bool state) {
-	_visited = state;
-}
-
 std::list<std::shared_ptr<Node>> Node::inputNodes() const {
 	std::list<std::shared_ptr<Node>> list;
 	for (int i = 0; i < _inputs.size(); ++i)
@@ -37,18 +33,13 @@ std::list<std::shared_ptr<Node>> Node::inputNodes() const {
 	return list;
 }
 
-void Node::_unvisit() {
-	if (_visited == false)
+void Node::_resolve_propagation(int visit_token) {
+	if (visit_token == 0) {
+		visit_token = rand();
+	}
+	if (_visit_token == visit_token)
 		return;
-	_visited = false;
-	for (auto node : inputNodes())
-		node->_unvisit();
-}
-
-void Node::_resolve_propagation() {
-	if (_visited == true)
-		return;
-	_visited = true;	
+	_visit_token = visit_token;
 	LOG_IF(INFO, _verbose > 3) << "RESOLVING BP - VISITING " << _name;
 	if (backwardType() == ALWAYS_BACKWARD) {				
 		LOG_IF(INFO, _verbose > 3) << "RESOLVING BP - ALWAYS BACKWARD " << _name;
@@ -63,7 +54,7 @@ void Node::_resolve_propagation() {
 		auto list = inputNodes();
 		for (auto node : list) {
 			LOG_IF(INFO, _verbose > 3) << "RESOLVING BP - INSPECTING INPUT " << node->name();
-			node->_resolve_propagation();
+			node->_resolve_propagation(visit_token);
 			if (node->_propagate_back == true) {
 				_should_backward = true;				
 				break;
@@ -73,7 +64,7 @@ void Node::_resolve_propagation() {
 		setShouldBackward(_should_backward);
 	}	
 	for (auto node : inputNodes()) {
-		node->_resolve_propagation();
+		node->_resolve_propagation(visit_token);
 	}
 }
 
@@ -92,7 +83,7 @@ void Node::write_values(std::shared_ptr<Tensor> tensor, float alpha, float beta)
 	LOG_IF(INFO, _verbose > 2) << "FEEDING VALUES TO " << _name;		
 	auto feed_dim = tensor->dims();
 	auto my_dim = _outputs[0]->value()->dims();
-	LOG_IF(FATAL, feed_dim != my_dim) << "Forward feed dimension mismatch between " << _name << " (src - " << _outputs[0]->value()->shape() << " ) and dst - " << tensor->shape();
+	LOG_IF(FATAL, feed_dim != my_dim) << "Forward feed dimension mismatch between dst (" << _name << ") " << tensor->shape() << " and src (" << _outputs[0]->value()->shape() + ")";
 	cpy(_outputs[0]->value()->size(), alpha, tensor->data(), beta, _outputs[0]->value()->mutableData());
 }
 
@@ -101,53 +92,62 @@ void Node::write_diffs(std::shared_ptr<Tensor> tensor, float alpha, float beta)
 	LOG_IF(INFO, _verbose > 2) << "FEEDING GRADIENTS FROM TO " << _name;	
 	auto feed_dim = tensor->dims();
 	auto my_dim = _outputs[0]->diff()->dims();
-	LOG_IF(FATAL, feed_dim != my_dim) << "Backward feed dimension mismatch between " << _name << " (src - " << _outputs[0]->value()->shape() << " ) and dst - " << tensor->shape();
+	LOG_IF(FATAL, feed_dim != my_dim) << "Backward feed dimension mismatch between dst (" << _name << ") " << tensor->shape() << " and src (" << _outputs[0]->value()->shape() << ")";
 	cpy(_outputs[0]->diff()->size(), alpha, tensor->data(), beta, _outputs[0]->diff()->mutableData());
 }
 
-void Node::_traverse_up(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition)
+void Node::_traverse_up(std::function<void(Node*)> fun, TraverseOrder order, int visit_token)
 {
-	if (_visited == visit_condition)
+	if (visit_token == 0) {
+		visit_token = rand();
+	}
+	if (_visit_token == visit_token)
 		return;
 	if (_context && includePhase(_context->phase) == false)
 		return;
 	if (order == PRE_ORDER)
 		fun(this);
 	for (auto node : inputNodes())
-		node->_traverse_up(fun, order, visit_condition);
+		node->_traverse_up(fun, order, visit_token);
 	if (order == POST_ORDER)
 		fun(this);
-	_visited = visit_condition;
+	_visit_token = visit_token;	
 }
 
-void Node::_traverse_down(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition)
+void Node::_traverse_down(std::function<void(Node*)> fun, TraverseOrder order, int visit_token)
 {
-	if (_visited == visit_condition)
+	if (visit_token == 0) {
+		visit_token = rand();
+	}
+	if (_visit_token == visit_token)
 		return;
 	if (_context && includePhase(_context->phase) == false)
 		return;
 	if (order == PRE_ORDER)
 		fun(this);
 	for (auto node : outputNodes())
-		node->_traverse_down(fun, order, visit_condition);
+		node->_traverse_down(fun, order, visit_token);
 	if (order == POST_ORDER)
 		fun(this);
-	_visited = visit_condition;
+	_visit_token = visit_token;
 }
 
-void Node::_forward() {	
-	if (_visited == true) {
-		LOG_IF(INFO, _verbose > 2) << "SKIP FORWARD" << _name << " DUE TO VISITED = true ";
+void Node::_forward(int visit_token) {	
+	if (visit_token == 0) {
+		visit_token = rand();
+	}
+	if (_visit_token == visit_token) {
+		LOG_IF(INFO, _verbose > 2) << "SKIP FORWARD " << _name << " DUE TO VISITED = true ";
 		return;
 	}
 	if (_context && includePhase(_context->phase) == false) {
 		LOG_IF(INFO, _verbose > 2) << "SKIP FORWARD " << _name << " DUE TO PHASE";
 		return;
 	}
-	_visited = true;	
+	_visit_token = visit_token;	
 	for (auto node : inputNodes()) {
 		LOG_IF(INFO, _verbose > 3) << "FROM " << _name << " GOING TO FORWARD " << node->name();
-		node->_forward();
+		node->_forward(visit_token);
 	}	
 	LOG_IF(INFO, _verbose > 2) << "FORWARD " << _name;
 	forward();
@@ -161,8 +161,11 @@ void Node::_forward() {
 	}
 }
 
-void Node::_backward() {	
-	if (_visited == true) {
+void Node::_backward(int visit_token) {	
+	if (visit_token == 0) {
+		visit_token = rand();
+	}
+	if (_visit_token == visit_token) {		
 		LOG_IF(INFO, _verbose > 2) << "SKIP BACKWARD " << _name << " DUE TO VISITED = true ";
 		return;
 	}
@@ -170,10 +173,10 @@ void Node::_backward() {
 		LOG_IF(INFO, _verbose > 2) << "SKIP BACKWARD " << _name << " DUE TO PHASE";
 		return;
 	}
-	_visited = true;
+	_visit_token = visit_token;	
 	for (auto node : outputNodes()) {
 		LOG_IF(INFO, _verbose > 3) << "FROM " << _name << " GOING TO BACKWARD " << node->name();
-		node->_backward();
+		node->_backward(visit_token);
 	}
 	if (_propagate_back) {
 		LOG_IF(INFO, _verbose > 2) << "BACKWARD " << _name;

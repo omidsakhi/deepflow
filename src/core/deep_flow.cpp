@@ -230,19 +230,6 @@ std::string DeepFlow::cast_float(std::string input, std::string name, std::initi
 	return node_param->output(0);
 }
 
-std::string DeepFlow::negate(std::string input, ActionType negateType, std::string name, std::initializer_list<std::string> phases)
-{
-	auto node_param = _block->add_node_param();
-	node_param->set_name(_block->get_unique_node_param_name(name));
-	add_outputs(node_param, 1);
-	for (auto phase : phases)
-		node_param->add_phase(phase);
-	node_param->add_input(input);
-	auto negate = node_param->mutable_negate_param();
-	negate->set_negate_type((deepflow::ActionType)negateType);
-	return node_param->output(0);
-}
-
 std::string DeepFlow::softmax(std::string a, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();	
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -468,19 +455,6 @@ std::string DeepFlow::replay_memory(std::string input, int capacity, std::string
 	return node_param->output(0);
 }
 
-std::string DeepFlow::agc(std::string input, float sensitivity, std::string name, std::initializer_list<std::string> phases)
-{
-	auto node_param = _block->add_node_param();
-	node_param->set_name(_block->get_unique_node_param_name(name));
-	add_outputs(node_param, 1);
-	for (auto phase : phases)
-		node_param->add_phase(phase);
-	node_param->add_input(input);	
-	auto agc_param = node_param->mutable_agc_param();
-	agc_param->set_sensitivity(sensitivity);	
-	return node_param->output(0);
-}
-
 void DeepFlow::print(std::initializer_list<std::string> inputs, std::string message, ActionTime printTime, ActionType printType, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -528,6 +502,19 @@ std::string DeepFlow::display(std::string input, int delay_msec, ActionTime disl
 	display_param->set_display_type((deepflow::ActionType)displayType);
 	display_param->set_display_time((deepflow::ActionTime)dislayTime);
 	display_param->set_epoch_frequency(epoch_frequency);
+	return node_param->output(0);
+}
+
+std::string DeepFlow::imwrite(std::string input, std::string filename, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto writer_param = node_param->mutable_image_writer_param();
+	writer_param->set_filename(filename);
 	return node_param->output(0);
 }
 
@@ -747,6 +734,20 @@ std::string DeepFlow::patching(std::string input, PatchingMode mode, int num_ver
 	patching_param->set_mode((deepflow::PatchingParam_Mode) mode);
 	patching_param->set_num_horizontal_patch(num_horizontal_patches);
 	patching_param->set_num_vertical_patch(num_vertical_patches);
+	return node_param->output(0);
+}
+
+std::string DeepFlow::resize(std::string input, float height_scale, float width_scale, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto resize_param = node_param->mutable_resize_param();
+	resize_param->set_height_scale(height_scale);
+	resize_param->set_width_scale(width_scale);
 	return node_param->output(0);
 }
 

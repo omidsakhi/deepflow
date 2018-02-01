@@ -22,11 +22,11 @@ public:
 	std::string to_cpp() const;
 	std::shared_ptr<PlaceHolder> get_placeholder(std::string name);	
 	std::shared_ptr<Node> get_node(std::string name);
-	void forward(std::string end_node_output = "ALL");
+	void forward();
 	void reset_gradients();
 	void clamp(float min, float max);	
 	void resove_propagation();
-	void backward(std::string node = "ALL");
+	void backward();
 	void apply_solvers();
 	void save(std::string file_path, bool as_text = false);
 private:
@@ -39,6 +39,7 @@ private:
 	std::shared_ptr<Node> _create_node(deepflow::NodeParam *);
 	std::shared_ptr<Solver> _create_solver(deepflow::SolverParam *);
 	void _execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Node>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Node>> *head_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration);
+	void _insert_splits();
 private:
 	bool _initialized = false;
 	std::shared_ptr<Block> _block;

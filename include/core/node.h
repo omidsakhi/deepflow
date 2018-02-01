@@ -61,18 +61,16 @@ public:
 	std::string name() const;	
 	std::string _to_cpp_phases() const;
 	std::string _input_name_for_cpp(int i) const;
-	int numConnectedOutputs();
-	void _unvisit();
-	void _forward();
-	void _backward();	
-	void _resolve_propagation();	
+	int numConnectedOutputs();	
+	void _forward(int visit_token = 0);
+	void _backward(int visit_token = 0);	
+	void _resolve_propagation(int visit_token = 0);	
 	bool propagateBack() const;	
 	void setShouldBackward(bool state);
 	void write_values(std::shared_ptr<Tensor> tensor, float alpha = 1.0, float beta = 0.0f);
 	void write_diffs(std::shared_ptr<Tensor> tensor, float alpha = 1.0, float beta = 0.0f);
-	void _traverse_up(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);
-	void _traverse_down(std::function<void(Node*)> fun, TraverseOrder order, bool visit_condition);	
-	void setVisited(bool state);		
+	void _traverse_up(std::function<void(Node*)> fun, TraverseOrder order, int visit_token);
+	void _traverse_down(std::function<void(Node*)> fun, TraverseOrder order, int visit_token);	
 	void cpy(int n, const float alpha, const void *src, const float beta, void *dst);
 	void dot(const int n, const float alpha, const void *a, const void *b, const float beta, void *dst);
 	void fill(int n, const float value, void *dst, const float beta = 0);
@@ -93,7 +91,7 @@ protected:
 	std::vector<NodeInputPtr> _inputs;
 	std::vector<NodeOutputPtr> _outputs;
 	std::string _name = "Unknown";	
-	bool _visited = false;
+	int _visit_token = 0;
 	bool _propagate_back = false;
 	bool _initialized = false;
 	deepflow::NodeParam *_param = nullptr;
@@ -104,3 +102,9 @@ protected:
 };
 
 using NodePtr = std::shared_ptr<Node>;
+
+__global__
+void GrayPictureGeneratorKernel(const int num_images, const float * in, const int per_image_height, const int per_image_width, const int num_image_per_row_and_col, unsigned char * out);
+
+__global__
+void ColorPictureGeneratorKernel(const int num_images, const float * in, const int per_image_height, const int per_image_width, const int num_image_per_row_and_col, unsigned char * out);

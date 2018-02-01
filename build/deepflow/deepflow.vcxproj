@@ -54,9 +54,12 @@
     <ClInclude Include="..\..\include\nodes\dropout.h" />
     <ClInclude Include="..\..\include\nodes\equal.h" />
     <ClInclude Include="..\..\include\nodes\exp.h" />
+    <ClInclude Include="..\..\include\nodes\image_writer.h" />
     <ClInclude Include="..\..\include\nodes\lifting.h" />
     <ClInclude Include="..\..\include\nodes\patching.h" />
     <ClInclude Include="..\..\include\nodes\reduce_all.h" />
+    <ClInclude Include="..\..\include\nodes\resize.h" />
+    <ClInclude Include="..\..\include\nodes\split.h" />
     <ClInclude Include="..\..\include\nodes\square_error.h" />
     <ClInclude Include="..\..\include\nodes\image_reader.h" />
     <ClInclude Include="..\..\include\nodes\leaky_relu.h" />
@@ -65,7 +68,6 @@
     <ClInclude Include="..\..\include\nodes\loss.h" />
     <ClInclude Include="..\..\include\nodes\matmul.h" />
     <ClInclude Include="..\..\include\nodes\multiplexer.h" />
-    <ClInclude Include="..\..\include\nodes\negate.h" />
     <ClInclude Include="..\..\include\nodes\phaseplexer.h" />
     <ClInclude Include="..\..\include\nodes\place_holder.h" />
     <ClInclude Include="..\..\include\nodes\pooling.h" />
@@ -108,17 +110,19 @@
     <CudaCompile Include="..\..\src\nodes\abs.cu" />
     <CudaCompile Include="..\..\src\nodes\accumulator.cu" />
     <CudaCompile Include="..\..\src\nodes\add.cu" />
-    <CudaCompile Include="..\..\src\nodes\bias_add.cu" />
+    <CudaCompile Include="..\..\src\nodes\bias_add.cu">
+      <FileType>Document</FileType>
+    </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\cast_float.cu" />
     <CudaCompile Include="..\..\src\nodes\display.cu" />
     <CudaCompile Include="..\..\src\nodes\equal.cu" />
+    <CudaCompile Include="..\..\src\nodes\image_writer.cu" />
     <CudaCompile Include="..\..\src\nodes\lifting.cu" />
     <CudaCompile Include="..\..\src\nodes\patching.cu" />
     <CudaCompile Include="..\..\src\nodes\reduce_all.cu" />
     <CudaCompile Include="..\..\src\nodes\square_error.cu" />
     <CudaCompile Include="..\..\src\nodes\image_reader.cu" />
     <CudaCompile Include="..\..\src\nodes\leaky_relu.cu" />
-    <CudaCompile Include="..\..\src\nodes\negate.cu" />
     <CudaCompile Include="..\..\src\nodes\psnr.cu" />
     <CudaCompile Include="..\..\src\nodes\square.cu" />
     <CudaCompile Include="..\..\src\nodes\upsample.cu" />
@@ -161,8 +165,12 @@
       <FileType>CppCode</FileType>
     </CudaCompile>
     <ClCompile Include="..\..\src\nodes\replay_memory.cpp" />
+    <CudaCompile Include="..\..\src\nodes\resize.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
     <ClCompile Include="..\..\src\nodes\sio_output.cpp" />
     <ClCompile Include="..\..\src\nodes\softmax.cpp" />
+    <ClCompile Include="..\..\src\nodes\split.cpp" />
     <ClCompile Include="..\..\src\nodes\transposed_conv_2d.cpp" />
     <ClCompile Include="..\..\src\proto\caffe.pb.cc" />
     <ClCompile Include="..\..\src\proto\deepflow.pb.cc" />
@@ -213,7 +221,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 8.0.props" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 9.1.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -255,13 +263,13 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>DEEPFLOW_DLL_EXPORT;WIN32;WIN64;_CONSOLE;GFLAGS_DLL_DECLARE_FLAG=;GFLAGS_DLL_DEFINE_FLAG=;GLOG_NO_ABBREVIATED_SEVERITIES;GOOGLE_GLOG_DLL_DECL=;GFLAGS_IS_A_DLL=0;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\include;..\..\third-party\socket.io-client-cpp;..\..\third-party\protobuf\src;..\..\third-party\opencv\build\include;..\..\third-party\gflags\build\include;..\..\third-party\glog\src\windows;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\include;..\..\include\proto;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\include;..\..\third-party\socket.io-client-cpp;..\..\third-party\protobuf\src;..\..\third-party\opencv\build\include;..\..\third-party\gflags\build\include;..\..\third-party\glog\src\windows;..\..\third-party\cuda\include;..\..\include\proto;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>libboost_thread-vc140-mt-gd-1_64.lib;libboost_filesystem-vc140-mt-gd-1_64.lib;libboost_chrono-vc140-mt-gd-1_64.lib;libboost_system-vc140-mt-gd-1_64.lib;libboost_random-vc140-mt-gd-1_64.lib;sioclient.lib;libprotobufd.lib;opencv_imgcodecs320d.lib;opencv_imgproc320d.lib;opencv_core320d.lib;opencv_highgui320d.lib;shlwapi.lib;gflags_static.lib;glog.lib;curand.lib;cublas.lib;cudnn.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\third-party\boost_1_64_0\stage\lib;..\..\third-party\protobuf\src;..\..\third-party\protobuf\cmake-build\Debug;..\..\third-party\opencv\build\lib\Debug;..\..\third-party\glog\cmake-build\Debug;..\..\third-party\socket.io-client-cpp\cmake-build\Debug;..\..\third-party\gflags\cmake-build\lib\Debug;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\third-party\boost_1_64_0\stage\lib;..\..\third-party\protobuf\src;..\..\third-party\protobuf\cmake-build\Debug;..\..\third-party\opencv\build\lib\Debug;..\..\third-party\glog\cmake-build\Debug;..\..\third-party\socket.io-client-cpp\cmake-build\Debug;..\..\third-party\gflags\cmake-build\lib\Debug;..\..\third-party\cuda\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -269,7 +277,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
-      <CodeGeneration>compute_30,sm_30</CodeGeneration>
+      <CodeGeneration>compute_35,sm_35</CodeGeneration>
     </CudaCompile>
     <PreBuildEvent>
       <Command>
@@ -303,7 +311,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>DEEPFLOW_DLL_EXPORT;WIN32;WIN64;NDEBUG;_CONSOLE;GFLAGS_DLL_DECLARE_FLAG=;GFLAGS_DLL_DEFINE_FLAG=;GLOG_NO_ABBREVIATED_SEVERITIES;GOOGLE_GLOG_DLL_DECL=;GFLAGS_IS_A_DLL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\third-party\socket.io-client-cpp;..\..\third-party\protobuf\src;..\..\third-party\opencv\build\include;..\..\third-party\gflags\cmake-build\include;..\..\third-party\glog\src\windows;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\include;..\..\include\proto;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\third-party\socket.io-client-cpp;..\..\third-party\protobuf\src;..\..\third-party\opencv\build\include;..\..\third-party\gflags\cmake-build\include;..\..\third-party\glog\src\windows;..\..\third-party\cuda\include;..\..\include\proto;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
@@ -316,7 +324,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>libboost_thread-vc140-mt-1_64.lib;libboost_filesystem-vc140-mt-1_64.lib;libboost_chrono-vc140-mt-1_64.lib;libboost_system-vc140-mt-1_64.lib;libboost_random-vc140-mt-1_64.lib;sioclient.lib;libprotobuf.lib;opencv_imgcodecs320.lib;opencv_imgproc320.lib;opencv_core320.lib;opencv_highgui320.lib;shlwapi.lib;gflags_static.lib;glog.lib;curand.lib;cublas.lib;cudnn.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\third-party\boost_1_64_0\stage\lib;..\..\third-party\protobuf\src;..\..\third-party\protobuf\cmake-build\Release;..\..\third-party\opencv\build\lib\Release;..\..\third-party\glog\cmake-build\Release;..\..\third-party\socket.io-client-cpp\cmake-build\Release;..\..\third-party\gflags\cmake-build\lib\Release;..\..\third-party\cudnn-8.0-x64-v6.0\cuda\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\third-party\boost_1_64_0\stage\lib;..\..\third-party\protobuf\src;..\..\third-party\protobuf\cmake-build\Release;..\..\third-party\opencv\build\lib\Release;..\..\third-party\glog\cmake-build\Release;..\..\third-party\socket.io-client-cpp\cmake-build\Release;..\..\third-party\gflags\cmake-build\lib\Release;..\..\third-party\cuda\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -324,7 +332,8 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
-      <CodeGeneration>compute_30,sm_30</CodeGeneration>
+      <CodeGeneration>compute_35,sm_35</CodeGeneration>
+      <FastMath>true</FastMath>
     </CudaCompile>
     <PreBuildEvent>
       <Command>
@@ -335,6 +344,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 8.0.targets" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 9.1.targets" />
   </ImportGroup>
 </Project>

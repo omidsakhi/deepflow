@@ -82,16 +82,15 @@ message AddParam {
 	float alpha = 1;
 	float beta = 2;
 }
-
-message NegateParam {
-	ActionType negate_type = 1;
-}
-
 message DisplayParam {
 	int32 delay_msec = 1;
 	ActionTime display_time = 2;
 	ActionType display_type = 3;
 	int32 epoch_frequency = 4;
+}
+
+message ImageWriterParam {
+	string filename = 1;
 }
 
 message LogParam {
@@ -109,7 +108,12 @@ message LossParam {
 		NORM1 = 6;
 		NORM2 = 7;
 	}
-	ReduceOp reduce_op = 1;	
+	ReduceOp reduce_op = 1;
+	bool force_output = 2;
+}
+
+message SplitParam {
+
 }
 
 message EqualParam {
@@ -312,8 +316,7 @@ message NodeParam {
   LoggerParam logger_param = 122;
   RestructureParam restructure_param = 123;
   ImageReaderParam image_reader_param = 124;
-  MultiplexerParam multiplexer_param = 125;
-  NegateParam negate_param = 126;
+  MultiplexerParam multiplexer_param = 125;  
   BatchNormalizationParam batch_normalization_param = 127;
   MnistParam mnist_param = 128;
   DataGeneratorParam data_generator_param = 129;	
@@ -329,7 +332,15 @@ message NodeParam {
   PatchingParam patching_param = 140;
   AbsParam abs_param = 141;
   ReduceAllParam reduce_all_param = 142;
-  UpsampleParam upsample_param = 143;  
+  UpsampleParam upsample_param = 143; 
+  ImageWriterParam image_writer_param = 144;
+  ResizeParam resize_param = 145;
+  SplitParam split_param = 146;
+}
+
+message ResizeParam {
+	float height_scale = 1;
+	float width_scale = 2;
 }
 
 message UpsampleParam {
@@ -354,9 +365,11 @@ message SoftmaxParam {
 
 message PatchingParam {
 	enum Mode {
-		UP = 0;    
-		DOWN = 1;
-	}
+		UPSAMPLES = 0;    
+		DOWNSAMPLES = 1;
+		UPCHANNELS = 2;
+		DOWNCHANNELS = 3;
+	}	
 	Mode mode = 1;	
 	int32 num_vertical_patch = 2;
 	int32 num_horizontal_patch = 3;
@@ -364,8 +377,10 @@ message PatchingParam {
 
 message LiftingParam {
 	enum Mode {
-		UP = 0;    
-		DOWN = 1;
+		UP_REGULAR = 0;    
+		DOWN_REGULAR = 1;
+		UP_FLIP = 2;
+		DOWN_FLIP = 3;
 	}
 	Mode mode = 1;	
 }

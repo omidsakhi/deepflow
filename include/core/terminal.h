@@ -19,6 +19,7 @@ public :
 	std::shared_ptr<Node> parentNode() const;		
 	const TerminalType& type() const;
 	virtual void connectTerminal(std::shared_ptr<Terminal> terminal) = 0;
+	virtual void disconnect() = 0;
 	virtual std::array<int, 4> dims() = 0;
 	virtual std::shared_ptr<Tensor> value() = 0;
 	virtual std::shared_ptr<Tensor> diff() = 0;
@@ -41,6 +42,7 @@ public:
 	std::shared_ptr<Tensor> diff();
 	virtual const std::string& name() const;
 	virtual void connectTerminal(std::shared_ptr<Terminal> terminal);
+	virtual void disconnect();
 	std::shared_ptr<Node> connectedNode() const;
 	std::shared_ptr<Terminal> connectedTerminal() const;
 protected:
@@ -54,7 +56,7 @@ public:
 	void initValue(std::shared_ptr<Tensor> tensor);
 	std::array<int, 4> dims();
 	void feed(std::shared_ptr<NodeOutput> t);
-	void initDiff();
+	void initDiff(std::shared_ptr<Tensor> tensor = nullptr);
 	void resetDiff();
 	void resetValue();
 	void cpyValueToDiff();
@@ -62,6 +64,7 @@ public:
 	std::shared_ptr<Tensor> diff();
 	virtual const std::string& name() const;
 	virtual void connectTerminal(std::shared_ptr<Terminal> terminal);
+	virtual void disconnect();
 	virtual std::set<std::shared_ptr<Node>> connectedNodes() const;
 	virtual std::set<std::shared_ptr<Terminal>> connectedTerminals() const;
 protected:

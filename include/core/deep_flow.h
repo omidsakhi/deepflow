@@ -45,13 +45,17 @@ public:
 	};
 
 	enum LiftingMode {
-		LIFT_UP = 0,
-		LIFT_DOWN = 1
+		LIFT_UP_REGULAR = 0,
+		LIFT_DOWN_REGULAR = 1,
+		LIFT_UP_FLIP = 2,
+		LIFT_DOWN_FLIP = 3
 	};
 
 	enum PatchingMode {
-		PATCHING_UP = 0,
-		PATCHING_DOWN = 1
+		PATCHING_UPSAMPLES = 0,
+		PATCHING_DOWNSAMPLES = 1,
+		PATCHING_UPCHANNELS = 2,
+		PATCHING_DOWNCHANNELS = 3
 	};
 
 	enum ReduceAllOp {
@@ -80,17 +84,20 @@ public:
 
 	// VARIABLES & PLACE HOLDER
 	std::string variable(std::string initializer, std::string solver = "", std::string name = "var", std::initializer_list<std::string> phases = {});
-	std::string place_holder(std::array<int,4> dims, Tensor::TensorType type = Tensor::Float, std::string name = "ph", std::initializer_list<std::string> phases = {});
-	std::string restructure(std::string input, int first_dims, int second_dim, std::string name = "restructure", std::initializer_list<std::string> phases = {});
+	std::string place_holder(std::array<int,4> dims, Tensor::TensorType type = Tensor::Float, std::string name = "ph", std::initializer_list<std::string> phases = {});		
 
 	//CONVOLUTION
 	std::string conv2d(std::string input, std::string filter, std::string bias, float negative_slope /* NOT SUPPORTED YET BY CUDNN */, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string conv2d(std::string input, std::string filter, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
+	std::string transposed_conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
+
+	// RESTRUCTURE
+	std::string restructure(std::string input, int first_dims, int second_dim, std::string name = "restructure", std::initializer_list<std::string> phases = {});
 	std::string pooling(std::string input, int windowHeight = 3, int windowWidth = 3, int verticalPadding = 0, int horizontalPadding = 0, int verticalStride = 1, int horizontalStride = 1, std::string name = "maxpool", std::initializer_list<std::string> phases = {});
 	std::string lifting(std::string input, LiftingMode mode, std::string name = "lifting", std::initializer_list<std::string> phases = {});
 	std::string upsample(std::string input, std::string name = "upsample", std::initializer_list<std::string> phases = {});
 	std::string patching(std::string input, PatchingMode mode, int num_vertical_patches, int num_horizontal_patches, std::string name = "patching", std::initializer_list<std::string> phases = {});
-	std::string transposed_conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
+	std::string resize(std::string input, float height_scale, float width_scale, std::string name = "resize", std::initializer_list<std::string> phases = {});
 
 	// MATH
 	std::string add(std::string a, std::string b, float alpha, float beta, std::string name = "add", std::initializer_list<std::string> phases = {});
@@ -147,7 +154,8 @@ public:
 	void print(std::initializer_list<std::string> inputs, std::string message, ActionTime printTime = ActionTime::END_OF_EPOCH, ActionType = ActionType::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
 	void logger(std::initializer_list<std::string> inputs, std::string file_path, std::string message, ActionTime loggingTime = ActionTime::END_OF_EPOCH, ActionType loggingType = ActionType::VALUES, std::string name = "logger", std::initializer_list<std::string> phases = {});
 	std::string display(std::string input, int delay_msec = 100, ActionTime displayTime = ActionTime::EVERY_PASS, ActionType dislayType = ActionType::VALUES, int epoch_frequency = 1, std::string name = "disp", std::initializer_list<std::string> phases = {});
-	void psnr(std::string a, std::string b, ActionTime printTime = ActionTime::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});
+	std::string imwrite(std::string input, std::string filename, std::string name = "disp", std::initializer_list<std::string> phases = {});
+	void psnr(std::string a, std::string b, ActionTime printTime = ActionTime::END_OF_EPOCH, std::string name = "psnr", std::initializer_list<std::string> phases = {});	
 
 	// NORMALIZATION
 	std::string batch_normalization(std::string input, std::string scale, std::string bias, NormalizationMode mode = DeepFlow::SPATIAL, bool cache = true, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
@@ -158,11 +166,9 @@ public:
 	// OTHER	
 	std::string loss(std::string a, std::string coef, ReduceOp op, std::string name = "loss", std::initializer_list<std::string> phases = {});
 	std::string equal(std::string a, std::string b, std::string name = "Equal", std::initializer_list<std::string> phases = {});
-	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});
-	std::string negate(std::string input, ActionType negateType = ActionType::VALUES_AND_DIFFS, std::string name = "negate", std::initializer_list<std::string> phases = {});
+	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});	
 	std::array<std::string,2> accumulator(std::string input, ActionTime resetTime = ActionTime::END_OF_EPOCH, std::string name = "acc", std::initializer_list<std::string> phases = {});
 	std::string replay_memory(std::string input, int capacity, std::string name = "replay_memory", std::initializer_list<std::string> phases = {});
-	std::string agc(std::string input, float sensitivity = 0.001f, std::string name = "agc", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
 	std::string define_phase(std::string phase, PhaseBehaviour behaviour = TRAIN_AND_INFERENCE);
