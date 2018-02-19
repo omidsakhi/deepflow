@@ -75,6 +75,12 @@ std::string batchnorm(DeepFlow *df, std::string input, std::string solver, int o
 	return df->batch_normalization(input, bns, bnb, DeepFlow::SPATIAL, true, name + "_bn");
 }
 
+std::string prelu(DeepFlow *df, std::string input, int output_channels, std::string solver, std::string name) {
+	auto w = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0.2), solver, name + "_preluw");
+	auto node = df->prelu(input, w, name + "prelu");
+	return node;
+}
+
 std::string dense(DeepFlow *df, std::string input, std::initializer_list<int> dims, std::string solver, std::string name) {
 	auto w = df->variable(df->random_normal( dims, 0, 0.02), solver, name + "_w");
 	return df->matmul(input, w);
@@ -88,8 +94,9 @@ std::string deconv(DeepFlow *df, std::string input, std::string solver, int inpu
 	auto f = df->variable(df->random_normal({ output_channels, upsample? input_channels : input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
 	node = df->conv2d(node, f, pad, pad, 1, 1, 1, 1, name + "_conv");
 	node = batchnorm(df, node, solver, output_channels, name + "_bn");
+	//node = df->lrn(node, name + "_lrn");
 	if (activation) {
-		return df->elu(node, 0.1, name + "_elu");
+		return prelu(df, node, output_channels, solver, name);
 	}
 	return node;
 }
@@ -100,7 +107,8 @@ std::string conv(DeepFlow *df, std::string input, std::string solver, int input_
 	auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_bnb");
 	node = df->bias_add(node, bnb, name + "_bias");
 	if (activation) {
-		return df->leaky_relu(node, 0.2, name + "_relu");		
+		return prelu(df, node, output_channels, solver, name);
+		//return df->leaky_relu(node, 0.2, name + "_relu");		
 	}
 	return node;
 }
@@ -110,7 +118,7 @@ std::shared_ptr<Session> create_generator() {
 	
 	int gf = 64;
 
-	auto solver = df.adam_solver(0.0002f, 0.5f, 0.9f);
+	auto solver = df.adam_solver(0.0002f, 0.5f, 0.98f);
 
 	auto node = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1), FLAGS_total, "", "input");
 
@@ -127,7 +135,7 @@ std::shared_ptr<Session> create_generator() {
 
 	node = deconv(&df, node, solver, gf * 2, FLAGS_channels, 5, 2, 1, 0, "g9"); // 128x128
 
-	node = df.tanh(node, "gout");
+	node = df.leaky_relu(node, 1.0f, "gout");
 
 	return df.session();
 }
@@ -137,7 +145,7 @@ std::shared_ptr<Session> create_discriminator() {
 
 	int dfs = 64;
 
-	auto solver = df.adam_solver(0.0002f, 0.5f, 0.9f);
+	auto solver = df.adam_solver(0.0002f, 0.5f, 0.98f);
 
 	auto node = df.place_holder({ FLAGS_batch , FLAGS_channels, FLAGS_size, FLAGS_size }, Tensor::Float, "input");
 
@@ -151,7 +159,8 @@ std::shared_ptr<Session> create_discriminator() {
 
 	node = dense(&df, node, { (dfs * 8) * 8 * 8, 1, 1, 1 }, solver, "d5");
 
-	node = df.sigmoid(node, "dout");
+	node = df.leaky_relu(node, 1.0f, "dout");
+	//node = df.sigmoid(node, "dout");
 
 	return df.session();
 }
@@ -210,14 +219,12 @@ void main(int argc, char** argv) {
 
 	loss_coef->fill(1.0f);
 	face_labels->forward();
-	generator_labels->forward();
-
+	generator_labels->forward();	
 	for (iter = 1; iter <= FLAGS_iter && execution_context->quit != true; ++iter) {
 
 		execution_context->current_iteration = iter;
 		std::cout << "Iteration: [" << iter << "/" << FLAGS_iter << "]";
 
-		for (int k = 0; k < 2; k++) {
 			face_reader_data->forward();
 			discriminator_input->write_values(face_reader_data->output(0)->value());
 			discriminator->forward();
@@ -242,7 +249,6 @@ void main(int argc, char** argv) {
 
 			std::cout << " - d_loss: " << d_loss;
 
-		}
 		discriminator->apply_solvers();
 
 		discriminator_input->write_values(generator_output->output(0)->value());
@@ -258,7 +264,7 @@ void main(int argc, char** argv) {
 		generator_output->write_diffs(discriminator_input->output(0)->diff());
 		generator->backward();
 		generator->apply_solvers();
-		discriminator->reset_gradients();
+		discriminator->reset_gradients();		
 
 		if (FLAGS_save_image != 0 && iter % FLAGS_save_image == 0) {
 			imwrite_input->write_values(generator_output->output(0)->value());

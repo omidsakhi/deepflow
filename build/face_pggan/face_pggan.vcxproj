@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\examples\face_began\face_began.cpp" />
+    <ClCompile Include="..\..\examples\face_pggan\face_pggan.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E0D463A2-6A26-4330-884D-18B4C5531334}</ProjectGuid>
-    <RootNamespace>deepflow_face_began</RootNamespace>
-    <ProjectName>face_began</ProjectName>
+    <RootNamespace>deepflow_face_pggan</RootNamespace>
+    <ProjectName>face_pggan</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

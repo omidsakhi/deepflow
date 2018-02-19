@@ -59,6 +59,9 @@
 #include "nodes/image_writer.h"
 #include "nodes/resize.h"
 #include "nodes/split.h"
+#include "nodes/switch.h"
+#include "nodes/lrn.h"
+#include "nodes/prelu.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -155,6 +158,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Display>(node_param);
 	else if (node_param->has_leaky_relu_param())
 		return std::make_shared<LeakyRelu>(node_param);
+	else if (node_param->has_prelu_param())
+		return std::make_shared<PRelu>(node_param);
 	else if (node_param->has_softmax_param())
 		return std::make_shared<Softmax>(node_param);
 	else if (node_param->has_dropout_param())
@@ -201,6 +206,10 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<SIOOutput>(node_param);
 	else if (node_param->has_split_param())
 		return std::make_shared<Split>(node_param);
+	else if (node_param->has_switch_param())
+		return std::make_shared<Switch>(node_param);
+	else if (node_param->has_lrn_param())
+		return std::make_shared<LRN>(node_param);
 	else {
 		LOG(FATAL) << "Unsupported Node";
 	}
@@ -316,8 +325,7 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 			}
 		}
 		if (resolved) {
-			node->initForward();
-			node->initBackward();
+			node->init();			
 			node->setInitialized(true);
 			mem_usage(&free_byte, &total_byte, &used_byte_percentage);
 			if (used_byte_percentage > 50) {
@@ -331,8 +339,7 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 
 	if (execution_context)
 		set_execution_context(execution_context);
-
-	resove_propagation();
+	
 }
 
 void Session::_insert_splits()
@@ -397,33 +404,7 @@ std::shared_ptr<Node> Session::_find_node_by_name(const std::string &name) const
 	return 0;
 }
 
-std::list<std::shared_ptr<Node>> Session::_get_end_nodes(std::string execution_phase) const
-{
-	std::list<std::shared_ptr<Node>> list;
-	for (auto node : _nodes) {
-		if (node->includePhase(execution_phase)) {
-			int num_connected_outputs = 0;
-			for (auto output : node->outputs())
-				num_connected_outputs += output->connectedNodes().size();
-			if (num_connected_outputs == 0)
-				list.push_back(node);
-		}
-	}
-	for (auto map_item : _solvers) {
-		auto solver = map_item.second;
-		if (solver) {
-			auto enable_input = solver->enable_input();
-			if (enable_input) {
-				auto node = enable_input->connectedNode();
-				if (node)
-					list.push_back(node);
-			}
-		}
-	}
-	return list;
-}
-
-std::list<std::shared_ptr<Node>> Session::_get_head_nodes(std::string execution_phase) const
+std::list<std::shared_ptr<Node>> Session::_get_all_end_nodes(std::string execution_phase) const
 {
 	std::list<std::shared_ptr<Node>> list;
 	for (auto node : _nodes) {
@@ -431,12 +412,226 @@ std::list<std::shared_ptr<Node>> Session::_get_head_nodes(std::string execution_
 			int num_connected_inputs = 0;
 			for (auto input : node->inputs())
 				num_connected_inputs += input->connectedNode() ? 1 : 0;
-			if (num_connected_inputs == 0)
+			int num_connected_outputs = 0;
+			for (auto output : node->outputs())
+				num_connected_outputs += output->connectedNodes().size();			
+			if (num_connected_outputs == 0 && num_connected_inputs != 0)
 				list.push_back(node);
 		}
 	}
 	return list;
 }
+
+std::list<std::shared_ptr<Node>> Session::_get_all_head_nodes(std::string execution_phase) const
+{
+	std::list<std::shared_ptr<Node>> list;
+	for (auto node : _nodes) {
+		if (node->includePhase(execution_phase)) {
+			int num_connected_inputs = 0;
+			for (auto input : node->inputs())
+				num_connected_inputs += input->connectedNode() ? 1 : 0;
+			int num_connected_outputs = 0;
+			for (auto output : node->outputs())
+				num_connected_outputs += output->connectedNodes().size();
+			if (num_connected_inputs == 0 && num_connected_outputs != 0)
+				list.push_back(node);
+		}
+	}
+	return list;
+}
+
+/*
+std::list<std::shared_ptr<Node>> Session::_get_forward_path(std::string execution_phase) const
+{
+
+	/*
+
+
+	std::list<std::shared_ptr<Node>> end_nodes = _get_all_end_nodes("");
+	std::list<std::list<std::shared_ptr<Node>>> paths;
+	std::list<std::shared_ptr<Node>> abandon;
+	for (auto node : end_nodes) {
+		int visit_token = rand();
+		for (auto node : abandon)
+			node->setVisitToken(visit_token);
+		std::list<std::shared_ptr<Node>> path;
+		std::list<std::shared_ptr<Node>> list;		
+		list.push_back(node);
+		bool valid_path = true;
+		while (valid_path && list.size() > 0) {
+			auto node = list.front();
+			list.pop_front();
+			if (node->visitToken() == visit_token) {
+				continue;
+			}
+			auto inputNodes = node->inputNodes();
+			auto outputNodes = node->outputNodes();
+			if (inputNodes.size() == 0 && outputNodes.size() == 0) {
+				valid_path = false;				
+			}
+			if (valid_path && inputNodes.size() > 0) {
+				bool found = false;
+				for (auto inputNode : inputNodes) {
+					for (auto outputNode : inputNode->outputNodes()) {
+						if (outputNode == node) {
+							found = true;
+							break;
+						}
+					}
+					if (found)
+						break;
+				}
+				if (!found)	valid_path = false;
+			}
+			if (valid_path && outputNodes.size() > 0) {
+				bool found = false;
+				for (auto outputNode : outputNodes) {
+					for (auto inputNode : outputNode->inputNodes()) {
+						if (inputNode == node) {
+							found = true;
+							break;
+						}
+					}
+					if (found) break;
+				}
+				if (!found) {
+					valid_path = false;
+				}
+				else {
+					bool all_visited = true;
+					for (auto outputNode : outputNodes) {
+						if (outputNode->visitToken() != visit_token) {
+							bool valid = false;
+							for (auto in : outputNode->inputNodes())
+								if (in == node) {
+									valid = true;
+									break;
+								}
+							if (valid)
+								all_visited = false;
+							break;
+						}
+					}
+					if (!all_visited) {
+						list.push_back(node);
+						continue;
+					}
+				}
+			}
+			node->setVisitToken(visit_token);
+			if (valid_path) {
+				path.push_front(node);				
+				for (auto inputNode : node->inputNodes()) {
+					list.push_back(inputNode);
+				}
+			}
+			else {
+				for (auto node : path)
+					abandon.push_back(node);
+				abandon.push_back(node);
+			}
+		}
+		if (valid_path)
+			paths.push_back(path);
+	}
+
+	std::list<std::shared_ptr<Node>> head_nodes = _get_all_head_nodes("");
+	std::list<std::shared_ptr<Node>> valid_path;
+	for (auto path : paths) {
+		bool foundAHead = false;
+		for (auto node : path) {
+			for (auto head : head_nodes) {
+				if (head == node) {
+					foundAHead = true;
+					break;
+				}
+			}
+			if (foundAHead)
+				break;
+		}
+		if (foundAHead) {
+			for (auto node : path) {
+				bool found = false;
+				for (auto n2 : valid_path) {
+					if (n2 == node) {
+						found = true;
+						break;
+					}
+				}
+				if (!found)
+					valid_path.push_back(node);
+			}
+		}
+	}
+
+	return valid_path;
+	
+}
+*/
+
+/*
+std::list<std::shared_ptr<Node>> Session::_get_backward_path(std::string execution_phase) const
+{
+
+	std::list<std::shared_ptr<Node>> head_nodes = _get_all_head_nodes("");
+	std::list<std::list<std::shared_ptr<Node>>> paths;	
+	for (auto node : head_nodes) {		
+		std::list<std::shared_ptr<Node>> path;
+		std::list<std::shared_ptr<Node>> list;
+		list.push_back(node);
+		while (list.size() > 0) {
+			auto node = list.front();
+			int visit_token = rand();
+			list.pop_front();
+			if (node->visitToken() != visit_token) {
+				path.push_front(node);
+				node->setVisitToken(visit_token);
+				for (auto outputNode : node->outputNodes()) {
+					bool found = false;
+					for (auto inputNode : outputNode->inputNodes()) {
+						if (inputNode == node) {
+							found = true;
+							break;
+						}
+					}
+					if (found)
+						list.push_back(outputNode);
+				}
+			}
+		}
+		paths.push_back(path);
+	}
+
+	std::list<std::shared_ptr<Node>> end_nodes = _get_all_end_nodes("");
+	std::list<std::shared_ptr<Node>> valid_path;
+	for (auto path : paths) {
+		bool foundEnd = false;
+		for (auto node : path) {
+			for (auto end : end_nodes) {
+				if (end == node) {					
+					foundEnd = true;
+					break;
+				}
+			}
+			if (foundEnd)
+				break;
+		}
+		if (foundEnd) {
+			for (auto node : path) {
+				bool found = false;
+				for (auto n2 : valid_path)
+					if (n2 == node) {
+						found = true;
+						break;
+					}
+				if (!found)
+				valid_path.push_back(node);
+			}
+		}
+	}
+	return valid_path;
+}
+*/
 
 std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string &name) const {
 	for (auto node : _nodes) {
@@ -447,12 +642,120 @@ std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string
 	}
 	return 0;
 }
+
+std::list<std::shared_ptr<Node>> Session::forward_path()
+{
+	for (auto node : _nodes) {
+		for (auto t : node->outputs())
+			t->setEnabled(false);
+	}
+
+	std::list<std::shared_ptr<Node>> nodes = _get_all_end_nodes("");
+	std::list<std::shared_ptr<Node>> active_head_nodes;
+	std::list<std::shared_ptr<Node>> visited_nodes;
+
+	auto isVisited = [](std::list<std::shared_ptr<Node>> &list, std::shared_ptr<Node> node_to_check) {
+		for (auto node : list)
+			if (node == node_to_check)
+				return true;
+		return false;
+	};
+
+	int _verbose = 0;
+	while (nodes.size() > 0) {
+		auto node = nodes.front();
+		_verbose = node->executionContext()->debug_level;
+		nodes.pop_front();
+		auto inputNodes = node->inputNodes();
+		auto outputNodes = node->outputNodes();
+		if (isVisited(visited_nodes, node)) {
+			continue;
+		}
+		visited_nodes.push_back(node);
+		if (inputNodes.size() == 0 && outputNodes.size() == 0) {
+			continue;
+		}
+		if (inputNodes.size() > 0) {
+			for (auto inputNode : inputNodes) {
+				for (auto t : inputNode->outputs()) {
+					for (auto c : t->connectedNodes()) {
+						if (c == node) {
+							t->setEnabled(true);
+							break;
+						}
+					}
+				}
+				nodes.push_back(inputNode);
+			}
+		}
+		else {
+			active_head_nodes.push_back(node);
+		}
+
+	}
+
+
+	nodes = active_head_nodes;
+	std::list<std::shared_ptr<Node>> forward_path;
+	visited_nodes.clear();
+
+	while (nodes.size() > 0) {
+		auto node = nodes.front();
+		_verbose = node->executionContext()->debug_level;
+		LOG_IF(INFO, _verbose > 3) << "FWRD POP " << node->name();
+		nodes.pop_front();
+		auto inputNodes = node->inputNodes();
+		auto outputNodes = node->outputNodes();
+		if (isVisited(visited_nodes, node)) {
+			LOG_IF(INFO, _verbose > 3) << "END FOR " << node->name() << " | ALREADY VISITED.";
+			continue;
+		}
+		if (inputNodes.size() == 0 && outputNodes.size() == 0) {
+			visited_nodes.push_back(node);
+			forward_path.push_front(node);
+			LOG_IF(INFO, _verbose > 3) << "END FOR " << node->name() << "  | NO INPUT & OUTPUT.";
+			continue;
+		}
+		if (inputNodes.size() > 0) {
+			bool ready = true;
+			for (auto inputNode : inputNodes) {
+				if (!isVisited(visited_nodes, inputNode))
+				{
+					LOG_IF(INFO, _verbose > 3) << "REPUSH " << node->name() << " | " << inputNode->name();
+					ready = false;
+					break;
+				}
+			}
+			if (!ready) {
+				nodes.push_back(node);
+				continue;
+			}
+		}
+		visited_nodes.push_back(node);		
+		forward_path.push_back(node);
+		if (outputNodes.size() > 0) {
+			for (auto outputT : node->outputs()) {
+				if (outputT->enabled()) {
+					for (auto outputNode : outputT->connectedNodes()) {
+						LOG_IF(INFO, _verbose > 3) << "PUSH " << outputNode->name();
+						nodes.push_back(outputNode);
+					}
+				}
+			}
+		}
+	}
+	return forward_path;	
+}
+
 void Session::forward()
 {
-	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
-	int token = rand();
-	for (auto node : end_nodes) {
-		node->_forward(token);
+	auto path = forward_path();
+	while (path.size() > 0) {
+		auto node = path.front();
+		path.pop_front();
+		int _verbose = node->executionContext()->debug_level;
+		LOG_IF(INFO, _verbose > 2) << "FWRD -> " << node->name();
+		node->forward();
 	}
 }
 
@@ -469,24 +772,16 @@ void Session::clamp(float min, float max)
 	}
 }
 
-void Session::resove_propagation()
-{
-	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
-	int token = rand();
-	for (auto node : end_nodes) {
-		node->_resolve_propagation(token);
-	}
-}
-
 void Session::backward()
 {
-	std::list<std::shared_ptr<Node>> end_nodes = _get_end_nodes("");
-	std::list<std::shared_ptr<Node>> head_nodes = _get_head_nodes("");
-	int token = rand();
-	for (auto node : head_nodes) {
-		node->_backward(token);
+	auto path = forward_path();
+	while (path.size() > 0) {
+		auto node = path.back();
+		path.pop_back();
+		int _verbose = node->executionContext()->debug_level;
+		LOG_IF(INFO, _verbose > 2) << "BWRD -> " << node->name();
+		node->backward();
 	}
-
 }
 
 void Session::apply_solvers()
@@ -496,6 +791,17 @@ void Session::apply_solvers()
 		auto map_var_to_solver = _solvers.find(var);
 		if (map_var_to_solver != _solvers.end()) {
 			map_var_to_solver->second->apply(var);
+		}
+	}
+}
+
+void Session::apply_solvers(std::initializer_list<std::string> solver_names)
+{
+	for (auto item : _solvers) {
+		for (auto name : solver_names) {
+			if (item.second->name() == name) {
+				item.second->apply(item.first);				
+			}
 		}
 	}
 }
@@ -510,6 +816,7 @@ void Session::save(std::string file_path, bool as_text)
 		_block->save_as_binary(file_path);
 }
 
+/*
 void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Node>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Node>> *head_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration) {
 	int iteration_per_epoch = 1;
 	bool last_batch = false;	
@@ -567,6 +874,10 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 			break;
 	} while (last_batch == false && context->quit != true);
 }
+
+*/
+
+/*
 
 void Session::run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level) {
 	LOG(INFO) << "Executing graph for phase " << phase;
@@ -645,6 +956,8 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 	}
 }
 
+*/
+
 void Session::mem_usage(size_t * free_byte, size_t * total_byte, float *used_byte_percentage)
 {
 	cudaError_t cuda_status = cudaMemGetInfo(free_byte, total_byte);
@@ -660,7 +973,7 @@ void generate_cpp_code(Node *node, std::string *code) {
 
 std::string Session::to_cpp() const
 {
-	std::list<std::shared_ptr<Node>> ends = _get_end_nodes("");
+	std::list<std::shared_ptr<Node>> ends = _get_all_end_nodes("");
 	std::string code = "\nDeepFlow df;\n\n";
 	
 	for (auto phase : _phases)			
@@ -691,8 +1004,8 @@ std::string Session::to_cpp() const
 	std::function<void(Node*)> foo = std::bind(generate_cpp_code, std::placeholders::_1, &code);
 	
 	int token = rand();
-	for (auto end : ends)
-		end->_traverse_up(foo, Node::POST_ORDER, token);
+	//for (auto end : ends)
+	//	end->_traverse_up(foo, Node::POST_ORDER, token);
 	
 	code += "\n";
 	

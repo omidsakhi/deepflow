@@ -29,7 +29,7 @@ Variable::Variable(std::shared_ptr<Initializer> initializer, deepflow::NodeParam
 	_initializer = initializer;			
 }
 
-void Variable::initForward() {	
+void Variable::init() {	
 	_initializer->init();
 	_outputs[0]->initValue(_initializer->dims());
 	LOG(INFO) << "Variable " << _name << " - " << _outputs[0]->value()->shape();
@@ -49,13 +49,12 @@ void Variable::initForward() {
 			_param->mutable_variable_param()->mutable_init_param()->mutable_init_data()->add_data(0);
 		DF_NODE_CUDA_CHECK(cudaMemcpy(_param->mutable_variable_param()->mutable_init_param()->mutable_init_data()->mutable_data()->mutable_data(),_outputs[0]->value()->data(),_outputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToHost));
 	}
-}
 
-void Variable::initBackward() {	
 	_outputs[0]->initDiff();
 	int size = _outputs[0]->value()->sizeInBytes();
 	DF_CUDA_CHECK(cudaMalloc(&_grad, size));
 	DF_CUDA_CHECK(cudaMemset(_grad, 0, size));
+
 }
 
 inline void Variable::forward() {
@@ -63,8 +62,10 @@ inline void Variable::forward() {
 }
 
 inline void Variable::backward() {
-	LOG_IF(INFO, _verbose > 3) << _name << " COPY GRADIENTS";
-	cpy(_outputs[0]->value()->size(), 1.0, _outputs[0]->diff()->data(), 1.0, _grad);
+	if (!_param->variable_param().solver_name().empty()) {
+		LOG_IF(INFO, _verbose > 3) << _name << " COPY GRADIENTS";
+		cpy(_outputs[0]->value()->size(), 1.0, _outputs[0]->diff()->data(), 1.0, _grad);
+	}
 }
 
 float * Variable::gradients()
@@ -95,11 +96,6 @@ void Variable::clamp(float min, float max)
 	auto size = _outputs[0]->value()->size();
 	VariableClampKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*) _outputs[0]->value()->mutableData(), min, max);
 	DF_KERNEL_CHECK();
-}
-
-Node::BackwardType Variable::backwardType()
-{
-	return _param->mutable_variable_param()->solver_name().empty() ? NEVER_BACKWARD : ALWAYS_BACKWARD;
 }
 
 std::string Variable::to_cpp() const

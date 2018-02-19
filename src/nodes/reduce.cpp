@@ -4,7 +4,7 @@ Reduce::Reduce(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_reduce_param() == false) << "param.has_reduce_param() == false [FAILED]";
 }
 
-void Reduce::initForward() {
+void Reduce::init() {
 	
 	auto reduceParam = _param->reduce_param();
 	int reduceDim = reduceParam.reduce_dim();
@@ -109,10 +109,6 @@ std::string Reduce::to_cpp() const
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;
-}
-
-void Reduce::initBackward() {
-	//LOG(FATAL);
 }
 
 void Reduce::forward() {		

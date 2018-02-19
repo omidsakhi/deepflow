@@ -25,14 +25,11 @@ SquareError::SquareError(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_square_error_param() == false) << "param.has_square_error_param() == false";
 }
 
-void SquareError::initForward() {
-	LOG(INFO) << "SquareError " << _name << " - " << _inputs[0]->value()->shape();
+void SquareError::init() {	
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input " << _inputs[0]->value()->shape() << " != " << " Target " << _inputs[1]->value()->shape();	
 	_outputs[0]->initValue(_inputs[0]->dims());
-}
-
-void SquareError::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "SquareError " << _name << " - " << _inputs[0]->value()->shape();
 }
 
 void SquareError::forward() {
@@ -43,11 +40,11 @@ void SquareError::forward() {
 
 void SquareError::backward() {
 	auto size = _inputs[0]->value()->size();
-	if (_inputs[0]->connectedNode()->propagateBack()) {
+	if (_inputs[0]->connectedNode()) {
 		SquareErrorBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, 1.0f, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data() , (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}
-	if (_inputs[1]->connectedNode()->propagateBack()) {
+	if (_inputs[1]->connectedNode()) {
 		SquareErrorBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, -1.0f, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data() , (float*)_outputs[0]->diff()->data(), (float*)_inputs[1]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}

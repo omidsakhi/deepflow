@@ -6,7 +6,7 @@ Activation::Activation(deepflow::NodeParam *param) : Node(param)
 	LOG_IF(FATAL, param->has_activation_param() == false) << "param.has_activation_param() == false";
 }
 
-void Activation::initForward()
+void Activation::init()
 {	
 	auto activation_param = _param->activation_param();
 	cudnnActivationMode_t _activation_mode =  (cudnnActivationMode_t) activation_param.type();
@@ -34,13 +34,8 @@ void Activation::initForward()
 	};
 
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-
-	LOG(INFO) << "" << opString << " " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void Activation::initBackward()
-{
 	_outputs[0]->initDiff();
+	LOG(INFO) << "" << opString << " " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Activation::forward()

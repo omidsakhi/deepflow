@@ -26,7 +26,7 @@ BiasAdd::BiasAdd(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_bias_add_param() == false) << "param.has_bias_add_param() == false";
 }
 
-void BiasAdd::initForward() {
+void BiasAdd::init() {
 	auto inputDim = _inputs[0]->dims();
 	_inner_dim = inputDim[2] * inputDim[3];
 	auto weightDim = _inputs[1]->dims();
@@ -35,11 +35,8 @@ void BiasAdd::initForward() {
 	_bias_dim = weightDim[1];
 	_sample_dim = inputDim[0];
 	_outputs[0]->initValue(inputDim);
+	_outputs[0]->initDiff();
 	LOG(INFO) << "Bias " << _name << " - " << _outputs[0]->value()->shape();	
-}
-
-void BiasAdd::initBackward() {
-	_outputs[0]->initDiff();	
 }
 
 void BiasAdd::forward() {
@@ -50,10 +47,10 @@ void BiasAdd::forward() {
 }
 
 void BiasAdd::backward() {
-	if (_inputs[0]->connectedNode()->propagateBack()) {
+	if (_inputs[0]->connectedNode()) {
 		cpy(_inputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 0, _inputs[0]->diff()->mutableData());		
 	}
-	if (_inputs[1]->connectedNode()->propagateBack()) {
+	if (_inputs[1]->connectedNode()) {
 		auto size = _outputs[0]->diff()->size();
 		DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
 		BiasAddKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), _inner_dim, _sample_dim, _bias_dim, (float*)_inputs[1]->diff()->mutableData());

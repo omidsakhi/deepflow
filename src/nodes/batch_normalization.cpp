@@ -5,7 +5,7 @@ BatchNormalization::BatchNormalization(deepflow::NodeParam *param) : Node(param)
 	LOG_IF(FATAL, param->has_batch_normalization_param() == false) << "param.has_batch_normalization_param() == false";
 }
 
-void BatchNormalization::initForward()
+void BatchNormalization::init()
 {
 
 	auto param = _param->batch_normalization_param();
@@ -67,13 +67,10 @@ void BatchNormalization::initForward()
 
 	_bnScale = (float*)_inputs[1]->value()->data();
 	_bnBias = (float*)_inputs[2]->value()->data();
-}
 
-void BatchNormalization::initBackward()
-{	
 	_outputs[0]->initDiff();
 	_dy = (float*)_outputs[0]->diff()->mutableData();
-	_dx = (float*)_inputs[0]->diff()->mutableData(); 
+	_dx = (float*)_inputs[0]->diff()->mutableData();
 	_resultBnScaleDiff = (float*)_inputs[1]->diff()->mutableData();
 	_resultBnBiasDiff = (float*)_inputs[2]->diff()->mutableData();
 }
@@ -126,7 +123,7 @@ void BatchNormalization::forward()
 
 void BatchNormalization::backward()
 {		
-	if (_inputs[0]->connectedNode()->propagateBack()) {
+	if (_inputs[0]->connectedNode()) {
 		DF_NODE_CUDNN_CHECK(
 			cudnnBatchNormalizationBackward(
 				_cudnnHandle,

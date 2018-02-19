@@ -21,13 +21,10 @@ Exp::Exp(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_exp_param() == false) << "param.has_exp_param() == false";
 }
 
-void Exp::initForward() {
+void Exp::init() {
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Exp " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void Exp::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "Exp " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Exp::forward() {

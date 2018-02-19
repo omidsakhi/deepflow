@@ -11,7 +11,7 @@ int Convolution2D::minNumInputs()
 	return _num_inputs;
 }
 
-void Convolution2D::initForward() {
+void Convolution2D::init() {
 	LOG_IF(FATAL, _num_inputs != 2 && _num_inputs != 3) << _name << " _num_inputs != 2 && _num_inputs != 3";
 	_xDesc = _inputs[0]->value()->descriptor();
 	_x = _inputs[0]->value()->mutableData();
@@ -53,9 +53,7 @@ void Convolution2D::initForward() {
 		DF_NODE_CUDNN_CHECK(cudnnCreateActivationDescriptor(&_activationDesc));
 		cudnnSetActivationDescriptor(_activationDesc, CUDNN_ACTIVATION_RELU, CUDNN_NOT_PROPAGATE_NAN, param->negative_slope());
 	}
-}
 
-void Convolution2D::initBackward() {
 	if (_inputs[0]->diff()) {
 		_dxDesc = _inputs[0]->diff()->descriptor();
 		_dx = _inputs[0]->diff()->mutableData();
@@ -64,12 +62,12 @@ void Convolution2D::initBackward() {
 
 	_outputs[0]->initDiff();
 	_dyDesc = _outputs[0]->diff()->descriptor();
-	_dy = _outputs[0]->diff()->mutableData();	
-	
-	if (_inputs[0]->diff()) {		
+	_dy = _outputs[0]->diff()->mutableData();
+
+	if (_inputs[0]->diff()) {
 		DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardDataAlgorithm(_cudnnHandle, _wDesc, _dyDesc, _convDesc, _dxDesc, CUDNN_CONVOLUTION_BWD_DATA_PREFER_FASTEST, 0, &_bwdDataAlgo));
 		DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardDataWorkspaceSize(_cudnnHandle, _wDesc, _dyDesc, _convDesc, _dxDesc, _bwdDataAlgo, &_bwdDataWorkspaceSize));
-		_maxWorkspaceSize = std::max({ _maxWorkspaceSize, _bwdDataWorkspaceSize});
+		_maxWorkspaceSize = std::max({ _maxWorkspaceSize, _bwdDataWorkspaceSize });
 	}
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardFilterAlgorithm(_cudnnHandle, _xDesc, _dyDesc, _convDesc, _wDesc, CUDNN_CONVOLUTION_BWD_FILTER_PREFER_FASTEST, 0, &_bwdFilterAlgo));
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardFilterWorkspaceSize(_cudnnHandle, _xDesc, _dyDesc, _convDesc, _wDesc, _bwdFilterAlgo, &_bwdFilterWorkspaceSize));
@@ -79,8 +77,9 @@ void Convolution2D::initBackward() {
 		_dzDesc = _dyDesc;
 		DF_NODE_CUDA_CHECK(cudaMalloc(&_dz, _outputs[0]->diff()->sizeInBytes()));
 		_db = _inputs[2]->diff()->mutableData();
-		_dbDesc = _inputs[2]->diff()->descriptor();		
+		_dbDesc = _inputs[2]->diff()->descriptor();
 	}
+
 }
 
 void Convolution2D::forward() {
@@ -96,7 +95,7 @@ void Convolution2D::forward() {
 
 void Convolution2D::backward() {
 	if (_num_inputs == 3) {
-		if (_inputs[2]->connectedNode()->propagateBack())
+		if (_inputs[2]->connectedNode())
 			cudnnConvolutionBackwardBias(_cudnnHandle, &one, _dyDesc, _dy, &zero, _dbDesc, _db);
 		cudnnActivationBackward(_cudnnHandle, _activationDesc, &one, _yDesc, _y, _dyDesc, _dy, _xDesc, _x, &zero, _dzDesc, _dz);
 	}
@@ -104,9 +103,9 @@ void Convolution2D::backward() {
 		_dz = _dy;
 		_dzDesc = _dyDesc;
 	}
-	if (_inputs[0]->connectedNode()->propagateBack())
+	if (_inputs[0]->connectedNode())
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &one, _wDesc, _w, _dzDesc, _dz, _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &zero, _dxDesc, _dx));
-	if (_inputs[1]->connectedNode()->propagateBack())
+	if (_inputs[1]->connectedNode())
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &one, _xDesc, _x, _dzDesc, _dz, _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &zero, _wDesc, _dw));
 }
 

@@ -47,17 +47,14 @@ Restructure::Restructure(deepflow::NodeParam *param) : Node(param) {
 
 }
 
-void Restructure::initForward() {		
+void Restructure::init() {		
 	auto in_dim = _inputs[0]->value()->dims();
 	auto ou_dim = in_dim;	
 	ou_dim[_first_dim] = in_dim[_second_dim];
 	ou_dim[_second_dim] = in_dim[_first_dim];
 	_outputs[0]->initValue(ou_dim);
-	LOG(INFO) << "Restructure " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape();
-}
-
-void Restructure::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "Restructure " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape();
 }
 
 void Restructure::forward() {
@@ -69,7 +66,7 @@ void Restructure::forward() {
 }
 
 void Restructure::backward() {
-	if (_inputs[0]->connectedNode()->propagateBack()) {
+	if (_inputs[0]->connectedNode()) {
 		auto size = _outputs[0]->diff()->size();
 		auto dim = _outputs[0]->diff()->dims();
 		RestructureKernel << < numOfBlocks(size), maxThreadsPerBlock >> > 

@@ -13,8 +13,6 @@ public:
 	void forward();
 	bool isLastBatch();
 	std::string to_cpp() const;
-	ForwardType forwardType() { return ALWAYS_FORWARD; }
-	BackwardType backwardType();
 private:
 	int _current_batch = 0;
 	int _num_total_samples = 0;

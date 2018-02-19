@@ -33,6 +33,7 @@ std::list<std::shared_ptr<Node>> Node::inputNodes() const {
 	return list;
 }
 
+/*
 void Node::_resolve_propagation(int visit_token) {
 	if (visit_token == 0) {
 		visit_token = rand();
@@ -67,16 +68,7 @@ void Node::_resolve_propagation(int visit_token) {
 		node->_resolve_propagation(visit_token);
 	}
 }
-
-bool Node::propagateBack() const
-{
-	return _propagate_back;
-}
-
-void Node::setShouldBackward(bool state)
-{
-	_propagate_back = state;	
-}
+*/
 
 void Node::write_values(std::shared_ptr<Tensor> tensor, float alpha, float beta)
 {	
@@ -96,42 +88,7 @@ void Node::write_diffs(std::shared_ptr<Tensor> tensor, float alpha, float beta)
 	cpy(_outputs[0]->diff()->size(), alpha, tensor->data(), beta, _outputs[0]->diff()->mutableData());
 }
 
-void Node::_traverse_up(std::function<void(Node*)> fun, TraverseOrder order, int visit_token)
-{
-	if (visit_token == 0) {
-		visit_token = rand();
-	}
-	if (_visit_token == visit_token)
-		return;
-	if (_context && includePhase(_context->phase) == false)
-		return;
-	if (order == PRE_ORDER)
-		fun(this);
-	for (auto node : inputNodes())
-		node->_traverse_up(fun, order, visit_token);
-	if (order == POST_ORDER)
-		fun(this);
-	_visit_token = visit_token;	
-}
-
-void Node::_traverse_down(std::function<void(Node*)> fun, TraverseOrder order, int visit_token)
-{
-	if (visit_token == 0) {
-		visit_token = rand();
-	}
-	if (_visit_token == visit_token)
-		return;
-	if (_context && includePhase(_context->phase) == false)
-		return;
-	if (order == PRE_ORDER)
-		fun(this);
-	for (auto node : outputNodes())
-		node->_traverse_down(fun, order, visit_token);
-	if (order == POST_ORDER)
-		fun(this);
-	_visit_token = visit_token;
-}
-
+/*
 void Node::_forward(int visit_token) {	
 	if (visit_token == 0) {
 		visit_token = rand();
@@ -144,13 +101,25 @@ void Node::_forward(int visit_token) {
 		LOG_IF(INFO, _verbose > 2) << "SKIP FORWARD " << _name << " DUE TO PHASE";
 		return;
 	}
-	_visit_token = visit_token;	
+	_visit_token = visit_token;
+	
+	std::list<NodePtr> nodes;
+	
 	for (auto node : inputNodes()) {
 		LOG_IF(INFO, _verbose > 3) << "FROM " << _name << " GOING TO FORWARD " << node->name();
 		node->_forward(visit_token);
-	}	
-	LOG_IF(INFO, _verbose > 2) << "FORWARD " << _name;
-	forward();
+		for (auto outputNode : node->outputNodes())
+			nodes.push_back(outputNode);
+	}
+
+	for (auto node : nodes) {
+		if (node.get() == this) {
+			LOG_IF(INFO, _verbose > 2) << "FORWARD " << _name;
+			forward();
+			break;
+		}
+	}
+
 	if (_verbose > 3) {
 		for (auto output : _outputs) {
 			if (output->value()) {
@@ -191,6 +160,7 @@ void Node::_backward(int visit_token) {
 		}
 	}
 }
+*/
 
 void Node::reset_gradients()
 {
@@ -225,15 +195,6 @@ std::string Node::_input_name_for_cpp(int i) const
 		name += "[" + std::to_string(index) + "]";
 	}
 	return name;
-}
-
-int Node::numConnectedOutputs()
-{
-	int sum = 0;
-	for (auto terminal: _outputs) {
-		sum += terminal->connectedNodes().size();
-	}
-	return sum;
 }
 
 std::vector<NodeInputPtr> & Node::inputs() {
@@ -290,8 +251,9 @@ std::list<std::shared_ptr<Node>> Node::outputNodes() const
 	std::list<std::shared_ptr<Node>> list;
 	for (int i = 0; i < _outputs.size(); ++i)
 		if (_outputs[i]) {
-			for (auto node : _outputs[i]->connectedNodes())
-				list.push_back(node);
+			for (auto node : _outputs[i]->connectedNodes()) {
+					list.push_back(node);
+			}
 		}
 	return list;
 }

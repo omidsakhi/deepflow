@@ -29,7 +29,7 @@ ImageReader::ImageReader(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_image_reader_param() == false) << "param.generator_param().has_image_reader_param() == false";
 }
 
-void ImageReader::initForward() {
+void ImageReader::init() {
 	auto image_reader_param = _param->image_reader_param();
 	auto file_name = image_reader_param.file_name();
 	auto type = image_reader_param.type();

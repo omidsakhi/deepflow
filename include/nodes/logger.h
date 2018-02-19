@@ -8,13 +8,10 @@ public:
 	Logger(deepflow::NodeParam *param);
 	int minNumInputs();
 	int minNumOutputs() { return 0; }
-	void initForward();
-	void initBackward();
+	void init();	
 	void forward();
 	void backward();
 	std::string to_cpp() const;
-	ForwardType forwardType() { return ALWAYS_FORWARD; }
-	BackwardType backwardType() { return NEVER_BACKWARD; }
 private:
 	std::string _filePath;
 	int _num_inputs = 0;

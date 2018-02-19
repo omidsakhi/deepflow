@@ -15,7 +15,7 @@ int SIOOutput::minNumInputs()
 	return _num_inputs;
 }
 
-void SIOOutput::initForward()
+void SIOOutput::init()
 {
 	_client.set_open_listener(std::bind(&SIOOutput::on_connected, this));
 	_client.set_close_listener(std::bind(&SIOOutput::on_close, this, std::placeholders::_1));
@@ -23,10 +23,6 @@ void SIOOutput::initForward()
 	std::string url = "http://" + _host + ":" + std::to_string(_port);
 	LOG(INFO) << "CONNECTING TO " << url;
 	_client.connect(url);
-}
-
-void SIOOutput::initBackward()
-{
 }
 
 void SIOOutput::forward()

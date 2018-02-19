@@ -157,7 +157,7 @@ Lifting::Lifting(deepflow::NodeParam * param) : Node(param) {
 	LOG_IF(FATAL, param->has_lifting_param() == false) << "param.lifting_param() == false";
 }
 
-void Lifting::initForward()
+void Lifting::init()
 {
 	_mode = this->_param->lifting_param().mode();	
 
@@ -177,10 +177,7 @@ void Lifting::initForward()
 	else {
 		LOG(FATAL);
 	}
-}
 
-void Lifting::initBackward()
-{
 	_outputs[0]->initDiff();
 }
 

@@ -56,7 +56,9 @@
     <ClInclude Include="..\..\include\nodes\exp.h" />
     <ClInclude Include="..\..\include\nodes\image_writer.h" />
     <ClInclude Include="..\..\include\nodes\lifting.h" />
+    <ClInclude Include="..\..\include\nodes\lrn.h" />
     <ClInclude Include="..\..\include\nodes\patching.h" />
+    <ClInclude Include="..\..\include\nodes\prelu.h" />
     <ClInclude Include="..\..\include\nodes\reduce_all.h" />
     <ClInclude Include="..\..\include\nodes\resize.h" />
     <ClInclude Include="..\..\include\nodes\split.h" />
@@ -80,6 +82,7 @@
     <ClInclude Include="..\..\include\nodes\sio_output.h" />
     <ClInclude Include="..\..\include\nodes\softmax.h" />
     <ClInclude Include="..\..\include\nodes\square.h" />
+    <ClInclude Include="..\..\include\nodes\switch.h" />
     <ClInclude Include="..\..\include\nodes\transposed_conv_2d.h" />
     <ClInclude Include="..\..\include\nodes\upsample.h" />
     <ClInclude Include="..\..\include\nodes\variable.h" />
@@ -153,11 +156,15 @@
     </CudaCompile>
     <ClCompile Include="..\..\src\nodes\logger.cpp" />
     <ClCompile Include="..\..\src\nodes\loss.cpp" />
+    <ClCompile Include="..\..\src\nodes\lrn.cpp" />
     <ClCompile Include="..\..\src\nodes\matmul.cpp" />
     <ClCompile Include="..\..\src\nodes\multiplexer.cpp" />
     <ClCompile Include="..\..\src\nodes\phaseplexer.cpp" />
     <ClCompile Include="..\..\src\nodes\place_holder.cpp" />
     <ClCompile Include="..\..\src\nodes\pooling.cpp" />
+    <CudaCompile Include="..\..\src\nodes\prelu.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
     <ClCompile Include="..\..\src\nodes\print.cpp" />
     <ClCompile Include="..\..\src\nodes\random_selector.cpp" />
     <ClCompile Include="..\..\src\nodes\reduce.cpp" />
@@ -171,6 +178,7 @@
     <ClCompile Include="..\..\src\nodes\sio_output.cpp" />
     <ClCompile Include="..\..\src\nodes\softmax.cpp" />
     <ClCompile Include="..\..\src\nodes\split.cpp" />
+    <ClCompile Include="..\..\src\nodes\switch.cpp" />
     <ClCompile Include="..\..\src\nodes\transposed_conv_2d.cpp" />
     <ClCompile Include="..\..\src\proto\caffe.pb.cc" />
     <ClCompile Include="..\..\src\proto\deepflow.pb.cc" />

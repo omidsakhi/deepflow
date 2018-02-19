@@ -4,7 +4,7 @@ Phaseplexer::Phaseplexer(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_phaseplexer_param() == false) << "param.has_phaseplexer_param() == false";
 }
 
-void Phaseplexer::initForward()
+void Phaseplexer::init()
 {
 	auto param = _param->phaseplexer_param();
 	for (int i = 0; i < param.phase_size(); ++i)
@@ -13,10 +13,7 @@ void Phaseplexer::initForward()
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size());
 	_outputs[0]->initValue(_inputs[0]->dims());
 	LOG(INFO) << "Phaseplexer " << _name << " - " << _outputs[0]->value()->shape();
-}
 
-void Phaseplexer::initBackward()
-{
 	_outputs[0]->initDiff();
 }
 
@@ -51,7 +48,7 @@ void Phaseplexer::forward()
 void Phaseplexer::backward()
 {	
 	auto input = _map.find(_context->phase);
-	if (input->second->connectedNode()->propagateBack()) {		
+	if (input->second->connectedNode()) {		
 		cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 1, input->second->diff()->mutableData());
 	}
 }

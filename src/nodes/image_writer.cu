@@ -5,7 +5,7 @@ ImageWriter::ImageWriter(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_image_writer_param() == false) << "param.has_image_writer_param() == false";
 }
 
-void ImageWriter::initForward() {
+void ImageWriter::init() {
 
 	auto dims = _inputs[0]->value()->dims();
 	input_size = _inputs[0]->value()->size();
@@ -26,10 +26,6 @@ void ImageWriter::initForward() {
 	disp = cv::Mat(pic_height, pic_width, (num_channels == 3 ? CV_8UC3 : CV_8U));
 }
 
-void ImageWriter::initBackward() {
-
-}
-
 void ImageWriter::forward() {
 	if (num_channels == 3)
 		ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, (float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col, (unsigned char*)_outputs[0]->value()->mutableData());
@@ -46,7 +42,7 @@ void ImageWriter::forward() {
 }
 
 void ImageWriter::backward() {
-	LOG(FATAL);
+	
 }
 
 std::string ImageWriter::to_cpp() const

@@ -46,8 +46,3 @@ std::string DataGenerator::to_cpp() const
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;
 }
-
-Node::BackwardType DataGenerator::backwardType()
-{
-	return _no_solver ? NEVER_BACKWARD : ALWAYS_BACKWARD;
-} 

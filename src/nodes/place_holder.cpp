@@ -4,7 +4,7 @@ PlaceHolder::PlaceHolder(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_place_holder_param() == false) << "param.has_place_holder_param() == false";
 }
 
-void PlaceHolder::initForward() {
+void PlaceHolder::init() {
 		
 	std::array<int, 4> dims;
 	auto placeHolderParam = _param->place_holder_param();
@@ -27,12 +27,9 @@ void PlaceHolder::initForward() {
 	}
 	Tensor::TensorType type = (Tensor::TensorType) tensorParam.type();
 	_outputs[0]->initValue(dims,type);
+	_outputs[0]->initDiff();
 	LOG(INFO) << "Placeholder " << _name << " - " << _outputs[0]->value()->shape();
 
-}
-
-void PlaceHolder::initBackward() {
-	_outputs[0]->initDiff();
 }
 
 void PlaceHolder::forward() {

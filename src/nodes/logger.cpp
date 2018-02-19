@@ -15,13 +15,9 @@ int Logger::minNumInputs() {
 	return _num_inputs;
 }
 
-void Logger::initForward() {
+void Logger::init() {
 	auto loggingParam = _param->logger_param();
 	_raw_message = loggingParam.message();
-}
-
-void Logger::initBackward() {
-
 }
 
 void Logger::forward() {

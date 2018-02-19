@@ -5,8 +5,8 @@
 #include <random>
 #include <gflags/gflags.h>
 
-DEFINE_string(faces, "C:/Projects/deepflow/data/face643", "Path to face 64x64 dataset folder");
-DEFINE_int32(batch, 49, "Batch size");
+DEFINE_string(faces, "C:/Projects/deepflow/data/celeba128", "Path to face 128x128 dataset folder");
+DEFINE_int32(batch, 40, "Batch size");
 DEFINE_int32(debug, 0, "Level of debug");
 DEFINE_int32(epoch, 10000, "Maximum epochs");
 DEFINE_string(load, "", "Load from gXXXX.bin and dXXXX.bin");
@@ -16,7 +16,7 @@ DEFINE_int32(channels, 3, "Image channels");
 
 std::shared_ptr<Session> create_face_reader_session() {
 	DeepFlow df;
-	df.image_batch_reader(FLAGS_faces, { FLAGS_batch, FLAGS_channels, 64, 64 }, true, "face_data");
+	df.image_batch_reader(FLAGS_faces, { FLAGS_batch, FLAGS_channels, 128, 128 }, true, "face_data");
 	return df.session();
 }
 
@@ -32,7 +32,7 @@ std::shared_ptr<Session> create_encoder_session() {
 
 
 
-	auto enc_input = df.place_holder({ FLAGS_batch, FLAGS_channels, 64, 64 }, Tensor::Float, "enc_input");
+	auto enc_input = df.place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "enc_input");
 
 	auto conv1_w = df.variable(df.random_normal({ depth, FLAGS_channels, 3, 3 }, mean, stddev), enc_solver, "conv1_w");
 	auto conv1 = df.conv2d(enc_input, conv1_w, 1, 1, 1, 1, 1, 1, "conv1");
@@ -44,10 +44,15 @@ std::shared_ptr<Session> create_encoder_session() {
 	auto conv2_r = df.leaky_relu(conv2, enc_negative_slope);
 	auto conv2_p = df.pooling(conv2_r, 2, 2, 0, 0, 2, 2, "conv2_p");
 
-	auto conv3_w = df.variable(df.random_normal({ 8, depth, 3, 3 }, mean, stddev), enc_solver, "conv3_w");
+	auto conv3_w = df.variable(df.random_normal({ depth, depth, 3, 3 }, mean, stddev), enc_solver, "conv3_w");
 	auto conv3 = df.conv2d(conv2_p, conv3_w, 1, 1, 1, 1, 1, 1, "conv3");
 	auto conv3_r = df.leaky_relu(conv3, enc_negative_slope);
-	auto conv3_p = df.pooling(conv3_r, 2, 2, 0, 0, 2, 2, "enc_output");
+	auto conv3_p = df.pooling(conv3_r, 2, 2, 0, 0, 2, 2, "conv3_p");
+
+	auto conv4_w = df.variable(df.random_normal({ 8, depth, 3, 3 }, mean, stddev), enc_solver, "conv4_w");
+	auto conv4 = df.conv2d(conv3_p, conv4_w, 1, 1, 1, 1, 1, 1, "conv4");
+	auto conv4_r = df.leaky_relu(conv4, enc_negative_slope);
+	auto conv4_p = df.pooling(conv4_r, 2, 2, 0, 0, 2, 2, "enc_output");
 
 	return df.session();
 }
@@ -56,8 +61,8 @@ std::shared_ptr<Session> create_loss_session() {
 	
 	DeepFlow df;
 	
-	auto loss_t1 = df.place_holder({ FLAGS_batch, FLAGS_channels, 64, 64 }, Tensor::Float, "loss_t1");
-	auto loss_t2 = df.place_holder({ FLAGS_batch, FLAGS_channels, 64, 64 }, Tensor::Float, "loss_t2");
+	auto loss_t1 = df.place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "loss_t1");
+	auto loss_t2 = df.place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "loss_t2");
 	auto sqerr = df.square_error(loss_t1, loss_t2);
 	auto loss = df.loss(sqerr, "", DeepFlow::AVG);
 
@@ -67,7 +72,7 @@ std::shared_ptr<Session> create_loss_session() {
 }
 std::shared_ptr<Session> create_display_session() {
 	DeepFlow df;
-	auto input = df.place_holder({ FLAGS_batch, FLAGS_channels, 64, 64 }, Tensor::Float, "input");
+	auto input = df.place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "input");
 	df.display(input, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp");
 	return df.session();
 }
@@ -93,10 +98,14 @@ std::shared_ptr<Session> create_decoder_session() {
 	auto tconv2_t = df.transposed_conv2d(tconv1_r, tconv2_f, 1, 1, 2, 2, 1, 1, "tconv2_t");	
 	auto tconv2_r = df.leaky_relu(tconv2_t, dec_negative_slope);
 
-	auto tconv3_f = df.variable(df.random_normal({ depth, FLAGS_channels, 3, 3 }, mean, stddev), dec_solver, "tconv3_f");
+	auto tconv3_f = df.variable(df.random_normal({ depth, depth, 3, 3 }, mean, stddev), dec_solver, "tconv3_f");
 	auto tconv3_t = df.transposed_conv2d(tconv2_r, tconv3_f, 1, 1, 2, 2, 1, 1, "tconv3_t");
+	auto tconv3_r = df.leaky_relu(tconv3_t, dec_negative_slope);
 
-	auto output = df.tanh(tconv3_t, "dec_output");	
+	auto tconv4_f = df.variable(df.random_normal({ depth, FLAGS_channels, 3, 3 }, mean, stddev), dec_solver, "tconv4_f");
+	auto tconv4_t = df.transposed_conv2d(tconv3_r, tconv4_f, 1, 1, 2, 2, 1, 1, "tconv4_t");
+
+	auto output = df.tanh(tconv4_t, "dec_output");	
 
 	return df.session();
 }

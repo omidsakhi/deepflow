@@ -8,13 +8,10 @@ public:
 	Psnr(deepflow::NodeParam *param);
 	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 0; }
-	void initForward();
-	void initBackward();
+	void init();	
 	void forward();
 	void backward();
 	std::string to_cpp() const;
-	ForwardType forwardType() { return ALWAYS_FORWARD; }
-	BackwardType backwardType() { return NEVER_BACKWARD; }
 private:
 	deepflow::ActionTime _print_time;
 	float *d_square_error;

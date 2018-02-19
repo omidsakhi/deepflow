@@ -67,11 +67,14 @@ public:
 	virtual void disconnect();
 	virtual std::set<std::shared_ptr<Node>> connectedNodes() const;
 	virtual std::set<std::shared_ptr<Terminal>> connectedTerminals() const;
+	void setEnabled(bool status);
+	bool enabled() const;
 protected:
 	std::set<std::shared_ptr<Terminal>> _connected_terminals;
 	std::shared_ptr<Tensor> _value;
 	std::shared_ptr<Tensor> _diff;
 	std::string _name;
+	bool _enabled = false;
 };
 
 using NodeOutputPtr = std::shared_ptr<NodeOutput>;

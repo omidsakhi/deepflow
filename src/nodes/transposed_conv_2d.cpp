@@ -6,7 +6,7 @@ TransposedConvolution2D::TransposedConvolution2D(deepflow::NodeParam *param) : N
 	d_workspace = 0;
 }
 
-void TransposedConvolution2D::initForward() {	
+void TransposedConvolution2D::init() {	
 	auto transposed_conv2d_param = _param->transposed_conv_2d_param();
 	int pad_h = transposed_conv2d_param.pad_h();
 	int pad_w = transposed_conv2d_param.pad_w();
@@ -61,9 +61,6 @@ void TransposedConvolution2D::initForward() {
 	_maxWorkspaceSize = std::max({ _fwdWorkspaceSize, _bwdDataWorkspaceSize, _bwdFilterWorkspaceSize });
 }
 
-void TransposedConvolution2D::initBackward() {
-}
-
 void TransposedConvolution2D::forward() {
 	if (d_workspace == 0 && _maxWorkspaceSize != 0)
 		DF_NODE_CUDA_CHECK(cudaMalloc(&d_workspace, _maxWorkspaceSize));		
@@ -71,9 +68,9 @@ void TransposedConvolution2D::forward() {
 }
 
 void TransposedConvolution2D::backward() {
-	if (_inputs[0]->connectedNode()->propagateBack())
+	if (_inputs[0]->connectedNode())
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionForward(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _wDesc, _inputs[1]->value()->data(), _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));	
-	if (_inputs[1]->connectedNode()->propagateBack())
+	if (_inputs[1]->connectedNode())
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _inputs[0]->value()->descriptor(), _dy, _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &zero, _wDesc, _inputs[1]->diff()->mutableData()));
 }
 

@@ -13,14 +13,11 @@ CastFloat::CastFloat(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_cast_float_param() == false) << "param.has_cast_float_param() == false";
 }
 
-void CastFloat::initForward() {
+void CastFloat::init() {
 	LOG_IF(FATAL, _inputs[0]->value()->type() != Tensor::Int32) << "Input tensor must be of Int32 type.";	
 	_outputs[0]->initValue(_inputs[0]->value()->dims(), Tensor::Float);		
-	LOG(INFO) << "CastFloat " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void CastFloat::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "CastFloat " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void CastFloat::forward() {

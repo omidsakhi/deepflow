@@ -10,8 +10,7 @@ class Initializer;
 class DeepFlowDllExport Variable : public Node {
 public:		
 	Variable(std::shared_ptr<Initializer> initializer, deepflow::NodeParam *param);
-	virtual void initForward();
-	virtual void initBackward();		
+	virtual void init();	
 	virtual int minNumInputs() { return 0;  }
 	virtual int minNumOutputs() { return 1; }
 	virtual void forward();
@@ -20,8 +19,6 @@ public:
 	void reset_gradients();
 	void prep_for_saving();
 	void clamp(float min, float max);
-	virtual ForwardType forwardType() { return ALWAYS_FORWARD; }
-	virtual BackwardType backwardType();
 	virtual std::string to_cpp() const;
 protected:		
 	std::shared_ptr<Initializer> _initializer;

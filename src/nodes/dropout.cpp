@@ -6,9 +6,8 @@ Dropout::Dropout(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_dropout_param() == false) << "param.has_dropout_param() == false";
 }
 
-void Dropout::initForward() {	
-	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Dropout " << _name << " - " << _outputs[0]->value()->shape();
+void Dropout::init() {	
+	_outputs[0]->initValue(_inputs[0]->value()->dims());	
 	_dropout = _param->dropout_param().dropout();	
 	_train_only = _param->dropout_param().train_only();
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
@@ -18,10 +17,8 @@ void Dropout::initForward() {
 	DF_NODE_CUDNN_CHECK(cudnnSetDropoutDescriptor(_dropoutDesc, _cudnnHandle, _dropout, d_states, _state_sizes_in_bytes, clock()));
 	DF_NODE_CUDNN_CHECK(cudnnDropoutGetReserveSpaceSize(_inputs[0]->value()->descriptor(), &_reserve_sizes_in_bytes));
 	DF_NODE_CUDA_CHECK(cudaMalloc(&d_reserve, _reserve_sizes_in_bytes));	
-}
-
-void Dropout::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "Dropout " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Dropout::forward() {

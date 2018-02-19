@@ -15,14 +15,11 @@ public:
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
 	bool isGenerator() { return true; }
-	void initForward();
-	void initBackward() {}
+	void init();	
 	void forward();
 	void backward() {}
 	bool isLastBatch();
 	std::string to_cpp() const;
-	ForwardType forwardType() { return ALWAYS_FORWARD; }
-	BackwardType backwardType() { return NEVER_BACKWARD; }
 private:
 	std::string _folder_path;
 	std::array<int, 4> _dims;

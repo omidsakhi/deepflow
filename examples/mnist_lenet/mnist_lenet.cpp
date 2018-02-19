@@ -96,7 +96,7 @@ void main(int argc, char** argv) {
 
 	if (!FLAGS_run.empty()) {
 		session->initialize();
-		session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
+		//session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
 	}
 
 	if (FLAGS_cpp) {

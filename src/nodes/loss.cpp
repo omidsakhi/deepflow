@@ -5,7 +5,7 @@ Loss::Loss(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_loss_param() == false) << "param.has_loss_param() == false";
 }
 
-void Loss::initForward() {
+void Loss::init() {
 	auto lossParam = _param->loss_param();
 	_reduceTensorOp = (cudnnReduceTensorOp_t)lossParam.reduce_op();
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
@@ -16,10 +16,6 @@ void Loss::initForward() {
 	DF_NODE_CUDNN_CHECK(cudnnGetReductionWorkspaceSize(_cudnnHandle, _reduceTensorDesciptor, _inputs[0]->value()->descriptor(), _outputs[0]->value()->descriptor(), &_workspaceSizeInBytes));
 	DF_NODE_CUDA_CHECK(cudaMalloc(&_d_workspace, _workspaceSizeInBytes));
 	LOG(INFO) << "Loss " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void Loss::initBackward() {
-	
 }
 
 void Loss::forward() {

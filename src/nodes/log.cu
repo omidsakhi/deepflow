@@ -21,13 +21,10 @@ Log::Log(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_log_param() == false) << "param.has_log_param() == false";
 }
 
-void Log::initForward() {
+void Log::init() {
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Log " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void Log::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "Log " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Log::forward() {

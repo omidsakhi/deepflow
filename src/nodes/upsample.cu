@@ -73,16 +73,12 @@ Upsample::Upsample(deepflow::NodeParam * param) : Node(param) {
 	LOG_IF(FATAL, param->has_upsample_param() == false) << "param.upsample_param() == false";
 }
 
-void Upsample::initForward()
+void Upsample::init()
 {
 	auto dims = _inputs[0]->value()->dims();	
 	_outputs[0]->initValue({ dims[0] , dims[1], dims[2] * 2, dims[3] * 2 });
-	LOG(INFO) << "Upsample Up " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void Upsample::initBackward()
-{
 	_outputs[0]->initDiff();
+	LOG(INFO) << "Upsample Up " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Upsample::forward()

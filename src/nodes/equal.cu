@@ -13,16 +13,12 @@ Equal::Equal(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_equal_param() == false) << "param.has_equal_param() == false";
 }
 
-void Equal::initForward() {
+void Equal::init() {
 	LOG_IF(FATAL, _inputs[0]->value()->type() != Tensor::Int32) << "Inputs must be of type int32.";
 	LOG_IF(FATAL, _inputs[1]->value()->type() != Tensor::Int32) << "Inputs must be of type int32.";
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[0]->value()->size()) << "Size mismatch [FAILED]";
 	_outputs[0]->initValue(_inputs[0]->value()->dims(), Tensor::TensorType::Float);
 	LOG(INFO) << "Equal " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void Equal::initBackward() {
-
 }
 
 void Equal::forward() {

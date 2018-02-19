@@ -319,11 +319,7 @@ int Block::minNumOutputs()
 	return 0;
 }
 
-void Block::initForward()
-{
-}
-
-void Block::initBackward()
+void Block::init()
 {
 }
 

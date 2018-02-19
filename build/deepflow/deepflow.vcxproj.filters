@@ -94,6 +94,9 @@
     <CudaCompile Include="..\..\src\nodes\resize.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\prelu.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -205,6 +208,12 @@
       <Filter>source\nodes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\nodes\split.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\switch.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\lrn.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -417,6 +426,15 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\split.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\switch.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\lrn.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\prelu.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

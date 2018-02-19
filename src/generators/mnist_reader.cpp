@@ -27,7 +27,7 @@ int ReverseInt(int i)
 	return((int)ch1 << 24) + ((int)ch2 << 16) + ((int)ch3 << 8) + ch4;
 }
 
-void MNISTReader::initForward() {
+void MNISTReader::init() {
 	_file_path = _folder_path;
 	if (_output_type == MNISTOutputType::Data && _reader_type == MNISTReaderType::Train) {
 		_file_path += "/train-images.idx3-ubyte";
@@ -85,10 +85,6 @@ void MNISTReader::initForward() {
 	else {
 		LOG(FATAL);
 	}	
-}
-
-void MNISTReader::initBackward() {
-	
 }
 
 void MNISTReader::forward()

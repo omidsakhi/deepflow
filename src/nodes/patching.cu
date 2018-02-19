@@ -83,7 +83,7 @@ Patching::Patching(deepflow::NodeParam * param) : Node(param) {
 	LOG_IF(FATAL, param->has_patching_param() == false) << "param.patching_param() == false";
 }
 
-void Patching::initForward() 
+void Patching::init() 
 {
 	// NCHW
 	_mode = this->_param->patching_param().mode();
@@ -120,10 +120,7 @@ void Patching::initForward()
 	}
 	else
 		LOG(FATAL);
-}
 
-void Patching::initBackward()
-{
 	_outputs[0]->initDiff();
 }
 

@@ -24,15 +24,12 @@ ReduceAll::ReduceAll(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_reduce_all_param() == false) << "param.has_reduce_all_param() == false";
 }
 
-void ReduceAll::initForward() {
+void ReduceAll::init() {
 	_outputs[0]->initValue({ 1, 1, 1, 1});
 	_reduce_op = _param->reduce_all_param().reduce_op();
 	std::string op_name = (_reduce_op == deepflow::ReduceAllParam_ReduceAllOp_AVG ? "reduce_mean" : "reduce_sum");
-	LOG(INFO) << op_name << " " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void ReduceAll::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << op_name << " " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void ReduceAll::forward() {

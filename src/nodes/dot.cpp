@@ -4,7 +4,7 @@ Dot::Dot(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_dot_param() == false) << "param.has_dot_param() == false";
 }
 
-void Dot::initForward() {
+void Dot::init() {
 
 	auto a = _inputs[0];
 	auto ad = a->dims();
@@ -16,11 +16,8 @@ void Dot::initForward() {
 		<< "Different sizes " << a->value()->shape() << "(" << a->connectedNode()->name() << ") vs " << b->value()->shape() << " (" << b->connectedNode()->name() << ")";
 	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Dot " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void Dot::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "Dot " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Dot::forward() {	
@@ -31,11 +28,11 @@ void Dot::forward() {
 
 void Dot::backward() {
 	auto size = _outputs[0]->diff()->size();
-	if (_inputs[0]->connectedNode()->propagateBack()) {
+	if (_inputs[0]->connectedNode()) {
 		dot(size, 1.0, _outputs[0]->diff()->data(), _inputs[1]->value()->data(), 0.0, _inputs[0]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}
-	if (_inputs[1]->connectedNode()->propagateBack()) {
+	if (_inputs[1]->connectedNode()) {
 		dot(size, 1.0, _outputs[0]->diff()->data(), _inputs[0]->value()->data(), 0.0, _inputs[1]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}

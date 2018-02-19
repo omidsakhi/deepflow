@@ -9,13 +9,10 @@ public:
 	ImageWriter(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
-	void initForward();
-	void initBackward();
+	void init();	
 	void forward();
 	void backward();
 	std::string to_cpp() const;
-	ForwardType forwardType() { return ALWAYS_FORWARD; }
-	BackwardType backwardType() { return NEVER_BACKWARD; }
 private:
 	int input_size;
 	int input_size_in_bytes;

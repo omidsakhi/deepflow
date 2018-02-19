@@ -5,7 +5,7 @@ Display::Display(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_display_param() == false) << "param.has_display_param() == false";
 }
 
-void Display::initForward() {
+void Display::init() {
 	auto display_param = _param->display_param();
 	_delay_msec = display_param.delay_msec();
 	_display_type = display_param.display_type();
@@ -28,10 +28,6 @@ void Display::initForward() {
 	LOG(INFO) << "Display " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape() << "(" << (num_channels == 3? "COLOR": "GRAY") <<  ")";
 
 	disp = cv::Mat(pic_height, pic_width, (num_channels == 3 ? CV_8UC3 : CV_8U));	
-}
-
-void Display::initBackward() {
-	
 }
 
 void Display::forward() {
@@ -74,7 +70,7 @@ void Display::forward() {
 }
 
 void Display::backward() {
-	LOG(FATAL);
+	
 }
 
 std::string Display::to_cpp() const

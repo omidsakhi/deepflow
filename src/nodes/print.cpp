@@ -12,13 +12,9 @@ int Print::minNumInputs() {
 	return _num_inputs;
 }
 
-void Print::initForward() {
+void Print::init() {
 	auto printParam = _param->print_param();
 	_raw_message = printParam.message();
-}
-
-void Print::initBackward() {
-
 }
 
 void Print::forward() {

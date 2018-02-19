@@ -9,13 +9,10 @@
 class DeepFlowDllExport PlaceHolder : public Node {
 public:
 	PlaceHolder(deepflow::NodeParam *param);
-	void initForward();
-	void initBackward();
+	void init();	
 	void forward();
 	void backward();	
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
 	std::string to_cpp() const;
-	ForwardType forwardType() { return ALWAYS_FORWARD; }
-	BackwardType backwardType() { return ALWAYS_BACKWARD; }
 };

@@ -97,6 +97,10 @@ message LogParam {
 	float coef = 1;
 }
 
+message SwitchParam {
+
+}
+
 message LossParam {
 	enum ReduceOp {
 		ADD = 0;
@@ -336,6 +340,20 @@ message NodeParam {
   ImageWriterParam image_writer_param = 144;
   ResizeParam resize_param = 145;
   SplitParam split_param = 146;
+  SwitchParam switch_param = 147;
+  LrnParam lrn_param = 148;
+  PReluParam prelu_param = 149;
+}
+
+message PReluParam {
+	
+}
+
+message LrnParam {	
+	int32 n = 1;
+	float alpha = 2;
+	float beta = 3;
+	float k = 4;
 }
 
 message ResizeParam {

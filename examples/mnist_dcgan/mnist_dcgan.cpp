@@ -87,13 +87,13 @@ std::shared_ptr<Session> create_generator_session() {
 	auto gfc_r = df.relu(gfc);
 	auto gfc_drop = df.dropout(gfc_r, dropout);
 
-	auto tconv1 = tconv(&df, "tconv1", gfc_drop, g_solver, 256, 128, 2, 0, true);
-	auto tconv2 = tconv(&df, "tconv2", tconv1, g_solver, 256, 64, 2, 0, true);
-	auto tconv3 = tconv(&df, "tconv3", tconv2, g_solver, 256, 64, 3, 0, true);
+	auto tconv1 = tconv(&df, "tconv1", gfc_drop, g_solver, 256, 512, 2, 0, true);
+	auto tconv2 = tconv(&df, "tconv2", tconv1, g_solver, 128, 256, 2, 0, true);
+	auto tconv3 = tconv(&df, "tconv3", tconv2, g_solver, 64, 128, 3, 0, true);
 	auto tconv4 = tconv(&df, "tconv4", tconv3, g_solver, 1, 64, 5, 0, false);
 
 	auto gout = df.tanh(tconv4, "gout");
-	auto disp = df.display(gout, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
+	auto disp = df.display(gout, 500, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
 
 	//auto replay_memory = df.replay_memory(gout, 10000, "replay_memory");
 

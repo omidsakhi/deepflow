@@ -135,6 +135,7 @@ public:
 	std::string leaky_relu(std::string a, float negative_slope = 0.01f, std::string name = "leaky_relu", std::initializer_list<std::string> phases = {});
 	std::string sigmoid(std::string a, std::string name = "sigmoid", std::initializer_list<std::string> phases = {});
 	std::string relu(std::string a, std::string name = "relu", std::initializer_list<std::string> phases = {});
+	std::string prelu(std::string input, std::string w, std::string name = "prelu", std::initializer_list<std::string> phases = {});
 	std::string tanh(std::string a, std::string name = "tanh", std::initializer_list<std::string> phases = {});
 	std::string clipped_relu(std::string a, float threshold, std::string name = "clipped_relu", std::initializer_list<std::string> phases = {});
 	std::string elu(std::string a, float alpha, std::string name = "elu", std::initializer_list<std::string> phases = {});
@@ -142,7 +143,8 @@ public:
 	// SELECTORS
 	std::string phaseplexer(std::string input_1, std::string phase_1, std::string input_2, std::string phase_2, std::string name = "plex", std::initializer_list<std::string> phases = {});
 	std::string random_selector(std::string input_1, std::string input_2, float probability = 0.5f, std::string name = "selector", std::initializer_list<std::string> phases = {});
-	std::string multiplexer(std::initializer_list<std::string> inputs, std::string selector, std::string name = "multiplexer", std::initializer_list<std::string> phases = {});
+	std::string multiplexer(std::initializer_list<std::string> inputs, std::string name = "multiplexer", std::initializer_list<std::string> phases = {});
+	std::string switcher(std::string input, std::string name = "switch", std::initializer_list<std::string> phases = {});
 				
 	// SOLVERS
 	std::string sgd_solver(float momentum, float learning_rate, std::string name = "sgd", std::string enable_input = "");
@@ -159,6 +161,7 @@ public:
 
 	// NORMALIZATION
 	std::string batch_normalization(std::string input, std::string scale, std::string bias, NormalizationMode mode = DeepFlow::SPATIAL, bool cache = true, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
+	std::string lrn(std::string input, std::string name = "lrn", int n = 5, float alpha = 1e-4f, float beta = 0.75f, float k = 2.0f, std::initializer_list<std::string> phases = {});
 
 	// SOCKET IO
 	void sio_output(std::initializer_list<std::string> inputs, ActionTime printTime = ActionTime::EVERY_PASS, std::string host = "127.0.0.1", int port = 6643, std::string name = "sio_output", std::initializer_list<std::string> phases = {});

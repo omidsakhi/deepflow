@@ -66,6 +66,16 @@ std::set<std::shared_ptr<Terminal>> NodeOutput::connectedTerminals() const
 	return _connected_terminals;
 }
 
+void NodeOutput::setEnabled(bool status)
+{
+	_enabled = status;
+}
+
+bool NodeOutput::enabled() const
+{
+	return _enabled;
+}
+
 const int& Terminal::index() const {
 	return _index;
 }

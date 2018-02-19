@@ -19,17 +19,14 @@ LeakyRelu::LeakyRelu(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_leaky_relu_param() == false) << "param.has_leaky_relu_param() == false";	
 }
 
-void LeakyRelu::initForward() {	
+void LeakyRelu::init() {	
 	_initial_negative_slope = _param->leaky_relu_param().negative_slope();	
 	LOG_IF(FATAL, _initial_negative_slope < 0) << " negative_slope < 0";
 	_negative_slope = _initial_negative_slope;
 	_randomize = _param->leaky_relu_param().randomize();
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "LeakyRelu " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void LeakyRelu::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "LeakyRelu " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void LeakyRelu::forward() {	

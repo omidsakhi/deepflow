@@ -385,6 +385,19 @@ std::string DeepFlow::relu(std::string a, std::string name, std::initializer_lis
 	return node_param->output(0);	
 }
 
+std::string DeepFlow::prelu(std::string input, std::string w, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	node_param->add_input(w);
+	auto prelu_param = node_param->mutable_prelu_param();		
+	return node_param->output(0);
+}
+
 std::string DeepFlow::tanh(std::string a, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();	
@@ -543,6 +556,22 @@ std::string DeepFlow::batch_normalization(std::string input, std::string scale, 
 	auto batch_norm_param = node_param->mutable_batch_normalization_param();
 	batch_norm_param->set_mode((deepflow::BatchNormalizationParam_Mode) mode);
 	batch_norm_param->set_cache_meanvar(cache);
+	return node_param->output(0);
+}
+
+std::string DeepFlow::lrn(std::string input, std::string name, int n, float alpha, float beta, float k, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto lrn_param = node_param->mutable_lrn_param();
+	lrn_param->set_alpha(alpha);
+	lrn_param->set_beta(beta);
+	lrn_param->set_k(k);
+	lrn_param->set_n(n);
 	return node_param->output(0);
 }
 
@@ -854,7 +883,7 @@ std::string DeepFlow::random_selector(std::string input_1, std::string input_2, 
 	return node_param->output(0);
 }
 
-std::string DeepFlow::multiplexer(std::initializer_list<std::string> inputs, std::string selector, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::multiplexer(std::initializer_list<std::string> inputs, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -864,10 +893,21 @@ std::string DeepFlow::multiplexer(std::initializer_list<std::string> inputs, std
 	std::vector<std::string> inputsVec(inputs.size());
 	std::copy(inputs.begin(), inputs.end(), inputsVec.begin());
 	for (int i = 0; i < inputsVec.size(); ++i)
-		node_param->add_input(inputsVec[i]);
-	node_param->add_input(selector);
+		node_param->add_input(inputsVec[i]);	
 	auto multiplexer_param = node_param->mutable_multiplexer_param();
 	multiplexer_param->set_num_inputs(inputs.size());
+	return node_param->output(0);
+}
+
+std::string DeepFlow::switcher(std::string input, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);	
+	node_param->mutable_switch_param();
 	return node_param->output(0);
 }
 

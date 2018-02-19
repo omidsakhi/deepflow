@@ -17,7 +17,7 @@ Psnr::Psnr(deepflow::NodeParam *param) : Node(param) {
 	_print_time = psnrParam.print_time();	
 }
 
-void Psnr::initForward() {	
+void Psnr::init() {	
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input " << _inputs[0]->value()->shape() << " != " << " Target " << _inputs[1]->value()->shape();
 	LOG(INFO) << "PSNR " << _name;
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
@@ -31,10 +31,6 @@ void Psnr::initForward() {
 	DF_NODE_CUDNN_CHECK(cudnnSetTensor4dDescriptor(_output_desc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, 1, 1, 1, 1));
 	DF_NODE_CUDNN_CHECK(cudnnGetReductionWorkspaceSize(_cudnnHandle, _reduce_tensor_desciptor, _inputs[0]->value()->descriptor(), _output_desc, &_workspaceSizeInBytes));
 	DF_NODE_CUDA_CHECK(cudaMalloc(&_d_workspace, _workspaceSizeInBytes));
-}
-
-void Psnr::initBackward() {
-
 }
 
 void Psnr::forward() {

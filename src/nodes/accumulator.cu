@@ -14,16 +14,12 @@ Accumulator::Accumulator(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_accumulator_param() == false) << "param.has_accumulator_param() == false";
 }
 
-void Accumulator::initForward() {	
+void Accumulator::init() {	
 	const deepflow::AccumulatorParam &accParam = _param->accumulator_param();
 	_reset_time = (deepflow::ActionTime)accParam.reset_time();
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
 	_outputs[1]->initValue({ 1,1,1,1 });
 	LOG(INFO) << "Accumulator " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void Accumulator::initBackward() {		
-
 }
 
 void Accumulator::forward() {

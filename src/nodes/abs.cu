@@ -21,13 +21,10 @@ Abs::Abs(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_abs_param() == false) << "param.has_abs_param() == false";
 }
 
-void Abs::initForward() {
+void Abs::init() {
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Absolute " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void Abs::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "Absolute " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Abs::forward() {

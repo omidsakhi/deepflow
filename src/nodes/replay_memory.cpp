@@ -5,7 +5,7 @@ ReplayMemory::ReplayMemory(deepflow::NodeParam *param) : Node(param)
 	LOG_IF(FATAL, param->has_replay_memory_param() == false) << "param.has_replay_memory_param() == false";
 }
 
-void ReplayMemory::initForward()
+void ReplayMemory::init()
 {
 	_capacity = _param->replay_memory_param().capacity();
 	auto inputDims = _inputs[0]->value()->dims();
@@ -16,10 +16,6 @@ void ReplayMemory::initForward()
 	DF_NODE_CUDA_CHECK(cudaMalloc(&dev_memory, _mem_size * sizeof(float)));
 	_outputs[0]->initValue(inputDims);
 	LOG(INFO) << "ReplayMemory " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void ReplayMemory::initBackward()
-{
 }
 
 void ReplayMemory::forward()

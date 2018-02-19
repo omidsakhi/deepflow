@@ -4,7 +4,7 @@ Pooling::Pooling(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_pooling_param() == false) << "param.has_pooling_param() == false";
 }
 
-void Pooling::initForward() {
+void Pooling::init() {
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 	auto param = _param->pooling_param();
 	LOG_IF(FATAL, param.window_w() < 1);
@@ -16,11 +16,8 @@ void Pooling::initForward() {
 	int n, c, h, w;
 	DF_NODE_CUDNN_CHECK(cudnnGetPooling2dForwardOutputDim(_poolingDesc, _inputs[0]->value()->descriptor(), &n, &c, &h, &w));
 	_outputs[0]->initValue({ n, c, h, w }, Tensor::Float);	
-	LOG(INFO) << "Pooling " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape();	
-}
-
-void Pooling::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "Pooling " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape();	
 }
 
 void Pooling::forward() {

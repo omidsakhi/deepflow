@@ -32,45 +32,24 @@ public:
 		PRE_ORDER,
 		POST_ORDER
 	};
-	enum ForwardType {
-		ALWAYS_FORWARD,
-		DEPENDS_ON_OUTPUTS,
-		NEVER_FORWARD
-	};
-	enum BackwardType {
-		ALWAYS_BACKWARD,
-		DEPENDS_ON_INPUTS,
-		NEVER_BACKWARD
-	};
 	Node();
 	Node(deepflow::NodeParam *param);
 	void createIO();
-	virtual void initForward() = 0;
-	virtual void initBackward() = 0;
+	virtual void init() = 0;
 	virtual int minNumInputs() = 0;
 	virtual int minNumOutputs() = 0;
 	virtual void forward() = 0;
-	virtual void backward() = 0;
+	virtual void backward() = 0;	
 	virtual bool isGenerator() { return false; }
 	virtual bool isLastBatch() { return true; }
-	virtual ForwardType forwardType() = 0;
-	virtual BackwardType backwardType() = 0;
 	virtual std::string to_cpp() const = 0;
 	virtual void prep_for_saving() {}
 	virtual void reset_gradients();
 	std::string name() const;	
 	std::string _to_cpp_phases() const;
-	std::string _input_name_for_cpp(int i) const;
-	int numConnectedOutputs();	
-	void _forward(int visit_token = 0);
-	void _backward(int visit_token = 0);	
-	void _resolve_propagation(int visit_token = 0);	
-	bool propagateBack() const;	
-	void setShouldBackward(bool state);
+	std::string _input_name_for_cpp(int i) const;	
 	void write_values(std::shared_ptr<Tensor> tensor, float alpha = 1.0, float beta = 0.0f);
 	void write_diffs(std::shared_ptr<Tensor> tensor, float alpha = 1.0, float beta = 0.0f);
-	void _traverse_up(std::function<void(Node*)> fun, TraverseOrder order, int visit_token);
-	void _traverse_down(std::function<void(Node*)> fun, TraverseOrder order, int visit_token);	
 	void cpy(int n, const float alpha, const void *src, const float beta, void *dst);
 	void dot(const int n, const float alpha, const void *a, const void *b, const float beta, void *dst);
 	void fill(int n, const float value, void *dst, const float beta = 0);
@@ -91,8 +70,6 @@ protected:
 	std::vector<NodeInputPtr> _inputs;
 	std::vector<NodeOutputPtr> _outputs;
 	std::string _name = "Unknown";	
-	int _visit_token = 0;
-	bool _propagate_back = false;
 	bool _initialized = false;
 	deepflow::NodeParam *_param = nullptr;
 	ExecutionContextPtr _context = nullptr;

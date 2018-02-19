@@ -4,18 +4,14 @@ RandomSelector::RandomSelector(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_random_selector_param() == false) << "param.has_random_selector_param() == false";
 }
 
-void RandomSelector::initForward()
+void RandomSelector::init()
 {
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Size mismatch " << _inputs[0]->value()->shape() << " vs " << _inputs[1]->value()->shape();
 	_outputs[0]->initValue(_inputs[0]->dims());
 	auto param = _param->random_selector_param();
 	_probability = param.probability();
-	LOG(INFO) << "RandomSelector " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void RandomSelector::initBackward()
-{
 	_outputs[0]->initDiff();
+	LOG(INFO) << "RandomSelector " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void RandomSelector::forward()

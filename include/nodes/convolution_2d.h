@@ -6,13 +6,10 @@ class DeepFlowDllExport Convolution2D : public Node {
 public:
 	Convolution2D(deepflow::NodeParam *param);
 	int minNumInputs();
-	int minNumOutputs() { return 1; }
-	void initForward();
-	void initBackward();
+	int minNumOutputs() { return 1; }	
+	void init();	
 	void forward();
 	void backward();
-	virtual ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
-	virtual BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 	std::string to_cpp() const;
 protected:
 	cudnnHandle_t _cudnnHandle;

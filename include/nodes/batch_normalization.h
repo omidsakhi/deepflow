@@ -6,15 +6,12 @@ class DeepFlowDllExport BatchNormalization : public Node {
 public:
 	BatchNormalization(deepflow::NodeParam *param);
 	int minNumInputs() { return 3; }
-	int minNumOutputs() { return 1; }
-	void initForward();
-	void initBackward();
+	int minNumOutputs() { return 1; }	
+	void init();	
 	void forward();
 	void backward();
 	void prep_for_saving();
 	std::string to_cpp() const;
-	ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
-	BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 private:
 	cudnnHandle_t _cudnnHandle;
 	cudnnBatchNormMode_t _bnMode;

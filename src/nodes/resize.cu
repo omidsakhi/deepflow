@@ -71,17 +71,14 @@ Resize::Resize(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_resize_param() == false) << "param.has_resize_param() == false";
 }
 
-void Resize::initForward() {
+void Resize::init() {
 	auto param = _param->resize_param();
 	m_height_scale = param.height_scale();
 	m_width_scale = param.width_scale();
 	auto input_dims = _inputs[0]->value()->dims();
 	_outputs[0]->initValue({input_dims[0], input_dims[1], (int) (input_dims[2] * m_height_scale), (int) (input_dims[3] * m_width_scale) });
-	LOG(INFO) << "Resize " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void Resize::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "Resize " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Resize::forward() {

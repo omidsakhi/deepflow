@@ -30,7 +30,8 @@ ImageBatchReader::ImageBatchReader(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_image_batch_reader_param() == false) << "param.has_image_batch_reader_param() == false";
 }
 
-void ImageBatchReader::initForward() {
+void ImageBatchReader::init() {
+	LOG(INFO) << "ImageBatchReader " << _name;
 	auto image_batch_reader_param = _param->image_batch_reader_param();
 	_folder_path = image_batch_reader_param.folder_path();		
 	std::experimental::filesystem::path path(_folder_path);	

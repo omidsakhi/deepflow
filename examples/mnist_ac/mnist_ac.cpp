@@ -181,6 +181,7 @@ void main(int argc, char** argv) {
 		loss_session->reset_gradients();
 		model->backward();
 		model->apply_solvers();
+		model->reset_gradients();
 		
 		mnist_test_session->forward();
 		enc_input->write_values(mnist_test_data->output(0)->value());

@@ -6,14 +6,11 @@ class DeepFlowDllExport Block : public Node {
 
 public: // Node	
 	int minNumInputs();
-	int minNumOutputs();
-	void initForward();
-	void initBackward();
+	int minNumOutputs();	
+	void init();	
 	void forward();
 	void backward();
 	std::string to_cpp() const;
-	ForwardType forwardType() { return DEPENDS_ON_OUTPUTS; }
-	BackwardType backwardType() { return DEPENDS_ON_INPUTS; }
 
 public: // Block
 	Block();

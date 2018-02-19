@@ -22,7 +22,7 @@ Add::Add(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_add_param() == false) << "param.has_add_param() == false";	
 }
 
-void Add::initForward() {
+void Add::init() {
 	
 	auto a = _inputs[0];
 	auto ad = a->dims();
@@ -35,11 +35,8 @@ void Add::initForward() {
 
 	LOG_IF(FATAL, a->value()->size() != b->value()->size()) << _name << " - Different input sizes: " << a->value()->shape() << " vs " << b->value()->shape() ;		
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Add " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void Add::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "Add " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Add::forward() {	
@@ -51,11 +48,11 @@ void Add::forward() {
 
 void Add::backward() {	
 	auto size = _outputs[0]->diff()->size();
-	if (_inputs[0]->connectedNode()->propagateBack()) {
+	if (_inputs[0]->connectedNode()) {
 		AddKernelBackward << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), _alpha, (float*)_inputs[0]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}	
-	if (_inputs[1]->connectedNode()->propagateBack()) {
+	if (_inputs[1]->connectedNode()) {
 		AddKernelBackward << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), _beta, (float*)_inputs[1]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}

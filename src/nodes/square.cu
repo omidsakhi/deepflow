@@ -21,13 +21,10 @@ Square::Square(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_square_param() == false) << "param.has_square_param() == false";
 }
 
-void Square::initForward() {		
+void Square::init() {		
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	LOG(INFO) << "Square " << _name << " - " << _outputs[0]->value()->shape();
-}
-
-void Square::initBackward() {
 	_outputs[0]->initDiff();
+	LOG(INFO) << "Square " << _name << " - " << _outputs[0]->value()->shape();
 }
 
 void Square::forward() {	
