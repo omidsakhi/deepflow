@@ -87,15 +87,18 @@ std::shared_ptr<Session> create() {
 
 	int fn = 256;	
 	
-	auto g_solver = df.adam_solver(0.0002f, 0.0f, 0.5f, 10e-8f, "g_adam");	
-	auto d_solver = df.adam_solver(0.0002f, 0.0f, 0.5f, 10e-8f, "d_adam");
+	auto g_solver = df.adam_solver(0.0002f, 0.5f, 0.98f, 10e-8f, "g_adam");	
+	auto d_solver = df.adam_solver(0.0002f, 0.5f, 0.98f, 10e-8f, "d_adam");
 
+	// The input for generator when needed
 	auto z = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1), FLAGS_total, "", "z");	
+	
 	auto face_data_128 = df.image_batch_reader(FLAGS_faces, { FLAGS_batch, FLAGS_channels, FLAGS_size, FLAGS_size }, false, "face_data_128");
 	auto face_data_64 = df.resize(face_data_128, 0.5, 0.5, "face_data_64");
 	auto face_data_32 = df.resize(face_data_64, 0.5, 0.5, "face_data_32");
 	auto face_data_16 = df.resize(face_data_32, 0.5, 0.5, "face_data_16");
 	auto face_data_8 = df.resize(face_data_16, 0.5, 0.5, "face_data_8");
+	
 	auto face_labels = df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1), FLAGS_total, "", "face_labels");
 	auto generator_labels = df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), FLAGS_total, "", "generator_labels");
 
@@ -104,47 +107,49 @@ std::shared_ptr<Session> create() {
 	auto g8 = deconv(&df, g4, g_solver, fn, fn, 3, 1, 1, "g8"); // 8x8
 	auto g8elu = df.leaky_relu(g8, 0.2, "g8elu");
 	auto g8trgb = to_rgb(&df, g8, g_solver, fn, "g8trgb");
-	auto im8 = df.switcher(g8trgb, "im8");
-	df.imwrite(im8, "{it}", "imw8");
 
 	auto g16 = deconv(&df, g8elu, g_solver, fn, fn, 3, 1, 1, "g16"); // 16x16
 	auto g16elu = df.leaky_relu(g16, 0.2, "g16elu");
 	auto g16trgb = to_rgb(&df, g16, g_solver, fn, "g16trgb");
+	auto g16add = df.add(df.resize(g8trgb, 2, 2), g16trgb, "g16add");
 	auto im16 = df.switcher(g16trgb, "im16");
 	df.imwrite(im16, "{it}", "imw16");
 
 	auto g32 = deconv(&df, g16elu, g_solver, fn, fn, 3, 1, 1, "g32"); // 32x32
 	auto g32elu = df.leaky_relu(g32, 0.2, "g32elu");
 	auto g32trgb = to_rgb(&df, g32, g_solver, fn, "g32trgb");
+	auto g32add = df.add(df.resize(g16add, 2, 2), g32trgb, "g32add");
 	auto im32 = df.switcher(g32trgb, "im32");
 	df.imwrite(im32, "{it}", "imw32");
 
 	auto g64 = deconv(&df, g32elu, g_solver, fn, fn, 3, 1, 1, "g64"); // 64x64
 	auto g64elu = df.leaky_relu(g64, 0.2, "g64elu");
 	auto g64trgb = to_rgb(&df, g64, g_solver, fn, "g64trgb");
+	auto g64add = df.add(df.resize(g32add, 2, 2), g64trgb, "g64add");
 	auto im64 = df.switcher(g64trgb, "im64");
 	df.imwrite(im64, "{it}", "imw64");
 
 	auto g128 = deconv(&df, g64elu, g_solver, fn, fn, 3, 1, 1, "g128"); // 64x64 -> 128x128
-	auto g128trgb = to_rgb(&df, g128, g_solver, fn, "g128trgb");	
+	auto g128trgb = to_rgb(&df, g128, g_solver, fn, "g128trgb");
+	auto g128add = df.add(df.resize(g64add, 2, 2), g128trgb, "g128add");
 	auto im128 = df.switcher(g128trgb, "im128");
 	df.imwrite(im128, "{it}", "imw128");
 
-	auto m128 = df.multiplexer({ face_data_128, g128trgb }, "m128");
+	auto m128 = df.multiplexer({ face_data_128, g128add }, "m128");
 	auto m128frgb = from_rgb(&df, m128, d_solver, fn, "m128frgb");
 	
 	auto d128 = conv(&df, m128frgb, d_solver, fn, fn, 3, 1, 1, true, "d128"); // 128x128 -> 64x64
-	auto m64 = df.multiplexer({ face_data_64, g64trgb }, "m64");
+	auto m64 = df.multiplexer({ face_data_64, g64add }, "m64");
 	auto m64frgb = from_rgb(&df, m64, d_solver, fn, "m64frgb");
 	auto m642 = df.multiplexer({ d128, m64frgb }, "m642");
 
 	auto d64 = conv(&df, m642, d_solver, fn, fn, 3, 1, 1, true, "d64"); // 64x64 -> 32x32
-	auto m32 = df.multiplexer({ face_data_32, g32trgb }, "m32");
+	auto m32 = df.multiplexer({ face_data_32, g32add }, "m32");
 	auto m32frgb = from_rgb(&df, m32, d_solver, fn, "m32frgb");
 	auto m322 = df.multiplexer({ d64, m32frgb }, "m322");
 
 	auto d32 = conv(&df, m322, d_solver, fn, fn, 3, 1, 1, true, "d32"); // 32x32 -> 16x16
-	auto m16 = df.multiplexer({ face_data_16, g16trgb }, "m16");
+	auto m16 = df.multiplexer({ face_data_16, g16add }, "m16");
 	auto m16frgb = from_rgb(&df, m16, d_solver, fn, "m16frgb");
 	auto m162 = df.multiplexer({ d32, m16frgb }, "m162");
 
@@ -192,6 +197,13 @@ void main(int argc, char** argv) {
 		0,  0,  0,  0  // stage 4
 	};
 
+	std::shared_ptr<Add> add_nodes[4] = {
+		std::dynamic_pointer_cast<Add>(session->get_node("g16add")),
+		std::dynamic_pointer_cast<Add>(session->get_node("g32add")),
+		std::dynamic_pointer_cast<Add>(session->get_node("g64add")),
+		std::dynamic_pointer_cast<Add>(session->get_node("g128add"))
+	};
+
 	std::shared_ptr<Multiplexer> main_multiplex[4] = {
 		std::dynamic_pointer_cast<Multiplexer>(session->get_node("m82")),
 		std::dynamic_pointer_cast<Multiplexer>(session->get_node("m162")),
@@ -208,8 +220,7 @@ void main(int argc, char** argv) {
 		std::dynamic_pointer_cast<Multiplexer>(session->get_node("mloss"))
 	};
 	
-	std::shared_ptr<Switch> im_switches[5] = {
-		std::dynamic_pointer_cast<Switch>(session->get_node("im8")),
+	std::shared_ptr<Switch> im_switches[5] = {		
 		std::dynamic_pointer_cast<Switch>(session->get_node("im16")),
 		std::dynamic_pointer_cast<Switch>(session->get_node("im32")),
 		std::dynamic_pointer_cast<Switch>(session->get_node("im64")),
@@ -224,16 +235,22 @@ void main(int argc, char** argv) {
 	loss_coef->fill(1.0f);
 	int stage;
 
-	for (stage = 3; stage < 5; stage++) {
+	for (stage = 1; stage < 5; stage++) {
 		for (iter = 1; iter <= FLAGS_iter && execution_context->quit != true; ++iter) {			
 				execution_context->current_iteration = iter;
-				stage = 4;
+				
+				if (stage > 0) {
+					float beta = (float)iter / 500.0f;
+					if (beta > 1) beta = 1;
+					add_nodes[stage - 1]->setAlpha(1 - beta);
+					add_nodes[stage - 1]->setBeta(beta);
+				}
 
 				std::cout << "Stage " << stage << " Iteration: [" << iter << "/" << FLAGS_iter << "]";
 				for (int m = 0; m < 4; m++)
 					main_multiplex[m]->selectInput(main_multiplex_states[stage][m]);
 
-				for (int s = 0; s < 5; s++)
+				for (int s = 0; s < 4; s++)
 					im_switches[s]->setEnabled(false);
 
 				for (int m = 0; m < 6; m++)
@@ -259,8 +276,8 @@ void main(int argc, char** argv) {
 				session->apply_solvers({ "d_adam" });
 				session->reset_gradients();
 
-				if (FLAGS_save_image != 0 && iter % FLAGS_save_image == 0)
-					im_switches[stage]->setEnabled(true);
+				if (FLAGS_save_image != 0 && iter % FLAGS_save_image == 0 && stage > 0)
+					im_switches[stage - 1]->setEnabled(true);
 
 				for (int m = 0; m < 6; m++)
 					per_stage_multiplex[m]->selectInput(-1);

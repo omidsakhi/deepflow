@@ -10,6 +10,8 @@ public:
 	void init();		
 	void forward();
 	void backward();
+	void setAlpha(float alpha);
+	void setBeta(float beta);
 	std::string to_cpp() const;
 private:
 	float _alpha, _beta;

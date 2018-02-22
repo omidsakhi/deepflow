@@ -50,6 +50,19 @@ std::shared_ptr<Session> create_generator_labels() {
 	return df.session();
 }
 
+std::shared_ptr<Session> create_z() {
+	DeepFlow df;
+	df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1), FLAGS_total, "", "z");	
+	return df.session();
+}
+
+std::shared_ptr<Session> create_static_z() {
+	DeepFlow df;
+	df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1), FLAGS_total, "", "static_z");
+	return df.session();
+}
+
+
 std::shared_ptr<Session> create_imwrite_session() {
 	DeepFlow df;
 	auto input = df.place_holder({ FLAGS_batch, FLAGS_channels, FLAGS_size, FLAGS_size }, Tensor::Float, "input");
@@ -76,25 +89,33 @@ std::string batchnorm(DeepFlow *df, std::string input, std::string solver, int o
 }
 
 std::string prelu(DeepFlow *df, std::string input, int output_channels, std::string solver, std::string name) {
-	auto w = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0.2), solver, name + "_preluw");
-	auto node = df->prelu(input, w, name + "prelu");
+	auto w = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0.2), solver, name + "_prelu_w");
+	auto node = df->prelu(input, w, name + "_prelu");
 	return node;
 }
 
-std::string dense(DeepFlow *df, std::string input, std::initializer_list<int> dims, std::string solver, std::string name) {
+std::string dense(DeepFlow *df, std::string input, std::initializer_list<int> dims, std::string solver, bool has_batchnorm, bool has_bias, std::string name) {
 	auto w = df->variable(df->random_normal( dims, 0, 0.02), solver, name + "_w");
-	return df->matmul(input, w);
+	auto node = df->matmul(input, w, name + "_ip");
+	if (has_bias) {
+		auto bnb = df->variable(df->fill({ 1, (*(dims.begin() + 1)), 1, 1 }, 0), solver, name + "_bnb");
+		node = df->bias_add(node, bnb, name + "_bias");
+	}
+	if (has_batchnorm)
+		node = batchnorm(df, node, solver, *(dims.begin() + 1), name);
+	return node;
 }
 
-std::string deconv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool upsample, bool activation, std::string name) {
+std::string deconv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool upsample, bool has_batchnorm, bool activation, std::string name) {
 
 	auto node = input;
 	if (upsample)
 		node = df->resize(node, 2, 2, name + "_resize");
 	auto f = df->variable(df->random_normal({ output_channels, upsample? input_channels : input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
 	node = df->conv2d(node, f, pad, pad, 1, 1, 1, 1, name + "_conv");
-	node = batchnorm(df, node, solver, output_channels, name + "_bn");
-	//node = df->lrn(node, name + "_lrn");
+	if (has_batchnorm)
+		node = batchnorm(df, node, solver, output_channels, name);
+		//node = df->lrn(node, name + "_lrn");
 	if (activation) {
 		return prelu(df, node, output_channels, solver, name);
 	}
@@ -118,34 +139,31 @@ std::shared_ptr<Session> create_generator() {
 	
 	int gf = 64;
 
-	auto solver = df.adam_solver(0.0002f, 0.5f, 0.98f);
+	auto solver = df.adam_solver(0.00005f, 0.0f, 0.98f);
+	
+	auto node = df.place_holder({ FLAGS_batch, 100, 1, 1 }, Tensor::Float, "input");
 
-	auto node = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1), FLAGS_total, "", "input");
+	node = dense(&df, node, { 100, gf * 16 , 4 , 4 }, solver, false, true, "g1"); // 4x4	
 
-	node = dense(&df, node, { 100, gf * 16 , 4 , 4 }, solver, "g1");
-	node = batchnorm(&df, node, solver, gf * 16, "g2"); // 4x4
+	node = deconv(&df, node, solver, gf * 16, gf * 8, 3, 1, true, true, true, "g3"); // 8x8	
 
-	node = deconv(&df, node, solver, gf * 16, gf * 8, 3, 1, 1, 1, "g3"); // 8x8	
+	node = deconv(&df, node, solver, gf * 8, gf * 4, 5, 2, true, true, true, "g4"); // 16x16	
 
-	node = deconv(&df, node, solver, gf * 8, gf * 4, 5, 2, 1, 1, "g4"); // 16x16	
+	node = deconv(&df, node, solver, gf * 4, gf * 2, 5, 2, true, true, true, "g5"); // 32x32	
 
-	node = deconv(&df, node, solver, gf * 4, gf * 2, 5, 2, 1, 1, "g5"); // 32x32	
+	node = deconv(&df, node, solver, gf * 2, gf * 2, 5, 2, true, true, true, "g6"); // 64x64	
 
-	node = deconv(&df, node, solver, gf * 2, gf * 2, 5, 2, 1, 1, "g7"); // 64x64	
-
-	node = deconv(&df, node, solver, gf * 2, FLAGS_channels, 5, 2, 1, 0, "g9"); // 128x128
-
-	node = df.leaky_relu(node, 1.0f, "gout");
+	node = deconv(&df, node, solver, gf * 2, FLAGS_channels, 5, 2, true, false, false, "g7"); // 128x128	
 
 	return df.session();
 }
 
 std::shared_ptr<Session> create_discriminator() {
 	DeepFlow df;
-
+	 
 	int dfs = 64;
 
-	auto solver = df.adam_solver(0.0002f, 0.5f, 0.98f);
+	auto solver = df.adam_solver(0.00005f, 0.5f, 0.98f);
 
 	auto node = df.place_holder({ FLAGS_batch , FLAGS_channels, FLAGS_size, FLAGS_size }, Tensor::Float, "input");
 
@@ -155,12 +173,11 @@ std::shared_ptr<Session> create_discriminator() {
 
 	node = conv(&df, node, solver, dfs * 2, dfs * 4, 5, 2, 2, true, "d3");
 
-	node = conv(&df, node, solver, dfs * 4, dfs * 8, 5, 2, 2, true, "d4");
+	node = conv(&df, node, solver, dfs * 4, dfs * 4, 5, 2, 2, true, "d4");
+	
+	node = conv(&df, node, solver, dfs * 4, dfs * 4, 5, 2, 2, true, "d4");
 
-	node = dense(&df, node, { (dfs * 8) * 8 * 8, 1, 1, 1 }, solver, "d5");
-
-	node = df.leaky_relu(node, 1.0f, "dout");
-	//node = df.sigmoid(node, "dout");
+	node = dense(&df, node, { (dfs * 4) * 4 * 4, 1, 1, 1 }, solver, false, false, "d5");
 
 	return df.session();
 }
@@ -203,10 +220,17 @@ void main(int argc, char** argv) {
 	auto l2_loss = create_l2_loss();
 	l2_loss->initialize(execution_context);	
 
+	auto z_session = create_z();
+	z_session->initialize(execution_context);
+
+	auto static_z_session = create_static_z();
+	static_z_session->initialize(execution_context);
+
 	auto face_reader_data = face_reader->get_node("face_data");
-	auto generator_output = generator->get_node("gout");
+	auto generator_output = generator->get_node("g7_conv");
+	auto generator_input = generator->get_placeholder("input");
 	auto discriminator_input = discriminator->get_placeholder("input");
-	auto discriminator_output = discriminator->get_node("dout");
+	auto discriminator_output = discriminator->get_node("d5_ip");
 	auto generator_labels_output = generator_labels->get_node("generator_labels");
 	auto face_labels_node = face_labels->get_node("face_labels");
 	auto l2_loss_discriminator_input = l2_loss->get_placeholder("discriminator_input");
@@ -214,12 +238,16 @@ void main(int argc, char** argv) {
 	auto l2_loss_output = l2_loss->get_node("loss");
 	auto loss_coef = l2_loss->get_node("coef");
 	auto imwrite_input = imwrite_session->get_placeholder("input");
+	auto z = z_session->get_node("z");
+	auto static_z = static_z_session->get_node("static_z");
 
 	int iter = 1;
 
 	loss_coef->fill(1.0f);
 	face_labels->forward();
 	generator_labels->forward();	
+	static_z->forward();
+
 	for (iter = 1; iter <= FLAGS_iter && execution_context->quit != true; ++iter) {
 
 		execution_context->current_iteration = iter;
@@ -236,6 +264,8 @@ void main(int argc, char** argv) {
 			discriminator_output->write_diffs(l2_loss_discriminator_input->output(0)->diff());
 			discriminator->backward();
 
+			z->forward();
+			generator_input->write_values(z->output(0)->value());
 			generator->forward();
 			discriminator_input->write_values(generator_output->output(0)->value());
 			discriminator->forward();
@@ -267,6 +297,8 @@ void main(int argc, char** argv) {
 		discriminator->reset_gradients();		
 
 		if (FLAGS_save_image != 0 && iter % FLAGS_save_image == 0) {
+			generator_input->write_values(static_z->output(0)->value());
+			generator->forward();			
 			imwrite_input->write_values(generator_output->output(0)->value());
 			imwrite_session->forward();
 		}

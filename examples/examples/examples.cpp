@@ -36,6 +36,8 @@ DEFINE_bool(x10, false, "Test batch normalization");
 DEFINE_bool(x11, false, "Test lifting");
 DEFINE_bool(x12, false, "Test patching");
 DEFINE_bool(x13, false, "Test upsample");
+DEFINE_bool(x14, false, "Test Concate");
+DEFINE_bool(x15, false, "Test resize");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -179,6 +181,20 @@ void main(int argc, char** argv) {
 			auto up = df.upsample(image);
 			df.display(up, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp", { train });
 		}
+		else if (FLAGS_x14) {
+			auto train = df.define_train_phase("Train");
+			auto images1 = df.image_batch_reader(FLAGS_image_folder, { 20, 1, 27, 18 }, true);
+			auto images2 = df.image_batch_reader(FLAGS_image_folder, { 20, 1, 27, 18 }, true);			
+			auto concate = df.concate(images1, images2);
+			df.display(concate, 5000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp", { train });
+		}
+		else if (FLAGS_x15) {
+			auto train = df.define_train_phase("Train");
+			auto images = df.image_batch_reader(FLAGS_image_folder, { 20, 1, 27, 18 }, true);			
+			auto resized = df.resize(images, 2.0, 2.0);
+			df.display(resized, 5000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp", { train });
+		}
+
 	}
 	else {
 		df.block()->load_from_binary(FLAGS_i);
@@ -198,7 +214,7 @@ void main(int argc, char** argv) {
 
 	if (!FLAGS_run.empty()) {
 		session->initialize();
-		//session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
+		session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
 	}
 	
 	if (!FLAGS_o.empty())

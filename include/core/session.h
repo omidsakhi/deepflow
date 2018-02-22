@@ -6,6 +6,7 @@
 #include "nodes/place_holder.h"
 #include "nodes/switch.h"
 #include "nodes/multiplexer.h"
+#include "nodes/add.h"
 
 class Solver;
 class Variable;
@@ -19,7 +20,7 @@ public:
 	Session(std::shared_ptr<Block> block) { _block = block; }	
 	void initialize(std::shared_ptr<ExecutionContext> execution_context = nullptr);
 	void set_execution_context(std::shared_ptr<ExecutionContext> execution_context);
-	//void run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level);
+	void run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level);
 	void mem_usage(size_t *free_byte, size_t *total_byte, float *used_byte_percentage);
 	std::string to_cpp() const;
 	std::shared_ptr<PlaceHolder> get_placeholder(std::string name);	
@@ -45,6 +46,7 @@ private:
 	void _insert_splits();
 private:
 	bool _initialized = false;
+	std::shared_ptr<ExecutionContext> _execution_context;
 	std::shared_ptr<Block> _block;
 	std::list<std::shared_ptr<Node>> _nodes;
 	std::list<std::shared_ptr<Variable>> _variables;

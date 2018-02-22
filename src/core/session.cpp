@@ -62,6 +62,7 @@
 #include "nodes/switch.h"
 #include "nodes/lrn.h"
 #include "nodes/prelu.h"
+#include "nodes/concate.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -180,6 +181,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Equal>(node_param);
 	else if (node_param->has_activation_param())
 		return std::make_shared<Activation>(node_param);
+	else if (node_param->has_concate_param())
+		return std::make_shared<Concate>(node_param);
 	else if (node_param->has_phaseplexer_param())
 		return std::make_shared<Phaseplexer>(node_param);
 	else if (node_param->has_place_holder_param())
@@ -337,8 +340,13 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 		}
 	}
 
-	if (execution_context)
+	if (execution_context) {
 		set_execution_context(execution_context);
+	}
+	else {
+		auto execution_context = std::make_shared<ExecutionContext>();
+		set_execution_context(execution_context);
+	}
 	
 }
 
@@ -349,7 +357,7 @@ void Session::_insert_splits()
 	for (auto node : _nodes) {
 		for (auto output : node->outputs()) {			
 			auto connected_terminals = output->connectedTerminals();
-			LOG_IF(FATAL, connected_terminals.size() > 2) << "We don't support more than 2 connected nodes to one output at this time.";
+			LOG_IF(FATAL, connected_terminals.size() > 2) << "We don't support more than 2 connected nodes to one output at this time | " << node->name();
 			if (connected_terminals.size() == 2) {
 
 				auto node_param = deepflow::NodeParam();
@@ -392,6 +400,7 @@ void Session::_insert_splits()
 
 void Session::set_execution_context(std::shared_ptr<ExecutionContext> execution_context)
 {
+	_execution_context = execution_context;
 	for (auto node : _nodes)
 		node->setExecutionContext(execution_context);
 }
@@ -814,6 +823,27 @@ void Session::save(std::string file_path, bool as_text)
 		_block->save_as_text(file_path);
 	else
 		_block->save_as_binary(file_path);
+}
+
+void Session::run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level) {
+	int iteration = 1;
+	for (int epoch = 1; epoch <= max_epoch; ++epoch) {
+		if (print_epoch)
+			std::cout << "Epoch " << epoch << " -->" << std::endl;
+		auto epoch_start = std::chrono::high_resolution_clock::now();
+		forward();
+		backward();
+		apply_solvers();
+		reset_gradients();
+		auto epoch_end = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
+		if (print_epoch)
+			std::cout << "<-- Epoch " << epoch << " Elapsed time: " << elapsed_epoch.count() << " seconds" << std::endl;
+		if (_execution_context->quit == true)
+			break;
+		if (max_iter > 0 && iteration >= max_iter)
+			break;
+	}
 }
 
 /*

@@ -21,6 +21,7 @@ void RandomUniform::apply(Variable *variable) {
 	for (int i = 0; i < size; ++i)
 		h_rand[i] = distribution(generator);
 	DF_CUDA_CHECK(cudaMemcpy((float*)variable->output(0)->value()->mutableData(), h_rand, variable->output(0)->value()->sizeInBytes(), cudaMemcpyHostToDevice));
+	delete[] h_rand;
 }
 
 std::string RandomUniform::to_cpp() const

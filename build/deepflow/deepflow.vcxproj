@@ -48,6 +48,7 @@
     <ClInclude Include="..\..\include\nodes\bias_add.h" />
     <ClInclude Include="..\..\include\nodes\block.h" />
     <ClInclude Include="..\..\include\nodes\cast_float.h" />
+    <ClInclude Include="..\..\include\nodes\concate.h" />
     <ClInclude Include="..\..\include\nodes\convolution_2d.h" />
     <ClInclude Include="..\..\include\nodes\display.h" />
     <ClInclude Include="..\..\include\nodes\dot.h" />
@@ -109,7 +110,9 @@
       <FileType>CppCode</FileType>
     </CudaCompile>
     <ClCompile Include="..\..\src\generators\mnist_reader.cpp" />
-    <ClCompile Include="..\..\src\initializers\random_normal.cpp" />
+    <CudaCompile Include="..\..\src\initializers\random_normal.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\abs.cu" />
     <CudaCompile Include="..\..\src\nodes\accumulator.cu" />
     <CudaCompile Include="..\..\src\nodes\add.cu" />
@@ -145,6 +148,7 @@
     <ClCompile Include="..\..\src\nodes\activation.cpp" />
     <ClCompile Include="..\..\src\nodes\batch_normalization.cpp" />
     <ClCompile Include="..\..\src\nodes\block.cpp" />
+    <ClCompile Include="..\..\src\nodes\concate.cpp" />
     <ClCompile Include="..\..\src\nodes\convolution_2d.cpp" />
     <ClCompile Include="..\..\src\nodes\dot.cpp" />
     <ClCompile Include="..\..\src\nodes\dropout.cpp" />
@@ -285,7 +289,9 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
-      <CodeGeneration>compute_35,sm_35</CodeGeneration>
+      <CodeGeneration>compute_61,sm_61</CodeGeneration>
+      <InterleaveSourceInPTX>true</InterleaveSourceInPTX>
+      <GenerateLineInfo>true</GenerateLineInfo>
     </CudaCompile>
     <PreBuildEvent>
       <Command>
@@ -340,8 +346,11 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
-      <CodeGeneration>compute_35,sm_35</CodeGeneration>
-      <FastMath>true</FastMath>
+      <CodeGeneration>compute_61,sm_61</CodeGeneration>
+      <FastMath>false</FastMath>
+      <GPUDebugInfo>false</GPUDebugInfo>
+      <GenerateLineInfo>false</GenerateLineInfo>
+      <Optimization>O2</Optimization>
     </CudaCompile>
     <PreBuildEvent>
       <Command>

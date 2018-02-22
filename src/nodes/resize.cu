@@ -99,22 +99,24 @@ void Resize::forward() {
 }
 
 void Resize::backward() {
-	auto size = _outputs[0]->value()->size();
-	auto output_dims = _outputs[0]->value()->dims();
-	auto input_dims = _inputs[0]->value()->dims();
-	DF_CUDA_CHECK(cudaMemset(_inputs[0]->diff()->mutableData(), 0, _inputs[0]->diff()->sizeInBytes()));
-	NearestNeighborGradientKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (
-		size,
-		output_dims[1],
-		output_dims[2],
-		output_dims[3],
-		input_dims[2],
-		input_dims[3],
-		m_height_scale,
-		m_width_scale,
-		(float*)_outputs[0]->diff()->data(),
-		(float*)_inputs[0]->diff()->mutableData());
-	DF_KERNEL_CHECK();
+	if (_inputs[0]->diff()) {
+		auto size = _outputs[0]->value()->size();
+		auto output_dims = _outputs[0]->value()->dims();
+		auto input_dims = _inputs[0]->value()->dims();
+		DF_CUDA_CHECK(cudaMemset(_inputs[0]->diff()->mutableData(), 0, _inputs[0]->diff()->sizeInBytes()));
+		NearestNeighborGradientKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (
+			size,
+			output_dims[1],
+			output_dims[2],
+			output_dims[3],
+			input_dims[2],
+			input_dims[3],
+			m_height_scale,
+			m_width_scale,
+			(float*)_outputs[0]->diff()->data(),
+			(float*)_inputs[0]->diff()->mutableData());
+		DF_KERNEL_CHECK();
+	}
 }
 
 std::string Resize::to_cpp() const

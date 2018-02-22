@@ -75,7 +75,6 @@ message SIOOutputParam {
 }
 
 message DotParam {
-
 }
 
 message AddParam {
@@ -98,7 +97,6 @@ message LogParam {
 }
 
 message SwitchParam {
-
 }
 
 message LossParam {
@@ -117,19 +115,15 @@ message LossParam {
 }
 
 message SplitParam {
-
 }
 
 message EqualParam {
-
 }
 
 message BiasAddParam {
-	
 }
 
 message ExpParam {
-	
 }
 
 message PoolingParam {
@@ -270,7 +264,6 @@ message MnistParam {
 }
 
 message CastFloatParam {
-	
 }
 
 message BatchNormalizationParam {
@@ -288,65 +281,7 @@ message ReplayMemoryParam {
 	int32 capacity = 1;
 }
 
-message NodeParam {
-  string name = 1;
-  repeated string input = 2;
-  repeated string output = 3;  
-  repeated string phase = 4;  
-  BlockParam block_param = 5;  
-
-  VariableParam variable_param = 100;  
-  PlaceHolderParam place_holder_param = 101;  
-  PhaseplexerParam phaseplexer_param = 102;    
-  AddParam add_param = 103;
-  BiasAddParam bias_add_param = 104;
-  Conv2dParam conv_2d_param = 105;
-  TransposedConv2dParam transposed_conv_2d_param = 106;
-  DropoutParam dropout_param = 107;
-  LeakyReluParam leaky_relu_param = 108;
-  SoftmaxParam softmax_param = 109;  
-  SquareParam square_param = 110;
-  MatMulParam matmul_param = 111;
-  PoolingParam pooling_param = 112;  
-  ReduceParam reduce_param = 113;
-  EqualParam equal_param = 114;
-  PrintParam print_param = 115;
-  CastFloatParam cast_float_param = 116;
-  AccumulatorParam accumulator_param = 117;
-  DisplayParam display_param = 118;
-  ActivationParam activation_param = 119;
-  PsnrParam psnr_param = 120;
-  RandomSelectorParam random_selector_param = 121; 
-  LoggerParam logger_param = 122;
-  RestructureParam restructure_param = 123;
-  ImageReaderParam image_reader_param = 124;
-  MultiplexerParam multiplexer_param = 125;  
-  BatchNormalizationParam batch_normalization_param = 127;
-  MnistParam mnist_param = 128;
-  DataGeneratorParam data_generator_param = 129;	
-  ImageBatchReaderParam image_batch_reader_param = 130;
-  DotParam dot_param = 131;
-  ReplayMemoryParam replay_memory_param = 132;  
-  SquareErrorParam square_error_param = 134;
-  SIOOutputParam sio_output_param = 135;
-  LogParam log_param = 136;
-  LossParam loss_param = 137;
-  ExpParam exp_param = 138;
-  LiftingParam lifting_param = 139;  
-  PatchingParam patching_param = 140;
-  AbsParam abs_param = 141;
-  ReduceAllParam reduce_all_param = 142;
-  UpsampleParam upsample_param = 143; 
-  ImageWriterParam image_writer_param = 144;
-  ResizeParam resize_param = 145;
-  SplitParam split_param = 146;
-  SwitchParam switch_param = 147;
-  LrnParam lrn_param = 148;
-  PReluParam prelu_param = 149;
-}
-
 message PReluParam {
-	
 }
 
 message LrnParam {	
@@ -362,23 +297,18 @@ message ResizeParam {
 }
 
 message UpsampleParam {
-
 }
 
 message SquareParam {
-	
 }
 
 message AbsParam {
-	
 }
 
 message SquareErrorParam {
-
 }
 
 message SoftmaxParam {
-
 }
 
 message PatchingParam {
@@ -427,7 +357,6 @@ message InitStepParam {
 }
 
 message InitThreeStateParam {
-
 }
 
 message InitParam {
@@ -495,3 +424,65 @@ message BlockParam {
 	repeated PhaseParam phase = 3;
 	repeated InitParam initializer = 4;
 }
+
+message ConcateParam {
+}
+
+message NodeParam {
+  string name = 1;
+  repeated string input = 2;
+  repeated string output = 3;  
+  repeated string phase = 4;  
+  BlockParam block_param = 5;  
+
+  VariableParam variable_param = 100;  
+  PlaceHolderParam place_holder_param = 101;  
+  PhaseplexerParam phaseplexer_param = 102;    
+  AddParam add_param = 103;
+  BiasAddParam bias_add_param = 104;
+  Conv2dParam conv_2d_param = 105;
+  TransposedConv2dParam transposed_conv_2d_param = 106;
+  DropoutParam dropout_param = 107;
+  LeakyReluParam leaky_relu_param = 108;
+  SoftmaxParam softmax_param = 109;  
+  SquareParam square_param = 110;
+  MatMulParam matmul_param = 111;
+  PoolingParam pooling_param = 112;  
+  ReduceParam reduce_param = 113;
+  EqualParam equal_param = 114;
+  PrintParam print_param = 115;
+  CastFloatParam cast_float_param = 116;
+  AccumulatorParam accumulator_param = 117;
+  DisplayParam display_param = 118;
+  ActivationParam activation_param = 119;
+  PsnrParam psnr_param = 120;
+  RandomSelectorParam random_selector_param = 121; 
+  LoggerParam logger_param = 122;
+  RestructureParam restructure_param = 123;
+  ImageReaderParam image_reader_param = 124;
+  MultiplexerParam multiplexer_param = 125;  
+  BatchNormalizationParam batch_normalization_param = 127;
+  MnistParam mnist_param = 128;
+  DataGeneratorParam data_generator_param = 129;	
+  ImageBatchReaderParam image_batch_reader_param = 130;
+  DotParam dot_param = 131;
+  ReplayMemoryParam replay_memory_param = 132;  
+  SquareErrorParam square_error_param = 134;
+  SIOOutputParam sio_output_param = 135;
+  LogParam log_param = 136;
+  LossParam loss_param = 137;
+  ExpParam exp_param = 138;
+  LiftingParam lifting_param = 139;  
+  PatchingParam patching_param = 140;
+  AbsParam abs_param = 141;
+  ReduceAllParam reduce_all_param = 142;
+  UpsampleParam upsample_param = 143; 
+  ImageWriterParam image_writer_param = 144;
+  ResizeParam resize_param = 145;
+  SplitParam split_param = 146;
+  SwitchParam switch_param = 147;
+  LrnParam lrn_param = 148;
+  PReluParam prelu_param = 149;
+  ConcateParam concate_param = 150;
+}
+

@@ -780,6 +780,19 @@ std::string DeepFlow::resize(std::string input, float height_scale, float width_
 	return node_param->output(0);
 }
 
+std::string DeepFlow::concate(std::string input1, std::string input2, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input1);
+	node_param->add_input(input2);
+	node_param->mutable_concate_param();
+	return node_param->output(0);
+}
+
 
 std::string DeepFlow::_reduce(std::string input, int reduce_dimention, deepflow::ReduceParam_ReduceOp op, deepflow::ReduceParam::OutputType type, int output, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();

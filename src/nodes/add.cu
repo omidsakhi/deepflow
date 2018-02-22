@@ -58,6 +58,16 @@ void Add::backward() {
 	}
 }
 
+void Add::setAlpha(float alpha)
+{
+	_alpha = alpha;
+}
+
+void Add::setBeta(float beta)
+{
+	_beta = beta;
+}
+
 std::string Add::to_cpp() const
 {
 	std::string op;

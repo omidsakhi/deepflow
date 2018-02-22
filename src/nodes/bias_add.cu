@@ -5,20 +5,38 @@
 __global__
 void BiasAddKernelForward(const int n, const float *in, const int inner_dim, const int bias_dim, const float *b, float *out)
 {
+	extern __shared__ float bias[];	
+	if (threadIdx.x == 0) {
+		for (int k = 0; k < bias_dim; k++)
+			bias[k] = b[k];
+	}
+	__syncthreads();
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
-		out[i] = in[i] + b[(i/inner_dim)%bias_dim];
+		int index = (i/inner_dim)%bias_dim;
+		out[i] = in[i] + bias[index];
 	}
 }
 
 __global__
 void BiasAddKernelBackward(const int n, const float *diff, const int inner_dim, const int num_samples, const int bias_dim, float *bias_diff)
 {
+	extern __shared__ float sum[];	
+	if (threadIdx.x == 0) {
+		for (int k = 0; k < bias_dim; k++)
+			sum[k] = 0;
+	}
+	__syncthreads();
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n)
 	{
-		int index = (i/inner_dim)%bias_dim;
-		atomicAdd(&bias_diff[index], diff[i] / num_samples);
+		int index = (i / inner_dim) % bias_dim;
+		sum[index] += diff[i] / inner_dim;
+	}
+	__syncthreads();
+	if (threadIdx.x == 0) {
+		for (int k = 0; k < bias_dim; k++)
+			atomicAdd(&bias_diff[k], sum[k]);
 	}
 }
 
@@ -42,7 +60,7 @@ void BiasAdd::init() {
 void BiasAdd::forward() {
 	// C(m,n) = A(m,n) + B(m,n)	
 	auto size = _outputs[0]->value()->size();
-	BiasAddKernelForward <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*) _inputs[0]->value()->data(), _inner_dim, _bias_dim, (float*) _inputs[1]->value()->data(), (float*) _outputs[0]->value()->mutableData());
+	BiasAddKernelForward <<< numOfBlocks(size), maxThreadsPerBlock, _bias_dim * sizeof(float) >>> (size, (float*) _inputs[0]->value()->data(), _inner_dim, _bias_dim, (float*) _inputs[1]->value()->data(), (float*) _outputs[0]->value()->mutableData());
 	DF_KERNEL_CHECK();
 }
 
@@ -53,7 +71,7 @@ void BiasAdd::backward() {
 	if (_inputs[1]->connectedNode()) {
 		auto size = _outputs[0]->diff()->size();
 		DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
-		BiasAddKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), _inner_dim, _sample_dim, _bias_dim, (float*)_inputs[1]->diff()->mutableData());
+		BiasAddKernelBackward << < numOfBlocks(size), maxThreadsPerBlock, _bias_dim * sizeof(float) >> > (size, (float*)_outputs[0]->diff()->data(), _inner_dim, _sample_dim, _bias_dim, (float*)_inputs[1]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}
 }

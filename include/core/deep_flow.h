@@ -98,6 +98,7 @@ public:
 	std::string upsample(std::string input, std::string name = "upsample", std::initializer_list<std::string> phases = {});
 	std::string patching(std::string input, PatchingMode mode, int num_vertical_patches, int num_horizontal_patches, std::string name = "patching", std::initializer_list<std::string> phases = {});
 	std::string resize(std::string input, float height_scale, float width_scale, std::string name = "resize", std::initializer_list<std::string> phases = {});
+	std::string concate(std::string input1, std::string input2, std::string name = "resize", std::initializer_list<std::string> phases = {});
 
 	// MATH
 	std::string add(std::string a, std::string b, float alpha, float beta, std::string name = "add", std::initializer_list<std::string> phases = {});
