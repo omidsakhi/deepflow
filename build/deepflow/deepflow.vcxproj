@@ -110,9 +110,9 @@
       <FileType>CppCode</FileType>
     </CudaCompile>
     <ClCompile Include="..\..\src\generators\mnist_reader.cpp" />
-    <CudaCompile Include="..\..\src\initializers\random_normal.cu">
+    <ClCompile Include="..\..\src\initializers\random_normal.cpp">
       <FileType>CppCode</FileType>
-    </CudaCompile>
+    </ClCompile>
     <CudaCompile Include="..\..\src\nodes\abs.cu" />
     <CudaCompile Include="..\..\src\nodes\accumulator.cu" />
     <CudaCompile Include="..\..\src\nodes\add.cu" />

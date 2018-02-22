@@ -97,9 +97,6 @@
     <CudaCompile Include="..\..\src\nodes\prelu.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\initializers\random_normal.cu">
-      <Filter>source\initializers</Filter>
-    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -218,6 +215,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\nodes\concate.cpp">
       <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\initializers\random_normal.cpp">
+      <Filter>source\initializers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
