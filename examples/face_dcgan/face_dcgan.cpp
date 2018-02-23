@@ -153,6 +153,8 @@ std::shared_ptr<Session> create_generator() {
 
 	node = deconv(&df, node, solver, gf * 2, gf * 2, 5, 2, true, true, true, "g6"); // 64x64	
 
+	//node = deconv(&df, node, solver, gf * 2, gf * 2, 5, 2, true, true, true, "g6"); // 128x128
+
 	node = deconv(&df, node, solver, gf * 2, FLAGS_channels, 5, 2, true, false, false, "g7"); // 128x128	
 
 	return df.session();
@@ -242,8 +244,7 @@ void main(int argc, char** argv) {
 	auto static_z = static_z_session->get_node("static_z");
 
 	int iter = 1;
-
-	loss_coef->fill(1.0f);
+	
 	face_labels->forward();
 	generator_labels->forward();	
 	static_z->forward();
@@ -253,31 +254,33 @@ void main(int argc, char** argv) {
 		execution_context->current_iteration = iter;
 		std::cout << "Iteration: [" << iter << "/" << FLAGS_iter << "]";
 
-			face_reader_data->forward();
-			discriminator_input->write_values(face_reader_data->output(0)->value());
-			discriminator->forward();
-			l2_loss_discriminator_input->write_values(discriminator_output->output(0)->value());
-			l2_loss_labels_input->write_values(face_labels_node->output(0)->value());
-			l2_loss->forward();
-			float d_loss = l2_loss_output->output(0)->value()->toFloat();
-			l2_loss->backward();
-			discriminator_output->write_diffs(l2_loss_discriminator_input->output(0)->diff());
-			discriminator->backward();
+		loss_coef->fill(1.0f);
 
-			z->forward();
-			generator_input->write_values(z->output(0)->value());
-			generator->forward();
-			discriminator_input->write_values(generator_output->output(0)->value());
-			discriminator->forward();
-			l2_loss_discriminator_input->write_values(discriminator_output->output(0)->value());
-			l2_loss_labels_input->write_values(generator_labels_output->output(0)->value());
-			l2_loss->forward();
-			d_loss += l2_loss_output->output(0)->value()->toFloat();
-			l2_loss->backward();
-			discriminator_output->write_diffs(l2_loss_discriminator_input->output(0)->diff());
-			discriminator->backward();
+		face_reader_data->forward();
+		discriminator_input->write_values(face_reader_data->output(0)->value());
+		discriminator->forward();
+		l2_loss_discriminator_input->write_values(discriminator_output->output(0)->value());
+		l2_loss_labels_input->write_values(face_labels_node->output(0)->value());
+		l2_loss->forward();
+		float d_loss = l2_loss_output->output(0)->value()->toFloat();
+		l2_loss->backward();
+		discriminator_output->write_diffs(l2_loss_discriminator_input->output(0)->diff());
+		discriminator->backward();
 
-			std::cout << " - d_loss: " << d_loss;
+		z->forward();
+		generator_input->write_values(z->output(0)->value());
+		generator->forward();
+		discriminator_input->write_values(generator_output->output(0)->value());
+		discriminator->forward();
+		l2_loss_discriminator_input->write_values(discriminator_output->output(0)->value());
+		l2_loss_labels_input->write_values(generator_labels_output->output(0)->value());
+		l2_loss->forward();
+		d_loss += l2_loss_output->output(0)->value()->toFloat();
+		l2_loss->backward();
+		discriminator_output->write_diffs(l2_loss_discriminator_input->output(0)->diff());
+		discriminator->backward();
+
+		std::cout << " - d_loss: " << d_loss;
 
 		discriminator->apply_solvers();
 
@@ -286,13 +289,28 @@ void main(int argc, char** argv) {
 		l2_loss_discriminator_input->write_values(discriminator_output->output(0)->value());
 		l2_loss_labels_input->write_values(face_labels_node->output(0)->value());
 		l2_loss->forward();
-		auto g_loss = l2_loss_output->output(0)->value()->toFloat();
+		auto g_loss = l2_loss_output->output(0)->value()->toFloat();		
+		l2_loss->backward();
+		discriminator_output->write_diffs(l2_loss_discriminator_input->output(0)->diff());
+		discriminator->backward();
+		generator_output->write_diffs(discriminator_input->output(0)->diff());
+		generator->backward();
+		
+		loss_coef->fill(-1.0f);
+
+		discriminator_input->write_values(generator_output->output(0)->value());
+		discriminator->forward();
+		l2_loss_discriminator_input->write_values(discriminator_output->output(0)->value());
+		l2_loss_labels_input->write_values(generator_labels_output->output(0)->value());
+		l2_loss->forward();
+		g_loss += l2_loss_output->output(0)->value()->toFloat();
 		std::cout << " - g_loss: " << g_loss << std::endl;
 		l2_loss->backward();
 		discriminator_output->write_diffs(l2_loss_discriminator_input->output(0)->diff());
 		discriminator->backward();
 		generator_output->write_diffs(discriminator_input->output(0)->diff());
 		generator->backward();
+
 		generator->apply_solvers();
 		discriminator->reset_gradients();		
 

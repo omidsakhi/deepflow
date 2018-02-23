@@ -17,13 +17,13 @@ void DotKernel(const int n, const float alpha, const float *a, const float *b, c
 		dst[i] = beta * dst[i] + alpha * a[i] * b[i];
 }
 
-void Node::cpy(int n, const float alpha, const void * src, const float beta, void * dst)
+void Node::cpy(int n, const float alpha, const void * src, const float beta, void * dst, cudaStream_t stream)
 {
 	if (alpha == 1 && beta == 0) {
 		DF_NODE_CUDA_CHECK(cudaMemcpy(dst, src, n * sizeof(float), cudaMemcpyDeviceToDevice));
 	}
 	else {
-		CpyAddKernel << < numOfBlocks(n), maxThreadsPerBlock >> > (n, alpha, (float*)src, beta, (float*)dst);
+		CpyAddKernel << < numOfBlocks(n), maxThreadsPerBlock, 0, stream >> > (n, alpha, (float*)src, beta, (float*)dst);
 		DF_KERNEL_CHECK();
 	}
 }
@@ -41,15 +41,15 @@ void NodeFillKernel(const int n, const float value, const float beta, float *dst
 	if (i < n)
 		dst[i] = beta * dst[i] + value;
 }
-void Node::fill(int n, const float value, void * dst, const float beta)
+void Node::fill(int n, const float value, void * dst, const float beta, cudaStream_t stream)
 {
-	NodeFillKernel << < numOfBlocks(n), maxThreadsPerBlock >> > (n, value, beta, (float*) dst);
+	NodeFillKernel << < numOfBlocks(n), maxThreadsPerBlock, 0, stream >> > (n, value, beta, (float*) dst);
 	DF_KERNEL_CHECK();
 }
 
-void Node::fill(const float value)
+void Node::fill(const float value, cudaStream_t stream)
 {
-	fill(_outputs[0]->value()->size(), value, _outputs[0]->value()->mutableData(), 0.0f);	
+	fill(_outputs[0]->value()->size(), value, _outputs[0]->value()->mutableData(), 0.0f, stream);	
 }
 
 

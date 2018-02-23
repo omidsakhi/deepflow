@@ -5,6 +5,7 @@
 #include <gflags/gflags.h>
 
 DEFINE_string(mnist, "C:/Projects/deepflow/data/mnist", "Path to MNIST data folder");
+DEFINE_string(celeba128, "C:/Projects/deepflow/data/celeba128", "Path to face dataset folder");
 DEFINE_string(image1, "C:/Projects/deepflow/data/image/lena-256x256.jpg", "Input test image");
 DEFINE_string(image2, "C:/Projects/deepflow/data/style_transfer/sanfrancisco.jpg", "Another input test image");
 DEFINE_string(image_folder, "C:/Projects/deepflow/data/face", "Path to image folder");
@@ -106,7 +107,8 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x5) {
 			auto train = df.define_train_phase("Train");
-			auto imbar = df.image_batch_reader(FLAGS_image_folder, { 6, 1, 27, 18 }, true);
+			//auto imbar = df.image_batch_reader(FLAGS_image_folder, { 30, 1, 27, 18 }, true);
+			auto imbar = df.image_batch_reader(FLAGS_celeba128, { 50, 3, 128, 128 }, true);
 			df.display(imbar, 500, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approx1", { train });
 		}
 		else if (FLAGS_x6) {
