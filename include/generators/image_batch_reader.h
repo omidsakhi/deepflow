@@ -31,4 +31,6 @@ private:
 	int _batch_size = 0;
 	bool _last_batch = false;	
 	bool _randomize = false;
+	unsigned char *d_img;
+	cv::Mat img;
 };
