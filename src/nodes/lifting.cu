@@ -164,15 +164,13 @@ void Lifting::init()
 	if (_mode == deepflow::LiftingParam_Mode_UP_FLIP || _mode == deepflow::LiftingParam_Mode_UP_REGULAR) {
 		auto dims = _inputs[0]->value()->dims();
 		LOG_IF(FATAL, dims[1] % 4 != 0) << "Input channels must be a multiple of 4.";		
-		_outputs[0]->initValue({ dims[0] , dims[1] / 4, dims[2] * 2, dims[3] * 2 });
-		LOG(INFO) << "Lifting Up " << _name << " - " << _outputs[0]->value()->shape();
+		_outputs[0]->initValue({ dims[0] , dims[1] / 4, dims[2] * 2, dims[3] * 2 });		
 	}
 	else if (_mode == deepflow::LiftingParam_Mode_DOWN_REGULAR || _mode == deepflow::LiftingParam_Mode_DOWN_FLIP) {
 		auto dims = _inputs[0]->value()->dims();
 		LOG_IF(FATAL, dims[2] % 2 != 0) << "Input height must be a multiple of 2.";
 		LOG_IF(FATAL, dims[3] % 2 != 0) << "Input width must be a multiple of 2.";
-		_outputs[0]->initValue({ dims[0] , dims[1] * 4, dims[2] / 2, dims[3] / 2 });
-		LOG(INFO) << "Lifting Down " << _name << " - " << _outputs[0]->value()->shape();
+		_outputs[0]->initValue({ dims[0] , dims[1] * 4, dims[2] / 2, dims[3] / 2 });		
 	}
 	else {
 		LOG(FATAL);

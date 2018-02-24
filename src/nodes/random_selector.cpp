@@ -10,8 +10,7 @@ void RandomSelector::init()
 	_outputs[0]->initValue(_inputs[0]->dims());
 	auto param = _param->random_selector_param();
 	_probability = param.probability();
-	_outputs[0]->initDiff();
-	LOG(INFO) << "RandomSelector " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 }
 
 void RandomSelector::forward()

@@ -22,8 +22,7 @@ void Multiplexer::init()
 	}
 	_outputs[0]->initValue(firstInputDim);
 	_output_size_in_bytes = _outputs[0]->value()->sizeInBytes();
-	_outputs[0]->initDiff();
-	LOG(INFO) << "Multiplexer " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 }
 
 void Multiplexer::forward()

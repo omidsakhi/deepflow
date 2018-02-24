@@ -63,6 +63,7 @@
 #include "nodes/lrn.h"
 #include "nodes/prelu.h"
 #include "nodes/concate.h"
+#include "nodes/reshape.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -211,6 +212,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Split>(node_param);
 	else if (node_param->has_switch_param())
 		return std::make_shared<Switch>(node_param);
+	else if (node_param->has_reshape_param())
+		return std::make_shared<Reshape>(node_param);
 	else if (node_param->has_lrn_param())
 		return std::make_shared<LRN>(node_param);
 	else {
@@ -286,30 +289,29 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 			}
 		}
 		if (!var_solver_name.empty() && solver == nullptr) {
-			LOG(FATAL) << "Solver " << var_solver_name << " couldn't be found for variable " << var->name();
+			LOG(FATAL) << "solver " << var_solver_name << " couldn't be found for variable " << var->name();
 		}
 		else if (solver) {
 			_solvers.insert(std::pair<std::shared_ptr<Variable>, std::shared_ptr<Solver>>(var, solver));
-			LOG(INFO) << "Variable " << var->name() << " <-> Solver " << solver->name();
+			LOG(INFO) << "variable " << var->name() << " <-> Solver " << solver->name();
 			auto enable_input = solver->param()->enable_input();
 			if (!enable_input.empty()) {
 				auto terminal = _find_node_output_by_name(enable_input);
 				LOG_IF(FATAL, terminal == 0) << "Failed to find " << enable_input << " as the input for solver " << solver->param()->name() << " in variable " << var_solver_name;
 				solver->create_enable_input();
 				solver->enable_input()->connect(terminal);
-				LOG(INFO) << "Solver " << solver->name() << " Enable <-> Node " << terminal->parentNode()->name();
+				LOG(INFO) << "solver " << solver->name() << " Enable <-> Node " << terminal->parentNode()->name();
 			}
 		}
 		else {
-			LOG(INFO) << "Variable " << var->name() << " <-> Constant";
+			LOG(INFO) << "variable " << var->name() << " <-> Constant";
 		}
 	}
 
 	_insert_splits();
 
-	size_t free_byte;
-	size_t total_byte;
-	float used_byte_percentage;
+	size_t free_byte_before, free_byte_after;
+	size_t total_byte;	
 	std::srand(std::time(0));
 	std::list<std::shared_ptr<Node>> queue = _nodes;
 	while (!queue.empty()) {
@@ -328,12 +330,14 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 			}
 		}
 		if (resolved) {
-			node->init();			
+			mem_usage(&free_byte_before, &total_byte, 0);
+			node->init();						
+			mem_usage(&free_byte_after, &total_byte, 0);
+			std::string shape;
+			for (auto output : node->outputs())
+				shape += output->value()->shape() + " , ";			
+			LOG(INFO) << node->op_name() << " " << node->name() << " | " << (10e-6f * (free_byte_before - free_byte_after)) << "MB | " << shape;
 			node->setInitialized(true);
-			mem_usage(&free_byte, &total_byte, &used_byte_percentage);
-			if (used_byte_percentage > 50) {
-				LOG(WARNING) << "**WARN** - LOW MEMORY - USED: " << used_byte_percentage << "%";
-			}
 		}
 		else {
 			queue.push_back(node);
@@ -991,10 +995,10 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 void Session::mem_usage(size_t * free_byte, size_t * total_byte, float *used_byte_percentage)
 {
 	cudaError_t cuda_status = cudaMemGetInfo(free_byte, total_byte);
-	if (cudaSuccess != cuda_status) {
+	if (cudaSuccess != cuda_status)
 		LOG(FATAL) << "cudaMemGetInfo fails, " << cudaGetErrorString(cuda_status);
-	}
-	*used_byte_percentage = ((float)*total_byte - (float)*free_byte) / (*total_byte) * 100;
+	if (used_byte_percentage)
+		*used_byte_percentage = ((float)*total_byte - (float)*free_byte) / (*total_byte) * 100;
 }
 
 void generate_cpp_code(Node *node, std::string *code) {	

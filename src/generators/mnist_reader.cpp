@@ -43,9 +43,7 @@ void MNISTReader::init() {
 	}
 	else {
 		LOG(FATAL);
-	}
-
-	LOG(INFO) << "MNIST " << _name << " reading from " << _file_path;
+	}	
 
 	if (_output_type == MNISTOutputType::Data) {
 		_tx.open(_file_path, std::ios::binary);

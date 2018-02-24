@@ -69,7 +69,7 @@ public:
 	// GENERATORS
 	std::string mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name = "mnist", std::initializer_list<std::string> phases = {});
 	std::string data_generator(std::string initializer, int num_samples = 1, std::string solver = "", std::string name = "igen", std::initializer_list<std::string> phases = {});
-	std::string image_reader(std::string file_path, deepflow::ImageReaderParam_Type type, std::string name = "imread", std::initializer_list<std::string> phases = {});
+	std::string imread(std::string file_path, deepflow::ImageReaderParam_Type type, std::string name = "imread", std::initializer_list<std::string> phases = {});
 	std::string image_batch_reader(std::string folder_path, std::initializer_list<int> dims, bool randomize = false, std::string name = "imbar", std::initializer_list<std::string> phases = {});
 
 	// INITIALIZERS
@@ -99,6 +99,7 @@ public:
 	std::string patching(std::string input, PatchingMode mode, int num_vertical_patches, int num_horizontal_patches, std::string name = "patching", std::initializer_list<std::string> phases = {});
 	std::string resize(std::string input, float height_scale, float width_scale, std::string name = "resize", std::initializer_list<std::string> phases = {});
 	std::string concate(std::string input1, std::string input2, std::string name = "resize", std::initializer_list<std::string> phases = {});
+	std::string reshape(std::string input, std::array<int, 4> output_dims, std::string name = "reshape", std::initializer_list<std::string> phases = {});
 
 	// MATH
 	std::string add(std::string a, std::string b, float alpha, float beta, std::string name = "add", std::initializer_list<std::string> phases = {});

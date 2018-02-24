@@ -29,10 +29,10 @@ Variable::Variable(std::shared_ptr<Initializer> initializer, deepflow::NodeParam
 	_initializer = initializer;			
 }
 
-void Variable::init() {	
+void Variable::init() {
+
 	_initializer->init();
-	_outputs[0]->initValue(_initializer->dims());
-	LOG(INFO) << "Variable " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initValue(_initializer->dims());	
 	if (_param->variable_param().has_weights()) {		
 		auto weights = _param->variable_param().weights();
 		LOG_IF(FATAL, weights.data_size() != _outputs[0]->value()->size()) << "weights.weight_size() != _outputs[0]->value()->size() in " << _name << " - " << weights.data_size() << " != " << _outputs[0]->value()->size();

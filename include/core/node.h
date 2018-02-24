@@ -45,7 +45,8 @@ public:
 	virtual std::string to_cpp() const = 0;
 	virtual void prep_for_saving() {}
 	virtual void reset_gradients();
-	std::string name() const;	
+	std::string name() const;
+	virtual std::string op_name() const = 0;
 	std::string _to_cpp_phases() const;
 	std::string _input_name_for_cpp(int i) const;	
 	void write_values(std::shared_ptr<Tensor> tensor, float alpha = 1.0, float beta = 0.0f);

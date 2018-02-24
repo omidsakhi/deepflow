@@ -18,8 +18,7 @@ Psnr::Psnr(deepflow::NodeParam *param) : Node(param) {
 }
 
 void Psnr::init() {	
-	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input " << _inputs[0]->value()->shape() << " != " << " Target " << _inputs[1]->value()->shape();
-	LOG(INFO) << "PSNR " << _name;
+	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input " << _inputs[0]->value()->shape() << " != " << " Target " << _inputs[1]->value()->shape();	
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 	DF_NODE_CUDA_CHECK(cudaMalloc(&d_square_error, _inputs[0]->value()->sizeInBytes()));
 	DF_NODE_CUDA_CHECK(cudaMalloc(&d_sum_square_error, sizeof(float)));

@@ -7,6 +7,7 @@ public:
 	Switch(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs();
+	std::string op_name() const override { return "switcher"; }
 	std::list<std::shared_ptr<Node>> outputNodes() const;
 	std::list<std::shared_ptr<Node>> inputNodes() const;
 	void init();

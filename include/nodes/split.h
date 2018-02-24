@@ -8,6 +8,7 @@ public:
 	Split(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 2; }
+	std::string op_name() const override { return "split"; }
 	void init();	
 	void forward();
 	void backward();

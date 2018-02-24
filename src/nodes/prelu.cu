@@ -78,8 +78,7 @@ void PRelu::init()
 	auto idims = _inputs[0]->dims();
 	LOG_IF(FATAL, wdims[0] != 1 || wdims[1] != idims[1] || wdims[2] != 1 || wdims[3] != 1) << "PRELU " << _name << " weights must be " << "1x" << idims[1] << "x1x1";
 	_outputs[0]->initValue(idims);
-	_outputs[0]->initDiff();
-	LOG(INFO) << "PRelu " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 }
 
 void PRelu::forward()

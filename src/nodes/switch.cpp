@@ -32,8 +32,7 @@ std::list<std::shared_ptr<Node>> Switch::inputNodes() const
 void Switch::init()
 {
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	_outputs[0]->initDiff();
-	LOG(INFO) << "Switch " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 }
 
 void Switch::forward()

@@ -8,6 +8,7 @@ public:
 	Psnr(deepflow::NodeParam *param);
 	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 0; }
+	std::string op_name() const override { return "psnr"; }
 	void init();	
 	void forward();
 	void backward();

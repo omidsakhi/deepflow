@@ -26,11 +26,12 @@ public:
 
 	Tensor();
 	Tensor(deepflow::TensorParam *param);	
-	Tensor(std::array<int, 4> dims, TensorType type);	
+	Tensor(std::array<int, 4> dims, TensorType type);
+	Tensor(std::array<int, 4> dims, std::shared_ptr<Tensor> shadow_tensor);
 	cudnnDataType_t cudnnType() const;
 	TensorType type() const;
 	std::string typeString() const;
-	void init();
+	void init();	
 	std::string shape() const;
 	int size() const;
 	size_t sizeInBytes() const;

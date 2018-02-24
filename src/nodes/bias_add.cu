@@ -53,8 +53,7 @@ void BiasAdd::init() {
 	_bias_dim = weightDim[1];
 	_sample_dim = inputDim[0];
 	_outputs[0]->initValue(inputDim);
-	_outputs[0]->initDiff();
-	LOG(INFO) << "Bias " << _name << " - " << _outputs[0]->value()->shape();	
+	_outputs[0]->initDiff();	
 }
 
 void BiasAdd::forward() {

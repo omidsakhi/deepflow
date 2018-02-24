@@ -12,8 +12,7 @@ void Split::init()
 	_outputs[1]->initValue(input_dims);
 	_outputs[0]->initDiff();
 	_outputs[1]->initDiff();
-	m_size_in_bytes = _inputs[0]->value()->sizeInBytes();
-	LOG(INFO) << "Split " << _name << " - 2 x " << _outputs[0]->value()->shape();
+	m_size_in_bytes = _inputs[0]->value()->sizeInBytes();	
 }
 
 void Split::forward()

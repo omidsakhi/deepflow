@@ -219,6 +219,9 @@
     <ClCompile Include="..\..\src\initializers\random_normal.cpp">
       <Filter>source\initializers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\nodes\reshape.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -441,6 +444,9 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\concate.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\reshape.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

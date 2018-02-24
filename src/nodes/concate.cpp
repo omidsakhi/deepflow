@@ -14,8 +14,7 @@ void Concate::init()
 	_second_input_batches = d2[0];	
 	_chw = d1[1] * d1[2] * d1[3];
 	_outputs[0]->initValue({ _first_input_batches + _second_input_batches, d1[1], d1[2], d1[3] });
-	_outputs[0]->initDiff();
-	LOG(INFO) << "Concate " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 }
 
 void Concate::forward()

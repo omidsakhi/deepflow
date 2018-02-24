@@ -7,6 +7,7 @@ public:
 	Loss(deepflow::NodeParam *param);
 	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 1; }
+	std::string op_name() const override { return "loss"; }
 	void init();	
 	void forward();
 	void backward();

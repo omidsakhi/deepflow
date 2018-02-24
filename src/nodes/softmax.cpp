@@ -9,8 +9,7 @@ Softmax::Softmax(deepflow::NodeParam *param) : Node(param) {
 void Softmax::init() {		
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	_outputs[0]->initDiff();
-	LOG(INFO) << "Softmax " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 }
 
 void Softmax::forward() {	

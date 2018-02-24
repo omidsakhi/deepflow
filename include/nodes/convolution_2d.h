@@ -7,6 +7,7 @@ public:
 	Convolution2D(deepflow::NodeParam *param);
 	int minNumInputs();
 	int minNumOutputs() { return 1; }	
+	std::string op_name() const override { return "conv2d"; }
 	void init();	
 	void forward();
 	void backward();

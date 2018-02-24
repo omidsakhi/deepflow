@@ -9,6 +9,7 @@ public:
 	DataGenerator(std::shared_ptr<Initializer> initializer, deepflow::NodeParam *param);
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }
+	std::string op_name() const override { return "data_generator"; }
 	bool isGenerator();
 	void forward();
 	bool isLastBatch();

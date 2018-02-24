@@ -22,6 +22,19 @@ Add::Add(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_add_param() == false) << "param.has_add_param() == false";	
 }
 
+std::string Add::op_name() const
+{
+	std::string op;
+	if (_alpha == 1 && _beta == 1)
+		op = "add";
+	else if (_alpha == 1 && _beta == -1)
+		op = "subtract";
+	else {
+		op = "add";		
+	}
+	return op;
+}
+
 void Add::init() {
 	
 	auto a = _inputs[0];
@@ -35,8 +48,7 @@ void Add::init() {
 
 	LOG_IF(FATAL, a->value()->size() != b->value()->size()) << _name << " - Different input sizes: " << a->value()->shape() << " vs " << b->value()->shape() ;		
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	_outputs[0]->initDiff();
-	LOG(INFO) << "Add " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 }
 
 void Add::forward() {	

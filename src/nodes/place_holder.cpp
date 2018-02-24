@@ -27,8 +27,7 @@ void PlaceHolder::init() {
 	}
 	Tensor::TensorType type = (Tensor::TensorType) tensorParam.type();
 	_outputs[0]->initValue(dims,type);
-	_outputs[0]->initDiff();
-	LOG(INFO) << "Placeholder " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 
 }
 

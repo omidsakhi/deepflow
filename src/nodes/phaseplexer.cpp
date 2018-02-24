@@ -12,8 +12,6 @@ void Phaseplexer::init()
 	LOG_IF(FATAL, _map.size() < 2);
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size());
 	_outputs[0]->initValue(_inputs[0]->dims());
-	LOG(INFO) << "Phaseplexer " << _name << " - " << _outputs[0]->value()->shape();
-
 	_outputs[0]->initDiff();
 }
 

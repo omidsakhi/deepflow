@@ -53,10 +53,11 @@ class DeepFlowDllExport NodeOutput : public Terminal {
 public:
 	NodeOutput(std::shared_ptr<Node> parentNode, int index, const std::string &name);		
 	void initValue(std::array<int, 4> dims, Tensor::TensorType type = Tensor::Float);
-	void initValue(std::shared_ptr<Tensor> tensor);
+	void initValue(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor);
 	std::array<int, 4> dims();
 	void feed(std::shared_ptr<NodeOutput> t);
-	void initDiff(std::shared_ptr<Tensor> tensor = nullptr);
+	void initDiff();
+	void initDiff(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor);
 	void resetDiff();
 	void resetValue();
 	void cpyValueToDiff();

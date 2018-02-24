@@ -7,6 +7,7 @@ public:
 	Dropout(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }	
+	std::string op_name() const override { return "dropout"; }
 	void init();	
 	void forward();
 	void backward();

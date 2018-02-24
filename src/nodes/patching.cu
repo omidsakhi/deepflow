@@ -95,12 +95,12 @@ void Patching::init()
 	if (_mode == deepflow::PatchingParam_Mode_UPSAMPLES) {		
 		LOG_IF(FATAL, dims[0] % (_num_horizontal_patches * _num_vertical_patches) != 0) << "Input samples must be a multiple of number of patches" << (_num_horizontal_patches * _num_vertical_patches);
 		_outputs[0]->initValue({ dims[0] / (_num_horizontal_patches * _num_vertical_patches), dims[1], input_height * _num_vertical_patches, input_width * _num_horizontal_patches});
-		LOG(INFO) << "Patching Up " << _name << " - " << _outputs[0]->value()->shape();
+		//LOG(INFO) << "Patching Up " << _name << " - " << _outputs[0]->value()->shape();
 	}
 	else if (_mode == deepflow::PatchingParam_Mode_UPCHANNELS) {
 		LOG_IF(FATAL, dims[1] % (_num_horizontal_patches * _num_vertical_patches) != 0) << "Input channels must be a multiple of number of patches" << (_num_horizontal_patches * _num_vertical_patches);
 		_outputs[0]->initValue({ dims[0], dims[1] / (_num_horizontal_patches * _num_vertical_patches), input_height * _num_vertical_patches, input_width * _num_horizontal_patches });
-		LOG(INFO) << "Patching Up " << _name << " - " << _outputs[0]->value()->shape();
+		//LOG(INFO) << "Patching Up " << _name << " - " << _outputs[0]->value()->shape();
 	}
 	else if (_mode == deepflow::PatchingParam_Mode_DOWNSAMPLES) {
 		LOG_IF(FATAL, dims[2] % _num_vertical_patches != 0) << _name << " Input height must be a multiple of number of vertical patchs " << _num_vertical_patches;
@@ -108,7 +108,7 @@ void Patching::init()
 		int patch_h = input_height / _num_vertical_patches;
 		int patch_w = input_width / _num_horizontal_patches;
 		_outputs[0]->initValue({ dims[0] * _num_horizontal_patches * _num_vertical_patches, dims[1], patch_h, patch_w });
-		LOG(INFO) << "Patching Down " << _name << " - " << _outputs[0]->value()->shape();
+		//LOG(INFO) << "Patching Down " << _name << " - " << _outputs[0]->value()->shape();
 	}
 	else if (_mode == deepflow::PatchingParam_Mode_DOWNCHANNELS) {
 		LOG_IF(FATAL, dims[2] % _num_vertical_patches != 0) << _name << " Input height must be a multiple of number of vertical patchs " << _num_vertical_patches;
@@ -116,7 +116,7 @@ void Patching::init()
 		int patch_h = input_height / _num_vertical_patches;
 		int patch_w = input_width / _num_horizontal_patches;
 		_outputs[0]->initValue({ dims[0], dims[1] * _num_horizontal_patches * _num_vertical_patches, patch_h, patch_w });
-		LOG(INFO) << "Patching Down " << _name << " - " << _outputs[0]->value()->shape();
+		//LOG(INFO) << "Patching Down " << _name << " - " << _outputs[0]->value()->shape();
 	}
 	else
 		LOG(FATAL);

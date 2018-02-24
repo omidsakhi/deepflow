@@ -2,17 +2,16 @@
 
 #include "core/node.h"
 
-class DeepFlowDllExport LRN : public Node {
+class DeepFlowDllExport Reshape : public Node {
 public:
-	LRN(deepflow::NodeParam *param);
+	Reshape(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 1; }
-	std::string op_name() const override { return "lrn"; }
+	std::string op_name() const override { return "reshape"; }
 	void init();
 	void forward();
 	void backward();
 	std::string to_cpp() const;
 private:
-	cudnnLRNDescriptor_t _normDesc;
-	cudnnHandle_t _cudnnHandle;
+	std::array<int, 4> _output_dims;
 };

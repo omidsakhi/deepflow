@@ -26,34 +26,25 @@ Tensor::Tensor(deepflow::TensorParam *param) {
 	init();
 }
 
-/*
-Tensor::Tensor(std::initializer_list<int> dims, TensorType type) {
-	std::vector<int> values(dims);
-	switch (values.size()) {
-	case 1:
-		_dims = { 1, values[0], 1, 1 };
-		break;
-	case 2:
-		_dims = { values[0], values[1], 1, 1 };
-		break;
-	case 3:
-		_dims = { values[0], 1, values[1], values[2] };
-		break;
-	case 4:
-		_dims = { values[0], values[1], values[2], values[3] };
-		break;
-	default:
-		LOG(FATAL) << "Unsupported shape.";
-	}
-	_type = type;
-	init();
-}
-*/
-
 Tensor::Tensor(std::array<int, 4> dims, TensorType type) {
 	_dims = dims;
 	_reader_type = type;
 	init();
+}
+
+Tensor::Tensor(std::array<int, 4> dims, std::shared_ptr<Tensor> shadow_tensor)
+{
+	_dims = dims;
+	_reader_type = shadow_tensor->type();
+	_size = _dims[0] * _dims[1] * _dims[2] * _dims[3];
+	_shapeString = std::to_string(_dims[0]);
+	for (int i = 1; i < 4; ++i)
+		_shapeString += "x" + std::to_string(_dims[i]);
+	LOG_IF(FATAL, _size != shadow_tensor->size()) << "The tensor that you are shadowing must have the same size.";
+	DF_CUDNN_CHECK(cudnnCreateTensorDescriptor(&_desc));
+	DF_CUDNN_CHECK(cudnnSetTensor4dDescriptor(_desc, CUDNN_TENSOR_NCHW, (cudnnDataType_t)_reader_type, _dims[0], _dims[1], _dims[2], _dims[3]));
+	DF_CUDNN_CHECK(cudnnGetTensorSizeInBytes(_desc, &_sizeInBytes));
+	d_data = shadow_tensor->mutableData();
 }
 
 void Tensor::init() {

@@ -9,6 +9,7 @@ public:
 	SIOOutput(deepflow::NodeParam *param);
 	int minNumInputs();
 	int minNumOutputs() { return 0; }
+	std::string op_name() const override { return "sio_output"; }
 	void init();	
 	void forward();
 	void backward();

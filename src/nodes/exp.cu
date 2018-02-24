@@ -23,8 +23,7 @@ Exp::Exp(deepflow::NodeParam *param) : Node(param) {
 
 void Exp::init() {
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	_outputs[0]->initDiff();
-	LOG(INFO) << "Exp " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 }
 
 void Exp::forward() {

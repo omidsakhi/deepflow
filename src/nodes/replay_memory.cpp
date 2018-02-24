@@ -14,8 +14,7 @@ void ReplayMemory::init()
 	_size_per_sample = inputDims[1] * inputDims[2] * inputDims[3];
 	_mem_size = _capacity * _size_per_sample;
 	DF_NODE_CUDA_CHECK(cudaMalloc(&dev_memory, _mem_size * sizeof(float)));
-	_outputs[0]->initValue(inputDims);
-	LOG(INFO) << "ReplayMemory " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initValue(inputDims);	
 }
 
 void ReplayMemory::forward()

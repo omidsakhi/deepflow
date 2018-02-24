@@ -7,6 +7,7 @@ class DeepFlowDllExport Block : public Node {
 public: // Node	
 	int minNumInputs();
 	int minNumOutputs();	
+	std::string op_name() const override { return "block"; }
 	void init();	
 	void forward();
 	void backward();

@@ -36,7 +36,6 @@ void Convolution2D::init() {
 	_outputs[0]->initValue({ n, c, h, w });
 	_yDesc = _outputs[0]->value()->descriptor();
 	_y = _outputs[0]->value()->mutableData();	
-	LOG(INFO) << "Convolution " << _name << " - " << _inputs[0]->value()->shape() << " * " << _inputs[1]->value()->shape() << " -> " << _outputs[0]->value()->shape();	
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionForwardAlgorithm(_cudnnHandle, _xDesc, _wDesc, _convDesc, _yDesc, CUDNN_CONVOLUTION_FWD_PREFER_FASTEST, 0, &_fwdAlgo));
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionForwardWorkspaceSize(_cudnnHandle, _xDesc, _wDesc, _convDesc, _yDesc, _fwdAlgo, &_fwdWorkspaceSize));	
 	_maxWorkspaceSize = _fwdWorkspaceSize;

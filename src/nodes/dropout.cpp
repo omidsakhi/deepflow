@@ -17,8 +17,7 @@ void Dropout::init() {
 	DF_NODE_CUDNN_CHECK(cudnnSetDropoutDescriptor(_dropoutDesc, _cudnnHandle, _dropout, d_states, _state_sizes_in_bytes, clock()));
 	DF_NODE_CUDNN_CHECK(cudnnDropoutGetReserveSpaceSize(_inputs[0]->value()->descriptor(), &_reserve_sizes_in_bytes));
 	DF_NODE_CUDA_CHECK(cudaMalloc(&d_reserve, _reserve_sizes_in_bytes));	
-	_outputs[0]->initDiff();
-	LOG(INFO) << "Dropout " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 }
 
 void Dropout::forward() {

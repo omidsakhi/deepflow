@@ -7,6 +7,7 @@ public:
 	BatchNormalization(deepflow::NodeParam *param);
 	int minNumInputs() { return 3; }
 	int minNumOutputs() { return 1; }	
+	std::string op_name() const override { return "batch_normalization"; }
 	void init();	
 	void forward();
 	void backward();

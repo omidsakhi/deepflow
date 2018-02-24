@@ -54,7 +54,7 @@ void main(int argc, char** argv) {
 			auto train = df.define_train_phase("Train");						
 			auto solver = df.adam_solver(0.02f, 0.5f, 0.5f);
 			//auto solver = df.sgd_solver(0.99f, 0.0001f);
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
 			auto euclidean = df.square_error(image, generator);
 			auto loss = df.loss(euclidean,"", DeepFlow::AVG);
@@ -66,7 +66,7 @@ void main(int argc, char** argv) {
 			auto train = df.define_train_phase("Train");		
 			auto solver = df.adam_solver(0.002f, 0.9f, 0.99f);
 			//auto solver = df.gain_solver(0.98, 0.000001f);
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY, "image");
+			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY, "image");
 			auto recon = df.variable(df.random_normal({ 1,1,256,256 }, 0, 0.1), solver, "recon");
 			auto f1 = df.variable(df.step({ 11,1,5,5 }, 0, 1), "" , "w");
 			auto conv = df.conv2d(image, f1, 2, 2, 1, 1, 1, 1);			
@@ -80,7 +80,7 @@ void main(int argc, char** argv) {
 		else if (FLAGS_x3) {			
 			auto train = df.define_train_phase("Train");			
 			auto solver = df.adam_solver(0.01f, 0.5f, 0.9f);
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE, "image");
+			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE, "image");
 			auto recon = df.variable(df.random_normal({ 1,3,256,256 }, 0, 0.1), solver, "recon");			
 			auto f1 = df.data_generator(df.random_uniform({ 10,3,3,3 }, -1, 1), 100, "", "f1");
 			auto f2 = df.restructure(f1, 0, 1);
@@ -96,7 +96,7 @@ void main(int argc, char** argv) {
 			//auto solver = df.gain_solver(1.0f, 0.01f, 100, 0.0000001f, 0.05f, 0.95f);
 			auto solver = df.adadelta_solver();
 			//auto solver = df.adam_solver(0.1f, 0.5f, 0.9f);
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto generator1 = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -0.1, 0.1), 1, solver, "gen1");
 			auto generator2 = df.data_generator(df.random_normal({ 1, 3, 256, 256 }, 0, 0.1), 1, solver, "gen2");
 			auto selector = df.random_selector(generator1, generator2, 0.5);
@@ -121,7 +121,7 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x7) {
 			auto train = df.define_train_phase("Train");
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY);
+			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY);
 			auto b = df.variable(df.ones({ 1,1,1,1 }), "", "b", {});
 			auto f = df.variable(df.ones({ 1,1,5,5 }), "", "f", {});
 			auto conv1 = df.conv2d(image, f, b, -1.0, 0, 0, 1, 1, 1, 1, "conv");
@@ -133,18 +133,18 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x8) {
 			auto train = df.define_train_phase("Train");
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			df.display(image, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "input", { train });
 		}
 		else if (FLAGS_x9) {
 			auto train = df.define_train_phase("Train");
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto rotate = df.restructure(image, 2, 3);
 			df.display(rotate, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1,  "rotate", { train });
 		}
 		else if (FLAGS_x10) {
 			auto train = df.define_train_phase("Train");
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto scale = df.variable(df.random_normal({ 1, 3, 1, 1 }, 0, 1));
 			auto bias = df.variable(df.random_normal({ 1, 3, 1, 1 }, 0, 1));
 			auto norm = df.batch_normalization(image, scale, bias, DeepFlow::SPATIAL, true);
@@ -152,7 +152,7 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x11) {
 			auto train = df.define_train_phase("Train");
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto liftdown = df.lifting(image, DeepFlow::LIFT_DOWN_FLIP);			
 			df.display(liftdown, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "DOWN", { train });
 			auto liftup = df.lifting(liftdown, DeepFlow::LIFT_UP_FLIP);			
@@ -179,7 +179,7 @@ void main(int argc, char** argv) {
 		}
 		else if (FLAGS_x13) {
 			auto train = df.define_train_phase("Train");
-			auto image = df.image_reader(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
+			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto up = df.upsample(image);
 			df.display(up, 10000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp", { train });
 		}

@@ -8,6 +8,7 @@ public:
 	Print(deepflow::NodeParam *param);
 	int minNumInputs();
 	int minNumOutputs() { return 0; }
+	std::string op_name() const override { return "print"; }
 	void init();	
 	void forward();
 	void backward();

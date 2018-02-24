@@ -25,6 +25,7 @@ public:
 	MNISTReader(deepflow::NodeParam *param);
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }	
+	std::string op_name() const override { return "mnist_reader"; }
 	bool isGenerator() { return true; }
 	void init();	
 	void forward();

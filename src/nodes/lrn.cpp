@@ -12,8 +12,7 @@ void LRN::init()
 	DF_NODE_CUDNN_CHECK(cudnnSetLRNDescriptor(_normDesc, param.n(), param.alpha(), param.beta(), param.k()));
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	_outputs[0]->initDiff();
-	LOG(INFO) << "LRN " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 }
 
 void LRN::forward()

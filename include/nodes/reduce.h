@@ -7,6 +7,7 @@ public:
 	Reduce(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
 	int minNumOutputs() { return 2; }
+	std::string op_name() const override;
 	void init();	
 	void forward();
 	void backward();

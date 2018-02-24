@@ -16,8 +16,7 @@ void Dot::init() {
 		<< "Different sizes " << a->value()->shape() << "(" << a->connectedNode()->name() << ") vs " << b->value()->shape() << " (" << b->connectedNode()->name() << ")";
 	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	_outputs[0]->initDiff();
-	LOG(INFO) << "Dot " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 }
 
 void Dot::forward() {	

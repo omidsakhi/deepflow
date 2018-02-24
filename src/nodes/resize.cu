@@ -77,8 +77,7 @@ void Resize::init() {
 	m_width_scale = param.width_scale();
 	auto input_dims = _inputs[0]->value()->dims();
 	_outputs[0]->initValue({input_dims[0], input_dims[1], (int) (input_dims[2] * m_height_scale), (int) (input_dims[3] * m_width_scale) });
-	_outputs[0]->initDiff();
-	LOG(INFO) << "Resize " << _name << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initDiff();	
 }
 
 void Resize::forward() {

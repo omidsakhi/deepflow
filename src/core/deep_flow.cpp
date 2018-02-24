@@ -50,7 +50,7 @@ std::string DeepFlow::data_generator(std::string initializer, int num_samples, s
 	return node_param->output(0);
 }
 
-std::string DeepFlow::image_reader(std::string file_path, deepflow::ImageReaderParam_Type type, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::imread(std::string file_path, deepflow::ImageReaderParam_Type type, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();	
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -790,6 +790,20 @@ std::string DeepFlow::concate(std::string input1, std::string input2, std::strin
 	node_param->add_input(input1);
 	node_param->add_input(input2);
 	node_param->mutable_concate_param();
+	return node_param->output(0);
+}
+
+std::string DeepFlow::reshape(std::string input, std::array<int,4> output_dims, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto reshape_param = node_param->mutable_reshape_param();
+	for (int i = 0; i < 4; ++i)
+		reshape_param->add_output_dims(output_dims[i]);
 	return node_param->output(0);
 }
 

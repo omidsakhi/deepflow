@@ -61,9 +61,7 @@ void BatchNormalization::init()
 		else {
 			fill(_bnScaleBiasMeanVarSize, 0, _resultSaveInvVariance);
 		}
-	}
-	
-	LOG(INFO) << "Batch Normalization " << _name << " - " << _outputs[0]->value()->shape();
+	}	
 
 	_bnScale = (float*)_inputs[1]->value()->data();
 	_bnBias = (float*)_inputs[2]->value()->data();

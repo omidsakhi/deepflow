@@ -8,6 +8,7 @@ public:
 	Multiplexer(deepflow::NodeParam *param);
 	int minNumInputs();
 	int minNumOutputs() { return 1; }
+	std::string op_name() const override { return "multiplexer"; }
 	void init();	
 	void forward();
 	void backward();	

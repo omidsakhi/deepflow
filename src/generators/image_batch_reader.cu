@@ -30,8 +30,7 @@ ImageBatchReader::ImageBatchReader(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_image_batch_reader_param() == false) << "param.has_image_batch_reader_param() == false";
 }
 
-void ImageBatchReader::init() {
-	LOG(INFO) << "ImageBatchReader " << _name;
+void ImageBatchReader::init() {	
 	auto image_batch_reader_param = _param->image_batch_reader_param();
 	_folder_path = image_batch_reader_param.folder_path();		
 	std::experimental::filesystem::path path(_folder_path);	
@@ -66,8 +65,7 @@ void ImageBatchReader::init() {
 	LOG_IF(FATAL, _num_total_samples % _batch_size != 0) << "Number of total samples " << _num_total_samples << " must be dividable by the batch size " << _batch_size;
 	_num_batches = _num_total_samples / _batch_size;
 	_last_batch = (_current_batch == (_num_batches - 1));
-	_outputs[0]->initValue(_dims);
-	LOG(INFO) << "image_batch_reader from folder " << _folder_path << " - " << _outputs[0]->value()->shape();
+	_outputs[0]->initValue(_dims);	
 	size_t img_size = _dims[1] * _dims[2] * _dims[3];
 	DF_NODE_CUDA_CHECK(cudaMalloc(&d_img, img_size ));
 	_indices.resize(_batch_size);	

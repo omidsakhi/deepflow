@@ -13,6 +13,7 @@ public:
 	virtual void init();	
 	virtual int minNumInputs() { return 0;  }
 	virtual int minNumOutputs() { return 1; }
+	std::string op_name() const override { return "variable"; }
 	virtual void forward();
 	virtual void backward();
 	float * gradients();

@@ -428,6 +428,10 @@ message BlockParam {
 message ConcateParam {
 }
 
+message ReshapeParam {
+	repeated int32 output_dims = 1;
+}
+
 message NodeParam {
   string name = 1;
   repeated string input = 2;
@@ -484,5 +488,6 @@ message NodeParam {
   LrnParam lrn_param = 148;
   PReluParam prelu_param = 149;
   ConcateParam concate_param = 150;
+  ReshapeParam reshape_param = 151;
 }
 
