@@ -98,7 +98,7 @@ std::string dense(DeepFlow *df, std::string input, std::initializer_list<int> di
 	auto w = df->variable(df->random_normal( dims, 0, 0.02), solver, name + "_w");
 	auto node = df->matmul(input, w, name + "_ip");
 	if (has_bias) {
-		auto bnb = df->variable(df->fill({ 1, (*(dims.begin() + 1)), 1, 1 }, 0), solver, name + "_bnb");
+		auto bnb = df->variable(df->fill({ 1, (*(dims.begin() + 1)), 1, 1 }, 0.01), solver, name + "_bnb");
 		node = df->bias_add(node, bnb, name + "_bias");
 	}
 	if (has_batchnorm)
@@ -106,16 +106,21 @@ std::string dense(DeepFlow *df, std::string input, std::initializer_list<int> di
 	return node;
 }
 
-std::string deconv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool upsample, bool has_batchnorm, bool activation, std::string name) {
+std::string deconv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool upsample, bool has_bias, bool has_batchnorm, bool activation, std::string name) {
 
 	auto node = input;
 	if (upsample)
 		node = df->resize(node, 2, 2, name + "_resize");
-	auto f = df->variable(df->random_normal({ output_channels, upsample? input_channels : input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
+	auto f = df->variable(df->random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
 	node = df->conv2d(node, f, pad, pad, 1, 1, 1, 1, name + "_conv");
-	if (has_batchnorm)
-		node = batchnorm(df, node, solver, output_channels, name);
-		//node = df->lrn(node, name + "_lrn");
+	if (has_bias) {
+		auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_bnb");
+		node = df->bias_add(node, bnb, name + "_bias");
+	}
+	if (has_batchnorm) {
+		//node = batchnorm(df, node, solver, output_channels, name);
+		node = df->lrn(node, name + "_lrn", 1);
+	}
 	if (activation) {
 		return prelu(df, node, output_channels, solver, name);
 	}
@@ -125,7 +130,7 @@ std::string deconv(DeepFlow *df, std::string input, std::string solver, int inpu
 std::string conv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, int stride, bool activation, std::string name) {
 	auto f = df->variable(df->random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
 	auto node = df->conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_conv");	
-	auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_bnb");
+	auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0.01), solver, name + "_bnb");
 	node = df->bias_add(node, bnb, name + "_bias");
 	if (activation) {
 		return prelu(df, node, output_channels, solver, name);
@@ -145,17 +150,19 @@ std::shared_ptr<Session> create_generator() {
 
 	node = dense(&df, node, { 100, gf * 16 , 4 , 4 }, solver, false, true, "g1"); // 4x4	
 
-	node = deconv(&df, node, solver, gf * 16, gf * 8, 3, 1, true, true, true, "g3"); // 8x8	
+	node = deconv(&df, node, solver, gf * 16, gf * 8, 3, 1, false, true, false, true, "g3"); // 4x4
 
-	node = deconv(&df, node, solver, gf * 8, gf * 4, 5, 2, true, true, true, "g4"); // 16x16	
+	node = deconv(&df, node, solver, gf * 8, gf * 8, 3, 1, true, true, false, true, "g3"); // 8x8	
 
-	node = deconv(&df, node, solver, gf * 4, gf * 2, 5, 2, true, true, true, "g5"); // 32x32	
+	node = deconv(&df, node, solver, gf * 8, gf * 4, 5, 2, true, true, false,true, "g4"); // 16x16	
 
-	node = deconv(&df, node, solver, gf * 2, gf * 2, 5, 2, true, true, true, "g6"); // 64x64	
+	node = deconv(&df, node, solver, gf * 4, gf * 2, 5, 2, true, true, false, true, "g5"); // 32x32	
+
+	node = deconv(&df, node, solver, gf * 2, gf * 2, 5, 2, true, false, true, true, "g6"); // 64x64	
 
 	//node = deconv(&df, node, solver, gf * 2, gf * 2, 5, 2, true, true, true, "g6"); // 128x128
 
-	node = deconv(&df, node, solver, gf * 2, FLAGS_channels, 5, 2, true, false, false, "g7"); // 128x128	
+	node = deconv(&df, node, solver, gf * 2, FLAGS_channels, 5, 2, true, false, false, false, "g7"); // 128x128	
 
 	return df.session();
 }
@@ -310,6 +317,8 @@ void main(int argc, char** argv) {
 		discriminator->backward();
 		generator_output->write_diffs(discriminator_input->output(0)->diff());
 		generator->backward();
+
+		//generator->print_variable_means();
 
 		generator->apply_solvers();
 		discriminator->reset_gradients();		

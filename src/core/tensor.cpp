@@ -139,6 +139,39 @@ int Tensor::isValid() const {
 	return 0;
 }
 
+void Tensor::statistics(double * mean, double * std, double * min, double * max) const
+{
+	double eps = 10e-7;
+	auto h_data = cpyToHost<float>();
+	double sum = 0;
+	int count = 0;
+	*min = DBL_MAX;
+	*max = -DBL_MAX;
+	for (int i = 0; i < _size; ++i) {
+		float val = h_data->at(i);
+		sum += val;
+		if (*max < val)
+			*max = val;
+		if (*min > val)
+			*min = val;
+		count++;
+	}
+	*mean = sum / count;
+	sum = 0;
+	for (int i = 0; i < _size; ++i) {
+		float val = h_data->at(i);		
+		sum += (val - *mean) * (val - *mean);
+	}
+	*std = sqrt( sum /(count - 1));
+	if (fabs(*mean) < eps)
+		*mean = 0;
+	if (fabs(*max) < eps)
+		*max = 0;
+	if (fabs(*min) < eps)
+		*min = 0;
+	if (fabs(*std) < eps)
+		*std = 0;
+}
 
 
 void Tensor::release() {

@@ -352,6 +352,7 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 		set_execution_context(execution_context);
 	}
 	
+	print_total_parameters();
 }
 
 void Session::_insert_splits()
@@ -827,6 +828,26 @@ void Session::save(std::string file_path, bool as_text)
 		_block->save_as_text(file_path);
 	else
 		_block->save_as_binary(file_path);
+}
+
+void Session::print_variable_means()
+{
+	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>("");	
+	double mean, std, min, max;
+	for (auto var : variable_nodes) {		
+		var->output(0)->diff()->statistics(&mean, &std, &min, &max);
+		LOG(INFO) << "variable " << var->name() << " | " << mean <<" " << std <<  " | " << min << " " << max;
+	}	
+}
+
+void Session::print_total_parameters()
+{
+	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>("");
+	size_t total = 0;
+	for (auto var : variable_nodes) {
+		total += var->output(0)->value()->size();
+	}
+	LOG(INFO) << "TOTAL PARAMETERS: " << total;
 }
 
 void Session::run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level) {

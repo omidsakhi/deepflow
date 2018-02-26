@@ -33,6 +33,8 @@ public:
 	void apply_solvers();
 	void apply_solvers(std::initializer_list<std::string> solver_names);
 	void save(std::string file_path, bool as_text = false);
+	void print_total_parameters();
+	void print_variable_means();
 private:
 	template <class T>
 	std::list<std::shared_ptr<T>> _get_nodes(std::string execution_phase);

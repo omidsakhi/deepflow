@@ -44,6 +44,7 @@ public:
 	void release();
 		
 	int isValid() const;
+	void statistics(double *mean, double *std, double *min, double *max) const;
 
 	template <typename T>
 	void print() const;

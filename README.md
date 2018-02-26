@@ -17,9 +17,9 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 
 # Dependencies
 - Visual Studio 2015
-- [CUDA 8](https://developer.nvidia.com/cuda-toolkit)
+- [CUDA 9.1](https://developer.nvidia.com/cuda-toolkit)
 - [OpenCV 3.0](http://opencv.org/opencv-3-0.html)
-- [cuDNN v6.0](https://developer.nvidia.com/rdp/cudnn-download)
+- [cuDNN v7.0](https://developer.nvidia.com/rdp/cudnn-download)
 - [Protocol Buffers](https://github.com/google/protobuf)
 - [glog](https://github.com/google/glog)
 - [gflags](https://github.com/gflags/gflags)
@@ -27,7 +27,7 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 # Working Examples
 - Face DCGAN: The image below shows the results after 26000 iterations. Doesn't get much better after here. Still a work in progress.
 
-![results](https://github.com/omidsakhi/deepflow/blob/master/examples/face_dcgan/results-itr26000.jpg)
+![results](https://github.com/omidsakhi/deepflow/blob/master/examples/face_dcgan/results.jpg)
 
 
 # Current Nodes
@@ -50,5 +50,4 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 # Current Solvers
 - AdaDelta
 - Adam
-- Gain
-- Stochastic Gradient Descent
+- SGD
