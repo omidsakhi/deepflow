@@ -97,6 +97,9 @@
     <CudaCompile Include="..\..\src\nodes\prelu.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\dprelu.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -447,6 +450,9 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\reshape.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\dprelu.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

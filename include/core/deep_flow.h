@@ -138,6 +138,7 @@ public:
 	std::string sigmoid(std::string a, std::string name = "sigmoid", std::initializer_list<std::string> phases = {});
 	std::string relu(std::string a, std::string name = "relu", std::initializer_list<std::string> phases = {});
 	std::string prelu(std::string input, std::string w, std::string name = "prelu", std::initializer_list<std::string> phases = {});
+	std::string dprelu(std::string input, std::string w_left, std::string w_right, std::string name = "dprelu", std::initializer_list<std::string> phases = {});
 	std::string tanh(std::string a, std::string name = "tanh", std::initializer_list<std::string> phases = {});
 	std::string clipped_relu(std::string a, float threshold, std::string name = "clipped_relu", std::initializer_list<std::string> phases = {});
 	std::string elu(std::string a, float alpha, std::string name = "elu", std::initializer_list<std::string> phases = {});

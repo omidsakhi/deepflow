@@ -49,8 +49,10 @@ void PReluBackwardWeightKernel(int n, int channels, int inner_dims, const float 
 {
 	extern __shared__ float sum[];
 	if (threadIdx.x == 0) {
-		for (int k = 0; k < channels; k++)
-			sum[k] = 0;			
+		for (int k = 0; k < channels; k++) {
+			sum[k] = 0;
+			dw[k] = 0;
+		}			
 	}
 	__syncthreads();
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
@@ -96,8 +98,7 @@ void PRelu::backward()
 	auto channels = _inputs[0]->dims()[1];
 	auto inner_dims = _inputs[0]->dims()[2] * _inputs[0]->dims()[3];
 	PReluBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock, channels * sizeof(float) >> >(size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
-	DF_NODE_KERNEL_CHECK();
-	fill(channels, 0.0f, _inputs[1]->diff()->mutableData());
+	DF_NODE_KERNEL_CHECK();	
 	PReluBackwardWeightKernel << < numOfBlocks(size), maxThreadsPerBlock, channels * sizeof(float) >> >(size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[1]->diff()->mutableData());
 	DF_NODE_KERNEL_CHECK();
 }

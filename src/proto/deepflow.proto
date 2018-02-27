@@ -284,6 +284,9 @@ message ReplayMemoryParam {
 message PReluParam {
 }
 
+message DPReluParam {
+}
+
 message LrnParam {	
 	int32 n = 1;
 	float alpha = 2;
@@ -489,5 +492,6 @@ message NodeParam {
   PReluParam prelu_param = 149;
   ConcateParam concate_param = 150;
   ReshapeParam reshape_param = 151;
+  DPReluParam dprelu_param = 152;
 }
 

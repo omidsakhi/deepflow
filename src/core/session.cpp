@@ -62,6 +62,7 @@
 #include "nodes/switch.h"
 #include "nodes/lrn.h"
 #include "nodes/prelu.h"
+#include "nodes/dprelu.h"
 #include "nodes/concate.h"
 #include "nodes/reshape.h"
 
@@ -160,6 +161,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Display>(node_param);
 	else if (node_param->has_leaky_relu_param())
 		return std::make_shared<LeakyRelu>(node_param);
+	else if (node_param->has_dprelu_param())
+		return std::make_shared<DPRelu>(node_param);
 	else if (node_param->has_prelu_param())
 		return std::make_shared<PRelu>(node_param);
 	else if (node_param->has_softmax_param())

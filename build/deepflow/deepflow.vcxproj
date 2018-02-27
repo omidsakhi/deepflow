@@ -52,6 +52,7 @@
     <ClInclude Include="..\..\include\nodes\convolution_2d.h" />
     <ClInclude Include="..\..\include\nodes\display.h" />
     <ClInclude Include="..\..\include\nodes\dot.h" />
+    <ClInclude Include="..\..\include\nodes\dprelu.h" />
     <ClInclude Include="..\..\include\nodes\dropout.h" />
     <ClInclude Include="..\..\include\nodes\equal.h" />
     <ClInclude Include="..\..\include\nodes\exp.h" />
@@ -122,6 +123,7 @@
     </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\cast_float.cu" />
     <CudaCompile Include="..\..\src\nodes\display.cu" />
+    <CudaCompile Include="..\..\src\nodes\dprelu.cu" />
     <CudaCompile Include="..\..\src\nodes\equal.cu" />
     <CudaCompile Include="..\..\src\nodes\image_writer.cu" />
     <CudaCompile Include="..\..\src\nodes\lifting.cu" />
@@ -355,7 +357,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
       <CodeGeneration>compute_61,sm_61</CodeGeneration>
-      <FastMath>false</FastMath>
+      <FastMath>true</FastMath>
       <GPUDebugInfo>false</GPUDebugInfo>
       <GenerateLineInfo>false</GenerateLineInfo>
       <Optimization>O2</Optimization>

@@ -398,6 +398,20 @@ std::string DeepFlow::prelu(std::string input, std::string w, std::string name, 
 	return node_param->output(0);
 }
 
+std::string DeepFlow::dprelu(std::string input, std::string w_left, std::string w_right, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	node_param->add_input(w_left);
+	node_param->add_input(w_right);
+	auto prelu_param = node_param->mutable_dprelu_param();
+	return node_param->output(0);
+}
+
 std::string DeepFlow::tanh(std::string a, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();	
