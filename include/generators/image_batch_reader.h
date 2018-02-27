@@ -12,15 +12,15 @@ class Initializer;
 class DeepFlowDllExport ImageBatchReader : public Node {
 public:
 	ImageBatchReader(deepflow::NodeParam *param);
-	int minNumInputs() { return 0; }
-	int minNumOutputs() { return 1; }
+	int minNumInputs() override { return 0; }
+	int minNumOutputs() override { return 1; }
 	std::string op_name() const override { return "image_batch_reader"; }
-	bool isGenerator() { return true; }
-	void init();	
-	void forward();
-	void backward() {}
-	bool isLastBatch();
-	std::string to_cpp() const;
+	bool isGenerator() override { return true; }
+	void init() override;	
+	void forward() override;
+	void backward() override {}
+	bool isLastBatch() override;
+	std::string to_cpp() const override;
 private:
 	std::string _folder_path;
 	std::array<int, 4> _dims;
@@ -32,6 +32,4 @@ private:
 	int _batch_size = 0;
 	bool _last_batch = false;	
 	bool _randomize = false;
-	unsigned char *d_img;
-	cv::Mat img;
 };

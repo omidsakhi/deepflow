@@ -2,6 +2,7 @@
 #include "core/common_cu.h"
 #include <opencv2/opencv.hpp>
 #include <random>
+#include <thread>
 
 __global__
 void GrayImageBatchReaderKernel(const int n, const int offset, const unsigned char *in, float *out)
@@ -66,9 +67,36 @@ void ImageBatchReader::init() {
 	_num_batches = _num_total_samples / _batch_size;
 	_last_batch = (_current_batch == (_num_batches - 1));
 	_outputs[0]->initValue(_dims);	
-	size_t img_size = _dims[1] * _dims[2] * _dims[3];
-	DF_NODE_CUDA_CHECK(cudaMalloc(&d_img, img_size ));
 	_indices.resize(_batch_size);	
+}
+
+void thread_internal_read_image(int img_index, std::string file_name, float * output, int channels, int height, int width, int num_of_blocks, int max_thread_per_block)
+{
+	cv::Mat img;
+	if (channels == 1)
+		img = cv::imread(file_name, 0);
+	else if (channels == 3)
+		img = cv::imread(file_name);
+	else
+		LOG(FATAL) << "Unsupported channel size.";
+	LOG_IF(FATAL, img.empty()) << "Image " << file_name << " does not exist.";	
+	LOG_IF(FATAL, img.channels() != channels) << "Provided channels doesn't match for " << file_name;
+	LOG_IF(FATAL, img.rows != height) << "Provided height doesn't match for " << file_name;
+	LOG_IF(FATAL, img.cols != width) << "Provided width doesn't match for " << file_name;
+	size_t img_size = img.cols * img.rows * img.channels();
+	unsigned char *d_img;
+	cudaMalloc(&d_img, img_size);
+	DF_CUDA_CHECK(cudaMemcpy(d_img, img.ptr<uchar>(), img_size, cudaMemcpyHostToDevice));	
+	if (channels == 1) {
+		GrayImageBatchReaderKernel << < num_of_blocks, max_thread_per_block >> > (img_size, img_index * img_size, d_img, output);
+		DF_KERNEL_CHECK();
+	}
+	else if (channels == 3) {
+		ColorImageBatchReaderKernel << < num_of_blocks, max_thread_per_block >> > (img_size, img_index * img_size, d_img, img.cols, img.rows, output);
+		DF_KERNEL_CHECK();
+	}	
+	img.release();
+	cudaFree(d_img);
 }
 
 void ImageBatchReader::forward()
@@ -95,31 +123,14 @@ void ImageBatchReader::forward()
 		}
 	}
 
-	for (int i = 0; i < _indices.size(); ++i)
+	std::list<std::thread> thread_list;
+	for (int index = 0; index < _indices.size(); ++index)
 	{
-		std::string file_name = _list_of_files[_indices[i]].string();
-		if (_dims[1] == 1)
-			img = cv::imread(file_name, 0);
-		else if (_dims[1] == 3)
-			img = cv::imread(file_name);		
-		else
-			LOG(FATAL) << "Unsupported channel size.";		
-		LOG_IF(FATAL, img.empty()) << "Image " << file_name << " does not exist.";
-		//cv::copyMakeBorder(img, img, 2, 2, 2, 2, cv::BORDER_CONSTANT, 0);
-		LOG_IF(FATAL, img.channels() != _dims[1]) << "Provided channels doesn't match for " << file_name;
-		LOG_IF(FATAL, img.rows != _dims[2]) << "Provided height doesn't match for " << file_name;
-		LOG_IF(FATAL, img.cols != _dims[3]) << "Provided width doesn't match for " << file_name;
-		size_t img_size = img.cols * img.rows * img.channels();
-		DF_NODE_CUDA_CHECK(cudaMemcpy(d_img, img.ptr<uchar>(), img_size, cudaMemcpyHostToDevice));
-		if (img.channels() == 1) {
-			GrayImageBatchReaderKernel << < numOfBlocks(img_size), maxThreadsPerBlock >> > (img_size, i * img_size, d_img, (float*)_outputs[0]->value()->mutableData());
-			DF_KERNEL_CHECK();
-		}
-		else if (img.channels() == 3) {
-			ColorImageBatchReaderKernel << < numOfBlocks(img_size), maxThreadsPerBlock >> > (img_size, i * img_size, d_img, img.cols, img.rows, (float*)_outputs[0]->value()->mutableData());
-			DF_KERNEL_CHECK();
-		}
+		std::string file_name = _list_of_files[_indices[index]].string();
+		thread_list.push_back(std::thread(thread_internal_read_image, index, file_name, (float*)_outputs[0]->value()->mutableData(), _dims[1], _dims[2], _dims[3], numOfBlocks(_dims[1] * _dims[2] * _dims[3]), maxThreadsPerBlock));
 	}
+	for (auto &thread : thread_list)
+		thread.join();
 }
 
 bool ImageBatchReader::isLastBatch() {
