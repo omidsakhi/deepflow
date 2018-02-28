@@ -22,12 +22,12 @@ bool Solver::hasTheSameParam(std::shared_ptr<Solver> another) const
 	return _param->name() == another->name();
 }
 
-NodeInputPtr Solver::enable_input()
+void Solver::setLearningRate(float lr)
 {
-	return _enable_input;
+	_learning_rate = lr;
 }
 
-void Solver::create_enable_input()
-{
-	_enable_input = std::make_shared<NodeInput>( nullptr, 0);
+void Solver::setEnabled(bool state)
+{	
+	_enabled = state;
 }

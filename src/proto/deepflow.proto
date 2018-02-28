@@ -374,13 +374,11 @@ message InitParam {
   InitThreeStateParam three_state_param = 9;
 }
 
-message SGDSolverParam {
-	float learning_rate = 1;
+message SGDSolverParam {	
 	float momentum = 2;	
 }
 
-message GainSolverParam {
-	float learning_rate = 1;
+message GainSolverParam {	
 	float momentum = 2;	
 	float max_gain = 3;
 	float min_gain = 4;
@@ -388,26 +386,24 @@ message GainSolverParam {
 	float gain_mult = 6;
 }
 
-message AdaDeltaSolverParam {
-	float learning_rate = 1;
+message AdaDeltaSolverParam {	
 	float momentum = 2;	
 	float delta = 3;
 }
 
-message AdamSolverParam {
-	float learning_rate = 1;
+message AdamSolverParam {	
 	float beta1 = 2;
 	float beta2 = 3;
 	float eps = 4;
 }
 
 message SolverParam {
-	string name = 1;
-	string enable_input = 2;
+	string name = 1;	
 	SGDSolverParam sgd_solver = 3;
 	GainSolverParam gain_solver = 4;
 	AdamSolverParam adam_solver = 5;
 	AdaDeltaSolverParam adadelta_solver = 6;	
+	float learning_rate = 7;
 }
 
 message PhaseParam {

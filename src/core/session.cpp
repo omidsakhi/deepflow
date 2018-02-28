@@ -296,18 +296,10 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 		}
 		else if (solver) {
 			_solvers.insert(std::pair<std::shared_ptr<Variable>, std::shared_ptr<Solver>>(var, solver));
-			LOG(INFO) << "variable " << var->name() << " <-> Solver " << solver->name();
-			auto enable_input = solver->param()->enable_input();
-			if (!enable_input.empty()) {
-				auto terminal = _find_node_output_by_name(enable_input);
-				LOG_IF(FATAL, terminal == 0) << "Failed to find " << enable_input << " as the input for solver " << solver->param()->name() << " in variable " << var_solver_name;
-				solver->create_enable_input();
-				solver->enable_input()->connect(terminal);
-				LOG(INFO) << "solver " << solver->name() << " Enable <-> Node " << terminal->parentNode()->name();
-			}
+			LOG(INFO) << "variable " << var->name() << " <-> solver " << solver->name();
 		}
 		else {
-			LOG(INFO) << "variable " << var->name() << " <-> Constant";
+			LOG(INFO) << "variable " << var->name() << " <-> constant";
 		}
 	}
 
@@ -801,25 +793,63 @@ void Session::backward()
 	}
 }
 
-void Session::apply_solvers()
+void Session::apply_solvers(std::initializer_list<std::string> solver_names)
 {
-	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>("");
-	for (auto var : variable_nodes) {
-		auto map_var_to_solver = _solvers.find(var);
-		if (map_var_to_solver != _solvers.end()) {
-			map_var_to_solver->second->apply(var);
+	if (solver_names.size() > 0) {
+		for (auto item : _solvers) {
+			for (auto name : solver_names) {
+				if (item.second->name() == name) {
+					item.second->apply(item.first);
+				}
+			}
 		}
+	}
+	else {
+		for (auto item : _solvers)
+			item.second->apply(item.first);
+		/*
+		std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>("");
+		for (auto var : variable_nodes) {
+			auto map_var_to_solver = _solvers.find(var);
+			if (map_var_to_solver != _solvers.end()) {
+				map_var_to_solver->second->apply(var);
+			}
+		}
+		*/
 	}
 }
 
-void Session::apply_solvers(std::initializer_list<std::string> solver_names)
+void Session::set_enabled_solvers(bool state, std::initializer_list<std::string> solver_names)
 {
-	for (auto item : _solvers) {
-		for (auto name : solver_names) {
-			if (item.second->name() == name) {
-				item.second->apply(item.first);				
+	if (solver_names.size() > 0) {
+		for (auto item : _solvers) {
+			for (auto name : solver_names) {
+				if (item.second->name() == name) {
+					item.second->setEnabled(state);
+				}
 			}
 		}
+	}
+	else {
+		for (auto item : _solvers)
+			item.second->setEnabled(state);			
+	}
+}
+
+void Session::set_learning_rate(float lr, std::initializer_list<std::string> solver_names)
+{
+	if (solver_names.size() > 0) {
+		for (auto item : _solvers) {
+			for (auto name : solver_names) {
+				if (item.second->name() == name) {
+					item.second->setLearningRate(lr);
+				}
+			}
+		}
+	}
+	else {
+		for (auto item : _solvers)
+			item.second->setLearningRate(lr);			
 	}
 }
 

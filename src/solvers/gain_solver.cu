@@ -35,26 +35,21 @@ void GainStepKernel(const int n, float *w, const float *g, float *m, float *gain
 GainSolver::GainSolver(deepflow::SolverParam *param): Solver(param) {
 	LOG_IF(FATAL, param->has_gain_solver() == false) << "param.has_gain_solver() == false";
 	_my_param = param->mutable_gain_solver();
+	_learning_rate = param->learning_rate();
 }
 
 void GainSolver::apply(std::shared_ptr<Variable> var) {
 	auto context = var->executionContext();
 	bool verbos = (context && context->debug_level > 3) ? true : false;
 	if (_initialized == false) {
-		LOG_IF(INFO, verbos) << "SOLVER " << name() << " FOR VARIABLE " << var->name();
+		LOG_IF(INFO, verbos) << "solver " << name() << " for variable " << var->name();
 		init(var);
 	}
-	if (_enable_input) {
-		float value = _enable_input->value()->toFloat();
-		bool is_enable = value >= 1;
-		if (!is_enable) {
-			LOG_IF(INFO, verbos) << "SOLVER " << name() << " **NOT** APPLIED ON " << var->name();
-			return;
-		}
-	}
-	LOG_IF(INFO, verbos) << "APPLYING SOLVER " << name() << " ON " << var->name();	
+	if (!_enabled)
+		return;
+	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name();	
 	auto size = var->output(0)->value()->size();	
-	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _previous_gradient, _gain, _my_param->max_gain(), _my_param->min_gain(), _my_param->gain_plus(), _my_param->gain_mult(), _my_param->momentum(), _my_param->learning_rate());	
+	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _previous_gradient, _gain, _my_param->max_gain(), _my_param->min_gain(), _my_param->gain_plus(), _my_param->gain_mult(), _my_param->momentum(), _learning_rate);
 	DF_KERNEL_CHECK();
 	var->reset_gradients();
 }
@@ -74,7 +69,7 @@ std::string GainSolver::to_cpp() const
 {	
 	std::string cpp = "auto " + name() + " = df.gain_solver(";
 	cpp += std::to_string(_my_param->momentum()) + ", ";
-	cpp += std::to_string(_my_param->learning_rate()) + ", ";
+	cpp += std::to_string(_param->learning_rate()) + ", ";
 	cpp += std::to_string(_my_param->max_gain()) + ", ";
 	cpp += std::to_string(_my_param->min_gain()) + ", ";
 	cpp += std::to_string(_my_param->gain_plus()) + ", ";

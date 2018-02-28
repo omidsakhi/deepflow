@@ -29,9 +29,10 @@ public:
 	void forward();
 	void reset_gradients();
 	void clamp(float min, float max);
-	void backward();
-	void apply_solvers();
-	void apply_solvers(std::initializer_list<std::string> solver_names);
+	void backward();	
+	void apply_solvers(std::initializer_list<std::string> solver_names = {});
+	void set_enabled_solvers(bool state, std::initializer_list<std::string> solver_names = {});
+	void set_learning_rate(float lr, std::initializer_list<std::string> solver_names = {});
 	void save(std::string file_path, bool as_text = false);
 	void print_total_parameters();
 	void print_variable_means();

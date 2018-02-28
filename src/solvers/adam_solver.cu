@@ -20,27 +20,22 @@ void AdamKernel(const int n, float *w, const float *g, float *m, float *v, const
 
 AdamSolver::AdamSolver(deepflow::SolverParam *param) : Solver(param) {
 	LOG_IF(FATAL, param->has_adam_solver() == false) << "param.has_adam_solver() == false";
-	_my_param = param->mutable_adam_solver();
+	_my_param = param->mutable_adam_solver();	
+	_learning_rate = param->learning_rate();
 }
 
-void AdamSolver::apply(std::shared_ptr<Variable> var) {
+void AdamSolver::apply(std::shared_ptr<Variable> var) {	
 	auto context = var->executionContext();
 	bool verbos = (context && context->debug_level > 3) ? true : false;
 	if (_initialized == false) {
-		LOG_IF(INFO, verbos) << "SOLVER " << name() << " FOR VARIABLE " << var->name();
+		LOG_IF(INFO, verbos) << "solver " << name() << " for variable " << var->name();
 		init(var);
 	}
-	if (_enable_input) {
-		float value = _enable_input->value()->toFloat();
-		bool is_enable = value >= 1;
-		if (!is_enable) {
-			LOG_IF(INFO, verbos) << "SOLVER " << name() << " **NOT** APPLIED ON " << var->name();
-			return;
-		}
-	}
-	LOG_IF(INFO, verbos) << "APPLYING SOLVER " << name() << " ON " << var->name();
+	if (!_enabled)
+		return;
+	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name();
 	auto size = var->output(0)->value()->size();	
-	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _m, _v, _my_param->beta1(), _my_param->beta2(), _my_param->eps(), _my_param->learning_rate());	
+	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _m, _v, _my_param->beta1(), _my_param->beta2(), _my_param->eps(), _learning_rate);
 	DF_KERNEL_CHECK();	
 	var->reset_gradients();
 }
@@ -58,7 +53,7 @@ void AdamSolver::init(std::shared_ptr<Variable> var) {
 std::string AdamSolver::to_cpp() const
 {	
 	std::string cpp = "auto " + name() + " = df.adam_solver(";
-	cpp += std::to_string(_my_param->learning_rate()) + ", ";
+	cpp += std::to_string(_param->learning_rate()) + ", ";
 	cpp += std::to_string(_my_param->beta1()) + ", ";
 	cpp += std::to_string(_my_param->beta2()) + ", ";
 	cpp += std::to_string(_my_param->eps()) + ", ";

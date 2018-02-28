@@ -6274,12 +6274,6 @@ class SGDSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
-  // float learning_rate = 1;
-  void clear_learning_rate();
-  static const int kLearningRateFieldNumber = 1;
-  float learning_rate() const;
-  void set_learning_rate(float value);
-
   // float momentum = 2;
   void clear_momentum();
   static const int kMomentumFieldNumber = 2;
@@ -6290,7 +6284,6 @@ class SGDSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  float learning_rate_;
   float momentum_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
@@ -6361,12 +6354,6 @@ class GainSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
 
   // accessors -------------------------------------------------------
 
-  // float learning_rate = 1;
-  void clear_learning_rate();
-  static const int kLearningRateFieldNumber = 1;
-  float learning_rate() const;
-  void set_learning_rate(float value);
-
   // float momentum = 2;
   void clear_momentum();
   static const int kMomentumFieldNumber = 2;
@@ -6401,7 +6388,6 @@ class GainSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  float learning_rate_;
   float momentum_;
   float max_gain_;
   float min_gain_;
@@ -6476,12 +6462,6 @@ class AdaDeltaSolverParam : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
-  // float learning_rate = 1;
-  void clear_learning_rate();
-  static const int kLearningRateFieldNumber = 1;
-  float learning_rate() const;
-  void set_learning_rate(float value);
-
   // float momentum = 2;
   void clear_momentum();
   static const int kMomentumFieldNumber = 2;
@@ -6498,7 +6478,6 @@ class AdaDeltaSolverParam : public ::google::protobuf::Message /* @@protoc_inser
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  float learning_rate_;
   float momentum_;
   float delta_;
   mutable int _cached_size_;
@@ -6570,12 +6549,6 @@ class AdamSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
 
   // accessors -------------------------------------------------------
 
-  // float learning_rate = 1;
-  void clear_learning_rate();
-  static const int kLearningRateFieldNumber = 1;
-  float learning_rate() const;
-  void set_learning_rate(float value);
-
   // float beta1 = 2;
   void clear_beta1();
   static const int kBeta1FieldNumber = 2;
@@ -6598,7 +6571,6 @@ class AdamSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  float learning_rate_;
   float beta1_;
   float beta2_;
   float eps_;
@@ -6685,20 +6657,6 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
 
-  // string enable_input = 2;
-  void clear_enable_input();
-  static const int kEnableInputFieldNumber = 2;
-  const ::std::string& enable_input() const;
-  void set_enable_input(const ::std::string& value);
-  #if LANG_CXX11
-  void set_enable_input(::std::string&& value);
-  #endif
-  void set_enable_input(const char* value);
-  void set_enable_input(const char* value, size_t size);
-  ::std::string* mutable_enable_input();
-  ::std::string* release_enable_input();
-  void set_allocated_enable_input(::std::string* enable_input);
-
   // .deepflow.SGDSolverParam sgd_solver = 3;
   bool has_sgd_solver() const;
   void clear_sgd_solver();
@@ -6735,16 +6693,22 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::deepflow::AdaDeltaSolverParam* release_adadelta_solver();
   void set_allocated_adadelta_solver(::deepflow::AdaDeltaSolverParam* adadelta_solver);
 
+  // float learning_rate = 7;
+  void clear_learning_rate();
+  static const int kLearningRateFieldNumber = 7;
+  float learning_rate() const;
+  void set_learning_rate(float value);
+
   // @@protoc_insertion_point(class_scope:deepflow.SolverParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr name_;
-  ::google::protobuf::internal::ArenaStringPtr enable_input_;
   ::deepflow::SGDSolverParam* sgd_solver_;
   ::deepflow::GainSolverParam* gain_solver_;
   ::deepflow::AdamSolverParam* adam_solver_;
   ::deepflow::AdaDeltaSolverParam* adadelta_solver_;
+  float learning_rate_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -10513,20 +10477,6 @@ inline void InitParam::set_allocated_three_state_param(::deepflow::InitThreeStat
 
 // SGDSolverParam
 
-// float learning_rate = 1;
-inline void SGDSolverParam::clear_learning_rate() {
-  learning_rate_ = 0;
-}
-inline float SGDSolverParam::learning_rate() const {
-  // @@protoc_insertion_point(field_get:deepflow.SGDSolverParam.learning_rate)
-  return learning_rate_;
-}
-inline void SGDSolverParam::set_learning_rate(float value) {
-  
-  learning_rate_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.SGDSolverParam.learning_rate)
-}
-
 // float momentum = 2;
 inline void SGDSolverParam::clear_momentum() {
   momentum_ = 0;
@@ -10544,20 +10494,6 @@ inline void SGDSolverParam::set_momentum(float value) {
 // -------------------------------------------------------------------
 
 // GainSolverParam
-
-// float learning_rate = 1;
-inline void GainSolverParam::clear_learning_rate() {
-  learning_rate_ = 0;
-}
-inline float GainSolverParam::learning_rate() const {
-  // @@protoc_insertion_point(field_get:deepflow.GainSolverParam.learning_rate)
-  return learning_rate_;
-}
-inline void GainSolverParam::set_learning_rate(float value) {
-  
-  learning_rate_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.GainSolverParam.learning_rate)
-}
 
 // float momentum = 2;
 inline void GainSolverParam::clear_momentum() {
@@ -10633,20 +10569,6 @@ inline void GainSolverParam::set_gain_mult(float value) {
 
 // AdaDeltaSolverParam
 
-// float learning_rate = 1;
-inline void AdaDeltaSolverParam::clear_learning_rate() {
-  learning_rate_ = 0;
-}
-inline float AdaDeltaSolverParam::learning_rate() const {
-  // @@protoc_insertion_point(field_get:deepflow.AdaDeltaSolverParam.learning_rate)
-  return learning_rate_;
-}
-inline void AdaDeltaSolverParam::set_learning_rate(float value) {
-  
-  learning_rate_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.AdaDeltaSolverParam.learning_rate)
-}
-
 // float momentum = 2;
 inline void AdaDeltaSolverParam::clear_momentum() {
   momentum_ = 0;
@@ -10678,20 +10600,6 @@ inline void AdaDeltaSolverParam::set_delta(float value) {
 // -------------------------------------------------------------------
 
 // AdamSolverParam
-
-// float learning_rate = 1;
-inline void AdamSolverParam::clear_learning_rate() {
-  learning_rate_ = 0;
-}
-inline float AdamSolverParam::learning_rate() const {
-  // @@protoc_insertion_point(field_get:deepflow.AdamSolverParam.learning_rate)
-  return learning_rate_;
-}
-inline void AdamSolverParam::set_learning_rate(float value) {
-  
-  learning_rate_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.AdamSolverParam.learning_rate)
-}
 
 // float beta1 = 2;
 inline void AdamSolverParam::clear_beta1() {
@@ -10790,59 +10698,6 @@ inline void SolverParam::set_allocated_name(::std::string* name) {
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
   // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.name)
-}
-
-// string enable_input = 2;
-inline void SolverParam::clear_enable_input() {
-  enable_input_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& SolverParam::enable_input() const {
-  // @@protoc_insertion_point(field_get:deepflow.SolverParam.enable_input)
-  return enable_input_.GetNoArena();
-}
-inline void SolverParam::set_enable_input(const ::std::string& value) {
-  
-  enable_input_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:deepflow.SolverParam.enable_input)
-}
-#if LANG_CXX11
-inline void SolverParam::set_enable_input(::std::string&& value) {
-  
-  enable_input_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:deepflow.SolverParam.enable_input)
-}
-#endif
-inline void SolverParam::set_enable_input(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  enable_input_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:deepflow.SolverParam.enable_input)
-}
-inline void SolverParam::set_enable_input(const char* value, size_t size) {
-  
-  enable_input_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:deepflow.SolverParam.enable_input)
-}
-inline ::std::string* SolverParam::mutable_enable_input() {
-  
-  // @@protoc_insertion_point(field_mutable:deepflow.SolverParam.enable_input)
-  return enable_input_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* SolverParam::release_enable_input() {
-  // @@protoc_insertion_point(field_release:deepflow.SolverParam.enable_input)
-  
-  return enable_input_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SolverParam::set_allocated_enable_input(::std::string* enable_input) {
-  if (enable_input != NULL) {
-    
-  } else {
-    
-  }
-  enable_input_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), enable_input);
-  // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.enable_input)
 }
 
 // .deepflow.SGDSolverParam sgd_solver = 3;
@@ -10999,6 +10854,20 @@ inline void SolverParam::set_allocated_adadelta_solver(::deepflow::AdaDeltaSolve
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.adadelta_solver)
+}
+
+// float learning_rate = 7;
+inline void SolverParam::clear_learning_rate() {
+  learning_rate_ = 0;
+}
+inline float SolverParam::learning_rate() const {
+  // @@protoc_insertion_point(field_get:deepflow.SolverParam.learning_rate)
+  return learning_rate_;
+}
+inline void SolverParam::set_learning_rate(float value) {
+  
+  learning_rate_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.SolverParam.learning_rate)
 }
 
 // -------------------------------------------------------------------

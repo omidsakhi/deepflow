@@ -15,10 +15,11 @@ public:
 	deepflow::SolverParam *param() const;
 	const std::string name() const;
 	bool hasTheSameParam(std::shared_ptr<Solver> another) const;
-	NodeInputPtr enable_input();
-	void create_enable_input();
+	void setLearningRate(float lr);
+	void setEnabled(bool state);
 protected:
-	NodeInputPtr _enable_input;
 	deepflow::SolverParam *_param;
 	bool _initialized = false;
+	float _learning_rate = 0.0f;	
+	bool _enabled = true;
 };
