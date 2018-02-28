@@ -79,13 +79,23 @@ void Node::write_values(std::shared_ptr<Tensor> tensor, float alpha, float beta)
 	cpy(_outputs[0]->value()->size(), alpha, tensor->data(), beta, _outputs[0]->value()->mutableData());
 }
 
+void Node::write_values(std::initializer_list<float> values)
+{
+	_outputs[0]->value()->set(values);
+}
+
 void Node::write_diffs(std::shared_ptr<Tensor> tensor, float alpha, float beta)
 {	
-	LOG_IF(INFO, _verbose > 2) << "FEEDING GRADIENTS FROM TO " << _name;	
+	LOG_IF(INFO, _verbose > 2) << "FEEDING GRADIENTS TO " << _name;
 	auto feed_dim = tensor->dims();
 	auto my_dim = _outputs[0]->diff()->dims();
 	LOG_IF(FATAL, feed_dim != my_dim) << "Backward feed dimension mismatch between dst (" << _name << ") " << tensor->shape() << " and src (" << _outputs[0]->value()->shape() << ")";
 	cpy(_outputs[0]->diff()->size(), alpha, tensor->data(), beta, _outputs[0]->diff()->mutableData());
+}
+
+void Node::write_diffs(std::initializer_list<float> values)
+{
+	_outputs[0]->diff()->set(values);
 }
 
 /*

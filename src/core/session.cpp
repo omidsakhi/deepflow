@@ -395,7 +395,7 @@ void Session::_insert_splits()
 		}
 	}
 
-	LOG(INFO) << total_split_nodes << " total split nodes.";
+	LOG(INFO) << "TOTAL SPLITS: " << total_split_nodes;
 }
 
 void Session::set_execution_context(std::shared_ptr<ExecutionContext> execution_context)

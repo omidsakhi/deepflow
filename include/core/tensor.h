@@ -51,6 +51,13 @@ public:
 
 	template <typename T>
 	std::shared_ptr<std::vector<T>> cpyToHost() const;
+	
+	template <typename T>
+	void cpyFromHost(std::vector<T> &vec);
+
+	void set(std::initializer_list<float> values);
+
+	bool verify(std::initializer_list<float> values);
 
 	float toFloat() const;
 
@@ -81,4 +88,10 @@ std::shared_ptr<std::vector<T>> Tensor::cpyToHost() const {
 	auto h_data = std::make_shared<std::vector<T>>(_size);		
 	cudaMemcpy(h_data->data(), d_data, _sizeInBytes, cudaMemcpyDeviceToHost);
 	return h_data;
+}
+
+template <typename T>
+void Tensor::cpyFromHost(std::vector<T> &vec)
+{
+	DF_CUDA_CHECK(cudaMemcpy(d_data, vec.data(), vec.size() * sizeof(T), cudaMemcpyHostToDevice));
 }

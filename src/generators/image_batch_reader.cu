@@ -109,6 +109,7 @@ void ImageBatchReader::forward()
 		_current_batch++;
 	}
 
+	_randomize = true;
 
 	if (_randomize) {
 		std::random_device rd;

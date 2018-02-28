@@ -1,5 +1,7 @@
 #include "core/tensor.h"
 
+#include <vector>
+
 Tensor::Tensor() {
 	_size = _sizeInBytes = 0;
 	d_data = NULL;
@@ -186,6 +188,28 @@ void Tensor::release() {
 
 void Tensor::reset() {
 	DF_CUDA_CHECK(cudaMemset(d_data, 0, _sizeInBytes));	
+}
+
+void Tensor::set(std::initializer_list<float> values)
+{
+	LOG_IF(FATAL, _reader_type != TensorType::Float) << "_type != TensorType::Float";
+	LOG_IF(FATAL, values.size() != size()) << "values.size() != size()";
+	std::vector<float> h_data = values;	
+	cpyFromHost<float>(h_data);
+}
+
+bool Tensor::verify(std::initializer_list<float> values)
+{
+	auto h_data = cpyToHost<float>();
+	bool res = true;
+	int index = 0;
+	for (auto v : values) {
+		if (h_data->at(index++) != v) {
+			res = false;
+			break;
+		}
+	}
+	return res;
 }
 
 float Tensor::toFloat() const {
