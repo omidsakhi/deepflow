@@ -24,8 +24,7 @@ void BiasAddKernelBackward(const int n, const float *diff, const int inner_dim, 
 	extern __shared__ float sum[];	
 	if (threadIdx.x == 0) {
 		for (int k = 0; k < bias_dim; k++) {
-			sum[k] = 0;
-			bias_diff[k] = 0;
+			sum[k] = 0;			
 		}
 	}
 	__syncthreads();
@@ -67,6 +66,7 @@ void BiasAdd::forward() {
 
 void BiasAdd::backward() {
 	auto size = _outputs[0]->diff()->size();		
+	DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
 	BiasAddKernelBackward << < numOfBlocks(size), maxThreadsPerBlock, _bias_dim * sizeof(float) >> > (size, (float*)_outputs[0]->diff()->data(), _inner_dim, _sample_dim, _bias_dim, (float*)_inputs[1]->diff()->mutableData());
 	DF_KERNEL_CHECK();
 }

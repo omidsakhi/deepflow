@@ -62,8 +62,6 @@ void DPReluBackwardWeightKernel(int n, int channels, int inner_dims, const float
 		for (int k = 0; k < channels; k++) {
 			sum[2 * k] = 0;
 			sum[2 * k + 1] = 0;
-			dw_l[k] = 0;
-			dw_r[k] = 0;
 		}
 	}
 	
@@ -124,6 +122,8 @@ void DPRelu::backward()
 	auto inner_dims = _inputs[0]->dims()[2] * _inputs[0]->dims()[3];
 	DPReluBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock, 2 * channels * sizeof(float) >> >(size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_inputs[2]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
 	DF_NODE_KERNEL_CHECK();
+	DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
+	DF_CUDA_CHECK(cudaMemset(_inputs[2]->diff()->mutableData(), 0, _inputs[2]->diff()->sizeInBytes()));
 	DPReluBackwardWeightKernel << < numOfBlocks(size), maxThreadsPerBlock, 2 * channels * sizeof(float) >> >(size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[1]->diff()->mutableData(), (float*)_inputs[2]->diff()->mutableData());
 	DF_NODE_KERNEL_CHECK();
 }
