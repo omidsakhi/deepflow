@@ -14,6 +14,5 @@ public:
 	std::string to_cpp() const;
 private:
 	int _inner_dim = 0;
-	int _bias_dim = 0;
-	int _sample_dim = 0;
+	int _bias_dim = 0;	
 };

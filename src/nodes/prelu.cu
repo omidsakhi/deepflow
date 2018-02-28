@@ -58,7 +58,8 @@ void PReluBackwardWeightKernel(int n, int channels, int inner_dims, const float 
 	if (i < n && x[i] < 0)
 	{
 		int iw = (i / inner_dims) % channels;
-		sum[iw] += dy[i] * x[i] / inner_dims;
+		float denom = n / channels;
+		atomicAdd(&sum[iw], dy[i] * x[i] / denom);
 	}
 	__syncthreads();
 	if (threadIdx.x == 0) {

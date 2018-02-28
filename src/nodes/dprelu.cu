@@ -71,11 +71,12 @@ void DPReluBackwardWeightKernel(int n, int channels, int inner_dims, const float
 	if (i < n)
 	{
 		int iw = (i / inner_dims) % channels;
+		float denom = n / channels;
 		if (x[i] > 0) {
-			sum[2 * iw] += dy[i] * x[i] / inner_dims;
+			atomicAdd(&sum[2 * iw], dy[i] * x[i] / denom);
 		}
 		else {
-			sum[2 * iw + 1] += dy[i] * x[i] / inner_dims;
+			atomicAdd(&sum[2 * iw + 1],dy[i] * x[i] / denom);
 		}				
 	}
 	

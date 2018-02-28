@@ -19,7 +19,7 @@ void BiasAddKernelForward(const int n, const float *in, const int inner_dim, con
 }
 
 __global__
-void BiasAddKernelBackward(const int n, const float *diff, const int inner_dim, const int num_samples, const int bias_dim, float *bias_diff)
+void BiasAddKernelBackward(const int n, const float *diff, const int inner_dim, const int bias_dim, float *bias_diff)
 {
 	extern __shared__ float sum[];	
 	if (threadIdx.x == 0) {
@@ -31,8 +31,9 @@ void BiasAddKernelBackward(const int n, const float *diff, const int inner_dim, 
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n)
 	{
-		int index = (i / inner_dim) % bias_dim;
-		sum[index] += diff[i] / inner_dim;
+		float denom = n / bias_dim;
+		int index = (i / inner_dim) % bias_dim;		
+		atomicAdd(&sum[index], diff[i] / denom);
 	}
 	__syncthreads();
 	if (threadIdx.x == 0) {
@@ -51,8 +52,7 @@ void BiasAdd::init() {
 	auto weightDim = _inputs[1]->dims();
 	LOG_IF(FATAL, inputDim[1] != weightDim[1]) << _name << "Bias channels between input and bias weights must be the same.";
 	LOG_IF(FATAL, weightDim[0] != 1 || weightDim[2] != 1 || weightDim[3] != 1) << _name << "All bias weight dimentions must be one except channels.";
-	_bias_dim = weightDim[1];
-	_sample_dim = inputDim[0];
+	_bias_dim = weightDim[1];	
 	_outputs[0]->initValue(inputDim);
 	_outputs[0]->initDiff(inputDim, _inputs[0]->diff());	
 }
@@ -67,7 +67,7 @@ void BiasAdd::forward() {
 void BiasAdd::backward() {
 	auto size = _outputs[0]->diff()->size();		
 	DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
-	BiasAddKernelBackward << < numOfBlocks(size), maxThreadsPerBlock, _bias_dim * sizeof(float) >> > (size, (float*)_outputs[0]->diff()->data(), _inner_dim, _sample_dim, _bias_dim, (float*)_inputs[1]->diff()->mutableData());
+	BiasAddKernelBackward << < numOfBlocks(size), maxThreadsPerBlock, _bias_dim * sizeof(float) >> > (size, (float*)_outputs[0]->diff()->data(), _inner_dim, _bias_dim, (float*)_inputs[1]->diff()->mutableData());
 	DF_KERNEL_CHECK();
 }
 
