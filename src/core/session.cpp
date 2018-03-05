@@ -257,20 +257,29 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 	if (_initialized == true)
 		return;
 	
+	int dbl = 0;
+	if (execution_context)
+		dbl = execution_context->debug_level;
+
 	_initialized = true;	
 
 	for (auto phase_param : _block->phase_params())
 		_phases.insert(std::pair<std::string, deepflow::PhaseParam_PhaseBehaviour>(phase_param.phase(), phase_param.behaviour()));
 	
+	LOG_IF(INFO, dbl > 2) << "creating nodes ... ";
+
 	// creating nodes
 	for (int i=0; i < _block->block_param()->node_size(); ++i)
 	{
 		auto node_param = _block->block_param()->mutable_node(i);
 		auto node = _create_node(node_param);
+		LOG_IF(INFO, dbl > 2) << "creating node " << node->name();
 		node->createIO();
 		LOG_IF(FATAL, node->inputs().size() != node->param()->input_size()) << "Node " << node->name() << "'s input size " << node->inputs().size() << " does not match the one specified in proto (" << node->param()->input_size() << ")";		
 		_nodes.push_back(node);
 	}
+
+	LOG_IF(INFO, dbl > 2) << "connecting nodes ... ";
 
 	// connecting node inputs/outputs
 	for (auto node : _nodes) {
@@ -374,14 +383,14 @@ void Session::_insert_splits()
 			LOG_IF(FATAL, connected_terminals.size() > 2) << "We don't support more than 2 connected nodes to one output at this time | " << node->name();
 			if (connected_terminals.size() == 2) {
 
-				auto node_param = deepflow::NodeParam();
-				node_param.set_name("split_" + output->name());
-				node_param.add_output(node_param.name() + "_output_0");
-				node_param.add_output(node_param.name() + "_output_1");				
-				node_param.add_input(node_param.name() + "_input");
-				node_param.mutable_split_param();
+				auto node_param = _block->add_node_param();				
+				node_param->set_name("split_" + output->name());
+				node_param->add_output(node_param->name() + "_splt0");
+				node_param->add_output(node_param->name() + "_splt1");				
+				node_param->add_input(node_param->name() + "_splti");
+				node_param->mutable_split_param();
 
-				auto new_split_node = _create_node(&node_param);
+				auto new_split_node = _create_node(node_param);
 				new_split_node->createIO();
 
 				output->disconnect();
