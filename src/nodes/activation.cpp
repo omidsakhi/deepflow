@@ -44,7 +44,7 @@ void Activation::init()
 
 void Activation::forward()
 {
-	DF_NODE_CUDNN_CHECK(cudnnActivationForward(_cudnnHandle, _activation_desc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
+	DF_NODE_CUDNN_CHECK(cudnnActivationForward(_cudnnHandle, _activation_desc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));	
 }
 
 void Activation::backward()

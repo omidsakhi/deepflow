@@ -120,5 +120,10 @@ void Resize::backward() {
 
 std::string Resize::to_cpp() const
 {
-	return "";
+	std::string cpp = "auto " + _name + " = df.resize(" + _input_name_for_cpp(0) + ", ";
+	cpp += std::to_string(m_height_scale) + ", ";
+	cpp += std::to_string(m_width_scale) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;	
 }

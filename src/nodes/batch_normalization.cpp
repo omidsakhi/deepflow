@@ -167,5 +167,16 @@ void BatchNormalization::prep_for_saving()
 
 std::string BatchNormalization::to_cpp() const
 {
-	return std::string();
+	auto param = _param->batch_normalization_param();
+	//std::string batch_normalization(std::string input, std::string scale, std::string bias, NormalizationMode mode = DeepFlow::SPATIAL, bool cache = true, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
+	std::string cpp = "auto " + _name + " = df.batch_normalization(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
+	cpp += _input_name_for_cpp(2) + ", ";
+	if (param.mode() == deepflow::BatchNormalizationParam_Mode_CUDNN_BATCHNORM_SPATIAL)
+		cpp += "DeepFlow::SPATIAL ,";
+	else 
+		cpp += "DeepFlow::PER_ACTIVATION ,";
+	cpp += param.cache_meanvar() ? " true, " : " false, ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;	
 }

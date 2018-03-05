@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\utilities\moving_average.cpp" />
     <ClInclude Include="..\..\include\core\caffe.h" />
     <ClInclude Include="..\..\include\core\common_cu.h" />
     <ClInclude Include="..\..\include\core\cuda_helper.h" />
@@ -45,6 +46,7 @@
     <ClInclude Include="..\..\include\nodes\activation.h" />
     <ClInclude Include="..\..\include\nodes\add.h" />
     <ClInclude Include="..\..\include\nodes\batch_normalization.h" />
+    <ClInclude Include="..\..\include\nodes\batch_stddev.h" />
     <ClInclude Include="..\..\include\nodes\bias_add.h" />
     <ClInclude Include="..\..\include\nodes\block.h" />
     <ClInclude Include="..\..\include\nodes\cast_float.h" />
@@ -94,11 +96,17 @@
     <ClInclude Include="..\..\include\solvers\adadelta_solver.h" />
     <ClInclude Include="..\..\include\solvers\adam_solver.h" />
     <ClInclude Include="..\..\include\solvers\gain_solver.h" />
+    <ClInclude Include="..\..\include\solvers\rmsprop_solver.h" />
     <ClInclude Include="..\..\include\solvers\sgd_solver.h" />
     <ClCompile Include="..\..\src\core\caffe.cpp" />
     <ClCompile Include="..\..\src\core\cuda_helper.cpp">
       <FileType>CppHeader</FileType>
     </ClCompile>
+    <ClInclude Include="..\..\include\utilities\moving_average.h" />
+    <CudaCompile Include="..\..\src\nodes\batch_stddev.cu" />
+    <CudaCompile Include="..\..\src\solvers\rmsprop_solver.cu">
+      <FileType>CppHeader</FileType>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\deep_flow.cpp" />
@@ -151,7 +159,9 @@
     <ClCompile Include="..\..\src\nodes\activation.cpp" />
     <ClCompile Include="..\..\src\nodes\batch_normalization.cpp" />
     <ClCompile Include="..\..\src\nodes\block.cpp" />
-    <ClCompile Include="..\..\src\nodes\concate.cpp" />
+    <CudaCompile Include="..\..\src\nodes\concate.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
     <ClCompile Include="..\..\src\nodes\convolution_2d.cpp" />
     <ClCompile Include="..\..\src\nodes\dot.cpp" />
     <ClCompile Include="..\..\src\nodes\dropout.cpp" />

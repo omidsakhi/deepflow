@@ -5,20 +5,16 @@
 __global__
 void PReluForwardKernel(int n, int channels, int inner_dims, const float * __restrict__ x, const float * __restrict__ w, float * __restrict__ y)
 {
-	extern __shared__ float we[];
-	if (threadIdx.x == 0) {
-		for (int k = 0; k < channels; k++)
-			we[k] = w[k];
-	}
-	__syncthreads();
 	int i = blockIdx.x*blockDim.x + threadIdx.x;	
 	if (i < n)
 	{
-		if (x[i] > 0)
+		if (x[i] > 0) {
 			y[i] = x[i];
-		else {
-			int iw = (i / inner_dims) % channels;
-			y[i] = x[i] * we[iw];
+		}
+		else 
+		{
+			const int iw = (i / inner_dims) % channels;
+			y[i] = x[i] * w[iw];
 		}
 	}
 }
@@ -26,20 +22,14 @@ void PReluForwardKernel(int n, int channels, int inner_dims, const float * __res
 __global__
 void PReluBackwardKernel(int n, int channels, int inner_dims, const float *x, const float *w, const float * dy, float *dx)
 {
-	extern __shared__ float we[];
-	if (threadIdx.x == 0) {
-		for (int k = 0; k < channels; k++)
-			we[k] = w[k];
-	}
-	__syncthreads();
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n)
 	{
 		if (x[i] > 0)
 			dx[i] = dy[i];
 		else {
-			int iw = (i / inner_dims) % channels;
-			dx[i] = dy[i] * we[iw];
+			const int iw = (i / inner_dims) % channels;
+			dx[i] = dy[i] * w[iw];
 		}
 	}
 }
@@ -47,26 +37,12 @@ void PReluBackwardKernel(int n, int channels, int inner_dims, const float *x, co
 __global__
 void PReluBackwardWeightKernel(int n, int channels, int inner_dims, const float *x, const float *w, const float * dy, float *dw)
 {
-	extern __shared__ float sum[];
-	if (threadIdx.x == 0) {
-		for (int k = 0; k < channels; k++) {
-			sum[k] = 0;			
-		}			
-	}
-	__syncthreads();
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n && x[i] < 0)
 	{
-		int iw = (i / inner_dims) % channels;
-		float denom = n / channels;
-		atomicAdd(&sum[iw], dy[i] * x[i] / denom);
+		int iw = (i / inner_dims) % channels;		
+		atomicAdd(&dw[iw], dy[i] * x[i] * channels / n);
 	}
-	__syncthreads();
-	if (threadIdx.x == 0) {
-		for (int k = 0; k < channels; k++)			
-			atomicAdd(&dw[k], sum[k] );
-	}
-
 }
 
 PRelu::PRelu(deepflow::NodeParam * param) : Node(param)
@@ -88,7 +64,7 @@ void PRelu::forward()
 	auto size = _inputs[0]->value()->size();
 	auto channels = _inputs[0]->dims()[1];
 	auto inner_dims = _inputs[0]->dims()[2] * _inputs[0]->dims()[3];
-	PReluForwardKernel << < numOfBlocks(size), maxThreadsPerBlock, channels * sizeof(float) >> >(size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->value()->mutableData());
+	PReluForwardKernel << < numOfBlocks(size), maxThreadsPerBlock>> >(size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->value()->mutableData());
 	DF_NODE_KERNEL_CHECK();
 }
 
@@ -97,14 +73,17 @@ void PRelu::backward()
 	auto size = _inputs[0]->value()->size();
 	auto channels = _inputs[0]->dims()[1];
 	auto inner_dims = _inputs[0]->dims()[2] * _inputs[0]->dims()[3];
-	PReluBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock, channels * sizeof(float) >> >(size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
+	PReluBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock>> >(size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
 	DF_NODE_KERNEL_CHECK();
 	DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
-	PReluBackwardWeightKernel << < numOfBlocks(size), maxThreadsPerBlock, channels * sizeof(float) >> >(size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[1]->diff()->mutableData());
+	PReluBackwardWeightKernel << < numOfBlocks(size), maxThreadsPerBlock>> >(size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[1]->diff()->mutableData());
 	DF_NODE_KERNEL_CHECK();
 }
 
 std::string PRelu::to_cpp() const
-{
-	return std::string();
+{	
+	std::string cpp = "auto " + _name + " = df.prelu(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
 }

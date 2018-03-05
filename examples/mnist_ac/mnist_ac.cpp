@@ -42,7 +42,7 @@ std::shared_ptr<Session> create_loss_session() {
 	auto loss_t2 = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "loss_t2");
 	auto sqerr = df.reduce_mean(df.square_error(loss_t1, loss_t2));
 	//auto sqerr = df.square_error(loss_t1, loss_t2);
-	auto loss = df.loss(sqerr,"", DeepFlow::AVG);
+	auto loss = df.loss(sqerr, DeepFlow::AVG);
 
 	df.print({ loss }, "Epoch: {ep} - Loss: {0}\n", DeepFlow::EVERY_PASS);
 

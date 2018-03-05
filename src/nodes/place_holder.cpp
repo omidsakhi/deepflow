@@ -32,21 +32,9 @@ void PlaceHolder::init() {
 }
 
 void PlaceHolder::forward() {
-	/*
-	if (_inputs[0] && _inputs[0]->connectedNode()) {
-		LOG_IF(FATAL, _outputs[0]->value()->sizeInBytes() != _inputs[0]->value()->sizeInBytes()) << "Size mismatch.";
-		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice));		
-	}
-	*/
 }
 
 void PlaceHolder::backward() {
-	/*
-	if (_inputs[0] && _inputs[0]->connectedNode()) {
-		LOG_IF(FATAL, _outputs[0]->diff()->sizeInBytes() != _inputs[0]->diff()->sizeInBytes()) << "Size mismatch.";
-		cpy(_inputs[0]->value()->size(), 1, _outputs[0]->diff()->data(), 1, _inputs[0]->diff()->mutableData());		
-	}
-	*/
 }
 
 std::string PlaceHolder::to_cpp() const

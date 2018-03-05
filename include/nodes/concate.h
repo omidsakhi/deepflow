@@ -13,7 +13,8 @@ public:
 	void backward();
 	std::string to_cpp() const;
 private:
-	int _first_input_batches;
-	int _second_input_batches;
-	int _chw;	
+	int _first_input_channels;
+	int _second_input_channels;
+	int _output_channels;
+	int _width, _height;
 };

@@ -10,8 +10,8 @@ void Split::init()
 	auto input_dims  = _inputs[0]->value()->dims();
 	_outputs[0]->initValue(input_dims);
 	_outputs[1]->initValue(input_dims);
-	_outputs[0]->initDiff();
-	_outputs[1]->initDiff();
+	_outputs[0]->initDiff(true);
+	_outputs[1]->initDiff(true);
 	m_size_in_bytes = _inputs[0]->value()->sizeInBytes();	
 }
 
@@ -24,7 +24,7 @@ void Split::forward()
 void Split::backward()
 {	
 	auto size = _inputs[0]->value()->size();
-	if (_inputs[0] && _inputs[0]->diff()) {
+	if (_inputs[0] && _inputs[0]->diff()) {		
 		cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), m_size_in_bytes, cudaMemcpyDeviceToDevice);		
 		cpy(size, 1.0, _outputs[1]->diff()->data(), 1.0f, _inputs[0]->diff()->mutableData());
 	}

@@ -45,10 +45,9 @@ std::string deconv(DeepFlow *df, std::string input, std::string solver, int inpu
 		node = df->resize(node, 2, 2, name + "_resize");
 	auto f = df->variable(df->random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
 	node = df->conv2d(node, f, pad, pad, 1, 1, 1, 1, name + "_conv");
-	node = batchnorm(df, node, solver, output_channels, name + "_bn");	
-	//auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_bnb");
-	//node = df->bias_add(node, bnb, name + "_bias");
-	//node = df->lrn(node, name + "_lrn", 5, 1e-4, 0.5, 1);
+	auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_bnb");
+	node = df->bias_add(node, bnb, name + "_bias");
+	node = df->lrn(node, name + "_lrn", 1);
 	return node;
 }
 
@@ -59,6 +58,12 @@ std::string to_rgb(DeepFlow *df, std::string input, std::string solver, int inpu
 	auto bnb = df->variable(df->fill({ 1, 3, 1, 1 }, 0), solver, name + "_bnb");
 	node = df->bias_add(node, bnb, name + "_bias");
 	//node = df->tanh(node, name + "_tanh");
+	return node;
+}
+
+std::string prelu(DeepFlow *df, std::string input, int output_channels, std::string solver, std::string name) {
+	auto w = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0.2), solver, name + "_prelu_w");
+	auto node = df->prelu(input, w, name + "_prelu");
 	return node;
 }
 
@@ -163,11 +168,10 @@ std::shared_ptr<Session> create() {
 	//auto dout = df.sigmoid(d8, "dout");
 
 	auto mloss = df.multiplexer({ face_labels, generator_labels }, "mloss");
-
-	auto coef = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "coef");
+	
 	std::string err;
 	err = df.reduce_mean(df.square_error(d8, mloss));
-	auto loss = df.loss(err, coef, DeepFlow::AVG, "loss");
+	auto loss = df.loss(err, DeepFlow::AVG, "loss");
 	df.print({ loss }, "", DeepFlow::END_OF_EPOCH);
 
 	return df.session();
@@ -227,12 +231,10 @@ void main(int argc, char** argv) {
 		std::dynamic_pointer_cast<Switch>(session->get_node("im128"))
 	};
 
-	auto loss_coef = session->get_node("coef");
 	auto loss = session->get_node("loss");
 
 	int iter = 1;	
-
-	loss_coef->fill(1.0f);
+	
 	int stage;
 
 	for (stage = 1; stage < 5; stage++) {
@@ -240,7 +242,7 @@ void main(int argc, char** argv) {
 				execution_context->current_iteration = iter;
 				
 				if (stage > 0) {
-					float beta = (float)iter / 500.0f;
+					float beta = (float)iter / 100.0f;
 					if (beta > 1) beta = 1;
 					add_nodes[stage - 1]->setAlpha(1 - beta);
 					add_nodes[stage - 1]->setBeta(beta);

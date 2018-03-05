@@ -42,12 +42,8 @@ void Loss::forward() {
 	}	
 }
 
-void Loss::backward() {
-	float coef = 1.0f;
-	if (_inputs[1]->connectedTerminal()) {
-		coef = _inputs[1]->value()->toFloat();
-	}	
-	cpy(_inputs[0]->value()->size(), coef, _inputs[0]->value()->data(), 0.0, _inputs[0]->diff()->mutableData());	
+void Loss::backward() {	
+	cpy(_inputs[0]->value()->size(), _coef, _inputs[0]->value()->data(), 0.0, _inputs[0]->diff()->mutableData());	
 }
 
 std::string Loss::to_cpp() const
@@ -56,4 +52,9 @@ std::string Loss::to_cpp() const
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";
 	return cpp;
+}
+
+void Loss::set_coef(float value)
+{
+	_coef = value;
 }

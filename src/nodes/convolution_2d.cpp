@@ -58,7 +58,6 @@ void Convolution2D::init() {
 		_dx = _inputs[0]->diff()->mutableData();
 	}
 	_dw = _inputs[1]->diff()->mutableData();
-
 	_outputs[0]->initDiff();
 	_dyDesc = _outputs[0]->diff()->descriptor();
 	_dy = _outputs[0]->diff()->mutableData();
@@ -71,14 +70,6 @@ void Convolution2D::init() {
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardFilterAlgorithm(_cudnnHandle, _xDesc, _dyDesc, _convDesc, _wDesc, CUDNN_CONVOLUTION_BWD_FILTER_PREFER_FASTEST, 0, &_bwdFilterAlgo));
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardFilterWorkspaceSize(_cudnnHandle, _xDesc, _dyDesc, _convDesc, _wDesc, _bwdFilterAlgo, &_bwdFilterWorkspaceSize));
 	_maxWorkspaceSize = std::max({ _maxWorkspaceSize, _bwdFilterWorkspaceSize });
-
-	if (_num_inputs == 3) {
-		_dzDesc = _dyDesc;
-		DF_NODE_CUDA_CHECK(cudaMalloc(&_dz, _outputs[0]->diff()->sizeInBytes()));
-		_db = _inputs[2]->diff()->mutableData();
-		_dbDesc = _inputs[2]->diff()->descriptor();
-	}
-
 }
 
 void Convolution2D::forward() {
@@ -114,8 +105,6 @@ std::string Convolution2D::to_cpp() const
 	std::string cpp = "auto " + _name + " = df.conv2d(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
 	if (_num_inputs == 3)
 		cpp += _input_name_for_cpp(2) + ", ";
-	else
-		cpp += "\"\", ";
 	cpp += std::to_string(param.pad_h()) + ", ";
 	cpp += std::to_string(param.pad_w()) + ", ";
 	cpp += std::to_string(param.u()) + ", ";

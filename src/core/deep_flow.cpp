@@ -482,6 +482,18 @@ std::string DeepFlow::replay_memory(std::string input, int capacity, std::string
 	return node_param->output(0);
 }
 
+std::string DeepFlow::batch_stddev(std::string input, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	node_param->mutable_batch_stddev_param();
+	return node_param->output(0);
+}
+
 void DeepFlow::print(std::initializer_list<std::string> inputs, std::string message, ActionTime printTime, ActionType printType, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -659,6 +671,17 @@ std::string DeepFlow::adadelta_solver(float learning_rate, float momentum, float
 	auto adadelta_solver = solver_param->mutable_adadelta_solver();	
 	adadelta_solver->set_momentum(momentum);
 	adadelta_solver->set_delta(delta);	
+	return solver_param->name();
+}
+
+std::string DeepFlow::rmsprop_solver(float learning_rate, float rms_decay, float eps, std::string name)
+{
+	auto solver_param = _block->add_solver_param();
+	solver_param->set_learning_rate(learning_rate);
+	solver_param->set_name(_block->get_unique_solver_param_name(name));
+	auto solver = solver_param->mutable_rmsprop_solver();
+	solver->set_rms_decay(rms_decay);
+	solver->set_eps(eps);
 	return solver_param->name();
 }
 
@@ -948,15 +971,14 @@ std::string DeepFlow::switcher(std::string input, std::string name, std::initial
 	return node_param->output(0);
 }
 
-std::string DeepFlow::loss(std::string a, std::string coef, ReduceOp op, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::loss(std::string a, ReduceOp op, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	for (auto phase : phases)
 		node_param->add_phase(phase);
-	node_param->add_input(a);
-	node_param->add_input(coef);
+	node_param->add_input(a);	
 	auto loss_param = node_param->mutable_loss_param();
 	loss_param->set_reduce_op((deepflow::LossParam_ReduceOp)op);
 	return node_param->output(0);

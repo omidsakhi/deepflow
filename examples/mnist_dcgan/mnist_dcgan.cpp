@@ -42,7 +42,7 @@ std::shared_ptr<Session> create_loss() {
 	auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "discriminator_input");
 	auto labels_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "labels_input");
 	auto euc = df.square_error(discriminator_input, labels_input);
-	auto loss = df.loss(euc,"", DeepFlow::AVG, "loss");
+	auto loss = df.loss(euc, DeepFlow::AVG, "loss");
 	df.print({ loss }, " NORM {0}\n", DeepFlow::EVERY_PASS); 
 	return df.session();
 

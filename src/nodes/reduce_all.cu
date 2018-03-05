@@ -16,8 +16,7 @@ void ReduceAllKernelBackward(const int n, bool average, const float *dY, float *
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
 		dX[i] = (average ? dY[0] / n : dY[0]);
-	}
-		
+	}		
 }
 
 ReduceAll::ReduceAll(deepflow::NodeParam *param) : Node(param) {

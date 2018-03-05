@@ -17,6 +17,7 @@
 #include "solvers/sgd_solver.h"
 #include "solvers/adam_solver.h"
 #include "solvers/adadelta_solver.h"
+#include "solvers/rmsprop_solver.h"
 
 #include "nodes/add.h"
 #include "nodes/matmul.h"
@@ -65,6 +66,7 @@
 #include "nodes/dprelu.h"
 #include "nodes/concate.h"
 #include "nodes/reshape.h"
+#include "nodes/batch_stddev.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -219,6 +221,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Reshape>(node_param);
 	else if (node_param->has_lrn_param())
 		return std::make_shared<LRN>(node_param);
+	else if (node_param->has_batch_stddev_param())
+		return std::make_shared<BatchStdDev>(node_param);
 	else {
 		LOG(FATAL) << "Unsupported Node";
 	}
@@ -238,6 +242,9 @@ std::shared_ptr<Solver> Session::_create_solver(deepflow::SolverParam *solver_pa
 	}
 	else if (solver_param->has_adadelta_solver()) {
 		return std::make_shared<AdaDeltaSolver>(solver_param);
+	}
+	else if (solver_param->has_rmsprop_solver()) {
+		return std::make_shared<RMSPropSolver>(solver_param);
 	}
 	else {
 		LOG(FATAL) << "Unsupported Solver";
@@ -327,11 +334,18 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 		if (resolved) {
 			mem_usage(&free_byte_before, &total_byte, 0);
 			node->init();						
+			LOG_IF(FATAL, cudaPeekAtLastError() != 0) << "[FAILED] " << node->name() << " | " << cudaGetErrorString(cudaPeekAtLastError());
 			mem_usage(&free_byte_after, &total_byte, 0);
 			std::string shape;
-			for (auto output : node->outputs())
-				shape += output->value()->shape() + " , ";			
-			LOG(INFO) << node->op_name() << " " << node->name() << " | " << (10e-6f * (free_byte_before - free_byte_after)) << "MB | " << shape;
+			int n_outputs = node->outputs().size();
+			if (n_outputs > 0) {
+				shape = node->output(0)->value()->shape();
+				for (int i = 1; i < n_outputs; ++i) {
+					shape += "," + node->output(i)->value()->shape();
+				}
+			}
+			float used_memory = (10e-6f * (free_byte_before - free_byte_after)); // MB
+			LOG(INFO) << node->op_name() << " " << node->name() << " | " << shape;
 			node->setInitialized(true);
 		}
 		else {
@@ -345,7 +359,7 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 	else {
 		auto execution_context = std::make_shared<ExecutionContext>();
 		set_execution_context(execution_context);
-	}
+	}	
 	
 	print_total_parameters();
 }
@@ -393,9 +407,7 @@ void Session::_insert_splits()
 			auto connected_terminals = output->connectedTerminals();
 			LOG_IF(FATAL, connected_terminals.size() > 1);
 		}
-	}
-
-	LOG(INFO) << "TOTAL SPLITS: " << total_split_nodes;
+	}	
 }
 
 void Session::set_execution_context(std::shared_ptr<ExecutionContext> execution_context)
@@ -765,6 +777,7 @@ void Session::forward()
 		int _verbose = node->executionContext()->debug_level;
 		LOG_IF(INFO, _verbose > 2) << "FWRD -> " << node->name();
 		node->forward();
+		LOG_IF(FATAL, cudaPeekAtLastError() != 0) << "[FAILED] " << node->name() << " | " << cudaGetErrorString(cudaPeekAtLastError());
 	}
 }
 
@@ -790,6 +803,7 @@ void Session::backward()
 		int _verbose = node->executionContext()->debug_level;
 		LOG_IF(INFO, _verbose > 2) << "BWRD -> " << node->name();
 		node->backward();
+		LOG_IF(FATAL, cudaPeekAtLastError() != 0) << "[FAILED] " << node->name() << " | " << cudaGetErrorString(cudaPeekAtLastError());
 	}
 }
 
@@ -880,7 +894,7 @@ void Session::print_total_parameters()
 	for (auto var : variable_nodes) {
 		total += var->output(0)->value()->size();
 	}
-	LOG(INFO) << "TOTAL PARAMETERS: " << total;
+	LOG(INFO) << "total parameters: " << total;
 }
 
 void Session::run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level) {
@@ -1063,10 +1077,10 @@ std::string Session::to_cpp() const
 {
 	std::list<std::shared_ptr<Node>> ends = _get_all_end_nodes("");
 	std::string code = "\nDeepFlow df;\n\n";
-	
-	for (auto phase : _phases)			
+
+	for (auto phase : _phases)
 		code += "df.define_phase(\"" + phase.first + "\", deepflow::PhaseParam_PhaseBehaviour_" + PhaseParam_PhaseBehaviour_Name(phase.second) + ");\n";
-	
+
 	if (_phases.size() > 0)
 		code += "\n";
 
@@ -1082,21 +1096,62 @@ std::string Session::to_cpp() const
 		}
 		if (!exist)
 			solvers_set.insert(solver_map_item.second);
-	}		
+	}
 	for (auto solver : solvers_set)
 		code += solver->to_cpp() + "\n";
-	
+
 	if (solvers_set.size() > 0)
 		code += "\n";
 
 	std::function<void(Node*)> foo = std::bind(generate_cpp_code, std::placeholders::_1, &code);
-	
+
 	int token = rand();
-	//for (auto end : ends)
-	//	end->_traverse_up(foo, Node::POST_ORDER, token);
-	
+
+	std::list<std::shared_ptr<Node>> nodes = _get_all_end_nodes("");
+	std::list<std::shared_ptr<Node>> list, visited_nodes;
+
+	auto isVisited = [](std::list<std::shared_ptr<Node>> &list, std::shared_ptr<Node> node_to_check) {
+		for (auto node : list)
+			if (node == node_to_check)
+				return true;
+		return false;
+	};
+
+	while (nodes.size() > 0) {
+		auto node = nodes.front();
+		nodes.pop_front();
+		auto inputNodes = node->inputNodes();
+		auto outputNodes = node->outputNodes();
+		if (isVisited(visited_nodes, node)) {
+			continue;
+		}
+		visited_nodes.push_back(node);
+		if (inputNodes.size() == 0 && outputNodes.size() == 0) {
+			continue;
+		}
+		if (inputNodes.size() > 0) {
+			for (auto inputNode : inputNodes) {
+				for (auto t : inputNode->outputs()) {
+					for (auto c : t->connectedNodes()) {
+						if (c == node) {
+							t->setEnabled(true);
+							break;
+						}
+					}
+				}
+				nodes.push_back(inputNode);
+			}
+		}
+
+		list.push_front(node);
+	}
+
+	for (auto node : list) {
+		auto cpp = node->to_cpp();
+		code += (cpp.empty()?"MISSING " + node->name() : cpp) + "\n";
+	}
 	code += "\n";
-	
+
 	return code;
 }
 

@@ -75,7 +75,7 @@ void main(int argc, char** argv) {
 		auto test_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Labels, "test_labels", { "Validation" });
 		auto label_selector = df.phaseplexer(train_labels, "Train", test_labels, "Validation", "label_selector", {});		
 		auto softmax_dot = df.dot(softmax_log, label_selector);
-		auto loss = df.loss(softmax_dot,"", DeepFlow::AVG, "loss");
+		auto loss = df.loss(softmax_dot, DeepFlow::AVG, "loss");
 		auto predict = df.argmax(softmax, 1, "predict", {});
 		auto target = df.argmax(label_selector, 1, "target", {});
 		auto equal = df.equal(predict, target, "equal", {});

@@ -72,10 +72,10 @@ void Node::_resolve_propagation(int visit_token) {
 
 void Node::write_values(std::shared_ptr<Tensor> tensor, float alpha, float beta)
 {	
-	LOG_IF(INFO, _verbose > 2) << "FEEDING VALUES TO " << _name;		
+	LOG_IF(INFO, _verbose > 2) << tensor->name() << " -> " << _outputs[0]->value()->name();
 	auto feed_dim = tensor->dims();
 	auto my_dim = _outputs[0]->value()->dims();
-	LOG_IF(FATAL, feed_dim != my_dim) << "Forward feed dimension mismatch between dst (" << _name << ") " << tensor->shape() << " and src (" << _outputs[0]->value()->shape() + ")";
+	LOG_IF(FATAL, feed_dim != my_dim) << _name << " Forward feed dimension mismatch between dst (" << _outputs[0]->value()->name()  << " - " << _outputs[0]->value()->shape() << ") and src (" << tensor->name()  << " - " << tensor->shape() << ")";
 	cpy(_outputs[0]->value()->size(), alpha, tensor->data(), beta, _outputs[0]->value()->mutableData());
 }
 
@@ -86,10 +86,10 @@ void Node::write_values(std::initializer_list<float> values)
 
 void Node::write_diffs(std::shared_ptr<Tensor> tensor, float alpha, float beta)
 {	
-	LOG_IF(INFO, _verbose > 2) << "FEEDING GRADIENTS TO " << _name;
+	LOG_IF(INFO, _verbose > 2) << tensor->name() << " -> " << _outputs[0]->diff()->name();	
 	auto feed_dim = tensor->dims();
 	auto my_dim = _outputs[0]->diff()->dims();
-	LOG_IF(FATAL, feed_dim != my_dim) << "Backward feed dimension mismatch between dst (" << _name << ") " << tensor->shape() << " and src (" << _outputs[0]->value()->shape() << ")";
+	LOG_IF(FATAL, feed_dim != my_dim) << _name << " Backward feed dimension mismatch between dst (" << _outputs[0]->diff()->name() << " - " << _outputs[0]->diff()->shape() << ") and src (" << tensor->name() << " - " << tensor->shape() << ")";
 	cpy(_outputs[0]->diff()->size(), alpha, tensor->data(), beta, _outputs[0]->diff()->mutableData());
 }
 

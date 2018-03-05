@@ -122,20 +122,20 @@ std::shared_ptr<Tensor> NodeOutput::diff() {
 
 void NodeOutput::initValue(std::array<int, 4> dims, Tensor::TensorType type) {
 	LOG_IF(FATAL, _value != nullptr) << "_value != nullptr";
-	_value = std::make_shared<Tensor>(dims,type);
+	_value = std::make_shared<Tensor>(dims,type, _name + "_v");
 }
 
 void NodeOutput::initValue(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor)
 {
 	LOG_IF(FATAL, _value != nullptr) << "_value != nullptr";
-	_value = std::make_shared<Tensor>(dims, tensor);
+	_value = std::make_shared<Tensor>(dims, tensor, _name + "_v");
 }
 
-void NodeOutput::initDiff()
+void NodeOutput::initDiff(bool reset)
 {
 	LOG_IF(FATAL, _value == nullptr) << "_value == nullptr";
 	LOG_IF(FATAL, _diff != nullptr) << "_diff != nullptr";
-	_diff = std::make_shared<Tensor>(_value->dims(), _value->type());
+	_diff = std::make_shared<Tensor>(_value->dims(), _value->type(), _name + "_d", reset);
 }
 
 void NodeOutput::initDiff(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor)
@@ -143,7 +143,7 @@ void NodeOutput::initDiff(std::array<int, 4> dims, std::shared_ptr<Tensor> tenso
 	LOG_IF(FATAL, _value == nullptr) << "_value == nullptr";
 	LOG_IF(FATAL, _diff != nullptr) << "_diff != nullptr";
 	LOG_IF(FATAL, dims != _value->dims()) << "dims != _value->dims()";
-	_diff = std::make_shared<Tensor>(dims, tensor);
+	_diff = std::make_shared<Tensor>(dims, tensor, _name + "_d");
 }
 
 void NodeOutput::resetDiff()

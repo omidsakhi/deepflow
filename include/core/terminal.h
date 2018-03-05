@@ -56,7 +56,7 @@ public:
 	void initValue(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor);
 	std::array<int, 4> dims();
 	void feed(std::shared_ptr<NodeOutput> t);
-	void initDiff();
+	void initDiff(bool reset = false);
 	void initDiff(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor);
 	void resetDiff();
 	void resetValue();

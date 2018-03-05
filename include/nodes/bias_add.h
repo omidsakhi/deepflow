@@ -15,4 +15,5 @@ public:
 private:
 	int _inner_dim = 0;
 	int _bias_dim = 0;	
+	cudnnHandle_t _cudnnHandle;
 };

@@ -57,7 +57,7 @@ void main(int argc, char** argv) {
 			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
 			auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
 			auto euclidean = df.square_error(image, generator);
-			auto loss = df.loss(euclidean,"", DeepFlow::AVG);
+			auto loss = df.loss(euclidean, DeepFlow::AVG);
 			df.display(image, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1,  "input", { train });
 			df.display(generator, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approximation", { train });
 			df.psnr(image, generator, DeepFlow::EVERY_PASS);
@@ -73,7 +73,7 @@ void main(int argc, char** argv) {
 			auto f2 = df.variable(df.step({ 1,11,5,5 }, 0, 1), "", "w");
 			auto tconv = df.transposed_conv2d(recon, f2, 2, 2, 1, 1, 1, 1);
 			auto euclidean = df.square_error(conv, tconv);
-			auto loss = df.loss(euclidean,"", DeepFlow::AVG);			
+			auto loss = df.loss(euclidean, DeepFlow::AVG);			
 			df.display(recon, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "input", { train });
 			df.psnr(recon, image, DeepFlow::EVERY_PASS, "psnr", { train });
 		}
@@ -87,7 +87,7 @@ void main(int argc, char** argv) {
 			auto conv = df.conv2d(image, f1, "", 1, 1, 1, 1, 1, 1);			
 			auto tconv = df.transposed_conv2d(recon, f2, 1, 1, 1, 1, 1, 1);
 			auto euclidean = df.square_error(conv, tconv);
-			auto loss = df.loss(euclidean,"", DeepFlow::SUM);
+			auto loss = df.loss(euclidean, DeepFlow::SUM);
 			df.display(recon, 2, DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, 1, "input", { train });
 			df.psnr(recon, image, DeepFlow::END_OF_EPOCH, "psnr", { train });
 		}
@@ -101,7 +101,7 @@ void main(int argc, char** argv) {
 			auto generator2 = df.data_generator(df.random_normal({ 1, 3, 256, 256 }, 0, 0.1), 1, solver, "gen2");
 			auto selector = df.random_selector(generator1, generator2, 0.5);
 			auto euclidean = df.square_error(selector, image);
-			auto loss = df.loss(euclidean,"", DeepFlow::SUM);			
+			auto loss = df.loss(euclidean, DeepFlow::SUM);			
 			df.display(generator1, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approx1", { train });
 			df.display(generator2, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "approx2", { train });
 		}

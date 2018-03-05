@@ -26,12 +26,12 @@ public:
 
 	Tensor();
 	Tensor(deepflow::TensorParam *param);	
-	Tensor(std::array<int, 4> dims, TensorType type);
-	Tensor(std::array<int, 4> dims, std::shared_ptr<Tensor> shadow_tensor);
+	Tensor(std::array<int, 4> dims, TensorType type, std::string name, bool reset = false);
+	Tensor(std::array<int, 4> dims, std::shared_ptr<Tensor> shadow_tensor, std::string name);
 	cudnnDataType_t cudnnType() const;
 	TensorType type() const;
 	std::string typeString() const;
-	void init();	
+	void init(bool reset_to_zero = false);	
 	std::string shape() const;
 	int size() const;
 	size_t sizeInBytes() const;
@@ -62,6 +62,7 @@ public:
 	float toFloat() const;
 
 	std::string toString() const;
+	std::string name() const;
 protected:
 	std::array<int, 4> _dims;
 	size_t _size = 0;
@@ -70,6 +71,7 @@ protected:
 	TensorType _reader_type;
 	std::string _shapeString;
 	void *d_data = nullptr;
+	std::string _name;
 };
 
 

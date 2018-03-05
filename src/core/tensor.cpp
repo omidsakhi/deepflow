@@ -25,19 +25,22 @@ Tensor::Tensor(deepflow::TensorParam *param) {
 		LOG(FATAL) << "Unsupported shape.";
 	}
 	_reader_type = (Tensor::TensorType) param->type();
+	_name = param->name();
 	init();
 }
 
-Tensor::Tensor(std::array<int, 4> dims, TensorType type) {
+Tensor::Tensor(std::array<int, 4> dims, TensorType type, std::string name, bool reset) {
 	_dims = dims;
 	_reader_type = type;
-	init();
+	_name = name;
+	init(reset);
 }
 
-Tensor::Tensor(std::array<int, 4> dims, std::shared_ptr<Tensor> shadow_tensor)
+Tensor::Tensor(std::array<int, 4> dims, std::shared_ptr<Tensor> shadow_tensor, std::string name)
 {
 	_dims = dims;
 	_reader_type = shadow_tensor->type();
+	_name = name;
 	_size = _dims[0] * _dims[1] * _dims[2] * _dims[3];
 	_shapeString = std::to_string(_dims[0]);
 	for (int i = 1; i < 4; ++i)
@@ -49,7 +52,7 @@ Tensor::Tensor(std::array<int, 4> dims, std::shared_ptr<Tensor> shadow_tensor)
 	d_data = shadow_tensor->mutableData();
 }
 
-void Tensor::init() {
+void Tensor::init(bool reset_to_zero) {
 	_size = _dims[0] * _dims[1] * _dims[2] * _dims[3];	
 	_shapeString = std::to_string(_dims[0]);
 	for (int i = 1; i < 4; ++i)
@@ -57,7 +60,10 @@ void Tensor::init() {
 	DF_CUDNN_CHECK(cudnnCreateTensorDescriptor(&_desc));
 	DF_CUDNN_CHECK(cudnnSetTensor4dDescriptor(_desc, CUDNN_TENSOR_NCHW, (cudnnDataType_t)_reader_type, _dims[0], _dims[1], _dims[2], _dims[3]));
 	DF_CUDNN_CHECK(cudnnGetTensorSizeInBytes(_desc, &_sizeInBytes));	
-	DF_CUDA_CHECK(cudaMalloc(&d_data, _sizeInBytes));	
+	DF_CUDA_CHECK(cudaMalloc(&d_data, _sizeInBytes));
+	if (reset_to_zero)
+		reset();
+		
 }
 
 cudnnDataType_t Tensor::cudnnType() const {
@@ -247,6 +253,11 @@ std::string Tensor::toString() const {
 			LOG(FATAL) << "Unsupported type for toString() function";
 	};
 	return output;
+}
+
+std::string Tensor::name() const
+{
+	return _name;
 }
 
 std::string Tensor::typeString() const {

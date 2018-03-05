@@ -116,7 +116,7 @@ TEST(bias_add, forward) {
 	auto bias_add_op = df.bias_add(vec, bias, "bias_add");
 	auto session = df.session();
 	session->initialize();
-	session->get_node("v")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,	15, 16, 17,	18, 19, 20, 21, 22, 23, 24 });
+	session->get_node("v")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
 	session->get_node("b")->write_values({ 1, 2, 3 });
 	session->forward();	
 	EXPECT_EQ(
@@ -131,7 +131,7 @@ TEST(bias_add, backward) {
 	auto bias_add_op = df.bias_add(vec, bias, "bias_add");
 	auto session = df.session();
 	session->initialize();	
-	session->get_node("v")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,	15, 16, 17,	18, 19, 20, 21, 22, 23, 24 });
+	session->get_node("v")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
 	session->get_node("b")->write_values({ 1, 2, 3 });
 	session->forward();	
 	session->get_node("bias_add")->write_diffs({ 
@@ -141,14 +141,36 @@ TEST(bias_add, backward) {
 		1, 1, 1, 1,
 		1, 1, 1, 1,
 		1, 1, 1, 1 });
-	// 0: B[(0 / 4) % 3] += 24 / 4; 
-	// 1: B[(1 / 4) % 3] += 23 / 4;
-	// 2: B[(2 / 4) % 3] += 22 / 4;
-	// 3: B[(3 / 4) % 3] += 21 / 4;
-	// 4: B[(4 / 4) % 3] += 20 / 4;
 	session->backward();
 	EXPECT_EQ(session->get_node("bias_add")->input(0)->diff()->verify({ 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }), true);	
 	EXPECT_EQ(session->get_node("bias_add")->input(1)->diff()->verify({ 11.75, 9.75, 7.75 }), true);	
+}
+
+TEST(conv2d, forward) {
+	DeepFlow df;
+	auto input = df.place_holder({ 2, 1, 3, 3 }, Tensor::Float, "input");
+	auto f = df.place_holder({ 1, 1, 2, 2 }, Tensor::Float, "f");
+	auto conv = df.conv2d(input, f, 0, 0, 1, 1, 1, 1, "conv");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("input")->write_values(
+	{ 1, 2, 3, 
+	  4, 5, 6,
+	  7, 8, 9,
+	  
+	  10, 11, 12,
+	  13, 14, 15,
+	  16, 17, 18 });
+	session->get_node("f")->write_values({ 1, 1, 1, 1 });
+	session->forward();	
+	EXPECT_EQ(
+		session->get_node("conv")->output(0)->value()->verify({ 
+		12, 16,
+		24, 28,
+		
+		48, 52,
+		60, 64 }),
+		true);
 }
 
 int main(int argc, char** argv) {

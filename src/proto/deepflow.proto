@@ -29,7 +29,8 @@ message TensorParam {
 		INT8x4 = 5;
 	};
 	TensorType type = 1;
-	repeated int32 dims = 2;		
+	repeated int32 dims = 2;
+	string name = 3;
 }
 
 message MultiplexerParam {
@@ -397,13 +398,20 @@ message AdamSolverParam {
 	float eps = 4;
 }
 
+message RMSPropSolverParam {	
+	float rms_decay = 1;
+	float eps = 2;	
+}
+
 message SolverParam {
 	string name = 1;	
+	float learning_rate = 2;
 	SGDSolverParam sgd_solver = 3;
 	GainSolverParam gain_solver = 4;
 	AdamSolverParam adam_solver = 5;
-	AdaDeltaSolverParam adadelta_solver = 6;	
-	float learning_rate = 7;
+	AdaDeltaSolverParam adadelta_solver = 6;
+	RMSPropSolverParam rmsprop_solver = 7;
+
 }
 
 message PhaseParam {
@@ -429,6 +437,9 @@ message ConcateParam {
 
 message ReshapeParam {
 	repeated int32 output_dims = 1;
+}
+
+message BatchStdDevParam {
 }
 
 message NodeParam {
@@ -489,5 +500,6 @@ message NodeParam {
   ConcateParam concate_param = 150;
   ReshapeParam reshape_param = 151;
   DPReluParam dprelu_param = 152;
+  BatchStdDevParam batch_stddev_param = 153;
 }
 

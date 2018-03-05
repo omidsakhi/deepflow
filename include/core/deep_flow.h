@@ -154,6 +154,7 @@ public:
 	std::string gain_solver(float momentum = 0.98f, float learning_rate = 10e-2f, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f, std::string name = "gain");
 	std::string adam_solver(float learning_rate = 10e-2f, float beta1 = 0.5f, float beta2 = 0.999f, float eps = 10e-8f, std::string name = "adam");
 	std::string adadelta_solver(float learning_rate = 10e-2f, float momentum = 0.5f, float delta = 1e-6f, std::string name = "adadelta");
+	std::string rmsprop_solver(float learning_rate = 10e-2f, float rms_decay = 0.9f, float eps = 0.001f, std::string name = "rmsprop");
 	
 	// PRINTERS & DISPLAYS
 	void print(std::initializer_list<std::string> inputs, std::string message, ActionTime printTime = ActionTime::END_OF_EPOCH, ActionType = ActionType::VALUES, std::string name = "print", std::initializer_list<std::string> phases = {});
@@ -170,11 +171,12 @@ public:
 	void sio_output(std::initializer_list<std::string> inputs, ActionTime printTime = ActionTime::EVERY_PASS, std::string host = "127.0.0.1", int port = 6643, std::string name = "sio_output", std::initializer_list<std::string> phases = {});
 
 	// OTHER	
-	std::string loss(std::string a, std::string coef, ReduceOp op, std::string name = "loss", std::initializer_list<std::string> phases = {});
+	std::string loss(std::string a, ReduceOp op, std::string name = "loss", std::initializer_list<std::string> phases = {});
 	std::string equal(std::string a, std::string b, std::string name = "Equal", std::initializer_list<std::string> phases = {});
 	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});	
 	std::array<std::string,2> accumulator(std::string input, ActionTime resetTime = ActionTime::END_OF_EPOCH, std::string name = "acc", std::initializer_list<std::string> phases = {});
 	std::string replay_memory(std::string input, int capacity, std::string name = "replay_memory", std::initializer_list<std::string> phases = {});
+	std::string batch_stddev(std::string input, std::string name = "batch_stddev", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
 	std::string define_phase(std::string phase, PhaseBehaviour behaviour = TRAIN_AND_INFERENCE);

@@ -7,6 +7,7 @@
 #include "nodes/switch.h"
 #include "nodes/multiplexer.h"
 #include "nodes/add.h"
+#include "nodes/loss.h"
 
 class Solver;
 class Variable;

@@ -5,40 +5,10 @@
 __global__
 void BiasAddKernelForward(const int n, const float *in, const int inner_dim, const int bias_dim, const float *b, float *out)
 {
-	extern __shared__ float bias[];	
-	if (threadIdx.x == 0) {
-		for (int k = 0; k < bias_dim; k++)
-			bias[k] = b[k];
-	}
-	__syncthreads();
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
-		int index = (i/inner_dim)%bias_dim;
-		out[i] = in[i] + bias[index];
-	}
-}
-
-__global__
-void BiasAddKernelBackward(const int n, const float *diff, const int inner_dim, const int bias_dim, float *bias_diff)
-{
-	extern __shared__ float sum[];	
-	if (threadIdx.x == 0) {
-		for (int k = 0; k < bias_dim; k++) {
-			sum[k] = 0;			
-		}
-	}
-	__syncthreads();
-	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	if (i < n)
-	{
-		float denom = n / bias_dim;
-		int index = (i / inner_dim) % bias_dim;		
-		atomicAdd(&sum[index], diff[i] / denom);
-	}
-	__syncthreads();
-	if (threadIdx.x == 0) {
-		for (int k = 0; k < bias_dim; k++)
-			atomicAdd(&bias_diff[k], sum[k]);
+		const int bias_index = (i/inner_dim)%bias_dim;
+		out[i] = in[i] + b[bias_index];
 	}
 }
 
@@ -54,21 +24,20 @@ void BiasAdd::init() {
 	LOG_IF(FATAL, weightDim[0] != 1 || weightDim[2] != 1 || weightDim[3] != 1) << _name << "All bias weight dimentions must be one except channels.";
 	_bias_dim = weightDim[1];	
 	_outputs[0]->initValue(inputDim);
-	_outputs[0]->initDiff(inputDim, _inputs[0]->diff());	
+	_outputs[0]->initDiff(inputDim, _inputs[0]->diff());
+	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 }
 
 void BiasAdd::forward() {
 	// C(m,n) = A(m,n) + B(m,n)	
-	auto size = _outputs[0]->value()->size();
-	BiasAddKernelForward <<< numOfBlocks(size), maxThreadsPerBlock, _bias_dim * sizeof(float) >>> (size, (float*) _inputs[0]->value()->data(), _inner_dim, _bias_dim, (float*) _inputs[1]->value()->data(), (float*) _outputs[0]->value()->mutableData());
-	DF_KERNEL_CHECK();
+	auto size = _outputs[0]->value()->size();	
+	BiasAddKernelForward <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*) _inputs[0]->value()->data(), _inner_dim, _bias_dim, (float*) _inputs[1]->value()->data(), (float*) _outputs[0]->value()->mutableData());	
 }
 
 void BiasAdd::backward() {
-	auto size = _outputs[0]->diff()->size();		
-	DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
-	BiasAddKernelBackward << < numOfBlocks(size), maxThreadsPerBlock, _bias_dim * sizeof(float) >> > (size, (float*)_outputs[0]->diff()->data(), _inner_dim, _bias_dim, (float*)_inputs[1]->diff()->mutableData());
-	DF_KERNEL_CHECK();
+	auto size = _outputs[0]->value()->size();
+	float alpha = 1.0f / (size / _bias_dim);
+	cudnnConvolutionBackwardBias(_cudnnHandle, &alpha, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), &zero, _inputs[1]->diff()->descriptor(), _inputs[1]->diff()->mutableData());
 }
 
 std::string BiasAdd::to_cpp() const

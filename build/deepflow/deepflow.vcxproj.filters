@@ -100,6 +100,12 @@
     <CudaCompile Include="..\..\src\nodes\dprelu.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\solvers\rmsprop_solver.cu">
+      <Filter>source\solver</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\batch_stddev.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -216,13 +222,16 @@
     <ClCompile Include="..\..\src\nodes\lrn.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\nodes\concate.cpp">
-      <Filter>source\nodes</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\initializers\random_normal.cpp">
       <Filter>source\initializers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\nodes\reshape.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\utilities\moving_average.cpp">
+      <Filter>source\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\concate.cu">
       <Filter>source\nodes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -455,6 +464,15 @@
     <ClInclude Include="..\..\include\nodes\dprelu.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\utilities\moving_average.h">
+      <Filter>include\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\solvers\rmsprop_solver.h">
+      <Filter>include\solver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\batch_stddev.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -504,6 +522,12 @@
     </Filter>
     <Filter Include="proto">
       <UniqueIdentifier>{7ff734da-7359-4ef9-838e-0e7fcee1ce90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\utilities">
+      <UniqueIdentifier>{4e3955d6-90e2-41dd-af4c-f1cc62e6311c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\utilities">
+      <UniqueIdentifier>{8db38e35-768e-4715-8bc3-32297ca481ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
