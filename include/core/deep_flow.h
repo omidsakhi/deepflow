@@ -138,7 +138,7 @@ public:
 	std::string sigmoid(std::string a, std::string name = "sigmoid", std::initializer_list<std::string> phases = {});
 	std::string relu(std::string a, std::string name = "relu", std::initializer_list<std::string> phases = {});
 	std::string prelu(std::string input, std::string w, std::string name = "prelu", std::initializer_list<std::string> phases = {});
-	std::string dprelu(std::string input, std::string w_left, std::string w_right, std::string name = "dprelu", std::initializer_list<std::string> phases = {});
+	std::string dprelu(std::string input, std::string a, std::string name = "dprelu", std::initializer_list<std::string> phases = {});
 	std::string tanh(std::string a, std::string name = "tanh", std::initializer_list<std::string> phases = {});
 	std::string clipped_relu(std::string a, float threshold, std::string name = "clipped_relu", std::initializer_list<std::string> phases = {});
 	std::string elu(std::string a, float alpha, std::string name = "elu", std::initializer_list<std::string> phases = {});
@@ -177,6 +177,7 @@ public:
 	std::array<std::string,2> accumulator(std::string input, ActionTime resetTime = ActionTime::END_OF_EPOCH, std::string name = "acc", std::initializer_list<std::string> phases = {});
 	std::string replay_memory(std::string input, int capacity, std::string name = "replay_memory", std::initializer_list<std::string> phases = {});
 	std::string batch_stddev(std::string input, std::string name = "batch_stddev", std::initializer_list<std::string> phases = {});
+	std::string pass_through(std::string input, std::string name = "pass_through", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
 	std::string define_phase(std::string phase, PhaseBehaviour behaviour = TRAIN_AND_INFERENCE);

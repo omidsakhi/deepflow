@@ -25,5 +25,9 @@ void Reshape::backward()
 
 std::string Reshape::to_cpp() const
 {
-	return std::string();
+	std::string cpp = "auto " + _name + " = df.reshape(" + _input_name_for_cpp(0) + ", ";
+	cpp += "{" + std::to_string(_output_dims[0]) + ", " + std::to_string(_output_dims[1]) + ", " + std::to_string(_output_dims[2]) + ", " + std::to_string(_output_dims[3]) + "}, ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;	
 }

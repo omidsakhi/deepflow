@@ -6,13 +6,13 @@
 class DeepFlowDllExport Split : public Node {
 public:
 	Split(deepflow::NodeParam *param);
-	int minNumInputs() { return 1; }
-	int minNumOutputs() { return 2; }
+	int minNumInputs() override { return 1; }
+	int minNumOutputs() override;
 	std::string op_name() const override { return "split"; }
-	void init();	
-	void forward();
-	void backward();
+	void init() override;	
+	void forward() override;
+	void backward() override;
 	std::string to_cpp() const;
-private:
-	size_t m_size_in_bytes;
+private:	
+	int _num_outputs = 0;
 };

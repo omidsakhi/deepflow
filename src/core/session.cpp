@@ -67,6 +67,7 @@
 #include "nodes/concate.h"
 #include "nodes/reshape.h"
 #include "nodes/batch_stddev.h"
+#include "nodes/pass_through.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -221,6 +222,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Reshape>(node_param);
 	else if (node_param->has_lrn_param())
 		return std::make_shared<LRN>(node_param);
+	else if (node_param->has_pass_through_param())
+		return std::make_shared<PassThrough>(node_param);
 	else if (node_param->has_batch_stddev_param())
 		return std::make_shared<BatchStdDev>(node_param);
 	else {
@@ -374,21 +377,20 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 }
 
 void Session::_insert_splits()
-{
-	int total_split_nodes = 0;
-
+{	
 	for (auto node : _nodes) {
 		for (auto output : node->outputs()) {			
-			auto connected_terminals = output->connectedTerminals();
-			LOG_IF(FATAL, connected_terminals.size() > 2) << "We don't support more than 2 connected nodes to one output at this time | " << node->name();
-			if (connected_terminals.size() == 2) {
+			auto connected_terminals = output->connectedTerminals();			
+			if (connected_terminals.size() > 1) {
 
 				auto node_param = _block->add_node_param();				
 				node_param->set_name("split_" + output->name());
-				node_param->add_output(node_param->name() + "_splt0");
-				node_param->add_output(node_param->name() + "_splt1");				
-				node_param->add_input(node_param->name() + "_splti");
-				node_param->mutable_split_param();
+				node_param->add_input(node_param->name());
+				for (int i = 0; i < connected_terminals.size(); ++i) {
+					node_param->add_output(node_param->name() + "_" + std::to_string(i));
+				}
+				auto split_param = node_param->mutable_split_param();
+				split_param->set_num_outputs(connected_terminals.size());
 
 				auto new_split_node = _create_node(node_param);
 				new_split_node->createIO();
@@ -405,12 +407,12 @@ void Session::_insert_splits()
 					}
 				}
 
-				_nodes.push_back(new_split_node);
-				total_split_nodes++;
+				_nodes.push_back(new_split_node);	
 			}
 		}
 	}
 
+	// verification
 	for (auto node : _nodes) {
 		for (auto output : node->outputs()) {
 			auto connected_terminals = output->connectedTerminals();
@@ -886,7 +888,7 @@ void Session::save(std::string file_path, bool as_text)
 		_block->save_as_binary(file_path);
 }
 
-void Session::print_variable_means()
+void Session::print_variables_info()
 {
 	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>("");	
 	double mean, std, min, max;
@@ -894,6 +896,28 @@ void Session::print_variable_means()
 		var->output(0)->diff()->statistics(&mean, &std, &min, &max);
 		LOG(INFO) << "variable " << var->name() << " | " << mean <<" " << std <<  " | " << min << " " << max;
 	}	
+}
+
+void Session::print_nodes_info()
+{	
+	double mean, std, min, max;
+	for (auto node : _nodes) {
+		for (auto output : node->outputs()) {
+			output->value()->statistics(&mean, &std, &min, &max);
+			LOG(INFO) << output->value()->name() << " | "<< mean << " " << std << " | " << min << " " << max;
+			if (output->diff()) {
+				output->diff()->statistics(&mean, &std, &min, &max);
+				LOG(INFO) << output->diff()->name() << " | " << mean << " " << std << " | " << min << " " << max;
+			}
+		}
+	}	
+}
+
+std::shared_ptr<Node> Session::end_node()
+{
+	auto list = _get_all_end_nodes("");	
+	LOG_IF(FATAL, list.size() != 1) << "[FAILED] session must have exactly one end node.";
+	return *list.begin();
 }
 
 void Session::print_total_parameters()

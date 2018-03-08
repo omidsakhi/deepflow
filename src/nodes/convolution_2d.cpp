@@ -85,7 +85,7 @@ void Convolution2D::forward() {
 
 void Convolution2D::backward() {
 	if (_num_inputs == 3) {
-		if (_inputs[2]->connectedNode())
+		if (_inputs[2]->diff())
 			cudnnConvolutionBackwardBias(_cudnnHandle, &one, _dyDesc, _dy, &zero, _dbDesc, _db);
 		cudnnActivationBackward(_cudnnHandle, _activationDesc, &one, _yDesc, _y, _dyDesc, _dy, _xDesc, _x, &zero, _dzDesc, _dz);
 	}
@@ -93,9 +93,9 @@ void Convolution2D::backward() {
 		_dz = _dy;
 		_dzDesc = _dyDesc;
 	}
-	if (_inputs[0]->connectedNode())
+	if (_inputs[0]->diff())
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &one, _wDesc, _w, _dzDesc, _dz, _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &zero, _dxDesc, _dx));
-	if (_inputs[1]->connectedNode())
+	if (_inputs[1]->diff())
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &one, _xDesc, _x, _dzDesc, _dz, _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &zero, _wDesc, _dw));
 }
 

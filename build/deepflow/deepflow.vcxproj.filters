@@ -106,6 +106,10 @@
     <CudaCompile Include="..\..\src\nodes\batch_stddev.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\concate.cu" />
+    <CudaCompile Include="..\..\src\nodes\pass_through.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -219,9 +223,6 @@
     <ClCompile Include="..\..\src\nodes\switch.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\nodes\lrn.cpp">
-      <Filter>source\nodes</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\initializers\random_normal.cpp">
       <Filter>source\initializers</Filter>
     </ClCompile>
@@ -231,7 +232,7 @@
     <ClCompile Include="..\..\src\utilities\moving_average.cpp">
       <Filter>source\utilities</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\nodes\concate.cu">
+    <ClCompile Include="..\..\src\nodes\lrn.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -471,6 +472,9 @@
       <Filter>include\solver</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\batch_stddev.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\pass_through.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

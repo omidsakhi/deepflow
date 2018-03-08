@@ -116,6 +116,7 @@ message LossParam {
 }
 
 message SplitParam {
+	int32 num_outputs = 1;
 }
 
 message EqualParam {
@@ -442,6 +443,9 @@ message ReshapeParam {
 message BatchStdDevParam {
 }
 
+message PassThroughParam {
+}
+
 message NodeParam {
   string name = 1;
   repeated string input = 2;
@@ -501,5 +505,6 @@ message NodeParam {
   ReshapeParam reshape_param = 151;
   DPReluParam dprelu_param = 152;
   BatchStdDevParam batch_stddev_param = 153;
+  PassThroughParam pass_through_param = 154;
 }
 

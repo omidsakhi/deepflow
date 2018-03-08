@@ -36,7 +36,9 @@ public:
 	void set_learning_rate(float lr, std::initializer_list<std::string> solver_names = {});
 	void save(std::string file_path, bool as_text = false);
 	void print_total_parameters();
-	void print_variable_means();
+	void print_variables_info();
+	void print_nodes_info();
+	std::shared_ptr<Node> end_node();
 private:
 	template <class T>
 	std::list<std::shared_ptr<T>> _get_nodes(std::string execution_phase);

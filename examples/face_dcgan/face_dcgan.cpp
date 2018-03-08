@@ -9,8 +9,9 @@
 DEFINE_string(faces, "C:/Projects/deepflow/data/celeba128", "Path to face dataset folder");
 DEFINE_int32(channels, 3, "Image channels");
 DEFINE_int32(size, 128, "Image size");
-DEFINE_int32(total, 2000000, "Image channels"); // 13230
-DEFINE_int32(batch, 40, "Batch size");
+DEFINE_int32(z_dim, 1024, "Z Dimension");
+DEFINE_int32(total, 200000, "Image channels"); // 13230
+DEFINE_int32(batch, 80, "Batch size");
 DEFINE_int32(debug, 0, "Level of debug");
 DEFINE_int32(iter, 10000, "Maximum iterations");
 DEFINE_string(load, "", "Load from gXXXX.bin and dXXXX.bin");
@@ -54,13 +55,13 @@ std::shared_ptr<Session> create_generator_labels() {
 
 std::shared_ptr<Session> create_z() {
 	DeepFlow df;
-	df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1), FLAGS_total, "", "z");	
+	df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), FLAGS_total, "", "z");	
 	return df.session();
 }
 
 std::shared_ptr<Session> create_static_z() {
 	DeepFlow df;
-	df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1), FLAGS_total, "", "static_z");
+	df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), FLAGS_total, "", "static_z");
 	return df.session();
 }
 
@@ -107,7 +108,7 @@ std::string dense(DeepFlow *df, std::string input, std::initializer_list<int> di
 	return node;
 }
 
-std::string deconv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool upsample, bool has_batchnorm, bool activation, std::string name) {
+std::string deconv(DeepFlow *df, std::string input, std::string a, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool upsample, bool has_batchnorm, bool activation, std::string name) {
 
 	auto node = input;
 	if (upsample)
@@ -115,14 +116,16 @@ std::string deconv(DeepFlow *df, std::string input, std::string solver, int inpu
 	auto f = df->variable(df->random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
 	node = df->conv2d(node, f, pad, pad, 1, 1, 1, 1, name + "_conv");
 	if (has_batchnorm) {
-		auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0.01), solver, name + "_bnb");
-		node = df->bias_add(node, bnb, name + "_bias");
-		//node = batchnorm(df, node, solver, output_channels, name);
-		node = df->lrn(node, name + "_lrn", 1);
+		//auto bnb = df->variable(df->random_uniform({ 1, output_channels, 1, 1 }, 0, 0.02), solver, name + "_bnb");
+		//node = df->bias_add(node, bnb, name + "_bias");
+		node = batchnorm(df, node, solver, output_channels, name);
+		//node = df->sigmoid(node);
+		//node = df->lrn(node, name + "_lrn", 1);		
 	}
 	if (activation) {
-		return prelu(df, node, output_channels, solver, name);
-		//return df->leaky_relu(node, 0.2, name + "_relu");			
+		node = df->dprelu(node, a, name + "_relu");
+		//return prelu(df, node, output_channels, solver, name);				
+		//node = df->leaky_relu(node, 0.0, name + "_relu");
 	}
 	return node;
 }
@@ -144,23 +147,22 @@ std::shared_ptr<Session> create_generator() {
 	
 	int gf = 64;
 
-	auto solver = df.adam_solver(0.00005f, 0.0f, 0.98f);
+	auto solver = df.adam_solver(0.00005f, 0.0f, 0.5f);
 	
-	auto node = df.place_holder({ FLAGS_batch, 100, 1, 1 }, Tensor::Float, "input");
+	auto node = df.place_holder({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, Tensor::Float, "input");
+	auto a = node;
 
-	node = dense(&df, node, { 100, gf * 16 , 4 , 4 }, solver, false, true, "g41"); // 4x4
+	node = dense(&df, node, { FLAGS_z_dim, gf * 8 , 4 , 4 }, solver, false, true, "g41"); // 4x4	
 
-	//node = deconv(&df, node, solver, gf * 16, gf * 8, 3, 1, false, false, false, true, "g42"); // 4x4
+	node = deconv(&df, node, a, solver, gf * 8, gf * 8, 3, 1, true, true, true, "g81"); // 8x8	
 
-	node = deconv(&df, node, solver, gf * 16, gf * 8, 5, 2, true, true, true, "g81"); // 8x8	
+	node = deconv(&df, node, a, solver, gf * 8, gf * 4, 5, 2, true, true,true, "g161"); // 16x16
 
-	node = deconv(&df, node, solver, gf * 8, gf * 4, 5, 2, true, true,true, "g161"); // 16x16	
+	node = deconv(&df, node, a, solver, gf * 4, gf * 2, 5, 2, true, true, true, "g321"); // 32x32	
 
-	node = deconv(&df, node, solver, gf * 4, gf * 2, 5, 2, true, true, true, "g321"); // 32x32	
+	node = deconv(&df, node, a, solver, gf * 2, gf, 5, 2, true, true, true, "g641"); // 64x64	
 
-	node = deconv(&df, node, solver, gf * 2, gf * 2, 5, 2, true, true, true, "g641"); // 64x64	
-
-	node = deconv(&df, node, solver, gf * 2, FLAGS_channels, 5, 2, true, false, false, "g1281"); // 128x128	
+	node = deconv(&df, node, a, solver, gf, FLAGS_channels, 5, 2, true, false, false, "g1281"); // 128x128	
 
 	return df.session();
 
@@ -170,20 +172,20 @@ std::shared_ptr<Session> create_discriminator() {
 	DeepFlow df;
 	 
 	int dfs = 64;
-
+	
 	auto solver = df.adam_solver(0.00005f, 0.5f, 0.98f);
 
 	auto node = df.place_holder({ FLAGS_batch , FLAGS_channels, FLAGS_size, FLAGS_size }, Tensor::Float, "input");		
 
-	node = conv(&df, node, solver, 3, dfs, 5, 2, 2, true, "d1");
+	node = conv(&df, node, solver, 3, dfs, 3, 1, 2, true, "d1");
 
-	node = conv(&df, node, solver, dfs, dfs * 2, 5, 2, 2, true, "d2");
+	node = conv(&df, node, solver, dfs, dfs * 2, 3, 1, 2, true, "d2");
 
-	node = conv(&df, node, solver, dfs * 2, dfs * 4, 5, 2, 2,true, "d3");
+	node = conv(&df, node, solver, dfs * 2, dfs * 4, 3, 1, 2,true, "d3");
 
-	node = conv(&df, node, solver, dfs * 4, dfs * 4, 5, 2, 2, false, "d4");
+	node = conv(&df, node, solver, dfs * 4, dfs * 4, 3, 1, 2, false, "d4");
 	
-	node = conv(&df, node, solver, dfs * 4, dfs * 4, 5, 2, 2, false, "d5");
+	node = conv(&df, node, solver, dfs * 4, dfs * 4, 3, 1, 2, false, "d5");
 
 	auto std = df.batch_stddev(node, "std");
 	auto std_ones = df.variable(df.ones({ 1, FLAGS_batch, 4, 4 }), "", "d61");
@@ -192,7 +194,9 @@ std::shared_ptr<Session> create_discriminator() {
 	
 	node = df.concate(node, std_reshaped, "d7");
 
-	node = dense(&df, node, { (dfs * 4 + 1) * 4 * 4, 1, 1, 1 }, solver, false, false, "d8");
+	node = conv(&df, node, solver, dfs * 4 + 1, dfs * 2, 3, 1, 2, false, "d8");
+
+	node = dense(&df, node, { (dfs * 2) * 2 * 2, 1, 1, 1 }, solver, false, false, "d9");
 
 	return df.session();
 }
@@ -251,7 +255,7 @@ void main(int argc, char** argv) {
 	auto generator_output = generator->get_node("g1281_conv");
 	auto generator_input = generator->get_placeholder("input");
 	auto discriminator_input = discriminator->get_placeholder("input");
-	auto discriminator_output = discriminator->get_node("d8_ip");
+	auto discriminator_output = discriminator->get_node("d9_ip");
 	auto generator_labels_output = generator_labels->get_node("generator_labels");
 	auto face_labels_node = face_labels->get_node("face_labels");
 	auto l2_loss_discriminator_input = l2_loss_session->get_placeholder("discriminator_input");

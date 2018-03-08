@@ -3,30 +3,35 @@
 Split::Split(deepflow::NodeParam * param) : Node(param)
 {
 	LOG_IF(FATAL, param->has_split_param() == false) << "param.has_split_param() == false";
+	_num_outputs = param->split_param().num_outputs();
+}
+
+int Split::minNumOutputs()
+{
+	return _num_outputs;
 }
 
 void Split::init()
 {
 	auto input_dims  = _inputs[0]->value()->dims();
-	_outputs[0]->initValue(input_dims);
-	_outputs[1]->initValue(input_dims);
-	_outputs[0]->initDiff(true);
-	_outputs[1]->initDiff(true);
-	m_size_in_bytes = _inputs[0]->value()->sizeInBytes();	
+	for (int i = 0; i < _num_outputs; ++i) {
+		_outputs[i]->initValue(input_dims, _inputs[0]->value());
+		_outputs[i]->initDiff(true);
+	}
 }
 
 void Split::forward()
 {	
-	cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[0]->value()->data(), m_size_in_bytes, cudaMemcpyDeviceToDevice);
-	cudaMemcpy(_outputs[1]->value()->mutableData(), _inputs[0]->value()->data(), m_size_in_bytes, cudaMemcpyDeviceToDevice);
 }
 
 void Split::backward()
 {	
-	auto size = _inputs[0]->value()->size();
-	if (_inputs[0] && _inputs[0]->diff()) {		
-		cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), m_size_in_bytes, cudaMemcpyDeviceToDevice);		
-		cpy(size, 1.0, _outputs[1]->diff()->data(), 1.0f, _inputs[0]->diff()->mutableData());
+	if (_inputs[0] && _inputs[0]->diff()) {
+		auto size = _inputs[0]->value()->size();		
+		cudaMemset(_inputs[0]->diff()->mutableData(), 0, size * sizeof(float));
+		for (int i = 0; i < _num_outputs; ++i) {
+			cpy(size, 1.0, _outputs[i]->diff()->data(), 1.0f, _inputs[0]->diff()->mutableData());
+		}
 	}
 }
 

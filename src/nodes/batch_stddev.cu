@@ -15,8 +15,7 @@ BatchStdDev::BatchStdDev(deepflow::NodeParam * param) : Node(param)
 }
 
 void BatchStdDev::init()
-{
-	auto param = _param->reduce_param();
+{	
 	auto inputDims = _inputs[0]->value()->dims();
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));	
 	DF_NODE_CUDNN_CHECK(cudnnCreateTensorDescriptor(&_avgDesc1));
@@ -85,5 +84,8 @@ void BatchStdDev::backward()
 
 std::string BatchStdDev::to_cpp() const
 {
-	return std::string();
+	std::string cpp = "auto " + _name + " = df.batch_stddev(" + _input_name_for_cpp(0) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;	
 }

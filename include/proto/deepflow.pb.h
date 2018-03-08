@@ -158,6 +158,9 @@ extern NodeParamDefaultTypeInternal _NodeParam_default_instance_;
 class PReluParam;
 class PReluParamDefaultTypeInternal;
 extern PReluParamDefaultTypeInternal _PReluParam_default_instance_;
+class PassThroughParam;
+class PassThroughParamDefaultTypeInternal;
+extern PassThroughParamDefaultTypeInternal _PassThroughParam_default_instance_;
 class PatchingParam;
 class PatchingParamDefaultTypeInternal;
 extern PatchingParamDefaultTypeInternal _PatchingParam_default_instance_;
@@ -2286,10 +2289,17 @@ class SplitParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   // accessors -------------------------------------------------------
 
+  // int32 num_outputs = 1;
+  void clear_num_outputs();
+  static const int kNumOutputsFieldNumber = 1;
+  ::google::protobuf::int32 num_outputs() const;
+  void set_num_outputs(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:deepflow.SplitParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 num_outputs_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -7315,6 +7325,79 @@ class BatchStdDevParam : public ::google::protobuf::Message /* @@protoc_insertio
 };
 // -------------------------------------------------------------------
 
+class PassThroughParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.PassThroughParam) */ {
+ public:
+  PassThroughParam();
+  virtual ~PassThroughParam();
+
+  PassThroughParam(const PassThroughParam& from);
+
+  inline PassThroughParam& operator=(const PassThroughParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PassThroughParam& default_instance();
+
+  static inline const PassThroughParam* internal_default_instance() {
+    return reinterpret_cast<const PassThroughParam*>(
+               &_PassThroughParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    70;
+
+  void Swap(PassThroughParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PassThroughParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PassThroughParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PassThroughParam& from);
+  void MergeFrom(const PassThroughParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PassThroughParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:deepflow.PassThroughParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.NodeParam) */ {
  public:
   NodeParam();
@@ -7335,7 +7418,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NodeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    70;
+    71;
 
   void Swap(NodeParam* other);
 
@@ -7936,6 +8019,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::BatchStdDevParam* release_batch_stddev_param();
   void set_allocated_batch_stddev_param(::deepflow::BatchStdDevParam* batch_stddev_param);
 
+  // .deepflow.PassThroughParam pass_through_param = 154;
+  bool has_pass_through_param() const;
+  void clear_pass_through_param();
+  static const int kPassThroughParamFieldNumber = 154;
+  const ::deepflow::PassThroughParam& pass_through_param() const;
+  ::deepflow::PassThroughParam* mutable_pass_through_param();
+  ::deepflow::PassThroughParam* release_pass_through_param();
+  void set_allocated_pass_through_param(::deepflow::PassThroughParam* pass_through_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -7997,6 +8089,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::ReshapeParam* reshape_param_;
   ::deepflow::DPReluParam* dprelu_param_;
   ::deepflow::BatchStdDevParam* batch_stddev_param_;
+  ::deepflow::PassThroughParam* pass_through_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -8844,6 +8937,20 @@ inline void LossParam::set_force_output(bool value) {
 // -------------------------------------------------------------------
 
 // SplitParam
+
+// int32 num_outputs = 1;
+inline void SplitParam::clear_num_outputs() {
+  num_outputs_ = 0;
+}
+inline ::google::protobuf::int32 SplitParam::num_outputs() const {
+  // @@protoc_insertion_point(field_get:deepflow.SplitParam.num_outputs)
+  return num_outputs_;
+}
+inline void SplitParam::set_num_outputs(::google::protobuf::int32 value) {
+  
+  num_outputs_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.SplitParam.num_outputs)
+}
 
 // -------------------------------------------------------------------
 
@@ -11434,6 +11541,10 @@ ReshapeParam::mutable_output_dims() {
 
 // -------------------------------------------------------------------
 
+// PassThroughParam
+
+// -------------------------------------------------------------------
+
 // NodeParam
 
 // string name = 1;
@@ -13763,7 +13874,48 @@ inline void NodeParam::set_allocated_batch_stddev_param(::deepflow::BatchStdDevP
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.batch_stddev_param)
 }
 
+// .deepflow.PassThroughParam pass_through_param = 154;
+inline bool NodeParam::has_pass_through_param() const {
+  return this != internal_default_instance() && pass_through_param_ != NULL;
+}
+inline void NodeParam::clear_pass_through_param() {
+  if (GetArenaNoVirtual() == NULL && pass_through_param_ != NULL) delete pass_through_param_;
+  pass_through_param_ = NULL;
+}
+inline const ::deepflow::PassThroughParam& NodeParam::pass_through_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.pass_through_param)
+  return pass_through_param_ != NULL ? *pass_through_param_
+                         : *::deepflow::PassThroughParam::internal_default_instance();
+}
+inline ::deepflow::PassThroughParam* NodeParam::mutable_pass_through_param() {
+  
+  if (pass_through_param_ == NULL) {
+    pass_through_param_ = new ::deepflow::PassThroughParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.pass_through_param)
+  return pass_through_param_;
+}
+inline ::deepflow::PassThroughParam* NodeParam::release_pass_through_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.pass_through_param)
+  
+  ::deepflow::PassThroughParam* temp = pass_through_param_;
+  pass_through_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_pass_through_param(::deepflow::PassThroughParam* pass_through_param) {
+  delete pass_through_param_;
+  pass_through_param_ = pass_through_param;
+  if (pass_through_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.pass_through_param)
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

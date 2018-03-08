@@ -2,11 +2,11 @@
 
 #include "core/node.h"
 
-// Double Parametric Rectifier Unit
+// Dot Parametric Rectifier Unit
 class DeepFlowDllExport DPRelu : public Node {
 public:
 	DPRelu(deepflow::NodeParam *param);
-	int minNumInputs() override { return 3; }
+	int minNumInputs() override { return 2; }
 	int minNumOutputs() override  { return 1; }
 	std::string op_name() const override { return "dprelu"; }
 	void init() override;

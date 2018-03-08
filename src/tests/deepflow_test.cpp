@@ -173,6 +173,70 @@ TEST(conv2d, forward) {
 		true);
 }
 
+TEST(add, forward) {
+	DeepFlow df;
+	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
+	auto b = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "b");
+	auto add_op = df.add(a, b, "add");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("a")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
+	session->get_node("b")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
+	session->forward();	
+	EXPECT_EQ(session->get_node("add")->output(0)->value()->verify({ 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48 }), true);
+}
+
+TEST(sub, forward) {
+	DeepFlow df;
+	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
+	auto b = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "b");
+	auto add_op = df.add(a, b, 1.0, -1.0, "sub");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("a")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25 });
+	session->get_node("b")->write_values({ 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
+	session->forward();
+	EXPECT_EQ(session->get_node("sub")->output(0)->value()->verify({ -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }), true);
+}
+
+TEST(add, backward) {
+	DeepFlow df;
+	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
+	auto b = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "b");
+	auto add_op = df.add(a, b, "add");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("add")->write_diffs({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
+	session->backward();
+	EXPECT_EQ(session->get_node("a")->output(0)->diff()->verify({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 }), true);
+	EXPECT_EQ(session->get_node("b")->output(0)->diff()->verify({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 }), true);
+}
+
+TEST(sub, backward) {
+	DeepFlow df;
+	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
+	auto b = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "b");
+	auto add_op = df.add(a, b, 1.0, -1.0, "sub");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("sub")->write_diffs({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
+	session->backward();
+	EXPECT_EQ(session->get_node("a")->output(0)->diff()->verify({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 }), true);
+	EXPECT_EQ(session->get_node("b")->output(0)->diff()->verify({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24 }), true);
+}
+
+TEST(batch_stddev, forward) {
+	DeepFlow df;
+	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");	
+	df.batch_stddev(a, "stddev");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("a")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25 });
+	session->forward();
+	auto stddev = session->get_node("stddev");
+	LOG(INFO) << stddev->output(0)->value()->toString();
+}
+
 int main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);	
 	CudaHelper::setOptimalThreadsPerBlock();

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\nodes\lrn.cpp" />
     <ClCompile Include="..\..\src\utilities\moving_average.cpp" />
     <ClInclude Include="..\..\include\core\caffe.h" />
     <ClInclude Include="..\..\include\core\common_cu.h" />
@@ -61,6 +62,7 @@
     <ClInclude Include="..\..\include\nodes\image_writer.h" />
     <ClInclude Include="..\..\include\nodes\lifting.h" />
     <ClInclude Include="..\..\include\nodes\lrn.h" />
+    <ClInclude Include="..\..\include\nodes\pass_through.h" />
     <ClInclude Include="..\..\include\nodes\patching.h" />
     <ClInclude Include="..\..\include\nodes\prelu.h" />
     <ClInclude Include="..\..\include\nodes\reduce_all.h" />
@@ -104,6 +106,7 @@
     </ClCompile>
     <ClInclude Include="..\..\include\utilities\moving_average.h" />
     <CudaCompile Include="..\..\src\nodes\batch_stddev.cu" />
+    <CudaCompile Include="..\..\src\nodes\pass_through.cu" />
     <CudaCompile Include="..\..\src\solvers\rmsprop_solver.cu">
       <FileType>CppHeader</FileType>
     </CudaCompile>
@@ -173,7 +176,6 @@
     </CudaCompile>
     <ClCompile Include="..\..\src\nodes\logger.cpp" />
     <ClCompile Include="..\..\src\nodes\loss.cpp" />
-    <ClCompile Include="..\..\src\nodes\lrn.cpp" />
     <ClCompile Include="..\..\src\nodes\matmul.cpp" />
     <ClCompile Include="..\..\src\nodes\multiplexer.cpp" />
     <ClCompile Include="..\..\src\nodes\phaseplexer.cpp" />
