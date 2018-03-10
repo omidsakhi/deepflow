@@ -58,25 +58,24 @@ void Variable::init() {
 }
 
 inline void Variable::forward() {
-	LOG_IF(INFO, _verbose > 3) << _name << " FORWARD DOING NOTHING";
+	
 }
 
 inline void Variable::backward() {
 	if (!_param->variable_param().solver_name().empty()) {
-		LOG_IF(INFO, _verbose > 3) << _name << " COPY GRADIENTS";
+		LOG_IF(INFO, _verbose > 2) << _name << " + gradients";
 		cpy(_outputs[0]->value()->size(), 1.0, _outputs[0]->diff()->data(), 1.0, _grad);
 	}
 }
 
 float * Variable::gradients()
-{
-	LOG_IF(INFO, _verbose > 3) << _name << " EXTERNAL GRADIENT ACCESS";
+{	
 	return _grad;
 }
 
 void Variable::reset_gradients()
 {	
-	LOG_IF(INFO, _verbose > 3) << _name << " GRADIENT RESET";
+	LOG_IF(INFO, _verbose > 3) << _name << " : gradients <- 0";
 	_outputs[0]->resetDiff();	
 	DF_CUDA_CHECK(cudaMemset(_grad, 0, _outputs[0]->value()->sizeInBytes()));
 }
