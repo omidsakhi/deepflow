@@ -144,6 +144,11 @@ TEST(bias_add, backward) {
 	session->backward();
 	EXPECT_EQ(session->get_node("bias_add")->input(0)->diff()->verify({ 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }), true);	
 	EXPECT_EQ(session->get_node("bias_add")->input(1)->diff()->verify({ 11.75, 9.75, 7.75 }), true);	
+	EXPECT_EQ(
+		session->get_node("bias_add")->output(0)->value()->verify({ 2, 3, 4, 5, 7, 8, 9, 10, 12, 13, 14, 15, 14, 15, 16, 17, 19, 20, 21, 22, 24, 25, 26, 27 }),
+		true);
+	EXPECT_EQ(session->get_node("v")->output(0)->value()->verify({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 }), true);
+	EXPECT_EQ(session->get_node("b")->output(0)->value()->verify({ 1, 2, 3 }), true);
 }
 
 TEST(conv2d, forward) {
@@ -235,6 +240,80 @@ TEST(batch_stddev, forward) {
 	session->forward();
 	auto stddev = session->get_node("stddev");
 	LOG(INFO) << stddev->output(0)->value()->toString();
+}
+
+TEST(leaky_relu, forward_zero) {
+	DeepFlow df;
+	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");	
+	auto relu_op = df.leaky_relu(a, 0, "relu");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("a")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
+	session->forward();
+	EXPECT_EQ(session->get_node("relu")->output(0)->value()->verify({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 }), true);	
+}
+
+TEST(leaky_relu, forward_1) {
+	DeepFlow df;
+	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
+	auto relu_op = df.leaky_relu(a, 1.0, "relu");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("a")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
+	session->forward();
+	EXPECT_EQ(session->get_node("relu")->output(0)->value()->verify({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 }), true);
+}
+
+TEST(leaky_relu, forward_0_1) {
+	DeepFlow df;
+	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
+	auto relu_op = df.leaky_relu(a, 0.1, "relu");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("a")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
+	session->forward();	
+	EXPECT_EQ(session->get_node("relu")->output(0)->value()->verify({ -0.1f, -0.2f, -0.3f, -0.4f, -0.5f, -0.6f, -0.7f, -0.8f, -0.9f, -1.0f, -1.1f, -1.2f, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 }), true);
+}
+
+TEST(leaky_relu, backward_zero) {
+	DeepFlow df;
+	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
+	auto relu_op = df.leaky_relu(a, 0, "relu");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("a")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
+	session->forward();
+	session->get_node("relu")->write_diffs({ -2, -4, -6, -8, -10, -12, -14, -16, -18, -20, -22, -24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48 });
+	session->backward();
+	EXPECT_EQ(session->get_node("a")->output(0)->diff()->verify({ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48 }), true);
+}
+
+TEST(leaky_relu, backward_one) {
+	DeepFlow df;
+	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
+	auto relu_op = df.leaky_relu(a, 1.0, "relu");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("a")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
+	session->forward();
+	session->get_node("relu")->write_diffs({ -2, -4, -6, -8, -10, -12, -14, -16, -18, -20, -22, -24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48 });
+	session->backward();
+	EXPECT_EQ(session->get_node("a")->output(0)->diff()->verify({ -2, -4, -6, -8, -10, -12, -14, -16, -18, -20, -22, -24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48 }), true);
+	EXPECT_EQ(session->get_node("a")->output(0)->value()->verify({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 }), true);
+}
+
+TEST(leaky_relu, backward_0_1) {
+	DeepFlow df;
+	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
+	auto relu_op = df.leaky_relu(a, 0.1f, "relu");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("a")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
+	session->forward();
+	session->get_node("relu")->write_diffs({ -2, -4, -6, -0.000008f, -10, -12, -14, -16000, -18, -20, -22, -24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48 });
+	session->backward();
+	EXPECT_EQ(session->get_node("a")->output(0)->diff()->verify({ -0.2f, -0.4f, -0.6f, -0.0000008f, -1.0f, -1.2f, -1.4f, -1600.0f, -1.8f, -2.0f, -2.2f, -2.4f, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48 }), true);
+	EXPECT_EQ(session->get_node("a")->output(0)->value()->verify({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 }), true);
 }
 
 int main(int argc, char** argv) {

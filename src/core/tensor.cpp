@@ -206,14 +206,17 @@ void Tensor::set(std::initializer_list<float> values)
 
 bool Tensor::verify(std::initializer_list<float> values)
 {
+	float eps = 10e-7;
 	auto h_data = cpyToHost<float>();
 	bool res = true;
 	int index = 0;
 	for (auto v : values) {
-		if (h_data->at(index++) != v) {
+		if (fabs(h_data->at(index) - v) > eps) {
+			LOG(INFO) << h_data->at(index) << " != " << v << " @ " << index;
 			res = false;
 			break;
 		}
+		index++;
 	}
 	return res;
 }
