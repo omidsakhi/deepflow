@@ -42,6 +42,8 @@ public:
 private:
 	template <class T>
 	std::list<std::shared_ptr<T>> _get_nodes(std::string execution_phase);
+	bool is_end_node(std::shared_ptr<Node> node) const;
+	bool is_head_node(std::shared_ptr<Node> node) const;
 	std::list<std::shared_ptr<Node>> _get_all_end_nodes(std::string execution_phase) const;
 	std::list<std::shared_ptr<Node>> _get_all_head_nodes(std::string execution_phase) const;
 	std::shared_ptr<Node> _find_node_by_name(const std::string &name) const;

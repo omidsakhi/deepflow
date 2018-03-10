@@ -436,19 +436,47 @@ std::shared_ptr<Node> Session::_find_node_by_name(const std::string &name) const
 	return 0;
 }
 
+bool Session::is_end_node(std::shared_ptr<Node> node) const
+{
+	int num_connected_inputs = 0;
+	for (auto input : node->inputs())
+		num_connected_inputs += input->connectedNode() ? 1 : 0;
+	int num_connected_outputs = 0;
+	for (auto output : node->outputs())
+		num_connected_outputs += output->connectedNodes().size();
+	int num_connected_inputs_by_node = node->inputNodes().size();
+	if (num_connected_inputs == 0) {
+		return num_connected_outputs == 0;
+	}
+	else {
+		return num_connected_outputs == 0 && num_connected_inputs_by_node != 0;
+	}
+}
+
+bool Session::is_head_node(std::shared_ptr<Node> node) const
+{
+	int num_connected_inputs = 0;
+	for (auto input : node->inputs())
+		num_connected_inputs += input->connectedNode() ? 1 : 0;
+	int num_connected_outputs = 0;
+	for (auto output : node->outputs())
+		num_connected_outputs += output->connectedNodes().size();
+	int num_connected_outputs_by_node = node->outputNodes().size();
+	if (num_connected_outputs == 0) {
+		return num_connected_inputs == 0;
+	}
+	else {
+		return num_connected_inputs == 0 && num_connected_outputs_by_node != 0;
+	}
+	return false;
+}
+
 std::list<std::shared_ptr<Node>> Session::_get_all_end_nodes(std::string execution_phase) const
 {
 	std::list<std::shared_ptr<Node>> list;
 	for (auto node : _nodes) {
-		if (node->includePhase(execution_phase)) {
-			int num_connected_inputs = 0;
-			for (auto input : node->inputs())
-				num_connected_inputs += input->connectedNode() ? 1 : 0;
-			int num_connected_outputs = 0;
-			for (auto output : node->outputs())
-				num_connected_outputs += output->connectedNodes().size();			
-			if (num_connected_outputs == 0 && num_connected_inputs != 0)
-				list.push_back(node);
+		if (node->includePhase(execution_phase) && is_end_node(node)) {
+			list.push_back(node);
 		}
 	}
 	return list;
@@ -458,14 +486,7 @@ std::list<std::shared_ptr<Node>> Session::_get_all_head_nodes(std::string execut
 {
 	std::list<std::shared_ptr<Node>> list;
 	for (auto node : _nodes) {
-		if (node->includePhase(execution_phase)) {
-			int num_connected_inputs = 0;
-			for (auto input : node->inputs())
-				num_connected_inputs += input->connectedNode() ? 1 : 0;
-			int num_connected_outputs = 0;
-			for (auto output : node->outputs())
-				num_connected_outputs += output->connectedNodes().size();
-			if (num_connected_inputs == 0 && num_connected_outputs != 0)
+		if (node->includePhase(execution_phase) && is_head_node(node)) {
 				list.push_back(node);
 		}
 	}
@@ -704,9 +725,6 @@ std::list<std::shared_ptr<Node>> Session::forward_path()
 			continue;
 		}
 		visited_nodes.push_back(node);
-		if (inputNodes.size() == 0 && outputNodes.size() == 0) {
-			continue;
-		}
 		if (inputNodes.size() > 0) {
 			for (auto inputNode : inputNodes) {
 				for (auto t : inputNode->outputs()) {
@@ -892,10 +910,15 @@ void Session::print_variables_info()
 {
 	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>("");	
 	double mean, std, min, max;
-	for (auto var : variable_nodes) {		
-		var->output(0)->diff()->statistics(&mean, &std, &min, &max);
-		LOG(INFO) << "variable " << var->name() << " | " << mean <<" " << std <<  " | " << min << " " << max;
-	}	
+	for (auto var : variable_nodes) {
+		auto output = var->output(0);
+		output->value()->statistics(&mean, &std, &min, &max);
+		LOG(INFO) << output->value()->name() << " | " << mean << " " << std << " | " << min << " " << max;
+		if (output->diff()) {
+			output->diff()->statistics(&mean, &std, &min, &max);
+			LOG(INFO) << output->diff()->name() << " | " << mean << " " << std << " | " << min << " " << max;
+		}
+	}
 }
 
 void Session::print_nodes_info()
@@ -1201,6 +1224,7 @@ std::shared_ptr<Node> Session::get_node(std::string name)
 {
 	auto node = _find_node_by_name(name);
 	LOG_IF(FATAL, node == nullptr) << "Node " << name << " does not exist.";
+	LOG_IF(WARNING, !is_end_node(node) && !is_head_node(node)) << "Node " << name << " is neither a head node nor an end node.";
 	return node;
 }
 
