@@ -39,9 +39,8 @@ std::shared_ptr<Session> create_loss_session() {
 	DeepFlow df;
 	
 	auto loss_t1 = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "loss_t1");
-	auto loss_t2 = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "loss_t2");
-	auto sqerr = df.reduce_mean(df.square_error(loss_t1, loss_t2));
-	//auto sqerr = df.square_error(loss_t1, loss_t2);
+	auto loss_t2 = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "loss_t2");	
+	auto sqerr = df.square_error(loss_t1, loss_t2);
 	auto loss = df.loss(sqerr, DeepFlow::AVG);
 
 	df.print({ loss }, "Epoch: {ep} - Loss: {0}\n", DeepFlow::EVERY_PASS);
@@ -55,20 +54,6 @@ std::shared_ptr<Session> create_display_session() {
 	df.display(input, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp");
 	return df.session();
 }
-std::string bias(DeepFlow *df, std::string input, std::string solver, int output_channels, std::string name) {	
-	return df->bias_add(input, df->variable(df->fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_bw"));
-}
-
-std::string batchnorm(DeepFlow *df, std::string input, std::string solver, int output_channels, std::string name) {
-	auto bns = df->variable(df->random_normal({ 1, output_channels, 1, 1 }, 1, 0.02), solver, name + "_bns");
-	auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_bnb");
-	return df->batch_normalization(input, bns, bnb, DeepFlow::SPATIAL, true, name + "_bn");
-}
-
-std::string dense(DeepFlow *df, std::string input, std::initializer_list<int> dims, std::string solver, std::string name) {
-	auto w = df->variable(df->random_normal(dims, 0, 0.02), solver, name + "_w");
-	return df->matmul(input, w);
-}
 
 std::string deconv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool upsample, bool has_bias, bool has_bn, bool activation, std::string name) {
 
@@ -78,20 +63,20 @@ std::string deconv(DeepFlow *df, std::string input, std::string solver, int inpu
 		node = df->upsample(node);
 	node = df->conv2d(node, f, pad, pad, 1, 1, 1, 1, name + "_conv");
 	if (has_bn)
-		node = batchnorm(df, node, solver, output_channels, name + "_bn");
+		node = df->batch_normalization(node, solver, output_channels, name + "_bn");		
 	if (has_bias)
-		node = bias(df, node, solver, output_channels, "_bias");
+		node = df->bias_add(node, output_channels, solver, name + "_bias");		
 	if (activation) {
 		return df->relu(node);
+		return df->leaky_relu(node, 0.2, name + "_relu");
 	}
 	return node;
 }
 
 std::string conv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, int stride, bool activation, std::string name) {
 	auto f = df->variable(df->random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
-	auto node = df->conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_conv");
-	node = batchnorm(df, node, solver, output_channels, name + "_bn");
-	if (activation) {
+	auto node = df->conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_conv");	
+	if (activation) {		
 		return df->leaky_relu(node, 0.2, name + "_relu");
 	}
 	return node;
@@ -105,20 +90,16 @@ std::shared_ptr<Session> create_session() {
 	auto solver = df.adam_solver(0.00002f, 0.7f, 0.99f);
 
 	auto input = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "enc_input");
-	auto node = conv(&df, input, solver, 1, flt, 5, 2, 2, 1, "e1"); // 14 * 14 
-	auto c1 = node;
-	node = conv(&df, node, solver, flt, flt * 2, 5, 2, 2, 1, "e2"); // 7 * 7
-	auto c2 = node;
-	node = conv(&df, node, solver, flt * 2, flt * 4, 5, 2, 2, 1, "e2");
-	auto c3 = node;
-	node = dense(&df, node, { (flt*4) * 4 * 4, 100, 1, 1 }, solver, "e3");
-	node = bias(&df, node, solver, 100, "e4");
+	auto node = conv(&df, input, solver, 1, flt, 3, 1, 2, 1, "e1");
+	node = conv(&df, node, solver, flt, flt * 2, 3, 1, 2, 1, "e2");
+	node = conv(&df, node, solver, flt * 2, flt * 4, 3, 1, 2, 1, "e2");
+	node = df.dense_with_bias(node, { (flt * 4) * 4 * 4, FLAGS_bottleneck, 1, 1 }, solver, "e3");
 	node = df.tanh(node, "h");
-	node = dense(&df, node, { 100, flt * 4, 4, 4 }, solver, "d1");
-	node = batchnorm(&df, node, solver, flt * 4, "d2");
-	node = deconv(&df, node, solver, flt * 4, flt * 2, 2, 0, 1, 1, 0, 1, "d4");
-	node = deconv(&df, node, solver, flt * 2, flt, 5, 2, 1, 1, 0, 1, "d6");
-	node = deconv(&df, node, solver, flt, 1, 5, 2, 1, 1, 0, 0, "d8");
+	node = df.dense(node, { FLAGS_bottleneck, flt * 4, 4, 4 }, solver, "d1");
+	node = df.batch_normalization(node, solver, flt * 4, "d2");
+	node = deconv(&df, node, solver, flt * 4, flt * 2, 2, 0, 1, 1, 0, 1, "d3");
+	node = deconv(&df, node, solver, flt * 2, flt, 3, 1, 1, 1, 0, 1, "d4");
+	node = deconv(&df, node, solver, flt, 1, 3, 1, 1, 1, 0, 0, "d5");
 
 	auto output = df.tanh(node, "dec_output");	
 
@@ -168,7 +149,7 @@ void main(int argc, char** argv) {
 	
 		mnist_train_session->forward();
 		enc_input->write_values(mnist_train_data->output(0)->value());
-		model->forward();
+		model->forward();		
 
 		//disp_input->write_values(dec_output->output(0)->value());
 		//display_session->forward();
@@ -177,11 +158,9 @@ void main(int argc, char** argv) {
 		loss_t2->write_values(mnist_train_data->output(0)->value());
 		loss_session->forward();
 		loss_session->backward();		
-		dec_output->write_diffs(loss_t1->output(0)->diff());
-		loss_session->reset_gradients();
+		dec_output->write_diffs(loss_t1->output(0)->diff());		
 		model->backward();
-		model->apply_solvers();
-		model->reset_gradients();
+		model->apply_solvers();				
 		
 		mnist_test_session->forward();
 		enc_input->write_values(mnist_test_data->output(0)->value());

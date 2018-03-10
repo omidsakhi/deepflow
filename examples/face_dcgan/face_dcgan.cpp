@@ -11,7 +11,7 @@ DEFINE_int32(channels, 3, "Image channels");
 DEFINE_int32(size, 128, "Image size");
 DEFINE_int32(z_dim, 1024, "Z Dimension");
 DEFINE_int32(total, 200000, "Image channels"); // 13230
-DEFINE_int32(batch, 80, "Batch size");
+DEFINE_int32(batch, 40, "Batch size");
 DEFINE_int32(debug, 0, "Level of debug");
 DEFINE_int32(iter, 10000, "Maximum iterations");
 DEFINE_string(load, "", "Load from gXXXX.bin and dXXXX.bin");
@@ -77,35 +77,11 @@ std::shared_ptr<Session> create_l2_loss() {
 	DeepFlow df;
 	auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "discriminator_input");
 	auto labels_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "labels_input");	
-	std::string err;
-	err = df.reduce_mean(df.square_error(discriminator_input, labels_input));
+	std::string err;	
+	err = df.square_error(discriminator_input, labels_input);	
 	auto loss = df.loss(err, DeepFlow::AVG);
 	df.print({ loss }, "", DeepFlow::END_OF_EPOCH);
 	return df.session();
-}
-
-std::string batchnorm(DeepFlow *df, std::string input, std::string solver, int output_channels, std::string name) {
-	auto bns = df->variable(df->random_normal({ 1, output_channels, 1, 1 }, 1, 0.02), solver, name + "_bns");
-	auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_bnb");
-	return df->batch_normalization(input, bns, bnb, DeepFlow::SPATIAL, true, name + "_bn");
-}
-
-std::string prelu(DeepFlow *df, std::string input, int output_channels, std::string solver, std::string name) {
-	auto w = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0.2), solver, name + "_prelu_w");
-	auto node = df->prelu(input, w, name + "_prelu");
-	return node;
-}
-
-std::string dense(DeepFlow *df, std::string input, std::initializer_list<int> dims, std::string solver, bool has_batchnorm, bool has_bias, std::string name) {
-	auto w = df->variable(df->random_normal( dims, 0, 0.02), solver, name + "_w");
-	auto node = df->matmul(input, w, name + "_ip");
-	if (has_bias) {
-		auto bnb = df->variable(df->fill({ 1, (*(dims.begin() + 1)), 1, 1 }, 0.01), solver, name + "_bnb");
-		node = df->bias_add(node, bnb, name + "_bias");
-	}	
-	if (has_batchnorm)
-		node = batchnorm(df, node, solver, *(dims.begin() + 1), name);
-	return node;
 }
 
 std::string deconv(DeepFlow *df, std::string input, std::string a, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool upsample, bool has_batchnorm, bool activation, std::string name) {
@@ -116,28 +92,26 @@ std::string deconv(DeepFlow *df, std::string input, std::string a, std::string s
 	auto f = df->variable(df->random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
 	node = df->conv2d(node, f, pad, pad, 1, 1, 1, 1, name + "_conv");
 	if (has_batchnorm) {
-		//auto bnb = df->variable(df->random_uniform({ 1, output_channels, 1, 1 }, 0, 0.02), solver, name + "_bnb");
-		//node = df->bias_add(node, bnb, name + "_bias");
-		node = batchnorm(df, node, solver, output_channels, name);
-		//node = df->sigmoid(node);
-		//node = df->lrn(node, name + "_lrn", 1);		
+		node = df->bias_add(node, output_channels, solver, name + "_bias");
+		//node = df->batch_normalization(node, solver, output_channels, name + "_bn");
 	}
 	if (activation) {
 		node = df->dprelu(node, a, name + "_relu");
-		//return prelu(df, node, output_channels, solver, name);				
+		//return df->prelu(node, output_channels, solver, name + "_prelu");			
 		//node = df->leaky_relu(node, 0.0, name + "_relu");
 	}
 	return node;
 }
 
 std::string conv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, int stride, bool activation, std::string name) {
-	auto f = df->variable(df->random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
-	auto node = df->conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_conv");	
-	auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0.01), solver, name + "_bnb");
-	node = df->bias_add(node, bnb, name + "_bias");
+	stride = 1;
+	auto f = df->variable(df->random_normal({ output_channels / 4, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
+	auto node = df->conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_conv");
+	node = df->patching(node, DeepFlow::PATCHING_DOWNCHANNELS, 2, 2, name + "_dp");
+	node = df->bias_add(node, output_channels, solver, name + "_bias");
 	if (activation) {
-		return prelu(df, node, output_channels, solver, name);
-		//return df->leaky_relu(node, 0.2, name + "_relu");		
+		//return df->prelu(node, output_channels, solver, name + "_prelu");
+		return df->leaky_relu(node, 0.2, name + "_relu");		
 	}
 	return node;
 }
@@ -152,7 +126,7 @@ std::shared_ptr<Session> create_generator() {
 	auto node = df.place_holder({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, Tensor::Float, "input");
 	auto a = node;
 
-	node = dense(&df, node, { FLAGS_z_dim, gf * 8 , 4 , 4 }, solver, false, true, "g41"); // 4x4	
+	node = df.dense_with_bias(node, { FLAGS_z_dim, gf * 8 , 4 , 4 }, solver, "g41");	
 
 	node = deconv(&df, node, a, solver, gf * 8, gf * 8, 3, 1, true, true, true, "g81"); // 8x8	
 
@@ -190,13 +164,14 @@ std::shared_ptr<Session> create_discriminator() {
 	auto std = df.batch_stddev(node, "std");
 	auto std_ones = df.variable(df.ones({ 1, FLAGS_batch, 4, 4 }), "", "d61");
 	auto std_ip = df.matmul(std, std_ones, "d62");
-	auto std_reshaped = df.reshape(std_ip, { FLAGS_batch, 1, 4, 4 }, "d63");
-	
+	auto std_reshaped = df.reshape(std_ip, { FLAGS_batch, 1, 4, 4 }, "d63");	
 	node = df.concate(node, std_reshaped, "d7");
 
 	node = conv(&df, node, solver, dfs * 4 + 1, dfs * 2, 3, 1, 2, false, "d8");
 
-	node = dense(&df, node, { (dfs * 2) * 2 * 2, 1, 1, 1 }, solver, false, false, "d9");
+	node = df.dense(node, { (dfs * 2) * 2 * 2, 1, 1, 1 }, solver, "d9");	
+
+	node = df.leaky_relu(node, 0.0f);
 
 	return df.session();
 }
@@ -255,7 +230,7 @@ void main(int argc, char** argv) {
 	auto generator_output = generator->get_node("g1281_conv");
 	auto generator_input = generator->get_placeholder("input");
 	auto discriminator_input = discriminator->get_placeholder("input");
-	auto discriminator_output = discriminator->get_node("d9_ip");
+	auto discriminator_output = discriminator->end_node();
 	auto generator_labels_output = generator_labels->get_node("generator_labels");
 	auto face_labels_node = face_labels->get_node("face_labels");
 	auto l2_loss_discriminator_input = l2_loss_session->get_placeholder("discriminator_input");

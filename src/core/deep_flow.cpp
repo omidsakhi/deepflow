@@ -129,6 +129,12 @@ std::string DeepFlow::bias_add(std::string a, std::string b, std::string name, s
 	return node_param->output(0);
 }
 
+std::string DeepFlow::bias_add(std::string input, int output_channels, std::string solver, std::string name)
+{
+	auto bnb = variable(random_uniform({ 1, output_channels, 1, 1 }, 0, 0.02), solver, name + "_b");
+	return bias_add(input, bnb, name);
+}
+
 std::string DeepFlow::index_fill(std::initializer_list<int> dims, float offset, std::string name) {
 	auto init_param = _block->add_initializer_param();
 	init_param->set_name(_block->get_unique_initializer_param_name(name));
@@ -344,6 +350,18 @@ std::string DeepFlow::matmul(std::string a, std::string b, std::string name, std
 	return node_param->output(0);
 }
 
+std::string DeepFlow::dense(std::string input, std::initializer_list<int> dims, std::string solver, std::string name)
+{
+	auto w = variable(random_normal(dims, 0, 0.02), solver, name + "_w");
+	return matmul(input, w, name);
+}
+
+std::string DeepFlow::dense_with_bias(std::string input, std::initializer_list<int> dims, std::string solver, std::string name)
+{
+	auto node = dense(input, dims, solver, name + "_ip");
+	return bias_add(node, (*(dims.begin() + 1)), solver, name + "_bias");
+}
+
 std::string DeepFlow::leaky_relu(std::string a, float negative_slope, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -396,6 +414,12 @@ std::string DeepFlow::prelu(std::string input, std::string w, std::string name, 
 	node_param->add_input(w);
 	auto prelu_param = node_param->mutable_prelu_param();		
 	return node_param->output(0);
+}
+
+std::string DeepFlow::prelu(std::string input, int output_channels, std::string solver, std::string name)
+{
+	auto w = variable(fill({ 1, output_channels, 1, 1 }, 0.2), solver, name + "_w");
+	return prelu(input, w, name);	
 }
 
 std::string DeepFlow::dprelu(std::string input, std::string a, std::string name, std::initializer_list<std::string> phases)
@@ -594,6 +618,13 @@ std::string DeepFlow::batch_normalization(std::string input, std::string scale, 
 	batch_norm_param->set_mode((deepflow::BatchNormalizationParam_Mode) mode);
 	batch_norm_param->set_cache_meanvar(cache);
 	return node_param->output(0);
+}
+
+std::string DeepFlow::batch_normalization(std::string input, std::string solver, int output_channels, std::string name)
+{
+	auto bns = variable(random_normal({ 1, output_channels, 1, 1 }, 1, 0.02), solver, name + "_s");
+	auto bnb = variable(fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_b");
+	return batch_normalization(input, bns, bnb, DeepFlow::SPATIAL, true, name);
 }
 
 std::string DeepFlow::lrn(std::string input, std::string name, int n, float alpha, float beta, float k, std::initializer_list<std::string> phases)

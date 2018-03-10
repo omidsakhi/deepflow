@@ -108,14 +108,19 @@ public:
 	std::string square(std::string a, std::string name = "square", std::initializer_list<std::string> phases = {});
 	std::string abs(std::string a, std::string name = "abs", std::initializer_list<std::string> phases = {});
 	std::string exp(std::string a, std::string name = "exp", std::initializer_list<std::string> phases = {});
-	std::string log(std::string a, float coef = 1.0f, std::string name = "log", std::initializer_list<std::string> phases = {});
-	std::string matmul(std::string a, std::string b, std::string name = "ip", std::initializer_list<std::string> phases = {});
+	std::string log(std::string a, float coef = 1.0f, std::string name = "log", std::initializer_list<std::string> phases = {});	
 	std::string subtract(std::string a, std::string b, std::string name = "sub", std::initializer_list<std::string> phases = {});
 	std::string square_error(std::string a, std::string b, std::string name = "SquareError", std::initializer_list<std::string> phases = {});
 	std::string softmax(std::string a, std::string name = "softmax", std::initializer_list<std::string> phases = {});
 
+	// matmul
+	std::string matmul(std::string a, std::string b, std::string name = "ip", std::initializer_list<std::string> phases = {});
+	std::string dense(std::string input, std::initializer_list<int> dims, std::string solver, std::string name);
+	std::string dense_with_bias(std::string input, std::initializer_list<int> dims, std::string solver, std::string name);
+
 	// NEURAL NETS
 	std::string bias_add(std::string a, std::string b, std::string name = "bias", std::initializer_list<std::string> phases = {});
+	std::string bias_add(std::string input, int output_channels, std::string solver, std::string name);
 	std::string dropout(std::string a, float dropout = 0.5f, bool train_only = true, std::string name = "dropout", std::initializer_list<std::string> phases = {});
 
 	//REDUCTION
@@ -138,6 +143,7 @@ public:
 	std::string sigmoid(std::string a, std::string name = "sigmoid", std::initializer_list<std::string> phases = {});
 	std::string relu(std::string a, std::string name = "relu", std::initializer_list<std::string> phases = {});
 	std::string prelu(std::string input, std::string w, std::string name = "prelu", std::initializer_list<std::string> phases = {});
+	std::string prelu(std::string input, int output_channels, std::string solver, std::string name);
 	std::string dprelu(std::string input, std::string a, std::string name = "dprelu", std::initializer_list<std::string> phases = {});
 	std::string tanh(std::string a, std::string name = "tanh", std::initializer_list<std::string> phases = {});
 	std::string clipped_relu(std::string a, float threshold, std::string name = "clipped_relu", std::initializer_list<std::string> phases = {});
@@ -165,6 +171,7 @@ public:
 
 	// NORMALIZATION
 	std::string batch_normalization(std::string input, std::string scale, std::string bias, NormalizationMode mode = DeepFlow::SPATIAL, bool cache = true, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
+	std::string batch_normalization(std::string input, std::string solver, int output_channels, std::string name);
 	std::string lrn(std::string input, std::string name = "lrn", int n = 5, float alpha = 1e-4f, float beta = 0.75f, float k = 2.0f, std::initializer_list<std::string> phases = {});
 
 	// SOCKET IO
