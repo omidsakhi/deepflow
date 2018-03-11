@@ -516,7 +516,7 @@ std::string DeepFlow::batch_stddev(std::string input, std::string name, std::ini
 	return node_param->output(0);
 }
 
-std::string DeepFlow::pass_through(std::string input, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::pass_through(std::string input, bool stop_gradients, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -524,7 +524,21 @@ std::string DeepFlow::pass_through(std::string input, std::string name, std::ini
 	for (auto phase : phases)
 		node_param->add_phase(phase);
 	node_param->add_input(input);
-	node_param->mutable_pass_through_param();
+	auto pass = node_param->mutable_pass_through_param();
+	pass->set_stop_gradients(stop_gradients);
+	return node_param->output(0);
+}
+
+std::string DeepFlow::gaussian(std::string mean, std::string sigma, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(mean);
+	node_param->add_input(sigma);
+	node_param->mutable_gaussian_param();
 	return node_param->output(0);
 }
 

@@ -443,6 +443,10 @@ message BatchStdDevParam {
 }
 
 message PassThroughParam {
+	bool stop_gradients = 1;
+}
+
+message GaussianParam {
 }
 
 message NodeParam {
@@ -505,5 +509,6 @@ message NodeParam {
   DPReluParam dprelu_param = 152;
   BatchStdDevParam batch_stddev_param = 153;
   PassThroughParam pass_through_param = 154;
+  GaussianParam gaussian_param = 155;
 }
 

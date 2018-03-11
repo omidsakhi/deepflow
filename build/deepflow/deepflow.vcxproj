@@ -59,6 +59,7 @@
     <ClInclude Include="..\..\include\nodes\dropout.h" />
     <ClInclude Include="..\..\include\nodes\equal.h" />
     <ClInclude Include="..\..\include\nodes\exp.h" />
+    <ClInclude Include="..\..\include\nodes\gaussian.h" />
     <ClInclude Include="..\..\include\nodes\image_writer.h" />
     <ClInclude Include="..\..\include\nodes\lifting.h" />
     <ClInclude Include="..\..\include\nodes\lrn.h" />
@@ -106,6 +107,7 @@
     </ClCompile>
     <ClInclude Include="..\..\include\utilities\moving_average.h" />
     <CudaCompile Include="..\..\src\nodes\batch_stddev.cu" />
+    <CudaCompile Include="..\..\src\nodes\gaussian.cu" />
     <CudaCompile Include="..\..\src\nodes\pass_through.cu" />
     <CudaCompile Include="..\..\src\solvers\rmsprop_solver.cu">
       <FileType>CppHeader</FileType>

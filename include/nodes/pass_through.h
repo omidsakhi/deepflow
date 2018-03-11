@@ -13,4 +13,6 @@ public:
 	void forward() override;
 	void backward() override;
 	std::string to_cpp() const override;
+private:
+	bool _stop_gradients = true;
 };

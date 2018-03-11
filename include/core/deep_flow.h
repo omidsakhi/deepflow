@@ -184,7 +184,8 @@ public:
 	std::array<std::string,2> accumulator(std::string input, ActionTime resetTime = ActionTime::END_OF_EPOCH, std::string name = "acc", std::initializer_list<std::string> phases = {});
 	std::string replay_memory(std::string input, int capacity, std::string name = "replay_memory", std::initializer_list<std::string> phases = {});
 	std::string batch_stddev(std::string input, std::string name = "batch_stddev", std::initializer_list<std::string> phases = {});
-	std::string pass_through(std::string input, std::string name = "pass_through", std::initializer_list<std::string> phases = {});
+	std::string pass_through(std::string input, bool stop_gradients, std::string name = "pass_through", std::initializer_list<std::string> phases = {});
+	std::string gaussian(std::string mean, std::string sigma, std::string name = "gaussian", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
 	std::string define_phase(std::string phase, PhaseBehaviour behaviour = TRAIN_AND_INFERENCE);

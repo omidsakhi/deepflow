@@ -68,6 +68,7 @@
 #include "nodes/reshape.h"
 #include "nodes/batch_stddev.h"
 #include "nodes/pass_through.h"
+#include "nodes/gaussian.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -226,6 +227,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<PassThrough>(node_param);
 	else if (node_param->has_batch_stddev_param())
 		return std::make_shared<BatchStdDev>(node_param);
+	else if (node_param->has_gaussian_param())
+		return std::make_shared<Gaussian>(node_param);
 	else {
 		LOG(FATAL) << "Unsupported Node";
 	}

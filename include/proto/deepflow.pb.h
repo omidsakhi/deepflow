@@ -95,6 +95,9 @@ extern ExpParamDefaultTypeInternal _ExpParam_default_instance_;
 class GainSolverParam;
 class GainSolverParamDefaultTypeInternal;
 extern GainSolverParamDefaultTypeInternal _GainSolverParam_default_instance_;
+class GaussianParam;
+class GaussianParamDefaultTypeInternal;
+extern GaussianParamDefaultTypeInternal _GaussianParam_default_instance_;
 class ImageBatchReaderParam;
 class ImageBatchReaderParamDefaultTypeInternal;
 extern ImageBatchReaderParamDefaultTypeInternal _ImageBatchReaderParam_default_instance_;
@@ -7382,7 +7385,87 @@ class PassThroughParam : public ::google::protobuf::Message /* @@protoc_insertio
 
   // accessors -------------------------------------------------------
 
+  // bool stop_gradients = 1;
+  void clear_stop_gradients();
+  static const int kStopGradientsFieldNumber = 1;
+  bool stop_gradients() const;
+  void set_stop_gradients(bool value);
+
   // @@protoc_insertion_point(class_scope:deepflow.PassThroughParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool stop_gradients_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class GaussianParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.GaussianParam) */ {
+ public:
+  GaussianParam();
+  virtual ~GaussianParam();
+
+  GaussianParam(const GaussianParam& from);
+
+  inline GaussianParam& operator=(const GaussianParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GaussianParam& default_instance();
+
+  static inline const GaussianParam* internal_default_instance() {
+    return reinterpret_cast<const GaussianParam*>(
+               &_GaussianParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    71;
+
+  void Swap(GaussianParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline GaussianParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  GaussianParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const GaussianParam& from);
+  void MergeFrom(const GaussianParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(GaussianParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:deepflow.GaussianParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -7411,7 +7494,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NodeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    71;
+    72;
 
   void Swap(NodeParam* other);
 
@@ -8021,6 +8104,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::PassThroughParam* release_pass_through_param();
   void set_allocated_pass_through_param(::deepflow::PassThroughParam* pass_through_param);
 
+  // .deepflow.GaussianParam gaussian_param = 155;
+  bool has_gaussian_param() const;
+  void clear_gaussian_param();
+  static const int kGaussianParamFieldNumber = 155;
+  const ::deepflow::GaussianParam& gaussian_param() const;
+  ::deepflow::GaussianParam* mutable_gaussian_param();
+  ::deepflow::GaussianParam* release_gaussian_param();
+  void set_allocated_gaussian_param(::deepflow::GaussianParam* gaussian_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -8083,6 +8175,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::DPReluParam* dprelu_param_;
   ::deepflow::BatchStdDevParam* batch_stddev_param_;
   ::deepflow::PassThroughParam* pass_through_param_;
+  ::deepflow::GaussianParam* gaussian_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -11522,6 +11615,24 @@ ReshapeParam::mutable_output_dims() {
 
 // PassThroughParam
 
+// bool stop_gradients = 1;
+inline void PassThroughParam::clear_stop_gradients() {
+  stop_gradients_ = false;
+}
+inline bool PassThroughParam::stop_gradients() const {
+  // @@protoc_insertion_point(field_get:deepflow.PassThroughParam.stop_gradients)
+  return stop_gradients_;
+}
+inline void PassThroughParam::set_stop_gradients(bool value) {
+  
+  stop_gradients_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.PassThroughParam.stop_gradients)
+}
+
+// -------------------------------------------------------------------
+
+// GaussianParam
+
 // -------------------------------------------------------------------
 
 // NodeParam
@@ -13892,7 +14003,48 @@ inline void NodeParam::set_allocated_pass_through_param(::deepflow::PassThroughP
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.pass_through_param)
 }
 
+// .deepflow.GaussianParam gaussian_param = 155;
+inline bool NodeParam::has_gaussian_param() const {
+  return this != internal_default_instance() && gaussian_param_ != NULL;
+}
+inline void NodeParam::clear_gaussian_param() {
+  if (GetArenaNoVirtual() == NULL && gaussian_param_ != NULL) delete gaussian_param_;
+  gaussian_param_ = NULL;
+}
+inline const ::deepflow::GaussianParam& NodeParam::gaussian_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.gaussian_param)
+  return gaussian_param_ != NULL ? *gaussian_param_
+                         : *::deepflow::GaussianParam::internal_default_instance();
+}
+inline ::deepflow::GaussianParam* NodeParam::mutable_gaussian_param() {
+  
+  if (gaussian_param_ == NULL) {
+    gaussian_param_ = new ::deepflow::GaussianParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.gaussian_param)
+  return gaussian_param_;
+}
+inline ::deepflow::GaussianParam* NodeParam::release_gaussian_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.gaussian_param)
+  
+  ::deepflow::GaussianParam* temp = gaussian_param_;
+  gaussian_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_gaussian_param(::deepflow::GaussianParam* gaussian_param) {
+  delete gaussian_param_;
+  gaussian_param_ = gaussian_param;
+  if (gaussian_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.gaussian_param)
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

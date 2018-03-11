@@ -110,6 +110,9 @@
     <CudaCompile Include="..\..\src\nodes\pass_through.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\gaussian.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -475,6 +478,9 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\pass_through.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\gaussian.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

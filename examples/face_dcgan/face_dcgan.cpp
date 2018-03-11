@@ -43,13 +43,13 @@ std::shared_ptr<Session> create_face_reader() {
 
 std::shared_ptr<Session> create_face_labels() {
 	DeepFlow df;
-	df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1), "", "face_labels");	
+	df.data_generator(df.random_normal({ FLAGS_batch, 1, 1, 1 }, 1, 1), "", "face_labels");	
 	return df.session();
 }
 
 std::shared_ptr<Session> create_generator_labels() {
 	DeepFlow df;
-	df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), "", "generator_labels");
+	df.data_generator(df.random_normal({ FLAGS_batch, 1, 1, 1 }, -1, 1), "", "generator_labels");
 	return df.session();
 }
 
@@ -75,23 +75,25 @@ std::shared_ptr<Session> create_imwrite_session() {
 
 std::shared_ptr<Session> create_l2_loss() {
 	DeepFlow df;
-	auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "discriminator_input");
-	auto labels_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "labels_input");	
-	std::string err;	
-	err = df.square_error(discriminator_input, labels_input);	
+	auto discriminator_mean = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "discriminator_mean");
+	auto discriminator_sigma = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "discriminator_sigma");
+	auto target_dist = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "target_dist");
+	auto discriminator_dist = df.gaussian(discriminator_mean, discriminator_sigma, "discriminator_dist");
+	std::string err;
+	err = df.reduce_mean(df.square_error(discriminator_dist, target_dist));
 	auto loss = df.loss(err, DeepFlow::AVG);
 	df.print({ loss }, "", DeepFlow::END_OF_EPOCH);
 	return df.session();
 }
 
-std::string deconv(DeepFlow *df, std::string input, std::string a, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool upsample, bool has_batchnorm, bool activation, std::string name) {
+std::string deconv(DeepFlow *df, std::string input, std::string a, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool upsample, bool has_bias, bool activation, std::string name) {
 
 	auto node = input;
 	if (upsample)
 		node = df->resize(node, 2, 2, name + "_resize");
 	auto f = df->variable(df->random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
 	node = df->conv2d(node, f, pad, pad, 1, 1, 1, 1, name + "_conv");
-	if (has_batchnorm) {
+	if (has_bias) {
 		node = df->bias_add(node, output_channels, solver, name + "_bias");
 		//node = df->batch_normalization(node, solver, output_channels, name + "_bn");
 	}
@@ -128,9 +130,15 @@ std::shared_ptr<Session> create_generator() {
 
 	node = df.dense_with_bias(node, { FLAGS_z_dim, gf * 8 , 4 , 4 }, solver, "g41");	
 
+	node = deconv(&df, node, a, solver, gf * 8, gf * 8, 3, 1, false, true, true, "g42"); // 4x4	
+
 	node = deconv(&df, node, a, solver, gf * 8, gf * 8, 3, 1, true, true, true, "g81"); // 8x8	
 
+	node = deconv(&df, node, a, solver, gf * 8, gf * 8, 3, 1, false, true, true, "g82"); // 8x8
+
 	node = deconv(&df, node, a, solver, gf * 8, gf * 4, 5, 2, true, true,true, "g161"); // 16x16
+
+	node = deconv(&df, node, a, solver, gf * 4, gf * 4, 5, 2, false, true, true, "g162"); // 16x16
 
 	node = deconv(&df, node, a, solver, gf * 4, gf * 2, 5, 2, true, true, true, "g321"); // 32x32	
 
@@ -169,7 +177,11 @@ std::shared_ptr<Session> create_discriminator() {
 
 	node = conv(&df, node, solver, dfs * 16 + 1, dfs * 16, 3, 1, 2, false, "d8");
 
-	node = df.dense(node, { (dfs * 16) * 2 * 2, 1, 1, 1 }, solver, "d9");		
+	auto mean = df.dense(node, { (dfs * 16) * 2 * 2, 1, 1, 1 }, solver, "d9");
+	df.pass_through(mean, false, "output_mean");	
+
+	auto sigma = df.dense(node, { (dfs * 16) * 2 * 2, 1, 1, 1 }, solver, "d9");
+	df.pass_through(sigma, false, "output_sigma");	
 
 	return df.session();
 }
@@ -228,11 +240,13 @@ void main(int argc, char** argv) {
 	auto generator_output = generator->end_node(); 
 	auto generator_input = generator->get_placeholder("input");
 	auto discriminator_input = discriminator->get_placeholder("input");
-	auto discriminator_output = discriminator->end_node();
+	auto discriminator_output_mean = discriminator->get_node("output_mean");
+	auto discriminator_output_sigma = discriminator->get_node("output_sigma");
 	auto generator_labels_output = generator_labels->get_node("generator_labels");
 	auto face_labels_node = face_labels->get_node("face_labels");
-	auto l2_loss_discriminator_input = l2_loss_session->get_placeholder("discriminator_input");
-	auto l2_loss_labels_input = l2_loss_session->get_placeholder("labels_input");
+	auto l2_loss_discriminator_mean = l2_loss_session->get_placeholder("discriminator_mean");
+	auto l2_loss_discriminator_sigma = l2_loss_session->get_placeholder("discriminator_sigma");
+	auto l2_loss_labels_input = l2_loss_session->get_placeholder("target_dist");
 	auto l2_loss = std::dynamic_pointer_cast<Loss>(l2_loss_session->get_node("loss"));	
 	auto imwrite_input = imwrite_session->get_placeholder("input");
 	auto z = z_session->get_node("z");
@@ -255,7 +269,7 @@ void main(int argc, char** argv) {
 	MovingAverage d_loss_avg(100);
 	
 	float decay = 0.99999f;
-	float lr = 0.00005f;
+	float lr = 0.00008f;
 
 	for ( ; iter <= FLAGS_iter && execution_context->quit != true; ++iter) {		
 
@@ -272,13 +286,15 @@ void main(int argc, char** argv) {
 		face_reader_data->forward();
 		discriminator_input->write_values(face_reader_data->output(0)->value());
 		discriminator->forward();
-		l2_loss_discriminator_input->write_values(discriminator_output->output(0)->value());
+		l2_loss_discriminator_mean->write_values(discriminator_output_mean->output(0)->value());
+		l2_loss_discriminator_sigma->write_values(discriminator_output_sigma->output(0)->value());
 		l2_loss_labels_input->write_values(face_labels_node->output(0)->value());
 		l2_loss_session->forward();
 		float d_loss = l2_loss->output(0)->value()->toFloat();
 		float d_std = std->output(0)->value()->toFloat();
 		l2_loss_session->backward();
-		discriminator_output->write_diffs(l2_loss_discriminator_input->output(0)->diff());
+		discriminator_output_mean->write_diffs(l2_loss_discriminator_mean->output(0)->diff());
+		discriminator_output_sigma->write_diffs(l2_loss_discriminator_sigma->output(0)->diff());
 		discriminator->backward();
 
 		z->forward();
@@ -286,14 +302,16 @@ void main(int argc, char** argv) {
 		generator->forward();
 		discriminator_input->write_values(generator_output->output(0)->value());
 		discriminator->forward();
-		l2_loss_discriminator_input->write_values(discriminator_output->output(0)->value());
+		l2_loss_discriminator_mean->write_values(discriminator_output_mean->output(0)->value());
+		l2_loss_discriminator_sigma->write_values(discriminator_output_sigma->output(0)->value());
 		l2_loss_labels_input->write_values(generator_labels_output->output(0)->value());
 		l2_loss_session->forward();
 		d_loss += l2_loss->output(0)->value()->toFloat();
 		d_loss_avg.add(d_loss);
 		float g_std = std->output(0)->value()->toFloat();
 		l2_loss_session->backward();
-		discriminator_output->write_diffs(l2_loss_discriminator_input->output(0)->diff());
+		discriminator_output_mean->write_diffs(l2_loss_discriminator_mean->output(0)->diff());
+		discriminator_output_sigma->write_diffs(l2_loss_discriminator_sigma->output(0)->diff());
 		discriminator->backward();
 
 		std::cout << " - d_loss: " << d_loss_avg.result();
@@ -307,15 +325,18 @@ void main(int argc, char** argv) {
 		generator->forward();
 		discriminator_input->write_values(generator_output->output(0)->value());
 		discriminator->forward();
-		l2_loss_discriminator_input->write_values(discriminator_output->output(0)->value());
+		l2_loss_discriminator_mean->write_values(discriminator_output_mean->output(0)->value());
+		l2_loss_discriminator_sigma->write_values(discriminator_output_sigma->output(0)->value());
 		l2_loss_labels_input->write_values(face_labels_node->output(0)->value());
 		l2_loss_session->forward();
 		auto g_loss = l2_loss->output(0)->value()->toFloat();		
 		l2_loss_session->backward();
-		discriminator_output->write_diffs(l2_loss_discriminator_input->output(0)->diff());
+		discriminator_output_mean->write_diffs(l2_loss_discriminator_mean->output(0)->diff());
+		discriminator_output_sigma->write_diffs(l2_loss_discriminator_sigma->output(0)->diff());
 		discriminator->backward();
 		generator_output->write_diffs(discriminator_input->output(0)->diff());
 		generator->backward();
+		
 		
 		l2_loss->set_coef(-1.0f);
 
@@ -324,15 +345,18 @@ void main(int argc, char** argv) {
 		generator->forward();
 		discriminator_input->write_values(generator_output->output(0)->value());
 		discriminator->forward();
-		l2_loss_discriminator_input->write_values(discriminator_output->output(0)->value());
+		l2_loss_discriminator_mean->write_values(discriminator_output_mean->output(0)->value());
+		l2_loss_discriminator_sigma->write_values(discriminator_output_sigma->output(0)->value());
 		l2_loss_labels_input->write_values(generator_labels_output->output(0)->value());
 		l2_loss_session->forward();
 		g_loss += l2_loss->output(0)->value()->toFloat();
 		l2_loss_session->backward();
-		discriminator_output->write_diffs(l2_loss_discriminator_input->output(0)->diff());
+		discriminator_output_mean->write_diffs(l2_loss_discriminator_mean->output(0)->diff());
+		discriminator_output_sigma->write_diffs(l2_loss_discriminator_sigma->output(0)->diff());
 		discriminator->backward();
 		generator_output->write_diffs(discriminator_input->output(0)->diff());
 		generator->backward();
+	
 
 		g_loss_avg.add(g_loss);
 		//std::cout << " - g_loss: " << g_loss_avg.result() << " | " << lr << std::endl;
