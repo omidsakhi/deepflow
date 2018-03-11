@@ -43,25 +43,25 @@ std::shared_ptr<Session> create_face_reader() {
 
 std::shared_ptr<Session> create_face_labels() {
 	DeepFlow df;
-	df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1), FLAGS_total, "", "face_labels");	
+	df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1), "", "face_labels");	
 	return df.session();
 }
 
 std::shared_ptr<Session> create_generator_labels() {
 	DeepFlow df;
-	df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), FLAGS_total, "", "generator_labels");
+	df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), "", "generator_labels");
 	return df.session();
 }
 
 std::shared_ptr<Session> create_z() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), FLAGS_total, "", "z");	
+	df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), "", "z");	
 	return df.session();
 }
 
 std::shared_ptr<Session> create_static_z() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), FLAGS_total, "", "static_z");
+	df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), "", "static_z");
 	return df.session();
 }
 
@@ -151,15 +151,15 @@ std::shared_ptr<Session> create_discriminator() {
 
 	auto node = df.place_holder({ FLAGS_batch , FLAGS_channels, FLAGS_size, FLAGS_size }, Tensor::Float, "input");		
 
-	node = conv(&df, node, solver, 3, dfs, 3, 1, 2, true, "d1");
+	node = conv(&df, node, solver, 3, dfs * 2, 3, 1, 2, true, "d1");
 
-	node = conv(&df, node, solver, dfs, dfs * 2, 3, 1, 2, true, "d2");
+	node = conv(&df, node, solver, dfs * 2, dfs * 4, 3, 1, 2, true, "d2");
 
-	node = conv(&df, node, solver, dfs * 2, dfs * 4, 3, 1, 2,true, "d3");
+	node = conv(&df, node, solver, dfs * 4, dfs * 8, 3, 1, 2,true, "d3");
 
-	node = conv(&df, node, solver, dfs * 4, dfs * 4, 3, 1, 2, false, "d4");
+	node = conv(&df, node, solver, dfs * 8, dfs * 16, 3, 1, 2, false, "d4");
 	
-	node = conv(&df, node, solver, dfs * 4, dfs * 4, 3, 1, 2, false, "d5");
+	node = conv(&df, node, solver, dfs * 16, dfs * 16, 3, 1, 2, false, "d5");
 
 	auto std = df.batch_stddev(node, "std");
 	auto std_ones = df.variable(df.ones({ 1, FLAGS_batch, 4, 4 }), "", "d61");
@@ -167,11 +167,9 @@ std::shared_ptr<Session> create_discriminator() {
 	auto std_reshaped = df.reshape(std_ip, { FLAGS_batch, 1, 4, 4 }, "d63");	
 	node = df.concate(node, std_reshaped, "d7");
 
-	node = conv(&df, node, solver, dfs * 4 + 1, dfs * 2, 3, 1, 2, false, "d8");
+	node = conv(&df, node, solver, dfs * 16 + 1, dfs * 16, 3, 1, 2, false, "d8");
 
-	node = df.dense(node, { (dfs * 2) * 2 * 2, 1, 1, 1 }, solver, "d9");	
-
-	node = df.leaky_relu(node, 0.0f);
+	node = df.dense(node, { (dfs * 16) * 2 * 2, 1, 1, 1 }, solver, "d9");		
 
 	return df.session();
 }
@@ -227,7 +225,7 @@ void main(int argc, char** argv) {
 	static_z_session->initialize(execution_context);
 
 	auto face_reader_data = face_reader->get_node("face_data");
-	auto generator_output = generator->get_node("g1281_conv");
+	auto generator_output = generator->end_node(); 
 	auto generator_input = generator->get_placeholder("input");
 	auto discriminator_input = discriminator->get_placeholder("input");
 	auto discriminator_output = discriminator->end_node();

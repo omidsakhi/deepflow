@@ -96,7 +96,7 @@ std::shared_ptr<Session> create() {
 	auto d_solver = df.adam_solver(0.0002f, 0.5f, 0.98f, 10e-8f, "d_adam");
 
 	// The input for generator when needed
-	auto z = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1), FLAGS_total, "", "z");	
+	auto z = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1), "", "z");	
 	
 	auto face_data_128 = df.image_batch_reader(FLAGS_faces, { FLAGS_batch, FLAGS_channels, FLAGS_size, FLAGS_size }, false, "face_data_128");
 	auto face_data_64 = df.resize(face_data_128, 0.5, 0.5, "face_data_64");
@@ -104,8 +104,8 @@ std::shared_ptr<Session> create() {
 	auto face_data_16 = df.resize(face_data_32, 0.5, 0.5, "face_data_16");
 	auto face_data_8 = df.resize(face_data_16, 0.5, 0.5, "face_data_8");
 	
-	auto face_labels = df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1), FLAGS_total, "", "face_labels");
-	auto generator_labels = df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), FLAGS_total, "", "generator_labels");
+	auto face_labels = df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1), "", "face_labels");
+	auto generator_labels = df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), "", "generator_labels");
 
 	auto g4 = dense(&df, z, { 100, fn , 4 , 4 }, g_solver, true, "g4"); // 4x4	
 

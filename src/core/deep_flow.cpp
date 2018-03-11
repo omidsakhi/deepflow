@@ -33,7 +33,7 @@ std::string DeepFlow::mnist_reader(std::string folder_path, int batch_size, MNIS
 
 }
 
-std::string DeepFlow::data_generator(std::string initializer, int num_samples, std::string solver, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::data_generator(std::string initializer, std::string solver, std::string name, std::initializer_list<std::string> phases)
 {
 	auto node_param = _block->add_node_param();	
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -42,7 +42,6 @@ std::string DeepFlow::data_generator(std::string initializer, int num_samples, s
 		node_param->add_phase(phase);
 	auto variable_param = node_param->mutable_variable_param();	
 	auto data_generator_param = node_param->mutable_data_generator_param();	
-	data_generator_param->set_num_samples(num_samples);
 	if (!solver.empty())
 		variable_param->set_solver_name(solver);
 	auto init_param = variable_param->mutable_init_param();

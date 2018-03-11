@@ -991,7 +991,7 @@ void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *
 	do {
 		if (generators->size() > 0) {
 			for (auto gen : *generators) {
-				LOG_IF(FATAL, gen->isGenerator() == false) << "NOT A GENERATOR";
+				LOG_IF(FATAL, gen->is_generator() == false) << "NOT A GENERATOR";
 				if (gen->isLastBatch()) {
 					last_batch = true;
 					//LOG(INFO) << "LAST BATCH: " << std::dynamic_pointer_cast<Node>(gen)->name();
@@ -1044,7 +1044,7 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 	for (auto node : _nodes) {
 		if (!phase.empty() && node->includePhase(phase) == false)
 			continue;
-		if (node->isGenerator())
+		if (node->is_generator())
 			execution_phase_generators.push_back(node);
 	}	
 	std::list<std::shared_ptr<Node>> execution_end_nodes = _get_end_nodes(phase);
@@ -1081,7 +1081,7 @@ void Session::run(std::string phase, int max_epoch, int max_iter, bool print_ite
 			for (auto node : _nodes) {
 				if (node->includePhase(validation_phase) == false)
 					continue;
-				if (node->isGenerator())
+				if (node->is_generator())
 					validation_phase_generators.push_back(node);
 			}			
 			validation_end_nodes = _get_end_nodes(validation_phase);

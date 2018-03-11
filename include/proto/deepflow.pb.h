@@ -3838,17 +3838,10 @@ class DataGeneratorParam : public ::google::protobuf::Message /* @@protoc_insert
 
   // accessors -------------------------------------------------------
 
-  // int32 num_samples = 1;
-  void clear_num_samples();
-  static const int kNumSamplesFieldNumber = 1;
-  ::google::protobuf::int32 num_samples() const;
-  void set_num_samples(::google::protobuf::int32 value);
-
   // @@protoc_insertion_point(class_scope:deepflow.DataGeneratorParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::int32 num_samples_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -9686,20 +9679,6 @@ inline void VariableParam::set_allocated_weights(::deepflow::TensorData* weights
 // -------------------------------------------------------------------
 
 // DataGeneratorParam
-
-// int32 num_samples = 1;
-inline void DataGeneratorParam::clear_num_samples() {
-  num_samples_ = 0;
-}
-inline ::google::protobuf::int32 DataGeneratorParam::num_samples() const {
-  // @@protoc_insertion_point(field_get:deepflow.DataGeneratorParam.num_samples)
-  return num_samples_;
-}
-inline void DataGeneratorParam::set_num_samples(::google::protobuf::int32 value) {
-  
-  num_samples_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.DataGeneratorParam.num_samples)
-}
 
 // -------------------------------------------------------------------
 

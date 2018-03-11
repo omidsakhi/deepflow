@@ -40,7 +40,7 @@ public:
 	virtual int minNumOutputs() = 0;
 	virtual void forward() = 0;
 	virtual void backward() = 0;	
-	virtual bool isGenerator() { return false; }
+	virtual bool is_generator() { return false; }
 	virtual bool isLastBatch() { return true; }
 	virtual std::string to_cpp() const = 0;
 	virtual void prep_for_saving() {}

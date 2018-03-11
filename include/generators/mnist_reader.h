@@ -26,7 +26,7 @@ public:
 	int minNumInputs() { return 0; }
 	int minNumOutputs() { return 1; }	
 	std::string op_name() const override { return "mnist_reader"; }
-	bool isGenerator() { return true; }
+	bool is_generator() { return true; }
 	void init();	
 	void forward();
 	void backward() {}

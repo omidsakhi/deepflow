@@ -27,13 +27,13 @@ std::shared_ptr<Session> create_mnist_reader() {
 
 std::shared_ptr<Session> create_mnist_labels() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0.8, 1.0), 10000, "", "mnist_labels");
+	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0.8, 1.0), "", "mnist_labels");
 	return df.session();
 }
 
 std::shared_ptr<Session> create_generator_labels() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0, 0.2), 10000, "", "generator_labels");
+	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0, 0.2), "", "generator_labels");
 	return df.session();
 }
 
@@ -80,7 +80,7 @@ std::shared_ptr<Session> create_generator_session() {
 	auto dropout = 0.2;	
 
 	auto g_solver = df.adam_solver(0.0002f, 0.5f, 0.999f);
-	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1, "random_input"), 10000, "", "input");
+	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1, "random_input"), "", "input");
 
 	auto gfc_w = df.variable(df.random_normal({ 100, 512, 3, 3 }, mean, stddev), g_solver, "gfc_w");
 	auto gfc = df.matmul(gin, gfc_w, "gfc");

@@ -5,16 +5,12 @@
 
 DataGenerator::DataGenerator(std::shared_ptr<Initializer> initializer, deepflow::NodeParam *param) : Variable(initializer,param) {
 	LOG_IF(FATAL, param->has_data_generator_param() == false) << "param->has_data_generator_param() == false";
-	_no_solver = param->variable_param().solver_name().empty();
-	_num_total_samples = param->data_generator_param().num_samples();
+	_no_solver = param->variable_param().solver_name().empty();	
 	_batch_size = param->variable_param().init_param().tensor_param().dims(0);
-	LOG_IF(FATAL, _batch_size < 1) << "Data generator batch size must be more than 0";
-	LOG_IF(FATAL, _num_total_samples % _batch_size != 0) << "Number of total samples " << _num_total_samples << " must be dividable by the batch size " << _batch_size;
-	_num_batches = _num_total_samples / _batch_size;
-	_last_batch = (_current_batch == (_num_batches - 1));
+	LOG_IF(FATAL, _batch_size < 1) << "Data generator batch size must be more than 0";	
 }
 
-bool DataGenerator::isGenerator()
+bool DataGenerator::is_generator()
 {	
 	return _no_solver;
 }
@@ -22,25 +18,11 @@ bool DataGenerator::isGenerator()
 void DataGenerator::forward() {
 	if (_no_solver) {
 		_initializer->apply(this);
-		_last_batch = (_current_batch >= (_num_batches - 1));
-		if (_last_batch) {
-			_current_batch = 0;
-		}
-		else {
-			_current_batch++;
-		}
-	}
-	LOG_IF(INFO, _verbose > 3) << "DataGenerator " << _name << " - BATCH @ " << _current_batch;
+	}	
 }
-
-bool DataGenerator::isLastBatch() {
-	return _last_batch;
-}
-
 std::string DataGenerator::to_cpp() const
 {	
 	std::string cpp = "auto " + _name + " = df.data_generator(" + _initializer->to_cpp() + ", ";
-	cpp += std::to_string(_num_total_samples) + ", ";
 	cpp += (_no_solver ? "NULL" : _param->variable_param().solver_name()) + ", ";
 	cpp += "\"" + _name + "\", ";
 	cpp += "{" + _to_cpp_phases() + "});";

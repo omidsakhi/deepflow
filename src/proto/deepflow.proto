@@ -219,8 +219,7 @@ message VariableParam {
 	TensorData weights = 3;	
 }
 
-message DataGeneratorParam {	
-	int32 num_samples = 1;	
+message DataGeneratorParam {		
 }
 
 message ActivationParam {

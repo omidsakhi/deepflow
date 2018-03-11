@@ -15,7 +15,7 @@ public:
 	int minNumInputs() override { return 0; }
 	int minNumOutputs() override { return 1; }
 	std::string op_name() const override { return "image_batch_reader"; }
-	bool isGenerator() override { return true; }
+	bool is_generator() override { return true; }
 	void init() override;	
 	void forward() override;
 	void backward() override {}

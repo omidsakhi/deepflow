@@ -55,7 +55,7 @@ void main(int argc, char** argv) {
 			auto solver = df.adam_solver(0.02f, 0.5f, 0.5f);
 			//auto solver = df.sgd_solver(0.99f, 0.0001f);
 			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
-			auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), 1, solver, "gen");
+			auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), solver, "gen");
 			auto euclidean = df.square_error(image, generator);
 			auto loss = df.loss(euclidean, DeepFlow::AVG);
 			df.display(image, 2, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1,  "input", { train });
@@ -82,7 +82,7 @@ void main(int argc, char** argv) {
 			auto solver = df.adam_solver(0.01f, 0.5f, 0.9f);
 			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE, "image");
 			auto recon = df.variable(df.random_normal({ 1,3,256,256 }, 0, 0.1), solver, "recon");			
-			auto f1 = df.data_generator(df.random_uniform({ 10,3,3,3 }, -1, 1), 100, "", "f1");
+			auto f1 = df.data_generator(df.random_uniform({ 10,3,3,3 }, -1, 1), "", "f1");
 			auto f2 = df.restructure(f1, 0, 1);
 			auto conv = df.conv2d(image, f1, "", 1, 1, 1, 1, 1, 1);			
 			auto tconv = df.transposed_conv2d(recon, f2, 1, 1, 1, 1, 1, 1);
@@ -97,8 +97,8 @@ void main(int argc, char** argv) {
 			auto solver = df.adadelta_solver();
 			//auto solver = df.adam_solver(0.1f, 0.5f, 0.9f);
 			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_COLOR_IF_AVAILABLE);
-			auto generator1 = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -0.1, 0.1), 1, solver, "gen1");
-			auto generator2 = df.data_generator(df.random_normal({ 1, 3, 256, 256 }, 0, 0.1), 1, solver, "gen2");
+			auto generator1 = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -0.1, 0.1), solver, "gen1");
+			auto generator2 = df.data_generator(df.random_normal({ 1, 3, 256, 256 }, 0, 0.1), solver, "gen2");
 			auto selector = df.random_selector(generator1, generator2, 0.5);
 			auto euclidean = df.square_error(selector, image);
 			auto loss = df.loss(euclidean, DeepFlow::SUM);			
