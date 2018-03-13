@@ -35,5 +35,14 @@ void LRN::backward()
 
 std::string LRN::to_cpp() const
 {
-	return std::string();
+	auto param = _param->lrn_param();
+	// std::string lrn(std::string input, std::string name = "lrn", int n = 5, float alpha = 1e-4f, float beta = 0.75f, float k = 2.0f, std::initializer_list<std::string> phases = {});
+	std::string cpp = "auto " + _name + " = df.lrn(" + _input_name_for_cpp(0) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += std::to_string(param.n()) + ", ";
+	cpp += std::to_string(param.alpha()) + ", ";
+	cpp += std::to_string(param.beta()) + ", ";
+	cpp += std::to_string(param.k()) + ", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
 }

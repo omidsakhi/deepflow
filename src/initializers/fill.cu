@@ -35,9 +35,11 @@ std::string Fill::to_cpp() const
 		omit_value = false;
 	}
 	std::string cpp = "df."+op+"(";
-	cpp += "{" + std::to_string(_dims[0]) + ", " + std::to_string(_dims[1]) + ", " + std::to_string(_dims[2]) + ", " + std::to_string(_dims[3]) + "}, ";
-	if (!omit_value)
+	cpp += "{" + std::to_string(_dims[0]) + ", " + std::to_string(_dims[1]) + ", " + std::to_string(_dims[2]) + ", " + std::to_string(_dims[3]) + "}";;
+	if (!omit_value) {
+		cpp += ", ";
 		cpp += std::to_string(value);
+	}
 	cpp += ")";
 	return cpp;
 }
