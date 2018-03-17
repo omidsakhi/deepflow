@@ -815,8 +815,16 @@ void Session::forward()
 
 void Session::reset_gradients()
 {
-	for (auto var : _variables)
-		var->reset_gradients();
+	std::list<cudaStream_t> streams;	
+	for (auto var : _variables) {
+		streams.push_back(cudaStream_t());
+		cudaStreamCreate(&streams.back());
+		var->reset_gradients(streams.back());
+	}
+	for (auto stream : streams) {
+		cudaStreamSynchronize(stream);
+		cudaStreamDestroy(stream);
+	}
 }
 
 void Session::clamp(float min, float max)
@@ -842,26 +850,32 @@ void Session::backward()
 void Session::apply_solvers(std::initializer_list<std::string> solver_names)
 {
 	if (solver_names.size() > 0) {
+		std::list<cudaStream_t> streams;
 		for (auto item : _solvers) {
 			for (auto name : solver_names) {
 				if (item.second->name() == name) {
-					item.second->apply(item.first);
+					streams.push_back(cudaStream_t());
+					cudaStreamCreate(&streams.back());
+					item.second->apply(item.first, streams.back());
 				}
 			}
 		}
+		for (auto stream : streams) {
+			cudaStreamSynchronize(stream);			
+			cudaStreamDestroy(stream);
+		}
 	}
 	else {
-		for (auto item : _solvers)
-			item.second->apply(item.first);
-		/*
-		std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>("");
-		for (auto var : variable_nodes) {
-			auto map_var_to_solver = _solvers.find(var);
-			if (map_var_to_solver != _solvers.end()) {
-				map_var_to_solver->second->apply(var);
-			}
+		std::list<cudaStream_t> streams;
+		for (auto item : _solvers) {
+			streams.push_back(cudaStream_t());
+			cudaStreamCreate(&streams.back());
+			item.second->apply(item.first, streams.back());
 		}
-		*/
+		for (auto stream : streams) {
+			cudaStreamSynchronize(stream);
+			cudaStreamDestroy(stream);
+		}
 	}
 }
 
@@ -1198,7 +1212,7 @@ std::string Session::to_cpp() const
 						}
 					}
 				}
-				nodes.push_back(inputNode);
+				nodes.push_front(inputNode);
 			}
 		}
 

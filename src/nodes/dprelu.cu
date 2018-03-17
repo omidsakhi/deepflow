@@ -90,5 +90,8 @@ void DPRelu::backward()
 
 std::string DPRelu::to_cpp() const
 {
-	return std::string();
+	std::string cpp = "auto " + _name + " = df.dprelu(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;	
 }

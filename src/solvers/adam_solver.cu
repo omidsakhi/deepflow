@@ -24,7 +24,7 @@ AdamSolver::AdamSolver(deepflow::SolverParam *param) : Solver(param) {
 	_learning_rate = param->learning_rate();
 }
 
-void AdamSolver::apply(std::shared_ptr<Variable> var) {	
+void AdamSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {	
 	auto context = var->executionContext();
 	bool verbos = (context && context->debug_level > 3) ? true : false;
 	bool dry_run = false;
@@ -37,9 +37,9 @@ void AdamSolver::apply(std::shared_ptr<Variable> var) {
 		return;
 	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name();
 	auto size = var->output(0)->value()->size();	
-	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _m, _v, _my_param->beta1(), _my_param->beta2(), _my_param->eps(), _learning_rate, dry_run);
+	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock, 0, stream >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _m, _v, _my_param->beta1(), _my_param->beta2(), _my_param->eps(), _learning_rate, dry_run);
 	DF_KERNEL_CHECK();	
-	var->reset_gradients();
+	var->reset_gradients(stream);
 }
 
 void AdamSolver::init(std::shared_ptr<Variable> var) {

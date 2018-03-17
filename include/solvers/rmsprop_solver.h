@@ -5,7 +5,7 @@
 class DeepFlowDllExport RMSPropSolver : public Solver {
 public:
 	RMSPropSolver(deepflow::SolverParam *param);
-	void apply(std::shared_ptr<Variable> var) override;
+	void apply(std::shared_ptr<Variable> var, cudaStream_t stream = 0) override;
 	void init(std::shared_ptr<Variable> var) override;
 	std::string to_cpp() const override;
 private:

@@ -73,11 +73,16 @@ float * Variable::gradients()
 	return _grad;
 }
 
-void Variable::reset_gradients()
+void Variable::reset_gradients(cudaStream_t stream)
 {	
 	LOG_IF(INFO, _verbose > 3) << _name << " : gradients <- 0";
-	_outputs[0]->resetDiff();	
-	DF_CUDA_CHECK(cudaMemset(_grad, 0, _outputs[0]->value()->sizeInBytes()));
+	_outputs[0]->resetDiff(stream);
+	if (stream) {
+		DF_CUDA_CHECK(cudaMemsetAsync(_grad, 0, _outputs[0]->value()->sizeInBytes(), stream));
+	}
+	else {
+		DF_CUDA_CHECK(cudaMemset(_grad, 0, _outputs[0]->value()->sizeInBytes()));
+	}
 }
 
 void Variable::prep_for_saving()

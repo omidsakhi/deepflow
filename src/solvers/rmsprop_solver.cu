@@ -25,7 +25,7 @@ RMSPropSolver::RMSPropSolver(deepflow::SolverParam * param) : Solver(param) {
 }
 
 
-void RMSPropSolver::apply(std::shared_ptr<Variable> var) {
+void RMSPropSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {
 	auto context = var->executionContext();
 	bool verbos = (context && context->debug_level > 3) ? true : false;
 	bool dry_run = false;
@@ -38,9 +38,9 @@ void RMSPropSolver::apply(std::shared_ptr<Variable> var) {
 		return;
 	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name();
 	auto size = var->output(0)->value()->size();
-	RMSPropKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _h, _my_param->rms_decay(), _my_param->eps(), _learning_rate, dry_run);
+	RMSPropKernel << <numOfBlocks(size), maxThreadsPerBlock, 0, stream >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _h, _my_param->rms_decay(), _my_param->eps(), _learning_rate, dry_run);
 	DF_KERNEL_CHECK();
-	var->reset_gradients();
+	var->reset_gradients(stream);
 }
 
 void RMSPropSolver::init(std::shared_ptr<Variable> var) {

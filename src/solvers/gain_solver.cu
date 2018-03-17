@@ -38,7 +38,7 @@ GainSolver::GainSolver(deepflow::SolverParam *param): Solver(param) {
 	_learning_rate = param->learning_rate();
 }
 
-void GainSolver::apply(std::shared_ptr<Variable> var) {
+void GainSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {
 	auto context = var->executionContext();
 	bool verbos = (context && context->debug_level > 3) ? true : false;
 	if (_initialized == false) {
@@ -49,9 +49,9 @@ void GainSolver::apply(std::shared_ptr<Variable> var) {
 		return;
 	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name();	
 	auto size = var->output(0)->value()->size();	
-	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _previous_gradient, _gain, _my_param->max_gain(), _my_param->min_gain(), _my_param->gain_plus(), _my_param->gain_mult(), _my_param->momentum(), _learning_rate);
+	GainStepKernel << <numOfBlocks(size), maxThreadsPerBlock, 0, stream>> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _previous_gradient, _gain, _my_param->max_gain(), _my_param->min_gain(), _my_param->gain_plus(), _my_param->gain_mult(), _my_param->momentum(), _learning_rate);
 	DF_KERNEL_CHECK();
-	var->reset_gradients();
+	var->reset_gradients(stream);
 }
 
 void GainSolver::init(std::shared_ptr<Variable> var) {

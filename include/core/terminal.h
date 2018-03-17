@@ -58,7 +58,7 @@ public:
 	void feed(std::shared_ptr<NodeOutput> t);
 	void initDiff(bool reset = false);
 	void initDiff(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor);
-	void resetDiff();
+	void resetDiff(cudaStream_t stream = 0);
 	void resetValue();
 	void cpyValueToDiff();
 	std::shared_ptr<Tensor> value();

@@ -146,10 +146,15 @@ void NodeOutput::initDiff(std::array<int, 4> dims, std::shared_ptr<Tensor> tenso
 	_diff = std::make_shared<Tensor>(dims, tensor, _name + "_d");
 }
 
-void NodeOutput::resetDiff()
+void NodeOutput::resetDiff(cudaStream_t stream)
 {
 	if (_diff) {
-		DF_NODE_CUDA_CHECK(cudaMemset(_diff->mutableData(), 0, _diff->sizeInBytes()));
+		if (stream) {
+			DF_NODE_CUDA_CHECK(cudaMemsetAsync(_diff->mutableData(), 0, _diff->sizeInBytes(), stream));
+		}
+		else {
+			DF_NODE_CUDA_CHECK(cudaMemset(_diff->mutableData(), 0, _diff->sizeInBytes()));
+		}		
 	}
 }
 

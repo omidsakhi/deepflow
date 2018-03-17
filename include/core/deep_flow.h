@@ -186,6 +186,7 @@ public:
 	std::string batch_stddev(std::string input, std::string name = "batch_stddev", std::initializer_list<std::string> phases = {});
 	std::string pass_through(std::string input, bool stop_gradients, std::string name = "pass_through", std::initializer_list<std::string> phases = {});
 	std::string gaussian(std::string mean, std::string sigma, std::string name = "gaussian", std::initializer_list<std::string> phases = {});
+	std::string identity(std::string input, float scale, int input_channels, int output_channels, std::string name = "identity", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
 	std::string define_phase(std::string phase, PhaseBehaviour behaviour = TRAIN_AND_INFERENCE);

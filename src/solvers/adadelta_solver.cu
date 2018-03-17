@@ -30,7 +30,7 @@ AdaDeltaSolver::AdaDeltaSolver(deepflow::SolverParam *param) : Solver(param) {
 	_learning_rate = param->learning_rate();
 }
 
-void AdaDeltaSolver::apply(std::shared_ptr<Variable> var) {
+void AdaDeltaSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {
 	auto context = var->executionContext();
 	bool verbos = (context && context->debug_level > 3) ? true : false;
 	if (_initialized == false) {
@@ -41,9 +41,9 @@ void AdaDeltaSolver::apply(std::shared_ptr<Variable> var) {
 		return;
 	LOG_IF(INFO, verbos) << "applying solver " << name() << " ON " << var->name();	
 	auto size = var->output(0)->value()->size();
-	AdaDeltaKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _h1, _h2, _my_param->momentum(), _learning_rate, _my_param->delta());
+	AdaDeltaKernel << <numOfBlocks(size), maxThreadsPerBlock, 0, stream >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _h1, _h2, _my_param->momentum(), _learning_rate, _my_param->delta());
 	DF_KERNEL_CHECK();
-	var->reset_gradients();
+	var->reset_gradients(stream);
 }
 
 void AdaDeltaSolver::init(std::shared_ptr<Variable> var) {

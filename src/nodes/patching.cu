@@ -162,5 +162,22 @@ void Patching::backward()
 
 std::string Patching::to_cpp() const
 {
-	return std::string();
+	// std::string patching(std::string input, PatchingMode mode, int num_vertical_patches, int num_horizontal_patches, std::string name = "patching", std::initializer_list<std::string> phases = {});
+	std::string cpp = "auto " + _name + " = df.patching(" + _input_name_for_cpp(0) + ", ";
+	if (_mode == deepflow::PatchingParam_Mode_DOWNSAMPLES) 
+	{
+		cpp += "DeepFlow::PATCHING_DOWNSAMPLES, ";
+	} 
+	else if (_mode == deepflow::PatchingParam_Mode_DOWNCHANNELS) {
+		cpp += "DeepFlow::PATCHING_DOWNCHANNELS, ";
+	}
+	else if (_mode == deepflow::PatchingParam_Mode_UPSAMPLES) {
+		cpp += "DeepFlow::PATCHING_UPSAMPLES, ";
+	}
+	else if (_mode == deepflow::PatchingParam_Mode_UPCHANNELS) {
+		cpp += "DeepFlow::PATCHING_UPCHANNELS, ";
+	}
+	cpp += "\"" + _name + "\", ";
+	cpp += "{" + _to_cpp_phases() + "});";
+	return cpp;
 }

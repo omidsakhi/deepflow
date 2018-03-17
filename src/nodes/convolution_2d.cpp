@@ -70,11 +70,12 @@ void Convolution2D::init() {
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardFilterAlgorithm(_cudnnHandle, _xDesc, _dyDesc, _convDesc, _wDesc, CUDNN_CONVOLUTION_BWD_FILTER_PREFER_FASTEST, 0, &_bwdFilterAlgo));
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardFilterWorkspaceSize(_cudnnHandle, _xDesc, _dyDesc, _convDesc, _wDesc, _bwdFilterAlgo, &_bwdFilterWorkspaceSize));
 	_maxWorkspaceSize = std::max({ _maxWorkspaceSize, _bwdFilterWorkspaceSize });
+
+	if (d_workspace == 0 && _maxWorkspaceSize != 0)
+		DF_NODE_CUDA_CHECK(cudaMallocManaged(&d_workspace, _maxWorkspaceSize));
 }
 
 void Convolution2D::forward() {
-	if (d_workspace == 0 && _maxWorkspaceSize != 0)
-		DF_NODE_CUDA_CHECK(cudaMalloc(&d_workspace, _maxWorkspaceSize));
 	if (_num_inputs == 2) {
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionForward(_cudnnHandle, &one, _xDesc, _x, _wDesc, _w, _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &zero, _yDesc, _y));
 	}

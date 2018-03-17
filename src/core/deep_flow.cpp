@@ -130,7 +130,7 @@ std::string DeepFlow::bias_add(std::string a, std::string b, std::string name, s
 
 std::string DeepFlow::bias_add(std::string input, int output_channels, std::string solver, std::string name)
 {
-	auto bnb = variable(random_uniform({ 1, output_channels, 1, 1 }, 0, 0.02), solver, name + "_b");
+	auto bnb = variable(fill({ 1, output_channels, 1, 1 }, 0.01), solver, name + "_b");
 	return bias_add(input, bnb, name);
 }
 
@@ -417,7 +417,7 @@ std::string DeepFlow::prelu(std::string input, std::string w, std::string name, 
 
 std::string DeepFlow::prelu(std::string input, int output_channels, std::string solver, std::string name)
 {
-	auto w = variable(fill({ 1, output_channels, 1, 1 }, 0.2), solver, name + "_w");
+	auto w = variable(random_uniform({ 1, output_channels, 1, 1 },0.0f, 0.2f), solver, name + "_w");
 	return prelu(input, w, name);	
 }
 
@@ -540,6 +540,17 @@ std::string DeepFlow::gaussian(std::string mean, std::string sigma, std::string 
 	node_param->add_input(sigma);
 	node_param->mutable_gaussian_param();
 	return node_param->output(0);
+}
+
+std::string DeepFlow::identity(std::string input, float scale, int input_channels, int output_channels, std::string name, std::initializer_list<std::string> phases)
+{	
+	auto node = input;
+	if (input_channels != output_channels) {
+		auto f = variable(fill({ output_channels, input_channels, 1, 1 }, 1.0f / input_channels), "", name + "_2");
+		node = conv2d(node, f, 0, 0, 1, 1, 1, 1, name + "_3");
+	}
+	node = resize(node, scale, scale, name + "_1");
+	return node;
 }
 
 void DeepFlow::print(std::initializer_list<std::string> inputs, std::string message, ActionTime printTime, ActionType printType, std::string name, std::initializer_list<std::string> phases) {

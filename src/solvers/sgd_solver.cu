@@ -19,7 +19,7 @@ SGDSolver::SGDSolver(deepflow::SolverParam *param) : Solver(param) {
 	_learning_rate = param->learning_rate();
 }
 
-void SGDSolver::apply(std::shared_ptr<Variable> var) {
+void SGDSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {
 	auto context = var->executionContext();
 	bool verbos = (context && context->debug_level > 3) ? true : false;
 	if (_initialized == false) {
@@ -30,9 +30,9 @@ void SGDSolver::apply(std::shared_ptr<Variable> var) {
 		return;
 	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name();
 	auto size = var->output(0)->value()->size();
-	ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock>> > (size, _my_param->momentum(), _learning_rate, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients());
+	ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock, 0, stream>> > (size, _my_param->momentum(), _learning_rate, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients());
 	DF_KERNEL_CHECK();
-	var->reset_gradients();
+	var->reset_gradients(stream);
 }
 
 void SGDSolver::init(std::shared_ptr<Variable> var) {
