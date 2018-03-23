@@ -39,6 +39,8 @@ DEFINE_bool(x12, false, "Test patching");
 DEFINE_bool(x13, false, "Test upsample");
 DEFINE_bool(x14, false, "Test Concate");
 DEFINE_bool(x15, false, "Test resize");
+DEFINE_bool(x16, false, "Test Gaussian weights 1");
+DEFINE_bool(x17, false, "Test Gaussian weights 2");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -196,7 +198,19 @@ void main(int argc, char** argv) {
 			auto resized = df.resize(images, 2.0, 2.0);
 			df.display(resized, 5000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp", { train });
 		}
-
+		else if (FLAGS_x16) {
+			auto train = df.define_train_phase("Train");
+			auto gw = df.gaussian_kernel(64, 10);
+			df.display(gw, 5000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp", { train });
+		}
+		else if (FLAGS_x17) {
+			auto train = df.define_train_phase("Train");
+			auto imba = df.image_batch_reader(FLAGS_celeba128, { 50, 3, 128, 128 }, true);
+			//auto gw = df.gaussian_kernel(63, 0.1);
+			auto gw = df.gaussian_kernel(63, 10);
+			auto conv = df.conv2d(imba, gw, 31, 31, 1, 1, 1, 1);
+			df.display(conv, 5000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp", { train });
+		}
 	}
 	else {
 		df.block()->load_from_binary(FLAGS_i);

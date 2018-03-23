@@ -8,6 +8,7 @@
 #include "nodes/multiplexer.h"
 #include "nodes/add.h"
 #include "nodes/loss.h"
+#include "nodes/gaussian_kernel.h"
 
 class Solver;
 class Variable;

@@ -449,6 +449,11 @@ message PassThroughParam {
 message GaussianParam {
 }
 
+message GaussianKernelParam {
+	int32 window_size = 1;
+	float sigma = 2;
+}
+
 message NodeParam {
   string name = 1;
   repeated string input = 2;
@@ -510,5 +515,6 @@ message NodeParam {
   BatchStdDevParam batch_stddev_param = 153;
   PassThroughParam pass_through_param = 154;
   GaussianParam gaussian_param = 155;
+  GaussianKernelParam gaussian_kernel_param = 156;
 }
 

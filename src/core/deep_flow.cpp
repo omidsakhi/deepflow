@@ -130,7 +130,7 @@ std::string DeepFlow::bias_add(std::string a, std::string b, std::string name, s
 
 std::string DeepFlow::bias_add(std::string input, int output_channels, std::string solver, std::string name)
 {
-	auto bnb = variable(fill({ 1, output_channels, 1, 1 }, 0.01), solver, name + "_b");
+	auto bnb = variable(fill({ 1, output_channels, 1, 1 }, 0.01), solver, name + "_w");
 	return bias_add(input, bnb, name);
 }
 
@@ -417,7 +417,7 @@ std::string DeepFlow::prelu(std::string input, std::string w, std::string name, 
 
 std::string DeepFlow::prelu(std::string input, int output_channels, std::string solver, std::string name)
 {
-	auto w = variable(random_uniform({ 1, output_channels, 1, 1 },0.0f, 0.2f), solver, name + "_w");
+	auto w = variable(fill({ 1, output_channels, 1, 1 }, 0.2f), solver, name + "_w");
 	return prelu(input, w, name);	
 }
 
@@ -542,6 +542,19 @@ std::string DeepFlow::gaussian(std::string mean, std::string sigma, std::string 
 	return node_param->output(0);
 }
 
+std::string DeepFlow::gaussian_kernel(int window_size, float sigma, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);	
+	auto param = node_param->mutable_gaussian_kernel_param();
+	param->set_sigma(sigma);
+	param->set_window_size(window_size);
+	return node_param->output(0);
+}
+
 std::string DeepFlow::identity(std::string input, float scale, int input_channels, int output_channels, std::string name, std::initializer_list<std::string> phases)
 {	
 	auto node = input;
@@ -549,7 +562,8 @@ std::string DeepFlow::identity(std::string input, float scale, int input_channel
 		auto f = variable(fill({ output_channels, input_channels, 1, 1 }, 1.0f / input_channels), "", name + "_2");
 		node = conv2d(node, f, 0, 0, 1, 1, 1, 1, name + "_3");
 	}
-	node = resize(node, scale, scale, name + "_1");
+	if (scale != 1)
+		node = resize(node, scale, scale, name + "_1");
 	return node;
 }
 
@@ -806,6 +820,12 @@ std::string DeepFlow::conv2d(std::string input, std::string filter, std::string 
 std::string DeepFlow::conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name, std::initializer_list<std::string> phases)
 {
 	return conv2d(input, filter, "", 0, pad_top_bottom, pad_left_right, vertical_filter_stride, horizontal_filter_stride, filter_height_dilation, filter_width_dialation, name, phases);
+}
+
+std::string DeepFlow::conv2d_with_bias(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name) {
+	auto f = variable(random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
+	auto node = conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_conv");
+	return bias_add(node, output_channels, solver, name);
 }
 
 std::string DeepFlow::pooling(std::string input, int windowHeight, int windowWidth, int verticalPadding, int horizontalPadding, int verticalStride, int horizontalStride, std::string name, std::initializer_list<std::string> phases) {

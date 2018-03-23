@@ -106,11 +106,16 @@
     <CudaCompile Include="..\..\src\nodes\batch_stddev.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\concate.cu" />
     <CudaCompile Include="..\..\src\nodes\pass_through.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\gaussian.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\gaussian_kernel.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\concate.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
   </ItemGroup>
@@ -481,6 +486,9 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\gaussian.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\gaussian_kernel.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

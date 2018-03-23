@@ -57,7 +57,10 @@ void Convolution2D::init() {
 		_dxDesc = _inputs[0]->diff()->descriptor();
 		_dx = _inputs[0]->diff()->mutableData();
 	}
-	_dw = _inputs[1]->diff()->mutableData();
+	if (_inputs[1]->diff())
+		_dw = _inputs[1]->diff()->mutableData();
+	else
+		_dw = nullptr;
 	_outputs[0]->initDiff();
 	_dyDesc = _outputs[0]->diff()->descriptor();
 	_dy = _outputs[0]->diff()->mutableData();

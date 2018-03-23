@@ -89,6 +89,7 @@ public:
 	//CONVOLUTION
 	std::string conv2d(std::string input, std::string filter, std::string bias, float negative_slope /* NOT SUPPORTED YET BY CUDNN */, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string conv2d(std::string input, std::string filter, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
+	std::string conv2d_with_bias(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name);
 	std::string transposed_conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
 
 	// RESTRUCTURE
@@ -172,7 +173,7 @@ public:
 	// NORMALIZATION
 	std::string batch_normalization(std::string input, std::string scale, std::string bias, NormalizationMode mode = DeepFlow::SPATIAL, bool cache = true, std::string name = "batch_norm", std::initializer_list<std::string> phases = {});
 	std::string batch_normalization(std::string input, std::string solver, int output_channels, std::string name);
-	std::string lrn(std::string input, std::string name = "lrn", int n = 5, float alpha = 1e-4f, float beta = 0.75f, float k = 2.0f, std::initializer_list<std::string> phases = {});
+	std::string lrn(std::string input, std::string name = "lrn", int n = 5, float alpha = 1e-4f, float beta = 0.75f, float k = 2.0f, std::initializer_list<std::string> phases = {});	
 
 	// SOCKET IO
 	void sio_output(std::initializer_list<std::string> inputs, ActionTime printTime = ActionTime::EVERY_PASS, std::string host = "127.0.0.1", int port = 6643, std::string name = "sio_output", std::initializer_list<std::string> phases = {});
@@ -186,6 +187,7 @@ public:
 	std::string batch_stddev(std::string input, std::string name = "batch_stddev", std::initializer_list<std::string> phases = {});
 	std::string pass_through(std::string input, bool stop_gradients, std::string name = "pass_through", std::initializer_list<std::string> phases = {});
 	std::string gaussian(std::string mean, std::string sigma, std::string name = "gaussian", std::initializer_list<std::string> phases = {});
+	std::string gaussian_kernel(int window_size, float sigma, std::string name = "gaussian_weights", std::initializer_list<std::string> phases = {});
 	std::string identity(std::string input, float scale, int input_channels, int output_channels, std::string name = "identity", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
