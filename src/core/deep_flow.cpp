@@ -224,6 +224,21 @@ std::string DeepFlow::random_normal(std::initializer_list<int> dims, float mean,
 	return init_param->name();
 }
 
+std::string DeepFlow::truncated_normal(std::initializer_list<int> dims, float mean, float stddev, std::string name)
+{
+	auto init_param = _block->add_initializer_param();
+	init_param->set_name(_block->get_unique_initializer_param_name(name));
+	std::vector<int> values(dims);
+	auto tensor_param = init_param->mutable_tensor_param();
+	for (int i = 0; i < values.size(); ++i)
+		tensor_param->add_dims(values[i]);
+	tensor_param->set_type(deepflow::TensorParam_TensorType_FLOAT);
+	auto t_normal_param = init_param->mutable_truncated_normal_param();
+	t_normal_param->set_mean(mean);
+	t_normal_param->set_stddev(stddev);
+	return init_param->name();
+}
+
 std::string DeepFlow::cast_float(std::string input, std::string name, std::initializer_list<std::string> phases) {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
@@ -555,6 +570,14 @@ std::string DeepFlow::gaussian_kernel(int window_size, float sigma, std::string 
 	return node_param->output(0);
 }
 
+std::string DeepFlow::gaussian_blur(std::string input, int window_size, float sigma, std::string name)
+{
+	LOG_IF(FATAL, window_size % 2 == 0) << "Window size for Gaussian Blur kernel must be odd.";
+	auto pad = floor(window_size / 2);
+	auto k = gaussian_kernel(window_size, sigma, name + "_kernel");
+	return conv2d(input, k, pad, pad, 1, 1, 1, 1, name);
+}
+
 std::string DeepFlow::identity(std::string input, float scale, int input_channels, int output_channels, std::string name, std::initializer_list<std::string> phases)
 {	
 	auto node = input;
@@ -822,8 +845,8 @@ std::string DeepFlow::conv2d(std::string input, std::string filter, int pad_top_
 	return conv2d(input, filter, "", 0, pad_top_bottom, pad_left_right, vertical_filter_stride, horizontal_filter_stride, filter_height_dilation, filter_width_dialation, name, phases);
 }
 
-std::string DeepFlow::conv2d_with_bias(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name) {
-	auto f = variable(random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
+std::string DeepFlow::conv2d_with_bias(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name) {	
+	auto f = variable(truncated_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.75 * sqrt(2.0f / (input_channels))), solver, name + "_f");
 	auto node = conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_conv");
 	return bias_add(node, output_channels, solver, name);
 }

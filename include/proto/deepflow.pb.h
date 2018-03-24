@@ -131,6 +131,9 @@ extern InitStepParamDefaultTypeInternal _InitStepParam_default_instance_;
 class InitThreeStateParam;
 class InitThreeStateParamDefaultTypeInternal;
 extern InitThreeStateParamDefaultTypeInternal _InitThreeStateParam_default_instance_;
+class InitTruncatedNormalParam;
+class InitTruncatedNormalParamDefaultTypeInternal;
+extern InitTruncatedNormalParamDefaultTypeInternal _InitTruncatedNormalParam_default_instance_;
 class LeakyReluParam;
 class LeakyReluParamDefaultTypeInternal;
 extern LeakyReluParamDefaultTypeInternal _LeakyReluParam_default_instance_;
@@ -5912,6 +5915,93 @@ class InitRandomNormalParam : public ::google::protobuf::Message /* @@protoc_ins
 };
 // -------------------------------------------------------------------
 
+class InitTruncatedNormalParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.InitTruncatedNormalParam) */ {
+ public:
+  InitTruncatedNormalParam();
+  virtual ~InitTruncatedNormalParam();
+
+  InitTruncatedNormalParam(const InitTruncatedNormalParam& from);
+
+  inline InitTruncatedNormalParam& operator=(const InitTruncatedNormalParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const InitTruncatedNormalParam& default_instance();
+
+  static inline const InitTruncatedNormalParam* internal_default_instance() {
+    return reinterpret_cast<const InitTruncatedNormalParam*>(
+               &_InitTruncatedNormalParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    56;
+
+  void Swap(InitTruncatedNormalParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline InitTruncatedNormalParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  InitTruncatedNormalParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const InitTruncatedNormalParam& from);
+  void MergeFrom(const InitTruncatedNormalParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(InitTruncatedNormalParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float mean = 1;
+  void clear_mean();
+  static const int kMeanFieldNumber = 1;
+  float mean() const;
+  void set_mean(float value);
+
+  // float stddev = 2;
+  void clear_stddev();
+  static const int kStddevFieldNumber = 2;
+  float stddev() const;
+  void set_stddev(float value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.InitTruncatedNormalParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float mean_;
+  float stddev_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class InitStepParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.InitStepParam) */ {
  public:
   InitStepParam();
@@ -5932,7 +6022,7 @@ class InitStepParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_InitStepParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    56;
+    57;
 
   void Swap(InitStepParam* other);
 
@@ -6019,7 +6109,7 @@ class InitThreeStateParam : public ::google::protobuf::Message /* @@protoc_inser
                &_InitThreeStateParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    57;
+    58;
 
   void Swap(InitThreeStateParam* other);
 
@@ -6092,7 +6182,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_InitParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    58;
+    59;
 
   void Swap(InitParam* other);
 
@@ -6222,6 +6312,15 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::InitThreeStateParam* release_three_state_param();
   void set_allocated_three_state_param(::deepflow::InitThreeStateParam* three_state_param);
 
+  // .deepflow.InitTruncatedNormalParam truncated_normal_param = 10;
+  bool has_truncated_normal_param() const;
+  void clear_truncated_normal_param();
+  static const int kTruncatedNormalParamFieldNumber = 10;
+  const ::deepflow::InitTruncatedNormalParam& truncated_normal_param() const;
+  ::deepflow::InitTruncatedNormalParam* mutable_truncated_normal_param();
+  ::deepflow::InitTruncatedNormalParam* release_truncated_normal_param();
+  void set_allocated_truncated_normal_param(::deepflow::InitTruncatedNormalParam* truncated_normal_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.InitParam)
  private:
 
@@ -6235,6 +6334,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::InitStepParam* step_param_;
   ::deepflow::InitRandomNormalParam* random_normal_param_;
   ::deepflow::InitThreeStateParam* three_state_param_;
+  ::deepflow::InitTruncatedNormalParam* truncated_normal_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -6260,7 +6360,7 @@ class SGDSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_SGDSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    59;
+    60;
 
   void Swap(SGDSolverParam* other);
 
@@ -6340,7 +6440,7 @@ class GainSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_GainSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    60;
+    61;
 
   void Swap(GainSolverParam* other);
 
@@ -6448,7 +6548,7 @@ class AdaDeltaSolverParam : public ::google::protobuf::Message /* @@protoc_inser
                &_AdaDeltaSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    61;
+    62;
 
   void Swap(AdaDeltaSolverParam* other);
 
@@ -6535,7 +6635,7 @@ class AdamSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_AdamSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    62;
+    63;
 
   void Swap(AdamSolverParam* other);
 
@@ -6629,7 +6729,7 @@ class RMSPropSolverParam : public ::google::protobuf::Message /* @@protoc_insert
                &_RMSPropSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    63;
+    64;
 
   void Swap(RMSPropSolverParam* other);
 
@@ -6716,7 +6816,7 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    64;
+    65;
 
   void Swap(SolverParam* other);
 
@@ -6861,7 +6961,7 @@ class PhaseParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_PhaseParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    65;
+    66;
 
   void Swap(PhaseParam* other);
 
@@ -6986,7 +7086,7 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_BlockParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    66;
+    67;
 
   void Swap(BlockParam* other);
 
@@ -7111,7 +7211,7 @@ class ConcateParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_ConcateParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    67;
+    68;
 
   void Swap(ConcateParam* other);
 
@@ -7184,7 +7284,7 @@ class ReshapeParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_ReshapeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    68;
+    69;
 
   void Swap(ReshapeParam* other);
 
@@ -7271,7 +7371,7 @@ class BatchStdDevParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_BatchStdDevParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    69;
+    70;
 
   void Swap(BatchStdDevParam* other);
 
@@ -7344,7 +7444,7 @@ class PassThroughParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_PassThroughParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    70;
+    71;
 
   void Swap(PassThroughParam* other);
 
@@ -7424,7 +7524,7 @@ class GaussianParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_GaussianParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    71;
+    72;
 
   void Swap(GaussianParam* other);
 
@@ -7497,7 +7597,7 @@ class GaussianKernelParam : public ::google::protobuf::Message /* @@protoc_inser
                &_GaussianKernelParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    72;
+    73;
 
   void Swap(GaussianKernelParam* other);
 
@@ -7584,7 +7684,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NodeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    73;
+    74;
 
   void Swap(NodeParam* other);
 
@@ -10603,6 +10703,38 @@ inline void InitRandomNormalParam::set_stddev(float value) {
 
 // -------------------------------------------------------------------
 
+// InitTruncatedNormalParam
+
+// float mean = 1;
+inline void InitTruncatedNormalParam::clear_mean() {
+  mean_ = 0;
+}
+inline float InitTruncatedNormalParam::mean() const {
+  // @@protoc_insertion_point(field_get:deepflow.InitTruncatedNormalParam.mean)
+  return mean_;
+}
+inline void InitTruncatedNormalParam::set_mean(float value) {
+  
+  mean_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.InitTruncatedNormalParam.mean)
+}
+
+// float stddev = 2;
+inline void InitTruncatedNormalParam::clear_stddev() {
+  stddev_ = 0;
+}
+inline float InitTruncatedNormalParam::stddev() const {
+  // @@protoc_insertion_point(field_get:deepflow.InitTruncatedNormalParam.stddev)
+  return stddev_;
+}
+inline void InitTruncatedNormalParam::set_stddev(float value) {
+  
+  stddev_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.InitTruncatedNormalParam.stddev)
+}
+
+// -------------------------------------------------------------------
+
 // InitStepParam
 
 // float min = 1;
@@ -11004,6 +11136,45 @@ inline void InitParam::set_allocated_three_state_param(::deepflow::InitThreeStat
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.three_state_param)
+}
+
+// .deepflow.InitTruncatedNormalParam truncated_normal_param = 10;
+inline bool InitParam::has_truncated_normal_param() const {
+  return this != internal_default_instance() && truncated_normal_param_ != NULL;
+}
+inline void InitParam::clear_truncated_normal_param() {
+  if (GetArenaNoVirtual() == NULL && truncated_normal_param_ != NULL) delete truncated_normal_param_;
+  truncated_normal_param_ = NULL;
+}
+inline const ::deepflow::InitTruncatedNormalParam& InitParam::truncated_normal_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.InitParam.truncated_normal_param)
+  return truncated_normal_param_ != NULL ? *truncated_normal_param_
+                         : *::deepflow::InitTruncatedNormalParam::internal_default_instance();
+}
+inline ::deepflow::InitTruncatedNormalParam* InitParam::mutable_truncated_normal_param() {
+  
+  if (truncated_normal_param_ == NULL) {
+    truncated_normal_param_ = new ::deepflow::InitTruncatedNormalParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.InitParam.truncated_normal_param)
+  return truncated_normal_param_;
+}
+inline ::deepflow::InitTruncatedNormalParam* InitParam::release_truncated_normal_param() {
+  // @@protoc_insertion_point(field_release:deepflow.InitParam.truncated_normal_param)
+  
+  ::deepflow::InitTruncatedNormalParam* temp = truncated_normal_param_;
+  truncated_normal_param_ = NULL;
+  return temp;
+}
+inline void InitParam::set_allocated_truncated_normal_param(::deepflow::InitTruncatedNormalParam* truncated_normal_param) {
+  delete truncated_normal_param_;
+  truncated_normal_param_ = truncated_normal_param;
+  if (truncated_normal_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.truncated_normal_param)
 }
 
 // -------------------------------------------------------------------
@@ -14214,6 +14385,8 @@ inline void NodeParam::set_allocated_gaussian_kernel_param(::deepflow::GaussianK
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

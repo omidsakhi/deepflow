@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\initializers\truncated_normal.cpp" />
     <ClCompile Include="..\..\src\nodes\lrn.cpp" />
     <ClCompile Include="..\..\src\utilities\moving_average.cpp" />
     <ClInclude Include="..\..\include\core\caffe.h" />
@@ -42,6 +43,7 @@
     <ClInclude Include="..\..\include\initializers\random_uniform.h" />
     <ClInclude Include="..\..\include\initializers\step.h" />
     <ClInclude Include="..\..\include\initializers\three_state.h" />
+    <ClInclude Include="..\..\include\initializers\truncated_normal.h" />
     <ClInclude Include="..\..\include\nodes\abs.h" />
     <ClInclude Include="..\..\include\nodes\accumulator.h" />
     <ClInclude Include="..\..\include\nodes\activation.h" />

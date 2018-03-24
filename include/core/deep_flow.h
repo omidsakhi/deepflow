@@ -79,6 +79,7 @@ public:
 	std::string ones(std::initializer_list<int> dims, std::string = "ones");
 	std::string random_uniform(std::initializer_list<int> dims, float min, float max, std::string name = "random_uniform");
 	std::string random_normal(std::initializer_list<int> dims, float mean, float stddev, std::string name = "random_normal");
+	std::string truncated_normal(std::initializer_list<int> dims, float mean, float stddev, std::string name = "truncated_normal");
 	std::string step(std::initializer_list<int> dims, float min, float max, std::string name = "step");
 	std::string three_state(std::initializer_list<int> dims, std::string name = "three_state");
 
@@ -188,6 +189,7 @@ public:
 	std::string pass_through(std::string input, bool stop_gradients, std::string name = "pass_through", std::initializer_list<std::string> phases = {});
 	std::string gaussian(std::string mean, std::string sigma, std::string name = "gaussian", std::initializer_list<std::string> phases = {});
 	std::string gaussian_kernel(int window_size, float sigma, std::string name = "gaussian_weights", std::initializer_list<std::string> phases = {});
+	std::string gaussian_blur(std::string input, int window_size, float sigma, std::string name = "gaussian_blur");
 	std::string identity(std::string input, float scale, int input_channels, int output_channels, std::string name = "identity", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	

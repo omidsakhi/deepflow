@@ -10,6 +10,7 @@
 #include "initializers/random_normal.h"
 #include "initializers/step.h"
 #include "initializers/three_state.h"
+#include "initializers/truncated_normal.h"
 
 #include "core/solver.h"
 
@@ -106,6 +107,9 @@ std::shared_ptr<Initializer> _create_initializer(deepflow::InitParam *init_param
 	}
 	else if (init_param->has_three_state_param()) {
 		return std::make_shared<ThreeState>(init_param);
+	}
+	else if (init_param->has_truncated_normal_param()) {
+		return std::make_shared<TruncatedNormal>(init_param);
 	}
 	else {
 		LOG(FATAL) << "Unsupported Initializer";

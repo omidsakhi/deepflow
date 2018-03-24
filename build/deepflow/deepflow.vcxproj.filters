@@ -243,6 +243,9 @@
     <ClCompile Include="..\..\src\nodes\lrn.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\initializers\truncated_normal.cpp">
+      <Filter>source\initializers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -490,6 +493,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\gaussian_kernel.h">
       <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\initializers\truncated_normal.h">
+      <Filter>include\initializers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

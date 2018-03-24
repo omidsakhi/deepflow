@@ -355,6 +355,11 @@ message InitRandomNormalParam {
 	float stddev = 2;
 }
 
+message InitTruncatedNormalParam {
+	float mean = 1;
+	float stddev = 2;
+}
+
 message InitStepParam {
 	float min = 1;
 	float max = 2;	
@@ -373,6 +378,7 @@ message InitParam {
   InitStepParam step_param = 7;
   InitRandomNormalParam random_normal_param = 8;
   InitThreeStateParam three_state_param = 9;
+  InitTruncatedNormalParam truncated_normal_param = 10;
 }
 
 message SGDSolverParam {	
