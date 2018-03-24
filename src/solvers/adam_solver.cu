@@ -6,6 +6,14 @@
 #include <glog/logging.h>
 
 __global__
+void AdamFillKernel(const int n, const float value, float *dst)
+{
+	int i = blockIdx.x*blockDim.x + threadIdx.x;
+	if (i < n)
+		dst[i] = value;
+}
+
+__global__
 void AdamKernel(const int n, float *w, const float *g, float *m, float *v, const float beta1, const float beta2, const float eps, const float learning_rate, const bool dry_run)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
@@ -48,7 +56,8 @@ void AdamSolver::init(std::shared_ptr<Variable> var) {
 	DF_CUDA_CHECK(cudaMalloc(&_m, sizeInBytes));	
 	DF_CUDA_CHECK(cudaMemset(_m, 0, sizeInBytes));
 	DF_CUDA_CHECK(cudaMalloc(&_v, sizeInBytes));
-	DF_CUDA_CHECK(cudaMemset(_v, 0, sizeInBytes));
+	AdamFillKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, 1, _v);
+	DF_KERNEL_CHECK();	
 	_initialized = true;
 }
 
