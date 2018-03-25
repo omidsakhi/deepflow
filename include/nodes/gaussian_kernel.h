@@ -16,6 +16,7 @@ public:
 private:
 	void generate();
 	int _window_size = 3;
-	float _current_sigma = 1;	
+	float _current_sigma = 1;
+	int _num_channels = 3;
 };
 

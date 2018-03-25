@@ -458,6 +458,7 @@ message GaussianParam {
 message GaussianKernelParam {
 	int32 window_size = 1;
 	float sigma = 2;
+	int32 num_channels = 3;
 }
 
 message NodeParam {
@@ -521,6 +522,6 @@ message NodeParam {
   BatchStdDevParam batch_stddev_param = 153;
   PassThroughParam pass_through_param = 154;
   GaussianParam gaussian_param = 155;
-  GaussianKernelParam gaussian_kernel_param = 156;
+  GaussianKernelParam gaussian_kernel_param = 156;  
 }
 

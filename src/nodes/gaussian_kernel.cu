@@ -1,7 +1,7 @@
 #include "nodes/gaussian_kernel.h"
 
 __global__
-void GaussianWeightsKernel(const int n, const float sigma, const int window_size, float * w)
+void GaussianWeightsKernel(const int n, const float sigma, const int window_size, const int num_channels, float * w)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
@@ -10,8 +10,8 @@ void GaussianWeightsKernel(const int n, const float sigma, const int window_size
 		indexTemp /= window_size;
 		const int y = indexTemp % window_size;
 		indexTemp /= window_size;
-		const int input_channel = indexTemp % 3;
-		indexTemp /= 3;
+		const int input_channel = indexTemp % num_channels;
+		indexTemp /= num_channels;
 		const int output_channel = indexTemp;
 		if (output_channel == input_channel) {
 			float half_window_size = (float)window_size / 2.0f;
@@ -19,7 +19,7 @@ void GaussianWeightsKernel(const int n, const float sigma, const int window_size
 				float xx = (x - half_window_size) * (x - half_window_size);
 				float yy = (y - half_window_size) * (y - half_window_size);
 				float ss = sigma * sigma;
-				w[i] = 1.0f / (2.0f * 3.141592f * sigma * sigma) * exp(-0.5f * (xx + yy) / ss);
+				w[i] = 1.0f / (2.0f * 3.141592f * ss) * exp(-0.5f * (xx + yy) / ss);
 			}
 		}
 		else {
@@ -47,7 +47,9 @@ void ConvGaussianKernel::init()
 	auto gparam = _param->gaussian_kernel_param();
 	_window_size = gparam.window_size();
 	_current_sigma = gparam.sigma();
-	std::array<int, 4> dims = { 3, 3, _window_size, _window_size};
+	if (gparam.num_channels())
+		_num_channels = gparam.num_channels();	
+	std::array<int, 4> dims = { _num_channels, _num_channels, _window_size, _window_size};
 	_outputs[0]->initValue(dims);
 	generate();
 }
@@ -68,6 +70,6 @@ std::string ConvGaussianKernel::to_cpp() const
 void ConvGaussianKernel::generate()
 {
 	auto size = _outputs[0]->value()->size();
-	GaussianWeightsKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _current_sigma, _window_size, (float*)_outputs[0]->value()->mutableData());
+	GaussianWeightsKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _current_sigma, _window_size, _num_channels, (float*)_outputs[0]->value()->mutableData());
 	DF_KERNEL_CHECK();
 }
