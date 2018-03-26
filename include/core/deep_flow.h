@@ -90,6 +90,7 @@ public:
 	//CONVOLUTION
 	std::string conv2d(std::string input, std::string filter, std::string bias, float negative_slope /* NOT SUPPORTED YET BY CUDNN */, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string conv2d(std::string input, std::string filter, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
+	std::string conv2d(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name);
 	std::string conv2d_with_bias(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name);
 	std::string transposed_conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
 
@@ -99,9 +100,10 @@ public:
 	std::string lifting(std::string input, LiftingMode mode, std::string name = "lifting", std::initializer_list<std::string> phases = {});
 	std::string upsample(std::string input, std::string name = "upsample", std::initializer_list<std::string> phases = {});
 	std::string patching(std::string input, PatchingMode mode, int num_vertical_patches, int num_horizontal_patches, std::string name = "patching", std::initializer_list<std::string> phases = {});
+	std::string patch_sampling(std::string input, int patch_width, int patch_height, std::string name = "patch_sampling", std::initializer_list<std::string> phases = {});
 	std::string resize(std::string input, float height_scale, float width_scale, std::string name = "resize", std::initializer_list<std::string> phases = {});
 	std::string concate(std::string input1, std::string input2, std::string name = "resize", std::initializer_list<std::string> phases = {});
-	std::string reshape(std::string input, std::array<int, 4> output_dims, std::string name = "reshape", std::initializer_list<std::string> phases = {});
+	std::string reshape(std::string input, std::array<int, 4> output_dims, std::string name = "reshape", std::initializer_list<std::string> phases = {});	
 
 	// MATH
 	std::string add(std::string a, std::string b, float alpha, float beta, std::string name = "add", std::initializer_list<std::string> phases = {});
@@ -190,7 +192,7 @@ public:
 	std::string gaussian(std::string mean, std::string sigma, std::string name = "gaussian", std::initializer_list<std::string> phases = {});
 	std::string gaussian_kernel(int window_size, float sigma, std::string name = "gaussian_weights", std::initializer_list<std::string> phases = {});
 	std::string gaussian_blur(std::string input, int window_size, float sigma, std::string name = "gaussian_blur");
-	std::string identity(std::string input, float scale, int input_channels, int output_channels, std::string name = "identity", std::initializer_list<std::string> phases = {});
+	std::string identity(std::string input, float scale, int input_channels, int output_channels, std::string solver, std::string name = "identity", std::initializer_list<std::string> phases = {});
 
 	// UTILITIES	
 	std::string define_phase(std::string phase, PhaseBehaviour behaviour = TRAIN_AND_INFERENCE);

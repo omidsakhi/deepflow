@@ -8,7 +8,7 @@ public:
 	int minNumInputs() override { return 0; }
 	int minNumOutputs() override { return 1; }
 	void setSigma(float value);
-	std::string op_name() const override { return "gaussian_weights"; }
+	std::string op_name() const override { return "gaussian_kernel"; }
 	void init() override;
 	void forward() override;
 	void backward() override;

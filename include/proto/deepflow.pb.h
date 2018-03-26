@@ -101,9 +101,6 @@ extern GaussianKernelParamDefaultTypeInternal _GaussianKernelParam_default_insta
 class GaussianParam;
 class GaussianParamDefaultTypeInternal;
 extern GaussianParamDefaultTypeInternal _GaussianParam_default_instance_;
-class IdentityKernelParam;
-class IdentityKernelParamDefaultTypeInternal;
-extern IdentityKernelParamDefaultTypeInternal _IdentityKernelParam_default_instance_;
 class ImageBatchReaderParam;
 class ImageBatchReaderParamDefaultTypeInternal;
 extern ImageBatchReaderParamDefaultTypeInternal _ImageBatchReaderParam_default_instance_;
@@ -173,6 +170,9 @@ extern PReluParamDefaultTypeInternal _PReluParam_default_instance_;
 class PassThroughParam;
 class PassThroughParamDefaultTypeInternal;
 extern PassThroughParamDefaultTypeInternal _PassThroughParam_default_instance_;
+class PatchSamplingParam;
+class PatchSamplingParamDefaultTypeInternal;
+extern PatchSamplingParamDefaultTypeInternal _PatchSamplingParam_default_instance_;
 class PatchingParam;
 class PatchingParamDefaultTypeInternal;
 extern PatchingParamDefaultTypeInternal _PatchingParam_default_instance_;
@@ -7674,39 +7674,39 @@ class GaussianKernelParam : public ::google::protobuf::Message /* @@protoc_inser
 };
 // -------------------------------------------------------------------
 
-class IdentityKernelParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.IdentityKernelParam) */ {
+class PatchSamplingParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.PatchSamplingParam) */ {
  public:
-  IdentityKernelParam();
-  virtual ~IdentityKernelParam();
+  PatchSamplingParam();
+  virtual ~PatchSamplingParam();
 
-  IdentityKernelParam(const IdentityKernelParam& from);
+  PatchSamplingParam(const PatchSamplingParam& from);
 
-  inline IdentityKernelParam& operator=(const IdentityKernelParam& from) {
+  inline PatchSamplingParam& operator=(const PatchSamplingParam& from) {
     CopyFrom(from);
     return *this;
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const IdentityKernelParam& default_instance();
+  static const PatchSamplingParam& default_instance();
 
-  static inline const IdentityKernelParam* internal_default_instance() {
-    return reinterpret_cast<const IdentityKernelParam*>(
-               &_IdentityKernelParam_default_instance_);
+  static inline const PatchSamplingParam* internal_default_instance() {
+    return reinterpret_cast<const PatchSamplingParam*>(
+               &_PatchSamplingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     74;
 
-  void Swap(IdentityKernelParam* other);
+  void Swap(PatchSamplingParam* other);
 
   // implements Message ----------------------------------------------
 
-  inline IdentityKernelParam* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline PatchSamplingParam* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  IdentityKernelParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  PatchSamplingParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const IdentityKernelParam& from);
-  void MergeFrom(const IdentityKernelParam& from);
+  void CopyFrom(const PatchSamplingParam& from);
+  void MergeFrom(const PatchSamplingParam& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -7722,7 +7722,7 @@ class IdentityKernelParam : public ::google::protobuf::Message /* @@protoc_inser
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(IdentityKernelParam* other);
+  void InternalSwap(PatchSamplingParam* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -7738,24 +7738,24 @@ class IdentityKernelParam : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
-  // int32 num_input_channels = 1;
-  void clear_num_input_channels();
-  static const int kNumInputChannelsFieldNumber = 1;
-  ::google::protobuf::int32 num_input_channels() const;
-  void set_num_input_channels(::google::protobuf::int32 value);
+  // int32 patch_height = 1;
+  void clear_patch_height();
+  static const int kPatchHeightFieldNumber = 1;
+  ::google::protobuf::int32 patch_height() const;
+  void set_patch_height(::google::protobuf::int32 value);
 
-  // int32 num_output_channels = 2;
-  void clear_num_output_channels();
-  static const int kNumOutputChannelsFieldNumber = 2;
-  ::google::protobuf::int32 num_output_channels() const;
-  void set_num_output_channels(::google::protobuf::int32 value);
+  // int32 patch_width = 2;
+  void clear_patch_width();
+  static const int kPatchWidthFieldNumber = 2;
+  ::google::protobuf::int32 patch_width() const;
+  void set_patch_width(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:deepflow.IdentityKernelParam)
+  // @@protoc_insertion_point(class_scope:deepflow.PatchSamplingParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::int32 num_input_channels_;
-  ::google::protobuf::int32 num_output_channels_;
+  ::google::protobuf::int32 patch_height_;
+  ::google::protobuf::int32 patch_width_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -8409,14 +8409,14 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::GaussianKernelParam* release_gaussian_kernel_param();
   void set_allocated_gaussian_kernel_param(::deepflow::GaussianKernelParam* gaussian_kernel_param);
 
-  // .deepflow.IdentityKernelParam identity_kernel_param = 157;
-  bool has_identity_kernel_param() const;
-  void clear_identity_kernel_param();
-  static const int kIdentityKernelParamFieldNumber = 157;
-  const ::deepflow::IdentityKernelParam& identity_kernel_param() const;
-  ::deepflow::IdentityKernelParam* mutable_identity_kernel_param();
-  ::deepflow::IdentityKernelParam* release_identity_kernel_param();
-  void set_allocated_identity_kernel_param(::deepflow::IdentityKernelParam* identity_kernel_param);
+  // .deepflow.PatchSamplingParam patch_sampling_param = 157;
+  bool has_patch_sampling_param() const;
+  void clear_patch_sampling_param();
+  static const int kPatchSamplingParamFieldNumber = 157;
+  const ::deepflow::PatchSamplingParam& patch_sampling_param() const;
+  ::deepflow::PatchSamplingParam* mutable_patch_sampling_param();
+  ::deepflow::PatchSamplingParam* release_patch_sampling_param();
+  void set_allocated_patch_sampling_param(::deepflow::PatchSamplingParam* patch_sampling_param);
 
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
@@ -8482,7 +8482,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::PassThroughParam* pass_through_param_;
   ::deepflow::GaussianParam* gaussian_param_;
   ::deepflow::GaussianKernelParam* gaussian_kernel_param_;
-  ::deepflow::IdentityKernelParam* identity_kernel_param_;
+  ::deepflow::PatchSamplingParam* patch_sampling_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -12059,34 +12059,34 @@ inline void GaussianKernelParam::set_num_channels(::google::protobuf::int32 valu
 
 // -------------------------------------------------------------------
 
-// IdentityKernelParam
+// PatchSamplingParam
 
-// int32 num_input_channels = 1;
-inline void IdentityKernelParam::clear_num_input_channels() {
-  num_input_channels_ = 0;
+// int32 patch_height = 1;
+inline void PatchSamplingParam::clear_patch_height() {
+  patch_height_ = 0;
 }
-inline ::google::protobuf::int32 IdentityKernelParam::num_input_channels() const {
-  // @@protoc_insertion_point(field_get:deepflow.IdentityKernelParam.num_input_channels)
-  return num_input_channels_;
+inline ::google::protobuf::int32 PatchSamplingParam::patch_height() const {
+  // @@protoc_insertion_point(field_get:deepflow.PatchSamplingParam.patch_height)
+  return patch_height_;
 }
-inline void IdentityKernelParam::set_num_input_channels(::google::protobuf::int32 value) {
+inline void PatchSamplingParam::set_patch_height(::google::protobuf::int32 value) {
   
-  num_input_channels_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.IdentityKernelParam.num_input_channels)
+  patch_height_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.PatchSamplingParam.patch_height)
 }
 
-// int32 num_output_channels = 2;
-inline void IdentityKernelParam::clear_num_output_channels() {
-  num_output_channels_ = 0;
+// int32 patch_width = 2;
+inline void PatchSamplingParam::clear_patch_width() {
+  patch_width_ = 0;
 }
-inline ::google::protobuf::int32 IdentityKernelParam::num_output_channels() const {
-  // @@protoc_insertion_point(field_get:deepflow.IdentityKernelParam.num_output_channels)
-  return num_output_channels_;
+inline ::google::protobuf::int32 PatchSamplingParam::patch_width() const {
+  // @@protoc_insertion_point(field_get:deepflow.PatchSamplingParam.patch_width)
+  return patch_width_;
 }
-inline void IdentityKernelParam::set_num_output_channels(::google::protobuf::int32 value) {
+inline void PatchSamplingParam::set_patch_width(::google::protobuf::int32 value) {
   
-  num_output_channels_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.IdentityKernelParam.num_output_channels)
+  patch_width_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.PatchSamplingParam.patch_width)
 }
 
 // -------------------------------------------------------------------
@@ -14537,43 +14537,43 @@ inline void NodeParam::set_allocated_gaussian_kernel_param(::deepflow::GaussianK
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.gaussian_kernel_param)
 }
 
-// .deepflow.IdentityKernelParam identity_kernel_param = 157;
-inline bool NodeParam::has_identity_kernel_param() const {
-  return this != internal_default_instance() && identity_kernel_param_ != NULL;
+// .deepflow.PatchSamplingParam patch_sampling_param = 157;
+inline bool NodeParam::has_patch_sampling_param() const {
+  return this != internal_default_instance() && patch_sampling_param_ != NULL;
 }
-inline void NodeParam::clear_identity_kernel_param() {
-  if (GetArenaNoVirtual() == NULL && identity_kernel_param_ != NULL) delete identity_kernel_param_;
-  identity_kernel_param_ = NULL;
+inline void NodeParam::clear_patch_sampling_param() {
+  if (GetArenaNoVirtual() == NULL && patch_sampling_param_ != NULL) delete patch_sampling_param_;
+  patch_sampling_param_ = NULL;
 }
-inline const ::deepflow::IdentityKernelParam& NodeParam::identity_kernel_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.NodeParam.identity_kernel_param)
-  return identity_kernel_param_ != NULL ? *identity_kernel_param_
-                         : *::deepflow::IdentityKernelParam::internal_default_instance();
+inline const ::deepflow::PatchSamplingParam& NodeParam::patch_sampling_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.patch_sampling_param)
+  return patch_sampling_param_ != NULL ? *patch_sampling_param_
+                         : *::deepflow::PatchSamplingParam::internal_default_instance();
 }
-inline ::deepflow::IdentityKernelParam* NodeParam::mutable_identity_kernel_param() {
+inline ::deepflow::PatchSamplingParam* NodeParam::mutable_patch_sampling_param() {
   
-  if (identity_kernel_param_ == NULL) {
-    identity_kernel_param_ = new ::deepflow::IdentityKernelParam;
+  if (patch_sampling_param_ == NULL) {
+    patch_sampling_param_ = new ::deepflow::PatchSamplingParam;
   }
-  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.identity_kernel_param)
-  return identity_kernel_param_;
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.patch_sampling_param)
+  return patch_sampling_param_;
 }
-inline ::deepflow::IdentityKernelParam* NodeParam::release_identity_kernel_param() {
-  // @@protoc_insertion_point(field_release:deepflow.NodeParam.identity_kernel_param)
+inline ::deepflow::PatchSamplingParam* NodeParam::release_patch_sampling_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.patch_sampling_param)
   
-  ::deepflow::IdentityKernelParam* temp = identity_kernel_param_;
-  identity_kernel_param_ = NULL;
+  ::deepflow::PatchSamplingParam* temp = patch_sampling_param_;
+  patch_sampling_param_ = NULL;
   return temp;
 }
-inline void NodeParam::set_allocated_identity_kernel_param(::deepflow::IdentityKernelParam* identity_kernel_param) {
-  delete identity_kernel_param_;
-  identity_kernel_param_ = identity_kernel_param;
-  if (identity_kernel_param) {
+inline void NodeParam::set_allocated_patch_sampling_param(::deepflow::PatchSamplingParam* patch_sampling_param) {
+  delete patch_sampling_param_;
+  patch_sampling_param_ = patch_sampling_param;
+  if (patch_sampling_param) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.identity_kernel_param)
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.patch_sampling_param)
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS

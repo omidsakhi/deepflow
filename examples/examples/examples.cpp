@@ -41,6 +41,7 @@ DEFINE_bool(x14, false, "Test Concate");
 DEFINE_bool(x15, false, "Test resize");
 DEFINE_bool(x16, false, "Test Gaussian weights 1");
 DEFINE_bool(x17, false, "Test Gaussian weights 2");
+DEFINE_bool(x18, false, "Test Patch sampling");
 
 void main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
@@ -210,6 +211,12 @@ void main(int argc, char** argv) {
 			auto gw = df.gaussian_kernel(63, 10);
 			auto conv = df.conv2d(imba, gw, 31, 31, 1, 1, 1, 1);
 			df.display(conv, 5000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp", { train });
+		}
+		else if (FLAGS_x18) { 
+			auto train = df.define_train_phase("Train");
+			auto input = df.image_batch_reader(FLAGS_celeba128, { 40, 3, 128, 128 }, true);
+			auto patches = df.patch_sampling(input, 64, 32);
+			df.display(patches, 5000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp", { train });
 		}
 	}
 	else {

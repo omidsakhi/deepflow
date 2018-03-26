@@ -461,6 +461,11 @@ message GaussianKernelParam {
 	int32 num_channels = 3;
 }
 
+message PatchSamplingParam {	
+	int32 patch_height = 1;
+	int32 patch_width = 2;
+}
+
 message NodeParam {
   string name = 1;
   repeated string input = 2;
@@ -522,6 +527,7 @@ message NodeParam {
   BatchStdDevParam batch_stddev_param = 153;
   PassThroughParam pass_through_param = 154;
   GaussianParam gaussian_param = 155;
-  GaussianKernelParam gaussian_kernel_param = 156;  
+  GaussianKernelParam gaussian_kernel_param = 156;
+  PatchSamplingParam patch_sampling_param = 157;  
 }
 

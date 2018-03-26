@@ -71,6 +71,7 @@
 #include "nodes/pass_through.h"
 #include "nodes/gaussian.h"
 #include "nodes/gaussian_kernel.h"
+#include "nodes/patch_sampling.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
@@ -234,6 +235,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<BatchStdDev>(node_param);
 	else if (node_param->has_gaussian_kernel_param())
 		return std::make_shared<ConvGaussianKernel>(node_param);
+	else if (node_param->has_patch_sampling_param())
+		return std::make_shared<PatchSampling>(node_param);
 	else if (node_param->has_gaussian_param())
 		return std::make_shared<Gaussian>(node_param);
 	else {

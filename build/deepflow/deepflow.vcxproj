@@ -68,6 +68,7 @@
     <ClInclude Include="..\..\include\nodes\lrn.h" />
     <ClInclude Include="..\..\include\nodes\pass_through.h" />
     <ClInclude Include="..\..\include\nodes\patching.h" />
+    <ClInclude Include="..\..\include\nodes\patch_sampling.h" />
     <ClInclude Include="..\..\include\nodes\prelu.h" />
     <ClInclude Include="..\..\include\nodes\reduce_all.h" />
     <ClInclude Include="..\..\include\nodes\reshape.h" />
@@ -113,6 +114,7 @@
     <CudaCompile Include="..\..\src\nodes\gaussian.cu" />
     <CudaCompile Include="..\..\src\nodes\gaussian_kernel.cu" />
     <CudaCompile Include="..\..\src\nodes\pass_through.cu" />
+    <CudaCompile Include="..\..\src\nodes\patch_sampling.cu" />
     <CudaCompile Include="..\..\src\solvers\rmsprop_solver.cu">
       <FileType>CppHeader</FileType>
     </CudaCompile>

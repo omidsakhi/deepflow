@@ -578,15 +578,15 @@ std::string DeepFlow::gaussian_blur(std::string input, int window_size, float si
 	return conv2d(input, k, pad, pad, 1, 1, 1, 1, name);
 }
 
-std::string DeepFlow::identity(std::string input, float scale, int input_channels, int output_channels, std::string name, std::initializer_list<std::string> phases)
+std::string DeepFlow::identity(std::string input, float scale, int input_channels, int output_channels, std::string solver, std::string name, std::initializer_list<std::string> phases)
 {	
 	auto node = input;
 	if (input_channels != output_channels) {
-		auto f = variable(fill({ output_channels, input_channels, 1, 1 }, 1.0f / input_channels), "", name + "_2");
-		node = conv2d(node, f, 0, 0, 1, 1, 1, 1, name + "_3");
+		auto f = variable(truncated_normal({ output_channels, input_channels, 1, 1 }, 1.0f / input_channels, 0.02f ), solver, name + "_conv_w");
+		node = conv2d(node, f, 0, 0, 1, 1, 1, 1, name + "_conv");
 	}
 	if (scale != 1)
-		node = resize(node, scale, scale, name + "_1");
+		node = resize(node, scale, scale, name);
 	return node;
 }
 
@@ -845,8 +845,14 @@ std::string DeepFlow::conv2d(std::string input, std::string filter, int pad_top_
 	return conv2d(input, filter, "", 0, pad_top_bottom, pad_left_right, vertical_filter_stride, horizontal_filter_stride, filter_height_dilation, filter_width_dialation, name, phases);
 }
 
+std::string DeepFlow::conv2d(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name)
+{
+	auto f = variable(truncated_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.5 * sqrt(2.0f / (input_channels))), solver, name + "_f");
+	return conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_conv");
+}
+
 std::string DeepFlow::conv2d_with_bias(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name) {	
-	auto f = variable(truncated_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.75 * sqrt(2.0f / (input_channels))), solver, name + "_f");
+	auto f = variable(truncated_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.5 * sqrt(2.0f / (input_channels))), solver, name + "_f");
 	auto node = conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_conv");
 	return bias_add(node, output_channels, solver, name);
 }
@@ -905,6 +911,20 @@ std::string DeepFlow::patching(std::string input, PatchingMode mode, int num_ver
 	patching_param->set_mode((deepflow::PatchingParam_Mode) mode);
 	patching_param->set_num_horizontal_patch(num_horizontal_patches);
 	patching_param->set_num_vertical_patch(num_vertical_patches);
+	return node_param->output(0);
+}
+
+std::string DeepFlow::patch_sampling(std::string input, int patch_width, int patch_height, std::string name, std::initializer_list<std::string> phases)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	for (auto phase : phases)
+		node_param->add_phase(phase);
+	node_param->add_input(input);
+	auto p = node_param->mutable_patch_sampling_param();
+	p->set_patch_height(patch_height);
+	p->set_patch_width(patch_width);
 	return node_param->output(0);
 }
 

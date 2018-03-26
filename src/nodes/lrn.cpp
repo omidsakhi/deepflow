@@ -25,6 +25,13 @@ void LRN::forward()
 
 void LRN::backward()
 {
+	/*
+	DF_NODE_CUDNN_CHECK(
+		cudnnLRNCrossChannelForward(_cudnnHandle, _normDesc, CUDNN_LRN_CROSS_CHANNEL_DIM1,
+			&one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(),
+			&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+	*/
+
 	DF_NODE_CUDNN_CHECK(
 	cudnnLRNCrossChannelBackward(_cudnnHandle, _normDesc, CUDNN_LRN_CROSS_CHANNEL_DIM1, &one,
 		_outputs[0]->value()->descriptor(), _outputs[0]->value()->data(),
