@@ -35,9 +35,8 @@ void BiasAdd::forward() {
 }
 
 void BiasAdd::backward() {
-	auto size = _outputs[0]->value()->size();
-	float alpha = 1.0f / (size / _bias_dim);
-	cudnnConvolutionBackwardBias(_cudnnHandle, &alpha, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), &zero, _inputs[1]->diff()->descriptor(), _inputs[1]->diff()->mutableData());
+	auto size = _outputs[0]->value()->size();	
+	cudnnConvolutionBackwardBias(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), &zero, _inputs[1]->diff()->descriptor(), _inputs[1]->diff()->mutableData());
 }
 
 std::string BiasAdd::to_cpp() const
