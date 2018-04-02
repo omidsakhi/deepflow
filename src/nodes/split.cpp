@@ -29,8 +29,9 @@ void Split::backward()
 	if (_inputs[0] && _inputs[0]->diff()) {
 		auto size = _inputs[0]->value()->size();		
 		cudaMemset(_inputs[0]->diff()->mutableData(), 0, size * sizeof(float));
+		float alpha = 1.0f / _num_outputs;
 		for (int i = 0; i < _num_outputs; ++i) {
-			cpy(size, 1.0, _outputs[i]->diff()->data(), 1.0f, _inputs[0]->diff()->mutableData());
+			cpy(size, alpha, _outputs[i]->diff()->data(), 1.0f, _inputs[0]->diff()->mutableData());
 		}
 	}
 }
