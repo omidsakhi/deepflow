@@ -89,7 +89,7 @@ void BatchNormalization::forward()
 				_bnScaleBiasMeanVarDesc,
 				_bnScale,
 				_bnBias,
-				0.0002f,
+				0.0001f,
 				nullptr,
 				nullptr,
 				_eps,
