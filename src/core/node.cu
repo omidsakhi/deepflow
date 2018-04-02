@@ -2,11 +2,19 @@
 #include "core/common_cu.h"
 
 __global__
-void CpyAddKernel(const int n, const float alpha, const float *src, const float beta, float *dst)
+void CpyAddKernelWithBeta(const int n, const float alpha, const float *src, const float beta, float *dst)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n)
 		dst[i] = beta * dst[i] + alpha * src[i];
+}
+
+__global__
+void CpyAddKernelWithoutBeta(const int n, const float alpha, const float *src, float *dst)
+{
+	int i = blockIdx.x*blockDim.x + threadIdx.x;
+	if (i < n)
+		dst[i] = alpha * src[i];
 }
 
 __global__ 
@@ -22,8 +30,12 @@ void Node::cpy(int n, const float alpha, const void * src, const float beta, voi
 	if (alpha == 1 && beta == 0) {
 		DF_NODE_CUDA_CHECK(cudaMemcpy(dst, src, n * sizeof(float), cudaMemcpyDeviceToDevice));
 	}
+	else if (beta == 0) {
+		CpyAddKernelWithoutBeta << < numOfBlocks(n), maxThreadsPerBlock, 0, stream >> > (n, alpha, (float*)src, (float*)dst);
+		DF_KERNEL_CHECK();
+	}
 	else {
-		CpyAddKernel << < numOfBlocks(n), maxThreadsPerBlock, 0, stream >> > (n, alpha, (float*)src, beta, (float*)dst);
+		CpyAddKernelWithBeta << < numOfBlocks(n), maxThreadsPerBlock, 0, stream >> > (n, alpha, (float*)src, beta, (float*)dst);
 		DF_KERNEL_CHECK();
 	}
 }
