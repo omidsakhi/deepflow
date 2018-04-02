@@ -49,12 +49,6 @@ void TransposedConvolution2D::init() {
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionForwardWorkspaceSize(_cudnnHandle, _outputs[0]->value()->descriptor(), _wDesc, _convDesc, _inputs[0]->value()->descriptor(), _fwdAlgo, &_fwdWorkspaceSize));
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardDataAlgorithm(_cudnnHandle, _wDesc, _inputs[0]->value()->descriptor(), _convDesc, _outputs[0]->value()->descriptor(), CUDNN_CONVOLUTION_BWD_DATA_PREFER_FASTEST, 0, &_bwdDataAlgo));
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardDataWorkspaceSize(_cudnnHandle, _wDesc, _inputs[0]->value()->descriptor(), _convDesc, _outputs[0]->value()->descriptor(), _bwdDataAlgo, &_bwdDataWorkspaceSize));
-	if (_inputs[0]->diff()) {
-		_dy = (float*)_inputs[0]->diff()->mutableData();
-	}
-	else {
-		cudaMalloc(&_dy, _inputs[0]->value()->sizeInBytes());
-	}
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardFilterAlgorithm(_cudnnHandle, _outputs[0]->value()->descriptor(), _inputs[0]->value()->descriptor(), _convDesc, _wDesc, CUDNN_CONVOLUTION_BWD_FILTER_PREFER_FASTEST, 0, &_bwdFilterAlgo));
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardFilterWorkspaceSize(_cudnnHandle, _outputs[0]->value()->descriptor(), _inputs[0]->value()->descriptor(), _convDesc, _wDesc, _bwdFilterAlgo, &_bwdFilterWorkspaceSize));
 	_maxWorkspaceSize = std::max({ _fwdWorkspaceSize, _bwdDataWorkspaceSize, _bwdFilterWorkspaceSize });
@@ -67,10 +61,10 @@ void TransposedConvolution2D::forward() {
 }
 
 void TransposedConvolution2D::backward() {
-	if (_inputs[0]->connectedNode())
+	if (_inputs[1]->diff())
+		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &zero, _wDesc, _inputs[1]->diff()->mutableData()));
+	if (_inputs[0]->diff())
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionForward(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _wDesc, _inputs[1]->value()->data(), _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));	
-	if (_inputs[1]->connectedNode())
-		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _inputs[0]->value()->descriptor(), _dy, _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &zero, _wDesc, _inputs[1]->diff()->mutableData()));
 }
 
 std::string TransposedConvolution2D::to_cpp() const

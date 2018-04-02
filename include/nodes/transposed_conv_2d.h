@@ -24,6 +24,4 @@ private:
 	size_t _maxWorkspaceSize = 0;
 	size_t _bwdFilterWorkspaceSize = 0;
 	float *d_workspace;
-	float *_dy;
-
 };
