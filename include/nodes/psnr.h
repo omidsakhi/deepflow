@@ -13,6 +13,7 @@ public:
 	void forward();
 	void backward();
 	std::string to_cpp() const;
+	float psnr() const { return _psnr; };
 private:
 	deepflow::ActionTime _print_time;
 	float *d_square_error;
@@ -22,4 +23,5 @@ private:
 	cudnnTensorDescriptor_t _output_desc;
 	float *_d_workspace;
 	size_t _workspaceSizeInBytes;
+	float _psnr = -1;
 };

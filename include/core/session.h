@@ -9,6 +9,7 @@
 #include "nodes/add.h"
 #include "nodes/loss.h"
 #include "nodes/gaussian_kernel.h"
+#include "nodes/psnr.h"
 
 class Solver;
 class Variable;

@@ -92,6 +92,7 @@ public:
 	std::string conv2d(std::string input, std::string filter, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
 	std::string conv2d(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name);
 	std::string conv2d_with_bias(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name);
+	std::string transposed_conv2d(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name);
 	std::string transposed_conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
 
 	// RESTRUCTURE
@@ -162,7 +163,7 @@ public:
 	// SOLVERS
 	std::string sgd_solver(float momentum, float learning_rate, std::string name = "sgd");
 	std::string gain_solver(float momentum = 0.98f, float learning_rate = 10e-2f, float max_gain = 10, float min_gain = 0.1, float gain_plus = 0.05f, float gain_mult = 0.95f, std::string name = "gain");
-	std::string adam_solver(float learning_rate = 10e-2f, float beta1 = 0.5f, float beta2 = 0.999f, float eps = 10e-8f, std::string name = "adam");
+	std::string adam_solver(float learning_rate = 10e-2f, float beta1 = 0.9f, float beta2 = 0.999f, float eps = 10e-8f, std::string name = "adam");
 	std::string adadelta_solver(float learning_rate = 10e-2f, float momentum = 0.5f, float delta = 1e-6f, std::string name = "adadelta");
 	std::string rmsprop_solver(float learning_rate = 10e-2f, float rms_decay = 0.9f, float eps = 0.001f, std::string name = "rmsprop");
 	

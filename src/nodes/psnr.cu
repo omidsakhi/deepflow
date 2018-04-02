@@ -33,8 +33,6 @@ void Psnr::init() {
 }
 
 void Psnr::forward() {
-	if (_print_time == deepflow::ActionTime::END_OF_EPOCH && _context->last_batch == false)
-		return;
 	auto size = _inputs[0]->value()->size();
 	SquareErrorKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), d_square_error);
 	DF_KERNEL_CHECK();	
@@ -54,8 +52,7 @@ void Psnr::forward() {
 			d_sum_square_error));
 	float sse;
 	DF_NODE_CUDA_CHECK(cudaMemcpy(&sse, d_sum_square_error, sizeof(float), cudaMemcpyDeviceToHost));
-	float psnr = 20.0f * log10(2.0f) - 10.0f * log10(sse / size);
-	LOG(INFO) << _name << " - PSNR: " << psnr;
+	_psnr = 20.0f * log10(2.0f) - 10.0f * log10(sse / size);	
 }
 
 void Psnr::backward() {

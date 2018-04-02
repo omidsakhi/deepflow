@@ -130,7 +130,7 @@ std::string DeepFlow::bias_add(std::string a, std::string b, std::string name, s
 
 std::string DeepFlow::bias_add(std::string input, int output_channels, std::string solver, std::string name)
 {
-	auto bnb = variable(fill({ 1, output_channels, 1, 1 }, 0.01), solver, name + "_w");
+	auto bnb = variable(zeros({ 1, output_channels, 1, 1 }), solver, name + "_w");
 	return bias_add(input, bnb, name);
 }
 
@@ -366,7 +366,7 @@ std::string DeepFlow::matmul(std::string a, std::string b, std::string name, std
 
 std::string DeepFlow::dense(std::string input, std::initializer_list<int> dims, std::string solver, std::string name)
 {
-	auto w = variable(random_normal(dims, 0, 0.02), solver, name + "_w");
+	auto w = variable(truncated_normal(dims, 0, 0.02), solver, name + "_w");
 	return matmul(input, w, name);
 }
 
@@ -683,7 +683,7 @@ std::string DeepFlow::batch_normalization(std::string input, std::string scale, 
 
 std::string DeepFlow::batch_normalization(std::string input, std::string solver, int output_channels, std::string name)
 {
-	auto bns = variable(random_normal({ 1, output_channels, 1, 1 }, 1, 0.02), solver, name + "_s");
+	auto bns = variable(fill({ 1, output_channels, 1, 1 }, 1), solver, name + "_s");
 	auto bnb = variable(fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_b");
 	return batch_normalization(input, bns, bnb, DeepFlow::SPATIAL, true, name);
 }
@@ -847,14 +847,20 @@ std::string DeepFlow::conv2d(std::string input, std::string filter, int pad_top_
 
 std::string DeepFlow::conv2d(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name)
 {
-	auto f = variable(truncated_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.5 * sqrt(2.0f / (input_channels))), solver, name + "_f");
+	auto f = variable(truncated_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
 	return conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_conv");
 }
 
 std::string DeepFlow::conv2d_with_bias(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name) {	
-	auto f = variable(truncated_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.5 * sqrt(2.0f / (input_channels))), solver, name + "_f");
+	auto f = variable(truncated_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
 	auto node = conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_conv");
 	return bias_add(node, output_channels, solver, name);
+}
+
+std::string DeepFlow::transposed_conv2d(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name)
+{
+	auto f = variable(truncated_normal({ input_channels, output_channels, kernel, kernel }, 0, 0.02), solver, name + "_f");
+	return transposed_conv2d(input, f, pad, pad, stride, stride, 1, 1, name + "_tconv");
 }
 
 std::string DeepFlow::pooling(std::string input, int windowHeight, int windowWidth, int verticalPadding, int horizontalPadding, int verticalStride, int horizontalStride, std::string name, std::initializer_list<std::string> phases) {

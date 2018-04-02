@@ -90,9 +90,9 @@ void main(int argc, char** argv) {
 			auto conv = df.conv2d(image, f1, "", 1, 1, 1, 1, 1, 1);			
 			auto tconv = df.transposed_conv2d(recon, f2, 1, 1, 1, 1, 1, 1);
 			auto euclidean = df.square_error(conv, tconv);
-			auto loss = df.loss(euclidean, DeepFlow::SUM);
-			df.display(recon, 2, DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, 1, "input", { train });
-			df.psnr(recon, image, DeepFlow::END_OF_EPOCH, "psnr", { train });
+			auto loss = df.loss(euclidean, DeepFlow::AVG);
+			df.display(recon, 20, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "input", { train });
+			df.psnr(recon, image, DeepFlow::EVERY_PASS, "psnr", { train });
 		}
 		else if (FLAGS_x4) {
 			auto train = df.define_train_phase("Train");			
