@@ -18,11 +18,14 @@ void Phaseplexer::init()
 std::list<std::shared_ptr<Node>> Phaseplexer::inputNodes() const {
 	std::list<std::shared_ptr<Node>> list;
 	if (_context) {
+		LOG_IF(FATAL, _context->phase.empty()) << "[FAILED] " << _name << ": Phase must be set for phaseplexer.";
 		auto input = _map.find(_context->phase);
+		LOG_IF(FATAL, input == _map.end()) << "[FAILED] " << _name << ": Phase " << _context->phase << " not found.";
 		list.push_back(input->second->connectedNode());
 		return list;
 	}
 	else {
+		LOG(FATAL) << "[FAILED] " << _name << ": No context is set.";
 		return Node::inputNodes();
 	}	
 }
@@ -46,7 +49,7 @@ void Phaseplexer::forward()
 void Phaseplexer::backward()
 {	
 	auto input = _map.find(_context->phase);
-	if (input->second->connectedNode()) {		
+	if (input->second->diff()) {		
 		cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 1, input->second->diff()->mutableData());
 	}
 }

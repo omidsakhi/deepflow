@@ -88,11 +88,9 @@ public:
 	std::string place_holder(std::array<int,4> dims, Tensor::TensorType type = Tensor::Float, std::string name = "ph", std::initializer_list<std::string> phases = {});		
 
 	//CONVOLUTION
-	std::string conv2d(std::string input, std::string filter, std::string bias, float negative_slope /* NOT SUPPORTED YET BY CUDNN */, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
-	std::string conv2d(std::string input, std::string filter, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});
-	std::string conv2d(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name);
-	std::string conv2d_with_bias(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name);
-	std::string transposed_conv2d(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, std::string solver, std::string name);
+	std::string conv2d(std::string input, std::string filter, std::string bias, float negative_slope /* NOT SUPPORTED YET BY CUDNN */, int pad_top_bottom = 0, int pad_left_right = 0, int vertical_filter_stride = 1, int horizontal_filter_stride = 1, int filter_height_dilation = 1, int filter_width_dialation = 1, std::string name = "conv", std::initializer_list<std::string> phases = {});	
+	std::string conv2d(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, bool has_bias, std::string solver, std::string name);	
+	std::string transposed_conv2d(std::string input, int input_channels, int output_channels, int kernel, int pad, int stride, bool has_bias, std::string solver, std::string name);	
 	std::string transposed_conv2d(std::string input, std::string filter, int pad_top_bottom, int pad_left_right, int vertical_filter_stride, int horizontal_filter_stride, int filter_height_dilation, int filter_width_dialation, std::string name = "tconv", std::initializer_list<std::string> phases = {});
 
 	// RESTRUCTURE
@@ -120,11 +118,10 @@ public:
 
 	// matmul
 	std::string matmul(std::string a, std::string b, std::string name = "ip", std::initializer_list<std::string> phases = {});
-	std::string dense(std::string input, std::initializer_list<int> dims, std::string solver, std::string name);
-	std::string dense_with_bias(std::string input, std::initializer_list<int> dims, std::string solver, std::string name);
+	std::string dense(std::string input, std::initializer_list<int> dims, bool has_bias, std::string solver, std::string name);	
 
 	// NEURAL NETS
-	std::string bias_add(std::string a, std::string b, std::string name = "bias", std::initializer_list<std::string> phases = {});
+	std::string bias_add(std::string input, std::string weights, std::string name = "bias", std::initializer_list<std::string> phases = {});
 	std::string bias_add(std::string input, int output_channels, std::string solver, std::string name);
 	std::string dropout(std::string a, float dropout = 0.5f, bool train_only = true, std::string name = "dropout", std::initializer_list<std::string> phases = {});
 
@@ -183,7 +180,7 @@ public:
 	void sio_output(std::initializer_list<std::string> inputs, ActionTime printTime = ActionTime::EVERY_PASS, std::string host = "127.0.0.1", int port = 6643, std::string name = "sio_output", std::initializer_list<std::string> phases = {});
 
 	// OTHER	
-	std::string loss(std::string a, ReduceOp op, std::string name = "loss", std::initializer_list<std::string> phases = {});
+	std::string loss(std::string a, ReduceOp op, float alpha = 1.0f, float beta = 0.0f, std::string name = "loss", std::initializer_list<std::string> phases = {});
 	std::string equal(std::string a, std::string b, std::string name = "Equal", std::initializer_list<std::string> phases = {});
 	std::string cast_float(std::string input, std::string name = "float", std::initializer_list<std::string> phases = {});	
 	std::array<std::string,2> accumulator(std::string input, ActionTime resetTime = ActionTime::END_OF_EPOCH, std::string name = "acc", std::initializer_list<std::string> phases = {});

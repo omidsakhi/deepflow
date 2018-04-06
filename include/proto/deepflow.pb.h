@@ -2220,18 +2220,25 @@ class LossParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::LossParam_ReduceOp reduce_op() const;
   void set_reduce_op(::deepflow::LossParam_ReduceOp value);
 
-  // bool force_output = 2;
-  void clear_force_output();
-  static const int kForceOutputFieldNumber = 2;
-  bool force_output() const;
-  void set_force_output(bool value);
+  // float alpha = 2;
+  void clear_alpha();
+  static const int kAlphaFieldNumber = 2;
+  float alpha() const;
+  void set_alpha(float value);
+
+  // float beta = 3;
+  void clear_beta();
+  static const int kBetaFieldNumber = 3;
+  float beta() const;
+  void set_beta(float value);
 
   // @@protoc_insertion_point(class_scope:deepflow.LossParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   int reduce_op_;
-  bool force_output_;
+  float alpha_;
+  float beta_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -9313,18 +9320,32 @@ inline void LossParam::set_reduce_op(::deepflow::LossParam_ReduceOp value) {
   // @@protoc_insertion_point(field_set:deepflow.LossParam.reduce_op)
 }
 
-// bool force_output = 2;
-inline void LossParam::clear_force_output() {
-  force_output_ = false;
+// float alpha = 2;
+inline void LossParam::clear_alpha() {
+  alpha_ = 0;
 }
-inline bool LossParam::force_output() const {
-  // @@protoc_insertion_point(field_get:deepflow.LossParam.force_output)
-  return force_output_;
+inline float LossParam::alpha() const {
+  // @@protoc_insertion_point(field_get:deepflow.LossParam.alpha)
+  return alpha_;
 }
-inline void LossParam::set_force_output(bool value) {
+inline void LossParam::set_alpha(float value) {
   
-  force_output_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.LossParam.force_output)
+  alpha_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.LossParam.alpha)
+}
+
+// float beta = 3;
+inline void LossParam::clear_beta() {
+  beta_ = 0;
+}
+inline float LossParam::beta() const {
+  // @@protoc_insertion_point(field_get:deepflow.LossParam.beta)
+  return beta_;
+}
+inline void LossParam::set_beta(float value) {
+  
+  beta_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.LossParam.beta)
 }
 
 // -------------------------------------------------------------------

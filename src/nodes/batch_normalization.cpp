@@ -63,6 +63,7 @@ void BatchNormalization::init()
 		}
 	}	
 
+	_eps = 0.001f;
 	_bnScale = (float*)_inputs[1]->value()->data();
 	_bnBias = (float*)_inputs[2]->value()->data();
 

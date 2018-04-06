@@ -21,8 +21,7 @@ DEFINE_string(run,"", "Phase to execute graph");
 DEFINE_bool(printiter, false, "Print iteration message");
 DEFINE_bool(printepoch, true, "Print epoch message");
 DEFINE_int32(debug, 0, "Level of debug");
-DEFINE_int32(epoch, 1000, "Maximum epochs");
-DEFINE_int32(iter, -1, "Maximum iterations");
+DEFINE_int32(iter, 1000, "Maximum iterations");
 DEFINE_bool(cpp, false, "Print C++ code");
 DEFINE_bool(x1, false, "Eucliean image reconstruction");
 DEFINE_bool(x2, false, "Transposed convolution gray image reconstruction");
@@ -72,7 +71,7 @@ void main(int argc, char** argv) {
 			auto image = df.imread(FLAGS_image1, deepflow::ImageReaderParam_Type_GRAY_ONLY, "image");
 			auto recon = df.variable(df.random_normal({ 1,1,256,256 }, 0, 0.1), solver, "recon");
 			auto f1 = df.variable(df.step({ 11,1,5,5 }, 0, 1), "" , "w");
-			auto conv = df.conv2d(image, f1, 2, 2, 1, 1, 1, 1);			
+			auto conv = df.conv2d(image, f1, "", 0, 2, 2, 1, 1, 1, 1);
 			auto f2 = df.variable(df.step({ 1,11,5,5 }, 0, 1), "", "w");
 			auto tconv = df.transposed_conv2d(recon, f2, 2, 2, 1, 1, 1, 1);
 			auto euclidean = df.square_error(conv, tconv);
@@ -207,10 +206,8 @@ void main(int argc, char** argv) {
 		else if (FLAGS_x17) {
 			auto train = df.define_train_phase("Train");
 			auto imba = df.image_batch_reader(FLAGS_celeba128, { 50, 3, 128, 128 }, true);
-			//auto gw = df.gaussian_kernel(63, 0.1);
-			auto gw = df.gaussian_kernel(63, 10);
-			auto conv = df.conv2d(imba, gw, 31, 31, 1, 1, 1, 1);
-			df.display(conv, 5000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp", { train });
+			auto gb = df.gaussian_blur(imba, 63, 10, "gaussian_blur");
+			df.display(gb, 5000, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp", { train });
 		}
 		else if (FLAGS_x18) { 
 			auto train = df.define_train_phase("Train");
@@ -237,7 +234,7 @@ void main(int argc, char** argv) {
 
 	if (!FLAGS_run.empty()) {
 		session->initialize();
-		session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
+		session->run(FLAGS_run, 1, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
 	}
 	
 	if (!FLAGS_o.empty())

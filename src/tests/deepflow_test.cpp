@@ -155,7 +155,7 @@ TEST(conv2d, forward) {
 	DeepFlow df;
 	auto input = df.place_holder({ 2, 1, 3, 3 }, Tensor::Float, "input");
 	auto f = df.place_holder({ 1, 1, 2, 2 }, Tensor::Float, "f");
-	auto conv = df.conv2d(input, f, 0, 0, 1, 1, 1, 1, "conv");
+	auto conv = df.conv2d(input, f, "", 0, 0, 0, 1, 1, 1, 1, "conv");
 	auto session = df.session();
 	session->initialize();
 	session->get_node("input")->write_values(

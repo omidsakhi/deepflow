@@ -25,7 +25,7 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 - [gflags](https://github.com/gflags/gflags)
 
 # Working Examples
-- Face DCGAN: The image below shows the results after 26000 iterations. Doesn't get much better after here. Still a work in progress.
+- Face DCGAN: The image below shows the results after 199000 iterations.
 
 ![results](https://github.com/omidsakhi/deepflow/blob/master/examples/face_dcgan/results.jpg)
 

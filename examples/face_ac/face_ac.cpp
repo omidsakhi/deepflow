@@ -33,24 +33,20 @@ std::shared_ptr<Session> create_encoder_session() {
 
 
 	auto enc_input = df.place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "enc_input");
-
-	auto conv1_w = df.variable(df.random_normal({ depth, FLAGS_channels, 3, 3 }, mean, stddev), enc_solver, "conv1_w");
-	auto conv1 = df.conv2d(enc_input, conv1_w, 1, 1, 1, 1, 1, 1, "conv1");
+	
+	auto conv1 = df.conv2d(enc_input, FLAGS_channels, depth, 3, 1, 1, true, enc_solver, "conv1");
 	auto conv1_r = df.leaky_relu(conv1, enc_negative_slope);
 	auto conv1_p = df.pooling(conv1_r, 2, 2, 0, 0, 2, 2, "conv1_p");
-
-	auto conv2_w = df.variable(df.random_normal({ depth, depth, 3, 3 }, mean, stddev), enc_solver, "conv2_w");
-	auto conv2 = df.conv2d(conv1_p, conv2_w, 1, 1, 1, 1, 1, 1, "conv2");
+	
+	auto conv2 = df.conv2d(conv1_p, depth, depth, 3, 1, 1, true, enc_solver, "conv2");
 	auto conv2_r = df.leaky_relu(conv2, enc_negative_slope);
 	auto conv2_p = df.pooling(conv2_r, 2, 2, 0, 0, 2, 2, "conv2_p");
-
-	auto conv3_w = df.variable(df.random_normal({ depth, depth, 3, 3 }, mean, stddev), enc_solver, "conv3_w");
-	auto conv3 = df.conv2d(conv2_p, conv3_w, 1, 1, 1, 1, 1, 1, "conv3");
+	
+	auto conv3 = df.conv2d(conv2_p, depth, depth, 3, 1, 1, true, enc_solver, "conv3");
 	auto conv3_r = df.leaky_relu(conv3, enc_negative_slope);
 	auto conv3_p = df.pooling(conv3_r, 2, 2, 0, 0, 2, 2, "conv3_p");
 
-	auto conv4_w = df.variable(df.random_normal({ 8, depth, 3, 3 }, mean, stddev), enc_solver, "conv4_w");
-	auto conv4 = df.conv2d(conv3_p, conv4_w, 1, 1, 1, 1, 1, 1, "conv4");
+	auto conv4 = df.conv2d(conv3_p, depth, depth, 3, 1, 1, true, enc_solver, "conv4");
 	auto conv4_r = df.leaky_relu(conv4, enc_negative_slope);
 	auto conv4_p = df.pooling(conv4_r, 2, 2, 0, 0, 2, 2, "enc_output");
 

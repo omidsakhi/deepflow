@@ -27,13 +27,13 @@ std::shared_ptr<Session> create_mnist_reader() {
 
 std::shared_ptr<Session> create_mnist_labels() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0.8, 1.0), "", "mnist_labels");
+	df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1.0), "", "mnist_labels");
 	return df.session();
 }
 
 std::shared_ptr<Session> create_generator_labels() {
 	DeepFlow df;
-	df.data_generator(df.random_uniform({ FLAGS_batch, 1, 1, 1 }, 0, 0.2), "", "generator_labels");
+	df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), "", "generator_labels");
 	return df.session();
 }
 
@@ -42,7 +42,7 @@ std::shared_ptr<Session> create_loss() {
 	auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "discriminator_input");
 	auto labels_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "labels_input");
 	auto euc = df.square_error(discriminator_input, labels_input);
-	auto loss = df.loss(euc, DeepFlow::AVG, "loss");
+	auto loss = df.loss(euc, DeepFlow::AVG);
 	df.print({ loss }, " NORM {0}\n", DeepFlow::EVERY_PASS); 
 	return df.session();
 
@@ -63,8 +63,8 @@ std::string tconv(DeepFlow *df, std::string name, std::string input, std::string
 	auto dropout = 0.2;	
 	auto tconv_l = df->resize(input, 2.0, 2.0, name + "_resize");
 	auto tconv_f = df->variable(df->random_normal({ depth1, depth2, kernel, kernel }, mean, stddev), solver, name + "_f");
-	auto tconv_t = df->conv2d(tconv_l, tconv_f, pad, pad, 1, 1, 1, 1, name + "_t");
-	//auto tconv_b = df->batch_normalization(tconv_t, DeepFlow::SPATIAL, 0, 1.0f, 0.0f, 0.15f, 1.0f, name + "_b");
+	auto tconv_t = df->conv2d(tconv_l, tconv_f, "", 0, pad, pad, 1, 1, 1, 1, name + "_t");
+	auto tconv_b = df->batch_normalization(tconv_t, solver, depth1, name + "_bn");
 	if (activation) {
 		auto drop = df->dropout(tconv_t, dropout);
 		return df->relu(drop);
@@ -79,23 +79,20 @@ std::shared_ptr<Session> create_generator_session() {
 	auto stddev = 0.1;	
 	auto dropout = 0.2;	
 
-	auto g_solver = df.adam_solver(0.0002f, 0.5f, 0.999f);
-	auto gin = df.data_generator(df.random_normal({ FLAGS_batch, 100, 1, 1 }, 0, 1, "random_input"), "", "input");
+	auto g_solver = df.adam_solver(0.0002f, 0.5f, 0.98f);
+	auto gin = df.data_generator(df.random_uniform({ FLAGS_batch, 100, 1, 1 }, -1, 1, "random_input"), "", "input");
 
 	auto gfc_w = df.variable(df.random_normal({ 100, 512, 3, 3 }, mean, stddev), g_solver, "gfc_w");
-	auto gfc = df.matmul(gin, gfc_w, "gfc");
-	auto gfc_r = df.relu(gfc);
-	auto gfc_drop = df.dropout(gfc_r, dropout);
+	auto gfc = df.matmul(gin, gfc_w, "gfc");	
 
-	auto tconv1 = tconv(&df, "tconv1", gfc_drop, g_solver, 256, 512, 2, 0, true);
+	auto tconv1 = tconv(&df, "tconv1", gfc, g_solver, 256, 512, 2, 0, true);
 	auto tconv2 = tconv(&df, "tconv2", tconv1, g_solver, 128, 256, 2, 0, true);
 	auto tconv3 = tconv(&df, "tconv3", tconv2, g_solver, 64, 128, 3, 0, true);
 	auto tconv4 = tconv(&df, "tconv4", tconv3, g_solver, 1, 64, 5, 0, false);
 
-	auto gout = df.tanh(tconv4, "gout");
-	auto disp = df.display(gout, 500, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
+	auto gout = df.pass_through(tconv4, false, "gout");
 
-	//auto replay_memory = df.replay_memory(gout, 10000, "replay_memory");
+	auto disp = df.display(gout, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);	
 
 	return df.session();
 }
@@ -105,10 +102,9 @@ std::string conv(DeepFlow *df, std::string name, std::string input, std::string 
 	auto stddev = 0.1;
 	auto negative_slope = 0.1;	
 	auto conv_w = df->variable(df->random_normal({ depth1, depth2, 3, 3 }, mean, stddev), solver, name + "_w");
-	auto conv_ = df->conv2d(input, conv_w, 1, 1, 2, 2, 1, 1, name);
-	if (activation) {		
-		auto drop = df->dropout(conv_, 0.2);
-		return df->leaky_relu(drop, negative_slope);
+	auto conv_ = df->conv2d(input, conv_w, "", 0,  1, 1, 2, 2, 1, 1, name);
+	if (activation) {				
+		return df->leaky_relu(conv_, negative_slope);
 	}
 	return conv_;
 }
@@ -117,7 +113,7 @@ std::shared_ptr<Session> create_discriminator() {
 	DeepFlow df;
 	auto mean = 0;
 	auto stddev = 0.01;
-	auto d_solver = df.adam_solver(0.0002f, 0.5f, 0.999f);
+	auto d_solver = df.adam_solver(0.0002f, 0.5f, 0.98f);
 	auto negative_slope = 0.1;
 	auto input = df.place_holder({ FLAGS_batch , 1, 28, 28 }, Tensor::Float, "input");
 
@@ -126,21 +122,16 @@ std::shared_ptr<Session> create_discriminator() {
 	auto conv1 = conv(&df, "conv1", input, d_solver, 64, 1, true);
 	auto conv2 = conv(&df, "conv2", conv1, d_solver, 64, 64, true);
 	auto conv3 = conv(&df, "conv3", conv2, d_solver, 64, 64, true);		
-	auto conv4 = conv(&df, "conv4", conv2, d_solver, 128, 64, true);
+	auto conv4 = conv(&df, "conv4", conv3, d_solver, 128, 64, true);
 
-	auto w1 = df.variable(df.random_uniform({ 2048, 500, 1, 1 }, -0.100000, 0.100000), d_solver, "w1");
+	auto w1 = df.variable(df.random_uniform({ 128 * 2 * 2, 500, 1, 1 }, -0.100000, 0.100000), d_solver, "w1");
 	auto m1 = df.matmul(conv4, w1, "m1");
 	auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, -1.000000, 1.000000), d_solver, "b1");
 	auto bias1 = df.bias_add(m1, b1, "bias1");
-	auto relu1 = df.leaky_relu(bias1, negative_slope, "relu1");
-	auto drop2 = df.dropout(relu1, 0.2);
+	auto relu1 = df.leaky_relu(bias1, negative_slope, "relu1");	
 
 	auto w2 = df.variable(df.random_uniform({ 500, 1, 1, 1 }, -0.100000, 0.100000), d_solver, "w2");
-	auto m2 = df.matmul(drop2, w2, "m2");
-
-	auto dout = df.sigmoid(m2, "dout");
-
-	//df.logger({ conv1_r, conv1_n}, "./log.txt", "R -> {0}\nN -> {0}\n\n", DeepFlow::EVERY_PASS);
+	auto m2 = df.matmul(relu1, w2, "m2");	
 
 	return df.session();
 }
@@ -171,9 +162,8 @@ void main(int argc, char** argv) {
 
 	auto mnist_reader_data = mnist_reader->get_node("mnist_data");
 	auto generator_output = generator->get_node("gout");
-	//auto replay_memory_output = generator->get_node("replay_memory");
 	auto discriminator_input = discriminator->get_placeholder("input");
-	auto discriminator_output = discriminator->get_node("dout");
+	auto discriminator_output = discriminator->end_node();
 	auto generator_labels_output = generator_labels->get_node("generator_labels");
 	auto mnist_labels_output = mnist_labels->get_node("mnist_labels");
 	auto loss_discriminator_input = loss->get_placeholder("discriminator_input");
@@ -184,6 +174,9 @@ void main(int argc, char** argv) {
 	auto sio_sender_gfake = socket_io_sender_session->get_node("gfake");
 
 	for (int i = 1; i <= FLAGS_epoch && execution_context->quit != true; ++i) {
+		
+		execution_context->current_iteration = i;
+
 		std::cout << "Epoch: " << i << std::endl;
 
 		std::cout << " MNIST INPUT " << std::endl;
@@ -198,7 +191,6 @@ void main(int argc, char** argv) {
 		loss->backward();		
 		discriminator_output->write_diffs(loss_discriminator_input->output(0)->diff());
 		discriminator->backward();
-		discriminator->apply_solvers();
 
 		std::cout << " GENERATOR INPUT " << std::endl;
 		generator->forward();
@@ -213,7 +205,7 @@ void main(int argc, char** argv) {
 		discriminator_output->write_diffs(loss_discriminator_input->output(0)->diff());
 		discriminator->backward();
 		discriminator->apply_solvers();
-
+		
 		std::cout << " TRAINING GENERATOR " << std::endl;
 		loss->reset_gradients();
 		generator->forward();
@@ -230,6 +222,7 @@ void main(int argc, char** argv) {
 		generator_output->write_diffs(discriminator_input->output(0)->diff());
 		generator->backward();
 		generator->apply_solvers();
+		discriminator->reset_gradients();
 
 		socket_io_sender_session->forward();
 	}

@@ -112,7 +112,8 @@ message LossParam {
 		NORM2 = 7;
 	}
 	ReduceOp reduce_op = 1;
-	bool force_output = 2;
+	float alpha = 2;
+	float beta = 3;
 }
 
 message SplitParam {

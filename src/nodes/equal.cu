@@ -27,13 +27,12 @@ void Equal::forward() {
 }
 
 void Equal::backward() {
-	LOG(FATAL);
+	
 }
 
 std::string Equal::to_cpp() const
 {
 	std::string cpp = "auto " + _name + " = df.equal(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

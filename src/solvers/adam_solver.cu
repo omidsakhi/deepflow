@@ -42,13 +42,13 @@ void AdamSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {
 		dry_run = true;
 	}
 	if (!_enabled)
-		return;
-	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name();
+		return;	
 	auto size = var->output(0)->value()->size();
-	float beta1 = _my_param->beta1();
-	float beta2 = _my_param->beta2();
-	float iter = context->current_iteration;
-	float corrected_lr = _learning_rate * std::sqrt(1.0f - pow(beta2, iter)) / (1.0f - pow(beta1, iter));
+	double beta1 = _my_param->beta1();
+	double beta2 = _my_param->beta2();
+	double iter = floor(context->current_iteration / 5000) + 2;
+	float corrected_lr = _learning_rate;// (float)((double)_learning_rate * std::sqrt(1.0 - pow(beta2, iter)) / (1.0 - pow(beta1, iter)));
+	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name() << " | lr: " << corrected_lr;
 	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock, 0, stream >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _m, _v, _my_param->beta1(), _my_param->beta2(), _my_param->eps(), corrected_lr, dry_run);
 	DF_KERNEL_CHECK();	
 	var->reset_gradients(stream);

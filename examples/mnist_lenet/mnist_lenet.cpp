@@ -15,17 +15,13 @@ DEFINE_string(run,"", "Phase to execute graph");
 DEFINE_bool(printiter, false, "Print iteration message");
 DEFINE_bool(printepoch, true, "Print epoch message");
 DEFINE_int32(debug, 0, "Level of debug");
-DEFINE_int32(epoch, 1000, "Maximum epochs");
-DEFINE_int32(iter, -1, "Maximum iterations");
+DEFINE_int32(epoch, 10000, "Maximum epochs");
+DEFINE_int32(iter, 600, "Maximum iterations");
 DEFINE_bool(cpp, false, "Print C++ code");
 
-std::string conv(DeepFlow *df, std::string name, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool activation) {
-	auto w = df->variable(df->random_normal({ output_channels, input_channels, kernel, kernel }, 0, 0.1), solver, name + "_w");
-	auto node = df->conv2d(input, w, pad, pad, 1, 1, 1, 1, name);
-	//auto bns = df->variable(df->random_uniform({ 1, output_channels, 1, 1 }, -0.1, 0.1), solver, name + "_bns");
-	auto bnb = df->variable(df->fill({ 1, output_channels, 1, 1 }, 0), solver, name + "_bnb");
-	node = df->bias_add(node, bnb);
-	//node = df->batch_normalization(node, bns, bnb, DeepFlow::SPATIAL, false, name + "_b");
+std::string conv(DeepFlow *df, std::string name, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool activation) {	
+	auto node = df->conv2d(input, input_channels, output_channels, kernel, pad, 1, false, solver, name);
+	node = df->batch_normalization(node, solver, output_channels, name + "_b");
 	node = df->pooling(node, 2, 2, 0, 0, 2, 2);
 	if (activation) {
 		node = df->elu(node, 0.1);
@@ -75,7 +71,7 @@ void main(int argc, char** argv) {
 		auto test_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Labels, "test_labels", { "Validation" });
 		auto label_selector = df.phaseplexer(train_labels, "Train", test_labels, "Validation", "label_selector", {});		
 		auto softmax_dot = df.dot(softmax_log, label_selector);
-		auto loss = df.loss(softmax_dot, DeepFlow::AVG, "loss");
+		auto loss = df.loss(softmax_dot, DeepFlow::AVG);
 		auto predict = df.argmax(softmax, 1, "predict", {});
 		auto target = df.argmax(label_selector, 1, "target", {});
 		auto equal = df.equal(predict, target, "equal", {});
@@ -96,7 +92,7 @@ void main(int argc, char** argv) {
 
 	if (!FLAGS_run.empty()) {
 		session->initialize();
-		//session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
+		session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
 	}
 
 	if (FLAGS_cpp) {
