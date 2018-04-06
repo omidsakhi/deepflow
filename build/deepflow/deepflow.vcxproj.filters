@@ -121,6 +121,9 @@
     <CudaCompile Include="..\..\src\nodes\patch_sampling.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\initializers\gradient_fill.cu">
+      <Filter>source\initializers</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -502,6 +505,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\patch_sampling.h">
       <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\initializers\gradient_fill.h">
+      <Filter>include\initializers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

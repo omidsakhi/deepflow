@@ -174,6 +174,19 @@ std::string DeepFlow::three_state(std::initializer_list<int> dims, std::string n
 	return init_param->name();
 }
 
+std::string DeepFlow::gradient(std::initializer_list<int> dims, std::string name)
+{
+	auto init_param = _block->add_initializer_param();
+	init_param->set_name(_block->get_unique_initializer_param_name(name));
+	std::vector<int> values(dims);
+	auto tensor_param = init_param->mutable_tensor_param();
+	for (int i = 0; i < values.size(); ++i)
+		tensor_param->add_dims(values[i]);
+	tensor_param->set_type(deepflow::TensorParam_TensorType_FLOAT);
+	init_param->mutable_gradient_fill_param();
+	return init_param->name();
+}
+
 std::string DeepFlow::fill(std::initializer_list<int> dims, float value, std::string name) {
 	auto init_param = _block->add_initializer_param();
 	init_param->set_name(_block->get_unique_initializer_param_name(name));

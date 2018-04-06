@@ -346,6 +346,9 @@ message InitIndexFillParam {
 	float offset = 1;
 }
 
+message InitGradientFillParam {
+}
+
 message InitRandomUniformParam {
 	float min = 1;
 	float max = 2;
@@ -380,6 +383,7 @@ message InitParam {
   InitRandomNormalParam random_normal_param = 8;
   InitThreeStateParam three_state_param = 9;
   InitTruncatedNormalParam truncated_normal_param = 10;
+  InitGradientFillParam gradient_fill_param = 11;
 }
 
 message SGDSolverParam {	

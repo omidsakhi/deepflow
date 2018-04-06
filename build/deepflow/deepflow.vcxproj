@@ -38,6 +38,7 @@
     <ClInclude Include="..\..\include\generators\image_batch_reader.h" />
     <ClInclude Include="..\..\include\generators\mnist_reader.h" />
     <ClInclude Include="..\..\include\initializers\fill.h" />
+    <ClInclude Include="..\..\include\initializers\gradient_fill.h" />
     <ClInclude Include="..\..\include\initializers\index_fill.h" />
     <ClInclude Include="..\..\include\initializers\random_normal.h" />
     <ClInclude Include="..\..\include\initializers\random_uniform.h" />
@@ -110,6 +111,7 @@
       <FileType>CppHeader</FileType>
     </ClCompile>
     <ClInclude Include="..\..\include\utilities\moving_average.h" />
+    <CudaCompile Include="..\..\src\initializers\gradient_fill.cu" />
     <CudaCompile Include="..\..\src\nodes\batch_stddev.cu" />
     <CudaCompile Include="..\..\src\nodes\gaussian.cu" />
     <CudaCompile Include="..\..\src\nodes\gaussian_kernel.cu" />
@@ -261,7 +263,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 9.1.props" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 9.0.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -391,6 +393,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 9.1.targets" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 9.0.targets" />
   </ImportGroup>
 </Project>

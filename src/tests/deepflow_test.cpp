@@ -316,6 +316,19 @@ TEST(leaky_relu, backward_0_1) {
 	EXPECT_EQ(session->get_node("a")->output(0)->value()->verify({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 }), true);
 }
 
+TEST(gradient_fill, fill_test) {
+	DeepFlow df;
+	df.variable(df.gradient({ 3, 2 , 8 , 8 }), "", "var");
+	auto session = df.session();
+	session->initialize();
+	session->forward();
+	auto var = session->get_node("var");
+	double min, max, avg, std;
+	var->output(0)->value()->statistics(&avg, &std, &min, &max);	
+	EXPECT_LE(min, -1);
+	EXPECT_GE(max, 1);	
+}
+
 int main(int argc, char** argv) {
 	gflags::ParseCommandLineFlags(&argc, &argv, true);	
 	CudaHelper::setOptimalThreadsPerBlock();

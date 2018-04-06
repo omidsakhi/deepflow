@@ -82,6 +82,7 @@ public:
 	std::string truncated_normal(std::initializer_list<int> dims, float mean, float stddev, std::string name = "truncated_normal");
 	std::string step(std::initializer_list<int> dims, float min, float max, std::string name = "step");
 	std::string three_state(std::initializer_list<int> dims, std::string name = "three_state");
+	std::string gradient(std::initializer_list<int> dims, std::string name = "gradient");
 
 	// VARIABLES & PLACE HOLDER
 	std::string variable(std::string initializer, std::string solver = "", std::string name = "var", std::initializer_list<std::string> phases = {});
@@ -101,7 +102,7 @@ public:
 	std::string patching(std::string input, PatchingMode mode, int num_vertical_patches, int num_horizontal_patches, std::string name = "patching", std::initializer_list<std::string> phases = {});
 	std::string patch_sampling(std::string input, int patch_width, int patch_height, std::string name = "patch_sampling", std::initializer_list<std::string> phases = {});
 	std::string resize(std::string input, float height_scale, float width_scale, std::string name = "resize", std::initializer_list<std::string> phases = {});
-	std::string concate(std::string input1, std::string input2, std::string name = "resize", std::initializer_list<std::string> phases = {});
+	std::string concate(std::string input1, std::string input2, std::string name = "concate", std::initializer_list<std::string> phases = {});
 	std::string reshape(std::string input, std::array<int, 4> output_dims, std::string name = "reshape", std::initializer_list<std::string> phases = {});	
 
 	// MATH
