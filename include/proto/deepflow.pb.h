@@ -1770,18 +1770,11 @@ class ImageWriterParam : public ::google::protobuf::Message /* @@protoc_insertio
   ::std::string* release_filename();
   void set_allocated_filename(::std::string* filename);
 
-  // bool draw_iteration = 2;
-  void clear_draw_iteration();
-  static const int kDrawIterationFieldNumber = 2;
-  bool draw_iteration() const;
-  void set_draw_iteration(bool value);
-
   // @@protoc_insertion_point(class_scope:deepflow.ImageWriterParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr filename_;
-  bool draw_iteration_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -8890,20 +8883,6 @@ inline void ImageWriterParam::set_allocated_filename(::std::string* filename) {
   }
   filename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), filename);
   // @@protoc_insertion_point(field_set_allocated:deepflow.ImageWriterParam.filename)
-}
-
-// bool draw_iteration = 2;
-inline void ImageWriterParam::clear_draw_iteration() {
-  draw_iteration_ = false;
-}
-inline bool ImageWriterParam::draw_iteration() const {
-  // @@protoc_insertion_point(field_get:deepflow.ImageWriterParam.draw_iteration)
-  return draw_iteration_;
-}
-inline void ImageWriterParam::set_draw_iteration(bool value) {
-  
-  draw_iteration_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.ImageWriterParam.draw_iteration)
 }
 
 // -------------------------------------------------------------------

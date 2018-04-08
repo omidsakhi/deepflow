@@ -2,7 +2,9 @@
 
 #include "core/node.h"
 
-#include <opencv2/opencv.hpp>
+namespace cv {
+	class Mat;
+}
 
 class DeepFlowDllExport ImageWriter : public Node {
 public:
@@ -14,6 +16,7 @@ public:
 	void forward();
 	void backward();
 	std::string to_cpp() const;
+	void set_text_line(std::string text);
 private:
 	int input_size;
 	int input_size_in_bytes;
@@ -27,6 +30,6 @@ private:
 	int pic_height;
 	int num_pic_pixels;
 	std::string _filename;
-	bool _draw_iteration = false;
-	cv::Mat disp;
+	std::string _text_line;
+	std::shared_ptr<cv::Mat> disp;
 };

@@ -77,8 +77,7 @@ message DisplayParam {
 }
 
 message ImageWriterParam {
-	string filename = 1;
-	bool draw_iteration = 2;
+	string filename = 1;	
 }
 
 message LogParam {

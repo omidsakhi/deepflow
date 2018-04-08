@@ -93,7 +93,7 @@ void main(int argc, char** argv) {
 		df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), "", "z");
 		df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), "", "static_z");
 		auto imwrite_input = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "imwrite_input");
-		df.imwrite(imwrite_input, "{it}", true, "imwrite");
+		df.imwrite(imwrite_input, "{it}", "imwrite");
 		auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "loss_input");
 		auto discriminator_target = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "loss_target");
 		std::string err = df.reduce_mean(df.square_error(discriminator_input, discriminator_target));

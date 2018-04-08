@@ -126,7 +126,7 @@ void main(int argc, char** argv) {
 		df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), "", "z");
 		df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), "", "static_z");
 		auto imwrite_input = df.place_holder({ FLAGS_batch, FLAGS_channels, FLAGS_size, FLAGS_size }, Tensor::Float, "imwrite_input");
-		df.imwrite(imwrite_input, "{it}", true, "imwrite");
+		df.imwrite(imwrite_input, "{it}", "imwrite");
 		create_loss(&df,1);
 		create_loss(&df, 2);
 		create_discriminator(&df);
@@ -158,7 +158,7 @@ void main(int argc, char** argv) {
 	auto loss1 = session->get_node<Loss>("loss1");
 	auto loss2 = session->get_node<Loss>("loss2");
 	auto imwrite_input = session->get_placeholder("imwrite_input");
-	auto imwrite = session->get_node("imwrite");
+	auto imwrite = session->get_node<ImageWriter>("imwrite");
 	auto z = session->get_node("z");
 	auto static_z = session->get_node("static_z");
 
@@ -235,6 +235,11 @@ void main(int argc, char** argv) {
 			session->reset_gradients();
 
 			if (FLAGS_save_image != 0 && iter % FLAGS_save_image == 0) {
+				imwrite->set_text_line(
+					"Iteration: " + std::to_string(iter) +
+					"  g " + std::to_string(g_loss_avg.result()) +
+					" +d " + std::to_string(p_d_loss_avg.result()) +
+					" -d " + std::to_string(n_d_loss_avg.result()));
 				session->forward({ generator_output }, { { generator_input, static_z->output(0)->value() } });
 				session->forward({ imwrite }, { { imwrite_input, generator_output->output(0)->value() } });
 			}

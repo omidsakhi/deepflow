@@ -13,6 +13,7 @@
 #include "nodes/accumulator.h"
 #include "nodes/print.h"
 #include "nodes/logger.h"
+#include "nodes/image_writer.h"
 
 class Solver;
 class Variable;

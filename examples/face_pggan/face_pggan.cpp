@@ -78,27 +78,27 @@ std::shared_ptr<Session> create() {
 	auto g16trgb = to_rgb(&df, g16, g_solver, fn, "g16trgb");
 	auto g16add = df.add(df.resize(g8trgb, 2, 2), g16trgb, "g16add");
 	auto im16 = df.switcher(g16trgb, "im16");
-	df.imwrite(im16, "i16-{it}", false, "imw16");
+	df.imwrite(im16, "i16-{it}", "imw16");
 
 	auto g32 = deconv(&df, g16elu, g_solver, fn, fn, 3, 1, "g32"); // 32x32
 	auto g32elu = df.leaky_relu(g32, 0.2, "g32elu");
 	auto g32trgb = to_rgb(&df, g32, g_solver, fn, "g32trgb");
 	auto g32add = df.add(df.resize(g16add, 2, 2), g32trgb, "g32add");
 	auto im32 = df.switcher(g32trgb, "im32");
-	df.imwrite(im32, "i32-{it}", false, "imw32");
+	df.imwrite(im32, "i32-{it}", "imw32");
 
 	auto g64 = deconv(&df, g32elu, g_solver, fn, fn, 3, 1, "g64"); // 64x64
 	auto g64elu = df.leaky_relu(g64, 0.2, "g64elu");
 	auto g64trgb = to_rgb(&df, g64, g_solver, fn, "g64trgb");
 	auto g64add = df.add(df.resize(g32add, 2, 2), g64trgb, "g64add");
 	auto im64 = df.switcher(g64trgb, "im64");
-	df.imwrite(im64, "i64-{it}", true, "imw64");
+	df.imwrite(im64, "i64-{it}", "imw64");
 
 	auto g128 = deconv(&df, g64elu, g_solver, fn, fn, 3, 1, "g128"); // 64x64 -> 128x128
 	auto g128trgb = to_rgb(&df, g128, g_solver, fn, "g128trgb");
 	auto g128add = df.add(df.resize(g64add, 2, 2), g128trgb, "g128add");
 	auto im128 = df.switcher(g128trgb, "im128");
-	df.imwrite(im128, "i128-{it}", true, "imw128");
+	df.imwrite(im128, "i128-{it}", "imw128");
 
 	auto m128 = df.multiplexer({ face_data_128, g128add }, "m128");
 	auto m128frgb = from_rgb(&df, m128, d_solver, fn, "m128frgb");

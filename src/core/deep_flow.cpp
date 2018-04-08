@@ -579,15 +579,14 @@ std::string DeepFlow::display(std::string input, int delay_msec, ActionType disp
 	return node_param->output(0);
 }
 
-std::string DeepFlow::imwrite(std::string input, std::string filename, bool draw_iteration, std::string name)
+std::string DeepFlow::imwrite(std::string input, std::string filename, std::string name)
 {
 	auto node_param = _block->add_node_param();
 	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
 	auto writer_param = node_param->mutable_image_writer_param();
-	writer_param->set_filename(filename);
-	writer_param->set_draw_iteration(draw_iteration);
+	writer_param->set_filename(filename);	
 	return node_param->output(0);
 }
 

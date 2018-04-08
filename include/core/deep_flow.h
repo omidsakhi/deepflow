@@ -162,7 +162,7 @@ public:
 	void print(std::initializer_list<std::string> inputs, std::string message, ActionType = ActionType::VALUES, std::string name = "print");
 	void logger(std::initializer_list<std::string> inputs, std::string file_path, std::string message, ActionType loggingType = ActionType::VALUES, std::string name = "logger");
 	std::string display(std::string input, int delay_msec = 100, ActionType dislayType = ActionType::VALUES, int epoch_frequency = 1, bool draw_iteration = false, std::string name = "disp");
-	std::string imwrite(std::string input, std::string filename, bool draw_iteration = false, std::string name = "disp");
+	std::string imwrite(std::string input, std::string filename, std::string name = "disp");
 	void psnr(std::string a, std::string b, std::string name = "psnr");	
 
 	// NORMALIZATION
