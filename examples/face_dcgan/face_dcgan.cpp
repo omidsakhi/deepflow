@@ -178,20 +178,18 @@ void main(int argc, char** argv) {
 			iter = std::stoi(FLAGS_load) + 1;
 		}
 
-		float alpha = 0.0001f;
+		float alpha = 0.01f;
 
 		session->forward({ face_labels });
 		session->forward({ generator_labels });
-
-		loss1->set_alpha(alpha);
-		loss1->set_beta(1 - alpha);
-		loss2->set_alpha(alpha);
-		loss2->set_beta(1 - alpha);
 
 		for (; iter <= FLAGS_iter && execution_context->quit != true; ++iter) {
 
 			execution_context->current_iteration = iter;
 			std::cout << "Iteration: [" << iter << "/" << FLAGS_iter << "]";
+
+			loss1->set_alpha(alpha);
+			loss1->set_beta(1 - alpha);
 
 			session->forward({ face_data });
 			session->forward({ discriminator_output }, { { discriminator_input, face_data->output(0)->value() } });
@@ -217,6 +215,9 @@ void main(int argc, char** argv) {
 			session->backward({ discriminator_output }, { { discriminator_output, loss1_input->output(0)->diff() } });
 
 			session->apply_solvers({ "d_adam" });
+
+			loss2->set_alpha(alpha);
+			loss2->set_beta(1 - alpha);
 
 			session->forward({ discriminator_output }, { { discriminator_input, generator_output->output(0)->value() } });
 			session->forward({ loss2 }, {
