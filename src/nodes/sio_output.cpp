@@ -4,8 +4,7 @@ SIOOutput::SIOOutput(deepflow::NodeParam *param) : Node(param)
 {
 	LOG_IF(FATAL, param->has_sio_output_param() == false) << "param.has_sio_output_param() == false";
 	auto sio_param = _param->sio_output_param();
-	_num_inputs = sio_param.num_inputs();
-	_print_time = sio_param.print_time();
+	_num_inputs = sio_param.num_inputs();	
 	_host = sio_param.host();
 	_port = sio_param.port();
 }
@@ -63,7 +62,7 @@ void SIOOutput::forward()
 
 void SIOOutput::backward()
 {
-	LOG(FATAL);
+	
 }
 
 std::string SIOOutput::to_cpp() const

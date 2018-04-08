@@ -79,7 +79,6 @@ std::string TransposedConvolution2D::to_cpp() const
 	cpp += std::to_string(param.v()) + ", ";
 	cpp += std::to_string(param.dilation_h()) + ", ";
 	cpp += std::to_string(param.dilation_w()) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

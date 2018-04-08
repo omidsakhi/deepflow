@@ -49,7 +49,9 @@ void Activation::forward()
 
 void Activation::backward()
 {
-	DF_NODE_CUDNN_CHECK(cudnnActivationBackward(_cudnnHandle, _activation_desc, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+	if (_inputs[0]->diff()) {
+		DF_NODE_CUDNN_CHECK(cudnnActivationBackward(_cudnnHandle, _activation_desc, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));		
+	}
 }
 
 std::string Activation::to_cpp() const
@@ -60,7 +62,6 @@ std::string Activation::to_cpp() const
 	std::string op = op_name();
 	if (op == "clipped_relu" || op == "elu")
 		cpp += std::to_string(coef) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

@@ -109,7 +109,6 @@ std::string Variable::to_cpp() const
 		cpp += "NULL, ";
 	else
 		cpp += _param->variable_param().solver_name() + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

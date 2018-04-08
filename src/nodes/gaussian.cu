@@ -71,7 +71,6 @@ std::string Gaussian::to_cpp() const
 	std::string cpp = "auto " + _name + " = df.gaussian(";
 	cpp += _input_name_for_cpp(0) + ", ";
 	cpp += _input_name_for_cpp(1) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

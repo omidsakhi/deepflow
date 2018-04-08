@@ -25,19 +25,21 @@ void LRN::forward()
 
 void LRN::backward()
 {
-	/*
-	DF_NODE_CUDNN_CHECK(
-		cudnnLRNCrossChannelForward(_cudnnHandle, _normDesc, CUDNN_LRN_CROSS_CHANNEL_DIM1,
-			&one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(),
-			&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
-	*/
+	if (_inputs[0]->diff()) {
+		/*
+		DF_NODE_CUDNN_CHECK(
+			cudnnLRNCrossChannelForward(_cudnnHandle, _normDesc, CUDNN_LRN_CROSS_CHANNEL_DIM1,
+				&one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(),
+				&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+		*/
 
-	DF_NODE_CUDNN_CHECK(
-	cudnnLRNCrossChannelBackward(_cudnnHandle, _normDesc, CUDNN_LRN_CROSS_CHANNEL_DIM1, &one,
-		_outputs[0]->value()->descriptor(), _outputs[0]->value()->data(),
-		_outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(),
-		_inputs[0]->value()->descriptor(), _inputs[0]->value()->data(),
-		&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+		DF_NODE_CUDNN_CHECK(
+			cudnnLRNCrossChannelBackward(_cudnnHandle, _normDesc, CUDNN_LRN_CROSS_CHANNEL_DIM1, &one,
+				_outputs[0]->value()->descriptor(), _outputs[0]->value()->data(),
+				_outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(),
+				_inputs[0]->value()->descriptor(), _inputs[0]->value()->data(),
+				&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+	}
 }
 
 std::string LRN::to_cpp() const
@@ -49,7 +51,6 @@ std::string LRN::to_cpp() const
 	cpp += std::to_string(param.n()) + ", ";
 	cpp += std::to_string(param.alpha()) + ", ";
 	cpp += std::to_string(param.beta()) + ", ";
-	cpp += std::to_string(param.k()) + ", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += std::to_string(param.k()) + ");";	
 	return cpp;
 }

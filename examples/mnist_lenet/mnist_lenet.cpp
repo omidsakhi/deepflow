@@ -4,109 +4,134 @@
 
 #include <gflags/gflags.h>
 
-DEFINE_string(mnist, "C:/Projects/deepflow/data/mnist", "Path to MNIST data folder");
-DEFINE_string(i, "", "Trained network model to load");
-DEFINE_string(o, "", "Trained network model to save");
-DEFINE_bool(text, false, "Save model as text");
-DEFINE_bool(includeweights, false, "Also save weights in text mode");
-DEFINE_bool(includeinits, false, "Also save initial values");
+DEFINE_string(mnist, "C:/Projects/deepflow/data/mnist", "Path to mnist folder dataset");
 DEFINE_int32(batch, 100, "Batch size");
-DEFINE_string(run,"", "Phase to execute graph");
-DEFINE_bool(printiter, false, "Print iteration message");
-DEFINE_bool(printepoch, true, "Print epoch message");
 DEFINE_int32(debug, 0, "Level of debug");
-DEFINE_int32(epoch, 10000, "Maximum epochs");
-DEFINE_int32(iter, 600, "Maximum iterations");
-DEFINE_bool(cpp, false, "Print C++ code");
+DEFINE_int32(epoch, 10000, "Maximum epoch");
+DEFINE_string(load, "", "Load from mnist_acXXXX.bin");
+DEFINE_int32(save, 1000, "Save model iter frequency (Don't Save = 0)");
+DEFINE_bool(train, false, "Train");
 
-std::string conv(DeepFlow *df, std::string name, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, bool activation) {	
-	auto node = df->conv2d(input, input_channels, output_channels, kernel, pad, 1, false, solver, name);
-	node = df->batch_normalization(node, solver, output_channels, name + "_b");
-	node = df->pooling(node, 2, 2, 0, 0, 2, 2);
-	if (activation) {
-		node = df->elu(node, 0.1);
-		//node = df->dropout(node, 0.5f);
-		return node; 
-	}
-	return node;
+void load_session(DeepFlow *df, std::string filename) {
+	filename += ".bin";
+	std::cout << "Loading from " << filename << std::endl;
+	df->block()->load_from_binary(filename);
 }
 
+void create_graph(DeepFlow *df) {
+
+	auto solver = df->adam_solver(0.0001f, 0.5f, 0.99f);
+	//auto solver = df->sgd_solver(0.01f, 0.01f);
+
+	df->mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::MNISTReaderType::Train, MNISTReader::Data, "mnist_train_data");
+	df->mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::MNISTReaderType::Test, MNISTReader::Data, "mnist_test_data");
+	df->mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::Train, MNISTReader::Labels, "mnist_train_labels");
+	df->mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::Test, MNISTReader::Labels, "mnist_test_labels");
+
+	auto loss_softmax_input = df->place_holder({ FLAGS_batch, 10, 1, 1 }, Tensor::Float, "loss_softmax_input");
+	auto loss_target_labels = df->place_holder({ FLAGS_batch, 10, 1, 1 }, Tensor::Float, "loss_target_labels");
+	auto loss_softmax_log = df->log(loss_softmax_input, -1.0f, "loss_softmax_log");
+	auto loss_softmax_dot = df->dot(loss_softmax_log, loss_target_labels);
+	auto loss = df->loss(loss_softmax_dot, DeepFlow::AVG, 1.0f, 0.0f, "loss");
+
+	auto pred_softmax_input = df->place_holder({ FLAGS_batch, 10, 1, 1 }, Tensor::Float, "pred_softmax_input");
+	auto pred_target_labels = df->place_holder({ FLAGS_batch, 10, 1, 1 }, Tensor::Float, "pred_target_labels");
+	auto max_actual = df->argmax(pred_softmax_input, 1, "pred_actual");
+	auto max_target = df->argmax(pred_target_labels, 1, "pred_target");	
+	auto equal = df->equal(max_actual, max_target, "equal");
+	auto acc = df->accumulator(equal, "accumulator");
+	auto correct_count = df->reduce_sum(acc[0], 0, "correct_count");
+
+	int fn = 64; 
+
+	auto net = df->place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "input");
+	net = df->conv2d(net, 1, fn, 3, 1, 2, true, solver, "conv1"); // 14x14
+	net = df->leaky_relu(net, 0.2f);	
+	net = df->conv2d(net, fn, fn * 2, 3, 1, 2, true, solver, "conv2"); // 7x7
+	net = df->leaky_relu(net, 0.2f);
+	net = df->conv2d(net, fn * 2, fn * 4, 3, 1, 2, true, solver, "conv3"); // 4x4
+	net = df->leaky_relu(net, 0.2f);
+	net = df->dense(net, { (fn * 4) * 4 * 4, 512, 1, 1 }, true, solver, "fc1");
+	//net = df->dropout(net);
+	net = df->dense(net, { 512, 10, 1, 1 }, true, solver, "fc2");
+	net = df->softmax(net, "output");
+
+}
 
 void main(int argc, char** argv) {
+
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
 
-	CudaHelper::setOptimalThreadsPerBlock();	
+	CudaHelper::setOptimalThreadsPerBlock();
 
-	int batch_size = FLAGS_batch;
-	
+	auto execution_context = std::make_shared<ExecutionContext>();
+	execution_context->debug_level = FLAGS_debug;
+
 	DeepFlow df;
+	if (FLAGS_load.empty())
+		create_graph(&df);
+	else
+		load_session(&df, "mnist_lenet" + FLAGS_load);
+
+	std::shared_ptr<Session> session = df.session();
+	session->initialize(execution_context);
 		
-	if (FLAGS_i.empty()) {		
+	auto mnist_train_data = session->get_node("mnist_train_data");
+	auto mnist_test_data = session->get_node("mnist_test_data");
+	auto mnist_train_labels = session->get_node("mnist_train_labels");
+	auto mnist_test_labels = session->get_node("mnist_test_labels");
+	auto loss_softmax_input = session->get_placeholder("loss_softmax_input");
+	auto loss_target_labels = session->get_placeholder("loss_target_labels");
+	auto loss = session->get_node("loss");	
+	auto input = session->get_placeholder("input");
+	auto output = session->get_node("output");
+	auto correct_count = session->get_node("correct_count");
+	auto pred_softmax_input = session->get_placeholder("pred_softmax_input");
+	auto pred_target_labels = session->get_placeholder("pred_target_labels");
+	auto acc = session->get_node<Accumulator>("accumulator");
 
-		df.define_phase("Train", DeepFlow::TRAIN);
-		df.define_phase("Validation", DeepFlow::VALIDATION);
-
-		auto solver = df.adam_solver(0.00001f, 0.9f);
+	if (FLAGS_train) {		
+		int epoch = 0;		
+		int total_iterations = 0;
 		
-		auto test_data = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Data, "test_data", { "Validation" });		
-		auto train_data = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Train, MNISTReader::Data, "train_data", { "Train" });
-		auto data_selector = df.phaseplexer(train_data, "Train", test_data, "Validation", "data_selector", {});
-				
-		auto conv1 = conv(&df, "conv1", data_selector, solver, 1, 32, 5,2, true);		
-		auto conv2 = conv(&df, "conv2", conv1, solver, 32, 64, 5,2, true);
+		for (; epoch <= FLAGS_epoch && execution_context->quit != true; ++epoch) {
+			execution_context->current_epoch = epoch;			
+			std::cout << "Epoch: [" << epoch << "/" << FLAGS_epoch << "]\n";
+			acc->reset();
+			for (int iter = 0; iter < 10000 / FLAGS_batch; ++iter) {
+				execution_context->execution_mode = ExecutionContext::TEST;
+				session->forward({ mnist_test_data, mnist_test_labels });
+				session->forward({ output }, { { input , mnist_test_data->output(0)->value() } });
+				session->forward({ correct_count }, { { pred_softmax_input, output->output(0)->value() },{ pred_target_labels, mnist_test_labels->output(0)->value() } });
+			}
+			{
+				auto num_correct = correct_count->output(0)->value()->toFloat();
+				auto num_total = acc->output(1)->value()->toFloat();
+				std::cout << " Test accuracy: " << num_correct << " out of " << num_total << " - " << num_correct / num_total * 100.0f << "%" << std::endl;
+			}
+			acc->reset();
+			for (int iter = 0; iter < 60000 / FLAGS_batch; ++iter) {
+				execution_context->execution_mode = ExecutionContext::TRAIN;
+				total_iterations = epoch * 60000 / FLAGS_batch + iter;
+				execution_context->current_iteration = total_iterations;
+				session->forward({ mnist_train_data, mnist_train_labels });					
+				session->forward({ output }, { { input , mnist_train_data->output(0)->value() } });
+				session->forward({ loss }, { { loss_softmax_input, output->output(0)->value() } , { loss_target_labels, mnist_train_labels->output(0)->value() } });
+				session->forward({ correct_count }, { { pred_softmax_input, output->output(0)->value() },{ pred_target_labels, mnist_train_labels->output(0)->value() } });
+				session->backward({ loss });
+				session->backward({ output }, { { output, loss_softmax_input->output(0)->diff() } });
+				session->apply_solvers();
 
-		auto w1 = df.variable(df.random_uniform({ 7 * 7 * 64, 1024, 1, 1 }, -0.1, 0.1), solver, "w1", {});		
-		auto b1 = df.variable(df.fill({ 1, 1024, 1, 1 }, 0), solver, "b1");
-		auto m1 = df.bias_add(df.matmul(conv2, w1, "m1", {}), b1);
-
-		auto r1 = df.relu(m1);
-		auto d1 = df.dropout(r1);
-
-		auto w2 = df.variable(df.random_uniform({ 1024, 10, 1, 1 }, -0.1, 0.1), solver, "w2");
-		auto m2 = df.matmul(d1, w2, "m2");
-
-		auto softmax = df.softmax(m2);
-		auto softmax_log = df.log(softmax, -1.0f);
-		auto train_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Train, MNISTReader::Labels, "train_labels", { "Train" });
-		auto test_labels = df.mnist_reader(FLAGS_mnist, 100, MNISTReader::Test, MNISTReader::Labels, "test_labels", { "Validation" });
-		auto label_selector = df.phaseplexer(train_labels, "Train", test_labels, "Validation", "label_selector", {});		
-		auto softmax_dot = df.dot(softmax_log, label_selector);
-		auto loss = df.loss(softmax_dot, DeepFlow::AVG);
-		auto predict = df.argmax(softmax, 1, "predict", {});
-		auto target = df.argmax(label_selector, 1, "target", {});
-		auto equal = df.equal(predict, target, "equal", {});
-		auto acc = df.accumulator(equal, DeepFlow::END_OF_EPOCH, "acc", {});
-		auto correct = df.reduce_sum(acc[0], 0, "correct", {});
-		df.print({ correct, acc[1] }, "    TRAINSET   CORRECT COUNT : {0} OUT OF {1} = %{}%\n", DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, "print1", { "Train" });
-		df.print({ correct, acc[1] }, "    VALIDATION CORRECT COUNT : {0} OUT OF {1} = %{}%\n", DeepFlow::END_OF_EPOCH, DeepFlow::VALUES, "print2", { "Validation" });
-		
-	}
-	else {
-		df.block()->load_from_binary(FLAGS_i);	
-	}
-	
-	df.block()->print_node_params();
-	df.block()->print_phase_params();
-
-	auto session = df.session();	
-
-	if (!FLAGS_run.empty()) {
-		session->initialize();
-		session->run(FLAGS_run, FLAGS_epoch, FLAGS_iter, FLAGS_printiter, FLAGS_printepoch, FLAGS_debug);
-	}
-
-	if (FLAGS_cpp) {
-		session->initialize();
-		std::cout << session->to_cpp() << std::endl;
-	}
-
-	
-	if (!FLAGS_o.empty())
-	{
-		if (FLAGS_text)
-			df.block()->save_as_text(FLAGS_o);
-		else
-			df.block()->save_as_binary(FLAGS_o);
+				if (FLAGS_save != 0 && total_iterations % FLAGS_save == 0) {
+					session->save("mnist_lenet" + std::to_string(iter) + ".bin");
+				}
+			}
+			{
+				auto num_correct = correct_count->output(0)->value()->toFloat();
+				auto num_total = acc->output(1)->value()->toFloat();
+				std::cout << "Train accuracy: " << num_correct << " out of " << num_total << " - " << num_correct / num_total * 100.0f << "%" << std::endl;
+			}
+		}
 	}
 	
 }

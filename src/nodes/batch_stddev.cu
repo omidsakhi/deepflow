@@ -79,13 +79,14 @@ void BatchStdDev::forward()
 
 void BatchStdDev::backward()
 {
-	cudaMemset(_inputs[0]->diff()->mutableData(), 0, _inputs[0]->diff()->sizeInBytes());
+	if (_inputs[0]->diff()) {
+		cudaMemset(_inputs[0]->diff()->mutableData(), 0, _inputs[0]->diff()->sizeInBytes());
+	}
 }
 
 std::string BatchStdDev::to_cpp() const
 {
 	std::string cpp = "auto " + _name + " = df.batch_stddev(" + _input_name_for_cpp(0) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;	
 }

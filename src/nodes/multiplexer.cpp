@@ -47,7 +47,7 @@ void Multiplexer::backward()
 		return;
 	}
 	auto input = _inputs[_selected_input];
-	if (input->connectedNode() && input->diff() && input->diff()->mutableData()) {
+	if (input->diff()) {
 		LOG_IF(INFO, _verbose > 2) << "MULTIPLEXER BACKWARD " << _name << " - SELECTED INPUT " << _inputs[_selected_input]->connectedNode()->name();
 		cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 0, input->diff()->mutableData());
 	}
@@ -88,8 +88,7 @@ std::string Multiplexer::to_cpp() const
 
 	std::string cpp = "df.multiplexer( {" + inputs + "} , ";
 	cpp += _input_name_for_cpp(_num_inputs) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }
 

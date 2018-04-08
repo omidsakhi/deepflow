@@ -8,102 +8,71 @@
 DEFINE_string(faces, "C:/Projects/deepflow/data/celeba128", "Path to face 128x128 dataset folder");
 DEFINE_int32(batch, 40, "Batch size");
 DEFINE_int32(debug, 0, "Level of debug");
-DEFINE_int32(epoch, 10000, "Maximum epochs");
-DEFINE_string(load, "", "Load from gXXXX.bin and dXXXX.bin");
-DEFINE_int32(save, 0 , "Save model epoch frequency (Don't Save = 0)");
+DEFINE_int32(iter, 10000, "Maximum iterations");
+DEFINE_string(load, "", "Load from face_acXXXX.bin");
+DEFINE_int32(save, 1000 , "Save model iter frequency (Don't Save = 0)");
 DEFINE_bool(train, false, "Train");
+DEFINE_bool(test, false, "Test");
 DEFINE_int32(channels, 3, "Image channels");
 
-std::shared_ptr<Session> create_face_reader_session() {
-	DeepFlow df;
-	df.image_batch_reader(FLAGS_faces, { FLAGS_batch, FLAGS_channels, 128, 128 }, true, "face_data");
-	return df.session();
+void load_session(DeepFlow *df, std::string prefix, std::string suffix) {
+	std::string filename = prefix + suffix + ".bin";
+	std::cout << "Loading " << prefix << " from " << filename << std::endl;
+	df->block()->load_from_binary(filename);
 }
 
-std::shared_ptr<Session> create_encoder_session() {
-	DeepFlow df;
-	auto mean = 0;
-	auto stddev = 0.02;
-	auto enc_solver = df.adam_solver(0.0002f, 0.5f);
-	auto enc_negative_slope = 0.05;
-	auto alpha_param = 1.0f;
-	auto decay = 0.01f;
-	auto depth = 128;
+void create_graph(DeepFlow *df) {	
 
+	auto solver = df->adam_solver(0.002f, 0.5f, 0.99f);
+	auto negative_slope = 0.2;	
+	auto fn = 128;
+	auto ef = 0.1f;
 
+	df->image_batch_reader(FLAGS_faces, { FLAGS_batch, FLAGS_channels, 128, 128 }, true, "face_data");
+	auto loss_input = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "loss_input");
+	auto loss_target = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "loss_target");
+	auto sqerr = df->square_error(loss_input, loss_target);
+	auto loss = df->loss(sqerr, DeepFlow::AVG);
+	auto disp_input = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "disp_input");
+	df->display(disp_input, 1, DeepFlow::VALUES, 1, "disp");
 
-	auto enc_input = df.place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "enc_input");
+	auto net = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "enc_input");
 	
-	auto conv1 = df.conv2d(enc_input, FLAGS_channels, depth, 3, 1, 1, true, enc_solver, "conv1");
-	auto conv1_r = df.leaky_relu(conv1, enc_negative_slope);
-	auto conv1_p = df.pooling(conv1_r, 2, 2, 0, 0, 2, 2, "conv1_p");
+	net = df->conv2d(net, FLAGS_channels, fn, 3, 1, 2, true, solver, "conv1");
+	net = df->leaky_relu(net, negative_slope);	
+
+	net = df->conv2d(net, fn, fn, 3, 1, 2, true, solver, "conv2");	
+	net = df->leaky_relu(net, negative_slope);	
 	
-	auto conv2 = df.conv2d(conv1_p, depth, depth, 3, 1, 1, true, enc_solver, "conv2");
-	auto conv2_r = df.leaky_relu(conv2, enc_negative_slope);
-	auto conv2_p = df.pooling(conv2_r, 2, 2, 0, 0, 2, 2, "conv2_p");
+	net = df->conv2d(net, fn, fn, 3, 1, 2, true, solver, "conv3");
+	net = df->leaky_relu(net, negative_slope);	
+
+	net = df->conv2d(net, fn, fn, 3, 1, 2, true, solver, "conv4");
+	net = df->leaky_relu(net, negative_slope);
+
+	net = df->conv2d(net, fn, fn, 3, 1, 2, false, solver, "conv5");	
+	net = df->leaky_relu(net, negative_slope);
+
+	net = df->transposed_conv2d(net, fn, fn, 3, 1, 2, false, solver, "tconv1");
+	net = df->batch_normalization(net, solver, fn, ef, "tconv1_bn");
+	net = df->leaky_relu(net, negative_slope);
+
+	net = df->transposed_conv2d(net, fn, fn , 3, 1, 2, false, solver, "tconv2");
+	net = df->batch_normalization(net, solver, fn, ef, "tconv2_bn");
+	net = df->leaky_relu(net, negative_slope);
 	
-	auto conv3 = df.conv2d(conv2_p, depth, depth, 3, 1, 1, true, enc_solver, "conv3");
-	auto conv3_r = df.leaky_relu(conv3, enc_negative_slope);
-	auto conv3_p = df.pooling(conv3_r, 2, 2, 0, 0, 2, 2, "conv3_p");
+	net = df->transposed_conv2d(net, fn, fn, 3, 1, 2, false, solver, "tconv3");
+	net = df->batch_normalization(net, solver, fn, ef, "tconv3_bn");
+	net = df->leaky_relu(net, negative_slope);
 
-	auto conv4 = df.conv2d(conv3_p, depth, depth, 3, 1, 1, true, enc_solver, "conv4");
-	auto conv4_r = df.leaky_relu(conv4, enc_negative_slope);
-	auto conv4_p = df.pooling(conv4_r, 2, 2, 0, 0, 2, 2, "enc_output");
+	net = df->transposed_conv2d(net, fn, fn, 3, 1, 2, false, solver, "tconv4");
+	net = df->batch_normalization(net, solver, fn, ef, "tconv4_bn");
+	net = df->leaky_relu(net, negative_slope);	
 
-	return df.session();
-}
+	net = df->transposed_conv2d(net, fn, 3, 3, 1, 2, true, solver, "tconv5");		
 
-std::shared_ptr<Session> create_loss_session() {
-	
-	DeepFlow df;
-	
-	auto loss_t1 = df.place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "loss_t1");
-	auto loss_t2 = df.place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "loss_t2");
-	auto sqerr = df.square_error(loss_t1, loss_t2);
-	auto loss = df.loss(sqerr, DeepFlow::AVG);
+	df->tanh(net, "dec_output");
 
-	df.print({ loss }, "Epoch: {ep} - Loss: {0}\n", DeepFlow::EVERY_PASS);
-
-	return df.session();
-}
-std::shared_ptr<Session> create_display_session() {
-	DeepFlow df;
-	auto input = df.place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "input");
-	df.display(input, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES, 1, "disp");
-	return df.session();
-}
-
-std::shared_ptr<Session> create_decoder_session() {
-
-	DeepFlow df;
-	auto mean = 0;
-	auto stddev = 0.02;	
-	auto dec_solver = df.adam_solver(0.0002f, 0.5f);	
-	auto dec_negative_slope = 0.05;		
-	auto alpha_param = 1.0f;
-	auto decay = 0.01f;
-	auto depth = 128;
-
-	auto dec_input = df.place_holder({ FLAGS_batch, 8, 8, 8 }, Tensor::Float, "dec_input");
-
-	auto tconv1_f = df.variable(df.random_normal({ 8, depth, 3, 3 }, mean, stddev), dec_solver, "tconv1_f");
-	auto tconv1_t = df.transposed_conv2d(dec_input, tconv1_f, 1, 1, 2, 2, 1, 1, "tconv1_t");	
-	auto tconv1_r = df.leaky_relu(tconv1_t, dec_negative_slope);
-
-	auto tconv2_f = df.variable(df.random_normal({ depth, depth, 3, 3 }, mean, stddev), dec_solver, "tconv2_f");
-	auto tconv2_t = df.transposed_conv2d(tconv1_r, tconv2_f, 1, 1, 2, 2, 1, 1, "tconv2_t");	
-	auto tconv2_r = df.leaky_relu(tconv2_t, dec_negative_slope);
-
-	auto tconv3_f = df.variable(df.random_normal({ depth, depth, 3, 3 }, mean, stddev), dec_solver, "tconv3_f");
-	auto tconv3_t = df.transposed_conv2d(tconv2_r, tconv3_f, 1, 1, 2, 2, 1, 1, "tconv3_t");
-	auto tconv3_r = df.leaky_relu(tconv3_t, dec_negative_slope);
-
-	auto tconv4_f = df.variable(df.random_normal({ depth, FLAGS_channels, 3, 3 }, mean, stddev), dec_solver, "tconv4_f");
-	auto tconv4_t = df.transposed_conv2d(tconv3_r, tconv4_f, 1, 1, 2, 2, 1, 1, "tconv4_t");
-
-	auto output = df.tanh(tconv4_t, "dec_output");	
-
-	return df.session();
 }
 
 void main(int argc, char** argv) {
@@ -114,63 +83,71 @@ void main(int argc, char** argv) {
 	auto execution_context = std::make_shared<ExecutionContext>();
 	execution_context->debug_level = FLAGS_debug;	
 
-	std::shared_ptr<Session> encoder_session;
-	encoder_session = create_encoder_session();
-	encoder_session->initialize();
-	encoder_session->set_execution_context(execution_context);
+	DeepFlow df;
+	if (FLAGS_load.empty())
+		create_graph(&df);
+	else
+		load_session(&df, "face_ac", FLAGS_load);
 
-	std::shared_ptr<Session> decoder_session;
-	decoder_session = create_decoder_session();
-	decoder_session->initialize(execution_context);	
+	std::shared_ptr<Session> session = df.session();
+	session->initialize(execution_context);
 
-	std::shared_ptr<Session> face_session = create_face_reader_session();
-	face_session->initialize(execution_context);	
+	auto face_data = session->get_node("face_data");
+	auto enc_input = session->get_placeholder("enc_input");
+	auto dec_output = session->get_node("dec_output");
+	auto disp_input = session->get_placeholder("disp_input");
+	auto disp = session->get_node("disp");
+	auto loss_input = session->get_placeholder("loss_input");
+	auto loss_target = session->get_placeholder("loss_target");
+	auto loss = session->get_node<Loss>("loss");
 
-	std::shared_ptr<Session> loss_session = create_loss_session();
-	loss_session->initialize(execution_context);	
-	
-	auto display_session = create_display_session();
-	display_session->initialize(execution_context);	
-	
-	auto face_data = face_session->get_node("face_data");
-	auto enc_input = encoder_session->get_node("enc_input");
-	auto enc_output = encoder_session->get_node("enc_output");
-	auto dec_input = decoder_session->get_node("dec_input");
-	auto dec_output = decoder_session->get_node("dec_output");
-	auto disp_input = display_session->get_node("input");
+	loss->set_alpha(0.0001f);
+	loss->set_beta(1 - 0.0001f);
 
-	auto loss_t1 = loss_session->get_node("loss_t1");
-	auto loss_t2 = loss_session->get_node("loss_t2");
+	if (FLAGS_train) {
+		int iter;
+		for (iter = 1; iter <= FLAGS_iter && execution_context->quit != true; ++iter) {
 
-	int epoch;
-	for (epoch = 1; epoch <= FLAGS_epoch && execution_context->quit != true; ++epoch) {
-		
-		execution_context->current_epoch = epoch;
-	
-		face_session->forward();
-		enc_input->write_values(face_data->output(0)->value());
-		encoder_session->forward();
-		dec_input->write_values(enc_output->output(0)->value());
-		decoder_session->forward();
-		if (epoch % 10 == 0) {
-			disp_input->write_values(dec_output->output(0)->value());
-			display_session->forward();
+			execution_context->execution_mode = ExecutionContext::TRAIN;
+			execution_context->current_epoch = iter;
+			execution_context->current_iteration = iter;
+
+			session->forward({ face_data });
+			session->forward({ dec_output }, { { enc_input, face_data->output(0)->value() } });
+			session->forward({ loss }, {
+				{ loss_input , dec_output->output(0)->value() },
+				{ loss_target , face_data->output(0)->value() }
+			});
+			session->backward({ loss });
+			session->backward({ dec_output }, { { dec_output , loss_input->output(0)->diff() } });
+			session->apply_solvers();
+
+			execution_context->execution_mode = ExecutionContext::TEST;
+			session->forward({ face_data });
+			session->forward({ dec_output }, { { enc_input, face_data->output(0)->value() } });
+			session->forward({ disp }, { { disp_input , dec_output->output(0)->value() } });
+
+			if (FLAGS_save != 0 && iter % FLAGS_save == 0) {
+				session->save("face_ac" + std::to_string(iter) + ".bin");
+			}
+
 		}
-		loss_session->reset_gradients();
-		loss_t1->write_values(dec_output->output(0)->value());
-		loss_t2->write_values(face_data->output(0)->value());
-		loss_session->forward();
-		loss_session->backward();
-		decoder_session->reset_gradients();
-		dec_output->write_diffs(loss_t1->output(0)->diff());
-		decoder_session->backward();
-		decoder_session->apply_solvers();
-		encoder_session->reset_gradients();
-		enc_output->write_diffs(dec_input->output(0)->diff());
-		encoder_session->backward();
-		encoder_session->apply_solvers();
 
+		if (FLAGS_save != 0) {
+			session->save("face_ac" + std::to_string(iter) + ".bin");
+		}
+	}
+
+	if (FLAGS_test) {
+		execution_context->execution_mode = ExecutionContext::TEST;
+		int iter;
+		for (iter = 1; iter <= FLAGS_iter && execution_context->quit != true; ++iter) {
+			session->forward({ face_data });
+			session->forward({ dec_output }, { { enc_input, face_data->output(0)->value() } });
+			session->forward({ disp }, { { disp_input , dec_output->output(0)->value() } });
+		}
 	}
 	
+	cudaDeviceReset();
 }
 

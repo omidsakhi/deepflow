@@ -5,7 +5,7 @@
 class DeepFlowDllExport Convolution2D : public Node {
 public:
 	Convolution2D(deepflow::NodeParam *param);
-	int minNumInputs();
+	int minNumInputs() { return 2; }
 	int minNumOutputs() { return 1; }	
 	std::string op_name() const override { return "conv2d"; }
 	void init();	
@@ -14,8 +14,8 @@ public:
 	std::string to_cpp() const;
 protected:
 	cudnnHandle_t _cudnnHandle;
-	void *_x, *_y, *_w, *_dx, *_dy, *_dw, *_b, *_db, *_z, *_dz;	
-	cudnnTensorDescriptor_t _xDesc, _yDesc, _dxDesc, _dyDesc, _zDesc, _dzDesc, _bDesc, _dbDesc;
+	void *_x, *_y, *_w, *_dx, *_dy, *_dw;	
+	cudnnTensorDescriptor_t _xDesc, _yDesc, _dxDesc, _dyDesc;
 	cudnnFilterDescriptor_t _wDesc;	
 	cudnnConvolutionDescriptor_t _convDesc;
 	cudnnConvolutionFwdAlgo_t _fwdAlgo;
@@ -26,6 +26,5 @@ protected:
 	size_t _bwdDataWorkspaceSize;
 	size_t _bwdFilterWorkspaceSize;
 	size_t _maxWorkspaceSize;
-	float *d_workspace;
-	int _num_inputs;
+	float *d_workspace;	
 };

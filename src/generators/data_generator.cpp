@@ -24,7 +24,6 @@ std::string DataGenerator::to_cpp() const
 {	
 	std::string cpp = "auto " + _name + " = df.data_generator(" + _initializer->to_cpp() + ", ";
 	cpp += (_no_solver ? "NULL" : _param->variable_param().solver_name()) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

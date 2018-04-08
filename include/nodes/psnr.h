@@ -14,8 +14,7 @@ public:
 	void backward();
 	std::string to_cpp() const;
 	float psnr() const { return _psnr; };
-private:
-	deepflow::ActionTime _print_time;
+private:	
 	float *d_square_error;
 	float *d_sum_square_error;
 	cudnnHandle_t _cudnnHandle;	

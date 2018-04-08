@@ -8,8 +8,8 @@ Display::Display(deepflow::NodeParam *param) : Node(param) {
 void Display::init() {
 	auto display_param = _param->display_param();
 	_delay_msec = display_param.delay_msec();
-	_display_type = display_param.display_type();
-	_display_time = display_param.display_time();
+	_display_type = display_param.display_type();	
+	_draw_iteration = display_param.draw_iteration();
 	_epoch_frequency = display_param.epoch_frequency();
 	auto dims = _inputs[0]->value()->dims();	
 	input_size = _inputs[0]->value()->size();
@@ -25,16 +25,14 @@ void Display::init() {
 	num_pic_pixels = pic_width * pic_height * (num_channels == 3 ? 3 : 1);	
 
 	_outputs[0]->initValue({ 1 , (num_channels == 3 ? 3 : 1), pic_height, pic_width }, Tensor::Int8);	
-	
-	//LOG(INFO) << "Display " << _name << " - " << _inputs[0]->value()->shape() << " -> " << _outputs[0]->value()->shape() << "(" << (num_channels == 3? "COLOR": "GRAY") <<  ")";
 
 	disp = cv::Mat(pic_height, pic_width, (num_channels == 3 ? CV_8UC3 : CV_8U));	
 }
 
 void Display::forward() {
+	if (_enabled == false)
+		return;
 	if (_context) {
-		if (_display_time == deepflow::ActionTime::END_OF_EPOCH && _context->last_batch == false)
-			return;
 		if (_context->current_epoch % _epoch_frequency != 0)
 			return;
 	}
@@ -53,6 +51,9 @@ void Display::forward() {
 	}
 	DF_KERNEL_CHECK();
 	DF_NODE_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), _outputs[0]->value()->data(), num_pic_pixels, cudaMemcpyDeviceToHost));
+	if (_context && _draw_iteration) {
+		cv::putText(disp, std::string("Iteration: ") + std::to_string(_context->current_iteration), cv::Point(5, 15), cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(255, 255, 255), 1, 8, false);
+	}
 	cv::imshow(name(), disp);
 	int key = cv::waitKey(_delay_msec);
 	if (key == 27) {
@@ -84,7 +85,11 @@ std::string Display::to_cpp() const
 	else {
 		cpp += "deepflow::DisplayParam_DisplayType_VALUES, ";
 	}	
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
+}
+
+void Display::setEnabled(bool state)
+{
+	_enabled = state;
 }

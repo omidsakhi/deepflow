@@ -43,40 +43,46 @@ void BatchNormalization::init()
 	
 	LOG_IF(FATAL, _inputs[1]->value()->dims() != scaleBiasExpectedDims || _inputs[2]->value()->dims() != scaleBiasExpectedDims) << _name << ": Expected dimention of scale and bias vector are " <<
 		scaleBiasExpectedDims[0] << "x" << scaleBiasExpectedDims[1] << "x" << scaleBiasExpectedDims[2] << "x" << scaleBiasExpectedDims[3];
-	
+
+	DF_NODE_CUDA_CHECK(cudaMalloc(&_runningMean, _bnScaleBiasMeanVarSizeInBytes));
+	DF_NODE_CUDA_CHECK(cudaMalloc(&_runningVariance, _bnScaleBiasMeanVarSizeInBytes));
+	if (param.has_mean()) {
+		LOG_IF(FATAL, param.mean().data_size() != _bnScaleBiasMeanVarSize);
+		DF_NODE_CUDA_CHECK(cudaMemcpy(_runningMean, param.mean().data().data(), _bnScaleBiasMeanVarSizeInBytes, cudaMemcpyHostToDevice));
+	}
+	else {		
+		fill(_bnScaleBiasMeanVarSize, 0, _runningMean);
+	}
+
+	if (param.has_var()) {
+		LOG_IF(FATAL, param.var().data_size() != _bnScaleBiasMeanVarSize);
+		DF_NODE_CUDA_CHECK(cudaMemcpy(_runningVariance, param.var().data().data(), _bnScaleBiasMeanVarSizeInBytes, cudaMemcpyHostToDevice));
+	}
+	else {
+		fill(_bnScaleBiasMeanVarSize, 0, _runningVariance);
+	}
+
 	if (cache) {
-		DF_NODE_CUDA_CHECK(cudaMalloc(&_resultSaveMean, _bnScaleBiasMeanVarSizeInBytes));
-		if (param.has_mean()) {
-			LOG_IF(FATAL, param.mean().data_size() != _bnScaleBiasMeanVarSize);
-			DF_NODE_CUDA_CHECK(cudaMemcpy(_resultSaveMean, param.mean().data().data(), _bnScaleBiasMeanVarSizeInBytes, cudaMemcpyHostToDevice));			
-		}
-		else {
-			fill(_bnScaleBiasMeanVarSize, 0, _resultSaveMean);
-		}		
-		DF_NODE_CUDA_CHECK(cudaMalloc(&_resultSaveInvVariance, _bnScaleBiasMeanVarSizeInBytes));
-		if (param.has_var()) {
-			LOG_IF(FATAL, param.var().data_size() != _bnScaleBiasMeanVarSize);
-			DF_NODE_CUDA_CHECK(cudaMemcpy(_resultSaveInvVariance, param.var().data().data(), _bnScaleBiasMeanVarSizeInBytes, cudaMemcpyHostToDevice));
-		}
-		else {
-			fill(_bnScaleBiasMeanVarSize, 0, _resultSaveInvVariance);
-		}
+		DF_NODE_CUDA_CHECK(cudaMalloc(&_cachedMean, _bnScaleBiasMeanVarSizeInBytes));
+		DF_NODE_CUDA_CHECK(cudaMalloc(&_cachedVariance, _bnScaleBiasMeanVarSizeInBytes));
 	}	
 
-	_eps = 0.001f;
+	_exp_avg_factor = param.exp_avg_factor();
+	LOG_IF(FATAL, _exp_avg_factor == 0) << "Average factor cannot be zero.";
 	_bnScale = (float*)_inputs[1]->value()->data();
 	_bnBias = (float*)_inputs[2]->value()->data();
 
-	_outputs[0]->initDiff();
+	_outputs[0]->initDiff();	
 	_dy = (float*)_outputs[0]->diff()->mutableData();
-	_dx = (float*)_inputs[0]->diff()->mutableData();
+	if (_inputs[0]->diff())
+		_dx = (float*)_inputs[0]->diff()->mutableData();
 	_resultBnScaleDiff = (float*)_inputs[1]->diff()->mutableData();
 	_resultBnBiasDiff = (float*)_inputs[2]->diff()->mutableData();
 }
 
 void BatchNormalization::forward()
 {
-	if ((_context && (_context->phase_behaviour == deepflow::PhaseParam_PhaseBehaviour_TRAIN || _context->phase_behaviour == deepflow::PhaseParam_PhaseBehaviour_TRAIN_AND_INFERENCE)) || _context == nullptr) {		
+	if (_context->execution_mode == ExecutionContext::TRAIN) {
 		DF_NODE_CUDNN_CHECK(
 			cudnnBatchNormalizationForwardTraining(
 				_cudnnHandle,
@@ -90,16 +96,15 @@ void BatchNormalization::forward()
 				_bnScaleBiasMeanVarDesc,
 				_bnScale,
 				_bnBias,
-				0.0001f,
-				nullptr,
-				nullptr,
+				_exp_avg_factor,
+				_runningMean,
+				_runningVariance,
 				_eps,
-				_resultSaveMean,
-				_resultSaveInvVariance
-			));		
+				_cachedMean,
+				_cachedVariance
+			));
 	}
 	else {
-		LOG(FATAL);
 		DF_NODE_CUDNN_CHECK(
 			cudnnBatchNormalizationForwardInference(
 				_cudnnHandle,
@@ -113,16 +118,16 @@ void BatchNormalization::forward()
 				_bnScaleBiasMeanVarDesc,
 				_bnScale,
 				_bnBias,
-				_resultSaveMean,
-				_resultSaveInvVariance,
+				_runningMean,
+				_runningVariance,
 				_eps
 			));
-	}
+	}	
 }
 
 void BatchNormalization::backward()
 {		
-	if (_inputs[0]->connectedNode()) {
+	if (_inputs[0]->diff()) {
 		DF_NODE_CUDNN_CHECK(
 			cudnnBatchNormalizationBackward(
 				_cudnnHandle,
@@ -142,8 +147,8 @@ void BatchNormalization::backward()
 				_resultBnScaleDiff,
 				_resultBnBiasDiff,
 				_eps,
-				_resultSaveMean,
-				_resultSaveInvVariance));
+				_cachedMean,
+				_cachedVariance));
 	}	
 }
 
@@ -156,13 +161,13 @@ void BatchNormalization::prep_for_saving()
 	auto mutable_mean_data = mutable_mean->mutable_data();
 	mutable_mean_data->Resize(_bnScaleBiasMeanVarSize, 0);
 	LOG_IF(FATAL, mutable_mean_data->size() != _bnScaleBiasMeanVarSize);
-	DF_NODE_CUDA_CHECK(cudaMemcpy(mutable_mean_data->mutable_data(), _resultSaveMean, _bnScaleBiasMeanVarSizeInBytes, cudaMemcpyDeviceToHost));
+	DF_NODE_CUDA_CHECK(cudaMemcpy(mutable_mean_data->mutable_data(), _runningMean, _bnScaleBiasMeanVarSizeInBytes, cudaMemcpyDeviceToHost));
 
 	auto mutable_var = bn_param->mutable_var();
 	auto mutable_var_data = mutable_var->mutable_data();
 	mutable_var_data->Resize(_bnScaleBiasMeanVarSize, 0);
 	LOG_IF(FATAL, mutable_var_data->size() != _bnScaleBiasMeanVarSize);
-	DF_NODE_CUDA_CHECK(cudaMemcpy(mutable_var_data->mutable_data(), _resultSaveInvVariance, _bnScaleBiasMeanVarSizeInBytes, cudaMemcpyDeviceToHost));
+	DF_NODE_CUDA_CHECK(cudaMemcpy(mutable_var_data->mutable_data(), _runningVariance, _bnScaleBiasMeanVarSizeInBytes, cudaMemcpyDeviceToHost));
 	
 }
 
@@ -177,7 +182,6 @@ std::string BatchNormalization::to_cpp() const
 	else 
 		cpp += "DeepFlow::PER_ACTIVATION ,";
 	cpp += param.cache_meanvar() ? " true, " : " false, ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;	
 }

@@ -65,7 +65,7 @@ void Restructure::forward() {
 }
 
 void Restructure::backward() {
-	if (_inputs[0]->connectedNode()) {
+	if (_inputs[0]->diff()) {
 		auto size = _outputs[0]->diff()->size();
 		auto dim = _outputs[0]->diff()->dims();
 		RestructureKernel << < numOfBlocks(size), maxThreadsPerBlock >> > 
@@ -79,7 +79,6 @@ std::string Restructure::to_cpp() const
 	std::string cpp = "auto " + _name + " = df.resturecture(" + _input_name_for_cpp(0) + ", ";
 	cpp += std::to_string(_first_dim) + ", ";
 	cpp += std::to_string(_second_dim) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

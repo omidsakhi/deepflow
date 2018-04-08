@@ -144,20 +144,22 @@ void Patching::forward()
 
 void Patching::backward()
 {
-	auto size = _outputs[0]->diff()->size();
-	auto dims = _outputs[0]->dims();
-	if (_mode == deepflow::PatchingParam_Mode_DOWNSAMPLES || _mode == deepflow::PatchingParam_Mode_DOWNCHANNELS)
-		PatchingUpKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size,
-		_mode == deepflow::PatchingParam_Mode_DOWNSAMPLES,
-		(float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], _num_vertical_patches, _num_horizontal_patches, 0);
-	else {
-		int patch_h = dims[2] / _num_vertical_patches;
-		int patch_w = dims[3] / _num_horizontal_patches;
-		PatchingDownKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size,
-		_mode == deepflow::PatchingParam_Mode_UPSAMPLES,
-		(float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], patch_h, patch_w, 0);
+	if (_inputs[0]->diff()) {
+		auto size = _outputs[0]->diff()->size();
+		auto dims = _outputs[0]->dims();
+		if (_mode == deepflow::PatchingParam_Mode_DOWNSAMPLES || _mode == deepflow::PatchingParam_Mode_DOWNCHANNELS)
+			PatchingUpKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size,
+				_mode == deepflow::PatchingParam_Mode_DOWNSAMPLES,
+				(float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], _num_vertical_patches, _num_horizontal_patches, 0);
+		else {
+			int patch_h = dims[2] / _num_vertical_patches;
+			int patch_w = dims[3] / _num_horizontal_patches;
+			PatchingDownKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size,
+				_mode == deepflow::PatchingParam_Mode_UPSAMPLES,
+				(float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], patch_h, patch_w, 0);
+		}
+		DF_KERNEL_CHECK();
 	}
-	DF_KERNEL_CHECK();
 }
 
 std::string Patching::to_cpp() const
@@ -177,7 +179,6 @@ std::string Patching::to_cpp() const
 	else if (_mode == deepflow::PatchingParam_Mode_UPCHANNELS) {
 		cpp += "DeepFlow::PATCHING_UPCHANNELS, ";
 	}
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

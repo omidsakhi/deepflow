@@ -47,11 +47,13 @@ void Switch::forward()
 
 void Switch::backward()
 {
-	if (m_on) {
-		cpy(_inputs[0]->diff()->size(), 1.0, _outputs[0]->diff()->data(), 0.0, _inputs[0]->diff()->mutableData());
-	}
-	else {
-		fill(_outputs[0]->diff()->size(), 0.0, _inputs[0]->diff()->mutableData());
+	if (_inputs[0]->diff()) {
+		if (m_on) {
+			cpy(_inputs[0]->diff()->size(), 1.0, _outputs[0]->diff()->data(), 0.0, _inputs[0]->diff()->mutableData());
+		}
+		else {
+			fill(_outputs[0]->diff()->size(), 0.0, _inputs[0]->diff()->mutableData());
+		}
 	}
 }
 

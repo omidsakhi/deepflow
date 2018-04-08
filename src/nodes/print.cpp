@@ -3,8 +3,7 @@
 Print::Print(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_print_param() == false) << "param.has_print_param() == false";
 	auto printParam = _param->print_param();
-	_num_inputs = printParam.num_inputs();
-	_print_time = printParam.print_time();
+	_num_inputs = printParam.num_inputs();	
 	_print_type = printParam.print_type();
 }
 
@@ -18,7 +17,7 @@ void Print::init() {
 }
 
 void Print::forward() {
-	if (_print_time == deepflow::ActionTime::END_OF_EPOCH && _context->last_batch == false)
+	if (_enabled == false)
 		return;
 	std::string message = _raw_message;
 	size_t start_pos = message.find("%{}");
@@ -77,19 +76,17 @@ std::string Print::to_cpp() const
 			escaped_raw_message[i] = 'n';
 		}		
 	cpp += "\"" + escaped_raw_message + "\", ";
-	if (_print_time == deepflow::ActionTime::END_OF_EPOCH) {
-		cpp += "Print::END_OF_EPOCH, ";
-	}
-	else {
-		cpp += "Print::EVERY_PASS, ";
-	}
 	if (_print_type == deepflow::ActionType::DIFFS) {
 		cpp += "Print::DIFFS, ";
 	}
 	else {
 		cpp += "Print::VALUES, ";
 	}
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
+}
+
+void Print::setEnabled(bool state)
+{
+	_enabled = state;
 }

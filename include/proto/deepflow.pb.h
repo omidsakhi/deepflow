@@ -179,12 +179,6 @@ extern PatchSamplingParamDefaultTypeInternal _PatchSamplingParam_default_instanc
 class PatchingParam;
 class PatchingParamDefaultTypeInternal;
 extern PatchingParamDefaultTypeInternal _PatchingParam_default_instance_;
-class PhaseParam;
-class PhaseParamDefaultTypeInternal;
-extern PhaseParamDefaultTypeInternal _PhaseParam_default_instance_;
-class PhaseplexerParam;
-class PhaseplexerParamDefaultTypeInternal;
-extern PhaseplexerParamDefaultTypeInternal _PhaseplexerParam_default_instance_;
 class PlaceHolderParam;
 class PlaceHolderParamDefaultTypeInternal;
 extern PlaceHolderParamDefaultTypeInternal _PlaceHolderParam_default_instance_;
@@ -556,51 +550,6 @@ inline bool LiftingParam_Mode_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<LiftingParam_Mode>(
     LiftingParam_Mode_descriptor(), name, value);
 }
-enum PhaseParam_PhaseBehaviour {
-  PhaseParam_PhaseBehaviour_TRAIN_AND_INFERENCE = 0,
-  PhaseParam_PhaseBehaviour_TRAIN = 1,
-  PhaseParam_PhaseBehaviour_VALIDATION = 2,
-  PhaseParam_PhaseBehaviour_INFERENCE = 3,
-  PhaseParam_PhaseBehaviour_PhaseParam_PhaseBehaviour_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  PhaseParam_PhaseBehaviour_PhaseParam_PhaseBehaviour_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
-};
-bool PhaseParam_PhaseBehaviour_IsValid(int value);
-const PhaseParam_PhaseBehaviour PhaseParam_PhaseBehaviour_PhaseBehaviour_MIN = PhaseParam_PhaseBehaviour_TRAIN_AND_INFERENCE;
-const PhaseParam_PhaseBehaviour PhaseParam_PhaseBehaviour_PhaseBehaviour_MAX = PhaseParam_PhaseBehaviour_INFERENCE;
-const int PhaseParam_PhaseBehaviour_PhaseBehaviour_ARRAYSIZE = PhaseParam_PhaseBehaviour_PhaseBehaviour_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* PhaseParam_PhaseBehaviour_descriptor();
-inline const ::std::string& PhaseParam_PhaseBehaviour_Name(PhaseParam_PhaseBehaviour value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    PhaseParam_PhaseBehaviour_descriptor(), value);
-}
-inline bool PhaseParam_PhaseBehaviour_Parse(
-    const ::std::string& name, PhaseParam_PhaseBehaviour* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<PhaseParam_PhaseBehaviour>(
-    PhaseParam_PhaseBehaviour_descriptor(), name, value);
-}
-enum ActionTime {
-  EVERY_PASS = 0,
-  END_OF_EPOCH = 1,
-  NEVER = 2,
-  ActionTime_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  ActionTime_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
-};
-bool ActionTime_IsValid(int value);
-const ActionTime ActionTime_MIN = EVERY_PASS;
-const ActionTime ActionTime_MAX = NEVER;
-const int ActionTime_ARRAYSIZE = ActionTime_MAX + 1;
-
-const ::google::protobuf::EnumDescriptor* ActionTime_descriptor();
-inline const ::std::string& ActionTime_Name(ActionTime value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    ActionTime_descriptor(), value);
-}
-inline bool ActionTime_Parse(
-    const ::std::string& name, ActionTime* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<ActionTime>(
-    ActionTime_descriptor(), name, value);
-}
 enum ActionType {
   VALUES = 0,
   DIFFS = 1,
@@ -935,102 +884,6 @@ class MultiplexerParam : public ::google::protobuf::Message /* @@protoc_insertio
 };
 // -------------------------------------------------------------------
 
-class PhaseplexerParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.PhaseplexerParam) */ {
- public:
-  PhaseplexerParam();
-  virtual ~PhaseplexerParam();
-
-  PhaseplexerParam(const PhaseplexerParam& from);
-
-  inline PhaseplexerParam& operator=(const PhaseplexerParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const PhaseplexerParam& default_instance();
-
-  static inline const PhaseplexerParam* internal_default_instance() {
-    return reinterpret_cast<const PhaseplexerParam*>(
-               &_PhaseplexerParam_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    3;
-
-  void Swap(PhaseplexerParam* other);
-
-  // implements Message ----------------------------------------------
-
-  inline PhaseplexerParam* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  PhaseplexerParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const PhaseplexerParam& from);
-  void MergeFrom(const PhaseplexerParam& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(PhaseplexerParam* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated string phase = 1;
-  int phase_size() const;
-  void clear_phase();
-  static const int kPhaseFieldNumber = 1;
-  const ::std::string& phase(int index) const;
-  ::std::string* mutable_phase(int index);
-  void set_phase(int index, const ::std::string& value);
-  #if LANG_CXX11
-  void set_phase(int index, ::std::string&& value);
-  #endif
-  void set_phase(int index, const char* value);
-  void set_phase(int index, const char* value, size_t size);
-  ::std::string* add_phase();
-  void add_phase(const ::std::string& value);
-  #if LANG_CXX11
-  void add_phase(::std::string&& value);
-  #endif
-  void add_phase(const char* value);
-  void add_phase(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& phase() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_phase();
-
-  // @@protoc_insertion_point(class_scope:deepflow.PhaseplexerParam)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
-  mutable int _cached_size_;
-  friend struct protobuf_deepflow_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
 class RandomSelectorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.RandomSelectorParam) */ {
  public:
   RandomSelectorParam();
@@ -1051,7 +904,7 @@ class RandomSelectorParam : public ::google::protobuf::Message /* @@protoc_inser
                &_RandomSelectorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    4;
+    3;
 
   void Swap(RandomSelectorParam* other);
 
@@ -1131,7 +984,7 @@ class AccumulatorParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_AccumulatorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    5;
+    4;
 
   void Swap(AccumulatorParam* other);
 
@@ -1175,17 +1028,10 @@ class AccumulatorParam : public ::google::protobuf::Message /* @@protoc_insertio
 
   // accessors -------------------------------------------------------
 
-  // .deepflow.ActionTime reset_time = 1;
-  void clear_reset_time();
-  static const int kResetTimeFieldNumber = 1;
-  ::deepflow::ActionTime reset_time() const;
-  void set_reset_time(::deepflow::ActionTime value);
-
   // @@protoc_insertion_point(class_scope:deepflow.AccumulatorParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  int reset_time_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -1211,7 +1057,7 @@ class PsnrParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_PsnrParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    6;
+    5;
 
   void Swap(PsnrParam* other);
 
@@ -1255,17 +1101,10 @@ class PsnrParam : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
-  // .deepflow.ActionTime print_time = 1;
-  void clear_print_time();
-  static const int kPrintTimeFieldNumber = 1;
-  ::deepflow::ActionTime print_time() const;
-  void set_print_time(::deepflow::ActionTime value);
-
   // @@protoc_insertion_point(class_scope:deepflow.PsnrParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  int print_time_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -1291,7 +1130,7 @@ class LoggerParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_LoggerParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    7;
+    6;
 
   void Swap(LoggerParam* other);
 
@@ -1369,12 +1208,6 @@ class LoggerParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::int32 num_inputs() const;
   void set_num_inputs(::google::protobuf::int32 value);
 
-  // .deepflow.ActionTime logging_time = 4;
-  void clear_logging_time();
-  static const int kLoggingTimeFieldNumber = 4;
-  ::deepflow::ActionTime logging_time() const;
-  void set_logging_time(::deepflow::ActionTime value);
-
   // .deepflow.ActionType logging_type = 5;
   void clear_logging_type();
   static const int kLoggingTypeFieldNumber = 5;
@@ -1388,7 +1221,6 @@ class LoggerParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::internal::ArenaStringPtr file_path_;
   ::google::protobuf::internal::ArenaStringPtr message_;
   ::google::protobuf::int32 num_inputs_;
-  int logging_time_;
   int logging_type_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
@@ -1415,7 +1247,7 @@ class PrintParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_PrintParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    8;
+    7;
 
   void Swap(PrintParam* other);
 
@@ -1479,12 +1311,6 @@ class PrintParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::int32 num_inputs() const;
   void set_num_inputs(::google::protobuf::int32 value);
 
-  // .deepflow.ActionTime print_time = 3;
-  void clear_print_time();
-  static const int kPrintTimeFieldNumber = 3;
-  ::deepflow::ActionTime print_time() const;
-  void set_print_time(::deepflow::ActionTime value);
-
   // .deepflow.ActionType print_type = 4;
   void clear_print_type();
   static const int kPrintTypeFieldNumber = 4;
@@ -1497,7 +1323,6 @@ class PrintParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr message_;
   ::google::protobuf::int32 num_inputs_;
-  int print_time_;
   int print_type_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
@@ -1524,7 +1349,7 @@ class SIOOutputParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_SIOOutputParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    9;
+    8;
 
   void Swap(SIOOutputParam* other);
 
@@ -1588,12 +1413,6 @@ class SIOOutputParam : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 num_inputs() const;
   void set_num_inputs(::google::protobuf::int32 value);
 
-  // .deepflow.ActionTime print_time = 2;
-  void clear_print_time();
-  static const int kPrintTimeFieldNumber = 2;
-  ::deepflow::ActionTime print_time() const;
-  void set_print_time(::deepflow::ActionTime value);
-
   // int32 port = 4;
   void clear_port();
   static const int kPortFieldNumber = 4;
@@ -1606,7 +1425,6 @@ class SIOOutputParam : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr host_;
   ::google::protobuf::int32 num_inputs_;
-  int print_time_;
   ::google::protobuf::int32 port_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
@@ -1633,7 +1451,7 @@ class DotParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_DotParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    10;
+    9;
 
   void Swap(DotParam* other);
 
@@ -1706,7 +1524,7 @@ class AddParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_AddParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    11;
+    10;
 
   void Swap(AddParam* other);
 
@@ -1793,7 +1611,7 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_DisplayParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    12;
+    11;
 
   void Swap(DisplayParam* other);
 
@@ -1843,12 +1661,6 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::int32 delay_msec() const;
   void set_delay_msec(::google::protobuf::int32 value);
 
-  // .deepflow.ActionTime display_time = 2;
-  void clear_display_time();
-  static const int kDisplayTimeFieldNumber = 2;
-  ::deepflow::ActionTime display_time() const;
-  void set_display_time(::deepflow::ActionTime value);
-
   // .deepflow.ActionType display_type = 3;
   void clear_display_type();
   static const int kDisplayTypeFieldNumber = 3;
@@ -1861,14 +1673,20 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::int32 epoch_frequency() const;
   void set_epoch_frequency(::google::protobuf::int32 value);
 
+  // bool draw_iteration = 5;
+  void clear_draw_iteration();
+  static const int kDrawIterationFieldNumber = 5;
+  bool draw_iteration() const;
+  void set_draw_iteration(bool value);
+
   // @@protoc_insertion_point(class_scope:deepflow.DisplayParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int32 delay_msec_;
-  int display_time_;
   int display_type_;
   ::google::protobuf::int32 epoch_frequency_;
+  bool draw_iteration_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -1894,7 +1712,7 @@ class ImageWriterParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_ImageWriterParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    13;
+    12;
 
   void Swap(ImageWriterParam* other);
 
@@ -1952,11 +1770,18 @@ class ImageWriterParam : public ::google::protobuf::Message /* @@protoc_insertio
   ::std::string* release_filename();
   void set_allocated_filename(::std::string* filename);
 
+  // bool draw_iteration = 2;
+  void clear_draw_iteration();
+  static const int kDrawIterationFieldNumber = 2;
+  bool draw_iteration() const;
+  void set_draw_iteration(bool value);
+
   // @@protoc_insertion_point(class_scope:deepflow.ImageWriterParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr filename_;
+  bool draw_iteration_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -1982,7 +1807,7 @@ class LogParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_LogParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    14;
+    13;
 
   void Swap(LogParam* other);
 
@@ -2062,7 +1887,7 @@ class SwitchParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SwitchParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    15;
+    14;
 
   void Swap(SwitchParam* other);
 
@@ -2135,7 +1960,7 @@ class LossParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_LossParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    16;
+    15;
 
   void Swap(LossParam* other);
 
@@ -2267,7 +2092,7 @@ class SplitParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_SplitParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    17;
+    16;
 
   void Swap(SplitParam* other);
 
@@ -2347,7 +2172,7 @@ class EqualParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_EqualParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    18;
+    17;
 
   void Swap(EqualParam* other);
 
@@ -2420,7 +2245,7 @@ class BiasAddParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_BiasAddParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    19;
+    18;
 
   void Swap(BiasAddParam* other);
 
@@ -2493,7 +2318,7 @@ class ExpParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_ExpParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    20;
+    19;
 
   void Swap(ExpParam* other);
 
@@ -2566,7 +2391,7 @@ class PoolingParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_PoolingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    21;
+    20;
 
   void Swap(PoolingParam* other);
 
@@ -2681,7 +2506,7 @@ class TransposedConv2dParam : public ::google::protobuf::Message /* @@protoc_ins
                &_TransposedConv2dParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    22;
+    21;
 
   void Swap(TransposedConv2dParam* other);
 
@@ -2796,7 +2621,7 @@ class Conv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_Conv2dParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    23;
+    22;
 
   void Swap(Conv2dParam* other);
 
@@ -2876,12 +2701,6 @@ class Conv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::int32 dilation_w() const;
   void set_dilation_w(::google::protobuf::int32 value);
 
-  // float negative_slope = 7;
-  void clear_negative_slope();
-  static const int kNegativeSlopeFieldNumber = 7;
-  float negative_slope() const;
-  void set_negative_slope(float value);
-
   // @@protoc_insertion_point(class_scope:deepflow.Conv2dParam)
  private:
 
@@ -2892,7 +2711,6 @@ class Conv2dParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::int32 v_;
   ::google::protobuf::int32 dilation_h_;
   ::google::protobuf::int32 dilation_w_;
-  float negative_slope_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2918,7 +2736,7 @@ class DropoutParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_DropoutParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    24;
+    23;
 
   void Swap(DropoutParam* other);
 
@@ -3005,7 +2823,7 @@ class MatMulParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_MatMulParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    25;
+    24;
 
   void Swap(MatMulParam* other);
 
@@ -3078,7 +2896,7 @@ class LeakyReluParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_LeakyReluParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    26;
+    25;
 
   void Swap(LeakyReluParam* other);
 
@@ -3165,7 +2983,7 @@ class ReduceAllParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_ReduceAllParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    27;
+    26;
 
   void Swap(ReduceAllParam* other);
 
@@ -3271,7 +3089,7 @@ class ReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_ReduceParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    28;
+    27;
 
   void Swap(ReduceParam* other);
 
@@ -3429,7 +3247,7 @@ class SnapshotParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_SnapshotParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    29;
+    28;
 
   void Swap(SnapshotParam* other);
 
@@ -3538,7 +3356,7 @@ class PlaceHolderParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_PlaceHolderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    30;
+    29;
 
   void Swap(PlaceHolderParam* other);
 
@@ -3621,7 +3439,7 @@ class RestructureParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_RestructureParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    31;
+    30;
 
   void Swap(RestructureParam* other);
 
@@ -3708,7 +3526,7 @@ class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_VariableParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    32;
+    31;
 
   void Swap(VariableParam* other);
 
@@ -3816,7 +3634,7 @@ class DataGeneratorParam : public ::google::protobuf::Message /* @@protoc_insert
                &_DataGeneratorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    33;
+    32;
 
   void Swap(DataGeneratorParam* other);
 
@@ -3889,7 +3707,7 @@ class ActivationParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_ActivationParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    34;
+    33;
 
   void Swap(ActivationParam* other);
 
@@ -4008,7 +3826,7 @@ class ImageBatchReaderParam : public ::google::protobuf::Message /* @@protoc_ins
                &_ImageBatchReaderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    35;
+    34;
 
   void Swap(ImageBatchReaderParam* other);
 
@@ -4113,7 +3931,7 @@ class ImageReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_ImageReaderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    36;
+    35;
 
   void Swap(ImageReaderParam* other);
 
@@ -4234,7 +4052,7 @@ class MnistParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_MnistParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    37;
+    36;
 
   void Swap(MnistParam* other);
 
@@ -4395,7 +4213,7 @@ class CastFloatParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_CastFloatParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    38;
+    37;
 
   void Swap(CastFloatParam* other);
 
@@ -4468,7 +4286,7 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
                &_BatchNormalizationParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    39;
+    38;
 
   void Swap(BatchNormalizationParam* other);
 
@@ -4568,6 +4386,12 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
   bool cache_meanvar() const;
   void set_cache_meanvar(bool value);
 
+  // float exp_avg_factor = 5;
+  void clear_exp_avg_factor();
+  static const int kExpAvgFactorFieldNumber = 5;
+  float exp_avg_factor() const;
+  void set_exp_avg_factor(float value);
+
   // @@protoc_insertion_point(class_scope:deepflow.BatchNormalizationParam)
  private:
 
@@ -4576,6 +4400,7 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
   ::deepflow::TensorData* var_;
   int mode_;
   bool cache_meanvar_;
+  float exp_avg_factor_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4601,7 +4426,7 @@ class ReplayMemoryParam : public ::google::protobuf::Message /* @@protoc_inserti
                &_ReplayMemoryParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    40;
+    39;
 
   void Swap(ReplayMemoryParam* other);
 
@@ -4681,7 +4506,7 @@ class PReluParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_PReluParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    41;
+    40;
 
   void Swap(PReluParam* other);
 
@@ -4754,7 +4579,7 @@ class DPReluParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_DPReluParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    42;
+    41;
 
   void Swap(DPReluParam* other);
 
@@ -4827,7 +4652,7 @@ class LrnParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_LrnParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    43;
+    42;
 
   void Swap(LrnParam* other);
 
@@ -4928,7 +4753,7 @@ class ResizeParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_ResizeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    44;
+    43;
 
   void Swap(ResizeParam* other);
 
@@ -5015,7 +4840,7 @@ class UpsampleParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_UpsampleParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    45;
+    44;
 
   void Swap(UpsampleParam* other);
 
@@ -5088,7 +4913,7 @@ class SquareParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SquareParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    46;
+    45;
 
   void Swap(SquareParam* other);
 
@@ -5161,7 +4986,7 @@ class AbsParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_AbsParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    47;
+    46;
 
   void Swap(AbsParam* other);
 
@@ -5234,7 +5059,7 @@ class SquareErrorParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_SquareErrorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    48;
+    47;
 
   void Swap(SquareErrorParam* other);
 
@@ -5307,7 +5132,7 @@ class SoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_SoftmaxParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    49;
+    48;
 
   void Swap(SoftmaxParam* other);
 
@@ -5380,7 +5205,7 @@ class PatchingParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_PatchingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    50;
+    49;
 
   void Swap(PatchingParam* other);
 
@@ -5504,7 +5329,7 @@ class LiftingParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_LiftingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    51;
+    50;
 
   void Swap(LiftingParam* other);
 
@@ -5614,7 +5439,7 @@ class InitFillParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_InitFillParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    52;
+    51;
 
   void Swap(InitFillParam* other);
 
@@ -5694,7 +5519,7 @@ class InitIndexFillParam : public ::google::protobuf::Message /* @@protoc_insert
                &_InitIndexFillParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    53;
+    52;
 
   void Swap(InitIndexFillParam* other);
 
@@ -5774,7 +5599,7 @@ class InitGradientFillParam : public ::google::protobuf::Message /* @@protoc_ins
                &_InitGradientFillParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    54;
+    53;
 
   void Swap(InitGradientFillParam* other);
 
@@ -5847,7 +5672,7 @@ class InitRandomUniformParam : public ::google::protobuf::Message /* @@protoc_in
                &_InitRandomUniformParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    55;
+    54;
 
   void Swap(InitRandomUniformParam* other);
 
@@ -5934,7 +5759,7 @@ class InitRandomNormalParam : public ::google::protobuf::Message /* @@protoc_ins
                &_InitRandomNormalParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    56;
+    55;
 
   void Swap(InitRandomNormalParam* other);
 
@@ -6021,7 +5846,7 @@ class InitTruncatedNormalParam : public ::google::protobuf::Message /* @@protoc_
                &_InitTruncatedNormalParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    57;
+    56;
 
   void Swap(InitTruncatedNormalParam* other);
 
@@ -6108,7 +5933,7 @@ class InitStepParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_InitStepParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    58;
+    57;
 
   void Swap(InitStepParam* other);
 
@@ -6195,7 +6020,7 @@ class InitThreeStateParam : public ::google::protobuf::Message /* @@protoc_inser
                &_InitThreeStateParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    59;
+    58;
 
   void Swap(InitThreeStateParam* other);
 
@@ -6268,7 +6093,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_InitParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    60;
+    59;
 
   void Swap(InitParam* other);
 
@@ -6456,7 +6281,7 @@ class SGDSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_SGDSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    61;
+    60;
 
   void Swap(SGDSolverParam* other);
 
@@ -6536,7 +6361,7 @@ class GainSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_GainSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    62;
+    61;
 
   void Swap(GainSolverParam* other);
 
@@ -6644,7 +6469,7 @@ class AdaDeltaSolverParam : public ::google::protobuf::Message /* @@protoc_inser
                &_AdaDeltaSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    63;
+    62;
 
   void Swap(AdaDeltaSolverParam* other);
 
@@ -6731,7 +6556,7 @@ class AdamSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_AdamSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    64;
+    63;
 
   void Swap(AdamSolverParam* other);
 
@@ -6825,7 +6650,7 @@ class RMSPropSolverParam : public ::google::protobuf::Message /* @@protoc_insert
                &_RMSPropSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    65;
+    64;
 
   void Swap(RMSPropSolverParam* other);
 
@@ -6912,7 +6737,7 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    66;
+    65;
 
   void Swap(SolverParam* other);
 
@@ -7037,131 +6862,6 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 };
 // -------------------------------------------------------------------
 
-class PhaseParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.PhaseParam) */ {
- public:
-  PhaseParam();
-  virtual ~PhaseParam();
-
-  PhaseParam(const PhaseParam& from);
-
-  inline PhaseParam& operator=(const PhaseParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const PhaseParam& default_instance();
-
-  static inline const PhaseParam* internal_default_instance() {
-    return reinterpret_cast<const PhaseParam*>(
-               &_PhaseParam_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    67;
-
-  void Swap(PhaseParam* other);
-
-  // implements Message ----------------------------------------------
-
-  inline PhaseParam* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  PhaseParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const PhaseParam& from);
-  void MergeFrom(const PhaseParam& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(PhaseParam* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  typedef PhaseParam_PhaseBehaviour PhaseBehaviour;
-  static const PhaseBehaviour TRAIN_AND_INFERENCE =
-    PhaseParam_PhaseBehaviour_TRAIN_AND_INFERENCE;
-  static const PhaseBehaviour TRAIN =
-    PhaseParam_PhaseBehaviour_TRAIN;
-  static const PhaseBehaviour VALIDATION =
-    PhaseParam_PhaseBehaviour_VALIDATION;
-  static const PhaseBehaviour INFERENCE =
-    PhaseParam_PhaseBehaviour_INFERENCE;
-  static inline bool PhaseBehaviour_IsValid(int value) {
-    return PhaseParam_PhaseBehaviour_IsValid(value);
-  }
-  static const PhaseBehaviour PhaseBehaviour_MIN =
-    PhaseParam_PhaseBehaviour_PhaseBehaviour_MIN;
-  static const PhaseBehaviour PhaseBehaviour_MAX =
-    PhaseParam_PhaseBehaviour_PhaseBehaviour_MAX;
-  static const int PhaseBehaviour_ARRAYSIZE =
-    PhaseParam_PhaseBehaviour_PhaseBehaviour_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor*
-  PhaseBehaviour_descriptor() {
-    return PhaseParam_PhaseBehaviour_descriptor();
-  }
-  static inline const ::std::string& PhaseBehaviour_Name(PhaseBehaviour value) {
-    return PhaseParam_PhaseBehaviour_Name(value);
-  }
-  static inline bool PhaseBehaviour_Parse(const ::std::string& name,
-      PhaseBehaviour* value) {
-    return PhaseParam_PhaseBehaviour_Parse(name, value);
-  }
-
-  // accessors -------------------------------------------------------
-
-  // string phase = 1;
-  void clear_phase();
-  static const int kPhaseFieldNumber = 1;
-  const ::std::string& phase() const;
-  void set_phase(const ::std::string& value);
-  #if LANG_CXX11
-  void set_phase(::std::string&& value);
-  #endif
-  void set_phase(const char* value);
-  void set_phase(const char* value, size_t size);
-  ::std::string* mutable_phase();
-  ::std::string* release_phase();
-  void set_allocated_phase(::std::string* phase);
-
-  // .deepflow.PhaseParam.PhaseBehaviour behaviour = 2;
-  void clear_behaviour();
-  static const int kBehaviourFieldNumber = 2;
-  ::deepflow::PhaseParam_PhaseBehaviour behaviour() const;
-  void set_behaviour(::deepflow::PhaseParam_PhaseBehaviour value);
-
-  // @@protoc_insertion_point(class_scope:deepflow.PhaseParam)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr phase_;
-  int behaviour_;
-  mutable int _cached_size_;
-  friend struct protobuf_deepflow_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
 class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.BlockParam) */ {
  public:
   BlockParam();
@@ -7182,7 +6882,7 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_BlockParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    68;
+    66;
 
   void Swap(BlockParam* other);
 
@@ -7250,18 +6950,6 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   const ::google::protobuf::RepeatedPtrField< ::deepflow::SolverParam >&
       solver() const;
 
-  // repeated .deepflow.PhaseParam phase = 3;
-  int phase_size() const;
-  void clear_phase();
-  static const int kPhaseFieldNumber = 3;
-  const ::deepflow::PhaseParam& phase(int index) const;
-  ::deepflow::PhaseParam* mutable_phase(int index);
-  ::deepflow::PhaseParam* add_phase();
-  ::google::protobuf::RepeatedPtrField< ::deepflow::PhaseParam >*
-      mutable_phase();
-  const ::google::protobuf::RepeatedPtrField< ::deepflow::PhaseParam >&
-      phase() const;
-
   // repeated .deepflow.InitParam initializer = 4;
   int initializer_size() const;
   void clear_initializer();
@@ -7280,7 +6968,6 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::deepflow::NodeParam > node_;
   ::google::protobuf::RepeatedPtrField< ::deepflow::SolverParam > solver_;
-  ::google::protobuf::RepeatedPtrField< ::deepflow::PhaseParam > phase_;
   ::google::protobuf::RepeatedPtrField< ::deepflow::InitParam > initializer_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
@@ -7307,7 +6994,7 @@ class ConcateParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_ConcateParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    69;
+    67;
 
   void Swap(ConcateParam* other);
 
@@ -7380,7 +7067,7 @@ class ReshapeParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_ReshapeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    70;
+    68;
 
   void Swap(ReshapeParam* other);
 
@@ -7467,7 +7154,7 @@ class BatchStdDevParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_BatchStdDevParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    71;
+    69;
 
   void Swap(BatchStdDevParam* other);
 
@@ -7540,7 +7227,7 @@ class PassThroughParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_PassThroughParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    72;
+    70;
 
   void Swap(PassThroughParam* other);
 
@@ -7620,7 +7307,7 @@ class GaussianParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_GaussianParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    73;
+    71;
 
   void Swap(GaussianParam* other);
 
@@ -7693,7 +7380,7 @@ class GaussianKernelParam : public ::google::protobuf::Message /* @@protoc_inser
                &_GaussianKernelParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    74;
+    72;
 
   void Swap(GaussianKernelParam* other);
 
@@ -7787,7 +7474,7 @@ class PatchSamplingParam : public ::google::protobuf::Message /* @@protoc_insert
                &_PatchSamplingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    75;
+    73;
 
   void Swap(PatchSamplingParam* other);
 
@@ -7874,7 +7561,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NodeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    76;
+    74;
 
   void Swap(NodeParam* other);
 
@@ -7918,10 +7605,10 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
-  // repeated string input = 2;
+  // repeated string input = 3;
   int input_size() const;
   void clear_input();
-  static const int kInputFieldNumber = 2;
+  static const int kInputFieldNumber = 3;
   const ::std::string& input(int index) const;
   ::std::string* mutable_input(int index);
   void set_input(int index, const ::std::string& value);
@@ -7940,10 +7627,10 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   const ::google::protobuf::RepeatedPtrField< ::std::string>& input() const;
   ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_input();
 
-  // repeated string output = 3;
+  // repeated string output = 4;
   int output_size() const;
   void clear_output();
-  static const int kOutputFieldNumber = 3;
+  static const int kOutputFieldNumber = 4;
   const ::std::string& output(int index) const;
   ::std::string* mutable_output(int index);
   void set_output(int index, const ::std::string& value);
@@ -7962,28 +7649,6 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   const ::google::protobuf::RepeatedPtrField< ::std::string>& output() const;
   ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_output();
 
-  // repeated string phase = 4;
-  int phase_size() const;
-  void clear_phase();
-  static const int kPhaseFieldNumber = 4;
-  const ::std::string& phase(int index) const;
-  ::std::string* mutable_phase(int index);
-  void set_phase(int index, const ::std::string& value);
-  #if LANG_CXX11
-  void set_phase(int index, ::std::string&& value);
-  #endif
-  void set_phase(int index, const char* value);
-  void set_phase(int index, const char* value, size_t size);
-  ::std::string* add_phase();
-  void add_phase(const ::std::string& value);
-  #if LANG_CXX11
-  void add_phase(::std::string&& value);
-  #endif
-  void add_phase(const char* value);
-  void add_phase(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& phase() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_phase();
-
   // string name = 1;
   void clear_name();
   static const int kNameFieldNumber = 1;
@@ -7997,6 +7662,20 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* mutable_name();
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
+
+  // string scope = 2;
+  void clear_scope();
+  static const int kScopeFieldNumber = 2;
+  const ::std::string& scope() const;
+  void set_scope(const ::std::string& value);
+  #if LANG_CXX11
+  void set_scope(::std::string&& value);
+  #endif
+  void set_scope(const char* value);
+  void set_scope(const char* value, size_t size);
+  ::std::string* mutable_scope();
+  ::std::string* release_scope();
+  void set_allocated_scope(::std::string* scope);
 
   // .deepflow.BlockParam block_param = 5;
   bool has_block_param() const;
@@ -8024,15 +7703,6 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::PlaceHolderParam* mutable_place_holder_param();
   ::deepflow::PlaceHolderParam* release_place_holder_param();
   void set_allocated_place_holder_param(::deepflow::PlaceHolderParam* place_holder_param);
-
-  // .deepflow.PhaseplexerParam phaseplexer_param = 102;
-  bool has_phaseplexer_param() const;
-  void clear_phaseplexer_param();
-  static const int kPhaseplexerParamFieldNumber = 102;
-  const ::deepflow::PhaseplexerParam& phaseplexer_param() const;
-  ::deepflow::PhaseplexerParam* mutable_phaseplexer_param();
-  ::deepflow::PhaseplexerParam* release_phaseplexer_param();
-  void set_allocated_phaseplexer_param(::deepflow::PhaseplexerParam* phaseplexer_param);
 
   // .deepflow.AddParam add_param = 103;
   bool has_add_param() const;
@@ -8517,12 +8187,11 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::std::string> input_;
   ::google::protobuf::RepeatedPtrField< ::std::string> output_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> phase_;
   ::google::protobuf::internal::ArenaStringPtr name_;
+  ::google::protobuf::internal::ArenaStringPtr scope_;
   ::deepflow::BlockParam* block_param_;
   ::deepflow::VariableParam* variable_param_;
   ::deepflow::PlaceHolderParam* place_holder_param_;
-  ::deepflow::PhaseplexerParam* phaseplexer_param_;
   ::deepflow::AddParam* add_param_;
   ::deepflow::BiasAddParam* bias_add_param_;
   ::deepflow::Conv2dParam* conv_2d_param_;
@@ -8738,79 +8407,6 @@ inline void MultiplexerParam::set_num_inputs(::google::protobuf::int32 value) {
 
 // -------------------------------------------------------------------
 
-// PhaseplexerParam
-
-// repeated string phase = 1;
-inline int PhaseplexerParam::phase_size() const {
-  return phase_.size();
-}
-inline void PhaseplexerParam::clear_phase() {
-  phase_.Clear();
-}
-inline const ::std::string& PhaseplexerParam::phase(int index) const {
-  // @@protoc_insertion_point(field_get:deepflow.PhaseplexerParam.phase)
-  return phase_.Get(index);
-}
-inline ::std::string* PhaseplexerParam::mutable_phase(int index) {
-  // @@protoc_insertion_point(field_mutable:deepflow.PhaseplexerParam.phase)
-  return phase_.Mutable(index);
-}
-inline void PhaseplexerParam::set_phase(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:deepflow.PhaseplexerParam.phase)
-  phase_.Mutable(index)->assign(value);
-}
-#if LANG_CXX11
-inline void PhaseplexerParam::set_phase(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:deepflow.PhaseplexerParam.phase)
-  phase_.Mutable(index)->assign(std::move(value));
-}
-#endif
-inline void PhaseplexerParam::set_phase(int index, const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  phase_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:deepflow.PhaseplexerParam.phase)
-}
-inline void PhaseplexerParam::set_phase(int index, const char* value, size_t size) {
-  phase_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:deepflow.PhaseplexerParam.phase)
-}
-inline ::std::string* PhaseplexerParam::add_phase() {
-  // @@protoc_insertion_point(field_add_mutable:deepflow.PhaseplexerParam.phase)
-  return phase_.Add();
-}
-inline void PhaseplexerParam::add_phase(const ::std::string& value) {
-  phase_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:deepflow.PhaseplexerParam.phase)
-}
-#if LANG_CXX11
-inline void PhaseplexerParam::add_phase(::std::string&& value) {
-  phase_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:deepflow.PhaseplexerParam.phase)
-}
-#endif
-inline void PhaseplexerParam::add_phase(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  phase_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:deepflow.PhaseplexerParam.phase)
-}
-inline void PhaseplexerParam::add_phase(const char* value, size_t size) {
-  phase_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:deepflow.PhaseplexerParam.phase)
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-PhaseplexerParam::phase() const {
-  // @@protoc_insertion_point(field_list:deepflow.PhaseplexerParam.phase)
-  return phase_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-PhaseplexerParam::mutable_phase() {
-  // @@protoc_insertion_point(field_mutable_list:deepflow.PhaseplexerParam.phase)
-  return &phase_;
-}
-
-// -------------------------------------------------------------------
-
 // RandomSelectorParam
 
 // float probability = 1;
@@ -8831,37 +8427,9 @@ inline void RandomSelectorParam::set_probability(float value) {
 
 // AccumulatorParam
 
-// .deepflow.ActionTime reset_time = 1;
-inline void AccumulatorParam::clear_reset_time() {
-  reset_time_ = 0;
-}
-inline ::deepflow::ActionTime AccumulatorParam::reset_time() const {
-  // @@protoc_insertion_point(field_get:deepflow.AccumulatorParam.reset_time)
-  return static_cast< ::deepflow::ActionTime >(reset_time_);
-}
-inline void AccumulatorParam::set_reset_time(::deepflow::ActionTime value) {
-  
-  reset_time_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.AccumulatorParam.reset_time)
-}
-
 // -------------------------------------------------------------------
 
 // PsnrParam
-
-// .deepflow.ActionTime print_time = 1;
-inline void PsnrParam::clear_print_time() {
-  print_time_ = 0;
-}
-inline ::deepflow::ActionTime PsnrParam::print_time() const {
-  // @@protoc_insertion_point(field_get:deepflow.PsnrParam.print_time)
-  return static_cast< ::deepflow::ActionTime >(print_time_);
-}
-inline void PsnrParam::set_print_time(::deepflow::ActionTime value) {
-  
-  print_time_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.PsnrParam.print_time)
-}
 
 // -------------------------------------------------------------------
 
@@ -8987,20 +8555,6 @@ inline void LoggerParam::set_allocated_message(::std::string* message) {
   // @@protoc_insertion_point(field_set_allocated:deepflow.LoggerParam.message)
 }
 
-// .deepflow.ActionTime logging_time = 4;
-inline void LoggerParam::clear_logging_time() {
-  logging_time_ = 0;
-}
-inline ::deepflow::ActionTime LoggerParam::logging_time() const {
-  // @@protoc_insertion_point(field_get:deepflow.LoggerParam.logging_time)
-  return static_cast< ::deepflow::ActionTime >(logging_time_);
-}
-inline void LoggerParam::set_logging_time(::deepflow::ActionTime value) {
-  
-  logging_time_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.LoggerParam.logging_time)
-}
-
 // .deepflow.ActionType logging_type = 5;
 inline void LoggerParam::clear_logging_type() {
   logging_type_ = 0;
@@ -9086,20 +8640,6 @@ inline void PrintParam::set_allocated_message(::std::string* message) {
   // @@protoc_insertion_point(field_set_allocated:deepflow.PrintParam.message)
 }
 
-// .deepflow.ActionTime print_time = 3;
-inline void PrintParam::clear_print_time() {
-  print_time_ = 0;
-}
-inline ::deepflow::ActionTime PrintParam::print_time() const {
-  // @@protoc_insertion_point(field_get:deepflow.PrintParam.print_time)
-  return static_cast< ::deepflow::ActionTime >(print_time_);
-}
-inline void PrintParam::set_print_time(::deepflow::ActionTime value) {
-  
-  print_time_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.PrintParam.print_time)
-}
-
 // .deepflow.ActionType print_type = 4;
 inline void PrintParam::clear_print_type() {
   print_type_ = 0;
@@ -9130,20 +8670,6 @@ inline void SIOOutputParam::set_num_inputs(::google::protobuf::int32 value) {
   
   num_inputs_ = value;
   // @@protoc_insertion_point(field_set:deepflow.SIOOutputParam.num_inputs)
-}
-
-// .deepflow.ActionTime print_time = 2;
-inline void SIOOutputParam::clear_print_time() {
-  print_time_ = 0;
-}
-inline ::deepflow::ActionTime SIOOutputParam::print_time() const {
-  // @@protoc_insertion_point(field_get:deepflow.SIOOutputParam.print_time)
-  return static_cast< ::deepflow::ActionTime >(print_time_);
-}
-inline void SIOOutputParam::set_print_time(::deepflow::ActionTime value) {
-  
-  print_time_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.SIOOutputParam.print_time)
 }
 
 // string host = 3;
@@ -9267,20 +8793,6 @@ inline void DisplayParam::set_delay_msec(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:deepflow.DisplayParam.delay_msec)
 }
 
-// .deepflow.ActionTime display_time = 2;
-inline void DisplayParam::clear_display_time() {
-  display_time_ = 0;
-}
-inline ::deepflow::ActionTime DisplayParam::display_time() const {
-  // @@protoc_insertion_point(field_get:deepflow.DisplayParam.display_time)
-  return static_cast< ::deepflow::ActionTime >(display_time_);
-}
-inline void DisplayParam::set_display_time(::deepflow::ActionTime value) {
-  
-  display_time_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.DisplayParam.display_time)
-}
-
 // .deepflow.ActionType display_type = 3;
 inline void DisplayParam::clear_display_type() {
   display_type_ = 0;
@@ -9307,6 +8819,20 @@ inline void DisplayParam::set_epoch_frequency(::google::protobuf::int32 value) {
   
   epoch_frequency_ = value;
   // @@protoc_insertion_point(field_set:deepflow.DisplayParam.epoch_frequency)
+}
+
+// bool draw_iteration = 5;
+inline void DisplayParam::clear_draw_iteration() {
+  draw_iteration_ = false;
+}
+inline bool DisplayParam::draw_iteration() const {
+  // @@protoc_insertion_point(field_get:deepflow.DisplayParam.draw_iteration)
+  return draw_iteration_;
+}
+inline void DisplayParam::set_draw_iteration(bool value) {
+  
+  draw_iteration_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.DisplayParam.draw_iteration)
 }
 
 // -------------------------------------------------------------------
@@ -9364,6 +8890,20 @@ inline void ImageWriterParam::set_allocated_filename(::std::string* filename) {
   }
   filename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), filename);
   // @@protoc_insertion_point(field_set_allocated:deepflow.ImageWriterParam.filename)
+}
+
+// bool draw_iteration = 2;
+inline void ImageWriterParam::clear_draw_iteration() {
+  draw_iteration_ = false;
+}
+inline bool ImageWriterParam::draw_iteration() const {
+  // @@protoc_insertion_point(field_get:deepflow.ImageWriterParam.draw_iteration)
+  return draw_iteration_;
+}
+inline void ImageWriterParam::set_draw_iteration(bool value) {
+  
+  draw_iteration_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.ImageWriterParam.draw_iteration)
 }
 
 // -------------------------------------------------------------------
@@ -9726,20 +9266,6 @@ inline void Conv2dParam::set_dilation_w(::google::protobuf::int32 value) {
   
   dilation_w_ = value;
   // @@protoc_insertion_point(field_set:deepflow.Conv2dParam.dilation_w)
-}
-
-// float negative_slope = 7;
-inline void Conv2dParam::clear_negative_slope() {
-  negative_slope_ = 0;
-}
-inline float Conv2dParam::negative_slope() const {
-  // @@protoc_insertion_point(field_get:deepflow.Conv2dParam.negative_slope)
-  return negative_slope_;
-}
-inline void Conv2dParam::set_negative_slope(float value) {
-  
-  negative_slope_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.Conv2dParam.negative_slope)
 }
 
 // -------------------------------------------------------------------
@@ -10611,6 +10137,20 @@ inline void BatchNormalizationParam::set_allocated_var(::deepflow::TensorData* v
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.BatchNormalizationParam.var)
+}
+
+// float exp_avg_factor = 5;
+inline void BatchNormalizationParam::clear_exp_avg_factor() {
+  exp_avg_factor_ = 0;
+}
+inline float BatchNormalizationParam::exp_avg_factor() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.exp_avg_factor)
+  return exp_avg_factor_;
+}
+inline void BatchNormalizationParam::set_exp_avg_factor(float value) {
+  
+  exp_avg_factor_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.exp_avg_factor)
 }
 
 // -------------------------------------------------------------------
@@ -11904,77 +11444,6 @@ inline void SolverParam::set_allocated_rmsprop_solver(::deepflow::RMSPropSolverP
 
 // -------------------------------------------------------------------
 
-// PhaseParam
-
-// string phase = 1;
-inline void PhaseParam::clear_phase() {
-  phase_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& PhaseParam::phase() const {
-  // @@protoc_insertion_point(field_get:deepflow.PhaseParam.phase)
-  return phase_.GetNoArena();
-}
-inline void PhaseParam::set_phase(const ::std::string& value) {
-  
-  phase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:deepflow.PhaseParam.phase)
-}
-#if LANG_CXX11
-inline void PhaseParam::set_phase(::std::string&& value) {
-  
-  phase_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:deepflow.PhaseParam.phase)
-}
-#endif
-inline void PhaseParam::set_phase(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  phase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:deepflow.PhaseParam.phase)
-}
-inline void PhaseParam::set_phase(const char* value, size_t size) {
-  
-  phase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:deepflow.PhaseParam.phase)
-}
-inline ::std::string* PhaseParam::mutable_phase() {
-  
-  // @@protoc_insertion_point(field_mutable:deepflow.PhaseParam.phase)
-  return phase_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* PhaseParam::release_phase() {
-  // @@protoc_insertion_point(field_release:deepflow.PhaseParam.phase)
-  
-  return phase_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void PhaseParam::set_allocated_phase(::std::string* phase) {
-  if (phase != NULL) {
-    
-  } else {
-    
-  }
-  phase_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), phase);
-  // @@protoc_insertion_point(field_set_allocated:deepflow.PhaseParam.phase)
-}
-
-// .deepflow.PhaseParam.PhaseBehaviour behaviour = 2;
-inline void PhaseParam::clear_behaviour() {
-  behaviour_ = 0;
-}
-inline ::deepflow::PhaseParam_PhaseBehaviour PhaseParam::behaviour() const {
-  // @@protoc_insertion_point(field_get:deepflow.PhaseParam.behaviour)
-  return static_cast< ::deepflow::PhaseParam_PhaseBehaviour >(behaviour_);
-}
-inline void PhaseParam::set_behaviour(::deepflow::PhaseParam_PhaseBehaviour value) {
-  
-  behaviour_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.PhaseParam.behaviour)
-}
-
-// -------------------------------------------------------------------
-
 // BlockParam
 
 // repeated .deepflow.NodeParam node = 1;
@@ -12035,36 +11504,6 @@ inline const ::google::protobuf::RepeatedPtrField< ::deepflow::SolverParam >&
 BlockParam::solver() const {
   // @@protoc_insertion_point(field_list:deepflow.BlockParam.solver)
   return solver_;
-}
-
-// repeated .deepflow.PhaseParam phase = 3;
-inline int BlockParam::phase_size() const {
-  return phase_.size();
-}
-inline void BlockParam::clear_phase() {
-  phase_.Clear();
-}
-inline const ::deepflow::PhaseParam& BlockParam::phase(int index) const {
-  // @@protoc_insertion_point(field_get:deepflow.BlockParam.phase)
-  return phase_.Get(index);
-}
-inline ::deepflow::PhaseParam* BlockParam::mutable_phase(int index) {
-  // @@protoc_insertion_point(field_mutable:deepflow.BlockParam.phase)
-  return phase_.Mutable(index);
-}
-inline ::deepflow::PhaseParam* BlockParam::add_phase() {
-  // @@protoc_insertion_point(field_add:deepflow.BlockParam.phase)
-  return phase_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::deepflow::PhaseParam >*
-BlockParam::mutable_phase() {
-  // @@protoc_insertion_point(field_mutable_list:deepflow.BlockParam.phase)
-  return &phase_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::deepflow::PhaseParam >&
-BlockParam::phase() const {
-  // @@protoc_insertion_point(field_list:deepflow.BlockParam.phase)
-  return phase_;
 }
 
 // repeated .deepflow.InitParam initializer = 4;
@@ -12296,7 +11735,60 @@ inline void NodeParam::set_allocated_name(::std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.name)
 }
 
-// repeated string input = 2;
+// string scope = 2;
+inline void NodeParam::clear_scope() {
+  scope_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& NodeParam::scope() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.scope)
+  return scope_.GetNoArena();
+}
+inline void NodeParam::set_scope(const ::std::string& value) {
+  
+  scope_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:deepflow.NodeParam.scope)
+}
+#if LANG_CXX11
+inline void NodeParam::set_scope(::std::string&& value) {
+  
+  scope_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:deepflow.NodeParam.scope)
+}
+#endif
+inline void NodeParam::set_scope(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  scope_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:deepflow.NodeParam.scope)
+}
+inline void NodeParam::set_scope(const char* value, size_t size) {
+  
+  scope_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:deepflow.NodeParam.scope)
+}
+inline ::std::string* NodeParam::mutable_scope() {
+  
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.scope)
+  return scope_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* NodeParam::release_scope() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.scope)
+  
+  return scope_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void NodeParam::set_allocated_scope(::std::string* scope) {
+  if (scope != NULL) {
+    
+  } else {
+    
+  }
+  scope_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), scope);
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.scope)
+}
+
+// repeated string input = 3;
 inline int NodeParam::input_size() const {
   return input_.size();
 }
@@ -12365,7 +11857,7 @@ NodeParam::mutable_input() {
   return &input_;
 }
 
-// repeated string output = 3;
+// repeated string output = 4;
 inline int NodeParam::output_size() const {
   return output_.size();
 }
@@ -12432,75 +11924,6 @@ inline ::google::protobuf::RepeatedPtrField< ::std::string>*
 NodeParam::mutable_output() {
   // @@protoc_insertion_point(field_mutable_list:deepflow.NodeParam.output)
   return &output_;
-}
-
-// repeated string phase = 4;
-inline int NodeParam::phase_size() const {
-  return phase_.size();
-}
-inline void NodeParam::clear_phase() {
-  phase_.Clear();
-}
-inline const ::std::string& NodeParam::phase(int index) const {
-  // @@protoc_insertion_point(field_get:deepflow.NodeParam.phase)
-  return phase_.Get(index);
-}
-inline ::std::string* NodeParam::mutable_phase(int index) {
-  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.phase)
-  return phase_.Mutable(index);
-}
-inline void NodeParam::set_phase(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:deepflow.NodeParam.phase)
-  phase_.Mutable(index)->assign(value);
-}
-#if LANG_CXX11
-inline void NodeParam::set_phase(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:deepflow.NodeParam.phase)
-  phase_.Mutable(index)->assign(std::move(value));
-}
-#endif
-inline void NodeParam::set_phase(int index, const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  phase_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:deepflow.NodeParam.phase)
-}
-inline void NodeParam::set_phase(int index, const char* value, size_t size) {
-  phase_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:deepflow.NodeParam.phase)
-}
-inline ::std::string* NodeParam::add_phase() {
-  // @@protoc_insertion_point(field_add_mutable:deepflow.NodeParam.phase)
-  return phase_.Add();
-}
-inline void NodeParam::add_phase(const ::std::string& value) {
-  phase_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:deepflow.NodeParam.phase)
-}
-#if LANG_CXX11
-inline void NodeParam::add_phase(::std::string&& value) {
-  phase_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:deepflow.NodeParam.phase)
-}
-#endif
-inline void NodeParam::add_phase(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  phase_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:deepflow.NodeParam.phase)
-}
-inline void NodeParam::add_phase(const char* value, size_t size) {
-  phase_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:deepflow.NodeParam.phase)
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-NodeParam::phase() const {
-  // @@protoc_insertion_point(field_list:deepflow.NodeParam.phase)
-  return phase_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-NodeParam::mutable_phase() {
-  // @@protoc_insertion_point(field_mutable_list:deepflow.NodeParam.phase)
-  return &phase_;
 }
 
 // .deepflow.BlockParam block_param = 5;
@@ -12618,45 +12041,6 @@ inline void NodeParam::set_allocated_place_holder_param(::deepflow::PlaceHolderP
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.place_holder_param)
-}
-
-// .deepflow.PhaseplexerParam phaseplexer_param = 102;
-inline bool NodeParam::has_phaseplexer_param() const {
-  return this != internal_default_instance() && phaseplexer_param_ != NULL;
-}
-inline void NodeParam::clear_phaseplexer_param() {
-  if (GetArenaNoVirtual() == NULL && phaseplexer_param_ != NULL) delete phaseplexer_param_;
-  phaseplexer_param_ = NULL;
-}
-inline const ::deepflow::PhaseplexerParam& NodeParam::phaseplexer_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.NodeParam.phaseplexer_param)
-  return phaseplexer_param_ != NULL ? *phaseplexer_param_
-                         : *::deepflow::PhaseplexerParam::internal_default_instance();
-}
-inline ::deepflow::PhaseplexerParam* NodeParam::mutable_phaseplexer_param() {
-  
-  if (phaseplexer_param_ == NULL) {
-    phaseplexer_param_ = new ::deepflow::PhaseplexerParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.phaseplexer_param)
-  return phaseplexer_param_;
-}
-inline ::deepflow::PhaseplexerParam* NodeParam::release_phaseplexer_param() {
-  // @@protoc_insertion_point(field_release:deepflow.NodeParam.phaseplexer_param)
-  
-  ::deepflow::PhaseplexerParam* temp = phaseplexer_param_;
-  phaseplexer_param_ = NULL;
-  return temp;
-}
-inline void NodeParam::set_allocated_phaseplexer_param(::deepflow::PhaseplexerParam* phaseplexer_param) {
-  delete phaseplexer_param_;
-  phaseplexer_param_ = phaseplexer_param;
-  if (phaseplexer_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.phaseplexer_param)
 }
 
 // .deepflow.AddParam add_param = 103;
@@ -14875,10 +14259,6 @@ inline void NodeParam::set_allocated_patch_sampling_param(::deepflow::PatchSampl
 
 // -------------------------------------------------------------------
 
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -14948,16 +14328,6 @@ template <> struct is_proto_enum< ::deepflow::LiftingParam_Mode> : ::google::pro
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::LiftingParam_Mode>() {
   return ::deepflow::LiftingParam_Mode_descriptor();
-}
-template <> struct is_proto_enum< ::deepflow::PhaseParam_PhaseBehaviour> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::PhaseParam_PhaseBehaviour>() {
-  return ::deepflow::PhaseParam_PhaseBehaviour_descriptor();
-}
-template <> struct is_proto_enum< ::deepflow::ActionTime> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::ActionTime>() {
-  return ::deepflow::ActionTime_descriptor();
 }
 template <> struct is_proto_enum< ::deepflow::ActionType> : ::google::protobuf::internal::true_type {};
 template <>

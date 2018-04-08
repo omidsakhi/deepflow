@@ -26,5 +26,7 @@ private:
 	int pic_width;
 	int pic_height;
 	int num_pic_pixels;
+	std::string _filename;
+	bool _draw_iteration = false;
 	cv::Mat disp;
 };

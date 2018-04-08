@@ -46,8 +46,8 @@ public:
 	virtual void prep_for_saving() {}
 	virtual void reset_gradients();
 	std::string name() const;
-	virtual std::string op_name() const = 0;
-	std::string _to_cpp_phases() const;
+	std::string scope() const;
+	virtual std::string op_name() const = 0;	
 	std::string _input_name_for_cpp(int i) const;	
 	void write_values(std::shared_ptr<Tensor> tensor, float alpha = 1.0, float beta = 0.0f);
 	void write_values(std::initializer_list<float> values);
@@ -63,8 +63,7 @@ public:
 	NodeOutputPtr output(int index);
 	bool isInitialized() const;
 	void setInitialized(bool status);
-	deepflow::NodeParam *param();
-	bool includePhase(const std::string &phase);
+	deepflow::NodeParam *param();	
 	void setExecutionContext(ExecutionContextPtr context);
 	ExecutionContextPtr executionContext();
 	virtual std::list<std::shared_ptr<Node>> inputNodes() const;
@@ -72,7 +71,8 @@ public:
 protected:	
 	std::vector<NodeInputPtr> _inputs;
 	std::vector<NodeOutputPtr> _outputs;
-	std::string _name = "Unknown";	
+	std::string _name = "NoName";
+	std::string _scope = "Default";
 	bool _initialized = false;
 	deepflow::NodeParam *_param = nullptr;
 	ExecutionContextPtr _context = nullptr;

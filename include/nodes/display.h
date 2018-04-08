@@ -14,7 +14,9 @@ public:
 	void forward();
 	void backward();
 	std::string to_cpp() const;
+	void setEnabled(bool state);
 private:
+	bool _enabled = true;
 	int input_size;
 	int input_size_in_bytes;
 	int num_images;
@@ -29,6 +31,6 @@ private:
 	cv::Mat disp;
 	int _delay_msec = 100;
 	int _epoch_frequency = 1;
+	bool _draw_iteration = false;
 	deepflow::ActionType _display_type;
-	deepflow::ActionTime _display_time;
 };

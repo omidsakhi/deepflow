@@ -26,7 +26,6 @@ void PassThrough::backward()
 std::string PassThrough::to_cpp() const
 {	
 	std::string cpp = "auto " + _name + " = df.pass_through(" + _input_name_for_cpp(0) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

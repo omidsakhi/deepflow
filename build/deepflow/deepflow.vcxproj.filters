@@ -88,9 +88,6 @@
     <CudaCompile Include="..\..\src\nodes\image_writer.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\bias_add.cu">
-      <Filter>source\nodes</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\resize.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
@@ -161,9 +158,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\generators\data_generator.cpp">
       <Filter>source\generators</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\nodes\phaseplexer.cpp">
-      <Filter>source\nodes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\nodes\place_holder.cpp">
       <Filter>source\nodes</Filter>
@@ -252,6 +246,9 @@
     <ClCompile Include="..\..\src\initializers\truncated_normal.cpp">
       <Filter>source\initializers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\nodes\bias_add.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -333,9 +330,6 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\matmul.h">
-      <Filter>include\nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\nodes\phaseplexer.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\place_holder.h">

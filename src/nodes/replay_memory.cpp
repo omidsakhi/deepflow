@@ -38,7 +38,7 @@ void ReplayMemory::forward()
 
 void ReplayMemory::backward()
 {
-	LOG(FATAL);
+	
 }
 
 std::string ReplayMemory::to_cpp() const

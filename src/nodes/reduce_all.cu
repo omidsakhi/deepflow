@@ -43,9 +43,11 @@ void ReduceAll::forward() {
 }
 
 void ReduceAll::backward() {
-	auto size = _inputs[0]->value()->size();
-	ReduceAllKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _reduce_op == deepflow::ReduceAllParam_ReduceAllOp_AVG, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
-	DF_KERNEL_CHECK();
+	if (_inputs[0]->diff()) {
+		auto size = _inputs[0]->value()->size();
+		ReduceAllKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _reduce_op == deepflow::ReduceAllParam_ReduceAllOp_AVG, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
+		DF_KERNEL_CHECK();
+	}
 }
 
 std::string ReduceAll::to_cpp() const

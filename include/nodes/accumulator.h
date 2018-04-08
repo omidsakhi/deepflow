@@ -13,7 +13,7 @@ public:
 	void forward();
 	void backward();
 	std::string to_cpp() const;
-private:
-	deepflow::ActionTime _reset_time;
+	void reset();
+private:	
 	float _total = 0;
 };

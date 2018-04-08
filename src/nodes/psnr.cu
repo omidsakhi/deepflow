@@ -14,7 +14,6 @@ void SquareErrorKernel(const int n, const float * __restrict__ a, const float * 
 Psnr::Psnr(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_psnr_param() == false) << "param.has_psnr_param() == false";
 	auto psnrParam = _param->psnr_param();	
-	_print_time = psnrParam.print_time();	
 }
 
 void Psnr::init() {	
@@ -61,13 +60,6 @@ void Psnr::backward() {
 std::string Psnr::to_cpp() const
 {	
 	std::string cpp = "df.psnr(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
-	if (_print_time == deepflow::ActionTime::END_OF_EPOCH) {
-		cpp += "Psnr::END_OF_EPOCH, ";
-	}
-	else {
-		cpp += "Psnr::EVERY_PASS, ";
-	}
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

@@ -2,16 +2,6 @@
 
 #include "nodes/bias_add.h"
 
-__global__
-void BiasAddKernelForward(const int n, const float *in, const int inner_dim, const int bias_dim, const float *b, float *out)
-{
-	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	if (i < n) {
-		const int bias_index = (i/inner_dim)%bias_dim;
-		out[i] = in[i] + b[bias_index];
-	}
-}
-
 BiasAdd::BiasAdd(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_bias_add_param() == false) << "param.has_bias_add_param() == false";
 }
@@ -29,20 +19,20 @@ void BiasAdd::init() {
 }
 
 void BiasAdd::forward() {
-	// C(m,n) = A(m,n) + B(m,n)	
-	auto size = _outputs[0]->value()->size();	
-	BiasAddKernelForward <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*) _inputs[0]->value()->data(), _inner_dim, _bias_dim, (float*) _inputs[1]->value()->data(), (float*) _outputs[0]->value()->mutableData());	
+	cpy(_outputs[0]->value()->size(), 1.0f, _inputs[0]->value()->data(), 0.0f, _outputs[0]->value()->mutableData());
+	cudnnAddTensor(_cudnnHandle, &one, _inputs[1]->value()->descriptor(), _inputs[1]->value()->data(), &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData());
 }
 
 void BiasAdd::backward() {
-	auto size = _outputs[0]->value()->size();	
-	cudnnConvolutionBackwardBias(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), &zero, _inputs[1]->diff()->descriptor(), _inputs[1]->diff()->mutableData());
+	if (_inputs[1]->diff()) {
+		auto size = _outputs[0]->value()->size();
+		cudnnConvolutionBackwardBias(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), &zero, _inputs[1]->diff()->descriptor(), _inputs[1]->diff()->mutableData());
+	}
 }
 
 std::string BiasAdd::to_cpp() const
 {
 	std::string cpp = "auto " + _name + " = df.bias_add(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

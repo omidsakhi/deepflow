@@ -67,7 +67,6 @@ std::string ImageReader::to_cpp() const
 		cpp += "ImageReaderParam_Type_GRAY_ONLY, ";
 	else
 		cpp += "ImageReaderParam_Type_COLOR_IF_AVAILABLE, ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

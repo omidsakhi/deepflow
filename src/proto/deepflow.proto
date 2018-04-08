@@ -6,12 +6,6 @@ message TensorData {
 	repeated float data = 1 [packed=true];
 }
 
-enum ActionTime {
-	EVERY_PASS = 0;	
-	END_OF_EPOCH = 1;
-	NEVER = 2;
-}
-
 enum ActionType {
 	VALUES = 0;
 	DIFFS = 1;
@@ -37,40 +31,33 @@ message MultiplexerParam {
 	int32 num_inputs = 1;
 }
 
-message PhaseplexerParam {
-	repeated string phase = 1;
-}
-
 message RandomSelectorParam {
 	float probability = 1;
 }
 
 message AccumulatorParam {
-	ActionTime reset_time = 1;
+	
 }
 
 message PsnrParam {
-	ActionTime print_time = 1;
+	
 }
 
 message LoggerParam {
 	string file_path = 1;
 	int32 num_inputs = 2;
-	string message = 3;
-	ActionTime logging_time = 4;
+	string message = 3;	
 	ActionType logging_type = 5;
 }
 
 message PrintParam {
 	int32 num_inputs = 1;
-	string message = 2;
-	ActionTime print_time = 3;
+	string message = 2;	
 	ActionType print_type = 4;
 }
 
 message SIOOutputParam {
-	int32 num_inputs = 1;
-	ActionTime print_time = 2;
+	int32 num_inputs = 1;	
 	string host = 3;
 	int32 port = 4;
 }
@@ -83,14 +70,15 @@ message AddParam {
 	float beta = 2;
 }
 message DisplayParam {
-	int32 delay_msec = 1;
-	ActionTime display_time = 2;
+	int32 delay_msec = 1;	
 	ActionType display_type = 3;
 	int32 epoch_frequency = 4;
+	bool draw_iteration = 5;
 }
 
 message ImageWriterParam {
 	string filename = 1;
+	bool draw_iteration = 2;
 }
 
 message LogParam {
@@ -153,8 +141,7 @@ message Conv2dParam {
 	int32 u = 3;
 	int32 v = 4;
 	int32 dilation_h = 5;
-	int32 dilation_w = 6;
-	float negative_slope = 7;
+	int32 dilation_w = 6;	
 }
 
 message DropoutParam {
@@ -277,6 +264,7 @@ message BatchNormalizationParam {
 	bool cache_meanvar = 2;
 	TensorData mean = 3;
 	TensorData var = 4;
+	float exp_avg_factor = 5;
 }
 
 message ReplayMemoryParam {
@@ -425,21 +413,9 @@ message SolverParam {
 
 }
 
-message PhaseParam {
-	enum PhaseBehaviour {
-		TRAIN_AND_INFERENCE = 0;
-		TRAIN = 1;
-		VALIDATION = 2;
-		INFERENCE = 3;
-	}
-	string phase = 1;	
-	PhaseBehaviour behaviour = 2;
-}
-
 message BlockParam {
 	repeated NodeParam node = 1;
 	repeated SolverParam solver = 2;
-	repeated PhaseParam phase = 3;
 	repeated InitParam initializer = 4;
 }
 
@@ -473,14 +449,13 @@ message PatchSamplingParam {
 
 message NodeParam {
   string name = 1;
-  repeated string input = 2;
-  repeated string output = 3;  
-  repeated string phase = 4;  
+  string scope = 2;
+  repeated string input = 3;
+  repeated string output = 4;    
   BlockParam block_param = 5;  
 
   VariableParam variable_param = 100;  
-  PlaceHolderParam place_holder_param = 101;  
-  PhaseplexerParam phaseplexer_param = 102;    
+  PlaceHolderParam place_holder_param = 101;   
   AddParam add_param = 103;
   BiasAddParam bias_add_param = 104;
   Conv2dParam conv_2d_param = 105;

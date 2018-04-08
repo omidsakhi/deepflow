@@ -17,17 +17,31 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 
 # Dependencies
 - Visual Studio 2015
-- [CUDA 9.1](https://developer.nvidia.com/cuda-toolkit)
+- [CUDA 9.0](https://developer.nvidia.com/cuda-toolkit)
 - [OpenCV 3.0](http://opencv.org/opencv-3-0.html)
-- [cuDNN v7.0](https://developer.nvidia.com/rdp/cudnn-download)
+- [cuDNN v7.1](https://developer.nvidia.com/rdp/cudnn-download)
 - [Protocol Buffers](https://github.com/google/protobuf)
 - [glog](https://github.com/google/glog)
 - [gflags](https://github.com/gflags/gflags)
 
 # Working Examples
-- Face DCGAN: The image below shows the results after 199000 iterations.
+- face_dcgan: A least-square generative adversarial network. The image below shows the results after 199000 iterations.
 
 ![results](https://github.com/omidsakhi/deepflow/blob/master/examples/face_dcgan/results.jpg)
+
+- face_ac: Deep auto-encoder on 128x128 CelebA dataset.
+
+![results](https://github.com/omidsakhi/deepflow/blob/master/examples/face_ac/results.jpg)
+
+- mnist_ac: Deep auto-encoder on MNIST dataset.
+
+![results](https://github.com/omidsakhi/deepflow/blob/master/examples/mnist_ac/results.jpg)
+
+- mnist_dcgan: Least-square gan (generative adversarial) on MNIST dataset.
+
+![results](https://github.com/omidsakhi/deepflow/blob/master/examples/mnist_dcgan/results.jpg)
+
+- mnist_lenet
 
 
 # Current Nodes
@@ -45,9 +59,10 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 | display               | psnr                  | softmax               | equal                 |
 | cast_float            | accumulator           | batch_normalization   | logger                |
 | negate                | multiplexer           | random_selector       | restructure           |
-| softmax               |                       |                       |                       |
+| softmax               | ...                   |                       |                       |
 
 # Current Solvers
 - AdaDelta
 - Adam
+- RMSProp
 - SGD

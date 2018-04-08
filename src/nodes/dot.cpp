@@ -27,11 +27,11 @@ void Dot::forward() {
 
 void Dot::backward() {
 	auto size = _outputs[0]->diff()->size();
-	if (_inputs[0]->connectedNode()) {
+	if (_inputs[0]->diff()) {
 		dot(size, 1.0, _outputs[0]->diff()->data(), _inputs[1]->value()->data(), 0.0, _inputs[0]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}
-	if (_inputs[1]->connectedNode()) {
+	if (_inputs[1]->diff()) {
 		dot(size, 1.0, _outputs[0]->diff()->data(), _inputs[0]->value()->data(), 0.0, _inputs[1]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}
@@ -40,7 +40,6 @@ void Dot::backward() {
 std::string Dot::to_cpp() const
 {
 	std::string cpp = "auto " + _name + " = df.dot(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

@@ -83,7 +83,6 @@
     <ClInclude Include="..\..\include\nodes\loss.h" />
     <ClInclude Include="..\..\include\nodes\matmul.h" />
     <ClInclude Include="..\..\include\nodes\multiplexer.h" />
-    <ClInclude Include="..\..\include\nodes\phaseplexer.h" />
     <ClInclude Include="..\..\include\nodes\place_holder.h" />
     <ClInclude Include="..\..\include\nodes\pooling.h" />
     <ClInclude Include="..\..\include\nodes\print.h" />
@@ -139,9 +138,9 @@
     <CudaCompile Include="..\..\src\nodes\abs.cu" />
     <CudaCompile Include="..\..\src\nodes\accumulator.cu" />
     <CudaCompile Include="..\..\src\nodes\add.cu" />
-    <CudaCompile Include="..\..\src\nodes\bias_add.cu">
+    <ClCompile Include="..\..\src\nodes\bias_add.cpp">
       <FileType>Document</FileType>
-    </CudaCompile>
+    </ClCompile>
     <CudaCompile Include="..\..\src\nodes\cast_float.cu" />
     <CudaCompile Include="..\..\src\nodes\display.cu" />
     <CudaCompile Include="..\..\src\nodes\dprelu.cu" />
@@ -188,7 +187,6 @@
     <ClCompile Include="..\..\src\nodes\loss.cpp" />
     <ClCompile Include="..\..\src\nodes\matmul.cpp" />
     <ClCompile Include="..\..\src\nodes\multiplexer.cpp" />
-    <ClCompile Include="..\..\src\nodes\phaseplexer.cpp" />
     <ClCompile Include="..\..\src\nodes\place_holder.cpp" />
     <ClCompile Include="..\..\src\nodes\pooling.cpp" />
     <CudaCompile Include="..\..\src\nodes\prelu.cu">

@@ -156,7 +156,6 @@ std::string MNISTReader::to_cpp() const
 		cpp += "MNISTReader::Data, ";
 	else 
 		cpp += "MNISTReader::Labels, ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

@@ -93,14 +93,16 @@ void Upsample::forward()
 
 void Upsample::backward()
 {
-	auto size = _inputs[0]->value()->size();
-	auto dims = _inputs[0]->dims();
-	UpsampleBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > 
-		(size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], dims[2] * 2, dims[3] * 2,
-		dims[1] * dims[2] * dims[3] * 4,
-			dims[2] * dims[3] * 4
-		);
-	DF_KERNEL_CHECK();
+	if (_inputs[0]->diff()) {
+		auto size = _inputs[0]->value()->size();
+		auto dims = _inputs[0]->dims();
+		UpsampleBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> >
+			(size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], dims[2] * 2, dims[3] * 2,
+				dims[1] * dims[2] * dims[3] * 4,
+				dims[2] * dims[3] * 4
+				);
+		DF_KERNEL_CHECK();
+	}
 }
 
 std::string Upsample::to_cpp() const

@@ -39,17 +39,18 @@ void LeakyRelu::forward() {
 	DF_KERNEL_CHECK();	
 }
 
-void LeakyRelu::backward() {	
-	auto size = _inputs[0]->value()->size();	
-	ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), _negative_slope);
-	DF_KERNEL_CHECK();	
+void LeakyRelu::backward() {
+	if (_inputs[0]->diff()) {
+		auto size = _inputs[0]->value()->size();
+		ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), _negative_slope);
+		DF_KERNEL_CHECK();
+	}
 }
 
 std::string LeakyRelu::to_cpp() const
 {
 	std::string cpp = "auto " + _name + " = df.leaky_relu(" + _input_name_for_cpp(0) + ", ";
 	cpp += std::to_string(_negative_slope) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

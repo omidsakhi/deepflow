@@ -19,13 +19,13 @@ __global__ void ConcateKernel(
 		int tempi = temp / height;
 		int tempo = tempi;
 		const int ci = tempi % input_channels;
-		const int co = tempo % output_channels;
 		const int ni = tempi / input_channels;
-		const int no = tempo / output_channels;		
+		int iindex = ni * (input_channels * width * height) + ci * (width * height) + h * width + w;
+		int oindex = ni * (output_channels * width * height) + (ci + channel_offset) * (width * height) + h * width + w;
 		if (forward)
-			y_dx[no * (output_channels * width * height) + (co + channel_offset) * (width * height) + h * width + w] = x_dy[ni * (input_channels * width * height) + ci * (width * height) + h * width + w];
+			y_dx[oindex] = x_dy[iindex];
 		else
-			y_dx[ni * (input_channels * width * height) + ci * (width * height) + h * width + w] = x_dy[no * (output_channels * width * height) + (co + channel_offset) * (width * height) + h * width + w];
+			y_dx[iindex] = x_dy[oindex];
 	}
 }
 
@@ -77,7 +77,6 @@ void Concate::backward()
 std::string Concate::to_cpp() const
 {
 	std::string cpp = "auto " + _name + " = df.concate(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\"); ";	
 	return cpp;
 }

@@ -1,18 +1,11 @@
 #include "nodes/convolution_2d.h"
 
 Convolution2D::Convolution2D(deepflow::NodeParam *param) : Node(param) {
-	LOG_IF(FATAL, param->has_conv_2d_param() == false) << "param.has_conv_2d_param() [FAILED]";
-	_num_inputs = param->input_size(); // COULD BE 2 WITHOUT BIAS OR 3 WITH BIAS
+	LOG_IF(FATAL, param->has_conv_2d_param() == false) << "param.has_conv_2d_param() [FAILED]";	
 	d_workspace = 0;
 }
 
-int Convolution2D::minNumInputs()
-{
-	return _num_inputs;
-}
-
 void Convolution2D::init() {
-	LOG_IF(FATAL, _num_inputs != 2 && _num_inputs != 3) << _name << " _num_inputs != 2 && _num_inputs != 3";
 	_xDesc = _inputs[0]->value()->descriptor();
 	_x = _inputs[0]->value()->mutableData();
 	auto inputDims = _inputs[0]->dims();	
@@ -40,19 +33,6 @@ void Convolution2D::init() {
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionForwardWorkspaceSize(_cudnnHandle, _xDesc, _wDesc, _convDesc, _yDesc, _fwdAlgo, &_fwdWorkspaceSize));	
 	_maxWorkspaceSize = _fwdWorkspaceSize;
 
-	// BIAS & ACTIVATION
-	if (_num_inputs == 3) {
-		_zDesc = _yDesc;				
-		_z = _y;
-		_bDesc = _inputs[2]->value()->descriptor();
-		_b = _inputs[2]->value()->mutableData();
-		auto biasDims = _inputs[2]->dims();
-		if (biasDims[0] != 1 || biasDims[1] != filterDims[0] || biasDims[2] != 1 || biasDims[3] != 1)
-			LOG(FATAL) << "Dimension of the bias must be 1x" << filterDims[0] << "x1x1";		
-		DF_NODE_CUDNN_CHECK(cudnnCreateActivationDescriptor(&_activationDesc));
-		cudnnSetActivationDescriptor(_activationDesc, CUDNN_ACTIVATION_RELU, CUDNN_NOT_PROPAGATE_NAN, param->negative_slope());
-	}
-
 	if (_inputs[0]->diff()) {
 		_dxDesc = _inputs[0]->diff()->descriptor();
 		_dx = _inputs[0]->diff()->mutableData();
@@ -79,43 +59,26 @@ void Convolution2D::init() {
 }
 
 void Convolution2D::forward() {
-	if (_num_inputs == 2) {
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionForward(_cudnnHandle, &one, _xDesc, _x, _wDesc, _w, _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &zero, _yDesc, _y));
-	}
-	else {
-		DF_NODE_CUDNN_CHECK(cudnnConvolutionBiasActivationForward(_cudnnHandle, &one, _xDesc, _x, _wDesc, _w, _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &zero, _zDesc, _z, _bDesc, _b, _activationDesc, _yDesc, _y));
-	}
 }
 
 void Convolution2D::backward() {
-	if (_num_inputs == 3) {
-		if (_inputs[2]->diff())
-			cudnnConvolutionBackwardBias(_cudnnHandle, &one, _dyDesc, _dy, &zero, _dbDesc, _db);
-		cudnnActivationBackward(_cudnnHandle, _activationDesc, &one, _yDesc, _y, _dyDesc, _dy, _xDesc, _x, &zero, _dzDesc, _dz);
-	}
-	else {
-		_dz = _dy;
-		_dzDesc = _dyDesc;
-	}
 	if (_inputs[0]->diff())
-		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &one, _wDesc, _w, _dzDesc, _dz, _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &zero, _dxDesc, _dx));
+		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &one, _wDesc, _w, _dyDesc, _dy, _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &zero, _dxDesc, _dx));
 	if (_inputs[1]->diff())
-		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &one, _xDesc, _x, _dzDesc, _dz, _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &zero, _wDesc, _dw));
+		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &one, _xDesc, _x, _dyDesc, _dy, _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &zero, _wDesc, _dw));
 }
 
 std::string Convolution2D::to_cpp() const
 {	
 	const deepflow::Conv2dParam &param = _param->conv_2d_param();
 	std::string cpp = "auto " + _name + " = df.conv2d(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
-	if (_num_inputs == 3)
-		cpp += _input_name_for_cpp(2) + ", ";
 	cpp += std::to_string(param.pad_h()) + ", ";
 	cpp += std::to_string(param.pad_w()) + ", ";
 	cpp += std::to_string(param.u()) + ", ";
 	cpp += std::to_string(param.v()) + ", ";
 	cpp += std::to_string(param.dilation_h()) + ", ";
 	cpp += std::to_string(param.dilation_w()) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

@@ -25,14 +25,16 @@ void RandomSelector::forward()
 
 void RandomSelector::backward()
 {
-		cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 1, _inputs[ _selection == 0 ? 0 : 1 ]->diff()->mutableData());
+	auto t = _inputs[_selection == 0 ? 0 : 1]->diff();
+	if (t) {
+		cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 1, t->mutableData());
+	}
 }
 
 std::string RandomSelector::to_cpp() const
 {	
 	std::string cpp = "auto " + _name + " = df.random_selector(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
 	cpp += std::to_string(_probability) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

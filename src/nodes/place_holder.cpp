@@ -72,7 +72,6 @@ std::string PlaceHolder::to_cpp() const
 		LOG(FATAL) << "Unsupported type.";
 	}
 	std::string cpp = "auto " + _name + " = df.place_holder(" + dims + ", " + type + ", ";	
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

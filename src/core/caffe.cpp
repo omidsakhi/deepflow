@@ -36,7 +36,7 @@ void Caffe::_parse_net_deprecated(std::shared_ptr<caffe::NetParameter> net, std:
 		bool resolved = false;
 		for (auto place_holde : inputs) {
 			if (place_holde.first == net_input_name) {
-				auto place_holder_node_output = df->place_holder(place_holde.second, Tensor::Float, net_input_name, {});
+				auto place_holder_node_output = df->place_holder(place_holde.second, Tensor::Float, net_input_name);
 				auto place_holder_node_param = df->block()->find_node_param_by_output_name(place_holder_node_output);
 				place_holder_node_param->set_output(0, net_input_name);
 				resolved = true;
@@ -171,14 +171,14 @@ std::string Caffe::_parse_relu_param(const caffe::ReLUParameter & param, const c
 {
 	LOG_IF(INFO, _verbose) << "  -> ReLUParameter";
 	LOG_IF(INFO, _verbose) << "     .negative_slope = " << param.negative_slope() << " [default: 0]";
-	return df->leaky_relu(layer.bottom(0) + "_output_0", param.negative_slope(), layer.name(), {});
+	return df->leaky_relu(layer.bottom(0) + "_output_0", param.negative_slope(), layer.name());
 }
 
 std::string Caffe::_parse_dropout_param(const caffe::DropoutParameter & param, const caffe::V1LayerParameter &layer)
 {
 	LOG_IF(INFO, _verbose) << "  -> DropoutParameter";
 	LOG_IF(INFO, _verbose) << "     .dropout_ratio = " << param.dropout_ratio() << " [default: 0.5]";
-	return df->dropout(layer.bottom(0) + "_output_0", param.dropout_ratio(), true, layer.name(), {});
+	return df->dropout(layer.bottom(0) + "_output_0", param.dropout_ratio(), true, layer.name());
 }
 
 std::string Caffe::_parse_inner_product_param(const caffe::InnerProductParameter & param, const caffe::V1LayerParameter &layer)
@@ -197,22 +197,22 @@ std::string Caffe::_parse_inner_product_param(const caffe::InnerProductParameter
 	LOG_IF(FATAL, num_output < 1) << "num_output < 1";
 	int num_inputs = layer.blobs(0).data_size() / num_output;
 	//LOG_IF(FATAL, param.has_weight_filler() == false) << "param.has_weight_filler() == false - " << layer.name() ;
-	std::string weight = df->variable( _parse_filler_param({ num_inputs, num_output, 1, 1 }, param.weight_filler(), "weight filler"), "", layer.name() + "_w", {});
+	std::string weight = df->variable( _parse_filler_param({ num_inputs, num_output, 1, 1 }, param.weight_filler(), "weight filler"), "", layer.name() + "_w");
 	auto weights_node = df->block()->find_node_param_by_output_name(weight);
 	auto weight_mutable_weights = weights_node->mutable_variable_param()->mutable_weights();
 	for (auto d : layer.blobs(0).data())
 		weight_mutable_weights->add_data(d);
 	if (param.bias_term() == false) {
-		return df->matmul(layer.bottom(0) + "_output_0", weight, layer.name(), {});
+		return df->matmul(layer.bottom(0) + "_output_0", weight, layer.name());
 	}
 	else {
 		//LOG_IF(FATAL, param.has_bias_filler() == false) << "param.has_bias_filler() == false - " << layer.name();
-		std::string bias = df->variable(_parse_filler_param({ 1, num_output, 1, 1 }, param.bias_filler(), "bias filler"), "", layer.name() + "_b", {});
+		std::string bias = df->variable(_parse_filler_param({ 1, num_output, 1, 1 }, param.bias_filler(), "bias filler"), "", layer.name() + "_b");
 		auto bias_node = df->block()->find_node_param_by_output_name(bias);		
 		auto bias_mutable_weights = bias_node->mutable_variable_param()->mutable_weights();
 		for (auto d : layer.blobs(1).data())
 			bias_mutable_weights->add_data(d);		
-		std::string m = df->matmul(layer.bottom(0) + "_output_0", weight, layer.name() + "_ip", {});
+		std::string m = df->matmul(layer.bottom(0) + "_output_0", weight, layer.name() + "_ip");
 		return df->bias_add(m, bias, layer.name());
 	}
 }
@@ -306,7 +306,7 @@ std::string Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, 
 	int num_output = param.num_output();
 	LOG_IF(FATAL, num_output < 1) << "num_output < 1";
 	int filter_second_dimension = layer.blobs(0).data_size() / num_output / kernel_h / kernel_w;
-	std::string filter = df->variable(_parse_filler_param({ num_output, filter_second_dimension, kernel_h, kernel_w }, param.weight_filler(), "weight filler"), "", layer.name() + "_w", {});
+	std::string filter = df->variable(_parse_filler_param({ num_output, filter_second_dimension, kernel_h, kernel_w }, param.weight_filler(), "weight filler"), "", layer.name() + "_w");
 	auto filter_node = df->block()->find_node_param_by_output_name(filter);
 	auto filter_mutable_weights = filter_node->mutable_variable_param()->mutable_weights();
 	for (auto d : layer.blobs(0).data())
@@ -319,19 +319,20 @@ std::string Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, 
 			_parse_filler_param({}, param.bias_filler(), "bias_filler");
 		}
 		//LOG_IF(FATAL, param.has_bias_filler() == false) << "param.has_bias_filler() == false - " << layer.name();
-		bias = df->variable(_parse_filler_param({ 1, num_output, 1, 1 }, param.bias_filler(), "bias filler"), "", layer.name() + "_b", {});
+		bias = df->variable(_parse_filler_param({ 1, num_output, 1, 1 }, param.bias_filler(), "bias filler"), "", layer.name() + "_b");
 		auto bias_node = df->block()->find_node_param_by_output_name(bias);
 		auto bias_mutable_weights = bias_node->mutable_variable_param()->mutable_weights();
 		for (auto d : layer.blobs(1).data())
 			bias_mutable_weights->add_data(d);
 	}
-	return df->conv2d(layer.bottom(0) + "_output_0", filter, bias, 1.0, pad_h, pad_w, stride_h, stride_w, dilation_h, dilation_w, layer.name(), {});
+	// TODO ADD BIAS
+	return df->conv2d(layer.bottom(0) + "_output_0", pad_h, pad_w, stride_h, stride_w, dilation_h, dilation_w, layer.name(), {});
 }
 
 std::string Caffe::_parse_softmax_param(const caffe::SoftmaxParameter & param, const caffe::V1LayerParameter & layer)
 {
 	LOG_IF(INFO, _verbose) << "  -> SoftmaxParameter";
-	return df->softmax(layer.bottom(0) + "_output_0", layer.name(), {});
+	return df->softmax(layer.bottom(0) + "_output_0", layer.name());
 }
 
 std::string Caffe::_parse_pooling_param(const caffe::PoolingParameter & param, const caffe::V1LayerParameter &layer)
@@ -377,6 +378,6 @@ std::string Caffe::_parse_pooling_param(const caffe::PoolingParameter & param, c
 		horizontalStride = param.stride_h();
 	}
 
-	return df->pooling(layer.bottom(0) + "_output_0", windowHeight, windowWidth, verticalPadding, horizontalPadding, verticalStride, horizontalStride, layer.name(), {});
+	return df->pooling(layer.bottom(0) + "_output_0", windowHeight, windowWidth, verticalPadding, horizontalPadding, verticalStride, horizontalStride, layer.name());
 }
 

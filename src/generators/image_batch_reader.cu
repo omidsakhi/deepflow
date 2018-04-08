@@ -147,7 +147,6 @@ std::string ImageBatchReader::to_cpp() const
 	else
 		cpp += "ImageReaderParam_Type_COLOR_IF_AVAILABLE, ";
 	cpp += (_randomize ? "true" : "false") + std::string(", ");
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

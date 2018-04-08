@@ -21,19 +21,22 @@ void Dropout::init() {
 }
 
 void Dropout::forward() {
-	if (_train_only && _context && _context->phase_behaviour != deepflow::PhaseParam_PhaseBehaviour_TRAIN) { 
-		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice));
-	}
-	else {
+	if (_context->execution_mode == ExecutionContext::TRAIN) {
 		DF_NODE_CUDNN_CHECK(cudnnDropoutForward(_cudnnHandle, _dropoutDesc, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData(), d_reserve, _reserve_sizes_in_bytes));
 	}
+	else {
+		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice));
+	}	
 }
 
 void Dropout::backward() {
-	if (_train_only && _context && _context->phase_behaviour != deepflow::PhaseParam_PhaseBehaviour_TRAIN) {
-		DF_NODE_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), _inputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice));
-	} else {
-		DF_NODE_CUDNN_CHECK(cudnnDropoutBackward(_cudnnHandle, _dropoutDesc, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData(), d_reserve, _reserve_sizes_in_bytes));
+	if (_inputs[0]->diff()) {
+		if (_context->execution_mode == ExecutionContext::TRAIN) {
+			DF_NODE_CUDNN_CHECK(cudnnDropoutBackward(_cudnnHandle, _dropoutDesc, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData(), d_reserve, _reserve_sizes_in_bytes));
+		}
+		else {
+			DF_NODE_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), _inputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice));
+		}		
 	}
 }
 
@@ -41,7 +44,6 @@ std::string Dropout::to_cpp() const
 {
 	std::string cpp = "auto " + _name + " = df.dropout(" + _input_name_for_cpp(0) + ", ";
 	cpp += std::to_string(_dropout) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

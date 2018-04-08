@@ -81,8 +81,7 @@ std::string Reduce::to_cpp() const
 	int reduceDim = reduceParam.reduce_dim();
 
 	std::string cpp = "auto " + _name + " = df." + op_name() + "(" + _input_name_for_cpp(0) + ", " + std::to_string(reduceDim) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }
 

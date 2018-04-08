@@ -15,17 +15,12 @@ Accumulator::Accumulator(deepflow::NodeParam *param) : Node(param) {
 }
 
 void Accumulator::init() {	
-	const deepflow::AccumulatorParam &accParam = _param->accumulator_param();
-	_reset_time = (deepflow::ActionTime)accParam.reset_time();
+	const deepflow::AccumulatorParam &accParam = _param->accumulator_param();	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
 	_outputs[1]->initValue({ 1,1,1,1 });	
 }
 
 void Accumulator::forward() {
-	if (_reset_time == deepflow::ActionTime::END_OF_EPOCH && _context->current_iteration_per_epoch == 1) {
-		DF_NODE_CUDA_CHECK(cudaMemset(_outputs[0]->value()->mutableData(), 0, _outputs[0]->value()->sizeInBytes()));
-		_total = 0;		
-	}
 	auto size = _inputs[0]->value()->size();
 	AccumulatorKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData());
 	DF_KERNEL_CHECK();
@@ -34,17 +29,18 @@ void Accumulator::forward() {
 }
 
 void Accumulator::backward() {
-	LOG(FATAL);
+	
 }
 
 std::string Accumulator::to_cpp() const
 {
 	std::string cpp = "auto " + _name + " = df.accumulator(" + _input_name_for_cpp(0) + ", ";
-	if (_reset_time == deepflow::ActionTime::END_OF_EPOCH)
-		cpp += "Accumulator::EndOfEpoch, ";
-	else if (_reset_time == deepflow::ActionTime::NEVER)
-		cpp += "Accumulator::Never, ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
+}
+
+void Accumulator::reset()
+{
+	DF_NODE_CUDA_CHECK(cudaMemset(_outputs[0]->value()->mutableData(), 0, _outputs[0]->value()->sizeInBytes()));
+	_total = 0;
 }

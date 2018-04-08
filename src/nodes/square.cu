@@ -32,16 +32,17 @@ void Square::forward() {
 	DF_KERNEL_CHECK();
 }
 
-void Square::backward() {	
-	auto size = _inputs[0]->value()->size();
-	SquareKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
-	DF_KERNEL_CHECK();
+void Square::backward() {
+	if (_inputs[0]->diff()) {
+		auto size = _inputs[0]->value()->size();
+		SquareKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
+		DF_KERNEL_CHECK();
+	}
 }
 
 std::string Square::to_cpp() const
 {
 	std::string cpp = "auto " + _name + " = df.square(" + _input_name_for_cpp(0) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

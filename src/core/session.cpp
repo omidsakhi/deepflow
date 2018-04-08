@@ -2,7 +2,6 @@
 
 #include "nodes/variable.h"
 #include "nodes/place_holder.h"
-#include "nodes/phaseplexer.h"
 
 #include "initializers/fill.h"
 #include "initializers/index_fill.h"
@@ -201,8 +200,6 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Activation>(node_param);
 	else if (node_param->has_concate_param())
 		return std::make_shared<Concate>(node_param);
-	else if (node_param->has_phaseplexer_param())
-		return std::make_shared<Phaseplexer>(node_param);
 	else if (node_param->has_place_holder_param())
 		return std::make_shared<PlaceHolder>(node_param);
 	else if (node_param->has_print_param())
@@ -278,14 +275,15 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 		return;
 	
 	int dbl = 0;
-	if (execution_context)
+	if (execution_context) {
 		dbl = execution_context->debug_level;
+		if (dbl > 2) {
+			cudnnSetCallback(CUDNN_SEV_INFO_EN, NULL, NULL);
+		}
+	}
 
 	_initialized = true;	
 
-	for (auto phase_param : _block->phase_params())
-		_phases.insert(std::pair<std::string, deepflow::PhaseParam_PhaseBehaviour>(phase_param.phase(), phase_param.behaviour()));
-	
 	LOG_IF(INFO, dbl > 2) << "creating nodes ... ";
 
 	// creating nodes
@@ -314,7 +312,7 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 	}
 	
 	// caching the name of all variables
-	_variables = _get_nodes<Variable>("");
+	_variables = _get_nodes<Variable>();
 
 	for (auto var : _variables) {
 		std::shared_ptr<Solver> solver;
@@ -488,220 +486,16 @@ bool Session::is_head_node(std::shared_ptr<Node> node) const
 	return false;
 }
 
-std::list<std::shared_ptr<Node>> Session::_get_all_end_nodes(std::string execution_phase) const
+std::list<std::shared_ptr<Node>> Session::end_nodes() const
 {
 	std::list<std::shared_ptr<Node>> list;
 	for (auto node : _nodes) {
-		if (node->includePhase(execution_phase) && is_end_node(node)) {
+		if (is_end_node(node)) {
 			list.push_back(node);
 		}
 	}
 	return list;
 }
-
-std::list<std::shared_ptr<Node>> Session::_get_all_head_nodes(std::string execution_phase) const
-{
-	std::list<std::shared_ptr<Node>> list;
-	for (auto node : _nodes) {
-		if (node->includePhase(execution_phase) && is_head_node(node)) {
-				list.push_back(node);
-		}
-	}
-	return list;
-}
-
-/*
-std::list<std::shared_ptr<Node>> Session::_get_forward_path(std::string execution_phase) const
-{
-
-	/*
-
-
-	std::list<std::shared_ptr<Node>> end_nodes = _get_all_end_nodes("");
-	std::list<std::list<std::shared_ptr<Node>>> paths;
-	std::list<std::shared_ptr<Node>> abandon;
-	for (auto node : end_nodes) {
-		int visit_token = rand();
-		for (auto node : abandon)
-			node->setVisitToken(visit_token);
-		std::list<std::shared_ptr<Node>> path;
-		std::list<std::shared_ptr<Node>> list;		
-		list.push_back(node);
-		bool valid_path = true;
-		while (valid_path && list.size() > 0) {
-			auto node = list.front();
-			list.pop_front();
-			if (node->visitToken() == visit_token) {
-				continue;
-			}
-			auto inputNodes = node->inputNodes();
-			auto outputNodes = node->outputNodes();
-			if (inputNodes.size() == 0 && outputNodes.size() == 0) {
-				valid_path = false;				
-			}
-			if (valid_path && inputNodes.size() > 0) {
-				bool found = false;
-				for (auto inputNode : inputNodes) {
-					for (auto outputNode : inputNode->outputNodes()) {
-						if (outputNode == node) {
-							found = true;
-							break;
-						}
-					}
-					if (found)
-						break;
-				}
-				if (!found)	valid_path = false;
-			}
-			if (valid_path && outputNodes.size() > 0) {
-				bool found = false;
-				for (auto outputNode : outputNodes) {
-					for (auto inputNode : outputNode->inputNodes()) {
-						if (inputNode == node) {
-							found = true;
-							break;
-						}
-					}
-					if (found) break;
-				}
-				if (!found) {
-					valid_path = false;
-				}
-				else {
-					bool all_visited = true;
-					for (auto outputNode : outputNodes) {
-						if (outputNode->visitToken() != visit_token) {
-							bool valid = false;
-							for (auto in : outputNode->inputNodes())
-								if (in == node) {
-									valid = true;
-									break;
-								}
-							if (valid)
-								all_visited = false;
-							break;
-						}
-					}
-					if (!all_visited) {
-						list.push_back(node);
-						continue;
-					}
-				}
-			}
-			node->setVisitToken(visit_token);
-			if (valid_path) {
-				path.push_front(node);				
-				for (auto inputNode : node->inputNodes()) {
-					list.push_back(inputNode);
-				}
-			}
-			else {
-				for (auto node : path)
-					abandon.push_back(node);
-				abandon.push_back(node);
-			}
-		}
-		if (valid_path)
-			paths.push_back(path);
-	}
-
-	std::list<std::shared_ptr<Node>> head_nodes = _get_all_head_nodes("");
-	std::list<std::shared_ptr<Node>> valid_path;
-	for (auto path : paths) {
-		bool foundAHead = false;
-		for (auto node : path) {
-			for (auto head : head_nodes) {
-				if (head == node) {
-					foundAHead = true;
-					break;
-				}
-			}
-			if (foundAHead)
-				break;
-		}
-		if (foundAHead) {
-			for (auto node : path) {
-				bool found = false;
-				for (auto n2 : valid_path) {
-					if (n2 == node) {
-						found = true;
-						break;
-					}
-				}
-				if (!found)
-					valid_path.push_back(node);
-			}
-		}
-	}
-
-	return valid_path;
-	
-}
-*/
-
-/*
-std::list<std::shared_ptr<Node>> Session::_get_backward_path(std::string execution_phase) const
-{
-
-	std::list<std::shared_ptr<Node>> head_nodes = _get_all_head_nodes("");
-	std::list<std::list<std::shared_ptr<Node>>> paths;	
-	for (auto node : head_nodes) {		
-		std::list<std::shared_ptr<Node>> path;
-		std::list<std::shared_ptr<Node>> list;
-		list.push_back(node);
-		while (list.size() > 0) {
-			auto node = list.front();
-			int visit_token = rand();
-			list.pop_front();
-			if (node->visitToken() != visit_token) {
-				path.push_front(node);
-				node->setVisitToken(visit_token);
-				for (auto outputNode : node->outputNodes()) {
-					bool found = false;
-					for (auto inputNode : outputNode->inputNodes()) {
-						if (inputNode == node) {
-							found = true;
-							break;
-						}
-					}
-					if (found)
-						list.push_back(outputNode);
-				}
-			}
-		}
-		paths.push_back(path);
-	}
-
-	std::list<std::shared_ptr<Node>> end_nodes = _get_all_end_nodes("");
-	std::list<std::shared_ptr<Node>> valid_path;
-	for (auto path : paths) {
-		bool foundEnd = false;
-		for (auto node : path) {
-			for (auto end : end_nodes) {
-				if (end == node) {					
-					foundEnd = true;
-					break;
-				}
-			}
-			if (foundEnd)
-				break;
-		}
-		if (foundEnd) {
-			for (auto node : path) {
-				bool found = false;
-				for (auto n2 : valid_path)
-					if (n2 == node) {
-						found = true;
-						break;
-					}
-				if (!found)
-				valid_path.push_back(node);
-			}
-		}
-	}
-	return valid_path;
-}
-*/
 
 std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string &name) const {
 	for (auto node : _nodes) {
@@ -713,14 +507,8 @@ std::shared_ptr<NodeOutput> Session::_find_node_output_by_name(const std::string
 	return 0;
 }
 
-std::list<std::shared_ptr<Node>> Session::forward_path()
+std::list<std::shared_ptr<Node>> forward_path(std::list<std::shared_ptr<Node>> nodes)
 {
-	for (auto node : _nodes) {
-		for (auto t : node->outputs())
-			t->setEnabled(false);
-	}
-
-	std::list<std::shared_ptr<Node>> nodes = _get_all_end_nodes("");
 	std::list<std::shared_ptr<Node>> active_head_nodes;
 	std::list<std::shared_ptr<Node>> visited_nodes;
 
@@ -814,9 +602,16 @@ std::list<std::shared_ptr<Node>> Session::forward_path()
 	return forward_path;	
 }
 
-void Session::forward()
+void Session::forward(std::list<std::shared_ptr<Node>> end_nodes, std::initializer_list<std::pair<std::shared_ptr<PlaceHolder>, std::shared_ptr<Tensor>>> feed_list)
 {
-	auto path = forward_path();
+	for (auto node : _nodes) {
+		for (auto t : node->outputs())
+			t->setEnabled(false);
+	}
+	for (auto pair : feed_list) {
+		pair.first->write_values(pair.second);
+	}
+	auto path = forward_path(end_nodes);
 	while (path.size() > 0) {
 		auto node = path.front();
 		path.pop_front();
@@ -848,9 +643,16 @@ void Session::clamp(float min, float max)
 	}
 }
 
-void Session::backward()
+void Session::backward(std::list<std::shared_ptr<Node>> end_nodes, std::initializer_list<std::pair<std::shared_ptr<Node>, std::shared_ptr<Tensor>>> feed_list)
 {
-	auto path = forward_path();
+	for (auto node : _nodes) {
+		for (auto t : node->outputs())
+			t->setEnabled(false);
+	}
+	for (auto pair : feed_list) {
+		pair.first->write_diffs(pair.second);
+	}
+	auto path = forward_path(end_nodes);
 	while (path.size() > 0) {
 		auto node = path.back();
 		path.pop_back();
@@ -939,7 +741,7 @@ void Session::save(std::string file_path, bool as_text)
 
 void Session::print_variables_info()
 {
-	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>("");	
+	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>();	
 	double mean, std, min, max;
 	for (auto var : variable_nodes) {
 		auto output = var->output(0);
@@ -967,185 +769,22 @@ void Session::print_nodes_info()
 	}	
 }
 
-std::shared_ptr<Node> Session::end_node()
+std::shared_ptr<Node> Session::end_node() const
 {
-	auto list = _get_all_end_nodes("");	
+	auto list = end_nodes();	
 	LOG_IF(FATAL, list.size() != 1) << "[FAILED] session must have exactly one end node.";
 	return *list.begin();
 }
 
 void Session::print_total_parameters()
 {
-	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>("");
+	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>();
 	size_t total = 0;
 	for (auto var : variable_nodes) {
 		total += var->output(0)->value()->size();
 	}
 	LOG(INFO) << "total parameters: " << total;
 }
-
-void Session::run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level) {
-	int iteration = 1;
-	for (int epoch = 1; epoch <= max_epoch; ++epoch) {
-		if (print_epoch)
-			std::cout << "Epoch " << epoch << " -->" << std::endl;
-		auto epoch_start = std::chrono::high_resolution_clock::now();
-		forward();
-		backward();
-		apply_solvers();
-		reset_gradients();
-		auto epoch_end = std::chrono::high_resolution_clock::now();
-		std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
-		if (print_epoch)
-			std::cout << "<-- Epoch " << epoch << " Elapsed time: " << elapsed_epoch.count() << " seconds" << std::endl;
-		if (_execution_context->quit == true)
-			break;
-		if (max_iter > 0 && iteration >= max_iter)
-			break;
-	}
-}
-
-/*
-void Session::_execute_one_pass(std::shared_ptr<ExecutionContext> context, int *iteration, std::list<std::shared_ptr<Node>> *nodes, std::list<std::shared_ptr<Node>> *generators, std::list<std::shared_ptr<Node>> *end_nodes, std::list<std::shared_ptr<Node>> *head_nodes, std::list<std::shared_ptr<Variable>> *variable_nodes, int max_iter, bool print_iteration) {
-	int iteration_per_epoch = 1;
-	bool last_batch = false;	
-	for (auto node : *nodes)
-		node->setExecutionContext(context);
-	bool train = _phases.find(context->phase)->second == deepflow::PhaseParam_PhaseBehaviour_TRAIN;
-	bool validation = _phases.find(context->phase)->second == deepflow::PhaseParam_PhaseBehaviour_VALIDATION;
-	if (train || validation) {
-		int token = rand();
-		for (auto node : *end_nodes) {
-			node->_resolve_propagation(token);
-		}
-	}
-	do {
-		if (generators->size() > 0) {
-			for (auto gen : *generators) {
-				LOG_IF(FATAL, gen->is_generator() == false) << "NOT A GENERATOR";
-				if (gen->isLastBatch()) {
-					last_batch = true;
-					//LOG(INFO) << "LAST BATCH: " << std::dynamic_pointer_cast<Node>(gen)->name();
-				}
-			}
-		}
-		else {
-			last_batch = true;
-		}
-		if (iteration)
-			context->current_iteration = *iteration;
-		context->current_iteration_per_epoch = iteration_per_epoch;
-		context->last_batch = last_batch;
-		if (iteration && print_iteration)
-			std::cout << "  Iteration " << *iteration << std::endl;
-		int token = rand();
-		for (auto node : *end_nodes) {
-			node->_forward(token);
-		}
-		if (train) {
-			for (auto node : *variable_nodes)
-				node->reset_gradients();
-			int token = rand();
-			for (auto node : *head_nodes) {
-				node->_backward(token);
-			}
-			for (auto var : *variable_nodes) {
-				auto map_var_to_solver = _solvers.find(var);
-				if (map_var_to_solver != _solvers.end()) {										
-					map_var_to_solver->second->apply(var);
-				}
-			}
-		}
-		if (iteration)
-			(*iteration)++;
-		iteration_per_epoch++;
-		if (max_iter > 0 && iteration && (*iteration) >= max_iter)
-			break;
-	} while (last_batch == false && context->quit != true);
-}
-
-*/
-
-/*
-
-void Session::run(std::string phase, int max_epoch, int max_iter, bool print_iteration, bool print_epoch, int debug_level) {
-	LOG(INFO) << "Executing graph for phase " << phase;
-	LOG_IF(FATAL, _phases.find(phase) == _phases.end()) << "Specified phase " << phase << " is not defined.";	
-	std::list<std::shared_ptr<Node>> execution_phase_generators;
-	for (auto node : _nodes) {
-		if (!phase.empty() && node->includePhase(phase) == false)
-			continue;
-		if (node->is_generator())
-			execution_phase_generators.push_back(node);
-	}	
-	std::list<std::shared_ptr<Node>> execution_end_nodes = _get_end_nodes(phase);
-	std::list<std::shared_ptr<Node>> execution_head_nodes = _get_head_nodes(phase);
-	std::string end_node_names;
-	for (auto node : execution_end_nodes) {
-		end_node_names += node->name() + " ";
-	}
-	LOG(INFO) << "End nodes: " << end_node_names;
-	auto execution_context = std::make_shared<ExecutionContext>();
-	deepflow::PhaseParam_PhaseBehaviour behaviour = _phases.find(phase)->second;
-	execution_context->phase = phase;
-	execution_context->phase_behaviour = behaviour;
-	execution_context->debug_level = debug_level;
-	if (behaviour == deepflow::PhaseParam_PhaseBehaviour_TRAIN) {
-		std::list<std::shared_ptr<Variable>> execution_phase_variable_nodes = _get_nodes<Variable>(phase);
-		std::string validation_phase;
-		for (auto phase : _phases) {
-			if (phase.second == deepflow::PhaseParam_PhaseBehaviour_VALIDATION) {
-				validation_phase = phase.first;
-				break;
-			}
-		}
-		std::list<std::shared_ptr<Node>> validation_phase_generators;
-		std::list<std::shared_ptr<Node>> validation_end_nodes, validation_head_nodes;
-		std::shared_ptr<ExecutionContext> validation_context;
-		if (!validation_phase.empty()) {
-			LOG(INFO) << "Graph has validation phase (name: " << validation_phase << ")";
-			validation_context = std::make_shared<ExecutionContext>();
-			validation_context->current_epoch = 1;
-			validation_context->debug_level = debug_level;
-			validation_context->phase = validation_phase;
-			validation_context->phase_behaviour = deepflow::PhaseParam_PhaseBehaviour_VALIDATION;
-			for (auto node : _nodes) {
-				if (node->includePhase(validation_phase) == false)
-					continue;
-				if (node->is_generator())
-					validation_phase_generators.push_back(node);
-			}			
-			validation_end_nodes = _get_end_nodes(validation_phase);
-			validation_head_nodes = _get_head_nodes(validation_phase);
-		}
-		int iteration = 1;
-		for (int epoch = 1; epoch <= max_epoch; ++epoch) {
-			if (print_epoch) 
-				std::cout << "Epoch " << epoch << " -->" << std::endl;
-			auto epoch_start = std::chrono::high_resolution_clock::now();
-			execution_context->current_epoch = epoch;
-			_execute_one_pass(execution_context, &iteration, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_head_nodes, &execution_phase_variable_nodes, max_iter, print_iteration);
-			if (!validation_phase.empty()) {
-				validation_context->current_iteration = 1;
-				validation_context->current_epoch = epoch;
-				_execute_one_pass(validation_context, 0, &_nodes, &validation_phase_generators, &validation_end_nodes, &validation_head_nodes, 0, max_iter, false);
-			}
-			auto epoch_end = std::chrono::high_resolution_clock::now();
-			std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;
-			if (print_epoch)
-				std::cout << "<-- Epoch " << epoch << " Elapsed time: " << elapsed_epoch.count() << " seconds" << std::endl;
-			if (execution_context->quit == true)
-				break;
-			if (max_iter > 0 && iteration >= max_iter)
-				break;
-		}
-	}
-	else {
-		_execute_one_pass(execution_context, 0, &_nodes, &execution_phase_generators, &execution_end_nodes, &execution_head_nodes, 0, max_iter, false);
-	}
-}
-
-*/
 
 void Session::mem_usage(size_t * free_byte, size_t * total_byte, float *used_byte_percentage)
 {
@@ -1162,14 +801,7 @@ void generate_cpp_code(Node *node, std::string *code) {
 
 std::string Session::to_cpp() const
 {
-	std::list<std::shared_ptr<Node>> ends = _get_all_end_nodes("");
 	std::string code = "\nDeepFlow df;\n\n";
-
-	for (auto phase : _phases)
-		code += "df.define_phase(\"" + phase.first + "\", deepflow::PhaseParam_PhaseBehaviour_" + PhaseParam_PhaseBehaviour_Name(phase.second) + ");\n";
-
-	if (_phases.size() > 0)
-		code += "\n";
 
 	std::set<std::shared_ptr<Solver>> solvers_set;
 	for (auto solver_map_item : _solvers) {
@@ -1194,7 +826,7 @@ std::string Session::to_cpp() const
 
 	int token = rand();
 
-	std::list<std::shared_ptr<Node>> nodes = _get_all_end_nodes("");
+	std::list<std::shared_ptr<Node>> nodes = end_nodes();
 	std::list<std::shared_ptr<Node>> list, visited_nodes;
 
 	auto isVisited = [](std::list<std::shared_ptr<Node>> &list, std::shared_ptr<Node> node_to_check) {
@@ -1250,37 +882,3 @@ std::shared_ptr<PlaceHolder> Session::get_placeholder(std::string name)
 	LOG_IF(FATAL, placeholder == nullptr) << name << " is not a placeholder.";
 	return placeholder;
 }
-
-std::shared_ptr<Node> Session::get_node(std::string name)
-{
-	auto node = _find_node_by_name(name);
-	LOG_IF(FATAL, node == nullptr) << "Node " << name << " does not exist.";
-	LOG_IF(WARNING, !is_end_node(node) && !is_head_node(node)) << "Node " << name << " is neither a head node nor an end node.";
-	return node;
-}
-
-/*
-std::shared_ptr<NetworkParam> DeepFlow::create_network_param(bool include_weights, bool include_inits) {
-	auto param = std::make_shared<NetworkParam>();
-	for (auto phase : _phases) {
-		PhaseParam *phaseParam = param->add_phase();
-		phaseParam->set_phase(phase.first);
-		phaseParam->set_behaviour(phase.second);
-	}
-	for (auto var : _variables) {
-		if (include_weights)
-			var->transferDataToParam();
-		else
-			var->param().mutable_variable_param()->clear_weights();
-		if (!include_inits)
-			var->param().mutable_variable_param()->mutable_init_param()->clear_init_data();
-	}
-	for (auto node : _nodes) {
-		NodeParam *nodeParam = param->add_node();
-		nodeParam->CopyFrom(node->param());
-	}
-	SolverParam *solverParam = param->add_solver();
-	solverParam->CopyFrom(_solver->param());
-	return param;
-}
-*/

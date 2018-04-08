@@ -1,142 +1,82 @@
+
 #include "core/deep_flow.h"
 #include "core/session.h"
+#include "utilities/moving_average.h"
 
 #include <random>
 #include <gflags/gflags.h>
 
 DEFINE_string(mnist, "C:/Projects/deepflow/data/mnist", "Path to mnist folder dataset");
-DEFINE_string(i, "", "Trained network model to load");
-DEFINE_string(o, "", "Trained network model to save");
-DEFINE_bool(text, false, "Save model as text");
-DEFINE_bool(includeweights, false, "Also save weights in text mode");
-DEFINE_bool(includeinits, false, "Also save initial values");
 DEFINE_int32(batch, 100, "Batch size");
-DEFINE_string(run, "", "Phase to execute graph");
-DEFINE_bool(printiter, false, "Print iteration message");
-DEFINE_bool(printepoch, true, "Print epoch message");
+DEFINE_int32(z_dim, 100, "Z dimention");
 DEFINE_int32(debug, 0, "Level of debug");
-DEFINE_int32(epoch, 1000000, "Maximum epochs");
-DEFINE_int32(iter, -1, "Maximum iterations");
+DEFINE_int32(iter, 1000000, "Maximum iterations");
+DEFINE_string(load, "", "Load from mnist_dcganXXXX.bin");
+DEFINE_int32(save_image, 100, "Save image iteration frequency (Don't Save = 0)");
+DEFINE_int32(save_model, 1000, "Save model iteration frequency (Don't Save = 0)");
+DEFINE_bool(train, false, "Train");
+DEFINE_bool(test, false, "Test");
 DEFINE_bool(cpp, false, "Print C++ code");
+DEFINE_bool(print, false, "Print source C++");
 
-std::shared_ptr<Session> create_mnist_reader() {
-	DeepFlow df;
-	df.mnist_reader(FLAGS_mnist, 100, MNISTReader::MNISTReaderType::Train, MNISTReader::Data, "mnist_data");
-	return df.session();
+void load_session(DeepFlow *df, std::string prefix) {
+	std::string filename = prefix + ".bin";
+	std::cout << "Loading " << prefix << " from " << filename << std::endl;
+	df->block()->load_from_binary(filename);
 }
 
-std::shared_ptr<Session> create_mnist_labels() {
-	DeepFlow df;
-	df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1.0), "", "mnist_labels");
-	return df.session();
+void create_generator(DeepFlow *df) {
+	int fn = 64;
+	float ef = 0.01f;
+	auto solver = df->adam_solver(0.00005f, 0.5f, 0.99f, 10e-8, "g_adam");
+
+	auto node = df->place_holder({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, Tensor::Float, "g_input");
+
+	node = df->dense(node, { FLAGS_z_dim, fn * 4, 4 , 4 }, false, solver, "gfc");
+	node = df->batch_normalization(node, solver, fn * 4, ef, "gfc_bn");
+	node = df->relu(node);
+
+	node = df->transposed_conv2d(node, fn * 4, fn * 4, 3, 1, 2, false, solver, "g8");
+	node = df->batch_normalization(node, solver, fn * 4, ef, "g8_bn");
+	node = df->relu(node);
+
+	node = df->transposed_conv2d(node, fn * 4, fn * 4, 3, 1, 2, false, solver, "g16");
+	node = df->batch_normalization(node, solver, fn * 4, ef, "g16_bn");
+	node = df->relu(node);
+
+	node = df->transposed_conv2d(node, fn * 4, fn * 2, 3, 1, 2, false, solver, "g32");
+	node = df->batch_normalization(node, solver, fn * 2, ef, "g32_bn");
+	node = df->relu(node);
+
+	df->conv2d(node, fn * 2, 1, 5, 0, 1, true, solver, "g28");
+
 }
 
-std::shared_ptr<Session> create_generator_labels() {
-	DeepFlow df;
-	df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), "", "generator_labels");
-	return df.session();
-}
+void create_discriminator(DeepFlow *df) {
+	int fn = 64;
+	float ef = 0.01f;
+	auto solver = df->adam_solver(0.00005f, 0.5f, 0.99f, 10e-8, "d_adam");
 
-std::shared_ptr<Session> create_loss() {
-	DeepFlow df;
-	auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "discriminator_input");
-	auto labels_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "labels_input");
-	auto euc = df.square_error(discriminator_input, labels_input);
-	auto loss = df.loss(euc, DeepFlow::AVG);
-	df.print({ loss }, " NORM {0}\n", DeepFlow::EVERY_PASS); 
-	return df.session();
+	auto node = df->place_holder({ FLAGS_batch , 1, 28, 28 }, Tensor::Float, "d_input");
 
-}
+	node = df->conv2d(node, 1, fn, 5, 2, 2, false, solver, "d14");
+	node = df->batch_normalization(node, solver, fn, ef, "d14_bn");
+	node = df->leaky_relu(node, 0.2f);
 
-std::shared_ptr<Session> create_socket_io_sender() {
-	DeepFlow df;
-	auto dtrue = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "dtrue");
-	auto dfake = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "dfake");
-	auto gfake = df.place_holder({ 1, 1, 1, 1 }, Tensor::Float, "gfake");
-	df.sio_output({ dtrue, dfake, gfake });
-	return df.session();
-}
+	node = df->conv2d(node, fn, fn * 2, 5, 2, 2, false, solver, "d7");
+	node = df->batch_normalization(node, solver, fn * 2, ef, "d7_bn");
+	node = df->leaky_relu(node, 0.2f);
 
-std::string tconv(DeepFlow *df, std::string name, std::string input, std::string solver, int depth1, int depth2, int kernel, int pad, bool activation) {
-	auto mean = 0;
-	auto stddev = 0.001;
-	auto dropout = 0.2;	
-	auto tconv_l = df->resize(input, 2.0, 2.0, name + "_resize");
-	auto tconv_f = df->variable(df->random_normal({ depth1, depth2, kernel, kernel }, mean, stddev), solver, name + "_f");
-	auto tconv_t = df->conv2d(tconv_l, tconv_f, "", 0, pad, pad, 1, 1, 1, 1, name + "_t");
-	auto tconv_b = df->batch_normalization(tconv_t, solver, depth1, name + "_bn");
-	if (activation) {
-		auto drop = df->dropout(tconv_t, dropout);
-		return df->relu(drop);
-	}
-	return tconv_t;
-}
+	node = df->conv2d(node, fn * 2, fn * 4, 5, 2, 2, false, solver, "d4");
+	node = df->batch_normalization(node, solver, fn * 4, ef, "d4_bn");
+	node = df->leaky_relu(node, 0.2f);
 
-std::shared_ptr<Session> create_generator_session() {
-	DeepFlow df;
+	df->dense(node, { (fn * 4) * 4 * 4, 1, 1, 1 }, true, solver, "dfc");
 
-	auto mean = 0;
-	auto stddev = 0.1;	
-	auto dropout = 0.2;	
-
-	auto g_solver = df.adam_solver(0.0002f, 0.5f, 0.98f);
-	auto gin = df.data_generator(df.random_uniform({ FLAGS_batch, 100, 1, 1 }, -1, 1, "random_input"), "", "input");
-
-	auto gfc_w = df.variable(df.random_normal({ 100, 512, 3, 3 }, mean, stddev), g_solver, "gfc_w");
-	auto gfc = df.matmul(gin, gfc_w, "gfc");	
-
-	auto tconv1 = tconv(&df, "tconv1", gfc, g_solver, 256, 512, 2, 0, true);
-	auto tconv2 = tconv(&df, "tconv2", tconv1, g_solver, 128, 256, 2, 0, true);
-	auto tconv3 = tconv(&df, "tconv3", tconv2, g_solver, 64, 128, 3, 0, true);
-	auto tconv4 = tconv(&df, "tconv4", tconv3, g_solver, 1, 64, 5, 0, false);
-
-	auto gout = df.pass_through(tconv4, false, "gout");
-
-	auto disp = df.display(gout, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);	
-
-	return df.session();
-}
-
-std::string conv(DeepFlow *df, std::string name, std::string input, std::string solver, int depth1, int depth2, bool activation) {
-	auto mean = 0;
-	auto stddev = 0.1;
-	auto negative_slope = 0.1;	
-	auto conv_w = df->variable(df->random_normal({ depth1, depth2, 3, 3 }, mean, stddev), solver, name + "_w");
-	auto conv_ = df->conv2d(input, conv_w, "", 0,  1, 1, 2, 2, 1, 1, name);
-	if (activation) {				
-		return df->leaky_relu(conv_, negative_slope);
-	}
-	return conv_;
-}
-
-std::shared_ptr<Session> create_discriminator() {
-	DeepFlow df;
-	auto mean = 0;
-	auto stddev = 0.01;
-	auto d_solver = df.adam_solver(0.0002f, 0.5f, 0.98f);
-	auto negative_slope = 0.1;
-	auto input = df.place_holder({ FLAGS_batch , 1, 28, 28 }, Tensor::Float, "input");
-
-	//auto disp = df.display(input, 1, DeepFlow::EVERY_PASS, DeepFlow::VALUES);
-
-	auto conv1 = conv(&df, "conv1", input, d_solver, 64, 1, true);
-	auto conv2 = conv(&df, "conv2", conv1, d_solver, 64, 64, true);
-	auto conv3 = conv(&df, "conv3", conv2, d_solver, 64, 64, true);		
-	auto conv4 = conv(&df, "conv4", conv3, d_solver, 128, 64, true);
-
-	auto w1 = df.variable(df.random_uniform({ 128 * 2 * 2, 500, 1, 1 }, -0.100000, 0.100000), d_solver, "w1");
-	auto m1 = df.matmul(conv4, w1, "m1");
-	auto b1 = df.variable(df.step({ 1, 500, 1, 1 }, -1.000000, 1.000000), d_solver, "b1");
-	auto bias1 = df.bias_add(m1, b1, "bias1");
-	auto relu1 = df.leaky_relu(bias1, negative_slope, "relu1");	
-
-	auto w2 = df.variable(df.random_uniform({ 500, 1, 1, 1 }, -0.100000, 0.100000), d_solver, "w2");
-	auto m2 = df.matmul(relu1, w2, "m2");	
-
-	return df.session();
 }
 
 void main(int argc, char** argv) {
+
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
 
 	CudaHelper::setOptimalThreadsPerBlock();
@@ -144,87 +84,136 @@ void main(int argc, char** argv) {
 	auto execution_context = std::make_shared<ExecutionContext>();
 	execution_context->debug_level = FLAGS_debug;
 
-	auto generator = create_generator_session();
-	generator->initialize();
-	generator->set_execution_context(execution_context);
-	auto discriminator = create_discriminator();
-	discriminator->initialize(execution_context);	
-	auto mnist_reader = create_mnist_reader();
-	mnist_reader->initialize(execution_context);	
-	auto mnist_labels = create_mnist_labels();
-	mnist_labels->initialize(execution_context);	
-	auto generator_labels = create_generator_labels();
-	generator_labels->initialize(execution_context);	
-	auto loss = create_loss();
-	loss->initialize(execution_context);	
-	auto socket_io_sender_session = create_socket_io_sender();	
-	socket_io_sender_session->initialize(execution_context);
+	DeepFlow df;
 
-	auto mnist_reader_data = mnist_reader->get_node("mnist_data");
-	auto generator_output = generator->get_node("gout");
-	auto discriminator_input = discriminator->get_placeholder("input");
-	auto discriminator_output = discriminator->end_node();
-	auto generator_labels_output = generator_labels->get_node("generator_labels");
-	auto mnist_labels_output = mnist_labels->get_node("mnist_labels");
-	auto loss_discriminator_input = loss->get_placeholder("discriminator_input");
-	auto loss_labels_input = loss->get_placeholder("labels_input");
-	auto loss_output = loss->get_node("loss");
-	auto sio_sender_dtrue = socket_io_sender_session->get_node("dtrue");
-	auto sio_sender_dfake = socket_io_sender_session->get_node("dfake");
-	auto sio_sender_gfake = socket_io_sender_session->get_node("gfake");
-
-	for (int i = 1; i <= FLAGS_epoch && execution_context->quit != true; ++i) {
-		
-		execution_context->current_iteration = i;
-
-		std::cout << "Epoch: " << i << std::endl;
-
-		std::cout << " MNIST INPUT " << std::endl;
-		mnist_reader_data->forward();
-		discriminator_input->write_values(mnist_reader_data->output(0)->value());		
-		discriminator->forward();
-		mnist_labels->forward();
-		loss_discriminator_input->write_values(discriminator_output->output(0)->value());		
-		loss_labels_input->write_values(mnist_labels_output->output(0)->value());		
-		loss->forward();
-		sio_sender_dtrue->write_values(loss_output->output(0)->value());
-		loss->backward();		
-		discriminator_output->write_diffs(loss_discriminator_input->output(0)->diff());
-		discriminator->backward();
-
-		std::cout << " GENERATOR INPUT " << std::endl;
-		generator->forward();
-		discriminator_input->write_values(generator_output->output(0)->value());
-		discriminator->forward();
-		generator_labels->forward();
-		loss_discriminator_input->write_values(discriminator_output->output(0)->value());
-		loss_labels_input->write_values(generator_labels_output->output(0)->value());
-		loss->forward();
-		sio_sender_dfake->write_values(loss_output->output(0)->value());
-		loss->backward();
-		discriminator_output->write_diffs(loss_discriminator_input->output(0)->diff());
-		discriminator->backward();
-		discriminator->apply_solvers();
-		
-		std::cout << " TRAINING GENERATOR " << std::endl;
-		loss->reset_gradients();
-		generator->forward();
-		discriminator_input->write_values(generator_output->output(0)->value());
-		discriminator->forward();
-		mnist_labels->forward();
-		loss_discriminator_input->write_values(discriminator_output->output(0)->value());
-		loss_labels_input->write_values(mnist_labels_output->output(0)->value());
-		loss->forward();
-		sio_sender_gfake->write_values(loss_output->output(0)->value());
-		loss->backward();
-		discriminator_output->write_diffs(loss_discriminator_input->output(0)->diff());
-		discriminator->backward();
-		generator_output->write_diffs(discriminator_input->output(0)->diff());
-		generator->backward();
-		generator->apply_solvers();
-		discriminator->reset_gradients();
-
-		socket_io_sender_session->forward();
+	if (FLAGS_load.empty()) {
+		df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1), "", "mnist_labels");
+		df.mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::MNISTReaderType::Train, MNISTReader::Data, "mnist_data");
+		df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), "", "generator_labels");
+		df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), "", "z");
+		df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), "", "static_z");
+		auto imwrite_input = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "imwrite_input");
+		df.imwrite(imwrite_input, "{it}", true, "imwrite");
+		auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "loss_input");
+		auto discriminator_target = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "loss_target");
+		std::string err = df.reduce_mean(df.square_error(discriminator_input, discriminator_target));
+		df.loss(err, DeepFlow::AVG, 1.0f, 0.0f, "loss");
+		create_discriminator(&df);
+		create_generator(&df);
+	}
+	else {
+		load_session(&df, "minst_dcgan" + FLAGS_load);
 	}
 
+	auto session = df.session();
+	session->initialize(execution_context);
+
+	if (FLAGS_print) {
+		std::cout << session->to_cpp() << std::endl;
+		return;
+	}
+
+	auto mnist_data = session->get_node("mnist_data");
+	auto generator_output = session->get_node("g28");
+	auto generator_input = session->get_placeholder("g_input");
+	auto discriminator_input = session->get_placeholder("d_input");
+	auto discriminator_output = session->get_node("dfc_bias");
+	auto generator_labels = session->get_node("generator_labels");
+	auto mnist_labels = session->get_node("mnist_labels");
+	auto loss_input = session->get_placeholder("loss_input");
+	auto loss_target = session->get_placeholder("loss_target");
+	auto loss = session->get_node<Loss>("loss");
+	auto imwrite_input = session->get_placeholder("imwrite_input");
+	auto imwrite = session->get_node("imwrite");
+	auto z = session->get_node("z");
+	auto static_z = session->get_node("static_z");
+
+	int iter = 0;
+
+	if (FLAGS_train) {
+		static_z->forward();
+
+		MovingAverage g_loss_avg(100);
+		MovingAverage p_d_loss_avg(100);
+		MovingAverage n_d_loss_avg(100);
+
+		if (FLAGS_load.empty()) {
+			iter = 1;
+		}
+		else {
+			iter = std::stoi(FLAGS_load) + 1;
+		}		
+
+		session->forward({ mnist_labels });
+		session->forward({ generator_labels });
+
+		for (; iter <= FLAGS_iter && execution_context->quit != true; ++iter) {
+
+			execution_context->current_iteration = iter;
+			std::cout << "Iteration: [" << iter << "/" << FLAGS_iter << "]";
+
+			session->forward({ mnist_data });
+			session->forward({ discriminator_output }, { { discriminator_input, mnist_data->output(0)->value() } });
+			session->forward({ loss }, {
+				{ loss_input , discriminator_output->output(0)->value() } ,
+				{ loss_target , mnist_labels->output(0)->value() } ,
+			});
+			p_d_loss_avg.add(loss->output(0)->value()->toFloat());
+			std::cout << " - p_d_loss: " << p_d_loss_avg.result();
+			session->backward({ loss });
+			session->backward({ discriminator_output }, { { discriminator_output , loss_input->output(0)->diff() } });
+
+			session->forward({ z });
+			session->forward({ generator_output }, { { generator_input , z->output(0)->value() } });
+			session->forward({ discriminator_output }, { { discriminator_input, generator_output->output(0)->value() } });
+			session->forward({ loss }, {
+				{ loss_input , discriminator_output->output(0)->value() },
+				{ loss_target, generator_labels->output(0)->value() }
+			});
+			n_d_loss_avg.add(loss->output(0)->value()->toFloat());
+			std::cout << " - n_d_loss: " << n_d_loss_avg.result();
+			session->backward({ loss });
+			session->backward({ discriminator_output }, { { discriminator_output, loss_input->output(0)->diff() } });
+
+			session->apply_solvers({ "d_adam" });
+
+			session->forward({ discriminator_output }, { { discriminator_input, generator_output->output(0)->value() } });
+			session->forward({ loss }, {
+				{ loss_input , discriminator_output->output(0)->value() },
+				{ loss_target, mnist_labels->output(0)->value() }
+			});
+			float g_loss = loss->output(0)->value()->toFloat();
+			g_loss_avg.add(g_loss);
+			session->backward({ loss });
+			session->backward({ discriminator_output }, { { discriminator_output, loss_input->output(0)->diff() } });
+			session->backward({ generator_output }, { { generator_output, discriminator_input->output(0)->diff() } });
+			std::cout << " - g_loss: " << g_loss_avg.result() << std::endl;
+
+			session->apply_solvers({ "g_adam" });
+			session->reset_gradients();
+
+			if (FLAGS_save_image != 0 && iter % FLAGS_save_image == 0) {
+				session->forward({ generator_output }, { { generator_input, static_z->output(0)->value() } });
+				session->forward({ imwrite }, { { imwrite_input, generator_output->output(0)->value() } });
+			}
+
+			if (FLAGS_save_model != 0 && iter % FLAGS_save_model == 0) {
+				session->save("mnist_dcgan" + std::to_string(iter) + ".bin");
+			}
+		}
+	}
+
+	if (FLAGS_test) {
+		iter = 1;
+		for (; iter <= FLAGS_iter && execution_context->quit != true; ++iter) {
+
+			execution_context->current_iteration = iter;
+			std::cout << "Iteration: [" << iter << "/" << FLAGS_iter << "]\n";
+			session->forward({ z });
+			session->forward({ generator_output }, { { generator_input , z->output(0)->value() } });
+			session->forward({ imwrite }, { { imwrite_input, generator_output->output(0)->value() } });
+		}
+	}
+
+	cudaDeviceReset();
 }

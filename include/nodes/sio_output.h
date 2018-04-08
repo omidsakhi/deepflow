@@ -20,7 +20,6 @@ private:
 	void on_fail();
 private:
 	int _num_inputs = 0;	
-	deepflow::ActionTime _print_time;
 	std::string _host;
 	int _port;
 	sio::client _client;			

@@ -39,11 +39,11 @@ void SquareError::forward() {
 
 void SquareError::backward() {
 	auto size = _inputs[0]->value()->size();
-	if (_inputs[0]->connectedNode()) {
+	if (_inputs[0]->diff()) {
 		SquareErrorBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, 1.0f, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data() , (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}
-	if (_inputs[1]->connectedNode()) {
+	if (_inputs[1]->diff()) {
 		SquareErrorBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, -1.0f, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data() , (float*)_outputs[0]->diff()->data(), (float*)_inputs[1]->diff()->mutableData());
 		DF_KERNEL_CHECK();
 	}
@@ -52,7 +52,6 @@ void SquareError::backward() {
 std::string SquareError::to_cpp() const
 {
 	std::string cpp = "auto " + _name + " = df.square_error(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

@@ -73,17 +73,20 @@ void PRelu::backward()
 	auto size = _inputs[0]->value()->size();
 	auto channels = _inputs[0]->dims()[1];
 	auto inner_dims = _inputs[0]->dims()[2] * _inputs[0]->dims()[3];
-	PReluBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock>> >(size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
-	DF_NODE_KERNEL_CHECK();
-	DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
-	PReluBackwardWeightKernel << < numOfBlocks(size), maxThreadsPerBlock>> >(size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[1]->diff()->mutableData());
-	DF_NODE_KERNEL_CHECK();
+	if (_inputs[0]->diff()) {
+		PReluBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
+		DF_NODE_KERNEL_CHECK();
+	}
+	if (_inputs[1]->diff()) {
+		DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->mutableData(), 0, _inputs[1]->diff()->sizeInBytes()));
+		PReluBackwardWeightKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, channels, inner_dims, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[1]->diff()->mutableData());
+		DF_NODE_KERNEL_CHECK();
+	}
 }
 
 std::string PRelu::to_cpp() const
 {	
 	std::string cpp = "auto " + _name + " = df.prelu(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
 }

@@ -7,7 +7,6 @@ Logger::Logger(deepflow::NodeParam *param) : Node(param) {
 	auto loggingParam = _param->logger_param();
 	_filePath = loggingParam.file_path();
 	_num_inputs = loggingParam.num_inputs();
-	_logging_time = loggingParam.logging_time();
 	_logging_type = loggingParam.logging_type();
 }
 
@@ -21,7 +20,7 @@ void Logger::init() {
 }
 
 void Logger::forward() {
-	if (_logging_time == deepflow::ActionTime::END_OF_EPOCH && _context->last_batch == false)
+	if (_enabled == false)
 		return;
 	std::string message = _raw_message;
 	size_t start_pos = message.find("%{}");
@@ -72,19 +71,17 @@ std::string Logger::to_cpp() const
 			escaped_raw_message[i] = 'n';
 		}
 	cpp += "\"" + escaped_raw_message + "\", ";
-	if (_logging_time == deepflow::ActionTime::END_OF_EPOCH) {
-		cpp += "Logger::END_OF_EPOCH, ";
-	}
-	else {
-		cpp += "Logger::EVERY_PASS, ";
-	}
 	if (_logging_type == deepflow::ActionType::DIFFS) {
 		cpp += "Logger::DIFFS, ";
 	}
 	else {
 		cpp += "Logger::VALUES, ";
 	}
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;
+}
+
+void Logger::setEnabled(bool state)
+{
+	_enabled = state;
 }

@@ -198,19 +198,21 @@ void Lifting::forward()
 
 void Lifting::backward()
 {
-	auto size = _outputs[0]->diff()->size();
-	auto dims = _outputs[0]->dims();
-	if (_mode == deepflow::LiftingParam_Mode_DOWN_REGULAR)
-		LiftUpRegularKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
-	else if (_mode == deepflow::LiftingParam_Mode_DOWN_FLIP)
-		LiftUpFlipKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
-	else if (_mode == deepflow::LiftingParam_Mode_UP_REGULAR)
-		LiftDownRegularKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
-	else if (_mode == deepflow::LiftingParam_Mode_UP_FLIP)
-		LiftDownFlipKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
-	else
-		LOG(FATAL);
-	DF_KERNEL_CHECK();
+	if (_inputs[0]->diff()) {
+		auto size = _outputs[0]->diff()->size();
+		auto dims = _outputs[0]->dims();
+		if (_mode == deepflow::LiftingParam_Mode_DOWN_REGULAR)
+			LiftUpRegularKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
+		else if (_mode == deepflow::LiftingParam_Mode_DOWN_FLIP)
+			LiftUpFlipKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
+		else if (_mode == deepflow::LiftingParam_Mode_UP_REGULAR)
+			LiftDownRegularKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
+		else if (_mode == deepflow::LiftingParam_Mode_UP_FLIP)
+			LiftDownFlipKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
+		else
+			LOG(FATAL);
+		DF_KERNEL_CHECK();
+	}
 }
 
 std::string Lifting::to_cpp() const

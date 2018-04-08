@@ -80,18 +80,19 @@ void DPRelu::forward()
 
 void DPRelu::backward()
 {
-	auto input_dims = _inputs[0]->dims();
-	auto a_channels = _inputs[1]->value()->dim(1);
-	auto size = _inputs[0]->value()->size();
-	DPReluBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> >
-		(size, input_dims[1], input_dims[2], input_dims[3], a_channels, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
-	DF_NODE_KERNEL_CHECK();
+	if (_inputs[0]->diff()) {
+		auto input_dims = _inputs[0]->dims();
+		auto a_channels = _inputs[1]->value()->dim(1);
+		auto size = _inputs[0]->value()->size();
+		DPReluBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> >
+			(size, input_dims[1], input_dims[2], input_dims[3], a_channels, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
+		DF_NODE_KERNEL_CHECK();
+	}
 }
 
 std::string DPRelu::to_cpp() const
 {
 	std::string cpp = "auto " + _name + " = df.dprelu(" + _input_name_for_cpp(0) + ", " + _input_name_for_cpp(1) + ", ";
-	cpp += "\"" + _name + "\", ";
-	cpp += "{" + _to_cpp_phases() + "});";
+	cpp += "\"" + _name + "\");";	
 	return cpp;	
 }
