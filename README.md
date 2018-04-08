@@ -25,7 +25,7 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 - [gflags](https://github.com/gflags/gflags)
 
 # Working Examples
-- face_dcgan: A least-square generative adversarial network. The image below shows the results after 199000 iterations.
+- face_dcgan: A least-square generative adversarial network.
 
 ![results](https://github.com/omidsakhi/deepflow/blob/master/examples/face_dcgan/results.jpg)
 
