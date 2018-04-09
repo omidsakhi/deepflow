@@ -9,16 +9,20 @@ Softmax::Softmax(deepflow::NodeParam *param) : Node(param) {
 void Softmax::init() {		
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	_outputs[0]->initDiff();	
+	_outputs[0]->initDiff();
+	if (_param->softmax_param().mode() == deepflow::SoftmaxParam_Mode_INSTANCE)
+		_mode = CUDNN_SOFTMAX_MODE_INSTANCE;
+	else
+		_mode = CUDNN_SOFTMAX_MODE_CHANNEL;
 }
 
 void Softmax::forward() {	
-	DF_NODE_CUDNN_CHECK(cudnnSoftmaxForward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, CUDNN_SOFTMAX_MODE_INSTANCE, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));	
+	DF_NODE_CUDNN_CHECK(cudnnSoftmaxForward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, _mode, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
 }
 
 void Softmax::backward() {
 	if (_inputs[0]->diff())
-		DF_NODE_CUDNN_CHECK(cudnnSoftmaxBackward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, CUDNN_SOFTMAX_MODE_INSTANCE, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+		DF_NODE_CUDNN_CHECK(cudnnSoftmaxBackward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, _mode, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
 }
 
 std::string Softmax::to_cpp() const

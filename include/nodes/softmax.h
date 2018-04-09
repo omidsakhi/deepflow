@@ -15,5 +15,6 @@ public:
 	void backward();
 	std::string to_cpp() const;
 private:
-	cudnnHandle_t _cudnnHandle;	
+	cudnnHandle_t _cudnnHandle;
+	cudnnSoftmaxMode_t _mode;
 };

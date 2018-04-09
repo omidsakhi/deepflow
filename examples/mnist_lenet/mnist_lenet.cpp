@@ -54,7 +54,7 @@ void create_graph(DeepFlow *df) {
 	net = df->dense(net, { (fn * 4) * 4 * 4, 512, 1, 1 }, true, solver, "fc1");
 	//net = df->dropout(net);
 	net = df->dense(net, { 512, 10, 1, 1 }, true, solver, "fc2");
-	net = df->softmax(net, "output");
+	net = df->softmax(net, DeepFlow::SoftmaxMode::INSTANCE, "output");
 
 }
 

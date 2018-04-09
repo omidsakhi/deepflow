@@ -247,12 +247,13 @@ std::string DeepFlow::cast_float(std::string input, std::string name) {
 	return node_param->output(0);
 }
 
-std::string DeepFlow::softmax(std::string a, std::string name) {
+std::string DeepFlow::softmax(std::string a, SoftmaxMode mode, std::string name) {
 	auto node_param = _block->add_node_param();	
 	node_param->set_name(_block->get_unique_node_param_name(name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
 	auto softmax_param = node_param->mutable_softmax_param();
+	softmax_param->set_mode((deepflow::SoftmaxParam_Mode)mode);
 	return node_param->output(0);
 }
 

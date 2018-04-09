@@ -57,6 +57,11 @@ public:
 		REDUCE_ALL_AVG
 	};
 
+	enum SoftmaxMode {
+		INSTANCE,
+		CHANNEL
+	};
+
 	DeepFlow();
 	DeepFlow(std::shared_ptr<Block> block);
 
@@ -109,7 +114,7 @@ public:
 	std::string log(std::string a, float coef = 1.0f, std::string name = "log");	
 	std::string subtract(std::string a, std::string b, std::string name = "sub");
 	std::string square_error(std::string a, std::string b, std::string name = "SquareError");
-	std::string softmax(std::string a, std::string name = "softmax");
+	std::string softmax(std::string a, SoftmaxMode mode, std::string name = "softmax");
 
 	// matmul
 	std::string matmul(std::string a, std::string b, std::string name = "ip");

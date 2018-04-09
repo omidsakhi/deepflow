@@ -332,7 +332,7 @@ std::string Caffe::_parse_conv_param(const caffe::ConvolutionParameter & param, 
 std::string Caffe::_parse_softmax_param(const caffe::SoftmaxParameter & param, const caffe::V1LayerParameter & layer)
 {
 	LOG_IF(INFO, _verbose) << "  -> SoftmaxParameter";
-	return df->softmax(layer.bottom(0) + "_output_0", layer.name());
+	return df->softmax(layer.bottom(0) + "_output_0", DeepFlow::SoftmaxMode::CHANNEL, layer.name());
 }
 
 std::string Caffe::_parse_pooling_param(const caffe::PoolingParameter & param, const caffe::V1LayerParameter &layer)

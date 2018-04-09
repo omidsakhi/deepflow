@@ -344,9 +344,30 @@ TEST(concate, forward1) {
 	session->get_node("a")->write_values({  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23,  24 });
 	session->get_node("b")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16 });
 	auto concate = session->get_node("concate");
-	session->forward({ concate });
-	LOG(INFO) << concate->output(0)->value()->toString();
+	session->forward({ concate });	
 	EXPECT_EQ(concate->output(0)->value()->verify({ 1,2,3,4,5,6,7,8,9,10,11,12,-1,-2,-3,-4,-5,-6,-7,-8,13,14,15,16,17,18,19,20,21,22,23,24,-9,-10,-11,-12,-13,-14,-15,-16 }), true);
+}
+
+TEST(softmax, forward) {
+	DeepFlow df;
+	auto a = df.place_holder({ 2, 3 , 2 , 2 }, Tensor::Float, "a");
+	df.softmax(a, DeepFlow::SoftmaxMode::INSTANCE, "softmax1");
+	df.softmax(a, DeepFlow::SoftmaxMode::CHANNEL, "softmax2");
+	auto session = df.session();
+	session->initialize();
+	session->get_node("a")->write_values({ 0.1f,  0.2f,  0.3f,  0.4f,  0.5f,  0.6f,  0.7f,  0.8f,  0.9f,  0.10f,  0.11f,  0.12f,  0.13f,  0.14f,  0.15f,  0.16f,  0.17f,  0.18f,  0.19f,  0.20f,  0.21f,  0.22f,  0.23f,  0.24f });
+	auto softmax1 = session->get_node("softmax1");
+	session->forward({ softmax1 });	
+	// 0.059141 + 0.065361 + 0.072235 + 0.079832 + 0.088229 + 0.097508 + 0.107763 + 0.119096 + 0.131622 + 0.059141 + 0.059736 + 0.060336 = 1
+	EXPECT_EQ(softmax1->output(0)->value()->verify(
+	{ 0.059141f, 0.065361f, 0.072235f, 0.079832f, 0.088229f, 0.097508f, 0.107763f, 0.119096f, 0.131622f, 0.059141f, 0.059736f, 0.060336f, 0.078827f, 0.079619f, 0.080419f, 0.081227f, 0.082044f, 0.082868f, 0.083701f, 0.084542f, 0.085392f, 0.086250f, 0.087117f, 0.087993f }), true);
+
+	auto softmax2 = session->get_node("softmax2");
+	session->forward({ softmax2 });	
+	// 0.211983 + 0.316241 + 0.471776 = 1
+	EXPECT_EQ(softmax2->output(0)->value()->verify(
+	{ 0.211983f, 0.294407f, 0.301315f, 0.307919f, 0.316241f, 0.439203f, 0.449509f, 0.459361f, 0.471776f, 0.266390f, 0.249175f, 0.232720f, 0.320092f, 0.320092f, 0.320092f, 0.320092f, 0.333156f, 0.333156f, 0.333156f, 0.333156f, 0.346752f, 0.346752f, 0.346752f, 0.346752f }), true);
+
 }
 
 int main(int argc, char** argv) {

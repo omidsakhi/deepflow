@@ -301,6 +301,11 @@ message SquareErrorParam {
 }
 
 message SoftmaxParam {
+	enum Mode {
+		INSTANCE = 0;
+		CHANNEL = 1;
+	}
+	Mode mode = 1;	
 }
 
 message PatchingParam {

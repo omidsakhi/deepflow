@@ -504,6 +504,27 @@ inline bool BatchNormalizationParam_Mode_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<BatchNormalizationParam_Mode>(
     BatchNormalizationParam_Mode_descriptor(), name, value);
 }
+enum SoftmaxParam_Mode {
+  SoftmaxParam_Mode_INSTANCE = 0,
+  SoftmaxParam_Mode_CHANNEL = 1,
+  SoftmaxParam_Mode_SoftmaxParam_Mode_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  SoftmaxParam_Mode_SoftmaxParam_Mode_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool SoftmaxParam_Mode_IsValid(int value);
+const SoftmaxParam_Mode SoftmaxParam_Mode_Mode_MIN = SoftmaxParam_Mode_INSTANCE;
+const SoftmaxParam_Mode SoftmaxParam_Mode_Mode_MAX = SoftmaxParam_Mode_CHANNEL;
+const int SoftmaxParam_Mode_Mode_ARRAYSIZE = SoftmaxParam_Mode_Mode_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* SoftmaxParam_Mode_descriptor();
+inline const ::std::string& SoftmaxParam_Mode_Name(SoftmaxParam_Mode value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    SoftmaxParam_Mode_descriptor(), value);
+}
+inline bool SoftmaxParam_Mode_Parse(
+    const ::std::string& name, SoftmaxParam_Mode* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<SoftmaxParam_Mode>(
+    SoftmaxParam_Mode_descriptor(), name, value);
+}
 enum PatchingParam_Mode {
   PatchingParam_Mode_UPSAMPLES = 0,
   PatchingParam_Mode_DOWNSAMPLES = 1,
@@ -5167,12 +5188,45 @@ class SoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // nested types ----------------------------------------------------
 
+  typedef SoftmaxParam_Mode Mode;
+  static const Mode INSTANCE =
+    SoftmaxParam_Mode_INSTANCE;
+  static const Mode CHANNEL =
+    SoftmaxParam_Mode_CHANNEL;
+  static inline bool Mode_IsValid(int value) {
+    return SoftmaxParam_Mode_IsValid(value);
+  }
+  static const Mode Mode_MIN =
+    SoftmaxParam_Mode_Mode_MIN;
+  static const Mode Mode_MAX =
+    SoftmaxParam_Mode_Mode_MAX;
+  static const int Mode_ARRAYSIZE =
+    SoftmaxParam_Mode_Mode_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  Mode_descriptor() {
+    return SoftmaxParam_Mode_descriptor();
+  }
+  static inline const ::std::string& Mode_Name(Mode value) {
+    return SoftmaxParam_Mode_Name(value);
+  }
+  static inline bool Mode_Parse(const ::std::string& name,
+      Mode* value) {
+    return SoftmaxParam_Mode_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
+
+  // .deepflow.SoftmaxParam.Mode mode = 1;
+  void clear_mode();
+  static const int kModeFieldNumber = 1;
+  ::deepflow::SoftmaxParam_Mode mode() const;
+  void set_mode(::deepflow::SoftmaxParam_Mode value);
 
   // @@protoc_insertion_point(class_scope:deepflow.SoftmaxParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  int mode_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -10270,6 +10324,20 @@ inline void ResizeParam::set_width_scale(float value) {
 
 // SoftmaxParam
 
+// .deepflow.SoftmaxParam.Mode mode = 1;
+inline void SoftmaxParam::clear_mode() {
+  mode_ = 0;
+}
+inline ::deepflow::SoftmaxParam_Mode SoftmaxParam::mode() const {
+  // @@protoc_insertion_point(field_get:deepflow.SoftmaxParam.mode)
+  return static_cast< ::deepflow::SoftmaxParam_Mode >(mode_);
+}
+inline void SoftmaxParam::set_mode(::deepflow::SoftmaxParam_Mode value) {
+  
+  mode_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.SoftmaxParam.mode)
+}
+
 // -------------------------------------------------------------------
 
 // PatchingParam
@@ -14297,6 +14365,11 @@ template <> struct is_proto_enum< ::deepflow::BatchNormalizationParam_Mode> : ::
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::BatchNormalizationParam_Mode>() {
   return ::deepflow::BatchNormalizationParam_Mode_descriptor();
+}
+template <> struct is_proto_enum< ::deepflow::SoftmaxParam_Mode> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::SoftmaxParam_Mode>() {
+  return ::deepflow::SoftmaxParam_Mode_descriptor();
 }
 template <> struct is_proto_enum< ::deepflow::PatchingParam_Mode> : ::google::protobuf::internal::true_type {};
 template <>
