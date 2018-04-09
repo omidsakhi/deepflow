@@ -33,6 +33,7 @@
 /data/face64
 /data/face643
 /data/celeba64
+/data/celeba
 /data/celeba128
 /data/mnist/*.gz
 /third-party/boost_1_64_0

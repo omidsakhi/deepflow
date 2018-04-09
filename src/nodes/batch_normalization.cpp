@@ -59,7 +59,7 @@ void BatchNormalization::init()
 		DF_NODE_CUDA_CHECK(cudaMemcpy(_runningVariance, param.var().data().data(), _bnScaleBiasMeanVarSizeInBytes, cudaMemcpyHostToDevice));
 	}
 	else {
-		fill(_bnScaleBiasMeanVarSize, 0, _runningVariance);
+		cudnnSetTensor(_cudnnHandle, _bnScaleBiasMeanVarDesc, _runningVariance, (void*)&one);		
 	}
 
 	if (cache) {
