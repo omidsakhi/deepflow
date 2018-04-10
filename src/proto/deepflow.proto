@@ -451,6 +451,12 @@ message PatchSamplingParam {
 	int32 patch_width = 2;
 }
 
+message TextImageGeneratorParam {
+}
+
+message MaxParam {
+}
+
 message NodeParam {
   string name = 1;
   string scope = 2;
@@ -512,6 +518,8 @@ message NodeParam {
   PassThroughParam pass_through_param = 154;
   GaussianParam gaussian_param = 155;
   GaussianKernelParam gaussian_kernel_param = 156;
-  PatchSamplingParam patch_sampling_param = 157;  
+  PatchSamplingParam patch_sampling_param = 157;
+  TextImageGeneratorParam text_image_generator_param = 158;
+  MaxParam max_param = 159; 
 }
 

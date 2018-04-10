@@ -19,8 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <CudaCompile Include="..\..\src\generators\text_image_generator.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
     <ClCompile Include="..\..\src\initializers\truncated_normal.cpp" />
     <ClCompile Include="..\..\src\nodes\lrn.cpp" />
+    <CudaCompile Include="..\..\src\nodes\max.cu">
+      <FileType>Document</FileType>
+    </CudaCompile>
     <ClCompile Include="..\..\src\utilities\moving_average.cpp" />
     <ClInclude Include="..\..\include\core\caffe.h" />
     <ClInclude Include="..\..\include\core\common_cu.h" />
@@ -37,6 +43,7 @@
     <ClInclude Include="..\..\include\generators\data_generator.h" />
     <ClInclude Include="..\..\include\generators\image_batch_reader.h" />
     <ClInclude Include="..\..\include\generators\mnist_reader.h" />
+    <ClInclude Include="..\..\include\generators\text_image_generator.h" />
     <ClInclude Include="..\..\include\initializers\fill.h" />
     <ClInclude Include="..\..\include\initializers\gradient_fill.h" />
     <ClInclude Include="..\..\include\initializers\index_fill.h" />
@@ -67,6 +74,7 @@
     <ClInclude Include="..\..\include\nodes\image_writer.h" />
     <ClInclude Include="..\..\include\nodes\lifting.h" />
     <ClInclude Include="..\..\include\nodes\lrn.h" />
+    <ClInclude Include="..\..\include\nodes\max.h" />
     <ClInclude Include="..\..\include\nodes\pass_through.h" />
     <ClInclude Include="..\..\include\nodes\patching.h" />
     <ClInclude Include="..\..\include\nodes\patch_sampling.h" />

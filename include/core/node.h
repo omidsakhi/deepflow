@@ -41,7 +41,7 @@ public:
 	virtual void forward() = 0;
 	virtual void backward() = 0;	
 	virtual bool is_generator() { return false; }
-	virtual bool isLastBatch() { return true; }
+	virtual bool is_last_batch() { return false; }
 	virtual std::string to_cpp() const = 0;
 	virtual void prep_for_saving() {}
 	virtual void reset_gradients();

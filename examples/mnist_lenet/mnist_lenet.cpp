@@ -9,7 +9,7 @@ DEFINE_int32(batch, 100, "Batch size");
 DEFINE_int32(debug, 0, "Level of debug");
 DEFINE_int32(epoch, 10000, "Maximum epoch");
 DEFINE_string(load, "", "Load from mnist_acXXXX.bin");
-DEFINE_int32(save, 1000, "Save model iter frequency (Don't Save = 0)");
+DEFINE_int32(save, 10, "Save model epoch frequency (Don't Save = 0)");
 DEFINE_bool(train, false, "Train");
 
 void load_session(DeepFlow *df, std::string filename) {
@@ -92,28 +92,25 @@ void main(int argc, char** argv) {
 
 	if (FLAGS_train) {		
 		int epoch = 0;		
-		int total_iterations = 0;
 		
 		for (; epoch <= FLAGS_epoch && execution_context->quit != true; ++epoch) {
 			execution_context->current_epoch = epoch;			
 			std::cout << "Epoch: [" << epoch << "/" << FLAGS_epoch << "]\n";
 			acc->reset();
-			for (int iter = 0; iter < 10000 / FLAGS_batch; ++iter) {
-				execution_context->execution_mode = ExecutionContext::TEST;
+			do {				execution_context->execution_mode = ExecutionContext::TEST;
 				session->forward({ mnist_test_data, mnist_test_labels });
 				session->forward({ output }, { { input , mnist_test_data->output(0)->value() } });
 				session->forward({ correct_count }, { { pred_softmax_input, output->output(0)->value() },{ pred_target_labels, mnist_test_labels->output(0)->value() } });
-			}
+			} while (!mnist_test_data->is_last_batch());
 			{
 				auto num_correct = correct_count->output(0)->value()->toFloat();
 				auto num_total = acc->output(1)->value()->toFloat();
 				std::cout << " Test accuracy: " << num_correct << " out of " << num_total << " - " << num_correct / num_total * 100.0f << "%" << std::endl;
 			}
 			acc->reset();
-			for (int iter = 0; iter < 60000 / FLAGS_batch; ++iter) {
+			do {			
 				execution_context->execution_mode = ExecutionContext::TRAIN;
-				total_iterations = epoch * 60000 / FLAGS_batch + iter;
-				execution_context->current_iteration = total_iterations;
+				execution_context->current_iteration = epoch;
 				session->forward({ mnist_train_data, mnist_train_labels });					
 				session->forward({ output }, { { input , mnist_train_data->output(0)->value() } });
 				session->forward({ loss }, { { loss_softmax_input, output->output(0)->value() } , { loss_target_labels, mnist_train_labels->output(0)->value() } });
@@ -121,15 +118,14 @@ void main(int argc, char** argv) {
 				session->backward({ loss });
 				session->backward({ output }, { { output, loss_softmax_input->output(0)->diff() } });
 				session->apply_solvers();
-
-				if (FLAGS_save != 0 && total_iterations % FLAGS_save == 0) {
-					session->save("mnist_lenet" + std::to_string(iter) + ".bin");
-				}
-			}
+			} while (!mnist_train_data->is_last_batch());
 			{
 				auto num_correct = correct_count->output(0)->value()->toFloat();
 				auto num_total = acc->output(1)->value()->toFloat();
 				std::cout << "Train accuracy: " << num_correct << " out of " << num_total << " - " << num_correct / num_total * 100.0f << "%" << std::endl;
+			}
+			if (FLAGS_save != 0 && epoch % FLAGS_save == 0) {
+				session->save("mnist_lenet" + std::to_string(epoch) + ".bin");
 			}
 		}
 	}

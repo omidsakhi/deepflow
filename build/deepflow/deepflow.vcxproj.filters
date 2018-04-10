@@ -121,6 +121,9 @@
     <CudaCompile Include="..\..\src\initializers\gradient_fill.cu">
       <Filter>source\initializers</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\generators\text_image_generator.cu">
+      <Filter>source\generators</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -247,6 +250,9 @@
       <Filter>source\initializers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\nodes\bias_add.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\max.cu">
       <Filter>source\nodes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -502,6 +508,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\initializers\gradient_fill.h">
       <Filter>include\initializers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\generators\text_image_generator.h">
+      <Filter>include\generators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\max.h">
+      <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

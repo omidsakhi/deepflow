@@ -19,7 +19,7 @@ public:
 	void init() override;	
 	void forward() override;
 	void backward() override {}
-	bool isLastBatch() override;
+	bool is_last_batch() override;
 	std::string to_cpp() const override;
 private:
 	std::string _folder_path;

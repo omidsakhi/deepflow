@@ -31,7 +31,7 @@ public:
 	void forward();
 	void backward() {}
 	void deinit();
-	bool isLastBatch();	
+	bool is_last_batch();	
 	std::string to_cpp() const;
 private:
 	std::string _file_path;

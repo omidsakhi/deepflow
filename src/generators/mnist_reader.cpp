@@ -140,7 +140,8 @@ void MNISTReader::deinit() {
 	_tx.close();	
 }
 
-bool MNISTReader::isLastBatch() {
+bool MNISTReader::is_last_batch()
+{
 	return _last_batch;
 }
 

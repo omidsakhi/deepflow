@@ -45,6 +45,18 @@ std::string DeepFlow::data_generator(std::string initializer, std::string solver
 	return node_param->output(0);
 }
 
+std::string DeepFlow::text_image_generator(std::string initializer, std::string name)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	auto variable_param = node_param->mutable_variable_param();
+	node_param->mutable_text_image_generator_param();
+	auto init_param = variable_param->mutable_init_param();
+	init_param->CopyFrom(*_block->find_initializer_param_by_name(initializer));
+	return node_param->output(0);
+}
+
 std::string DeepFlow::imread(std::string file_path, ImreadImageType type, std::string name)
 {
 	auto node_param = _block->add_node_param();	
@@ -254,6 +266,17 @@ std::string DeepFlow::softmax(std::string a, SoftmaxMode mode, std::string name)
 	node_param->add_input(a);
 	auto softmax_param = node_param->mutable_softmax_param();
 	softmax_param->set_mode((deepflow::SoftmaxParam_Mode)mode);
+	return node_param->output(0);
+}
+
+std::string DeepFlow::max(std::string a, std::string b, std::string name)
+{
+	auto node_param = _block->add_node_param();
+	node_param->set_name(_block->get_unique_node_param_name(name));
+	add_outputs(node_param, 1);
+	node_param->add_input(a);
+	node_param->add_input(b);
+	node_param->mutable_max_param();	
 	return node_param->output(0);
 }
 

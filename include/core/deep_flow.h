@@ -68,8 +68,9 @@ public:
 	// GENERATORS
 	std::string mnist_reader(std::string folder_path, int batch_size, MNISTReader::MNISTReaderType reader_type, MNISTReader::MNISTOutputType output_type, std::string name = "mnist");
 	std::string data_generator(std::string initializer, std::string solver = "", std::string name = "igen");
+	std::string text_image_generator(std::string initializer, std::string name = "tigen");
 	std::string imread(std::string file_path, ImreadImageType type, std::string name = "imread");
-	std::string image_batch_reader(std::string folder_path, std::initializer_list<int> dims, bool randomize = false, std::string name = "imbar");
+	std::string image_batch_reader(std::string folder_path, std::initializer_list<int> dims, bool randomize = false, std::string name = "imbar");	
 
 	// INITIALIZERS
 	std::string fill(std::initializer_list<int> dims, float value, std::string name = "fill");
@@ -115,6 +116,7 @@ public:
 	std::string subtract(std::string a, std::string b, std::string name = "sub");
 	std::string square_error(std::string a, std::string b, std::string name = "SquareError");
 	std::string softmax(std::string a, SoftmaxMode mode, std::string name = "softmax");
+	std::string max(std::string a, std::string b, std::string name = "max");
 
 	// matmul
 	std::string matmul(std::string a, std::string b, std::string name = "ip");

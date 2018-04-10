@@ -158,6 +158,9 @@ extern LrnParamDefaultTypeInternal _LrnParam_default_instance_;
 class MatMulParam;
 class MatMulParamDefaultTypeInternal;
 extern MatMulParamDefaultTypeInternal _MatMulParam_default_instance_;
+class MaxParam;
+class MaxParamDefaultTypeInternal;
+extern MaxParamDefaultTypeInternal _MaxParam_default_instance_;
 class MnistParam;
 class MnistParamDefaultTypeInternal;
 extern MnistParamDefaultTypeInternal _MnistParam_default_instance_;
@@ -248,6 +251,9 @@ extern TensorDataDefaultTypeInternal _TensorData_default_instance_;
 class TensorParam;
 class TensorParamDefaultTypeInternal;
 extern TensorParamDefaultTypeInternal _TensorParam_default_instance_;
+class TextImageGeneratorParam;
+class TextImageGeneratorParamDefaultTypeInternal;
+extern TextImageGeneratorParamDefaultTypeInternal _TextImageGeneratorParam_default_instance_;
 class TransposedConv2dParam;
 class TransposedConv2dParamDefaultTypeInternal;
 extern TransposedConv2dParamDefaultTypeInternal _TransposedConv2dParam_default_instance_;
@@ -7588,6 +7594,152 @@ class PatchSamplingParam : public ::google::protobuf::Message /* @@protoc_insert
 };
 // -------------------------------------------------------------------
 
+class TextImageGeneratorParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.TextImageGeneratorParam) */ {
+ public:
+  TextImageGeneratorParam();
+  virtual ~TextImageGeneratorParam();
+
+  TextImageGeneratorParam(const TextImageGeneratorParam& from);
+
+  inline TextImageGeneratorParam& operator=(const TextImageGeneratorParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const TextImageGeneratorParam& default_instance();
+
+  static inline const TextImageGeneratorParam* internal_default_instance() {
+    return reinterpret_cast<const TextImageGeneratorParam*>(
+               &_TextImageGeneratorParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    74;
+
+  void Swap(TextImageGeneratorParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline TextImageGeneratorParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  TextImageGeneratorParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const TextImageGeneratorParam& from);
+  void MergeFrom(const TextImageGeneratorParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(TextImageGeneratorParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:deepflow.TextImageGeneratorParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class MaxParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.MaxParam) */ {
+ public:
+  MaxParam();
+  virtual ~MaxParam();
+
+  MaxParam(const MaxParam& from);
+
+  inline MaxParam& operator=(const MaxParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const MaxParam& default_instance();
+
+  static inline const MaxParam* internal_default_instance() {
+    return reinterpret_cast<const MaxParam*>(
+               &_MaxParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    75;
+
+  void Swap(MaxParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline MaxParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  MaxParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const MaxParam& from);
+  void MergeFrom(const MaxParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(MaxParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:deepflow.MaxParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.NodeParam) */ {
  public:
   NodeParam();
@@ -7608,7 +7760,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NodeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    74;
+    76;
 
   void Swap(NodeParam* other);
 
@@ -8228,6 +8380,24 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::PatchSamplingParam* release_patch_sampling_param();
   void set_allocated_patch_sampling_param(::deepflow::PatchSamplingParam* patch_sampling_param);
 
+  // .deepflow.TextImageGeneratorParam text_image_generator_param = 158;
+  bool has_text_image_generator_param() const;
+  void clear_text_image_generator_param();
+  static const int kTextImageGeneratorParamFieldNumber = 158;
+  const ::deepflow::TextImageGeneratorParam& text_image_generator_param() const;
+  ::deepflow::TextImageGeneratorParam* mutable_text_image_generator_param();
+  ::deepflow::TextImageGeneratorParam* release_text_image_generator_param();
+  void set_allocated_text_image_generator_param(::deepflow::TextImageGeneratorParam* text_image_generator_param);
+
+  // .deepflow.MaxParam max_param = 159;
+  bool has_max_param() const;
+  void clear_max_param();
+  static const int kMaxParamFieldNumber = 159;
+  const ::deepflow::MaxParam& max_param() const;
+  ::deepflow::MaxParam* mutable_max_param();
+  ::deepflow::MaxParam* release_max_param();
+  void set_allocated_max_param(::deepflow::MaxParam* max_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -8292,6 +8462,8 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::GaussianParam* gaussian_param_;
   ::deepflow::GaussianKernelParam* gaussian_kernel_param_;
   ::deepflow::PatchSamplingParam* patch_sampling_param_;
+  ::deepflow::TextImageGeneratorParam* text_image_generator_param_;
+  ::deepflow::MaxParam* max_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -11727,6 +11899,14 @@ inline void PatchSamplingParam::set_patch_width(::google::protobuf::int32 value)
 
 // -------------------------------------------------------------------
 
+// TextImageGeneratorParam
+
+// -------------------------------------------------------------------
+
+// MaxParam
+
+// -------------------------------------------------------------------
+
 // NodeParam
 
 // string name = 1;
@@ -14157,7 +14337,89 @@ inline void NodeParam::set_allocated_patch_sampling_param(::deepflow::PatchSampl
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.patch_sampling_param)
 }
 
+// .deepflow.TextImageGeneratorParam text_image_generator_param = 158;
+inline bool NodeParam::has_text_image_generator_param() const {
+  return this != internal_default_instance() && text_image_generator_param_ != NULL;
+}
+inline void NodeParam::clear_text_image_generator_param() {
+  if (GetArenaNoVirtual() == NULL && text_image_generator_param_ != NULL) delete text_image_generator_param_;
+  text_image_generator_param_ = NULL;
+}
+inline const ::deepflow::TextImageGeneratorParam& NodeParam::text_image_generator_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.text_image_generator_param)
+  return text_image_generator_param_ != NULL ? *text_image_generator_param_
+                         : *::deepflow::TextImageGeneratorParam::internal_default_instance();
+}
+inline ::deepflow::TextImageGeneratorParam* NodeParam::mutable_text_image_generator_param() {
+  
+  if (text_image_generator_param_ == NULL) {
+    text_image_generator_param_ = new ::deepflow::TextImageGeneratorParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.text_image_generator_param)
+  return text_image_generator_param_;
+}
+inline ::deepflow::TextImageGeneratorParam* NodeParam::release_text_image_generator_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.text_image_generator_param)
+  
+  ::deepflow::TextImageGeneratorParam* temp = text_image_generator_param_;
+  text_image_generator_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_text_image_generator_param(::deepflow::TextImageGeneratorParam* text_image_generator_param) {
+  delete text_image_generator_param_;
+  text_image_generator_param_ = text_image_generator_param;
+  if (text_image_generator_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.text_image_generator_param)
+}
+
+// .deepflow.MaxParam max_param = 159;
+inline bool NodeParam::has_max_param() const {
+  return this != internal_default_instance() && max_param_ != NULL;
+}
+inline void NodeParam::clear_max_param() {
+  if (GetArenaNoVirtual() == NULL && max_param_ != NULL) delete max_param_;
+  max_param_ = NULL;
+}
+inline const ::deepflow::MaxParam& NodeParam::max_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.max_param)
+  return max_param_ != NULL ? *max_param_
+                         : *::deepflow::MaxParam::internal_default_instance();
+}
+inline ::deepflow::MaxParam* NodeParam::mutable_max_param() {
+  
+  if (max_param_ == NULL) {
+    max_param_ = new ::deepflow::MaxParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.max_param)
+  return max_param_;
+}
+inline ::deepflow::MaxParam* NodeParam::release_max_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.max_param)
+  
+  ::deepflow::MaxParam* temp = max_param_;
+  max_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_max_param(::deepflow::MaxParam* max_param) {
+  delete max_param_;
+  max_param_ = max_param;
+  if (max_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.max_param)
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

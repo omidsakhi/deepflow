@@ -72,9 +72,11 @@
 #include "nodes/gaussian.h"
 #include "nodes/gaussian_kernel.h"
 #include "nodes/patch_sampling.h"
+#include "nodes/max.h"
 
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
+#include "generators/text_image_generator.h"
 
 #include <unordered_map>
 #include <map>
@@ -135,6 +137,11 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
 		return std::make_shared<DataGenerator>(initializer, node_param);
 	}
+	else if (node_param->has_text_image_generator_param()) {
+		auto init_param = node_param->mutable_variable_param()->mutable_init_param();
+		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
+		return std::make_shared<TextImageGenerator>(initializer, node_param);
+	}
 	else if (node_param->has_variable_param()) {
 		auto init_param = node_param->mutable_variable_param()->mutable_init_param();
 		std::shared_ptr<Initializer> initializer = _create_initializer(init_param);
@@ -154,6 +161,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Log>(node_param);
 	else if (node_param->has_loss_param())
 		return std::make_shared<Loss>(node_param);
+	else if (node_param->has_max_param())
+		return std::make_shared<Max>(node_param);
 	else if (node_param->has_reduce_all_param())
 		return std::make_shared<ReduceAll>(node_param);
 	else if (node_param->has_square_error_param())

@@ -62,8 +62,7 @@ void ImageBatchReader::init() {
 	default:
 		LOG(FATAL) << "Unsupported shape.";
 	}
-	_batch_size = _dims[0];
-	LOG_IF(FATAL, _num_total_samples % _batch_size != 0) << "Number of total samples " << _num_total_samples << " must be dividable by the batch size " << _batch_size;
+	_batch_size = _dims[0];	
 	_num_batches = _num_total_samples / _batch_size;
 	_last_batch = (_current_batch == (_num_batches - 1));
 	_outputs[0]->initValue(_dims);	
@@ -132,7 +131,7 @@ void ImageBatchReader::forward()
 		thread.join();
 }
 
-bool ImageBatchReader::isLastBatch() {
+bool ImageBatchReader::is_last_batch() {
 	return _last_batch;
 }
 
