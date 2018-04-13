@@ -68,6 +68,9 @@ void BatchNormalization::init()
 	}	
 
 	_exp_avg_factor = param.exp_avg_factor();
+	_eps = param.eps();
+	if (_eps < CUDNN_BN_MIN_EPSILON)
+		_eps = CUDNN_BN_MIN_EPSILON;
 	LOG_IF(FATAL, _exp_avg_factor == 0) << "Average factor cannot be zero.";
 	_bnScale = (float*)_inputs[1]->value()->data();
 	_bnBias = (float*)_inputs[2]->value()->data();

@@ -9,7 +9,6 @@ Dropout::Dropout(deepflow::NodeParam *param) : Node(param) {
 void Dropout::init() {	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());	
 	_dropout = _param->dropout_param().dropout();	
-	_train_only = _param->dropout_param().train_only();
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 	DF_NODE_CUDNN_CHECK(cudnnCreateDropoutDescriptor(&_dropoutDesc));
 	DF_NODE_CUDNN_CHECK(cudnnDropoutGetStatesSize(_cudnnHandle, &_state_sizes_in_bytes));

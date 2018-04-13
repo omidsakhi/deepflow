@@ -23,11 +23,11 @@ GradientFill::GradientFill(deepflow::InitParam *param) : Initializer(param) {
 	LOG_IF(FATAL, param->has_gradient_fill_param() == false) << "param.has_gradient_fill_param() == false";
 }
 
-void GradientFill::apply(Variable *variable) {
-	auto dims = variable->output(0)->dims();
+void GradientFill::apply(Node *node) {
+	auto dims = node->output(0)->dims();
 	LOG_IF(FATAL, dims[1] > 2) << "[FAILED] - Number of channels for gradient fill must be less than 2.";
-	auto size = variable->output(0)->value()->size();
-	GradientFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, dims[1], dims[2], dims[3], (float*)variable->output(0)->value()->mutableData());
+	auto size = node->output(0)->value()->size();
+	GradientFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, dims[1], dims[2], dims[3], (float*)node->output(0)->value()->mutableData());
 	DF_KERNEL_CHECK();
 }
 

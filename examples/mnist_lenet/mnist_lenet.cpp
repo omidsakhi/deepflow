@@ -20,41 +20,40 @@ void load_session(DeepFlow *df, std::string filename) {
 
 void create_graph(DeepFlow *df) {
 
-	auto solver = df->adam_solver(0.0001f, 0.5f, 0.99f);
-	//auto solver = df->sgd_solver(0.01f, 0.01f);
+	auto solver = df->adam_solver( AdamSolverOp().lr(0.0001f).beta1(0.5f).beta2(0.99f));	
 
-	df->mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::MNISTReaderType::Train, MNISTReader::Data, "mnist_train_data");
-	df->mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::MNISTReaderType::Test, MNISTReader::Data, "mnist_test_data");
-	df->mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::Train, MNISTReader::Labels, "mnist_train_labels");
-	df->mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::Test, MNISTReader::Labels, "mnist_test_labels");
+	df->mnist_reader(FLAGS_mnist, MNISTReaderOp("mnist_train_data").batch(FLAGS_batch).train().data());
+	df->mnist_reader(FLAGS_mnist, MNISTReaderOp("mnist_test_data").batch(FLAGS_batch).test().data());
+	df->mnist_reader(FLAGS_mnist, MNISTReaderOp("mnist_train_labels").batch(FLAGS_batch).train().labels());
+	df->mnist_reader(FLAGS_mnist, MNISTReaderOp("mnist_test_labels").batch(FLAGS_batch).test().labels());
 
-	auto loss_softmax_input = df->place_holder({ FLAGS_batch, 10, 1, 1 }, Tensor::Float, "loss_softmax_input");
-	auto loss_target_labels = df->place_holder({ FLAGS_batch, 10, 1, 1 }, Tensor::Float, "loss_target_labels");
-	auto loss_softmax_log = df->log(loss_softmax_input, -1.0f, "loss_softmax_log");
+	auto loss_softmax_input = df->place_holder({ FLAGS_batch, 10, 1, 1 }, PlaceholderOp("loss_softmax_input"));
+	auto loss_target_labels = df->place_holder({ FLAGS_batch, 10, 1, 1 }, PlaceholderOp("loss_target_labels"));
+	auto loss_softmax_log = df->log(loss_softmax_input, LogOp("loss_softmax_log").negate());
 	auto loss_softmax_dot = df->dot(loss_softmax_log, loss_target_labels);
-	auto loss = df->loss(loss_softmax_dot, DeepFlow::AVG, 1.0f, 0.0f, "loss");
+	auto loss = df->loss(loss_softmax_dot, LossOp("loss"));
 
-	auto pred_softmax_input = df->place_holder({ FLAGS_batch, 10, 1, 1 }, Tensor::Float, "pred_softmax_input");
-	auto pred_target_labels = df->place_holder({ FLAGS_batch, 10, 1, 1 }, Tensor::Float, "pred_target_labels");
-	auto max_actual = df->argmax(pred_softmax_input, 1, "pred_actual");
-	auto max_target = df->argmax(pred_target_labels, 1, "pred_target");	
-	auto equal = df->equal(max_actual, max_target, "equal");
-	auto acc = df->accumulator(equal, "accumulator");
-	auto correct_count = df->reduce_sum(acc[0], 0, "correct_count");
+	auto pred_softmax_input = df->place_holder({ FLAGS_batch, 10, 1, 1 }, PlaceholderOp("pred_softmax_input"));
+	auto pred_target_labels = df->place_holder({ FLAGS_batch, 10, 1, 1 }, PlaceholderOp("pred_target_labels"));
+	auto max_actual = df->argmax(pred_softmax_input, 1, ArgmaxOp("pred_actual"));
+	auto max_target = df->argmax(pred_target_labels, 1, ArgmaxOp("pred_target"));	
+	auto equal = df->equal(max_actual, max_target);
+	auto acc = df->accumulator(equal);
+	auto correct_count = df->reduce_sum(acc[0], 0, ReduceSumOp("correct_count"));
 
 	int fn = 64; 
 
-	auto net = df->place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "input");
-	net = df->conv2d(net, 1, fn, 3, 1, 2, true, solver, "conv1"); // 14x14
-	net = df->leaky_relu(net, 0.2f);	
-	net = df->conv2d(net, fn, fn * 2, 3, 1, 2, true, solver, "conv2"); // 7x7
-	net = df->leaky_relu(net, 0.2f);
-	net = df->conv2d(net, fn * 2, fn * 4, 3, 1, 2, true, solver, "conv3"); // 4x4
-	net = df->leaky_relu(net, 0.2f);
-	net = df->dense(net, { (fn * 4) * 4 * 4, 512, 1, 1 }, true, solver, "fc1");
+	auto net = df->place_holder({ FLAGS_batch, 1, 28, 28 }, PlaceholderOp("input"));
+	net = df->conv2d(net, 1, fn, solver, ConvolutionOp("conv1").kernel(3).pad(1).stride(2).with_bias()); // 14x14	
+	net = df->leaky_relu(net);	
+	net = df->conv2d(net, fn, fn * 2, solver, ConvolutionOp("conv2").kernel(3).pad(1).stride(2).with_bias()); // 7x7	
+	net = df->leaky_relu(net);
+	net = df->conv2d(net, fn * 2, fn * 4, solver, ConvolutionOp("conv3").kernel(3).pad(1).stride(2).with_bias()); // 4x4	
+	net = df->leaky_relu(net);
+	net = df->dense(net, { (fn * 4) * 4 * 4, 512, 1, 1 }, solver, DenseOp("fc1"));
 	//net = df->dropout(net);
-	net = df->dense(net, { 512, 10, 1, 1 }, true, solver, "fc2");
-	net = df->softmax(net, DeepFlow::SoftmaxMode::INSTANCE, "output");
+	net = df->dense(net, { 512, 10, 1, 1 }, solver, DenseOp("fc2"));
+	net = df->softmax(net, SoftmaxOp("output").by_instance());
 
 }
 

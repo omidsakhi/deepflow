@@ -14,7 +14,6 @@
 
 #include "core/solver.h"
 
-#include "solvers/gain_solver.h"
 #include "solvers/sgd_solver.h"
 #include "solvers/adam_solver.h"
 #include "solvers/adadelta_solver.h"
@@ -57,7 +56,6 @@
 #include "nodes/lifting.h"
 #include "nodes/patching.h"
 #include "nodes/reduce_all.h"
-#include "nodes/upsample.h"
 #include "nodes/image_writer.h"
 #include "nodes/resize.h"
 #include "nodes/split.h"
@@ -74,6 +72,7 @@
 #include "nodes/patch_sampling.h"
 #include "nodes/max.h"
 
+#include "generators/mnist_reader.h"
 #include "generators/data_generator.h"
 #include "generators/image_batch_reader.h"
 #include "generators/text_image_generator.h"
@@ -175,8 +174,6 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Resize>(node_param);
 	else if (node_param->has_pooling_param())
 		return std::make_shared<Pooling>(node_param);
-	else if (node_param->has_upsample_param())
-		return std::make_shared<Upsample>(node_param);
 	else if (node_param->has_reduce_param())
 		return std::make_shared<Reduce>(node_param);
 	else if (node_param->has_display_param())
@@ -257,10 +254,7 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 }
 
 std::shared_ptr<Solver> Session::_create_solver(deepflow::SolverParam *solver_param) {
-	if (solver_param->has_gain_solver()) {
-		return std::make_shared<GainSolver>(solver_param);
-	}
-	else if (solver_param->has_sgd_solver()) {
+	if (solver_param->has_sgd_solver()) {
 		return std::make_shared<SGDSolver>(solver_param);
 	}
 	else if (solver_param->has_adam_solver()) {
@@ -279,38 +273,26 @@ std::shared_ptr<Solver> Session::_create_solver(deepflow::SolverParam *solver_pa
 	return 0;
 }
 
-void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
-	if (_initialized == true)
-		return;
-	
-	int dbl = 0;
-	if (execution_context) {
-		dbl = execution_context->debug_level;
-		if (dbl > 2) {
-			cudnnSetCallback(CUDNN_SEV_INFO_EN, NULL, NULL);
-		}
-	}
-
-	_initialized = true;	
-
-	LOG_IF(INFO, dbl > 2) << "creating nodes ... ";
+void Session::create_nodes()
+{
+	LOG(INFO) << "creating nodes ... ";
 
 	// creating nodes
-	for (int i=0; i < _block->block_param()->node_size(); ++i)
+	for (int i = 0; i < _block->block_param()->node_size(); ++i)
 	{
 		auto node_param = _block->block_param()->mutable_node(i);
 		auto node = _create_node(node_param);
-		LOG_IF(INFO, dbl > 2) << "creating node " << node->name();
+		//LOG_IF(INFO, dbl > 2) << "creating node " << node->name();
 		node->createIO();
-		LOG_IF(FATAL, node->inputs().size() != node->param()->input_size()) << "Node " << node->name() << "'s input size " << node->inputs().size() << " does not match the one specified in proto (" << node->param()->input_size() << ")";		
+		LOG_IF(FATAL, node->inputs().size() != node->param()->input_size()) << "Node " << node->name() << "'s input size " << node->inputs().size() << " does not match the one specified in proto (" << node->param()->input_size() << ")";
 		_nodes.push_back(node);
 	}
 
-	LOG_IF(INFO, dbl > 2) << "connecting nodes ... ";
+	LOG(INFO) << "connecting nodes ... ";
 
 	// connecting node inputs/outputs
 	for (auto node : _nodes) {
-		for (int i = 0; i < node->param()->input_size(); ++i) {			
+		for (int i = 0; i < node->param()->input_size(); ++i) {
 			const std::string terminal_name = node->param()->input(i);
 			if (!terminal_name.empty()) {
 				auto terminal = _find_node_output_by_name(terminal_name);
@@ -319,14 +301,14 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 			}
 		}
 	}
-	
+
 	// caching the name of all variables
 	_variables = _get_nodes<Variable>();
 
 	for (auto var : _variables) {
 		std::shared_ptr<Solver> solver;
 		std::string var_solver_name = var->param()->variable_param().solver_name();
-		for (int i=0; i < _block->block_param()->solver_size(); ++i) 
+		for (int i = 0; i < _block->block_param()->solver_size(); ++i)
 		{
 			auto solver_param = _block->block_param()->mutable_solver(i);
 			if (var_solver_name == solver_param->name()) {
@@ -347,6 +329,25 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 	}
 
 	_insert_splits();
+
+	_created = true;
+}
+
+void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
+	if (_initialized == true)
+		return;
+	
+	if (_created == false)
+		create_nodes();
+
+	LOG(INFO) << "initializing ... ";
+
+	int dbl = 0;
+	if (execution_context) {
+		dbl = execution_context->debug_level;
+	}
+
+	_initialized = true;	
 
 	size_t free_byte_before, free_byte_after;
 	size_t total_byte;	
@@ -710,14 +711,14 @@ void Session::set_enabled_solvers(bool state, std::initializer_list<std::string>
 		for (auto item : _solvers) {
 			for (auto name : solver_names) {
 				if (item.second->name() == name) {
-					item.second->setEnabled(state);
+					item.second->set_enabled(state);
 				}
 			}
 		}
 	}
 	else {
 		for (auto item : _solvers)
-			item.second->setEnabled(state);			
+			item.second->set_enabled(state);			
 	}
 }
 
@@ -727,14 +728,14 @@ void Session::set_learning_rate(float lr, std::initializer_list<std::string> sol
 		for (auto item : _solvers) {
 			for (auto name : solver_names) {
 				if (item.second->name() == name) {
-					item.second->setLearningRate(lr);
+					item.second->set_learning_rate(lr);
 				}
 			}
 		}
 	}
 	else {
 		for (auto item : _solvers)
-			item.second->setLearningRate(lr);			
+			item.second->set_learning_rate(lr);			
 	}
 }
 

@@ -14,11 +14,13 @@ Fill::Fill(deepflow::InitParam *param) : Initializer(param) {
 	LOG_IF(FATAL, param->has_fill_param() == false) << "param.has_fill_param() == false";		
 }
 
-void Fill::apply(Variable *variable) {
+void Fill::apply(Node *node) {
+	auto size = node->output(0)->value()->size();
 	float value = _param->fill_param().value();
-	auto size = variable->output(0)->value()->size();	
-	FillKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*)variable->output(0)->value()->mutableData(), value);
-	DF_KERNEL_CHECK();
+	for (auto output : node->outputs()) {		
+		FillKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), value);
+		DF_KERNEL_CHECK();
+	}
 }
 
 std::string Fill::to_cpp() const

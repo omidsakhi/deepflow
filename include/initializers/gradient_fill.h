@@ -6,7 +6,7 @@
 class DeepFlowDllExport GradientFill : public Initializer {
 public:
 	GradientFill(deepflow::InitParam *param);
-	void apply(Variable *variable);
+	void apply(Node *node);
 	void init() {}
 	std::string to_cpp() const;
 };

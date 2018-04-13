@@ -16,7 +16,6 @@ public:
 	std::string to_cpp() const;
 private:
 	float _initial_negative_slope = 0;
-	float _negative_slope = 0;
-	bool _randomize = false;
+	float _negative_slope = 0;	
 	std::random_device _random_device;
 };

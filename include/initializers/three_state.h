@@ -10,7 +10,7 @@ class DeepFlowDllExport ThreeState : public Initializer {
 public:
 	ThreeState(deepflow::InitParam *param);
 	void init() {}
-	void apply(Variable *variable);
+	void apply(Node *node);
 	std::string to_cpp() const;
 private:
 	std::random_device rd;

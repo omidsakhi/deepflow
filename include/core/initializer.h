@@ -5,14 +5,14 @@
 #include "core/tensor.h"
 #include "proto/deepflow.pb.h"
 
-class Variable;
+class Node;
 
 class DeepFlowDllExport Initializer : public CudaHelper {
 public:
 	Initializer(deepflow::InitParam *param);
 	//Initializer(std::array<int, 4> dims, Tensor::TensorType type);
 	virtual void init() = 0;
-	virtual void apply(Variable *variable) = 0;	
+	virtual void apply(Node *node) = 0;	
 	std::array<int, 4> dims() const;	
 	deepflow::InitParam *param();
 	virtual std::string to_cpp() const = 0;

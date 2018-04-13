@@ -71,7 +71,7 @@ public:
 protected:	
 	std::vector<NodeInputPtr> _inputs;
 	std::vector<NodeOutputPtr> _outputs;
-	std::string _name = "NoName";
+	std::string _name = "Node";
 	std::string _scope = "Default";
 	bool _initialized = false;
 	deepflow::NodeParam *_param = nullptr;

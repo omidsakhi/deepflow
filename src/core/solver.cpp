@@ -17,17 +17,22 @@ const std::string Solver::name() const {
 	return _param->name();
 }
 
-bool Solver::hasTheSameParam(std::shared_ptr<Solver> another) const
+const std::string Solver::scope() const
+{
+	return _param->scope();	
+}
+
+bool Solver::has_the_same_param(std::shared_ptr<Solver> another) const
 {
 	return _param->name() == another->name();
 }
 
-void Solver::setLearningRate(float lr)
+void Solver::set_learning_rate(float lr)
 {
 	_learning_rate = lr;
 }
 
-void Solver::setEnabled(bool state)
+void Solver::set_enabled(bool state)
 {	
 	_enabled = state;
 }

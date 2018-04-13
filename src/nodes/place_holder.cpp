@@ -75,3 +75,11 @@ std::string PlaceHolder::to_cpp() const
 	cpp += "\"" + _name + "\");";	
 	return cpp;
 }
+
+void PlaceHolder::set_dimentions(std::array<int, 4> dims)
+{
+	auto placeHolderParam = _param->mutable_place_holder_param();
+	auto tensorParam = placeHolderParam->mutable_tensor_param();
+	for (int i=0; i < 4; ++i)
+		tensorParam->set_dims(i, dims[i]);
+}

@@ -29,8 +29,9 @@ private:
 	int pic_height;
 	int num_pic_pixels;	
 	cv::Mat disp;
-	int _delay_msec = 100;
+	int _delay_msec = 1;
 	int _epoch_frequency = 1;
-	bool _draw_iteration = false;
+	int _iter_frequency = 1;
+	bool _draw_iteration = true;
 	deepflow::ActionType _display_type;
 };

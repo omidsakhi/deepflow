@@ -17,6 +17,7 @@ public:
 	void backward();
 	std::string to_cpp() const;
 	void set_text_line(std::string text);
+	void set_filename(std::string filename);
 private:
 	int input_size;
 	int input_size_in_bytes;

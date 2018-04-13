@@ -23,55 +23,56 @@ void load_session(DeepFlow *df, std::string prefix, std::string suffix) {
 
 void create_graph(DeepFlow *df) {	
 
-	auto solver = df->adam_solver(0.002f, 0.5f, 0.99f);
-	auto negative_slope = 0.2;	
+	auto solver = df->adam_solver( AdamSolverOp().lr(0.002f).beta1(0.5f).beta2(0.99f));
+
+	auto ns = 0.2f;	
 	auto fn = 128;
 	auto ef = 0.1f;
 
-	df->image_batch_reader(FLAGS_faces, { FLAGS_batch, FLAGS_channels, 128, 128 }, true, "face_data");
-	auto loss_input = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "loss_input");
-	auto loss_target = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "loss_target");
+	df->imbatch(FLAGS_faces, { FLAGS_batch, FLAGS_channels, 128, 128 }, ImbatchOp("face_data"));
+	auto loss_input = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, PlaceholderOp("loss_input"));
+	auto loss_target = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, PlaceholderOp("loss_target"));
 	auto sqerr = df->square_error(loss_input, loss_target);
-	auto loss = df->loss(sqerr, DeepFlow::AVG);
-	auto disp_input = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "disp_input");
-	df->display(disp_input, 1, DeepFlow::VALUES, 1, "disp");
+	auto loss = df->loss(sqerr);
+	auto disp_input = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, PlaceholderOp("disp_input"));
+	df->display(disp_input);
 
-	auto net = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, Tensor::Float, "enc_input");
+	auto net = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, PlaceholderOp("enc_input"));
 	
-	net = df->conv2d(net, FLAGS_channels, fn, 3, 1, 2, true, solver, "conv1");
-	net = df->leaky_relu(net, negative_slope);	
+	net = df->conv2d(net, FLAGS_channels, fn, solver, ConvolutionOp("conv1").kernel(3).pad(1).stride(2).with_bias());
+	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));	
 
-	net = df->conv2d(net, fn, fn, 3, 1, 2, true, solver, "conv2");	
-	net = df->leaky_relu(net, negative_slope);	
+	net = df->conv2d(net, fn, fn, solver, ConvolutionOp("conv2").kernel(3).pad(1).stride(2).with_bias());
+	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 	
-	net = df->conv2d(net, fn, fn, 3, 1, 2, true, solver, "conv3");
-	net = df->leaky_relu(net, negative_slope);	
+	net = df->conv2d(net, fn, fn, solver, ConvolutionOp("conv3").kernel(3).pad(1).stride(2).with_bias());	
+	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 
-	net = df->conv2d(net, fn, fn, 3, 1, 2, true, solver, "conv4");
-	net = df->leaky_relu(net, negative_slope);
+	net = df->conv2d(net, fn, fn, solver, ConvolutionOp("conv4").kernel(3).pad(1).stride(2).with_bias());	
+	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 
-	net = df->conv2d(net, fn, fn, 3, 1, 2, false, solver, "conv5");	
-	net = df->leaky_relu(net, negative_slope);
+	net = df->conv2d(net, fn, fn, solver, ConvolutionOp("conv5").kernel(3).pad(1).stride(2).with_bias());	
+	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 
-	net = df->transposed_conv2d(net, fn, fn, 3, 1, 2, false, solver, "tconv1");
-	net = df->batch_normalization(net, solver, fn, ef, "tconv1_bn");
-	net = df->leaky_relu(net, negative_slope);
+	net = df->transposed_conv2d(net, fn, fn, solver, ConvolutionOp("tconv1").kernel(3).pad(1).stride(2));
+	net = df->batch_normalization(net, fn, solver, BatchNormalizationOp("tconv1_bn").exponent_factor(ef));
+	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 
-	net = df->transposed_conv2d(net, fn, fn , 3, 1, 2, false, solver, "tconv2");
-	net = df->batch_normalization(net, solver, fn, ef, "tconv2_bn");
-	net = df->leaky_relu(net, negative_slope);
+	net = df->transposed_conv2d(net, fn, fn, solver, ConvolutionOp("tconv2").kernel(3).pad(1).stride(2));	
+	net = df->batch_normalization(net, fn, solver, BatchNormalizationOp("tconv2_bn").exponent_factor(ef));
+	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 	
-	net = df->transposed_conv2d(net, fn, fn, 3, 1, 2, false, solver, "tconv3");
-	net = df->batch_normalization(net, solver, fn, ef, "tconv3_bn");
-	net = df->leaky_relu(net, negative_slope);
+	net = df->transposed_conv2d(net, fn, fn, solver, ConvolutionOp("tconv3").kernel(3).pad(1).stride(2));	
+	net = df->batch_normalization(net, fn, solver, BatchNormalizationOp("tconv3_bn").exponent_factor(ef));
+	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 
-	net = df->transposed_conv2d(net, fn, fn, 3, 1, 2, false, solver, "tconv4");
-	net = df->batch_normalization(net, solver, fn, ef, "tconv4_bn");
-	net = df->leaky_relu(net, negative_slope);	
+	net = df->transposed_conv2d(net, fn, fn, solver, ConvolutionOp("tconv4").kernel(3).pad(1).stride(2));	
+	net = df->batch_normalization(net, fn, solver, BatchNormalizationOp("tconv4_bn").exponent_factor(ef));
+	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 
-	net = df->transposed_conv2d(net, fn, 3, 3, 1, 2, true, solver, "tconv5");		
+	net = df->transposed_conv2d(net, fn, 3, solver, ConvolutionOp("tconv5").kernel(3).pad(1).stride(2). with_bias());	
 
-	df->tanh(net, "dec_output");
+	df->tanh(net, TanhOp("dec_output"));
 
 }
 

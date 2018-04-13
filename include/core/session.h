@@ -24,14 +24,15 @@ class DeepFlowDllExport Session {
 	friend class Node;
 public:
 	Session() {}
-	Session(std::shared_ptr<Block> block) { _block = block; }	
+	Session(std::shared_ptr<Block> block) { _block = block; }
+	void create_nodes();
 	void initialize(std::shared_ptr<ExecutionContext> execution_context = nullptr);
 	void set_execution_context(std::shared_ptr<ExecutionContext> execution_context);	
 	void mem_usage(size_t *free_byte, size_t *total_byte, float *used_byte_percentage);
 	std::string to_cpp() const;
 	std::shared_ptr<PlaceHolder> get_placeholder(std::string name);
 	template <class T = Node>
-	std::shared_ptr<T> get_node(std::string name);	
+	std::shared_ptr<T> get_node(std::string name, bool validate = true);	
 	void forward(std::list<std::shared_ptr<Node>> end_nodes, std::initializer_list<std::pair<std::shared_ptr<PlaceHolder>, std::shared_ptr<Tensor>>> feed_list = {});
 	void reset_gradients();
 	void clamp(float min, float max);
@@ -57,6 +58,7 @@ private:
 	std::shared_ptr<Solver> _create_solver(deepflow::SolverParam *);	
 	void _insert_splits();
 private:
+	bool _created = false;
 	bool _initialized = false;
 	std::shared_ptr<ExecutionContext> _execution_context;
 	std::shared_ptr<Block> _block;
@@ -78,9 +80,14 @@ inline std::list<std::shared_ptr<T>> Session::_get_nodes()
 }
 
 template <class T>
-std::shared_ptr<T> Session::get_node(std::string name)
+std::shared_ptr<T> Session::get_node(std::string name, bool validate)
 {
 	auto node = _find_node_by_name(name);
-	return std::dynamic_pointer_cast<T>(node);
+	auto ref = std::dynamic_pointer_cast<T>(node);
+	if (ref == 0 && validate) {
+		std::cout << "[FAILED] - " << name << " node does not exist in the graph.";
+		exit(-1);
+	}
+	return ref;
 }
 

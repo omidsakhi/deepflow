@@ -22,19 +22,13 @@ LeakyRelu::LeakyRelu(deepflow::NodeParam *param) : Node(param) {
 void LeakyRelu::init() {	
 	_initial_negative_slope = _param->leaky_relu_param().negative_slope();	
 	LOG_IF(FATAL, _initial_negative_slope < 0) << " negative_slope < 0";
-	_negative_slope = _initial_negative_slope;
-	_randomize = _param->leaky_relu_param().randomize();
+	_negative_slope = _initial_negative_slope;	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
 	_outputs[0]->initDiff();	
 }
 
 void LeakyRelu::forward() {	
 	auto size = _inputs[0]->value()->size();
-	if (_randomize) {
-		std::mt19937 gen(_random_device());
-		std::uniform_real_distribution<> dis(0, _initial_negative_slope);
-		_negative_slope = dis(gen);				
-	}	
 	ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData(), _negative_slope);
 	DF_KERNEL_CHECK();	
 }

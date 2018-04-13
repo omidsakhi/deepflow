@@ -10,9 +10,6 @@
     <CudaCompile Include="..\..\src\solvers\sgd_solver.cu">
       <Filter>source\solver</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\solvers\gain_solver.cu">
-      <Filter>source\solver</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\initializers\step.cu">
       <Filter>source\initializers</Filter>
     </CudaCompile>
@@ -82,9 +79,6 @@
     <CudaCompile Include="..\..\src\nodes\reduce_all.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\upsample.cu">
-      <Filter>source\nodes</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\image_writer.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
@@ -123,6 +117,9 @@
     </CudaCompile>
     <CudaCompile Include="..\..\src\generators\text_image_generator.cu">
       <Filter>source\generators</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\max.cu">
+      <Filter>source\nodes</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -250,9 +247,6 @@
       <Filter>source\initializers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\nodes\bias_add.cpp">
-      <Filter>source\nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\nodes\max.cu">
       <Filter>source\nodes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -452,9 +446,6 @@
     <ClInclude Include="..\..\include\nodes\reduce_all.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\nodes\upsample.h">
-      <Filter>include\nodes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\nodes\image_writer.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
@@ -514,6 +505,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\max.h">
       <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\optional_params.h">
+      <Filter>include\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

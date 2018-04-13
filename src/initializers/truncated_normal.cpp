@@ -6,20 +6,22 @@ TruncatedNormal::TruncatedNormal(deepflow::InitParam *param) : Initializer(param
 	LOG_IF(FATAL, param->has_truncated_normal_param() == false) << "param.truncated_normal_param() == false";
 }
 
-void TruncatedNormal::apply(Variable *variable) {
-	auto size = variable->output(0)->value()->size();
+void TruncatedNormal::apply(Node *node) {
+	auto size = node->output(0)->value()->size();
 	float mean = _param->truncated_normal_param().mean();
 	float stddev = _param->truncated_normal_param().stddev();
 	generator.seed(rd());
 	std::normal_distribution<float> distribution(mean, stddev);
 	float *h_rand = new float[size];
-	for (int i = 0; i < size; ++i) {
-		float value = distribution(generator);
-		while (value > stddev || value < -stddev)
-			value = distribution(generator);
-		h_rand[i] = value;
+	for (auto output : node->outputs()) {
+		for (int i = 0; i < size; ++i) {
+			float value = distribution(generator);
+			while (value > stddev || value < -stddev)
+				value = distribution(generator);
+			h_rand[i] = value;
+		}
+		DF_CUDA_CHECK(cudaMemcpy((float*)output->value()->mutableData(), h_rand, output->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 	}
-	DF_CUDA_CHECK(cudaMemcpy((float*)variable->output(0)->value()->mutableData(), h_rand, variable->output(0)->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 	delete[] h_rand;
 }
 

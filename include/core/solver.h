@@ -14,9 +14,10 @@ public:
 	virtual std::string to_cpp() const = 0;
 	deepflow::SolverParam *param() const;
 	const std::string name() const;
-	bool hasTheSameParam(std::shared_ptr<Solver> another) const;
-	void setLearningRate(float lr);
-	void setEnabled(bool state);
+	const std::string scope() const;
+	bool has_the_same_param(std::shared_ptr<Solver> another) const;
+	void set_learning_rate(float lr);
+	void set_enabled(bool state);
 protected:
 	deepflow::SolverParam *_param;
 	bool _initialized = false;

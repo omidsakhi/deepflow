@@ -35,6 +35,9 @@
 /data/celeba64
 /data/celeba
 /data/celeba128
+/data/echo1
+/data/echo2
+/data/echo256
 /data/mnist/*.gz
 /third-party/boost_1_64_0
 /auxiliary/mnist-dcgan/dist/server.js

@@ -28,50 +28,50 @@ void load_session(DeepFlow *df, std::string prefix) {
 void create_generator(DeepFlow *df) {
 	int fn = 64;
 	float ef = 0.01f;
-	auto solver = df->adam_solver(0.00005f, 0.5f, 0.99f, 10e-8, "g_adam");
+	auto solver = df->adam_solver( AdamSolverOp("g_adam").lr(0.00005f).beta1(0.5f).beta2(0.99f) );
 
-	auto node = df->place_holder({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, Tensor::Float, "g_input");
+	auto node = df->place_holder({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, PlaceholderOp("g_input"));
 
-	node = df->dense(node, { FLAGS_z_dim, fn * 4, 4 , 4 }, false, solver, "gfc");
-	node = df->batch_normalization(node, solver, fn * 4, ef, "gfc_bn");
+	node = df->dense(node, { FLAGS_z_dim, fn * 4, 4 , 4 }, solver, DenseOp("gfc"));
+	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("gfc_bn").exponent_factor(ef));
 	node = df->relu(node);
 
-	node = df->transposed_conv2d(node, fn * 4, fn * 4, 3, 1, 2, false, solver, "g8");
-	node = df->batch_normalization(node, solver, fn * 4, ef, "g8_bn");
+	node = df->transposed_conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("g8").kernel(3).pad(1).stride(2));
+	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g8_bn").exponent_factor(ef));
 	node = df->relu(node);
 
-	node = df->transposed_conv2d(node, fn * 4, fn * 4, 3, 1, 2, false, solver, "g16");
-	node = df->batch_normalization(node, solver, fn * 4, ef, "g16_bn");
+	node = df->transposed_conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("g16").kernel(3).pad(1).stride(2));
+	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g16_bn").exponent_factor(ef));
 	node = df->relu(node);
 
-	node = df->transposed_conv2d(node, fn * 4, fn * 2, 3, 1, 2, false, solver, "g32");
-	node = df->batch_normalization(node, solver, fn * 2, ef, "g32_bn");
+	node = df->transposed_conv2d(node, fn * 4, fn * 2, solver, ConvolutionOp("g32").kernel(3).pad(1).stride(2));
+	node = df->batch_normalization(node, fn * 2, solver, BatchNormalizationOp("g32_bn").exponent_factor(ef));
 	node = df->relu(node);
 
-	df->conv2d(node, fn * 2, 1, 5, 0, 1, true, solver, "g28");
+	df->conv2d(node, fn * 2, 1, solver, ConvolutionOp("g28").kernel(5).pad(0).stride(1).with_bias());
 
 }
 
 void create_discriminator(DeepFlow *df) {
 	int fn = 64;
 	float ef = 0.01f;
-	auto solver = df->adam_solver(0.00005f, 0.5f, 0.99f, 10e-8, "d_adam");
+	auto solver = df->adam_solver(AdamSolverOp("d_adam").lr(0.00005f).beta1(0.5f).beta2(0.99f));
 
-	auto node = df->place_holder({ FLAGS_batch , 1, 28, 28 }, Tensor::Float, "d_input");
+	auto node = df->place_holder({ FLAGS_batch , 1, 28, 28 }, PlaceholderOp("d_input"));
 
-	node = df->conv2d(node, 1, fn, 5, 2, 2, false, solver, "d14");
-	node = df->batch_normalization(node, solver, fn, ef, "d14_bn");
-	node = df->leaky_relu(node, 0.2f);
+	node = df->conv2d(node, 1, fn, solver, ConvolutionOp("d14").kernel(5).pad(2).stride(2));
+	node = df->batch_normalization(node, fn, solver, BatchNormalizationOp("g14_bn").exponent_factor(ef));
+	node = df->leaky_relu(node);
 
-	node = df->conv2d(node, fn, fn * 2, 5, 2, 2, false, solver, "d7");
-	node = df->batch_normalization(node, solver, fn * 2, ef, "d7_bn");
-	node = df->leaky_relu(node, 0.2f);
+	node = df->conv2d(node, fn, fn * 2, solver, ConvolutionOp("d7").kernel(5).pad(2).stride(2));
+	node = df->batch_normalization(node, fn * 2, solver, BatchNormalizationOp("g7_bn").exponent_factor(ef));
+	node = df->leaky_relu(node);
 
-	node = df->conv2d(node, fn * 2, fn * 4, 5, 2, 2, false, solver, "d4");
-	node = df->batch_normalization(node, solver, fn * 4, ef, "d4_bn");
-	node = df->leaky_relu(node, 0.2f);
+	node = df->conv2d(node, fn * 2, fn * 4, solver, ConvolutionOp("d4").kernel(5).pad(2).stride(2));
+	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g4_bn").exponent_factor(ef));
+	node = df->leaky_relu(node);
 
-	df->dense(node, { (fn * 4) * 4 * 4, 1, 1, 1 }, true, solver, "dfc");
+	df->dense(node, { (fn * 4) * 4 * 4, 1, 1, 1 }, solver, DenseOp("dfc"));
 
 }
 
@@ -87,17 +87,17 @@ void main(int argc, char** argv) {
 	DeepFlow df;
 
 	if (FLAGS_load.empty()) {
-		df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1), "", "mnist_labels");
-		df.mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::MNISTReaderType::Train, MNISTReader::Data, "mnist_data");
-		df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), "", "generator_labels");
-		df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), "", "z");
-		df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), "", "static_z");
-		auto imwrite_input = df.place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "imwrite_input");
-		df.imwrite(imwrite_input, "{it}", "imwrite");
-		auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "loss_input");
-		auto discriminator_target = df.place_holder({ FLAGS_batch, 1, 1, 1 }, Tensor::Float, "loss_target");
-		std::string err = df.reduce_mean(df.square_error(discriminator_input, discriminator_target));
-		df.loss(err, DeepFlow::AVG, 1.0f, 0.0f, "loss");
+		df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1), DataGeneratorOp());
+		df.mnist_reader(FLAGS_mnist, MNISTReaderOp("mnist_data").batch(FLAGS_batch).train().data());
+		df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), DataGeneratorOp("generator_labels"));
+		df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), DataGeneratorOp("z"));
+		df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), DataGeneratorOp("static_z"));
+		auto imwrite_input = df.place_holder({ FLAGS_batch, 1, 28, 28 }, PlaceholderOp("imwrite_input"));
+		df.imwrite(imwrite_input, "{it}");
+		auto discriminator_input = df.place_holder({ FLAGS_batch, 1, 1, 1 }, PlaceholderOp("loss_input"));
+		auto discriminator_target = df.place_holder({ FLAGS_batch, 1, 1, 1 }, PlaceholderOp("loss_target"));
+		std::string err = df.reduce_all(df.square_error(discriminator_input, discriminator_target));
+		df.loss(err);
 		create_discriminator(&df);
 		create_generator(&df);
 	}

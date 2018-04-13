@@ -16,4 +16,5 @@ public:
 	int minNumOutputs() { return 1; }
 	std::string op_name() const override { return "place_holder"; }
 	std::string to_cpp() const;
+	void set_dimentions(std::array<int, 4> dims);
 };

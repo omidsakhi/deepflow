@@ -13,7 +13,7 @@ TEST(fill, initialization) {
 	for (int i = 0; i < 10; ++i) {
 		int value = uniform_dist(e1);
 		DeepFlow df;
-		df.variable(df.fill({ 3,3,3,3 }, value), "", "var");
+		df.variable(df.fill({ 3,3,3,3 }, value), "", VariableOp("var"));
 		auto session = df.session();
 		session->initialize();
 		auto var = session->get_node("var");
@@ -34,7 +34,7 @@ TEST(index_fill, initialization) {
 	for (int i = 0; i < 10; ++i) {
 		int value = uniform_dist(e1);
 		DeepFlow df;
-		df.variable(df.index_fill({ 3,3,3,3 }, value), "", "var");
+		df.variable(df.index_fill({ 3,3,3,3 }, value), "", VariableOp("var"));
 		auto session = df.session();
 		session->initialize();
 		auto var = session->get_node("var");
@@ -59,7 +59,7 @@ TEST(random_uniform, initialization) {
 		float min_value = uniform_dist(e1);
 		float max_value = min_value + uniform_dist(e1);		
 		DeepFlow df;
-		df.variable(df.random_uniform({ 3,3,3,3 }, min_value, max_value), "", "var");
+		df.variable(df.random_uniform({ 3,3,3,3 }, min_value, max_value), "", VariableOp("var"));
 		auto session = df.session();
 		session->initialize();
 		auto var = session->get_node("var");
@@ -81,7 +81,7 @@ TEST(step, initialization) {
 		float min_value = uniform_dist(e1);
 		float max_value = min_value + uniform_dist(e1);		
 		DeepFlow df;
-		df.variable(df.step({ 3,3,3,3 }, min_value, max_value), "", "var");
+		df.variable(df.step({ 3,3,3,3 }, min_value, max_value), "", VariableOp("var"));
 		auto session = df.session();
 		session->initialize();
 		auto var = session->get_node("var");
@@ -96,8 +96,8 @@ TEST(step, initialization) {
 
 TEST(abs, forward) {
 	DeepFlow df;
-	auto node = df.variable(df.step({ 3,3,3,3 }, -100, 100), "", "var");
-	df.abs(node, "abs");
+	auto node = df.variable(df.step({ 3,3,3,3 }, -100, 100), "", VariableOp("var"));
+	df.abs(node, AbsOp("abs"));
 	auto session = df.session();
 	session->initialize();
 	auto abs = session->get_node("abs");
@@ -111,9 +111,9 @@ TEST(abs, forward) {
 
 TEST(bias_add, forward) {
 	DeepFlow df;
-	auto vec = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "v");
-	auto bias = df.place_holder({ 1, 3, 1, 1 }, Tensor::Float, "b");
-	df.bias_add(vec, bias, "bias_add");
+	auto vec = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("v"));
+	auto bias = df.place_holder({ 1, 3, 1, 1 }, PlaceholderOp("b"));
+	df.bias_add(vec, bias, BiasAddOp("bias_add"));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("v")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
@@ -127,9 +127,9 @@ TEST(bias_add, forward) {
 
 TEST(bias_add, backward) {
 	DeepFlow df;
-	auto vec = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "v");
-	auto bias = df.place_holder({ 1, 3, 1, 1 }, Tensor::Float, "b");
-	df.bias_add(vec, bias, "bias_add");
+	auto vec = df.place_holder({ 2, 3, 2, 2 },  PlaceholderOp("v"));
+	auto bias = df.place_holder({ 1, 3, 1, 1 }, PlaceholderOp("b"));
+	df.bias_add(vec, bias, BiasAddOp("bias_add"));
 	auto session = df.session();
 	session->initialize();	
 	session->get_node("v")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
@@ -155,9 +155,9 @@ TEST(bias_add, backward) {
 
 TEST(conv2d, forward) {
 	DeepFlow df;
-	auto input = df.place_holder({ 2, 1, 3, 3 }, Tensor::Float, "input");
-	auto f = df.place_holder({ 1, 1, 2, 2 }, Tensor::Float, "f");
-	df.conv2d(input, f, 0, 0, 1, 1, 1, 1, "conv");
+	auto input = df.place_holder({ 2, 1, 3, 3 }, PlaceholderOp("input"));
+	auto f = df.place_holder({ 1, 1, 2, 2 }, PlaceholderOp("f"));
+	df.conv2d(input, f, ConvolutionOp("conv").pad(0));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("input")->write_values(
@@ -183,9 +183,9 @@ TEST(conv2d, forward) {
 
 TEST(add, forward) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
-	auto b = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "b");
-	df.add(a, b, "add");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	auto b = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("b"));
+	df.add(a, b, AddOp("add"));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("a")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
@@ -197,9 +197,9 @@ TEST(add, forward) {
 
 TEST(sub, forward) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
-	auto b = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "b");
-	df.add(a, b, 1.0, -1.0, "sub");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	auto b = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("b"));
+	df.subtract(a, b, SubtractOp("sub"));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("a")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25 });
@@ -211,9 +211,9 @@ TEST(sub, forward) {
 
 TEST(add, backward) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
-	auto b = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "b");
-	df.add(a, b, "add");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	auto b = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("b"));
+	df.add(a, b, AddOp("add"));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("add")->write_diffs({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
@@ -224,9 +224,9 @@ TEST(add, backward) {
 
 TEST(sub, backward) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
-	auto b = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "b");
-	df.add(a, b, 1.0, -1.0, "sub");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	auto b = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("b"));
+	df.subtract(a, b, SubtractOp("sub"));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("sub")->write_diffs({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
@@ -237,8 +237,8 @@ TEST(sub, backward) {
 
 TEST(batch_stddev, forward) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");	
-	df.batch_stddev(a, "stddev");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	df.batch_stddev(a, BatchStddevOp("stddev"));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("a")->write_values({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25 });
@@ -249,8 +249,8 @@ TEST(batch_stddev, forward) {
 
 TEST(leaky_relu, forward_zero) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");	
-	df.leaky_relu(a, 0, "relu");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	df.leaky_relu(a, LeakyReluOp("relu").negative_slope(0));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("a")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
@@ -260,8 +260,8 @@ TEST(leaky_relu, forward_zero) {
 
 TEST(leaky_relu, forward_1) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
-	df.leaky_relu(a, 1.0, "relu");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	df.leaky_relu(a, LeakyReluOp("relu").negative_slope(1.0f));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("a")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
@@ -271,8 +271,8 @@ TEST(leaky_relu, forward_1) {
 
 TEST(leaky_relu, forward_0_1) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
-	df.leaky_relu(a, 0.1, "relu");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	df.leaky_relu(a, LeakyReluOp("relu").negative_slope(0.1f));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("a")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
@@ -282,8 +282,8 @@ TEST(leaky_relu, forward_0_1) {
 
 TEST(leaky_relu, backward_zero) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
-	df.leaky_relu(a, 0, "relu");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	df.leaky_relu(a, LeakyReluOp("relu").negative_slope(0));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("a")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
@@ -295,8 +295,8 @@ TEST(leaky_relu, backward_zero) {
 
 TEST(leaky_relu, backward_one) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
-	df.leaky_relu(a, 1.0, "relu");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	df.leaky_relu(a, LeakyReluOp("relu").negative_slope(1.0f));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("a")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
@@ -309,8 +309,8 @@ TEST(leaky_relu, backward_one) {
 
 TEST(leaky_relu, backward_0_1) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3, 2, 2 }, Tensor::Float, "a");
-	df.leaky_relu(a, 0.1f, "relu");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	df.leaky_relu(a, LeakyReluOp("relu").negative_slope(0.1f));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("a")->write_values({ -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 });
@@ -323,7 +323,7 @@ TEST(leaky_relu, backward_0_1) {
 
 TEST(gradient_fill, fill_test) {
 	DeepFlow df;
-	df.variable(df.gradient({ 3, 2 , 8 , 8 }), "", "var");
+	df.variable(df.gradient({ 3, 2 , 8 , 8 }), "", VariableOp("var"));
 	auto session = df.session();
 	session->initialize();
 	auto var = session->get_node("var");
@@ -336,9 +336,9 @@ TEST(gradient_fill, fill_test) {
 
 TEST(concate, forward1) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3 , 2 , 2 }, Tensor::Float, "a");
-	auto b = df.place_holder({ 2, 2 , 2 , 2 }, Tensor::Float, "b");
-	df.concate(a, b, "concate");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	auto b = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("b"));
+	df.concate(a, b, ConcateOp("concate"));
 	auto session = df.session();
 	session->initialize();
 	session->get_node("a")->write_values({  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23,  24 });
@@ -350,9 +350,9 @@ TEST(concate, forward1) {
 
 TEST(softmax, forward) {
 	DeepFlow df;
-	auto a = df.place_holder({ 2, 3 , 2 , 2 }, Tensor::Float, "a");
-	df.softmax(a, DeepFlow::SoftmaxMode::INSTANCE, "softmax1");
-	df.softmax(a, DeepFlow::SoftmaxMode::CHANNEL, "softmax2");
+	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
+	df.softmax(a, SoftmaxOp("softmax1").by_instance());
+	df.softmax(a, SoftmaxOp("softmax2").by_channel());
 	auto session = df.session();
 	session->initialize();
 	session->get_node("a")->write_values({ 0.1f,  0.2f,  0.3f,  0.4f,  0.5f,  0.6f,  0.7f,  0.8f,  0.9f,  0.10f,  0.11f,  0.12f,  0.13f,  0.14f,  0.15f,  0.16f,  0.17f,  0.18f,  0.19f,  0.20f,  0.21f,  0.22f,  0.23f,  0.24f });

@@ -17,8 +17,7 @@ private:
 	cudnnDropoutDescriptor_t _dropoutDesc;
 	size_t _state_sizes_in_bytes;
 	size_t _reserve_sizes_in_bytes;
-	float _dropout;
-	bool _train_only;
+	float _dropout;	
 	float *d_states;
 	float *d_reserve;
 };

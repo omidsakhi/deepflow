@@ -74,6 +74,7 @@ message DisplayParam {
 	ActionType display_type = 3;
 	int32 epoch_frequency = 4;
 	bool draw_iteration = 5;
+	int32 iter_frequency = 6;
 }
 
 message ImageWriterParam {
@@ -145,7 +146,6 @@ message Conv2dParam {
 
 message DropoutParam {
 	float dropout = 1;	
-	bool train_only = 2;
 }
 
 message MatMulParam {
@@ -153,8 +153,15 @@ message MatMulParam {
 
 message LeakyReluParam {
 	float negative_slope = 1;
-	bool randomize = 2;
 }
+
+message PReluParam {
+}
+
+message DPReluParam {
+	float negative_slope = 1;
+}
+
 
 message ReduceAllParam {
 	enum ReduceAllOp {
@@ -264,16 +271,11 @@ message BatchNormalizationParam {
 	TensorData mean = 3;
 	TensorData var = 4;
 	float exp_avg_factor = 5;
+	float eps = 6;
 }
 
 message ReplayMemoryParam {
 	int32 capacity = 1;
-}
-
-message PReluParam {
-}
-
-message DPReluParam {
 }
 
 message LrnParam {	
@@ -286,9 +288,6 @@ message LrnParam {
 message ResizeParam {
 	float height_scale = 1;
 	float width_scale = 2;
-}
-
-message UpsampleParam {
 }
 
 message SquareParam {
@@ -382,14 +381,6 @@ message SGDSolverParam {
 	float momentum = 2;	
 }
 
-message GainSolverParam {	
-	float momentum = 2;	
-	float max_gain = 3;
-	float min_gain = 4;
-	float gain_plus = 5;
-	float gain_mult = 6;
-}
-
 message AdaDeltaSolverParam {	
 	float momentum = 2;	
 	float delta = 3;
@@ -409,12 +400,11 @@ message RMSPropSolverParam {
 message SolverParam {
 	string name = 1;	
 	float learning_rate = 2;
-	SGDSolverParam sgd_solver = 3;
-	GainSolverParam gain_solver = 4;
+	SGDSolverParam sgd_solver = 3;	
 	AdamSolverParam adam_solver = 5;
 	AdaDeltaSolverParam adadelta_solver = 6;
-	RMSPropSolverParam rmsprop_solver = 7;
-
+	RMSPropSolverParam rmsprop_solver = 7;	
+	string scope = 8;
 }
 
 message BlockParam {
@@ -452,6 +442,9 @@ message PatchSamplingParam {
 }
 
 message TextImageGeneratorParam {
+	InitParam init_param = 1;
+	string chars = 2;
+	repeated string words = 3;
 }
 
 message MaxParam {
@@ -503,8 +496,7 @@ message NodeParam {
   LiftingParam lifting_param = 139;  
   PatchingParam patching_param = 140;
   AbsParam abs_param = 141;
-  ReduceAllParam reduce_all_param = 142;
-  UpsampleParam upsample_param = 143; 
+  ReduceAllParam reduce_all_param = 142;  
   ImageWriterParam image_writer_param = 144;
   ResizeParam resize_param = 145;
   SplitParam split_param = 146;

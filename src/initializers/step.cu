@@ -31,11 +31,12 @@ std::string Step::to_cpp() const
 	return cpp;
 }
 
-void Step::apply(Variable *variable) {	
-	int size = variable->output(0)->value()->size();
+void Step::apply(Node *node) {	
+	int size = node->output(0)->value()->size();
 	float min = _param->step_param().min();
 	float max = _param->step_param().max();
-	LOG(INFO) << "Step fill " << variable->name() << " - " << variable->output(0)->value()->shape();
-	StepFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)variable->output(0)->value()->mutableData(), min, (max-min)/size);
-	DF_KERNEL_CHECK();
+	for (auto output : node->outputs()) {
+		StepFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), min, (max - min) / size);
+		DF_KERNEL_CHECK();
+	}
 }

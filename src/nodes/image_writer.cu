@@ -57,3 +57,8 @@ void ImageWriter::set_text_line(std::string text)
 {
 	_text_line = text;
 }
+
+void ImageWriter::set_filename(std::string filename)
+{
+	_filename = filename;
+}

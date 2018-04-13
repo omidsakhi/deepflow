@@ -7,21 +7,23 @@ ThreeState::ThreeState(deepflow::InitParam *param) : Initializer(param)
 	LOG_IF(FATAL, param->has_three_state_param() == false) << "param.has_three_state_param() == false";
 }
 
-void ThreeState::apply(Variable * variable)
+void ThreeState::apply(Node *node)
 {
-	auto size = variable->output(0)->value()->size();
+	auto size = node->output(0)->value()->size();
 	std::uniform_int_distribution<int> distribution(0, 3);
 	float *h_rand = new float[size];
-	for (int i = 0; i < size; ++i) {
-		int state = distribution(generator);
-		if (state == 0)
-			h_rand[i] = -1;
-		else if (state == 1)
-			h_rand[i] = 0;
-		else 
-			h_rand[i] = 1;
+	for (auto output : node->outputs()) {
+		for (int i = 0; i < size; ++i) {
+			int state = distribution(generator);
+			if (state == 0)
+				h_rand[i] = -1;
+			else if (state == 1)
+				h_rand[i] = 0;
+			else
+				h_rand[i] = 1;
+		}
+		DF_CUDA_CHECK(cudaMemcpy((float*)output->value()->mutableData(), h_rand, output->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 	}
-	DF_CUDA_CHECK(cudaMemcpy((float*)variable->output(0)->value()->mutableData(), h_rand, variable->output(0)->value()->sizeInBytes(), cudaMemcpyHostToDevice));
 	delete[] h_rand;
 }
 

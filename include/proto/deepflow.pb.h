@@ -92,9 +92,6 @@ extern EqualParamDefaultTypeInternal _EqualParam_default_instance_;
 class ExpParam;
 class ExpParamDefaultTypeInternal;
 extern ExpParamDefaultTypeInternal _ExpParam_default_instance_;
-class GainSolverParam;
-class GainSolverParamDefaultTypeInternal;
-extern GainSolverParamDefaultTypeInternal _GainSolverParam_default_instance_;
 class GaussianKernelParam;
 class GaussianKernelParamDefaultTypeInternal;
 extern GaussianKernelParamDefaultTypeInternal _GaussianKernelParam_default_instance_;
@@ -257,9 +254,6 @@ extern TextImageGeneratorParamDefaultTypeInternal _TextImageGeneratorParam_defau
 class TransposedConv2dParam;
 class TransposedConv2dParamDefaultTypeInternal;
 extern TransposedConv2dParamDefaultTypeInternal _TransposedConv2dParam_default_instance_;
-class UpsampleParam;
-class UpsampleParamDefaultTypeInternal;
-extern UpsampleParamDefaultTypeInternal _UpsampleParam_default_instance_;
 class VariableParam;
 class VariableParamDefaultTypeInternal;
 extern VariableParamDefaultTypeInternal _VariableParam_default_instance_;
@@ -1706,6 +1700,12 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   bool draw_iteration() const;
   void set_draw_iteration(bool value);
 
+  // int32 iter_frequency = 6;
+  void clear_iter_frequency();
+  static const int kIterFrequencyFieldNumber = 6;
+  ::google::protobuf::int32 iter_frequency() const;
+  void set_iter_frequency(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:deepflow.DisplayParam)
  private:
 
@@ -1714,6 +1714,7 @@ class DisplayParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   int display_type_;
   ::google::protobuf::int32 epoch_frequency_;
   bool draw_iteration_;
+  ::google::protobuf::int32 iter_frequency_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2806,18 +2807,11 @@ class DropoutParam : public ::google::protobuf::Message /* @@protoc_insertion_po
   float dropout() const;
   void set_dropout(float value);
 
-  // bool train_only = 2;
-  void clear_train_only();
-  static const int kTrainOnlyFieldNumber = 2;
-  bool train_only() const;
-  void set_train_only(bool value);
-
   // @@protoc_insertion_point(class_scope:deepflow.DropoutParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   float dropout_;
-  bool train_only_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -2966,18 +2960,164 @@ class LeakyReluParam : public ::google::protobuf::Message /* @@protoc_insertion_
   float negative_slope() const;
   void set_negative_slope(float value);
 
-  // bool randomize = 2;
-  void clear_randomize();
-  static const int kRandomizeFieldNumber = 2;
-  bool randomize() const;
-  void set_randomize(bool value);
-
   // @@protoc_insertion_point(class_scope:deepflow.LeakyReluParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   float negative_slope_;
-  bool randomize_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class PReluParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.PReluParam) */ {
+ public:
+  PReluParam();
+  virtual ~PReluParam();
+
+  PReluParam(const PReluParam& from);
+
+  inline PReluParam& operator=(const PReluParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PReluParam& default_instance();
+
+  static inline const PReluParam* internal_default_instance() {
+    return reinterpret_cast<const PReluParam*>(
+               &_PReluParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    26;
+
+  void Swap(PReluParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PReluParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PReluParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PReluParam& from);
+  void MergeFrom(const PReluParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PReluParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:deepflow.PReluParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DPReluParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.DPReluParam) */ {
+ public:
+  DPReluParam();
+  virtual ~DPReluParam();
+
+  DPReluParam(const DPReluParam& from);
+
+  inline DPReluParam& operator=(const DPReluParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DPReluParam& default_instance();
+
+  static inline const DPReluParam* internal_default_instance() {
+    return reinterpret_cast<const DPReluParam*>(
+               &_DPReluParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    27;
+
+  void Swap(DPReluParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DPReluParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DPReluParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DPReluParam& from);
+  void MergeFrom(const DPReluParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DPReluParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float negative_slope = 1;
+  void clear_negative_slope();
+  static const int kNegativeSlopeFieldNumber = 1;
+  float negative_slope() const;
+  void set_negative_slope(float value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.DPReluParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float negative_slope_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -3003,7 +3143,7 @@ class ReduceAllParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_ReduceAllParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    26;
+    28;
 
   void Swap(ReduceAllParam* other);
 
@@ -3109,7 +3249,7 @@ class ReduceParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_ReduceParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    27;
+    29;
 
   void Swap(ReduceParam* other);
 
@@ -3267,7 +3407,7 @@ class SnapshotParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_SnapshotParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    28;
+    30;
 
   void Swap(SnapshotParam* other);
 
@@ -3376,7 +3516,7 @@ class PlaceHolderParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_PlaceHolderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    29;
+    31;
 
   void Swap(PlaceHolderParam* other);
 
@@ -3459,7 +3599,7 @@ class RestructureParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_RestructureParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    30;
+    32;
 
   void Swap(RestructureParam* other);
 
@@ -3546,7 +3686,7 @@ class VariableParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_VariableParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    31;
+    33;
 
   void Swap(VariableParam* other);
 
@@ -3654,7 +3794,7 @@ class DataGeneratorParam : public ::google::protobuf::Message /* @@protoc_insert
                &_DataGeneratorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    32;
+    34;
 
   void Swap(DataGeneratorParam* other);
 
@@ -3727,7 +3867,7 @@ class ActivationParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_ActivationParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    33;
+    35;
 
   void Swap(ActivationParam* other);
 
@@ -3846,7 +3986,7 @@ class ImageBatchReaderParam : public ::google::protobuf::Message /* @@protoc_ins
                &_ImageBatchReaderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    34;
+    36;
 
   void Swap(ImageBatchReaderParam* other);
 
@@ -3951,7 +4091,7 @@ class ImageReaderParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_ImageReaderParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    35;
+    37;
 
   void Swap(ImageReaderParam* other);
 
@@ -4072,7 +4212,7 @@ class MnistParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_MnistParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    36;
+    38;
 
   void Swap(MnistParam* other);
 
@@ -4233,7 +4373,7 @@ class CastFloatParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_CastFloatParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    37;
+    39;
 
   void Swap(CastFloatParam* other);
 
@@ -4306,7 +4446,7 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
                &_BatchNormalizationParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    38;
+    40;
 
   void Swap(BatchNormalizationParam* other);
 
@@ -4412,6 +4552,12 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
   float exp_avg_factor() const;
   void set_exp_avg_factor(float value);
 
+  // float eps = 6;
+  void clear_eps();
+  static const int kEpsFieldNumber = 6;
+  float eps() const;
+  void set_eps(float value);
+
   // @@protoc_insertion_point(class_scope:deepflow.BatchNormalizationParam)
  private:
 
@@ -4421,6 +4567,7 @@ class BatchNormalizationParam : public ::google::protobuf::Message /* @@protoc_i
   int mode_;
   bool cache_meanvar_;
   float exp_avg_factor_;
+  float eps_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4446,7 +4593,7 @@ class ReplayMemoryParam : public ::google::protobuf::Message /* @@protoc_inserti
                &_ReplayMemoryParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    39;
+    41;
 
   void Swap(ReplayMemoryParam* other);
 
@@ -4501,152 +4648,6 @@ class ReplayMemoryParam : public ::google::protobuf::Message /* @@protoc_inserti
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int32 capacity_;
-  mutable int _cached_size_;
-  friend struct protobuf_deepflow_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
-class PReluParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.PReluParam) */ {
- public:
-  PReluParam();
-  virtual ~PReluParam();
-
-  PReluParam(const PReluParam& from);
-
-  inline PReluParam& operator=(const PReluParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const PReluParam& default_instance();
-
-  static inline const PReluParam* internal_default_instance() {
-    return reinterpret_cast<const PReluParam*>(
-               &_PReluParam_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    40;
-
-  void Swap(PReluParam* other);
-
-  // implements Message ----------------------------------------------
-
-  inline PReluParam* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  PReluParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const PReluParam& from);
-  void MergeFrom(const PReluParam& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(PReluParam* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:deepflow.PReluParam)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  mutable int _cached_size_;
-  friend struct protobuf_deepflow_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
-class DPReluParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.DPReluParam) */ {
- public:
-  DPReluParam();
-  virtual ~DPReluParam();
-
-  DPReluParam(const DPReluParam& from);
-
-  inline DPReluParam& operator=(const DPReluParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const DPReluParam& default_instance();
-
-  static inline const DPReluParam* internal_default_instance() {
-    return reinterpret_cast<const DPReluParam*>(
-               &_DPReluParam_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    41;
-
-  void Swap(DPReluParam* other);
-
-  // implements Message ----------------------------------------------
-
-  inline DPReluParam* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  DPReluParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const DPReluParam& from);
-  void MergeFrom(const DPReluParam& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(DPReluParam* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:deepflow.DPReluParam)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -4840,79 +4841,6 @@ class ResizeParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 };
 // -------------------------------------------------------------------
 
-class UpsampleParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.UpsampleParam) */ {
- public:
-  UpsampleParam();
-  virtual ~UpsampleParam();
-
-  UpsampleParam(const UpsampleParam& from);
-
-  inline UpsampleParam& operator=(const UpsampleParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const UpsampleParam& default_instance();
-
-  static inline const UpsampleParam* internal_default_instance() {
-    return reinterpret_cast<const UpsampleParam*>(
-               &_UpsampleParam_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    44;
-
-  void Swap(UpsampleParam* other);
-
-  // implements Message ----------------------------------------------
-
-  inline UpsampleParam* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  UpsampleParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const UpsampleParam& from);
-  void MergeFrom(const UpsampleParam& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(UpsampleParam* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:deepflow.UpsampleParam)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  mutable int _cached_size_;
-  friend struct protobuf_deepflow_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
 class SquareParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.SquareParam) */ {
  public:
   SquareParam();
@@ -4933,7 +4861,7 @@ class SquareParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SquareParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    45;
+    44;
 
   void Swap(SquareParam* other);
 
@@ -5006,7 +4934,7 @@ class AbsParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_AbsParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    46;
+    45;
 
   void Swap(AbsParam* other);
 
@@ -5079,7 +5007,7 @@ class SquareErrorParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_SquareErrorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    47;
+    46;
 
   void Swap(SquareErrorParam* other);
 
@@ -5152,7 +5080,7 @@ class SoftmaxParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_SoftmaxParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    48;
+    47;
 
   void Swap(SoftmaxParam* other);
 
@@ -5258,7 +5186,7 @@ class PatchingParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_PatchingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    49;
+    48;
 
   void Swap(PatchingParam* other);
 
@@ -5382,7 +5310,7 @@ class LiftingParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_LiftingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    50;
+    49;
 
   void Swap(LiftingParam* other);
 
@@ -5492,7 +5420,7 @@ class InitFillParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_InitFillParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    51;
+    50;
 
   void Swap(InitFillParam* other);
 
@@ -5572,7 +5500,7 @@ class InitIndexFillParam : public ::google::protobuf::Message /* @@protoc_insert
                &_InitIndexFillParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    52;
+    51;
 
   void Swap(InitIndexFillParam* other);
 
@@ -5652,7 +5580,7 @@ class InitGradientFillParam : public ::google::protobuf::Message /* @@protoc_ins
                &_InitGradientFillParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    53;
+    52;
 
   void Swap(InitGradientFillParam* other);
 
@@ -5725,7 +5653,7 @@ class InitRandomUniformParam : public ::google::protobuf::Message /* @@protoc_in
                &_InitRandomUniformParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    54;
+    53;
 
   void Swap(InitRandomUniformParam* other);
 
@@ -5812,7 +5740,7 @@ class InitRandomNormalParam : public ::google::protobuf::Message /* @@protoc_ins
                &_InitRandomNormalParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    55;
+    54;
 
   void Swap(InitRandomNormalParam* other);
 
@@ -5899,7 +5827,7 @@ class InitTruncatedNormalParam : public ::google::protobuf::Message /* @@protoc_
                &_InitTruncatedNormalParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    56;
+    55;
 
   void Swap(InitTruncatedNormalParam* other);
 
@@ -5986,7 +5914,7 @@ class InitStepParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_InitStepParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    57;
+    56;
 
   void Swap(InitStepParam* other);
 
@@ -6073,7 +6001,7 @@ class InitThreeStateParam : public ::google::protobuf::Message /* @@protoc_inser
                &_InitThreeStateParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    58;
+    57;
 
   void Swap(InitThreeStateParam* other);
 
@@ -6146,7 +6074,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_InitParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    59;
+    58;
 
   void Swap(InitParam* other);
 
@@ -6334,7 +6262,7 @@ class SGDSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_SGDSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    60;
+    59;
 
   void Swap(SGDSolverParam* other);
 
@@ -6394,114 +6322,6 @@ class SGDSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_
 };
 // -------------------------------------------------------------------
 
-class GainSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.GainSolverParam) */ {
- public:
-  GainSolverParam();
-  virtual ~GainSolverParam();
-
-  GainSolverParam(const GainSolverParam& from);
-
-  inline GainSolverParam& operator=(const GainSolverParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const GainSolverParam& default_instance();
-
-  static inline const GainSolverParam* internal_default_instance() {
-    return reinterpret_cast<const GainSolverParam*>(
-               &_GainSolverParam_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    61;
-
-  void Swap(GainSolverParam* other);
-
-  // implements Message ----------------------------------------------
-
-  inline GainSolverParam* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  GainSolverParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const GainSolverParam& from);
-  void MergeFrom(const GainSolverParam& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(GainSolverParam* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // float momentum = 2;
-  void clear_momentum();
-  static const int kMomentumFieldNumber = 2;
-  float momentum() const;
-  void set_momentum(float value);
-
-  // float max_gain = 3;
-  void clear_max_gain();
-  static const int kMaxGainFieldNumber = 3;
-  float max_gain() const;
-  void set_max_gain(float value);
-
-  // float min_gain = 4;
-  void clear_min_gain();
-  static const int kMinGainFieldNumber = 4;
-  float min_gain() const;
-  void set_min_gain(float value);
-
-  // float gain_plus = 5;
-  void clear_gain_plus();
-  static const int kGainPlusFieldNumber = 5;
-  float gain_plus() const;
-  void set_gain_plus(float value);
-
-  // float gain_mult = 6;
-  void clear_gain_mult();
-  static const int kGainMultFieldNumber = 6;
-  float gain_mult() const;
-  void set_gain_mult(float value);
-
-  // @@protoc_insertion_point(class_scope:deepflow.GainSolverParam)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  float momentum_;
-  float max_gain_;
-  float min_gain_;
-  float gain_plus_;
-  float gain_mult_;
-  mutable int _cached_size_;
-  friend struct protobuf_deepflow_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
 class AdaDeltaSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.AdaDeltaSolverParam) */ {
  public:
   AdaDeltaSolverParam();
@@ -6522,7 +6342,7 @@ class AdaDeltaSolverParam : public ::google::protobuf::Message /* @@protoc_inser
                &_AdaDeltaSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    62;
+    60;
 
   void Swap(AdaDeltaSolverParam* other);
 
@@ -6609,7 +6429,7 @@ class AdamSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_AdamSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    63;
+    61;
 
   void Swap(AdamSolverParam* other);
 
@@ -6703,7 +6523,7 @@ class RMSPropSolverParam : public ::google::protobuf::Message /* @@protoc_insert
                &_RMSPropSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    64;
+    62;
 
   void Swap(RMSPropSolverParam* other);
 
@@ -6790,7 +6610,7 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    65;
+    63;
 
   void Swap(SolverParam* other);
 
@@ -6848,6 +6668,20 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
 
+  // string scope = 8;
+  void clear_scope();
+  static const int kScopeFieldNumber = 8;
+  const ::std::string& scope() const;
+  void set_scope(const ::std::string& value);
+  #if LANG_CXX11
+  void set_scope(::std::string&& value);
+  #endif
+  void set_scope(const char* value);
+  void set_scope(const char* value, size_t size);
+  ::std::string* mutable_scope();
+  ::std::string* release_scope();
+  void set_allocated_scope(::std::string* scope);
+
   // .deepflow.SGDSolverParam sgd_solver = 3;
   bool has_sgd_solver() const;
   void clear_sgd_solver();
@@ -6856,15 +6690,6 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::deepflow::SGDSolverParam* mutable_sgd_solver();
   ::deepflow::SGDSolverParam* release_sgd_solver();
   void set_allocated_sgd_solver(::deepflow::SGDSolverParam* sgd_solver);
-
-  // .deepflow.GainSolverParam gain_solver = 4;
-  bool has_gain_solver() const;
-  void clear_gain_solver();
-  static const int kGainSolverFieldNumber = 4;
-  const ::deepflow::GainSolverParam& gain_solver() const;
-  ::deepflow::GainSolverParam* mutable_gain_solver();
-  ::deepflow::GainSolverParam* release_gain_solver();
-  void set_allocated_gain_solver(::deepflow::GainSolverParam* gain_solver);
 
   // .deepflow.AdamSolverParam adam_solver = 5;
   bool has_adam_solver() const;
@@ -6904,8 +6729,8 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr name_;
+  ::google::protobuf::internal::ArenaStringPtr scope_;
   ::deepflow::SGDSolverParam* sgd_solver_;
-  ::deepflow::GainSolverParam* gain_solver_;
   ::deepflow::AdamSolverParam* adam_solver_;
   ::deepflow::AdaDeltaSolverParam* adadelta_solver_;
   ::deepflow::RMSPropSolverParam* rmsprop_solver_;
@@ -6935,7 +6760,7 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_BlockParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    66;
+    64;
 
   void Swap(BlockParam* other);
 
@@ -7047,7 +6872,7 @@ class ConcateParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_ConcateParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    67;
+    65;
 
   void Swap(ConcateParam* other);
 
@@ -7120,7 +6945,7 @@ class ReshapeParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_ReshapeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    68;
+    66;
 
   void Swap(ReshapeParam* other);
 
@@ -7207,7 +7032,7 @@ class BatchStdDevParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_BatchStdDevParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    69;
+    67;
 
   void Swap(BatchStdDevParam* other);
 
@@ -7280,7 +7105,7 @@ class PassThroughParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_PassThroughParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    70;
+    68;
 
   void Swap(PassThroughParam* other);
 
@@ -7360,7 +7185,7 @@ class GaussianParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_GaussianParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    71;
+    69;
 
   void Swap(GaussianParam* other);
 
@@ -7433,7 +7258,7 @@ class GaussianKernelParam : public ::google::protobuf::Message /* @@protoc_inser
                &_GaussianKernelParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    72;
+    70;
 
   void Swap(GaussianKernelParam* other);
 
@@ -7527,7 +7352,7 @@ class PatchSamplingParam : public ::google::protobuf::Message /* @@protoc_insert
                &_PatchSamplingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    73;
+    71;
 
   void Swap(PatchSamplingParam* other);
 
@@ -7614,7 +7439,7 @@ class TextImageGeneratorParam : public ::google::protobuf::Message /* @@protoc_i
                &_TextImageGeneratorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    74;
+    72;
 
   void Swap(TextImageGeneratorParam* other);
 
@@ -7658,10 +7483,58 @@ class TextImageGeneratorParam : public ::google::protobuf::Message /* @@protoc_i
 
   // accessors -------------------------------------------------------
 
+  // repeated string words = 3;
+  int words_size() const;
+  void clear_words();
+  static const int kWordsFieldNumber = 3;
+  const ::std::string& words(int index) const;
+  ::std::string* mutable_words(int index);
+  void set_words(int index, const ::std::string& value);
+  #if LANG_CXX11
+  void set_words(int index, ::std::string&& value);
+  #endif
+  void set_words(int index, const char* value);
+  void set_words(int index, const char* value, size_t size);
+  ::std::string* add_words();
+  void add_words(const ::std::string& value);
+  #if LANG_CXX11
+  void add_words(::std::string&& value);
+  #endif
+  void add_words(const char* value);
+  void add_words(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& words() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_words();
+
+  // string chars = 2;
+  void clear_chars();
+  static const int kCharsFieldNumber = 2;
+  const ::std::string& chars() const;
+  void set_chars(const ::std::string& value);
+  #if LANG_CXX11
+  void set_chars(::std::string&& value);
+  #endif
+  void set_chars(const char* value);
+  void set_chars(const char* value, size_t size);
+  ::std::string* mutable_chars();
+  ::std::string* release_chars();
+  void set_allocated_chars(::std::string* chars);
+
+  // .deepflow.InitParam init_param = 1;
+  bool has_init_param() const;
+  void clear_init_param();
+  static const int kInitParamFieldNumber = 1;
+  const ::deepflow::InitParam& init_param() const;
+  ::deepflow::InitParam* mutable_init_param();
+  ::deepflow::InitParam* release_init_param();
+  void set_allocated_init_param(::deepflow::InitParam* init_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.TextImageGeneratorParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> words_;
+  ::google::protobuf::internal::ArenaStringPtr chars_;
+  ::deepflow::InitParam* init_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -7687,7 +7560,7 @@ class MaxParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_MaxParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    75;
+    73;
 
   void Swap(MaxParam* other);
 
@@ -7760,7 +7633,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NodeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    76;
+    74;
 
   void Swap(NodeParam* other);
 
@@ -8245,15 +8118,6 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::ReduceAllParam* release_reduce_all_param();
   void set_allocated_reduce_all_param(::deepflow::ReduceAllParam* reduce_all_param);
 
-  // .deepflow.UpsampleParam upsample_param = 143;
-  bool has_upsample_param() const;
-  void clear_upsample_param();
-  static const int kUpsampleParamFieldNumber = 143;
-  const ::deepflow::UpsampleParam& upsample_param() const;
-  ::deepflow::UpsampleParam* mutable_upsample_param();
-  ::deepflow::UpsampleParam* release_upsample_param();
-  void set_allocated_upsample_param(::deepflow::UpsampleParam* upsample_param);
-
   // .deepflow.ImageWriterParam image_writer_param = 144;
   bool has_image_writer_param() const;
   void clear_image_writer_param();
@@ -8447,7 +8311,6 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::PatchingParam* patching_param_;
   ::deepflow::AbsParam* abs_param_;
   ::deepflow::ReduceAllParam* reduce_all_param_;
-  ::deepflow::UpsampleParam* upsample_param_;
   ::deepflow::ImageWriterParam* image_writer_param_;
   ::deepflow::ResizeParam* resize_param_;
   ::deepflow::SplitParam* split_param_;
@@ -9054,6 +8917,20 @@ inline void DisplayParam::set_draw_iteration(bool value) {
   // @@protoc_insertion_point(field_set:deepflow.DisplayParam.draw_iteration)
 }
 
+// int32 iter_frequency = 6;
+inline void DisplayParam::clear_iter_frequency() {
+  iter_frequency_ = 0;
+}
+inline ::google::protobuf::int32 DisplayParam::iter_frequency() const {
+  // @@protoc_insertion_point(field_get:deepflow.DisplayParam.iter_frequency)
+  return iter_frequency_;
+}
+inline void DisplayParam::set_iter_frequency(::google::protobuf::int32 value) {
+  
+  iter_frequency_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.DisplayParam.iter_frequency)
+}
+
 // -------------------------------------------------------------------
 
 // ImageWriterParam
@@ -9491,20 +9368,6 @@ inline void DropoutParam::set_dropout(float value) {
   // @@protoc_insertion_point(field_set:deepflow.DropoutParam.dropout)
 }
 
-// bool train_only = 2;
-inline void DropoutParam::clear_train_only() {
-  train_only_ = false;
-}
-inline bool DropoutParam::train_only() const {
-  // @@protoc_insertion_point(field_get:deepflow.DropoutParam.train_only)
-  return train_only_;
-}
-inline void DropoutParam::set_train_only(bool value) {
-  
-  train_only_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.DropoutParam.train_only)
-}
-
 // -------------------------------------------------------------------
 
 // MatMulParam
@@ -9527,18 +9390,26 @@ inline void LeakyReluParam::set_negative_slope(float value) {
   // @@protoc_insertion_point(field_set:deepflow.LeakyReluParam.negative_slope)
 }
 
-// bool randomize = 2;
-inline void LeakyReluParam::clear_randomize() {
-  randomize_ = false;
+// -------------------------------------------------------------------
+
+// PReluParam
+
+// -------------------------------------------------------------------
+
+// DPReluParam
+
+// float negative_slope = 1;
+inline void DPReluParam::clear_negative_slope() {
+  negative_slope_ = 0;
 }
-inline bool LeakyReluParam::randomize() const {
-  // @@protoc_insertion_point(field_get:deepflow.LeakyReluParam.randomize)
-  return randomize_;
+inline float DPReluParam::negative_slope() const {
+  // @@protoc_insertion_point(field_get:deepflow.DPReluParam.negative_slope)
+  return negative_slope_;
 }
-inline void LeakyReluParam::set_randomize(bool value) {
+inline void DPReluParam::set_negative_slope(float value) {
   
-  randomize_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.LeakyReluParam.randomize)
+  negative_slope_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.DPReluParam.negative_slope)
 }
 
 // -------------------------------------------------------------------
@@ -10358,6 +10229,20 @@ inline void BatchNormalizationParam::set_exp_avg_factor(float value) {
   // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.exp_avg_factor)
 }
 
+// float eps = 6;
+inline void BatchNormalizationParam::clear_eps() {
+  eps_ = 0;
+}
+inline float BatchNormalizationParam::eps() const {
+  // @@protoc_insertion_point(field_get:deepflow.BatchNormalizationParam.eps)
+  return eps_;
+}
+inline void BatchNormalizationParam::set_eps(float value) {
+  
+  eps_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.BatchNormalizationParam.eps)
+}
+
 // -------------------------------------------------------------------
 
 // ReplayMemoryParam
@@ -10375,14 +10260,6 @@ inline void ReplayMemoryParam::set_capacity(::google::protobuf::int32 value) {
   capacity_ = value;
   // @@protoc_insertion_point(field_set:deepflow.ReplayMemoryParam.capacity)
 }
-
-// -------------------------------------------------------------------
-
-// PReluParam
-
-// -------------------------------------------------------------------
-
-// DPReluParam
 
 // -------------------------------------------------------------------
 
@@ -10475,10 +10352,6 @@ inline void ResizeParam::set_width_scale(float value) {
   width_scale_ = value;
   // @@protoc_insertion_point(field_set:deepflow.ResizeParam.width_scale)
 }
-
-// -------------------------------------------------------------------
-
-// UpsampleParam
 
 // -------------------------------------------------------------------
 
@@ -11213,80 +11086,6 @@ inline void SGDSolverParam::set_momentum(float value) {
 
 // -------------------------------------------------------------------
 
-// GainSolverParam
-
-// float momentum = 2;
-inline void GainSolverParam::clear_momentum() {
-  momentum_ = 0;
-}
-inline float GainSolverParam::momentum() const {
-  // @@protoc_insertion_point(field_get:deepflow.GainSolverParam.momentum)
-  return momentum_;
-}
-inline void GainSolverParam::set_momentum(float value) {
-  
-  momentum_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.GainSolverParam.momentum)
-}
-
-// float max_gain = 3;
-inline void GainSolverParam::clear_max_gain() {
-  max_gain_ = 0;
-}
-inline float GainSolverParam::max_gain() const {
-  // @@protoc_insertion_point(field_get:deepflow.GainSolverParam.max_gain)
-  return max_gain_;
-}
-inline void GainSolverParam::set_max_gain(float value) {
-  
-  max_gain_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.GainSolverParam.max_gain)
-}
-
-// float min_gain = 4;
-inline void GainSolverParam::clear_min_gain() {
-  min_gain_ = 0;
-}
-inline float GainSolverParam::min_gain() const {
-  // @@protoc_insertion_point(field_get:deepflow.GainSolverParam.min_gain)
-  return min_gain_;
-}
-inline void GainSolverParam::set_min_gain(float value) {
-  
-  min_gain_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.GainSolverParam.min_gain)
-}
-
-// float gain_plus = 5;
-inline void GainSolverParam::clear_gain_plus() {
-  gain_plus_ = 0;
-}
-inline float GainSolverParam::gain_plus() const {
-  // @@protoc_insertion_point(field_get:deepflow.GainSolverParam.gain_plus)
-  return gain_plus_;
-}
-inline void GainSolverParam::set_gain_plus(float value) {
-  
-  gain_plus_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.GainSolverParam.gain_plus)
-}
-
-// float gain_mult = 6;
-inline void GainSolverParam::clear_gain_mult() {
-  gain_mult_ = 0;
-}
-inline float GainSolverParam::gain_mult() const {
-  // @@protoc_insertion_point(field_get:deepflow.GainSolverParam.gain_mult)
-  return gain_mult_;
-}
-inline void GainSolverParam::set_gain_mult(float value) {
-  
-  gain_mult_ = value;
-  // @@protoc_insertion_point(field_set:deepflow.GainSolverParam.gain_mult)
-}
-
-// -------------------------------------------------------------------
-
 // AdaDeltaSolverParam
 
 // float momentum = 2;
@@ -11505,45 +11304,6 @@ inline void SolverParam::set_allocated_sgd_solver(::deepflow::SGDSolverParam* sg
   // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.sgd_solver)
 }
 
-// .deepflow.GainSolverParam gain_solver = 4;
-inline bool SolverParam::has_gain_solver() const {
-  return this != internal_default_instance() && gain_solver_ != NULL;
-}
-inline void SolverParam::clear_gain_solver() {
-  if (GetArenaNoVirtual() == NULL && gain_solver_ != NULL) delete gain_solver_;
-  gain_solver_ = NULL;
-}
-inline const ::deepflow::GainSolverParam& SolverParam::gain_solver() const {
-  // @@protoc_insertion_point(field_get:deepflow.SolverParam.gain_solver)
-  return gain_solver_ != NULL ? *gain_solver_
-                         : *::deepflow::GainSolverParam::internal_default_instance();
-}
-inline ::deepflow::GainSolverParam* SolverParam::mutable_gain_solver() {
-  
-  if (gain_solver_ == NULL) {
-    gain_solver_ = new ::deepflow::GainSolverParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.SolverParam.gain_solver)
-  return gain_solver_;
-}
-inline ::deepflow::GainSolverParam* SolverParam::release_gain_solver() {
-  // @@protoc_insertion_point(field_release:deepflow.SolverParam.gain_solver)
-  
-  ::deepflow::GainSolverParam* temp = gain_solver_;
-  gain_solver_ = NULL;
-  return temp;
-}
-inline void SolverParam::set_allocated_gain_solver(::deepflow::GainSolverParam* gain_solver) {
-  delete gain_solver_;
-  gain_solver_ = gain_solver;
-  if (gain_solver) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.gain_solver)
-}
-
 // .deepflow.AdamSolverParam adam_solver = 5;
 inline bool SolverParam::has_adam_solver() const {
   return this != internal_default_instance() && adam_solver_ != NULL;
@@ -11659,6 +11419,59 @@ inline void SolverParam::set_allocated_rmsprop_solver(::deepflow::RMSPropSolverP
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.rmsprop_solver)
+}
+
+// string scope = 8;
+inline void SolverParam::clear_scope() {
+  scope_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& SolverParam::scope() const {
+  // @@protoc_insertion_point(field_get:deepflow.SolverParam.scope)
+  return scope_.GetNoArena();
+}
+inline void SolverParam::set_scope(const ::std::string& value) {
+  
+  scope_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:deepflow.SolverParam.scope)
+}
+#if LANG_CXX11
+inline void SolverParam::set_scope(::std::string&& value) {
+  
+  scope_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:deepflow.SolverParam.scope)
+}
+#endif
+inline void SolverParam::set_scope(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  scope_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:deepflow.SolverParam.scope)
+}
+inline void SolverParam::set_scope(const char* value, size_t size) {
+  
+  scope_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:deepflow.SolverParam.scope)
+}
+inline ::std::string* SolverParam::mutable_scope() {
+  
+  // @@protoc_insertion_point(field_mutable:deepflow.SolverParam.scope)
+  return scope_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* SolverParam::release_scope() {
+  // @@protoc_insertion_point(field_release:deepflow.SolverParam.scope)
+  
+  return scope_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void SolverParam::set_allocated_scope(::std::string* scope) {
+  if (scope != NULL) {
+    
+  } else {
+    
+  }
+  scope_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), scope);
+  // @@protoc_insertion_point(field_set_allocated:deepflow.SolverParam.scope)
 }
 
 // -------------------------------------------------------------------
@@ -11900,6 +11713,167 @@ inline void PatchSamplingParam::set_patch_width(::google::protobuf::int32 value)
 // -------------------------------------------------------------------
 
 // TextImageGeneratorParam
+
+// .deepflow.InitParam init_param = 1;
+inline bool TextImageGeneratorParam::has_init_param() const {
+  return this != internal_default_instance() && init_param_ != NULL;
+}
+inline void TextImageGeneratorParam::clear_init_param() {
+  if (GetArenaNoVirtual() == NULL && init_param_ != NULL) delete init_param_;
+  init_param_ = NULL;
+}
+inline const ::deepflow::InitParam& TextImageGeneratorParam::init_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.TextImageGeneratorParam.init_param)
+  return init_param_ != NULL ? *init_param_
+                         : *::deepflow::InitParam::internal_default_instance();
+}
+inline ::deepflow::InitParam* TextImageGeneratorParam::mutable_init_param() {
+  
+  if (init_param_ == NULL) {
+    init_param_ = new ::deepflow::InitParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.TextImageGeneratorParam.init_param)
+  return init_param_;
+}
+inline ::deepflow::InitParam* TextImageGeneratorParam::release_init_param() {
+  // @@protoc_insertion_point(field_release:deepflow.TextImageGeneratorParam.init_param)
+  
+  ::deepflow::InitParam* temp = init_param_;
+  init_param_ = NULL;
+  return temp;
+}
+inline void TextImageGeneratorParam::set_allocated_init_param(::deepflow::InitParam* init_param) {
+  delete init_param_;
+  init_param_ = init_param;
+  if (init_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.TextImageGeneratorParam.init_param)
+}
+
+// string chars = 2;
+inline void TextImageGeneratorParam::clear_chars() {
+  chars_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& TextImageGeneratorParam::chars() const {
+  // @@protoc_insertion_point(field_get:deepflow.TextImageGeneratorParam.chars)
+  return chars_.GetNoArena();
+}
+inline void TextImageGeneratorParam::set_chars(const ::std::string& value) {
+  
+  chars_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:deepflow.TextImageGeneratorParam.chars)
+}
+#if LANG_CXX11
+inline void TextImageGeneratorParam::set_chars(::std::string&& value) {
+  
+  chars_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:deepflow.TextImageGeneratorParam.chars)
+}
+#endif
+inline void TextImageGeneratorParam::set_chars(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  chars_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:deepflow.TextImageGeneratorParam.chars)
+}
+inline void TextImageGeneratorParam::set_chars(const char* value, size_t size) {
+  
+  chars_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:deepflow.TextImageGeneratorParam.chars)
+}
+inline ::std::string* TextImageGeneratorParam::mutable_chars() {
+  
+  // @@protoc_insertion_point(field_mutable:deepflow.TextImageGeneratorParam.chars)
+  return chars_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* TextImageGeneratorParam::release_chars() {
+  // @@protoc_insertion_point(field_release:deepflow.TextImageGeneratorParam.chars)
+  
+  return chars_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void TextImageGeneratorParam::set_allocated_chars(::std::string* chars) {
+  if (chars != NULL) {
+    
+  } else {
+    
+  }
+  chars_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), chars);
+  // @@protoc_insertion_point(field_set_allocated:deepflow.TextImageGeneratorParam.chars)
+}
+
+// repeated string words = 3;
+inline int TextImageGeneratorParam::words_size() const {
+  return words_.size();
+}
+inline void TextImageGeneratorParam::clear_words() {
+  words_.Clear();
+}
+inline const ::std::string& TextImageGeneratorParam::words(int index) const {
+  // @@protoc_insertion_point(field_get:deepflow.TextImageGeneratorParam.words)
+  return words_.Get(index);
+}
+inline ::std::string* TextImageGeneratorParam::mutable_words(int index) {
+  // @@protoc_insertion_point(field_mutable:deepflow.TextImageGeneratorParam.words)
+  return words_.Mutable(index);
+}
+inline void TextImageGeneratorParam::set_words(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:deepflow.TextImageGeneratorParam.words)
+  words_.Mutable(index)->assign(value);
+}
+#if LANG_CXX11
+inline void TextImageGeneratorParam::set_words(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:deepflow.TextImageGeneratorParam.words)
+  words_.Mutable(index)->assign(std::move(value));
+}
+#endif
+inline void TextImageGeneratorParam::set_words(int index, const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  words_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:deepflow.TextImageGeneratorParam.words)
+}
+inline void TextImageGeneratorParam::set_words(int index, const char* value, size_t size) {
+  words_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:deepflow.TextImageGeneratorParam.words)
+}
+inline ::std::string* TextImageGeneratorParam::add_words() {
+  // @@protoc_insertion_point(field_add_mutable:deepflow.TextImageGeneratorParam.words)
+  return words_.Add();
+}
+inline void TextImageGeneratorParam::add_words(const ::std::string& value) {
+  words_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:deepflow.TextImageGeneratorParam.words)
+}
+#if LANG_CXX11
+inline void TextImageGeneratorParam::add_words(::std::string&& value) {
+  words_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:deepflow.TextImageGeneratorParam.words)
+}
+#endif
+inline void TextImageGeneratorParam::add_words(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  words_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:deepflow.TextImageGeneratorParam.words)
+}
+inline void TextImageGeneratorParam::add_words(const char* value, size_t size) {
+  words_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:deepflow.TextImageGeneratorParam.words)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+TextImageGeneratorParam::words() const {
+  // @@protoc_insertion_point(field_list:deepflow.TextImageGeneratorParam.words)
+  return words_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+TextImageGeneratorParam::mutable_words() {
+  // @@protoc_insertion_point(field_mutable_list:deepflow.TextImageGeneratorParam.words)
+  return &words_;
+}
 
 // -------------------------------------------------------------------
 
@@ -13752,45 +13726,6 @@ inline void NodeParam::set_allocated_reduce_all_param(::deepflow::ReduceAllParam
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.reduce_all_param)
 }
 
-// .deepflow.UpsampleParam upsample_param = 143;
-inline bool NodeParam::has_upsample_param() const {
-  return this != internal_default_instance() && upsample_param_ != NULL;
-}
-inline void NodeParam::clear_upsample_param() {
-  if (GetArenaNoVirtual() == NULL && upsample_param_ != NULL) delete upsample_param_;
-  upsample_param_ = NULL;
-}
-inline const ::deepflow::UpsampleParam& NodeParam::upsample_param() const {
-  // @@protoc_insertion_point(field_get:deepflow.NodeParam.upsample_param)
-  return upsample_param_ != NULL ? *upsample_param_
-                         : *::deepflow::UpsampleParam::internal_default_instance();
-}
-inline ::deepflow::UpsampleParam* NodeParam::mutable_upsample_param() {
-  
-  if (upsample_param_ == NULL) {
-    upsample_param_ = new ::deepflow::UpsampleParam;
-  }
-  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.upsample_param)
-  return upsample_param_;
-}
-inline ::deepflow::UpsampleParam* NodeParam::release_upsample_param() {
-  // @@protoc_insertion_point(field_release:deepflow.NodeParam.upsample_param)
-  
-  ::deepflow::UpsampleParam* temp = upsample_param_;
-  upsample_param_ = NULL;
-  return temp;
-}
-inline void NodeParam::set_allocated_upsample_param(::deepflow::UpsampleParam* upsample_param) {
-  delete upsample_param_;
-  upsample_param_ = upsample_param;
-  if (upsample_param) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.upsample_param)
-}
-
 // .deepflow.ImageWriterParam image_writer_param = 144;
 inline bool NodeParam::has_image_writer_param() const {
   return this != internal_default_instance() && image_writer_param_ != NULL;
@@ -14416,10 +14351,6 @@ inline void NodeParam::set_allocated_max_param(::deepflow::MaxParam* max_param) 
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

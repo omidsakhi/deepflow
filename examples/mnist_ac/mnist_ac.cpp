@@ -24,50 +24,50 @@ void load_session(DeepFlow *df, std::string prefix, std::string suffix) {
 std::string deconv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, int stride, bool activation, std::string name) {
 
 	auto node = input;	
-	node = df->transposed_conv2d(node, input_channels, output_channels,kernel, pad, stride, false, solver, name + "_conv");	
+	node = df->transposed_conv2d(node, input_channels, output_channels, solver, ConvolutionOp(name + "_conv").kernel(kernel).pad(pad).stride(stride));	
 	if (activation) {
-		node = df->batch_normalization(node, solver, output_channels, 0.001f, name + "_bn");
+		node = df->batch_normalization(node, output_channels, solver, BatchNormalizationOp(name + "_bn").exponent_factor(0.001f));
 		return df->relu(node);	
 	}
 	return node;
 }
 
 std::string conv(DeepFlow *df, std::string input, std::string solver, int input_channels, int output_channels, int kernel, int pad, int stride, bool activation, std::string name) {	
-	auto node = df->conv2d(input, input_channels, output_channels, kernel, pad, stride, true, solver, name + "_conv");	
+	auto node = df->conv2d(input, input_channels, output_channels, solver, ConvolutionOp(name + "_conv").kernel(kernel).pad(pad).stride(stride). with_bias());
 	if (activation) {		
-		return df->leaky_relu(node, 0.2, name + "_relu");
+		return df->leaky_relu(node, LeakyReluOp(name + "_relu"));
 	}
 	return node;
 }
 
 void create_graph(DeepFlow *df) {	
 
-	df->mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::MNISTReaderType::Train, MNISTReader::Data, "mnist_train_data");
-	df->mnist_reader(FLAGS_mnist, FLAGS_batch, MNISTReader::MNISTReaderType::Test, MNISTReader::Data, "mnist_test_data");
-	auto disp_input = df->place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "disp_input");
-	df->display(disp_input, 1, DeepFlow::VALUES, 1, true, "disp");
-	auto loss_input = df->place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "loss_input");
-	auto loss_target = df->place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "loss_target");
+	df->mnist_reader(FLAGS_mnist, MNISTReaderOp("mnist_train_data").batch(FLAGS_batch).train().data());
+	df->mnist_reader(FLAGS_mnist, MNISTReaderOp("mnist_test_data").batch(FLAGS_batch).test().data());
+	auto disp_input = df->place_holder({ FLAGS_batch, 1, 28, 28 }, PlaceholderOp("disp_input"));
+	df->display(disp_input);
+	auto loss_input = df->place_holder({ FLAGS_batch, 1, 28, 28 }, PlaceholderOp("loss_input"));
+	auto loss_target = df->place_holder({ FLAGS_batch, 1, 28, 28 }, PlaceholderOp("loss_target"));
 	auto sqerr = df->square_error(loss_input, loss_target);
-	auto loss = df->loss(sqerr, DeepFlow::AVG, 1.0f, 0.0f, "loss");
+	auto loss = df->loss(sqerr, LossOp("loss").avg());
 
 	int fn = 64;
 
-	auto solver = df->adam_solver(0.0002f, 0.5f, 0.99f);
+	auto solver = df->adam_solver( AdamSolverOp().lr(0.0002f).beta1(0.5f).beta2(0.99f));
 
-	auto enc_input = df->place_holder({ FLAGS_batch, 1, 28, 28 }, Tensor::Float, "enc_input");	
+	auto enc_input = df->place_holder({ FLAGS_batch, 1, 28, 28 }, PlaceholderOp("enc_input"));	
 
 	auto node = conv(df, enc_input, solver, 1, fn, 3, 1, 2, true, "e1");
 	node = conv(df, node, solver, fn, fn * 2, 3, 1, 2, true, "e2");
 	node = conv(df, node, solver, fn * 2, fn * 4, 3, 1, 2, true, "e2");
-	node = df->dense(node, { (fn * 4) * 4 * 4, FLAGS_bottleneck, 1, 1 }, true, solver, "e3");
-	node = df->tanh(node, "h");
-	node = df->dense(node, { FLAGS_bottleneck, fn * 4, 4, 4 }, true, solver, "d1");	
+	node = df->dense(node, { (fn * 4) * 4 * 4, FLAGS_bottleneck, 1, 1 }, solver, DenseOp("e3"));
+	node = df->tanh(node, TanhOp("h"));
+	node = df->dense(node, { FLAGS_bottleneck, fn * 4, 4, 4 }, solver, DenseOp("d1"));	
 	node = deconv(df, node, solver, fn * 4, fn * 2, 2, 1, 2, 1, "d3");
 	node = deconv(df, node, solver, fn * 2, fn    , 3, 1, 2, 1, "d4");
 	node = deconv(df, node, solver, fn    , 1      , 3, 1, 2, 0, "d5");
 
-	df->pass_through(node, false, "dec_output");
+	df->pass_through(node, PassThroughOp("dec_output"));
 	
 }
 

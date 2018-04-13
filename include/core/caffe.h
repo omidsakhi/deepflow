@@ -3,7 +3,9 @@
 #include "core/export.h"
 #include "core/deep_flow.h"
 #include "proto\caffe.pb.h"
+
 #include <memory>
+#include <list>
 
 class DeepFlowDllExport Caffe {
 	friend class DeepFlow;

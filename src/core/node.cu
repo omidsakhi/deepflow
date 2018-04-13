@@ -85,7 +85,7 @@ void GrayPictureGeneratorKernel(const int num_images, const float *in, const int
 		}
 
 		float denom = (max - min);
-		if (denom == 0)
+		if (fabs(denom) < 0.00001f)
 			denom = 1;
 
 		int output_block_col = num_image % num_image_per_row_and_col;

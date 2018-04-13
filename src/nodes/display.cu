@@ -11,6 +11,7 @@ void Display::init() {
 	_display_type = display_param.display_type();	
 	_draw_iteration = display_param.draw_iteration();
 	_epoch_frequency = display_param.epoch_frequency();
+	_iter_frequency = display_param.iter_frequency();
 	auto dims = _inputs[0]->value()->dims();	
 	input_size = _inputs[0]->value()->size();
 	input_size_in_bytes = _inputs[0]->value()->sizeInBytes();
@@ -34,6 +35,8 @@ void Display::forward() {
 		return;
 	if (_context) {
 		if (_context->current_epoch % _epoch_frequency != 0)
+			return;
+		if (_context->current_iteration % _iter_frequency != 0)
 			return;
 	}
 	if (_display_type == deepflow::ActionType::VALUES) {

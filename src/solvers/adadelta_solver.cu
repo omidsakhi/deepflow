@@ -8,7 +8,7 @@ __global__
 void FillKernel(int n, float *a)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	if (i < n) a[i] = 1.0f;
+	if (i < n) a[i] = 0.0f;
 }
 
 __global__
@@ -19,7 +19,7 @@ void AdaDeltaKernel(const int n, float *w, const float *g, float *h1, float *h2,
 		float gi = g[i];
 		float hi = h1[i] = momentum * h1[i] + (1 - momentum) * gi * gi;
 		gi = gi * sqrt((h2[i] + delta) / (hi + delta));
-		h2[i] = momentum * h2[i] + (1 - momentum) * gi * gi;
+		h2[i] = momentum * h2[i] + (1 - momentum) * gi * gi;		
 		w[i] -= learning_rate * gi;
 	}
 }
@@ -49,7 +49,7 @@ void AdaDeltaSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {
 void AdaDeltaSolver::init(std::shared_ptr<Variable> var) {
 	auto size = var->output(0)->value()->size();
 	auto sizeInBytes = var->output(0)->value()->sizeInBytes();
-	DF_CUDA_CHECK(cudaMalloc(&_h1, sizeInBytes));	
+	DF_CUDA_CHECK(cudaMalloc(&_h1, sizeInBytes));
 	FillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, _h1);
 	DF_KERNEL_CHECK();
 	DF_CUDA_CHECK(cudaMalloc(&_h2, sizeInBytes));	
