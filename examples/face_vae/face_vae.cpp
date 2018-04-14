@@ -8,7 +8,7 @@
 DEFINE_string(faces, "C:/Projects/deepflow/data/celeba128", "Path to face 128x128 dataset folder");
 DEFINE_int32(batch, 40, "Batch size");
 DEFINE_int32(debug, 0, "Level of debug");
-DEFINE_int32(iter, 10000, "Maximum iterations");
+DEFINE_int32(iter, 200000, "Maximum iterations");
 DEFINE_string(load, "", "Load from face_acXXXX.bin");
 DEFINE_int32(save, 1000 , "Save model iter frequency (Don't Save = 0)");
 DEFINE_bool(train, false, "Train");
@@ -27,8 +27,7 @@ void create_graph(DeepFlow *df) {
 	auto solver = df->adam_solver( AdamSolverOp().lr(0.002f).beta1(0.5f).beta2(0.9f));
 
 	auto ns = 0.2f;	
-	auto fn = 128;
-	auto ef = 0.1f;
+	auto fn = 128;	
 
 	df->imbatch(FLAGS_faces, { FLAGS_batch, FLAGS_channels, 128, 128 }, ImbatchOp("face_data"));
 	auto loss_input = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, PlaceholderOp("loss_input"));
@@ -36,7 +35,7 @@ void create_graph(DeepFlow *df) {
 	auto sqerr = df->square_error(loss_input, loss_target);
 	auto loss = df->loss(sqerr);
 	auto disp_input = df->place_holder({ FLAGS_batch, FLAGS_channels, 128, 128 }, PlaceholderOp("disp_input"));
-	df->display(disp_input);
+	df->display(disp_input, DisplayOp("disp").iter(100));
 
 	df->with("encoder");
 
@@ -46,15 +45,19 @@ void create_graph(DeepFlow *df) {
 	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));	
 
 	net = df->conv2d(net, fn, fn, solver, ConvolutionOp("e32").kernel(3).pad(1).stride(2).with_bias());
+	net = df->lrn(net, LrnOp().n(3));
 	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 	
 	net = df->conv2d(net, fn, fn, solver, ConvolutionOp("e16").kernel(3).pad(1).stride(2).with_bias());	
+	net = df->lrn(net, LrnOp().n(3));
 	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 
 	net = df->conv2d(net, fn, fn, solver, ConvolutionOp("e8").kernel(3).pad(1).stride(2).with_bias());	
+	net = df->lrn(net, LrnOp().n(3));
 	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 
-	net = df->conv2d(net, fn, fn, solver, ConvolutionOp("e4").kernel(3).pad(1).stride(2).with_bias());	
+	net = df->conv2d(net, fn, fn, solver, ConvolutionOp("e4").kernel(3).pad(1).stride(2).with_bias());
+	net = df->lrn(net, LrnOp().n(3));
 	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 
 	auto mean = df->dense(net, { fn * 4 * 4, FLAGS_bottleneck, 1, 1 }, solver, DenseOp("mean"));
@@ -68,20 +71,20 @@ void create_graph(DeepFlow *df) {
 
 	net = df->dense(net, { FLAGS_bottleneck, fn, 4, 4 }, solver, DenseOp("d_input"));
 
-	net = df->transposed_conv2d(net, fn, fn, solver, ConvolutionOp("d8").kernel(3).pad(1).stride(2));
-	net = df->batch_normalization(net, fn, solver, BatchNormalizationOp("d8bn").exponent_factor(ef));
+	net = df->transposed_conv2d(net, fn, fn, solver, ConvolutionOp("d8").kernel(3).pad(1).stride(2).with_bias());
+	net = df->lrn(net, LrnOp().n(3));	
 	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 
-	net = df->transposed_conv2d(net, fn, fn, solver, ConvolutionOp("d16").kernel(3).pad(1).stride(2));	
-	net = df->batch_normalization(net, fn, solver, BatchNormalizationOp("d16bn").exponent_factor(ef));
+	net = df->transposed_conv2d(net, fn, fn, solver, ConvolutionOp("d16").kernel(3).pad(1).stride(2).with_bias());
+	net = df->lrn(net, LrnOp().n(3));	
 	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 	
-	net = df->transposed_conv2d(net, fn, fn, solver, ConvolutionOp("d32").kernel(3).pad(1).stride(2));	
-	net = df->batch_normalization(net, fn, solver, BatchNormalizationOp("d32bn").exponent_factor(ef));
+	net = df->transposed_conv2d(net, fn, fn, solver, ConvolutionOp("d32").kernel(3).pad(1).stride(2).with_bias());	
+	net = df->lrn(net, LrnOp().n(3));	
 	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 
-	net = df->transposed_conv2d(net, fn, fn, solver, ConvolutionOp("d64").kernel(3).pad(1).stride(2));	
-	net = df->batch_normalization(net, fn, solver, BatchNormalizationOp("d64bn").exponent_factor(ef));
+	net = df->transposed_conv2d(net, fn, fn, solver, ConvolutionOp("d64").kernel(3).pad(1).stride(2).with_bias());		
+	net = df->lrn(net, LrnOp().n(3));
 	net = df->leaky_relu(net, LeakyReluOp().negative_slope(ns));
 
 	net = df->transposed_conv2d(net, fn, 3, solver, ConvolutionOp("dec_output").kernel(3).pad(1).stride(2). with_bias());		
@@ -100,7 +103,7 @@ void main(int argc, char** argv) {
 	if (FLAGS_load.empty())
 		create_graph(&df);
 	else
-		load_session(&df, "face_ac", FLAGS_load);
+		load_session(&df, "face_vae", FLAGS_load);
 
 	std::shared_ptr<Session> session = df.session();
 	session->initialize(execution_context);
@@ -141,13 +144,13 @@ void main(int argc, char** argv) {
 			session->forward({ disp }, { { disp_input , dec_output->output(0)->value() } });
 
 			if (FLAGS_save != 0 && iter % FLAGS_save == 0) {
-				session->save("face_ac" + std::to_string(iter) + ".bin");
+				session->save("face_vae" + std::to_string(iter) + ".bin");
 			}
 
 		}
 
 		if (FLAGS_save != 0) {
-			session->save("face_ac" + std::to_string(iter) + ".bin");
+			session->save("face_vae" + std::to_string(iter) + ".bin");
 		}
 	}
 

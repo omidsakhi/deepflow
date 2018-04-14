@@ -33,7 +33,7 @@ A work in progress. Not mature enough for a release but cool enough for poking a
 
 ![results](https://github.com/omidsakhi/deepflow/blob/master/examples/face_ac/results.jpg)
 
-- face_vae: Deep variaional auto-encoder on 128x128 CelebA dataset.
+- face_vae: Deep variational auto-encoder on 128x128 CelebA dataset.
 
 ![results](https://github.com/omidsakhi/deepflow/blob/master/examples/face_vae/results.jpg)
 
