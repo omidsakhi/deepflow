@@ -28,9 +28,6 @@
     <CudaCompile Include="..\..\src\nodes\variable.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\accumulator.cu">
-      <Filter>source\nodes</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\add.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
@@ -247,6 +244,9 @@
       <Filter>source\initializers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\nodes\bias_add.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\accumulator.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
   </ItemGroup>

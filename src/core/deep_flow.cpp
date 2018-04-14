@@ -706,7 +706,14 @@ std::string DeepFlow::batch_normalization(std::string input, int output_channels
 {
 	auto bns = variable(fill({ 1, output_channels, 1, 1 }, 1), solver, VariableOp(params._name + "_s").scope(params._scope));
 	auto bnb = variable(fill({ 1, output_channels, 1, 1 }, 0), solver, VariableOp(params._name + "_b").scope(params._scope));
-	return batch_normalization(input, bns, bnb, BatchNormalizationOp(params._name).scope(params._scope));
+	return batch_normalization(input, bns, bnb, BatchNormalizationOp(params._name).scope(params._scope).spatial());
+}
+
+std::string DeepFlow::batch_normalization(std::string input, int output_channels, int output_height, int output_width, std::string solver, BatchNormalizationOp & params)
+{
+	auto bns = variable(fill({ 1, output_channels, output_height, output_width }, 1), solver, VariableOp(params._name + "_s").scope(params._scope));
+	auto bnb = variable(fill({ 1, output_channels, output_height, output_width }, 0), solver, VariableOp(params._name + "_b").scope(params._scope));
+	return batch_normalization(input, bns, bnb, BatchNormalizationOp(params._name).scope(params._scope).per_activation());
 }
 
 std::string DeepFlow::lrn(std::string input, LrnOp &params)

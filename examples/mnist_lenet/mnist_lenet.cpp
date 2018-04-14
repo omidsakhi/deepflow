@@ -116,7 +116,7 @@ void main(int argc, char** argv) {
 				session->forward({ correct_count }, { { pred_softmax_input, output->output(0)->value() },{ pred_target_labels, mnist_train_labels->output(0)->value() } });
 				session->backward({ loss });
 				session->backward({ output }, { { output, loss_softmax_input->output(0)->diff() } });
-				session->apply_solvers();
+				session->apply_solvers("");
 			} while (!mnist_train_data->is_last_batch());
 			{
 				auto num_correct = correct_count->output(0)->value()->toFloat();

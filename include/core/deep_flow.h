@@ -127,7 +127,8 @@ public:
 	// NORMALIZATION
 	std::string batch_normalization(std::string input, std::string scale, std::string bias, BatchNormalizationOp &params = BatchNormalizationOp());
 	std::string batch_normalization(std::string input, int output_channels, std::string solver, BatchNormalizationOp &params = BatchNormalizationOp());
-	std::string lrn(std::string input, LrnOp &params = LrnOp());	
+	std::string batch_normalization(std::string input, int output_channels, int output_height, int output_width, std::string solver, BatchNormalizationOp &params = BatchNormalizationOp());
+	std::string lrn(std::string input, LrnOp &params = LrnOp());
 
 	// SOCKET IO
 	void sio_output(std::initializer_list<std::string> inputs, SioOutputOp &params = SioOutputOp());

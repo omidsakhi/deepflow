@@ -144,7 +144,9 @@
       <FileType>CppCode</FileType>
     </ClCompile>
     <CudaCompile Include="..\..\src\nodes\abs.cu" />
-    <CudaCompile Include="..\..\src\nodes\accumulator.cu" />
+    <ClCompile Include="..\..\src\nodes\accumulator.cpp">
+      <FileType>Document</FileType>
+    </ClCompile>
     <CudaCompile Include="..\..\src\nodes\add.cu" />
     <ClCompile Include="..\..\src\nodes\bias_add.cpp">
       <FileType>Document</FileType>

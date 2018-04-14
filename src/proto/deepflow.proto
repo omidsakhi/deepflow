@@ -261,6 +261,10 @@ message MnistParam {
 message CastFloatParam {
 }
 
+message InstanceNormalizationParam {
+	float eps = 1;
+}
+
 message BatchNormalizationParam {
 	enum Mode {
 		CUDNN_BATCHNORM_PER_ACTIVATION = 0;    
@@ -513,5 +517,6 @@ message NodeParam {
   PatchSamplingParam patch_sampling_param = 157;
   TextImageGeneratorParam text_image_generator_param = 158;
   MaxParam max_param = 159; 
+  InstanceNormalizationParam instance_normalization = 160;
 }
 

@@ -2,14 +2,6 @@
 
 #include "core/common_cu.h"
 
-__global__
-void AccumulatorKernel(int n, const float * __restrict__ x, float * __restrict__ out1)
-{
-	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	if (i < n)
-		out1[i] += x[i];
-}
-
 Accumulator::Accumulator(deepflow::NodeParam *param) : Node(param) {
 	LOG_IF(FATAL, param->has_accumulator_param() == false) << "param.has_accumulator_param() == false";
 }
@@ -17,13 +9,13 @@ Accumulator::Accumulator(deepflow::NodeParam *param) : Node(param) {
 void Accumulator::init() {	
 	const deepflow::AccumulatorParam &accParam = _param->accumulator_param();	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
-	_outputs[1]->initValue({ 1,1,1,1 });	
+	_outputs[1]->initValue({ 1,1,1,1 });
+	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 }
 
 void Accumulator::forward() {
-	auto size = _inputs[0]->value()->size();
-	AccumulatorKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData());
-	DF_KERNEL_CHECK();
+	auto size = _inputs[0]->value()->size();	
+	DF_NODE_CUDNN_CHECK(cudnnAddTensor(_cudnnHandle, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
 	_total += _inputs[0]->dims()[0];	
 	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[1]->value()->mutableData(), &_total, sizeof(float), cudaMemcpyHostToDevice));
 }

@@ -16,4 +16,5 @@ public:
 	void reset();
 private:	
 	float _total = 0;
+	cudnnHandle_t _cudnnHandle;
 };

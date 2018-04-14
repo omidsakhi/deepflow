@@ -33,7 +33,7 @@ void create_loss(DeepFlow *df, int num) {
 
 	auto discriminator_input = df->place_holder({ FLAGS_batch, 1, 1, 1 }, PlaceholderOp("loss" + std::to_string(num) + "_input"));	
 	auto discriminator_target = df->place_holder({ FLAGS_batch, 1, 1, 1 }, PlaceholderOp("loss" + std::to_string(num) + "_target"));
-	std::string err = df->reduce_all(df->abs(df->subtract(discriminator_input, discriminator_target)));
+	std::string err = df->reduce_all(df->square_error(discriminator_input, discriminator_target));
 	df->loss(err, LossOp("loss" + std::to_string(num)));
 }
 
@@ -42,9 +42,9 @@ void create_generator(DeepFlow *df) {
 	df->with("generator");
 
 	int fn = 64;
-	float ef = 0.1f;
+	float ef = 0.001f;
 
-	auto solver = df->adam_solver( AdamSolverOp("g_adam").lr(0.0002f).beta1(0.5f).beta2(0.98f));
+	auto solver = df->adam_solver( AdamSolverOp("g_adam").lr(0.0002f).beta1(0.0f).beta2(0.98f));
 	
 	auto node = df->place_holder({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, PlaceholderOp("g_input"));
 
@@ -80,37 +80,35 @@ void create_generator(DeepFlow *df) {
 	node = df->batch_normalization(node, fn, solver, BatchNormalizationOp("g128_1_bn").exponent_factor(ef));
 	node = df->relu(node);
 
-	df->transposed_conv2d(node, fn, 3, solver, ConvolutionOp("g_output").kernel(3).pad(1).stride(1).with_bias());
+	node = df->transposed_conv2d(node, fn, 3, solver, ConvolutionOp("g128_2").kernel(3).pad(1).stride(1));
+
+	node = df->tanh(node, TanhOp("g_output"));
+	
 }
 
 void create_discriminator(DeepFlow *df) {
 	
 	df->with("discriminator");
 	
-	int fn = 64;
-	float ef = 0.1f;
+	int fn = 64;	
 
-	auto solver = df->adam_solver( AdamSolverOp("d_adam").lr(0.0002f).beta1(0.5f).beta2(0.98f));
+	auto solver = df->adam_solver( AdamSolverOp("d_adam").lr(0.0002f).beta1(0.5f).beta2(0.98f));	
 
 	auto node = df->place_holder({ FLAGS_batch , FLAGS_channels, FLAGS_size, FLAGS_size }, PlaceholderOp("d_input"));	
 
 	node = df->conv2d(node, 3, fn, solver, ConvolutionOp("d64").kernel(5).pad(2).stride(2).with_bias());
 	node = df->leaky_relu(node);
 
-	node = df->conv2d(node, fn, fn * 2, solver, ConvolutionOp("d32").kernel(5).pad(2).stride(2));
-	node = df->batch_normalization(node, fn * 2, solver, BatchNormalizationOp("g32_bn").exponent_factor(ef));
+	node = df->conv2d(node, fn, fn * 2, solver, ConvolutionOp("d32").kernel(5).pad(2).stride(2).with_bias());	
 	node = df->leaky_relu(node);
 
-	node = df->conv2d(node, fn * 2, fn * 4, solver, ConvolutionOp("d16").kernel(5).pad(2).stride(2));
-	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g16_bn").exponent_factor(ef));
+	node = df->conv2d(node, fn * 2, fn * 4, solver, ConvolutionOp("d16").kernel(5).pad(2).stride(2).with_bias());	
 	node = df->leaky_relu(node);
 
-	node = df->conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("d8").kernel(5).pad(2).stride(2));
-	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g8_bn").exponent_factor(ef));
+	node = df->conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("d8").kernel(5).pad(2).stride(2).with_bias());	
 	node = df->leaky_relu(node);
 
-	node = df->conv2d(node, fn * 4, fn * 8, solver, ConvolutionOp("d4").kernel(5).pad(2).stride(2));
-	node = df->batch_normalization(node, fn * 8, solver, BatchNormalizationOp("g4_bn").exponent_factor(ef));
+	node = df->conv2d(node, fn * 4, fn * 8, solver, ConvolutionOp("d4").kernel(5).pad(2).stride(2).with_bias());	
 	node = df->leaky_relu(node);
 
 	df->dense(node, { (fn * 8) * 4 * 4, 1, 1, 1 }, solver, DenseOp("d_output").with_bias());	
@@ -152,10 +150,10 @@ void main(int argc, char** argv) {
 	}
 
 	auto face_data = session->get_node("face_data");	
-	auto generator_output = session->get_node("g_output");
+	auto generator_output = session->end_node("generator");
 	auto generator_input = session->get_placeholder("g_input");
 	auto discriminator_input = session->get_placeholder("d_input");	
-	auto discriminator_output = session->get_node("d_output");
+	auto discriminator_output = session->end_node("discriminator");
 	auto generator_labels = session->get_node("generator_labels");
 	auto face_labels = session->get_node("face_labels");
 	auto loss1_input = session->get_placeholder("loss1_input");	
