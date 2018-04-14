@@ -219,23 +219,23 @@ void main(int argc, char** argv) {
 				per_stage_multiplex[5]->selectInput(0);
 				per_stage_multiplex[stage]->selectInput(0);
 
-				session->forward( session->end_nodes() );
+				session->forward( "" );
 				float d_loss = loss->output(0)->value()->toFloat();
-				session->backward( session->end_nodes() );
+				session->backward( "" );
 
 				for (int m = 0; m < 6; m++)
 					per_stage_multiplex[m]->selectInput(-1);
 				per_stage_multiplex[5]->selectInput(1);
 				per_stage_multiplex[stage]->selectInput(1);
 
-				session->forward(session->end_nodes() );
+				session->forward( "" );
 				d_loss += loss->output(0)->value()->toFloat();
-				session->backward(session->end_nodes() );
+				session->backward( "" );
 
 				std::cout << " - d_loss: " << d_loss;
 
-				session->apply_solvers({ "d_adam" });
-				session->reset_gradients();
+				session->apply_solvers(std::list<std::string>({"d_adam"}));
+				session->reset_gradients("");
 
 				if (FLAGS_save_image != 0 && iter % FLAGS_save_image == 0 && stage > 0)
 					im_switches[stage - 1]->setEnabled(true);
@@ -245,12 +245,12 @@ void main(int argc, char** argv) {
 				per_stage_multiplex[5]->selectInput(0);
 				per_stage_multiplex[stage]->selectInput(1);
 
-				session->forward(session->end_nodes() );
+				session->forward( "" );
 				float g_loss = loss->output(0)->value()->toFloat();
-				session->backward(session->end_nodes() );
+				session->backward( "" );
 				std::cout << " - g_loss: " << g_loss << std::endl;
-				session->apply_solvers({ "g_adam" });
-				session->reset_gradients();
+				session->apply_solvers(std::list<std::string>({ "g_adam" }));
+				session->reset_gradients("");
 
 				if (FLAGS_save_model != 0 && iter % FLAGS_save_model == 0) {
 					session->save("model_s" + std::to_string(stage) + "_i" + std::to_string(iter) + ".bin");

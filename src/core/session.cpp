@@ -303,7 +303,7 @@ void Session::create_nodes()
 	}
 
 	// caching the name of all variables
-	_variables = _get_nodes<Variable>();
+	_variables = _get_nodes<Variable>("");
 
 	for (auto var : _variables) {
 		std::shared_ptr<Solver> solver;
@@ -398,7 +398,7 @@ void Session::initialize(std::shared_ptr<ExecutionContext> execution_context) {
 		set_execution_context(execution_context);
 	}	
 	
-	print_total_parameters();
+	print_total_parameters("");
 }
 
 void Session::_insert_splits()
@@ -453,10 +453,18 @@ void Session::set_execution_context(std::shared_ptr<ExecutionContext> execution_
 		node->setExecutionContext(execution_context);
 }
 
-std::shared_ptr<Node> Session::_find_node_by_name(const std::string &name) const {
-	for (auto node : _nodes) {
-		if (node->name() == name)
-			return node;
+std::shared_ptr<Node> Session::_find_node_by_name(const std::string &name, const std::string &scope) const {
+	if (scope.empty()) {
+		for (auto node : _nodes) {
+			if (node->name() == name)
+				return node;
+		}
+	}
+	else {
+		for (auto node : _nodes) {
+			if (node->name() == name && node->scope() == scope)
+				return node;
+		}
 	}
 	return 0;
 }
@@ -496,12 +504,21 @@ bool Session::is_head_node(std::shared_ptr<Node> node) const
 	return false;
 }
 
-std::list<std::shared_ptr<Node>> Session::end_nodes() const
+std::list<std::shared_ptr<Node>> Session::end_nodes(const std::string &scope) const
 {
 	std::list<std::shared_ptr<Node>> list;
-	for (auto node : _nodes) {
-		if (is_end_node(node)) {
-			list.push_back(node);
+	if (scope.empty()) {
+		for (auto node : _nodes) {
+			if (is_end_node(node)) {
+				list.push_back(node);
+			}
+		}
+	}
+	else {
+		for (auto node : _nodes) {
+			if (node->scope() == scope && is_end_node(node)) {
+				list.push_back(node);
+			}
 		}
 	}
 	return list;
@@ -612,7 +629,7 @@ std::list<std::shared_ptr<Node>> forward_path(std::list<std::shared_ptr<Node>> n
 	return forward_path;	
 }
 
-void Session::forward(std::list<std::shared_ptr<Node>> end_nodes, std::initializer_list<std::pair<std::shared_ptr<PlaceHolder>, std::shared_ptr<Tensor>>> feed_list)
+void Session::forward(std::list<std::shared_ptr<Node>> end_nodes, std::list<std::pair<std::shared_ptr<PlaceHolder>, std::shared_ptr<Tensor>>> feed_list)
 {
 	for (auto node : _nodes) {
 		for (auto t : node->outputs())
@@ -632,10 +649,16 @@ void Session::forward(std::list<std::shared_ptr<Node>> end_nodes, std::initializ
 	}
 }
 
-void Session::reset_gradients()
+void Session::forward(const std::string & scope, std::list<std::pair<std::shared_ptr<PlaceHolder>, std::shared_ptr<Tensor>>> feed_list)
 {
+	forward(end_nodes(scope), feed_list);
+}
+
+void Session::reset_gradients(const std::string &scope)
+{
+	auto variables = _get_nodes<Variable>(scope);
 	std::list<cudaStream_t> streams;	
-	for (auto var : _variables) {
+	for (auto var : variables) {
 		streams.push_back(cudaStream_t());
 		cudaStreamCreate(&streams.back());
 		var->reset_gradients(streams.back());
@@ -646,14 +669,15 @@ void Session::reset_gradients()
 	}
 }
 
-void Session::clamp(float min, float max)
+void Session::clamp(float min, float max, const std::string &scope)
 {
-	for (auto var : _variables) {		
+	auto variables = _get_nodes<Variable>(scope);
+	for (auto var : variables) {		
 		var->clamp(min, max);
 	}
 }
 
-void Session::backward(std::list<std::shared_ptr<Node>> end_nodes, std::initializer_list<std::pair<std::shared_ptr<Node>, std::shared_ptr<Tensor>>> feed_list)
+void Session::backward(std::list<std::shared_ptr<Node>> end_nodes, std::list <std::pair<std::shared_ptr<Node>, std::shared_ptr<Tensor>>> feed_list)
 {
 	for (auto node : _nodes) {
 		for (auto t : node->outputs())
@@ -673,7 +697,12 @@ void Session::backward(std::list<std::shared_ptr<Node>> end_nodes, std::initiali
 	}
 }
 
-void Session::apply_solvers(std::initializer_list<std::string> solver_names)
+void Session::backward(const std::string & scope, std::list<std::pair<std::shared_ptr<Node>, std::shared_ptr<Tensor>>> feed_list)
+{
+	backward(end_nodes(scope), feed_list);
+}
+
+void Session::apply_solvers(std::list<std::string> solver_names)
 {
 	if (solver_names.size() > 0) {
 		std::list<cudaStream_t> streams;
@@ -705,7 +734,24 @@ void Session::apply_solvers(std::initializer_list<std::string> solver_names)
 	}
 }
 
-void Session::set_enabled_solvers(bool state, std::initializer_list<std::string> solver_names)
+void Session::apply_solvers(const std::string & scope)
+{
+	std::list<cudaStream_t> streams;
+	for (auto item : _solvers) {
+		if (!scope.empty() && item.first->scope() != scope) {			
+			continue;
+		}
+		streams.push_back(cudaStream_t());
+		cudaStreamCreate(&streams.back());
+		item.second->apply(item.first, streams.back());
+	}
+	for (auto stream : streams) {
+		cudaStreamSynchronize(stream);
+		cudaStreamDestroy(stream);
+	}
+}
+
+void Session::set_enabled_solvers(bool state, std::list<std::string> solver_names)
 {
 	if (solver_names.size() > 0) {
 		for (auto item : _solvers) {
@@ -722,7 +768,21 @@ void Session::set_enabled_solvers(bool state, std::initializer_list<std::string>
 	}
 }
 
-void Session::set_learning_rate(float lr, std::initializer_list<std::string> solver_names)
+void Session::set_enabled_solvers(bool state, const std::string & scope)
+{
+	if (scope.empty()) {
+		for (auto item : _solvers)
+			item.second->set_enabled(state);
+	}
+	else {
+		for (auto item : _solvers) {
+			if (item.first->scope() == scope)
+				item.second->set_enabled(state);
+		}
+	}
+}
+
+void Session::set_learning_rate(float lr, std::list<std::string> solver_names)
 {
 	if (solver_names.size() > 0) {
 		for (auto item : _solvers) {
@@ -739,19 +799,36 @@ void Session::set_learning_rate(float lr, std::initializer_list<std::string> sol
 	}
 }
 
+void Session::set_learning_rate(float lr, const std::string & scope)
+{
+	if (scope.empty()) {
+		for (auto item : _solvers) {
+				item.second->set_learning_rate(lr);
+		}
+	}
+	else {
+		for (auto item : _solvers) {
+			if (item.first->scope() == scope) {
+				item.second->set_learning_rate(lr);
+			}
+		}
+	}
+}
+
 void Session::save(std::string file_path, bool as_text)
 {
-	for (auto node : _nodes)
-		node->prep_for_saving();		
+	for (auto node : _nodes) {
+		node->prep_for_saving();
+	}
 	if (as_text)
 		_block->save_as_text(file_path);
 	else
 		_block->save_as_binary(file_path);
 }
 
-void Session::print_variables_info()
+void Session::print_variables_info(const std::string &scope)
 {
-	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>();	
+	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>(scope);	
 	double mean, std, min, max;
 	for (auto var : variable_nodes) {
 		auto output = var->output(0);
@@ -764,10 +841,11 @@ void Session::print_variables_info()
 	}
 }
 
-void Session::print_nodes_info()
+void Session::print_nodes_info(const std::string &scope)
 {	
 	double mean, std, min, max;
 	for (auto node : _nodes) {
+		if (node->scope() != scope) continue;
 		for (auto output : node->outputs()) {
 			output->value()->statistics(&mean, &std, &min, &max);
 			LOG(INFO) << output->value()->name() << " | "<< mean << " " << std << " | " << min << " " << max;
@@ -779,16 +857,16 @@ void Session::print_nodes_info()
 	}	
 }
 
-std::shared_ptr<Node> Session::end_node() const
+std::shared_ptr<Node> Session::end_node(const std::string &scope) const
 {
-	auto list = end_nodes();	
+	auto list = end_nodes(scope);	
 	LOG_IF(FATAL, list.size() != 1) << "[FAILED] session must have exactly one end node.";
 	return *list.begin();
 }
 
-void Session::print_total_parameters()
+void Session::print_total_parameters(const std::string &scope)
 {
-	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>();
+	std::list<std::shared_ptr<Variable>> variable_nodes = _get_nodes<Variable>(scope);
 	size_t total = 0;
 	for (auto var : variable_nodes) {
 		total += var->output(0)->value()->size();
@@ -809,7 +887,7 @@ void generate_cpp_code(Node *node, std::string *code) {
 	(*code) += node->to_cpp() + "\n";	
 }
 
-std::string Session::to_cpp() const
+std::string Session::to_cpp(const std::string &scope) const
 {
 	std::string code = "\nDeepFlow df;\n\n";
 
@@ -836,7 +914,7 @@ std::string Session::to_cpp() const
 
 	int token = rand();
 
-	std::list<std::shared_ptr<Node>> nodes = end_nodes();
+	std::list<std::shared_ptr<Node>> nodes = end_nodes(scope);
 	std::list<std::shared_ptr<Node>> list, visited_nodes;
 
 	auto isVisited = [](std::list<std::shared_ptr<Node>> &list, std::shared_ptr<Node> node_to_check) {
@@ -884,9 +962,9 @@ std::string Session::to_cpp() const
 	return code;
 }
 
-std::shared_ptr<PlaceHolder> Session::get_placeholder(std::string name)
+std::shared_ptr<PlaceHolder> Session::get_placeholder(const std::string &name, const std::string &scope)
 {
-	auto node = _find_node_by_name(name);
+	auto node = _find_node_by_name(name, scope);
 	LOG_IF(FATAL, node == nullptr) << "Node " << name << " does not exist.";
 	auto placeholder = std::dynamic_pointer_cast<PlaceHolder>(node);
 	LOG_IF(FATAL, placeholder == nullptr) << name << " is not a placeholder.";

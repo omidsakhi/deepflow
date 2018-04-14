@@ -51,7 +51,10 @@ void main(int argc, char** argv) {
 		
 	if (FLAGS_i.empty()) {
 		if (FLAGS_x1) {									
-			auto solver = df.adam_solver(AdamSolverOp().lr(0.0002f).beta1(0.5f).beta2(0.5f));
+			//auto solver = df.adam_solver(AdamSolverOp().lr(0.02f).beta1(0.5f).beta2(0.5f));
+			//auto solver = df.adadelta_solver( AdaDeltaSolverOp());
+			//auto solver = df.rmsprop_solver();
+			auto solver = df.sgd_solver();
 			auto image = df.imread(FLAGS_image1, ImreadOp().color());
 			auto generator = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -1, 1), DataGeneratorOp().solver(solver));
 			auto euclidean = df.square_error(image, generator);
@@ -61,7 +64,7 @@ void main(int argc, char** argv) {
 			df.psnr(image, generator);
 		}
 		else if (FLAGS_x2) {			
-			auto solver = df.adam_solver(AdamSolverOp().lr(0.0002f).beta1(0.9f).beta2(0.9f));						
+			auto solver = df.adam_solver(AdamSolverOp().lr(0.002f).beta1(0.9f).beta2(0.9f));						
 			auto image = df.imread(FLAGS_image1, ImreadOp().gray());
 			auto recon = df.variable(df.random_normal({ 1,1,256,256 }, 0, 0.1), solver, VariableOp("recon"));
 			auto f1 = df.variable(df.step({ 11,1,5,5 }, 0, 1), "" , VariableOp("w"));
@@ -186,16 +189,19 @@ void main(int argc, char** argv) {
 		std::cout << session->to_cpp() << std::endl;
 	}
 
-	session->initialize();		
-	auto psnr_node = session->get_node<Psnr>("psnr", false);
+	auto execution_context = std::make_shared<ExecutionContext>();
+	execution_context->debug_level = FLAGS_debug;
+
+	session->initialize(execution_context);		
+	auto psnr_node = session->get_node<Psnr>("psnr", "", false);
 	for (int iter = 1; iter <= FLAGS_iter; ++iter) {		
 		std::cout << "Iteration " << iter << " -->" << std::endl;
 		auto epoch_start = std::chrono::high_resolution_clock::now();
-		session->forward(session->end_nodes());
+		session->forward("");
 		if (psnr_node) {
 			std::cout << "PSNR: " << psnr_node->psnr() << std::endl;
 		}
-		session->backward(session->end_nodes());
+		session->backward("");
 		session->apply_solvers();
 		auto epoch_end = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<double> elapsed_epoch = epoch_end - epoch_start;

@@ -10,4 +10,5 @@ public:
 	std::string to_cpp() const override;	
 protected:
 	deepflow::SGDSolverParam *_my_param;
+	float * _h = NULL;
 };

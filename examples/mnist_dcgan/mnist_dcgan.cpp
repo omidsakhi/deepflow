@@ -26,6 +26,8 @@ void load_session(DeepFlow *df, std::string prefix) {
 }
 
 void create_generator(DeepFlow *df) {
+	df->with("generator");
+
 	int fn = 64;
 	float ef = 0.01f;
 	auto solver = df->adam_solver( AdamSolverOp("g_adam").lr(0.00005f).beta1(0.5f).beta2(0.99f) );
@@ -53,6 +55,8 @@ void create_generator(DeepFlow *df) {
 }
 
 void create_discriminator(DeepFlow *df) {
+	df->with("discriminator");
+
 	int fn = 64;
 	float ef = 0.01f;
 	auto solver = df->adam_solver(AdamSolverOp("d_adam").lr(0.00005f).beta1(0.5f).beta2(0.99f));
@@ -175,7 +179,7 @@ void main(int argc, char** argv) {
 			session->backward({ loss });
 			session->backward({ discriminator_output }, { { discriminator_output, loss_input->output(0)->diff() } });
 
-			session->apply_solvers({ "d_adam" });
+			session->apply_solvers("discriminator");
 
 			session->forward({ discriminator_output }, { { discriminator_input, generator_output->output(0)->value() } });
 			session->forward({ loss }, {
@@ -189,8 +193,8 @@ void main(int argc, char** argv) {
 			session->backward({ generator_output }, { { generator_output, discriminator_input->output(0)->diff() } });
 			std::cout << " - g_loss: " << g_loss_avg.result() << std::endl;
 
-			session->apply_solvers({ "g_adam" });
-			session->reset_gradients();
+			session->apply_solvers("generator");
+			session->reset_gradients("discriminator");
 
 			if (FLAGS_save_image != 0 && iter % FLAGS_save_image == 0) {
 				session->forward({ generator_output }, { { generator_input, static_z->output(0)->value() } });

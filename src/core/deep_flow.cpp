@@ -8,6 +8,14 @@ void add_outputs(deepflow::NodeParam *node_param, int num_outputs) {
 		node_param->add_output(node_param->name() + "_output_" + std::to_string(i));
 }
 
+void add_scope(deepflow::NodeParam *node_param, std::string df_scope, std::string node_scope ) {
+	node_param->set_scope((!node_scope.empty() && node_scope != "Default") ? node_scope : df_scope);
+}
+
+void add_scope(deepflow::SolverParam *solver_param, std::string df_scope, std::string node_scope) {
+	solver_param->set_scope((!node_scope.empty() && node_scope != "Default") ? node_scope : df_scope);
+}
+
 DeepFlow::DeepFlow()
 {		
 	_block = std::make_shared<Block>();
@@ -20,6 +28,7 @@ DeepFlow::DeepFlow(std::shared_ptr<Block> block)
 
 std::string DeepFlow::mnist_reader(std::string folder_path, MNISTReaderOp &params) {	
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	auto mnistParam = node_param->mutable_mnist_param();
@@ -34,6 +43,7 @@ std::string DeepFlow::mnist_reader(std::string folder_path, MNISTReaderOp &param
 std::string DeepFlow::data_generator(std::string initializer, DataGeneratorOp &params)
 {	
 	auto node_param = _block->add_node_param();	
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	auto variable_param = node_param->mutable_variable_param();	
@@ -48,6 +58,7 @@ std::string DeepFlow::data_generator(std::string initializer, DataGeneratorOp &p
 std::array<std::string, 2> DeepFlow::text_image_generator(std::string initializer, TextImageGeneratorOp &params)
 {	
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 2);
 	auto variable_param = node_param->mutable_variable_param();
@@ -67,6 +78,7 @@ std::array<std::string, 2> DeepFlow::text_image_generator(std::string initialize
 std::string DeepFlow::imread(std::string file_path, ImreadOp &params)
 {	
 	auto node_param = _block->add_node_param();	
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	auto image_reader_param = node_param->mutable_image_reader_param();
@@ -78,6 +90,7 @@ std::string DeepFlow::imread(std::string file_path, ImreadOp &params)
 std::string DeepFlow::imbatch(std::string folder_path, std::initializer_list<int> dims, ImbatchOp &params)
 {	
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	auto image_batch_reader_param = node_param->mutable_image_batch_reader_param();	
@@ -93,7 +106,8 @@ std::string DeepFlow::imbatch(std::string folder_path, std::initializer_list<int
 }
 
 std::string DeepFlow::add(std::string a, std::string b, AddOp &params) {
-	auto node_param = _block->add_node_param();	
+	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -107,6 +121,7 @@ std::string DeepFlow::add(std::string a, std::string b, AddOp &params) {
 std::string DeepFlow::dot(std::string a, std::string b, DotOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -121,6 +136,7 @@ std::string DeepFlow::subtract(std::string a, std::string b, SubtractOp &params)
 
 std::string DeepFlow::bias_add(std::string input, std::string weights, BiasAddOp &params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -131,7 +147,7 @@ std::string DeepFlow::bias_add(std::string input, std::string weights, BiasAddOp
 
 std::string DeepFlow::bias_add(std::string input, int output_channels, std::string solver, BiasAddOp &params)
 {
-	auto bnb = variable(zeros({ 1, output_channels, 1, 1 }), solver, VariableOp(params._name + "_bias_w"));
+	auto bnb = variable(zeros({ 1, output_channels, 1, 1 }), solver, VariableOp(params._name + "_bias_w").scope(params._scope));
 	return bias_add(input, bnb, params);
 }
 
@@ -255,6 +271,7 @@ std::string DeepFlow::truncated_normal(std::initializer_list<int> dims, float me
 
 std::string DeepFlow::cast_float(std::string input, CastFloatOp &params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);	
@@ -263,7 +280,8 @@ std::string DeepFlow::cast_float(std::string input, CastFloatOp &params) {
 }
 
 std::string DeepFlow::softmax(std::string a, SoftmaxOp &params) {
-	auto node_param = _block->add_node_param();	
+	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -275,6 +293,7 @@ std::string DeepFlow::softmax(std::string a, SoftmaxOp &params) {
 std::string DeepFlow::max(std::string a, std::string b, MaxOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -284,7 +303,8 @@ std::string DeepFlow::max(std::string a, std::string b, MaxOp &params)
 }
 
 std::string DeepFlow::square(std::string a, SquareOp &params) {
-	auto node_param = _block->add_node_param();	
+	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -295,6 +315,7 @@ std::string DeepFlow::square(std::string a, SquareOp &params) {
 std::string DeepFlow::abs(std::string a, AbsOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -305,6 +326,7 @@ std::string DeepFlow::abs(std::string a, AbsOp &params)
 std::string DeepFlow::exp(std::string a, ExpOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -315,6 +337,7 @@ std::string DeepFlow::exp(std::string a, ExpOp &params)
 std::string DeepFlow::log(std::string a, LogOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -325,6 +348,7 @@ std::string DeepFlow::log(std::string a, LogOp &params)
 
 std::string DeepFlow::place_holder(std::array<int, 4> dims, PlaceholderOp &params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	auto place_holder_param = node_param->mutable_place_holder_param();
@@ -338,6 +362,7 @@ std::string DeepFlow::place_holder(std::array<int, 4> dims, PlaceholderOp &param
 std::string DeepFlow::restructure(std::string input, int first_dim, int second_dim, RestructureOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -349,6 +374,7 @@ std::string DeepFlow::restructure(std::string input, int first_dim, int second_d
 
 std::string DeepFlow::variable(std::string initializer, std::string solver, VariableOp &params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	auto variable_param = node_param->mutable_variable_param();
@@ -362,6 +388,7 @@ std::string DeepFlow::variable(std::string initializer, std::string solver, Vari
 
 std::string DeepFlow::matmul(std::string a, std::string b, MatmulOp &params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -372,7 +399,7 @@ std::string DeepFlow::matmul(std::string a, std::string b, MatmulOp &params) {
 
 std::string DeepFlow::dense(std::string input, std::initializer_list<int> dims, std::string solver, DenseOp &params)
 {
-	auto w = variable(truncated_normal(dims, 0, params._stddev), solver, VariableOp(params._name + "_fc_w"));
+	auto w = variable(truncated_normal(dims, 0, params._stddev), solver, VariableOp(params._name + "_fc_w").scope(params._scope));
 	std::string node;
 	if (params._with_bias) {
 		node = matmul(input, w, MatmulOp(params._name + "_fc").scope(params._scope));
@@ -386,6 +413,7 @@ std::string DeepFlow::dense(std::string input, std::initializer_list<int> dims, 
 
 std::string DeepFlow::leaky_relu(std::string a, LeakyReluOp &params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);	
@@ -397,6 +425,7 @@ std::string DeepFlow::leaky_relu(std::string a, LeakyReluOp &params) {
 std::string DeepFlow::sigmoid(std::string a, SigmoidOp &params)
 {
 	auto node_param = _block->add_node_param();	
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -408,7 +437,8 @@ std::string DeepFlow::sigmoid(std::string a, SigmoidOp &params)
 
 std::string DeepFlow::relu(std::string a, ReluOp &params)
 {
-	auto node_param = _block->add_node_param();	
+	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -421,6 +451,7 @@ std::string DeepFlow::relu(std::string a, ReluOp &params)
 std::string DeepFlow::prelu(std::string input, std::string w, PReluOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -431,13 +462,14 @@ std::string DeepFlow::prelu(std::string input, std::string w, PReluOp &params)
 
 std::string DeepFlow::prelu(std::string input, int output_channels, std::string solver, PReluOp &params)
 {
-	auto w = variable(fill({ 1, output_channels, 1, 1 }, params._initial_slope), solver, VariableOp(params._name + "_w"));
+	auto w = variable(fill({ 1, output_channels, 1, 1 }, params._initial_slope), solver, VariableOp(params._name + "_w").scope(params._scope));
 	return prelu(input, w, PReluOp(params._name));	
 }
 
 std::string DeepFlow::dprelu(std::string input, std::string enabler, DPReluOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -449,7 +481,8 @@ std::string DeepFlow::dprelu(std::string input, std::string enabler, DPReluOp &p
 
 std::string DeepFlow::tanh(std::string a, TanhOp &params)
 {
-	auto node_param = _block->add_node_param();	
+	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -461,7 +494,8 @@ std::string DeepFlow::tanh(std::string a, TanhOp &params)
 
 std::string DeepFlow::clipped_relu(std::string a, ClippedReluOp &params)
 {
-	auto node_param = _block->add_node_param();	
+	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -473,7 +507,8 @@ std::string DeepFlow::clipped_relu(std::string a, ClippedReluOp &params)
 
 std::string DeepFlow::elu(std::string a, EluOp &params)
 {
-	auto node_param = _block->add_node_param();	
+	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -485,6 +520,7 @@ std::string DeepFlow::elu(std::string a, EluOp &params)
 
 std::array<std::string, 2> DeepFlow::accumulator(std::string input, AccumulatorOp &params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 2);
 	node_param->add_input(input);	
@@ -498,6 +534,7 @@ std::array<std::string, 2> DeepFlow::accumulator(std::string input, AccumulatorO
 std::string DeepFlow::replay_memory(std::string input, int capacity, ReplayMemoryOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -509,6 +546,7 @@ std::string DeepFlow::replay_memory(std::string input, int capacity, ReplayMemor
 std::string DeepFlow::batch_stddev(std::string input, BatchStddevOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -519,6 +557,7 @@ std::string DeepFlow::batch_stddev(std::string input, BatchStddevOp &params)
 std::string DeepFlow::pass_through(std::string input, PassThroughOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -530,6 +569,7 @@ std::string DeepFlow::pass_through(std::string input, PassThroughOp &params)
 std::string DeepFlow::gaussian(std::string mean, std::string sigma, GaussianOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(mean);
@@ -541,6 +581,7 @@ std::string DeepFlow::gaussian(std::string mean, std::string sigma, GaussianOp &
 std::string DeepFlow::gaussian_kernel(int window_size, float sigma, GaussianKernelOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	auto param = node_param->mutable_gaussian_kernel_param();
@@ -559,6 +600,7 @@ std::string DeepFlow::gaussian_blur(std::string input, int window_size, float si
 
 void DeepFlow::print(std::initializer_list<std::string> inputs, std::string message, PrintOp &params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	std::vector<std::string> inputsVec(inputs.size());
 	std::copy(inputs.begin(), inputs.end(), inputsVec.begin());
@@ -580,6 +622,7 @@ void DeepFlow::print(std::initializer_list<std::string> inputs, std::string mess
 void DeepFlow::logger(std::initializer_list<std::string> inputs, std::string file_path, std::string message, LoggerOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	std::vector<std::string> inputsVec(inputs.size());
 	std::copy(inputs.begin(), inputs.end(), inputsVec.begin());
@@ -602,6 +645,7 @@ void DeepFlow::logger(std::initializer_list<std::string> inputs, std::string fil
 std::string DeepFlow::display(std::string input, DisplayOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -622,6 +666,7 @@ std::string DeepFlow::display(std::string input, DisplayOp &params)
 std::string DeepFlow::imwrite(std::string input, std::string filename, ImwriteOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -633,6 +678,7 @@ std::string DeepFlow::imwrite(std::string input, std::string filename, ImwriteOp
 void DeepFlow::psnr(std::string a, std::string b, PsnrOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	node_param->add_input(a);
 	node_param->add_input(b);
@@ -642,6 +688,7 @@ void DeepFlow::psnr(std::string a, std::string b, PsnrOp &params)
 std::string DeepFlow::batch_normalization(std::string input, std::string scale, std::string bias, BatchNormalizationOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -657,14 +704,15 @@ std::string DeepFlow::batch_normalization(std::string input, std::string scale, 
 
 std::string DeepFlow::batch_normalization(std::string input, int output_channels, std::string solver, BatchNormalizationOp &params)
 {
-	auto bns = variable(fill({ 1, output_channels, 1, 1 }, 1), solver, VariableOp(params._name + "_s"));
-	auto bnb = variable(fill({ 1, output_channels, 1, 1 }, 0), solver, VariableOp(params._name + "_b"));
-	return batch_normalization(input, bns, bnb, BatchNormalizationOp(params._name));
+	auto bns = variable(fill({ 1, output_channels, 1, 1 }, 1), solver, VariableOp(params._name + "_s").scope(params._scope));
+	auto bnb = variable(fill({ 1, output_channels, 1, 1 }, 0), solver, VariableOp(params._name + "_b").scope(params._scope));
+	return batch_normalization(input, bns, bnb, BatchNormalizationOp(params._name).scope(params._scope));
 }
 
 std::string DeepFlow::lrn(std::string input, LrnOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -679,6 +727,7 @@ std::string DeepFlow::lrn(std::string input, LrnOp &params)
 void DeepFlow::sio_output(std::initializer_list<std::string> inputs, SioOutputOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	std::vector<std::string> inputsVec(inputs.size());
 	std::copy(inputs.begin(), inputs.end(), inputsVec.begin());
@@ -693,7 +742,8 @@ void DeepFlow::sio_output(std::initializer_list<std::string> inputs, SioOutputOp
 
 std::string DeepFlow::square_error(std::string a, std::string b, SquareErrorOp &params)
 {
-	auto node_param = _block->add_node_param();	
+	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -704,6 +754,7 @@ std::string DeepFlow::square_error(std::string a, std::string b, SquareErrorOp &
 
 std::string DeepFlow::sgd_solver( SgdSolverOp &params) {
 	auto solver_param = _block->add_solver_param();
+	add_scope(solver_param, _scope, params._scope);
 	solver_param->set_learning_rate(params._learning_rate);
 	solver_param->set_name(_block->get_unique_solver_param_name(params._name));
 	auto sgd_solver = solver_param->mutable_sgd_solver();	
@@ -713,6 +764,7 @@ std::string DeepFlow::sgd_solver( SgdSolverOp &params) {
 
 std::string DeepFlow::adam_solver( AdamSolverOp &params ) {
 	auto solver_param = _block->add_solver_param();
+	add_scope(solver_param, _scope, params._scope);
 	solver_param->set_learning_rate(params._learning_rate);	
 	solver_param->set_name(_block->get_unique_solver_param_name(params._name));
 	auto adam_solver = solver_param->mutable_adam_solver();		
@@ -723,7 +775,8 @@ std::string DeepFlow::adam_solver( AdamSolverOp &params ) {
 }
 
 std::string DeepFlow::adadelta_solver( AdaDeltaSolverOp &params ) {
-	auto solver_param = _block->add_solver_param();	
+	auto solver_param = _block->add_solver_param();
+	add_scope(solver_param, _scope, params._scope);
 	solver_param->set_learning_rate(params._learning_rate);
 	solver_param->set_name(_block->get_unique_solver_param_name(params._name));
 	auto adadelta_solver = solver_param->mutable_adadelta_solver();	
@@ -735,6 +788,7 @@ std::string DeepFlow::adadelta_solver( AdaDeltaSolverOp &params ) {
 std::string DeepFlow::rmsprop_solver( RmsPropSolverOp &params)
 {
 	auto solver_param = _block->add_solver_param();
+	add_scope(solver_param, _scope, params._scope);
 	solver_param->set_learning_rate( params._learning_rate);
 	solver_param->set_name(_block->get_unique_solver_param_name(params._name));
 	auto solver = solver_param->mutable_rmsprop_solver();
@@ -745,6 +799,7 @@ std::string DeepFlow::rmsprop_solver( RmsPropSolverOp &params)
 
 std::string DeepFlow::dropout(std::string a, DropoutOp &params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -755,6 +810,7 @@ std::string DeepFlow::dropout(std::string a, DropoutOp &params) {
 
 std::string DeepFlow::pooling(std::string input, PoolingOp &params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -770,6 +826,7 @@ std::string DeepFlow::pooling(std::string input, PoolingOp &params) {
 
 std::string DeepFlow::transposed_conv2d(std::string input, std::string filter, ConvolutionOp & params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -787,6 +844,7 @@ std::string DeepFlow::transposed_conv2d(std::string input, std::string filter, C
 std::string DeepFlow::conv2d(std::string input, std::string filter, ConvolutionOp & params)
 {	
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -804,7 +862,7 @@ std::string DeepFlow::conv2d(std::string input, std::string filter, ConvolutionO
 std::string DeepFlow::conv2d(std::string input, int input_channels, int output_channels, std::string solver, ConvolutionOp & params)
 {
 	std::string name = params._name;
-	auto f = variable(truncated_normal({ output_channels, input_channels, params._kernel_h, params._kernel_w }, 0, params._stddev), solver, VariableOp(name + "_conv_f"));
+	auto f = variable(truncated_normal({ output_channels, input_channels, params._kernel_h, params._kernel_w }, 0, params._stddev), solver, VariableOp(name + "_conv_f").scope(params._scope));
 	std::string node; 
 	if (params._with_bias) {
 		node = conv2d(input, f, params.name(name + "_conv"));
@@ -819,7 +877,7 @@ std::string DeepFlow::conv2d(std::string input, int input_channels, int output_c
 std::string DeepFlow::transposed_conv2d(std::string input, int input_channels, int output_channels, std::string solver, ConvolutionOp & params)
 {
 	std::string name = params._name;
-	auto f = variable(truncated_normal({ input_channels, output_channels, params._kernel_h, params._kernel_w }, 0, params._stddev), solver, VariableOp(name + "_tconv_f"));
+	auto f = variable(truncated_normal({ input_channels, output_channels, params._kernel_h, params._kernel_w }, 0, params._stddev), solver, VariableOp(name + "_tconv_f").scope(params._scope));
 	std::string node; 
 	if (params._with_bias) {
 		node = transposed_conv2d(input, f, params.name(name + "_tconv"));
@@ -834,6 +892,7 @@ std::string DeepFlow::transposed_conv2d(std::string input, int input_channels, i
 std::string DeepFlow::lifting(std::string input, LiftingOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -858,6 +917,7 @@ std::string DeepFlow::lifting(std::string input, LiftingOp &params)
 std::string DeepFlow::patching(std::string input, PatchingOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -884,6 +944,7 @@ std::string DeepFlow::patching(std::string input, PatchingOp &params)
 std::string DeepFlow::patch_sampling(std::string input, int patch_width, int patch_height, PatchSamplingOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -896,6 +957,7 @@ std::string DeepFlow::patch_sampling(std::string input, int patch_width, int pat
 std::string DeepFlow::resize(std::string input, float height_scale, float width_scale, ResizeOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -908,6 +970,7 @@ std::string DeepFlow::resize(std::string input, float height_scale, float width_
 std::string DeepFlow::concate(std::string input1, std::string input2, ConcateOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input1);
@@ -919,6 +982,7 @@ std::string DeepFlow::concate(std::string input1, std::string input2, ConcateOp 
 std::string DeepFlow::reshape(std::string input, std::array<int,4> output_dims, ReshapeOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -931,6 +995,7 @@ std::string DeepFlow::reshape(std::string input, std::array<int,4> output_dims, 
 
 std::string DeepFlow::_reduce(std::string input, ReduceOp &params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 2);
 	node_param->add_input(input);
@@ -944,6 +1009,7 @@ std::string DeepFlow::_reduce(std::string input, ReduceOp &params) {
 std::string DeepFlow::reduce_all(std::string input, ReduceAllOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -991,6 +1057,7 @@ std::string DeepFlow::reduce_mean(std::string input, int reduce_dimension, Reduc
 std::string DeepFlow::random_selector(std::string input_1, std::string input_2, RandomSelectorOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input_1);
@@ -1003,6 +1070,7 @@ std::string DeepFlow::random_selector(std::string input_1, std::string input_2, 
 std::string DeepFlow::multiplexer(std::initializer_list<std::string> inputs, MultiplexerOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);	
 	std::vector<std::string> inputsVec(inputs.size());
@@ -1017,6 +1085,7 @@ std::string DeepFlow::multiplexer(std::initializer_list<std::string> inputs, Mul
 std::string DeepFlow::switcher(std::string input, SwitchOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);	
@@ -1027,6 +1096,7 @@ std::string DeepFlow::switcher(std::string input, SwitchOp &params)
 std::string DeepFlow::loss(std::string input, LossOp &params)
 {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(input);
@@ -1039,6 +1109,7 @@ std::string DeepFlow::loss(std::string input, LossOp &params)
 
 std::string DeepFlow::equal(std::string a, std::string b, EqualOp &params) {
 	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
 	node_param->add_input(a);
@@ -1061,4 +1132,9 @@ void DeepFlow::load_from_caffe_model(std::string file_path, std::initializer_lis
 {
 	Caffe caffe(this, verbose);
 	caffe.load(file_path, inputs);
+}
+
+void DeepFlow::with(std::string scope)
+{
+	_scope = scope;
 }

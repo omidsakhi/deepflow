@@ -150,9 +150,11 @@ public:
 	// CAFFE
 	void load_from_caffe_model(std::string file_path, std::initializer_list<std::pair<std::string, std::array<int, 4>>> inputs, bool verbose = false);
 
+	void with(std::string scope);
 private:
 	std::string _reduce(std::string input, ReduceOp &params = ReduceOp());		
 
 private:		
 	std::shared_ptr<Block> _block;
+	std::string _scope = "Default";
 };

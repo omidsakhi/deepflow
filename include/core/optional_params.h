@@ -1154,10 +1154,11 @@ public:
 
 class SgdSolverOp : public SolverOp<SgdSolverOp> {
 public:
-	float _momentum = 0.9999f;
+	float _momentum = 0.9f;
 public:
 	SgdSolverOp(std::string name = "sgd") {
 		this->name(name);
+		lr(0.1f);
 	}
 	SgdSolverOp &momentum(float value) {
 		this->_momentum = value;
@@ -1191,12 +1192,12 @@ public:
 
 class AdaDeltaSolverOp : public SolverOp<AdaDeltaSolverOp> {
 public:
-	float _momentum = 0.9999f;
+	float _momentum = 0.9f;
 	float _delta = 1e-6f;
 public:
 	AdaDeltaSolverOp(std::string name = "adelta") {
 		this->name(name);
-		this->lr(0.0002f);
+		this->lr(1.0f);
 	}
 	AdaDeltaSolverOp &momentum(float value) {
 		this->_momentum = value;

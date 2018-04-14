@@ -27,7 +27,10 @@ void load_session(DeepFlow *df, std::string prefix) {
 	df->block()->load_from_binary(filename);	
 }
 
-void create_loss(DeepFlow *df, int num) {	
+void create_loss(DeepFlow *df, int num) {
+	
+	df->with("loss");
+
 	auto discriminator_input = df->place_holder({ FLAGS_batch, 1, 1, 1 }, PlaceholderOp("loss" + std::to_string(num) + "_input"));	
 	auto discriminator_target = df->place_holder({ FLAGS_batch, 1, 1, 1 }, PlaceholderOp("loss" + std::to_string(num) + "_target"));
 	std::string err = df->reduce_all(df->abs(df->subtract(discriminator_input, discriminator_target)));
@@ -36,6 +39,8 @@ void create_loss(DeepFlow *df, int num) {
 
 void create_generator(DeepFlow *df) {	
 	
+	df->with("generator");
+
 	int fn = 64;
 	float ef = 0.1f;
 
@@ -79,7 +84,9 @@ void create_generator(DeepFlow *df) {
 }
 
 void create_discriminator(DeepFlow *df) {
-
+	
+	df->with("discriminator");
+	
 	int fn = 64;
 	float ef = 0.1f;
 
@@ -210,7 +217,7 @@ void main(int argc, char** argv) {
 			session->backward({ loss1 });
 			session->backward({ discriminator_output }, { { discriminator_output, loss1_input->output(0)->diff() } });
 
-			session->apply_solvers({ "d_adam" });
+			session->apply_solvers("discriminator");
 
 			loss2->set_alpha(alpha);
 			loss2->set_beta(1 - alpha);
@@ -227,8 +234,8 @@ void main(int argc, char** argv) {
 			session->backward({ generator_output }, { { generator_output, discriminator_input->output(0)->diff() } });
 			std::cout << " - g_loss: " << g_loss_avg.result() << std::endl;
 
-			session->apply_solvers({ "g_adam" });
-			session->reset_gradients();
+			session->apply_solvers("generator");
+			session->reset_gradients("discriminator");
 
 			if (FLAGS_save_image != 0 && iter % FLAGS_save_image == 0) {
 				imwrite->set_text_line(
