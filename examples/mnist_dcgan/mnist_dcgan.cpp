@@ -50,7 +50,7 @@ void create_generator(DeepFlow *df) {
 	node = df->batch_normalization(node, fn * 2, solver, BatchNormalizationOp("g32_bn").exponent_factor(ef));
 	node = df->relu(node);
 
-	df->conv2d(node, fn * 2, 1, solver, ConvolutionOp("g28").kernel(5).pad(0).stride(1).with_bias());
+	df->conv2d(node, fn * 2, 1, solver, ConvolutionOp("g_output").kernel(5).pad(0).stride(1).with_bias());
 
 }
 
@@ -75,7 +75,7 @@ void create_discriminator(DeepFlow *df) {
 	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g4_bn").exponent_factor(ef));
 	node = df->leaky_relu(node);
 
-	df->dense(node, { (fn * 4) * 4 * 4, 1, 1, 1 }, solver, DenseOp("dfc"));
+	df->dense(node, { (fn * 4) * 4 * 4, 1, 1, 1 }, solver, DenseOp("d_output"));
 
 }
 
@@ -90,9 +90,9 @@ void main(int argc, char** argv) {
 
 	DeepFlow df;
 
-	if (FLAGS_load.empty()) {
-		df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1), DataGeneratorOp());
+	if (FLAGS_load.empty()) {		
 		df.mnist_reader(FLAGS_mnist, MNISTReaderOp("mnist_data").batch(FLAGS_batch).train().data());
+		df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 1), DataGeneratorOp("mnist_labels"));
 		df.data_generator(df.fill({ FLAGS_batch, 1, 1, 1 }, 0), DataGeneratorOp("generator_labels"));
 		df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), DataGeneratorOp("z"));
 		df.data_generator(df.random_uniform({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, -1, 1), DataGeneratorOp("static_z"));
@@ -118,10 +118,10 @@ void main(int argc, char** argv) {
 	}
 
 	auto mnist_data = session->get_node("mnist_data");
-	auto generator_output = session->get_node("g28");
+	auto generator_output = session->get_node("g_output");
 	auto generator_input = session->get_placeholder("g_input");
 	auto discriminator_input = session->get_placeholder("d_input");
-	auto discriminator_output = session->get_node("dfc_bias");
+	auto discriminator_output = session->get_node("d_output");
 	auto generator_labels = session->get_node("generator_labels");
 	auto mnist_labels = session->get_node("mnist_labels");
 	auto loss_input = session->get_placeholder("loss_input");
