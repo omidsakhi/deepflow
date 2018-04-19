@@ -15,5 +15,8 @@ public:
 	void setBeta(float beta);
 	std::string to_cpp() const;
 private:
-	float _alpha, _beta;
+	float _alpha = 1.0f;
+	float _beta = 0.0f;
+	cudnnHandle_t _cudnnHandle = nullptr;
+	cudnnOpTensorDescriptor_t _opTensorDesc = nullptr;
 };

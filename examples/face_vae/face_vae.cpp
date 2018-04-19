@@ -8,7 +8,7 @@
 DEFINE_string(faces, "C:/Projects/deepflow/data/celeba128", "Path to face 128x128 dataset folder");
 DEFINE_int32(batch, 40, "Batch size");
 DEFINE_int32(debug, 0, "Level of debug");
-DEFINE_int32(iter, 200000, "Maximum iterations");
+DEFINE_int32(iter, 2000000, "Maximum iterations");
 DEFINE_string(load, "", "Load from face_acXXXX.bin");
 DEFINE_int32(save, 1000 , "Save model iter frequency (Don't Save = 0)");
 DEFINE_bool(train, false, "Train");

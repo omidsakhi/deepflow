@@ -32,4 +32,5 @@ private:
 	int _batch_size = 0;
 	bool _last_batch = false;	
 	bool _randomize = false;
+	bool _between_0_and_1 = false;
 };

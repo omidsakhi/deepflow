@@ -74,7 +74,7 @@ message DisplayParam {
 	ActionType display_type = 3;
 	int32 epoch_frequency = 4;
 	bool draw_iteration = 5;
-	int32 iter_frequency = 6;
+	int32 iter_frequency = 6;	
 }
 
 message ImageWriterParam {
@@ -232,6 +232,7 @@ message ImageBatchReaderParam {
 	string folder_path = 1;	
 	TensorParam tensor_param = 2;
 	bool randomize = 3;
+	bool between_0_and_1 = 4;
 }
 
 message ImageReaderParam {

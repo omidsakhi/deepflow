@@ -4062,6 +4062,12 @@ class ImageBatchReaderParam : public ::google::protobuf::Message /* @@protoc_ins
   bool randomize() const;
   void set_randomize(bool value);
 
+  // bool between_0_and_1 = 4;
+  void clear_between_0_and_1();
+  static const int kBetween0And1FieldNumber = 4;
+  bool between_0_and_1() const;
+  void set_between_0_and_1(bool value);
+
   // @@protoc_insertion_point(class_scope:deepflow.ImageBatchReaderParam)
  private:
 
@@ -4069,6 +4075,7 @@ class ImageBatchReaderParam : public ::google::protobuf::Message /* @@protoc_ins
   ::google::protobuf::internal::ArenaStringPtr folder_path_;
   ::deepflow::TensorParam* tensor_param_;
   bool randomize_;
+  bool between_0_and_1_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -10022,6 +10029,20 @@ inline void ImageBatchReaderParam::set_randomize(bool value) {
   
   randomize_ = value;
   // @@protoc_insertion_point(field_set:deepflow.ImageBatchReaderParam.randomize)
+}
+
+// bool between_0_and_1 = 4;
+inline void ImageBatchReaderParam::clear_between_0_and_1() {
+  between_0_and_1_ = false;
+}
+inline bool ImageBatchReaderParam::between_0_and_1() const {
+  // @@protoc_insertion_point(field_get:deepflow.ImageBatchReaderParam.between_0_and_1)
+  return between_0_and_1_;
+}
+inline void ImageBatchReaderParam::set_between_0_and_1(bool value) {
+  
+  between_0_and_1_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.ImageBatchReaderParam.between_0_and_1)
 }
 
 // -------------------------------------------------------------------

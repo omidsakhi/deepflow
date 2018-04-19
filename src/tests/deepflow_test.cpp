@@ -145,11 +145,12 @@ TEST(bias_add, backward) {
 		1, 1, 1, 1 });
 	session->backward({ bias_add_node });
 	EXPECT_EQ(session->get_node("bias_add")->input(0)->diff()->verify({ 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }), true);	
-	EXPECT_EQ(session->get_node("bias_add")->input(1)->diff()->verify({ 11.75, 9.75, 7.75 }), true);	
+	EXPECT_EQ(session->get_node("bias_add")->input(1)->diff()->verify({ 94.0f, 78.0f, 62.0f }), true);
 	EXPECT_EQ(
 		session->get_node("bias_add")->output(0)->value()->verify({ 2, 3, 4, 5, 7, 8, 9, 10, 12, 13, 14, 15, 14, 15, 16, 17, 19, 20, 21, 22, 24, 25, 26, 27 }),
 		true);
-	EXPECT_EQ(session->get_node("v")->output(0)->value()->verify({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 }), true);
+	// in-place causes this to change
+	EXPECT_EQ(session->get_node("v")->output(0)->value()->verify({ 2, 3, 4, 5, 7, 8, 9, 10, 12, 13, 14, 15, 14, 15, 16, 17, 19, 20, 21, 22, 24, 25, 26, 27 }), true);
 	EXPECT_EQ(session->get_node("b")->output(0)->value()->verify({ 1, 2, 3 }), true);
 }
 
@@ -337,7 +338,7 @@ TEST(gradient_fill, fill_test) {
 TEST(concate, forward1) {
 	DeepFlow df;
 	auto a = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("a"));
-	auto b = df.place_holder({ 2, 3, 2, 2 }, PlaceholderOp("b"));
+	auto b = df.place_holder({ 2, 2, 2, 2 }, PlaceholderOp("b"));
 	df.concate(a, b, ConcateOp("concate"));
 	auto session = df.session();
 	session->initialize();

@@ -28,9 +28,6 @@
     <CudaCompile Include="..\..\src\nodes\variable.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\add.cu">
-      <Filter>source\nodes</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\cast_float.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
@@ -247,6 +244,9 @@
       <Filter>source\nodes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\nodes\accumulator.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nodes\add.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
   </ItemGroup>

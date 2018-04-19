@@ -5,16 +5,16 @@
 #include <thread>
 
 __global__
-void GrayImageBatchReaderKernel(const int n, const int offset, const unsigned char *in, float *out)
+void GrayImageBatchReaderKernel(const int n, const int offset, const bool between_0_and_1, const unsigned char *in, float *out)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
-		out[i + offset] = (((float)in[i] / 255.0f) - 0.5f) * 2;
+		out[i + offset] = between_0_and_1 ? (float)in[i] / 255.0f : (((float)in[i] / 255.0f) - 0.5f) * 2;
 	}
 }
 
 __global__
-void ColorImageBatchReaderKernel(const int n, const int offset, const unsigned char *in, const int width, const int height, float *out)
+void ColorImageBatchReaderKernel(const int n, const int offset, const bool between_0_and_1, const unsigned char *in, const int width, const int height, float *out)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
@@ -22,7 +22,7 @@ void ColorImageBatchReaderKernel(const int n, const int offset, const unsigned c
 		int input_pixel = (i - channel) / 3;
 		int input_col = input_pixel % width;
 		int input_row = (input_pixel - input_col) / width;
-		out[(2 - channel) * width * height + input_row * width + input_col + offset] = (((float)in[i] / 255.0f) - 0.5f) * 2;
+		out[(2 - channel) * width * height + input_row * width + input_col + offset] = between_0_and_1 ? (float)in[i] / 255.0f: (((float)in[i] / 255.0f) - 0.5f) * 2;
 	}
 }
 
@@ -45,6 +45,7 @@ void ImageBatchReader::init() {
 	LOG_IF(FATAL, _list_of_files.size() == 0) << "Failed to find .png or .jpg or .pgm image files in the folder " << _folder_path;
 	_num_total_samples = _list_of_files.size();
 	_randomize = image_batch_reader_param.randomize();
+	_between_0_and_1 = image_batch_reader_param.between_0_and_1();
 	const deepflow::TensorParam &tensorParam = image_batch_reader_param.tensor_param();
 	switch (tensorParam.dims_size()) {
 	case 1:
@@ -69,7 +70,7 @@ void ImageBatchReader::init() {
 	_indices.resize(_batch_size);	
 }
 
-void thread_internal_read_image(int img_index, std::string file_name, float * output, int channels, int height, int width, int num_of_blocks, int max_thread_per_block)
+void thread_internal_read_image(int img_index, std::string file_name, float * output, int channels, int height, int width, int num_of_blocks, int max_thread_per_block, bool between_0_and_1)
 {
 	cv::Mat img;
 	if (channels == 1)
@@ -87,11 +88,11 @@ void thread_internal_read_image(int img_index, std::string file_name, float * ou
 	cudaMalloc(&d_img, img_size);
 	DF_CUDA_CHECK(cudaMemcpy(d_img, img.ptr<uchar>(), img_size, cudaMemcpyHostToDevice));	
 	if (channels == 1) {
-		GrayImageBatchReaderKernel << < num_of_blocks, max_thread_per_block >> > (img_size, img_index * img_size, d_img, output);
+		GrayImageBatchReaderKernel << < num_of_blocks, max_thread_per_block >> > (img_size, img_index * img_size, between_0_and_1, d_img, output);
 		DF_KERNEL_CHECK();
 	}
 	else if (channels == 3) {
-		ColorImageBatchReaderKernel << < num_of_blocks, max_thread_per_block >> > (img_size, img_index * img_size, d_img, img.cols, img.rows, output);
+		ColorImageBatchReaderKernel << < num_of_blocks, max_thread_per_block >> > (img_size, img_index * img_size, between_0_and_1, d_img, img.cols, img.rows, output);
 		DF_KERNEL_CHECK();
 	}	
 	img.release();
@@ -125,7 +126,7 @@ void ImageBatchReader::forward()
 	for (int index = 0; index < _indices.size(); ++index)
 	{
 		std::string file_name = _list_of_files[_indices[index]].string();
-		thread_list.push_back(std::thread(thread_internal_read_image, index, file_name, (float*)_outputs[0]->value()->mutableData(), _dims[1], _dims[2], _dims[3], numOfBlocks(_dims[1] * _dims[2] * _dims[3]), maxThreadsPerBlock));
+		thread_list.push_back(std::thread(thread_internal_read_image, index, file_name, (float*)_outputs[0]->value()->mutableData(), _dims[1], _dims[2], _dims[3], numOfBlocks(_dims[1] * _dims[2] * _dims[3]), maxThreadsPerBlock, _between_0_and_1));
 	}
 	for (auto &thread : thread_list)
 		thread.join();

@@ -13,19 +13,17 @@ void BiasAdd::init() {
 	LOG_IF(FATAL, inputDim[1] != weightDim[1]) << _name << "Bias channels between input and bias weights must be the same.";
 	LOG_IF(FATAL, weightDim[0] != 1 || weightDim[2] != 1 || weightDim[3] != 1) << _name << "All bias weight dimentions must be one except channels.";
 	_bias_dim = weightDim[1];	
-	_outputs[0]->initValue(inputDim);
+	_outputs[0]->initValue(inputDim, _inputs[0]->value());
 	_outputs[0]->initDiff(inputDim, _inputs[0]->diff());
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 }
 
-void BiasAdd::forward() {
-	cpy(_outputs[0]->value()->size(), 1.0f, _inputs[0]->value()->data(), 0.0f, _outputs[0]->value()->mutableData());
+void BiasAdd::forward() {	
 	cudnnAddTensor(_cudnnHandle, &one, _inputs[1]->value()->descriptor(), _inputs[1]->value()->data(), &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData());
 }
 
 void BiasAdd::backward() {
-	if (_inputs[1]->diff()) {
-		auto size = _outputs[0]->value()->size();
+	if (_inputs[1]->diff()) {		
 		cudnnConvolutionBackwardBias(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), &zero, _inputs[1]->diff()->descriptor(), _inputs[1]->diff()->mutableData());
 	}
 }

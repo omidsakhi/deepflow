@@ -96,7 +96,7 @@ std::string DeepFlow::imbatch(std::string folder_path, std::initializer_list<int
 	auto image_batch_reader_param = node_param->mutable_image_batch_reader_param();	
 	image_batch_reader_param->set_randomize(params._randomize);
 	image_batch_reader_param->set_folder_path(folder_path);	
-
+	image_batch_reader_param->set_between_0_and_1(params._between_0_and_1);
 	std::vector<int> values(dims);
 	auto tensor_param = image_batch_reader_param->mutable_tensor_param();
 	for (int i = 0; i < values.size(); ++i)
@@ -884,7 +884,12 @@ std::string DeepFlow::conv2d(std::string input, int input_channels, int output_c
 std::string DeepFlow::transposed_conv2d(std::string input, int input_channels, int output_channels, std::string solver, ConvolutionOp & params)
 {
 	std::string name = params._name;
-	auto f = variable(truncated_normal({ input_channels, output_channels, params._kernel_h, params._kernel_w }, 0, params._stddev), solver, VariableOp(name + "_tconv_f").scope(params._scope));
+	std::string initializer;
+	if (params._stddev == 0)
+		initializer = fill({ input_channels, output_channels, params._kernel_h, params._kernel_w }, 0);
+	else
+		initializer = truncated_normal({ input_channels, output_channels, params._kernel_h, params._kernel_w }, 0, params._stddev);
+	auto f = variable(initializer, solver, VariableOp(name + "_tconv_f").scope(params._scope));
 	std::string node; 
 	if (params._with_bias) {
 		node = transposed_conv2d(input, f, params.name(name + "_tconv"));

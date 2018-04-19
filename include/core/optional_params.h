@@ -120,12 +120,17 @@ public:
 class DeepFlowDllExport ImbatchOp : public NodeOp<ImbatchOp> {
 public:
 	bool _randomize = true;
+	bool _between_0_and_1 = false;
 public:
 	ImbatchOp(std::string name = "imbatch") {
 		this->name(name);
 	}
 	ImbatchOp &randomize(bool state) {
 		this->_randomize = state;
+		return *this;
+	}
+	ImbatchOp &between_0_and_1() {
+		this->_between_0_and_1 = true;
 		return *this;
 	}
 };
@@ -174,7 +179,7 @@ public:
 	int _dilation_w = 1;
 	bool _with_bias = false;
 	float _stddev = 0.02f;
-	bool _same = false;
+	bool _same = true;
 public:
 	ConvolutionOp(std::string name = "conv") {
 		this->name(name);
@@ -979,7 +984,7 @@ public:
 		SPATIAL = 1
 	};
 	NormalizationMode _mode = SPATIAL;
-	float _exponent_average_factor = 0.001f;
+	float _exponent_average_factor = 0.1f;
 	bool _cache = true;
 	float _eps = CUDNN_BN_MIN_EPSILON;
 public:
