@@ -1232,3 +1232,10 @@ public:
 		return *this;
 	}
 };
+
+class SpatialTransformerOp : public NodeOp<SpatialTransformerOp> {
+public:
+	SpatialTransformerOp(std::string name = "spatial_transformer") {
+		this->name(name);
+	}
+};

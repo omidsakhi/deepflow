@@ -368,6 +368,10 @@ message InitStepParam {
 message InitThreeStateParam {
 }
 
+message InitConstantParam {
+	repeated float values = 1;
+}
+
 message InitParam {
   string name = 1;
   TensorParam tensor_param = 2;
@@ -380,6 +384,7 @@ message InitParam {
   InitThreeStateParam three_state_param = 9;
   InitTruncatedNormalParam truncated_normal_param = 10;
   InitGradientFillParam gradient_fill_param = 11;
+  InitConstantParam constant_param = 12;
 }
 
 message SGDSolverParam {	
@@ -455,6 +460,9 @@ message TextImageGeneratorParam {
 message MaxParam {
 }
 
+message SpatialTransformerParam {	
+}
+
 message NodeParam {
   string name = 1;
   string scope = 2;
@@ -519,5 +527,6 @@ message NodeParam {
   TextImageGeneratorParam text_image_generator_param = 158;
   MaxParam max_param = 159; 
   InstanceNormalizationParam instance_normalization = 160;
+  SpatialTransformerParam spatial_transformer_param = 161;
 }
 

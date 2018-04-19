@@ -204,6 +204,20 @@ std::string DeepFlow::gradient(std::initializer_list<int> dims, std::string name
 	return init_param->name();
 }
 
+std::string DeepFlow::constant(std::list<int> dims, std::vector<float> values, std::string name)
+{
+	auto init_param = _block->add_initializer_param();
+	init_param->set_name(_block->get_unique_initializer_param_name(name));	
+	auto tensor_param = init_param->mutable_tensor_param();
+	for (auto dim : dims)
+		tensor_param->add_dims(dim);
+	tensor_param->set_type(deepflow::TensorParam_TensorType_FLOAT);
+	auto constant_param = init_param->mutable_constant_param();
+	for (auto value : values)
+		constant_param->add_values(value);
+	return init_param->name();
+}
+
 std::string DeepFlow::fill(std::initializer_list<int> dims, float value, std::string name) {
 	auto init_param = _block->add_initializer_param();
 	init_param->set_name(_block->get_unique_initializer_param_name(name));
@@ -1004,6 +1018,24 @@ std::string DeepFlow::reshape(std::string input, std::array<int,4> output_dims, 
 	return node_param->output(0);
 }
 
+std::string DeepFlow::spatial_transformer(std::string input, std::string theta, std::string grid, SpatialTransformerOp & params)
+{
+	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
+	node_param->set_name(_block->get_unique_node_param_name(params._name));
+	add_outputs(node_param, 1);
+	node_param->add_input(input);
+	node_param->add_input(theta);
+	node_param->add_input(grid);
+	node_param->mutable_spatial_transformer_param();
+	return node_param->output(0);
+}
+
+std::string DeepFlow::spatial_transformer(std::string input, std::string theta, int n, int h, int w, std::string solver, SpatialTransformerOp & params)
+{
+	auto grid = variable(fill({ n,h,w,2 }, 0), solver, VariableOp(params._name + "_grid").scope(params._scope));
+	return spatial_transformer(input, theta, grid, params);	
+}
 
 std::string DeepFlow::_reduce(std::string input, ReduceOp &params) {
 	auto node_param = _block->add_node_param();

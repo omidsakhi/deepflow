@@ -22,11 +22,13 @@
     <CudaCompile Include="..\..\src\generators\text_image_generator.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>
+    <ClCompile Include="..\..\src\initializers\constant.cpp" />
     <ClCompile Include="..\..\src\initializers\truncated_normal.cpp" />
     <ClCompile Include="..\..\src\nodes\lrn.cpp" />
     <CudaCompile Include="..\..\src\nodes\max.cu">
       <FileType>Document</FileType>
     </CudaCompile>
+    <ClCompile Include="..\..\src\nodes\spatial_transformer.cpp" />
     <ClCompile Include="..\..\src\utilities\moving_average.cpp" />
     <ClInclude Include="..\..\include\core\caffe.h" />
     <ClInclude Include="..\..\include\core\common_cu.h" />
@@ -45,6 +47,7 @@
     <ClInclude Include="..\..\include\generators\image_batch_reader.h" />
     <ClInclude Include="..\..\include\generators\mnist_reader.h" />
     <ClInclude Include="..\..\include\generators\text_image_generator.h" />
+    <ClInclude Include="..\..\include\initializers\constant.h" />
     <ClInclude Include="..\..\include\initializers\fill.h" />
     <ClInclude Include="..\..\include\initializers\gradient_fill.h" />
     <ClInclude Include="..\..\include\initializers\index_fill.h" />
@@ -83,6 +86,7 @@
     <ClInclude Include="..\..\include\nodes\reduce_all.h" />
     <ClInclude Include="..\..\include\nodes\reshape.h" />
     <ClInclude Include="..\..\include\nodes\resize.h" />
+    <ClInclude Include="..\..\include\nodes\spatial_transformer.h" />
     <ClInclude Include="..\..\include\nodes\split.h" />
     <ClInclude Include="..\..\include\nodes\square_error.h" />
     <ClInclude Include="..\..\include\nodes\image_reader.h" />

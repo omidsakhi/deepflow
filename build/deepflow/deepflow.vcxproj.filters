@@ -249,6 +249,12 @@
     <ClCompile Include="..\..\src\nodes\add.cpp">
       <Filter>source\nodes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\nodes\spatial_transformer.cpp">
+      <Filter>source\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\initializers\constant.cpp">
+      <Filter>source\generators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\initializers\fill.h">
@@ -508,6 +514,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\core\optional_params.h">
       <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\spatial_transformer.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\initializers\constant.h">
+      <Filter>include\initializers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -40,6 +40,7 @@ public:
 	std::string step(std::initializer_list<int> dims, float min, float max, std::string name = "step");
 	std::string three_state(std::initializer_list<int> dims, std::string name = "three_state");
 	std::string gradient(std::initializer_list<int> dims, std::string name = "gradient");
+	std::string constant(std::list<int> dims, std::vector<float> values, std::string name = "constant");
 
 	// VARIABLES & PLACE HOLDER
 	std::string variable(std::string initializer, std::string solver = "", VariableOp &params = VariableOp());
@@ -60,6 +61,8 @@ public:
 	std::string resize(std::string input, float height_scale, float width_scale, ResizeOp &params = ResizeOp());
 	std::string concate(std::string input1, std::string input2, ConcateOp &params = ConcateOp());
 	std::string reshape(std::string input, std::array<int, 4> output_dims, ReshapeOp &params = ReshapeOp());	
+	std::string spatial_transformer(std::string input, std::string theta, std::string grid, SpatialTransformerOp &params = SpatialTransformerOp());
+	std::string spatial_transformer(std::string input, std::string theta, int n, int h, int w, std::string solver, SpatialTransformerOp &params = SpatialTransformerOp());
 
 	// MATH
 	std::string add(std::string a, std::string b, AddOp &params = AddOp());

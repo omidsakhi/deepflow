@@ -107,6 +107,9 @@ extern ImageReaderParamDefaultTypeInternal _ImageReaderParam_default_instance_;
 class ImageWriterParam;
 class ImageWriterParamDefaultTypeInternal;
 extern ImageWriterParamDefaultTypeInternal _ImageWriterParam_default_instance_;
+class InitConstantParam;
+class InitConstantParamDefaultTypeInternal;
+extern InitConstantParamDefaultTypeInternal _InitConstantParam_default_instance_;
 class InitFillParam;
 class InitFillParamDefaultTypeInternal;
 extern InitFillParamDefaultTypeInternal _InitFillParam_default_instance_;
@@ -233,6 +236,9 @@ extern SoftmaxParamDefaultTypeInternal _SoftmaxParam_default_instance_;
 class SolverParam;
 class SolverParamDefaultTypeInternal;
 extern SolverParamDefaultTypeInternal _SolverParam_default_instance_;
+class SpatialTransformerParam;
+class SpatialTransformerParamDefaultTypeInternal;
+extern SpatialTransformerParamDefaultTypeInternal _SpatialTransformerParam_default_instance_;
 class SplitParam;
 class SplitParamDefaultTypeInternal;
 extern SplitParamDefaultTypeInternal _SplitParam_default_instance_;
@@ -6144,6 +6150,93 @@ class InitThreeStateParam : public ::google::protobuf::Message /* @@protoc_inser
 };
 // -------------------------------------------------------------------
 
+class InitConstantParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.InitConstantParam) */ {
+ public:
+  InitConstantParam();
+  virtual ~InitConstantParam();
+
+  InitConstantParam(const InitConstantParam& from);
+
+  inline InitConstantParam& operator=(const InitConstantParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const InitConstantParam& default_instance();
+
+  static inline const InitConstantParam* internal_default_instance() {
+    return reinterpret_cast<const InitConstantParam*>(
+               &_InitConstantParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    59;
+
+  void Swap(InitConstantParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline InitConstantParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  InitConstantParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const InitConstantParam& from);
+  void MergeFrom(const InitConstantParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(InitConstantParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated float values = 1;
+  int values_size() const;
+  void clear_values();
+  static const int kValuesFieldNumber = 1;
+  float values(int index) const;
+  void set_values(int index, float value);
+  void add_values(float value);
+  const ::google::protobuf::RepeatedField< float >&
+      values() const;
+  ::google::protobuf::RepeatedField< float >*
+      mutable_values();
+
+  // @@protoc_insertion_point(class_scope:deepflow.InitConstantParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< float > values_;
+  mutable int _values_cached_byte_size_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.InitParam) */ {
  public:
   InitParam();
@@ -6164,7 +6257,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_InitParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    59;
+    60;
 
   void Swap(InitParam* other);
 
@@ -6312,6 +6405,15 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::InitGradientFillParam* release_gradient_fill_param();
   void set_allocated_gradient_fill_param(::deepflow::InitGradientFillParam* gradient_fill_param);
 
+  // .deepflow.InitConstantParam constant_param = 12;
+  bool has_constant_param() const;
+  void clear_constant_param();
+  static const int kConstantParamFieldNumber = 12;
+  const ::deepflow::InitConstantParam& constant_param() const;
+  ::deepflow::InitConstantParam* mutable_constant_param();
+  ::deepflow::InitConstantParam* release_constant_param();
+  void set_allocated_constant_param(::deepflow::InitConstantParam* constant_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.InitParam)
  private:
 
@@ -6327,6 +6429,7 @@ class InitParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::InitThreeStateParam* three_state_param_;
   ::deepflow::InitTruncatedNormalParam* truncated_normal_param_;
   ::deepflow::InitGradientFillParam* gradient_fill_param_;
+  ::deepflow::InitConstantParam* constant_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -6352,7 +6455,7 @@ class SGDSolverParam : public ::google::protobuf::Message /* @@protoc_insertion_
                &_SGDSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    60;
+    61;
 
   void Swap(SGDSolverParam* other);
 
@@ -6432,7 +6535,7 @@ class AdaDeltaSolverParam : public ::google::protobuf::Message /* @@protoc_inser
                &_AdaDeltaSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    61;
+    62;
 
   void Swap(AdaDeltaSolverParam* other);
 
@@ -6519,7 +6622,7 @@ class AdamSolverParam : public ::google::protobuf::Message /* @@protoc_insertion
                &_AdamSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    62;
+    63;
 
   void Swap(AdamSolverParam* other);
 
@@ -6613,7 +6716,7 @@ class RMSPropSolverParam : public ::google::protobuf::Message /* @@protoc_insert
                &_RMSPropSolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    63;
+    64;
 
   void Swap(RMSPropSolverParam* other);
 
@@ -6700,7 +6803,7 @@ class SolverParam : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_SolverParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    64;
+    65;
 
   void Swap(SolverParam* other);
 
@@ -6850,7 +6953,7 @@ class BlockParam : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_BlockParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    65;
+    66;
 
   void Swap(BlockParam* other);
 
@@ -6962,7 +7065,7 @@ class ConcateParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_ConcateParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    66;
+    67;
 
   void Swap(ConcateParam* other);
 
@@ -7035,7 +7138,7 @@ class ReshapeParam : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_ReshapeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    67;
+    68;
 
   void Swap(ReshapeParam* other);
 
@@ -7122,7 +7225,7 @@ class BatchStdDevParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_BatchStdDevParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    68;
+    69;
 
   void Swap(BatchStdDevParam* other);
 
@@ -7195,7 +7298,7 @@ class PassThroughParam : public ::google::protobuf::Message /* @@protoc_insertio
                &_PassThroughParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    69;
+    70;
 
   void Swap(PassThroughParam* other);
 
@@ -7275,7 +7378,7 @@ class GaussianParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_GaussianParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    70;
+    71;
 
   void Swap(GaussianParam* other);
 
@@ -7348,7 +7451,7 @@ class GaussianKernelParam : public ::google::protobuf::Message /* @@protoc_inser
                &_GaussianKernelParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    71;
+    72;
 
   void Swap(GaussianKernelParam* other);
 
@@ -7442,7 +7545,7 @@ class PatchSamplingParam : public ::google::protobuf::Message /* @@protoc_insert
                &_PatchSamplingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    72;
+    73;
 
   void Swap(PatchSamplingParam* other);
 
@@ -7529,7 +7632,7 @@ class TextImageGeneratorParam : public ::google::protobuf::Message /* @@protoc_i
                &_TextImageGeneratorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    73;
+    74;
 
   void Swap(TextImageGeneratorParam* other);
 
@@ -7650,7 +7753,7 @@ class MaxParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_MaxParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    74;
+    75;
 
   void Swap(MaxParam* other);
 
@@ -7703,6 +7806,79 @@ class MaxParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
 };
 // -------------------------------------------------------------------
 
+class SpatialTransformerParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.SpatialTransformerParam) */ {
+ public:
+  SpatialTransformerParam();
+  virtual ~SpatialTransformerParam();
+
+  SpatialTransformerParam(const SpatialTransformerParam& from);
+
+  inline SpatialTransformerParam& operator=(const SpatialTransformerParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const SpatialTransformerParam& default_instance();
+
+  static inline const SpatialTransformerParam* internal_default_instance() {
+    return reinterpret_cast<const SpatialTransformerParam*>(
+               &_SpatialTransformerParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    76;
+
+  void Swap(SpatialTransformerParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline SpatialTransformerParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  SpatialTransformerParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const SpatialTransformerParam& from);
+  void MergeFrom(const SpatialTransformerParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(SpatialTransformerParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:deepflow.SpatialTransformerParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.NodeParam) */ {
  public:
   NodeParam();
@@ -7723,7 +7899,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NodeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    75;
+    77;
 
   void Swap(NodeParam* other);
 
@@ -8361,6 +8537,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::InstanceNormalizationParam* release_instance_normalization();
   void set_allocated_instance_normalization(::deepflow::InstanceNormalizationParam* instance_normalization);
 
+  // .deepflow.SpatialTransformerParam spatial_transformer_param = 161;
+  bool has_spatial_transformer_param() const;
+  void clear_spatial_transformer_param();
+  static const int kSpatialTransformerParamFieldNumber = 161;
+  const ::deepflow::SpatialTransformerParam& spatial_transformer_param() const;
+  ::deepflow::SpatialTransformerParam* mutable_spatial_transformer_param();
+  ::deepflow::SpatialTransformerParam* release_spatial_transformer_param();
+  void set_allocated_spatial_transformer_param(::deepflow::SpatialTransformerParam* spatial_transformer_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -8427,6 +8612,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::TextImageGeneratorParam* text_image_generator_param_;
   ::deepflow::MaxParam* max_param_;
   ::deepflow::InstanceNormalizationParam* instance_normalization_;
+  ::deepflow::SpatialTransformerParam* spatial_transformer_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -10753,6 +10939,40 @@ inline void InitStepParam::set_max(float value) {
 
 // -------------------------------------------------------------------
 
+// InitConstantParam
+
+// repeated float values = 1;
+inline int InitConstantParam::values_size() const {
+  return values_.size();
+}
+inline void InitConstantParam::clear_values() {
+  values_.Clear();
+}
+inline float InitConstantParam::values(int index) const {
+  // @@protoc_insertion_point(field_get:deepflow.InitConstantParam.values)
+  return values_.Get(index);
+}
+inline void InitConstantParam::set_values(int index, float value) {
+  values_.Set(index, value);
+  // @@protoc_insertion_point(field_set:deepflow.InitConstantParam.values)
+}
+inline void InitConstantParam::add_values(float value) {
+  values_.Add(value);
+  // @@protoc_insertion_point(field_add:deepflow.InitConstantParam.values)
+}
+inline const ::google::protobuf::RepeatedField< float >&
+InitConstantParam::values() const {
+  // @@protoc_insertion_point(field_list:deepflow.InitConstantParam.values)
+  return values_;
+}
+inline ::google::protobuf::RepeatedField< float >*
+InitConstantParam::mutable_values() {
+  // @@protoc_insertion_point(field_mutable_list:deepflow.InitConstantParam.values)
+  return &values_;
+}
+
+// -------------------------------------------------------------------
+
 // InitParam
 
 // string name = 1;
@@ -11196,6 +11416,45 @@ inline void InitParam::set_allocated_gradient_fill_param(::deepflow::InitGradien
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.gradient_fill_param)
+}
+
+// .deepflow.InitConstantParam constant_param = 12;
+inline bool InitParam::has_constant_param() const {
+  return this != internal_default_instance() && constant_param_ != NULL;
+}
+inline void InitParam::clear_constant_param() {
+  if (GetArenaNoVirtual() == NULL && constant_param_ != NULL) delete constant_param_;
+  constant_param_ = NULL;
+}
+inline const ::deepflow::InitConstantParam& InitParam::constant_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.InitParam.constant_param)
+  return constant_param_ != NULL ? *constant_param_
+                         : *::deepflow::InitConstantParam::internal_default_instance();
+}
+inline ::deepflow::InitConstantParam* InitParam::mutable_constant_param() {
+  
+  if (constant_param_ == NULL) {
+    constant_param_ = new ::deepflow::InitConstantParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.InitParam.constant_param)
+  return constant_param_;
+}
+inline ::deepflow::InitConstantParam* InitParam::release_constant_param() {
+  // @@protoc_insertion_point(field_release:deepflow.InitParam.constant_param)
+  
+  ::deepflow::InitConstantParam* temp = constant_param_;
+  constant_param_ = NULL;
+  return temp;
+}
+inline void InitParam::set_allocated_constant_param(::deepflow::InitConstantParam* constant_param) {
+  delete constant_param_;
+  constant_param_ = constant_param;
+  if (constant_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.InitParam.constant_param)
 }
 
 // -------------------------------------------------------------------
@@ -12010,6 +12269,10 @@ TextImageGeneratorParam::mutable_words() {
 // -------------------------------------------------------------------
 
 // MaxParam
+
+// -------------------------------------------------------------------
+
+// SpatialTransformerParam
 
 // -------------------------------------------------------------------
 
@@ -14521,7 +14784,50 @@ inline void NodeParam::set_allocated_instance_normalization(::deepflow::Instance
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.instance_normalization)
 }
 
+// .deepflow.SpatialTransformerParam spatial_transformer_param = 161;
+inline bool NodeParam::has_spatial_transformer_param() const {
+  return this != internal_default_instance() && spatial_transformer_param_ != NULL;
+}
+inline void NodeParam::clear_spatial_transformer_param() {
+  if (GetArenaNoVirtual() == NULL && spatial_transformer_param_ != NULL) delete spatial_transformer_param_;
+  spatial_transformer_param_ = NULL;
+}
+inline const ::deepflow::SpatialTransformerParam& NodeParam::spatial_transformer_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.spatial_transformer_param)
+  return spatial_transformer_param_ != NULL ? *spatial_transformer_param_
+                         : *::deepflow::SpatialTransformerParam::internal_default_instance();
+}
+inline ::deepflow::SpatialTransformerParam* NodeParam::mutable_spatial_transformer_param() {
+  
+  if (spatial_transformer_param_ == NULL) {
+    spatial_transformer_param_ = new ::deepflow::SpatialTransformerParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.spatial_transformer_param)
+  return spatial_transformer_param_;
+}
+inline ::deepflow::SpatialTransformerParam* NodeParam::release_spatial_transformer_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.spatial_transformer_param)
+  
+  ::deepflow::SpatialTransformerParam* temp = spatial_transformer_param_;
+  spatial_transformer_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_spatial_transformer_param(::deepflow::SpatialTransformerParam* spatial_transformer_param) {
+  delete spatial_transformer_param_;
+  spatial_transformer_param_ = spatial_transformer_param;
+  if (spatial_transformer_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.spatial_transformer_param)
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

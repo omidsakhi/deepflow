@@ -11,6 +11,7 @@
 #include "initializers/three_state.h"
 #include "initializers/truncated_normal.h"
 #include "initializers/gradient_fill.h"
+#include "initializers/constant.h"
 
 #include "core/solver.h"
 
@@ -71,6 +72,7 @@
 #include "nodes/gaussian_kernel.h"
 #include "nodes/patch_sampling.h"
 #include "nodes/max.h"
+#include "nodes/spatial_transformer.h"
 
 #include "generators/mnist_reader.h"
 #include "generators/data_generator.h"
@@ -115,6 +117,9 @@ std::shared_ptr<Initializer> _create_initializer(deepflow::InitParam *init_param
 	}
 	else if (init_param->has_gradient_fill_param()) {
 		return std::make_shared<GradientFill>(init_param);
+	}
+	else if (init_param->has_constant_param()) {
+		return std::make_shared<Constant>(init_param);
 	}
 	else {
 		LOG(FATAL) << "Unsupported Initializer";
@@ -246,6 +251,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<PatchSampling>(node_param);
 	else if (node_param->has_gaussian_param())
 		return std::make_shared<Gaussian>(node_param);
+	else if (node_param->has_spatial_transformer_param())
+		return std::make_shared<SpatialTransformer>(node_param);
 	else {
 		LOG(FATAL) << "Unsupported Node";
 	}
