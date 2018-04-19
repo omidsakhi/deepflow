@@ -179,16 +179,16 @@ void main(int argc, char** argv) {
 			// rotation and flip
 			auto image = df.imread(FLAGS_image1, ImreadOp().color());
 			auto theta = df.variable(df.constant({ 1, 1, 2, 3 }, { -1, 0, 0, 0, -1, 0}));
-			auto sp = df.spatial_transformer(image, theta, 1, 256, 256, "");
+			auto sp = df.spatial_transformer(image, theta, 1, 64, 64, "");
 			df.display(sp, DisplayOp().delay(5000));
 		}
 		else if (FLAGS_x20) {
-			// rotation and flip
-			auto image = df.imbatch(FLAGS_celeba128, { 1, 3, 128, 128 });
+			// rotation and flip and resize
+			auto image = df.imbatch(FLAGS_celeba128, { 2, 3, 128, 128 });
 			auto theta = df.variable(df.constant({ 2, 1, 2, 3 }, 
-			{ -1, 0, 0, 0,-1, 0,
-			   1, 0, 0, 0,-1, 0 }));
-			auto sp = df.spatial_transformer(image, theta, 2, 128, 128, "");
+			{ -1, 0, 0, 0,-1, 0, // rotate and fip
+			   0.5, 0, 0, 0,-0.5, 0 })); // zoom and flip
+			auto sp = df.spatial_transformer(image, theta, 2, 200, 200, "");
 			df.display(sp, DisplayOp().delay(5000));
 		}
 	}

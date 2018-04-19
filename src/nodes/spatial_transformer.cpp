@@ -10,22 +10,21 @@ void SpatialTransformer::init()
 	auto inputDims = _inputs[0]->dims();
 	auto thetaDims = _inputs[1]->dims();
 	auto gridDims = _inputs[2]->dims();
+	int outputDims[4] = { inputDims[0], inputDims[1], gridDims[1], gridDims[2] };
 	LOG_IF(FATAL, thetaDims[0] == 0 || thetaDims[1] != 1 || thetaDims[2] != 2 || thetaDims[3] != 3) << "[FAILED] " << _name << " - theta (second input) dimensions must be Nx1x2x3 but it was " << _inputs[1]->value()->shape();	
 	LOG_IF(FATAL, inputDims[0] != thetaDims[0]) << "[FAILED] " << _name << " - Number of input samples (N) must match for input and theta";
-	LOG_IF(FATAL, gridDims[0] != inputDims[0] || gridDims[1] != inputDims[2] || gridDims[2] != inputDims[3] || gridDims[3] != 2) << "[FAILED] " << _name << " - Grid (third input) dimension must be NxHxWx2";
+	LOG_IF(FATAL, gridDims[0] != inputDims[0] || gridDims[3] != 2) << "[FAILED] " << _name << " - Grid (third input) dimension must be NxHxWx2";
 	DF_NODE_CUDNN_CHECK(
 		cudnnCreate(&_cudnnHandle)
 	);
 	DF_NODE_CUDNN_CHECK(
 		cudnnCreateSpatialTransformerDescriptor(&_stDesc)
 	);
-	int nbDims = 4;
-	int dimA[4] = { inputDims[0], inputDims[1], inputDims[2], inputDims[3] };
 	DF_NODE_CUDNN_CHECK(
-		cudnnSetSpatialTransformerNdDescriptor(_stDesc, CUDNN_SAMPLER_BILINEAR, CUDNN_DATA_FLOAT, nbDims, dimA)
+		cudnnSetSpatialTransformerNdDescriptor(_stDesc, CUDNN_SAMPLER_BILINEAR, CUDNN_DATA_FLOAT, 4, outputDims)
 	);	
 	LOG_IF(FATAL, _inputs[2]->diff() == nullptr) << "[FAILED] " << _name << " - Grid must have a place to store diff memory.";
-	_outputs[0]->initValue(inputDims);
+	_outputs[0]->initValue({ outputDims[0], outputDims[1], outputDims[2], outputDims[3]});
 	_outputs[0]->initDiff();
 }
 
