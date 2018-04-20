@@ -38,7 +38,7 @@ void Concate::init()
 {
 	auto d1 = _inputs[0]->dims();
 	auto d2 = _inputs[1]->dims();
-	LOG_IF(FATAL, d1[0] != d2[0] || d1[2] != d2[2] || d1[3] != d2[3]) << "Concate " << _name << " | inputs must have the same number of samples, width and height.";
+	LOG_IF(FATAL, d1[0] != d2[0] || d1[2] != d2[2] || d1[3] != d2[3]) << "Concate " << _name << " | inputs must have the same number of samples, width and height - " << _inputs[0]->value()->shape() << " vs " << _inputs[1]->value()->shape();
 	_first_input_channels = d1[1];
 	_second_input_channels = d2[1];
 	_height = d1[2];

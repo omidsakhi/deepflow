@@ -9,6 +9,7 @@ Accumulator::Accumulator(deepflow::NodeParam *param) : Node(param) {
 void Accumulator::init() {	
 	const deepflow::AccumulatorParam &accParam = _param->accumulator_param();	
 	_outputs[0]->initValue(_inputs[0]->value()->dims());
+	_outputs[0]->initDiff(_inputs[0]->diff()->dims(), _inputs[0]->diff());
 	_outputs[1]->initValue({ 1,1,1,1 });
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 }
