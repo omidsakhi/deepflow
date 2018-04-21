@@ -424,6 +424,7 @@ message BlockParam {
 }
 
 message ConcateParam {
+	int32 num_inputs = 1;
 }
 
 message ReshapeParam {

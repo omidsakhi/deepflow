@@ -152,8 +152,7 @@ void main(int argc, char** argv) {
 			auto images1 = df.imbatch(FLAGS_image_folder, { 20, 1, 27, 18 });
 			auto images2 = df.imbatch(FLAGS_image_folder, { 20, 1, 27, 18 });
 			auto images3 = df.imbatch(FLAGS_image_folder, { 20, 1, 27, 18 });
-			auto concate = df.concate(images1, images2);
-			concate = df.concate(concate, images3);
+			auto concate = df.concate({ images1, images2, images3 });			
 			df.display(concate, DisplayOp().delay(5000));
 		}
 		else if (FLAGS_x15) {			

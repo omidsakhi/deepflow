@@ -40,7 +40,7 @@ public:
 	std::string step(std::initializer_list<int> dims, float min, float max, std::string name = "step");
 	std::string three_state(std::initializer_list<int> dims, std::string name = "three_state");
 	std::string gradient(std::initializer_list<int> dims, std::string name = "gradient");
-	std::string constant(std::list<int> dims, std::vector<float> values, std::string name = "constant");
+	std::string constant(std::initializer_list<int> dims, std::vector<float> values, std::string name = "constant");
 
 	// VARIABLES & PLACE HOLDER
 	std::string variable(std::string initializer, std::string solver = "", VariableOp &params = VariableOp());
@@ -59,7 +59,7 @@ public:
 	std::string patching(std::string input, PatchingOp &params = PatchingOp());
 	std::string patch_sampling(std::string input, int patch_width, int patch_height, PatchSamplingOp &params = PatchSamplingOp());
 	std::string resize(std::string input, float height_scale, float width_scale, ResizeOp &params = ResizeOp());
-	std::string concate(std::string input1, std::string input2, ConcateOp &params = ConcateOp());
+	std::string concate(std::list<std::string> inputs, ConcateOp &params = ConcateOp());
 	std::string reshape(std::string input, std::array<int, 4> output_dims, ReshapeOp &params = ReshapeOp());	
 	std::string spatial_transformer(std::string input, std::string theta, std::string grid, SpatialTransformerOp &params = SpatialTransformerOp());
 	std::string spatial_transformer(std::string input, std::string theta, int n, int h, int w, std::string solver, SpatialTransformerOp &params = SpatialTransformerOp());
@@ -78,7 +78,7 @@ public:
 
 	// matmul
 	std::string matmul(std::string a, std::string b, MatmulOp &params = MatmulOp());
-	std::string dense(std::string input, std::initializer_list<int> dims, std::string solver, DenseOp &params = DenseOp());	
+	std::string dense(std::string input, std::initializer_list<int> dims, std::string solver, DenseOp &params = DenseOp());
 
 	// NEURAL NETS
 	std::string bias_add(std::string input, std::string weights, BiasAddOp &params = BiasAddOp());
@@ -111,7 +111,7 @@ public:
 
 	// SELECTORS	
 	std::string random_selector(std::string input_1, std::string input_2, RandomSelectorOp &params = RandomSelectorOp());
-	std::string multiplexer(std::initializer_list<std::string> inputs, MultiplexerOp &params = MultiplexerOp());
+	std::string multiplexer(std::list<std::string> inputs, MultiplexerOp &params = MultiplexerOp());
 	std::string switcher(std::string input, SwitchOp &params = SwitchOp());
 				
 	// SOLVERS
@@ -121,8 +121,8 @@ public:
 	std::string rmsprop_solver( RmsPropSolverOp &params = RmsPropSolverOp());
 	
 	// PRINTERS & DISPLAYS
-	void print(std::initializer_list<std::string> inputs, std::string message, PrintOp &params = PrintOp());
-	void logger(std::initializer_list<std::string> inputs, std::string file_path, std::string message, LoggerOp &params = LoggerOp());
+	void print(std::list<std::string> inputs, std::string message, PrintOp &params = PrintOp());
+	void logger(std::list<std::string> inputs, std::string file_path, std::string message, LoggerOp &params = LoggerOp());
 	std::string display(std::string input, DisplayOp &params = DisplayOp());
 	std::string imwrite(std::string input, std::string filename, ImwriteOp &params = ImwriteOp());
 	void psnr(std::string a, std::string b, PsnrOp &params = PsnrOp());	
@@ -134,7 +134,7 @@ public:
 	std::string lrn(std::string input, LrnOp &params = LrnOp());
 
 	// SOCKET IO
-	void sio_output(std::initializer_list<std::string> inputs, SioOutputOp &params = SioOutputOp());
+	void sio_output(std::list<std::string> inputs, SioOutputOp &params = SioOutputOp());
 
 	// OTHER	
 	std::string loss(std::string input, LossOp &params = LossOp());

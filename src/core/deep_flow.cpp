@@ -204,7 +204,7 @@ std::string DeepFlow::gradient(std::initializer_list<int> dims, std::string name
 	return init_param->name();
 }
 
-std::string DeepFlow::constant(std::list<int> dims, std::vector<float> values, std::string name)
+std::string DeepFlow::constant(std::initializer_list<int> dims, std::vector<float> values, std::string name)
 {
 	auto init_param = _block->add_initializer_param();
 	init_param->set_name(_block->get_unique_initializer_param_name(name));	
@@ -612,7 +612,7 @@ std::string DeepFlow::gaussian_blur(std::string input, int window_size, float si
 	return conv2d(input, k, ConvolutionOp(params._name).pad(pad).scope(params._scope));
 }
 
-void DeepFlow::print(std::initializer_list<std::string> inputs, std::string message, PrintOp &params) {
+void DeepFlow::print(std::list<std::string> inputs, std::string message, PrintOp &params) {
 	auto node_param = _block->add_node_param();
 	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
@@ -633,7 +633,7 @@ void DeepFlow::print(std::initializer_list<std::string> inputs, std::string mess
 	print_param->set_print_type((deepflow::ActionType)type);
 }
 
-void DeepFlow::logger(std::initializer_list<std::string> inputs, std::string file_path, std::string message, LoggerOp &params)
+void DeepFlow::logger(std::list<std::string> inputs, std::string file_path, std::string message, LoggerOp &params)
 {
 	auto node_param = _block->add_node_param();
 	add_scope(node_param, _scope, params._scope);
@@ -745,7 +745,7 @@ std::string DeepFlow::lrn(std::string input, LrnOp &params)
 	return node_param->output(0);
 }
 
-void DeepFlow::sio_output(std::initializer_list<std::string> inputs, SioOutputOp &params)
+void DeepFlow::sio_output(std::list<std::string> inputs, SioOutputOp &params)
 {
 	auto node_param = _block->add_node_param();
 	add_scope(node_param, _scope, params._scope);
@@ -993,15 +993,16 @@ std::string DeepFlow::resize(std::string input, float height_scale, float width_
 	return node_param->output(0);
 }
 
-std::string DeepFlow::concate(std::string input1, std::string input2, ConcateOp &params)
+std::string DeepFlow::concate(std::list<std::string> inputs, ConcateOp &params)
 {
 	auto node_param = _block->add_node_param();
 	add_scope(node_param, _scope, params._scope);
 	node_param->set_name(_block->get_unique_node_param_name(params._name));
 	add_outputs(node_param, 1);
-	node_param->add_input(input1);
-	node_param->add_input(input2);
-	node_param->mutable_concate_param();
+	for (auto input : inputs)
+		node_param->add_input(input);	
+	auto concate_param = node_param->mutable_concate_param();
+	concate_param->set_num_inputs(inputs.size());
 	return node_param->output(0);
 }
 
@@ -1111,7 +1112,7 @@ std::string DeepFlow::random_selector(std::string input_1, std::string input_2, 
 	return node_param->output(0);
 }
 
-std::string DeepFlow::multiplexer(std::initializer_list<std::string> inputs, MultiplexerOp &params)
+std::string DeepFlow::multiplexer(std::list<std::string> inputs, MultiplexerOp &params)
 {
 	auto node_param = _block->add_node_param();
 	add_scope(node_param, _scope, params._scope);

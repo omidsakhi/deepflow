@@ -7109,10 +7109,17 @@ class ConcateParam : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
+  // int32 num_inputs = 1;
+  void clear_num_inputs();
+  static const int kNumInputsFieldNumber = 1;
+  ::google::protobuf::int32 num_inputs() const;
+  void set_num_inputs(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:deepflow.ConcateParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 num_inputs_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -11962,6 +11969,20 @@ BlockParam::initializer() const {
 // -------------------------------------------------------------------
 
 // ConcateParam
+
+// int32 num_inputs = 1;
+inline void ConcateParam::clear_num_inputs() {
+  num_inputs_ = 0;
+}
+inline ::google::protobuf::int32 ConcateParam::num_inputs() const {
+  // @@protoc_insertion_point(field_get:deepflow.ConcateParam.num_inputs)
+  return num_inputs_;
+}
+inline void ConcateParam::set_num_inputs(::google::protobuf::int32 value) {
+  
+  num_inputs_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.ConcateParam.num_inputs)
+}
 
 // -------------------------------------------------------------------
 

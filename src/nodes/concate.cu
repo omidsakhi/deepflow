@@ -31,45 +31,58 @@ __global__ void ConcateKernel(
 Concate::Concate(deepflow::NodeParam * param) : Node(param)
 {
 	LOG_IF(FATAL, param->has_concate_param() == false) << "param.has_concate_param() == false";
+	_num_inputs = param->concate_param().num_inputs();
+}
+
+int Concate::minNumInputs()
+{
+	return _num_inputs;
 }
 
 void Concate::init()
-{
-	auto d1 = _inputs[0]->dims();
-	auto d2 = _inputs[1]->dims();
-	LOG_IF(FATAL, d1[0] != d2[0] || d1[2] != d2[2] || d1[3] != d2[3]) << "Concate " << _name << " | inputs must have the same number of samples, width and height - " << _inputs[0]->value()->shape() << " vs " << _inputs[1]->value()->shape();
-	_first_input_channels = d1[1];
-	_second_input_channels = d2[1];
-	_height = d1[2];
-	_width = d1[3];
-	_output_channels = _first_input_channels + _second_input_channels;
-	_outputs[0]->initValue({ d1[0], _output_channels, d1[2], d1[3] });
+{	
+	auto firstInputDims = _inputs[0]->dims();
+	_height = firstInputDims[2];
+	_width = firstInputDims[3];
+	auto num_samples = firstInputDims[0];
+	_output_channels = firstInputDims[1];
+	for (int i = 1; i < _num_inputs; ++i) {
+		auto input = _inputs[i];
+		auto inputDims = input->dims();
+		LOG_IF(FATAL, inputDims[0] != firstInputDims[0] || 
+			inputDims[2] != firstInputDims[2] || 
+			inputDims[3] != firstInputDims[3]) << "Concate " << _name << " | inputs must have the same number of samples, width and height as " << _inputs[0]->value()->shape() << " but input " << i << " has a shape of " << " vs " << input->value()->shape();
+		_output_channels += inputDims[1];
+	}	
+	_outputs[0]->initValue({ num_samples, _output_channels, _height, _width });
 	_outputs[0]->initDiff();	
 }
 
 void Concate::forward()
 {
-	int size;
-	size = _inputs[0]->value()->size();
-	ConcateKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, true, _width, _height, _first_input_channels, _output_channels, 0, (float*) _inputs[0]->value()->data(), (float*) _outputs[0]->value()->mutableData());
-	DF_KERNEL_CHECK();
-	size = _inputs[1]->value()->size();
-	ConcateKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, true, _width, _height, _second_input_channels, _output_channels, _first_input_channels, (float *) _inputs[1]->value()->data(), (float*) _outputs[0]->value()->mutableData());
-	DF_KERNEL_CHECK();
+	int channel_offset = 0;
+	for (int i = 0; i < _num_inputs; ++i) {
+		auto input = _inputs[i];
+		int size = input->value()->size();
+		int channels = input->value()->dim(1);
+		ConcateKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, true, _width, _height, channels, _output_channels, channel_offset, (float*)input->value()->data(), (float*)_outputs[0]->value()->mutableData());
+		DF_KERNEL_CHECK();
+		channel_offset += channels;
+	}	
 }
 
 void Concate::backward()
-{
-	int size;
-	if (_inputs[0]->diff()) {
-		size = _inputs[0]->value()->size();
-		ConcateKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, false, _width, _height, _first_input_channels, _output_channels, 0, (float*) _outputs[0]->diff()->data(), (float*) _inputs[0]->diff()->mutableData());
-		DF_KERNEL_CHECK();
-	}
-	if (_inputs[1]->diff()) {
-		size = _inputs[1]->value()->size();
-		ConcateKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, false, _width, _height, _second_input_channels, _output_channels, _first_input_channels, (float *) _outputs[0]->diff()->data(), (float*) _inputs[1]->diff()->mutableData());
-		DF_KERNEL_CHECK();
+{	
+	int channel_offset = 0;
+	for (int i = 0; i < _num_inputs; ++i) {
+		auto input = _inputs[i];
+		int size = input->value()->size();
+		int channels = input->value()->dim(1);
+		if (input->diff()) {
+			ConcateKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, false, _width, _height, channels, _output_channels, channel_offset, (float*)_outputs[0]->diff()->data(), (float*)input->diff()->mutableData());
+			DF_KERNEL_CHECK();
+		}
+		channel_offset += channels;
 	}
 }
 
