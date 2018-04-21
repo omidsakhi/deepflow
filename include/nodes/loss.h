@@ -14,6 +14,7 @@ public:
 	std::string to_cpp() const;
 	void set_alpha(float value);
 	void set_beta(float value);
+	float loss() const;
 private:
 	cudnnHandle_t _cudnnHandle;
 	cudnnReduceTensorOp_t _reduceTensorOp;

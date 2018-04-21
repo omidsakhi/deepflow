@@ -50,6 +50,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "face_vae", "face_vae\face_v
 		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB} = {DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mnist_sp", "mnist_sp\mnist_sp.vcxproj", "{120DB5B7-61DA-42ED-B790-218870F86BF8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB} = {DAD8D0DA-2EF4-4136-BEE7-442E7396E5DB}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -138,6 +143,14 @@ Global
 		{46854544-D89A-49CB-96B8-D3C631946D91}.Release|x64.Build.0 = Release|x64
 		{46854544-D89A-49CB-96B8-D3C631946D91}.Release|x86.ActiveCfg = Release|Win32
 		{46854544-D89A-49CB-96B8-D3C631946D91}.Release|x86.Build.0 = Release|Win32
+		{120DB5B7-61DA-42ED-B790-218870F86BF8}.Debug|x64.ActiveCfg = Debug|x64
+		{120DB5B7-61DA-42ED-B790-218870F86BF8}.Debug|x64.Build.0 = Debug|x64
+		{120DB5B7-61DA-42ED-B790-218870F86BF8}.Debug|x86.ActiveCfg = Debug|Win32
+		{120DB5B7-61DA-42ED-B790-218870F86BF8}.Debug|x86.Build.0 = Debug|Win32
+		{120DB5B7-61DA-42ED-B790-218870F86BF8}.Release|x64.ActiveCfg = Release|x64
+		{120DB5B7-61DA-42ED-B790-218870F86BF8}.Release|x64.Build.0 = Release|x64
+		{120DB5B7-61DA-42ED-B790-218870F86BF8}.Release|x86.ActiveCfg = Release|Win32
+		{120DB5B7-61DA-42ED-B790-218870F86BF8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -64,3 +64,9 @@ void Loss::set_beta(float value)
 {
 	_beta = value;
 }
+
+float Loss::loss() const
+{
+	auto val = _outputs[0]->value()->cpyToHost<float>();
+	return val->at(0);
+}

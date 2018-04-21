@@ -16,8 +16,7 @@ __global__ void ConcateKernel(
 		const int w = temp % width;
 		temp /= width;
 		const int h = temp % height;		
-		int tempi = temp / height;
-		int tempo = tempi;
+		int tempi = temp / height;		
 		const int ci = tempi % input_channels;
 		const int ni = tempi / input_channels;
 		int iindex = ni * (input_channels * width * height) + ci * (width * height) + h * width + w;
