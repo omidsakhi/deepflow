@@ -115,6 +115,9 @@
     <CudaCompile Include="..\..\src\nodes\max.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\nand.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -520,6 +523,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\initializers\constant.h">
       <Filter>include\initializers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\nand.h">
+      <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

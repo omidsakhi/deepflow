@@ -18,9 +18,7 @@ public:
 private:
 	cudnnHandle_t _cudnnHandle;
 	cudnnReduceTensorOp_t _reduceTensorOp;
-	cudnnReduceTensorDescriptor_t _reduceTensorDesciptor;
-	cudnnReduceTensorIndices_t _reduceTensorIndices;
-	deepflow::ReduceParam::OutputType _type;
+	cudnnReduceTensorDescriptor_t _reduceTensorDesciptor;		
 	float *_d_workspace;
 	size_t _workspaceSizeInBytes;
 	float _alpha = 1.0f;

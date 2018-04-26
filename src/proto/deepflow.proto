@@ -464,6 +464,9 @@ message MaxParam {
 message SpatialTransformerParam {	
 }
 
+message NandParam {
+}
+
 message NodeParam {
   string name = 1;
   string scope = 2;
@@ -529,5 +532,6 @@ message NodeParam {
   MaxParam max_param = 159; 
   InstanceNormalizationParam instance_normalization = 160;
   SpatialTransformerParam spatial_transformer_param = 161;
+  NandParam nand_param = 162;
 }
 

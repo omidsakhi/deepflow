@@ -170,6 +170,9 @@ extern MnistParamDefaultTypeInternal _MnistParam_default_instance_;
 class MultiplexerParam;
 class MultiplexerParamDefaultTypeInternal;
 extern MultiplexerParamDefaultTypeInternal _MultiplexerParam_default_instance_;
+class NandParam;
+class NandParamDefaultTypeInternal;
+extern NandParamDefaultTypeInternal _NandParam_default_instance_;
 class NodeParam;
 class NodeParamDefaultTypeInternal;
 extern NodeParamDefaultTypeInternal _NodeParam_default_instance_;
@@ -7886,6 +7889,79 @@ class SpatialTransformerParam : public ::google::protobuf::Message /* @@protoc_i
 };
 // -------------------------------------------------------------------
 
+class NandParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.NandParam) */ {
+ public:
+  NandParam();
+  virtual ~NandParam();
+
+  NandParam(const NandParam& from);
+
+  inline NandParam& operator=(const NandParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const NandParam& default_instance();
+
+  static inline const NandParam* internal_default_instance() {
+    return reinterpret_cast<const NandParam*>(
+               &_NandParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    77;
+
+  void Swap(NandParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline NandParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  NandParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const NandParam& from);
+  void MergeFrom(const NandParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(NandParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:deepflow.NandParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.NodeParam) */ {
  public:
   NodeParam();
@@ -7906,7 +7982,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NodeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    77;
+    78;
 
   void Swap(NodeParam* other);
 
@@ -8553,6 +8629,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::SpatialTransformerParam* release_spatial_transformer_param();
   void set_allocated_spatial_transformer_param(::deepflow::SpatialTransformerParam* spatial_transformer_param);
 
+  // .deepflow.NandParam nand_param = 162;
+  bool has_nand_param() const;
+  void clear_nand_param();
+  static const int kNandParamFieldNumber = 162;
+  const ::deepflow::NandParam& nand_param() const;
+  ::deepflow::NandParam* mutable_nand_param();
+  ::deepflow::NandParam* release_nand_param();
+  void set_allocated_nand_param(::deepflow::NandParam* nand_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -8620,6 +8705,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::MaxParam* max_param_;
   ::deepflow::InstanceNormalizationParam* instance_normalization_;
   ::deepflow::SpatialTransformerParam* spatial_transformer_param_;
+  ::deepflow::NandParam* nand_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -12297,6 +12383,10 @@ TextImageGeneratorParam::mutable_words() {
 
 // -------------------------------------------------------------------
 
+// NandParam
+
+// -------------------------------------------------------------------
+
 // NodeParam
 
 // string name = 1;
@@ -14844,7 +14934,48 @@ inline void NodeParam::set_allocated_spatial_transformer_param(::deepflow::Spati
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.spatial_transformer_param)
 }
 
+// .deepflow.NandParam nand_param = 162;
+inline bool NodeParam::has_nand_param() const {
+  return this != internal_default_instance() && nand_param_ != NULL;
+}
+inline void NodeParam::clear_nand_param() {
+  if (GetArenaNoVirtual() == NULL && nand_param_ != NULL) delete nand_param_;
+  nand_param_ = NULL;
+}
+inline const ::deepflow::NandParam& NodeParam::nand_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.nand_param)
+  return nand_param_ != NULL ? *nand_param_
+                         : *::deepflow::NandParam::internal_default_instance();
+}
+inline ::deepflow::NandParam* NodeParam::mutable_nand_param() {
+  
+  if (nand_param_ == NULL) {
+    nand_param_ = new ::deepflow::NandParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.nand_param)
+  return nand_param_;
+}
+inline ::deepflow::NandParam* NodeParam::release_nand_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.nand_param)
+  
+  ::deepflow::NandParam* temp = nand_param_;
+  nand_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_nand_param(::deepflow::NandParam* nand_param) {
+  delete nand_param_;
+  nand_param_ = nand_param;
+  if (nand_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.nand_param)
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

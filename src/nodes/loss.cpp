@@ -8,23 +8,22 @@ Loss::Loss(deepflow::NodeParam *param) : Node(param) {
 void Loss::init() {
 	auto lossParam = _param->loss_param();
 	_reduceTensorOp = (cudnnReduceTensorOp_t)lossParam.reduce_op();
-	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
-	_reduceTensorIndices = CUDNN_REDUCE_TENSOR_NO_INDICES;
+	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));	
 	_outputs[0]->initValue({ 1,1,1,1 });
 	_alpha = _param->loss_param().alpha();
 	_beta = _param->loss_param().beta();	
 	cudaMemset(_inputs[0]->diff()->mutableData(), 0, _inputs[0]->diff()->sizeInBytes());
 	DF_NODE_CUDNN_CHECK(cudnnCreateReduceTensorDescriptor(&_reduceTensorDesciptor));
-	DF_NODE_CUDNN_CHECK(cudnnSetReduceTensorDescriptor(_reduceTensorDesciptor, _reduceTensorOp, CUDNN_DATA_FLOAT, CUDNN_PROPAGATE_NAN, _reduceTensorIndices, CUDNN_32BIT_INDICES));
+	DF_NODE_CUDNN_CHECK(cudnnSetReduceTensorDescriptor(_reduceTensorDesciptor, _reduceTensorOp, CUDNN_DATA_FLOAT, CUDNN_PROPAGATE_NAN, CUDNN_REDUCE_TENSOR_NO_INDICES, CUDNN_32BIT_INDICES));
 	DF_NODE_CUDNN_CHECK(cudnnGetReductionWorkspaceSize(_cudnnHandle, _reduceTensorDesciptor, _inputs[0]->value()->descriptor(), _outputs[0]->value()->descriptor(), &_workspaceSizeInBytes));
 	DF_NODE_CUDA_CHECK(cudaMalloc(&_d_workspace, _workspaceSizeInBytes));	
 }
 
 void Loss::forward() {
-	if (_inputs[0]->value()->size() == 1) {
-		cpy(1, 1, _inputs[0]->value()->data(), 0, _outputs[0]->value()->mutableData());
+	if (_inputs[0]->value()->size() == 1) {		
+		cpy(1, one, _inputs[0]->value()->data(), zero, _outputs[0]->value()->mutableData());
 	}
-	else {
+	else {		
 		DF_NODE_CUDNN_CHECK(
 			cudnnReduceTensor(
 				_cudnnHandle,

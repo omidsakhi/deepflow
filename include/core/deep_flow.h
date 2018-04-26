@@ -75,6 +75,7 @@ public:
 	std::string square_error(std::string a, std::string b, SquareErrorOp &params = SquareErrorOp());
 	std::string softmax(std::string a, SoftmaxOp &params = SoftmaxOp());
 	std::string max(std::string a, std::string b, MaxOp &params = MaxOp());
+	std::string nand(std::string a, std::string b, NandOp &params = NandOp());
 
 	// matmul
 	std::string matmul(std::string a, std::string b, MatmulOp &params = MatmulOp());
@@ -147,6 +148,7 @@ public:
 	std::string gaussian(std::string mean, std::string sigma, GaussianOp &params = GaussianOp());
 	std::string gaussian_kernel(int window_size, float sigma, GaussianKernelOp &params = GaussianKernelOp());
 	std::string gaussian_blur(std::string input, int window_size, float sigma, GaussianBlurOp &params = GaussianBlurOp());	
+	std::string identify(std::string input, int input_channels, int output_channels, float scale, std::string scope);
 
 	std::shared_ptr<Block> block();
 	std::shared_ptr<Session> session();

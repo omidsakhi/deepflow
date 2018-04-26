@@ -536,6 +536,13 @@ public:
 	}
 };
 
+class NandOp : public NodeOp<NandOp> {
+public:
+	NandOp(std::string name = "nand") {
+		this->name(name);
+	}
+};
+
 class MatmulOp : public NodeOp<MatmulOp> {
 public:
 	MatmulOp(std::string name = "matmul") {
@@ -818,8 +825,14 @@ public:
 class LossOp : public NodeOp<LossOp> {
 public:
 	enum LossType {
-		SUM,
-		AVG
+		ADD = 0,
+		MUL = 1,
+		MIN = 2,
+		MAX = 3,
+		AMAX = 4,
+		AVG = 5,
+		NORM1 = 6,
+		NORM2 = 7
 	};
 	float _alpha = 1.0f;
 	float _beta = 0.0f;
@@ -841,7 +854,7 @@ public:
 		return *this;
 	}
 	LossOp &sum() {
-		this->_type = SUM;
+		this->_type = ADD;
 		return *this;
 	}
 };

@@ -28,6 +28,9 @@
     <CudaCompile Include="..\..\src\nodes\max.cu">
       <FileType>Document</FileType>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\nand.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
     <ClCompile Include="..\..\src\nodes\spatial_transformer.cpp" />
     <ClCompile Include="..\..\src\utilities\moving_average.cpp" />
     <ClInclude Include="..\..\include\core\caffe.h" />
@@ -79,6 +82,7 @@
     <ClInclude Include="..\..\include\nodes\lifting.h" />
     <ClInclude Include="..\..\include\nodes\lrn.h" />
     <ClInclude Include="..\..\include\nodes\max.h" />
+    <ClInclude Include="..\..\include\nodes\nand.h" />
     <ClInclude Include="..\..\include\nodes\pass_through.h" />
     <ClInclude Include="..\..\include\nodes\patching.h" />
     <ClInclude Include="..\..\include\nodes\patch_sampling.h" />

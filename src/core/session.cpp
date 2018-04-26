@@ -72,6 +72,7 @@
 #include "nodes/gaussian_kernel.h"
 #include "nodes/patch_sampling.h"
 #include "nodes/max.h"
+#include "nodes/nand.h"
 #include "nodes/spatial_transformer.h"
 
 #include "generators/mnist_reader.h"
@@ -251,6 +252,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<PatchSampling>(node_param);
 	else if (node_param->has_gaussian_param())
 		return std::make_shared<Gaussian>(node_param);
+	else if (node_param->has_nand_param())
+		return std::make_shared<Nand>(node_param);
 	else if (node_param->has_spatial_transformer_param())
 		return std::make_shared<SpatialTransformer>(node_param);
 	else {

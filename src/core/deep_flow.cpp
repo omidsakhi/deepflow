@@ -316,6 +316,18 @@ std::string DeepFlow::max(std::string a, std::string b, MaxOp &params)
 	return node_param->output(0);
 }
 
+std::string DeepFlow::nand(std::string a, std::string b, NandOp & params)
+{
+	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
+	node_param->set_name(_block->get_unique_node_param_name(params._name));
+	add_outputs(node_param, 1);
+	node_param->add_input(a);
+	node_param->add_input(b);
+	node_param->mutable_nand_param();
+	return node_param->output(0);
+}
+
 std::string DeepFlow::square(std::string a, SquareOp &params) {
 	auto node_param = _block->add_node_param();
 	add_scope(node_param, _scope, params._scope);
@@ -610,6 +622,21 @@ std::string DeepFlow::gaussian_blur(std::string input, int window_size, float si
 	auto pad = floor(window_size / 2);
 	auto k = gaussian_kernel(window_size, sigma, GaussianKernelOp(params._name + "_kernel").scope(params._scope));
 	return conv2d(input, k, ConvolutionOp(params._name).pad(pad).scope(params._scope));
+}
+
+std::string DeepFlow::identify(std::string input, int input_channels, int output_channels, float scale, std::string scope)
+{
+	std::vector<float> weights(input_channels * output_channels);
+	for (int i = 0; i < input_channels * output_channels; ++i)
+		weights[i] = (i % output_channels) % input_channels ? 1.0f : 0.0f;
+	auto f = variable(constant({ output_channels, input_channels, 1, 1 }, weights), "", VariableOp().scope(scope));
+	std::string node = input;
+	if (scale < 1.0)
+		node = resize(node, scale, scale, ResizeOp().scope(scope));
+	node = conv2d(node, f, ConvolutionOp().scope(scope).kernel(1).pad(0));
+	if (scale > 1.0)
+		node = resize(node, scale, scale, ResizeOp().scope(scope));
+	return node;
 }
 
 void DeepFlow::print(std::list<std::string> inputs, std::string message, PrintOp &params) {
