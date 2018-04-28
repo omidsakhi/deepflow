@@ -147,6 +147,7 @@ public:
 	std::string pass_through(std::string input, PassThroughOp &params = PassThroughOp());
 	std::string gaussian(std::string mean, std::string sigma, GaussianOp &params = GaussianOp());
 	std::string gaussian_kernel(int window_size, float sigma, GaussianKernelOp &params = GaussianKernelOp());
+	std::string gabor_kernel(GaborKernelOp & params = GaborKernelOp());
 	std::string gaussian_blur(std::string input, int window_size, float sigma, GaussianBlurOp &params = GaussianBlurOp());	
 	std::string identify(std::string input, int input_channels, int output_channels, float scale, std::string scope);
 

@@ -39,6 +39,8 @@ DEFINE_bool(x17, false, "Test Gaussian weights 2");
 DEFINE_bool(x18, false, "Test Patch sampling");
 DEFINE_bool(x19, false, "Test Spatial Transformer 1");
 DEFINE_bool(x20, false, "Test Spatial Transformer 2");
+DEFINE_bool(x21, false, "Test Gabor kernels 1");
+DEFINE_bool(x22, false, "Test Gabor kernels 2");
 
 #include <chrono>
 
@@ -189,6 +191,19 @@ void main(int argc, char** argv) {
 			   0.5, 0, 0, 0,-0.5, 0 })); // zoom and flip
 			auto sp = df.spatial_transformer(image, theta, 2, 200, 200, "");
 			df.display(sp, DisplayOp().delay(5000));
+		}
+		else if (FLAGS_x21) {
+			auto g = df.gabor_kernel(GaborKernelOp().orientations(8).scales({15.0f, 10.0f, 5.0f}));
+			df.display(g, DisplayOp().delay(5000));
+		}
+		else if (FLAGS_x22) {
+			auto image = df.imread("C:/Projects/deepflow/data/image/00066.png", ImreadOp().gray());						
+			auto gf = df.gabor_kernel(GaborKernelOp().orientations(8).scales({ 15.0f, 11.0f, 9.0f, 7.0f }).phi(3.141592).scaled());
+			auto node = image;
+			node = df.conv2d(node, gf, ConvolutionOp());
+			node = df.reduce_max(node, 1);
+			df.display(image, DisplayOp("image"));
+			df.display(node, DisplayOp("result"));			
 		}
 	}
 	else {

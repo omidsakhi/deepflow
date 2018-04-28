@@ -74,6 +74,7 @@
 #include "nodes/max.h"
 #include "nodes/nand.h"
 #include "nodes/spatial_transformer.h"
+#include "nodes/gabor_kernel.h"
 
 #include "generators/mnist_reader.h"
 #include "generators/data_generator.h"
@@ -256,6 +257,8 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Nand>(node_param);
 	else if (node_param->has_spatial_transformer_param())
 		return std::make_shared<SpatialTransformer>(node_param);
+	else if (node_param->has_gabor_kernel_param())
+		return std::make_shared<GaborKernel>(node_param);
 	else {
 		LOG(FATAL) << "Unsupported Node";
 	}

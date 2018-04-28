@@ -1142,6 +1142,47 @@ public:
 	}
 };
 
+class GaborKernelOp : public NodeOp<GaborKernelOp> {
+public:
+	std::list<float> _orientations;
+	std::list<float> _scales = { 1.0f };
+	float _phi = 0;
+	bool _scaled = false;
+	GaborKernelOp(std::string name = "gabor_kernel") {
+		this->name(name);
+		createOrientations();
+	}
+	GaborKernelOp &orientations(int num) {
+		_num_ori = num;
+		createOrientations();
+		return *this;
+	}
+	GaborKernelOp &orientations(std::list<float> orientations) {
+		_orientations = orientations;		
+		return *this;
+	}
+	GaborKernelOp &scales(std::list<float> scales) {
+		_scales = scales;
+		return *this;
+	}
+	GaborKernelOp &phi(float val) {
+		_phi = val;
+		return *this;
+	}
+	GaborKernelOp &scaled() {
+		_scaled = true;
+		return *this;
+	}
+private:
+	int _num_ori = 8;
+	void createOrientations() {
+		_orientations.clear();
+		for (int i = 0; i < _num_ori; ++i) {
+			_orientations.push_back(3.141592f * i / _num_ori);
+		}
+	}
+};
+
 class GaussianBlurOp : public NodeOp<GaussianBlurOp> {
 public:
 	GaussianBlurOp(std::string name = "gaussian_blur") {

@@ -616,6 +616,22 @@ std::string DeepFlow::gaussian_kernel(int window_size, float sigma, GaussianKern
 	return node_param->output(0);
 }
 
+std::string DeepFlow::gabor_kernel(GaborKernelOp & params)
+{
+	auto node_param = _block->add_node_param();
+	add_scope(node_param, _scope, params._scope);
+	node_param->set_name(_block->get_unique_node_param_name(params._name));
+	add_outputs(node_param, 1);
+	auto param = node_param->mutable_gabor_kernel_param();
+	param->set_phi(params._phi);
+	param->set_apply_scale(params._scaled);
+	for (auto ori : params._orientations)
+		param->add_orientations(ori);
+	for (auto sca : params._scales)
+		param->add_scales(sca);
+	return node_param->output(0);
+}
+
 std::string DeepFlow::gaussian_blur(std::string input, int window_size, float sigma, GaussianBlurOp &params)
 {
 	LOG_IF(FATAL, window_size % 2 == 0) << "Window size for Gaussian Blur kernel must be odd.";

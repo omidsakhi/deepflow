@@ -164,6 +164,8 @@ class GaussianParamDefaultTypeInternal : public ::google::protobuf::internal::Ex
 } _GaussianParam_default_instance_;
 class GaussianKernelParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<GaussianKernelParam> {
 } _GaussianKernelParam_default_instance_;
+class GaborKernelParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<GaborKernelParam> {
+} _GaborKernelParam_default_instance_;
 class PatchSamplingParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<PatchSamplingParam> {
 } _PatchSamplingParam_default_instance_;
 class TextImageGeneratorParamDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<TextImageGeneratorParam> {
@@ -182,7 +184,7 @@ namespace protobuf_deepflow_2eproto {
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[79];
+::google::protobuf::Metadata file_level_metadata[80];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[14];
 
 }  // namespace
@@ -198,6 +200,7 @@ PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::AuxillaryParseTableField
 };
 PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTable const
     TableStruct::schema[] = {
+  { NULL, NULL, 0, -1, -1, false },
   { NULL, NULL, 0, -1, -1, false },
   { NULL, NULL, 0, -1, -1, false },
   { NULL, NULL, 0, -1, -1, false },
@@ -788,6 +791,15 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GaussianKernelParam, sigma_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GaussianKernelParam, num_channels_),
   ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GaborKernelParam, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GaborKernelParam, orientations_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GaborKernelParam, scales_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GaborKernelParam, phi_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GaborKernelParam, apply_scale_),
+  ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PatchSamplingParam, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -886,6 +898,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, instance_normalization_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, spatial_transformer_param_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, nand_param_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NodeParam, gabor_kernel_param_),
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
@@ -962,12 +975,13 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 488, -1, sizeof(PassThroughParam)},
   { 494, -1, sizeof(GaussianParam)},
   { 499, -1, sizeof(GaussianKernelParam)},
-  { 507, -1, sizeof(PatchSamplingParam)},
-  { 514, -1, sizeof(TextImageGeneratorParam)},
-  { 522, -1, sizeof(MaxParam)},
-  { 527, -1, sizeof(SpatialTransformerParam)},
-  { 532, -1, sizeof(NandParam)},
-  { 537, -1, sizeof(NodeParam)},
+  { 507, -1, sizeof(GaborKernelParam)},
+  { 516, -1, sizeof(PatchSamplingParam)},
+  { 523, -1, sizeof(TextImageGeneratorParam)},
+  { 531, -1, sizeof(MaxParam)},
+  { 536, -1, sizeof(SpatialTransformerParam)},
+  { 541, -1, sizeof(NandParam)},
+  { 546, -1, sizeof(NodeParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -1044,6 +1058,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_PassThroughParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_GaussianParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_GaussianKernelParam_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_GaborKernelParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_PatchSamplingParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_TextImageGeneratorParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_MaxParam_default_instance_),
@@ -1070,7 +1085,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 79);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 80);
 }
 
 }  // namespace
@@ -1222,18 +1237,20 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[71].reflection;
   _GaussianKernelParam_default_instance_.Shutdown();
   delete file_level_metadata[72].reflection;
-  _PatchSamplingParam_default_instance_.Shutdown();
+  _GaborKernelParam_default_instance_.Shutdown();
   delete file_level_metadata[73].reflection;
-  _TextImageGeneratorParam_default_instance_.Shutdown();
+  _PatchSamplingParam_default_instance_.Shutdown();
   delete file_level_metadata[74].reflection;
-  _MaxParam_default_instance_.Shutdown();
+  _TextImageGeneratorParam_default_instance_.Shutdown();
   delete file_level_metadata[75].reflection;
-  _SpatialTransformerParam_default_instance_.Shutdown();
+  _MaxParam_default_instance_.Shutdown();
   delete file_level_metadata[76].reflection;
-  _NandParam_default_instance_.Shutdown();
+  _SpatialTransformerParam_default_instance_.Shutdown();
   delete file_level_metadata[77].reflection;
-  _NodeParam_default_instance_.Shutdown();
+  _NandParam_default_instance_.Shutdown();
   delete file_level_metadata[78].reflection;
+  _NodeParam_default_instance_.Shutdown();
+  delete file_level_metadata[79].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -1313,6 +1330,7 @@ void TableStruct::InitDefaultsImpl() {
   _PassThroughParam_default_instance_.DefaultConstruct();
   _GaussianParam_default_instance_.DefaultConstruct();
   _GaussianKernelParam_default_instance_.DefaultConstruct();
+  _GaborKernelParam_default_instance_.DefaultConstruct();
   _PatchSamplingParam_default_instance_.DefaultConstruct();
   _TextImageGeneratorParam_default_instance_.DefaultConstruct();
   _MaxParam_default_instance_.DefaultConstruct();
@@ -1483,6 +1501,8 @@ void TableStruct::InitDefaultsImpl() {
       ::deepflow::SpatialTransformerParam::internal_default_instance());
   _NodeParam_default_instance_.get_mutable()->nand_param_ = const_cast< ::deepflow::NandParam*>(
       ::deepflow::NandParam::internal_default_instance());
+  _NodeParam_default_instance_.get_mutable()->gabor_kernel_param_ = const_cast< ::deepflow::GaborKernelParam*>(
+      ::deepflow::GaborKernelParam::internal_default_instance());
 }
 
 void InitDefaults() {
@@ -1640,96 +1660,99 @@ void AddDescriptorsImpl() {
       "BatchStdDevParam\"*\n\020PassThroughParam\022\026\n\016"
       "stop_gradients\030\001 \001(\010\"\017\n\rGaussianParam\"O\n"
       "\023GaussianKernelParam\022\023\n\013window_size\030\001 \001("
-      "\005\022\r\n\005sigma\030\002 \001(\002\022\024\n\014num_channels\030\003 \001(\005\"\?"
-      "\n\022PatchSamplingParam\022\024\n\014patch_height\030\001 \001"
-      "(\005\022\023\n\013patch_width\030\002 \001(\005\"`\n\027TextImageGene"
-      "ratorParam\022\'\n\ninit_param\030\001 \001(\0132\023.deepflo"
-      "w.InitParam\022\r\n\005chars\030\002 \001(\t\022\r\n\005words\030\003 \003("
-      "\t\"\n\n\010MaxParam\"\031\n\027SpatialTransformerParam"
-      "\"\013\n\tNandParam\"\262\030\n\tNodeParam\022\014\n\004name\030\001 \001("
-      "\t\022\r\n\005scope\030\002 \001(\t\022\r\n\005input\030\003 \003(\t\022\016\n\006outpu"
-      "t\030\004 \003(\t\022)\n\013block_param\030\005 \001(\0132\024.deepflow."
-      "BlockParam\022/\n\016variable_param\030d \001(\0132\027.dee"
-      "pflow.VariableParam\0226\n\022place_holder_para"
-      "m\030e \001(\0132\032.deepflow.PlaceHolderParam\022%\n\ta"
-      "dd_param\030g \001(\0132\022.deepflow.AddParam\022.\n\016bi"
-      "as_add_param\030h \001(\0132\026.deepflow.BiasAddPar"
-      "am\022,\n\rconv_2d_param\030i \001(\0132\025.deepflow.Con"
-      "v2dParam\022A\n\030transposed_conv_2d_param\030j \001"
-      "(\0132\037.deepflow.TransposedConv2dParam\022-\n\rd"
-      "ropout_param\030k \001(\0132\026.deepflow.DropoutPar"
-      "am\0222\n\020leaky_relu_param\030l \001(\0132\030.deepflow."
-      "LeakyReluParam\022-\n\rsoftmax_param\030m \001(\0132\026."
-      "deepflow.SoftmaxParam\022+\n\014square_param\030n "
-      "\001(\0132\025.deepflow.SquareParam\022+\n\014matmul_par"
-      "am\030o \001(\0132\025.deepflow.MatMulParam\022-\n\rpooli"
-      "ng_param\030p \001(\0132\026.deepflow.PoolingParam\022+"
-      "\n\014reduce_param\030q \001(\0132\025.deepflow.ReducePa"
-      "ram\022)\n\013equal_param\030r \001(\0132\024.deepflow.Equa"
-      "lParam\022)\n\013print_param\030s \001(\0132\024.deepflow.P"
-      "rintParam\0222\n\020cast_float_param\030t \001(\0132\030.de"
-      "epflow.CastFloatParam\0225\n\021accumulator_par"
-      "am\030u \001(\0132\032.deepflow.AccumulatorParam\022-\n\r"
-      "display_param\030v \001(\0132\026.deepflow.DisplayPa"
-      "ram\0223\n\020activation_param\030w \001(\0132\031.deepflow"
-      ".ActivationParam\022\'\n\npsnr_param\030x \001(\0132\023.d"
-      "eepflow.PsnrParam\022<\n\025random_selector_par"
-      "am\030y \001(\0132\035.deepflow.RandomSelectorParam\022"
-      "+\n\014logger_param\030z \001(\0132\025.deepflow.LoggerP"
-      "aram\0225\n\021restructure_param\030{ \001(\0132\032.deepfl"
-      "ow.RestructureParam\0226\n\022image_reader_para"
-      "m\030| \001(\0132\032.deepflow.ImageReaderParam\0225\n\021m"
-      "ultiplexer_param\030} \001(\0132\032.deepflow.Multip"
-      "lexerParam\022D\n\031batch_normalization_param\030"
-      "\177 \001(\0132!.deepflow.BatchNormalizationParam"
-      "\022*\n\013mnist_param\030\200\001 \001(\0132\024.deepflow.MnistP"
-      "aram\022;\n\024data_generator_param\030\201\001 \001(\0132\034.de"
-      "epflow.DataGeneratorParam\022B\n\030image_batch"
-      "_reader_param\030\202\001 \001(\0132\037.deepflow.ImageBat"
-      "chReaderParam\022&\n\tdot_param\030\203\001 \001(\0132\022.deep"
-      "flow.DotParam\0229\n\023replay_memory_param\030\204\001 "
-      "\001(\0132\033.deepflow.ReplayMemoryParam\0227\n\022squa"
-      "re_error_param\030\206\001 \001(\0132\032.deepflow.SquareE"
-      "rrorParam\0223\n\020sio_output_param\030\207\001 \001(\0132\030.d"
-      "eepflow.SIOOutputParam\022&\n\tlog_param\030\210\001 \001"
-      "(\0132\022.deepflow.LogParam\022(\n\nloss_param\030\211\001 "
-      "\001(\0132\023.deepflow.LossParam\022&\n\texp_param\030\212\001"
-      " \001(\0132\022.deepflow.ExpParam\022.\n\rlifting_para"
-      "m\030\213\001 \001(\0132\026.deepflow.LiftingParam\0220\n\016patc"
-      "hing_param\030\214\001 \001(\0132\027.deepflow.PatchingPar"
-      "am\022&\n\tabs_param\030\215\001 \001(\0132\022.deepflow.AbsPar"
-      "am\0223\n\020reduce_all_param\030\216\001 \001(\0132\030.deepflow"
-      ".ReduceAllParam\0227\n\022image_writer_param\030\220\001"
-      " \001(\0132\032.deepflow.ImageWriterParam\022,\n\014resi"
-      "ze_param\030\221\001 \001(\0132\025.deepflow.ResizeParam\022*"
-      "\n\013split_param\030\222\001 \001(\0132\024.deepflow.SplitPar"
-      "am\022,\n\014switch_param\030\223\001 \001(\0132\025.deepflow.Swi"
-      "tchParam\022&\n\tlrn_param\030\224\001 \001(\0132\022.deepflow."
-      "LrnParam\022*\n\013prelu_param\030\225\001 \001(\0132\024.deepflo"
-      "w.PReluParam\022.\n\rconcate_param\030\226\001 \001(\0132\026.d"
-      "eepflow.ConcateParam\022.\n\rreshape_param\030\227\001"
-      " \001(\0132\026.deepflow.ReshapeParam\022,\n\014dprelu_p"
-      "aram\030\230\001 \001(\0132\025.deepflow.DPReluParam\0227\n\022ba"
-      "tch_stddev_param\030\231\001 \001(\0132\032.deepflow.Batch"
-      "StdDevParam\0227\n\022pass_through_param\030\232\001 \001(\013"
-      "2\032.deepflow.PassThroughParam\0220\n\016gaussian"
-      "_param\030\233\001 \001(\0132\027.deepflow.GaussianParam\022="
-      "\n\025gaussian_kernel_param\030\234\001 \001(\0132\035.deepflo"
-      "w.GaussianKernelParam\022;\n\024patch_sampling_"
-      "param\030\235\001 \001(\0132\034.deepflow.PatchSamplingPar"
-      "am\022F\n\032text_image_generator_param\030\236\001 \001(\0132"
-      "!.deepflow.TextImageGeneratorParam\022&\n\tma"
-      "x_param\030\237\001 \001(\0132\022.deepflow.MaxParam\022E\n\026in"
-      "stance_normalization\030\240\001 \001(\0132$.deepflow.I"
-      "nstanceNormalizationParam\022E\n\031spatial_tra"
-      "nsformer_param\030\241\001 \001(\0132!.deepflow.Spatial"
-      "TransformerParam\022(\n\nnand_param\030\242\001 \001(\0132\023."
-      "deepflow.NandParam*9\n\nActionType\022\n\n\006VALU"
-      "ES\020\000\022\t\n\005DIFFS\020\001\022\024\n\020VALUES_AND_DIFFS\020\002b\006p"
-      "roto3"
+      "\005\022\r\n\005sigma\030\002 \001(\002\022\024\n\014num_channels\030\003 \001(\005\"Z"
+      "\n\020GaborKernelParam\022\024\n\014orientations\030\001 \003(\002"
+      "\022\016\n\006scales\030\002 \003(\002\022\013\n\003phi\030\003 \001(\002\022\023\n\013apply_s"
+      "cale\030\004 \001(\010\"\?\n\022PatchSamplingParam\022\024\n\014patc"
+      "h_height\030\001 \001(\005\022\023\n\013patch_width\030\002 \001(\005\"`\n\027T"
+      "extImageGeneratorParam\022\'\n\ninit_param\030\001 \001"
+      "(\0132\023.deepflow.InitParam\022\r\n\005chars\030\002 \001(\t\022\r"
+      "\n\005words\030\003 \003(\t\"\n\n\010MaxParam\"\031\n\027SpatialTran"
+      "sformerParam\"\013\n\tNandParam\"\353\030\n\tNodeParam\022"
+      "\014\n\004name\030\001 \001(\t\022\r\n\005scope\030\002 \001(\t\022\r\n\005input\030\003 "
+      "\003(\t\022\016\n\006output\030\004 \003(\t\022)\n\013block_param\030\005 \001(\013"
+      "2\024.deepflow.BlockParam\022/\n\016variable_param"
+      "\030d \001(\0132\027.deepflow.VariableParam\0226\n\022place"
+      "_holder_param\030e \001(\0132\032.deepflow.PlaceHold"
+      "erParam\022%\n\tadd_param\030g \001(\0132\022.deepflow.Ad"
+      "dParam\022.\n\016bias_add_param\030h \001(\0132\026.deepflo"
+      "w.BiasAddParam\022,\n\rconv_2d_param\030i \001(\0132\025."
+      "deepflow.Conv2dParam\022A\n\030transposed_conv_"
+      "2d_param\030j \001(\0132\037.deepflow.TransposedConv"
+      "2dParam\022-\n\rdropout_param\030k \001(\0132\026.deepflo"
+      "w.DropoutParam\0222\n\020leaky_relu_param\030l \001(\013"
+      "2\030.deepflow.LeakyReluParam\022-\n\rsoftmax_pa"
+      "ram\030m \001(\0132\026.deepflow.SoftmaxParam\022+\n\014squ"
+      "are_param\030n \001(\0132\025.deepflow.SquareParam\022+"
+      "\n\014matmul_param\030o \001(\0132\025.deepflow.MatMulPa"
+      "ram\022-\n\rpooling_param\030p \001(\0132\026.deepflow.Po"
+      "olingParam\022+\n\014reduce_param\030q \001(\0132\025.deepf"
+      "low.ReduceParam\022)\n\013equal_param\030r \001(\0132\024.d"
+      "eepflow.EqualParam\022)\n\013print_param\030s \001(\0132"
+      "\024.deepflow.PrintParam\0222\n\020cast_float_para"
+      "m\030t \001(\0132\030.deepflow.CastFloatParam\0225\n\021acc"
+      "umulator_param\030u \001(\0132\032.deepflow.Accumula"
+      "torParam\022-\n\rdisplay_param\030v \001(\0132\026.deepfl"
+      "ow.DisplayParam\0223\n\020activation_param\030w \001("
+      "\0132\031.deepflow.ActivationParam\022\'\n\npsnr_par"
+      "am\030x \001(\0132\023.deepflow.PsnrParam\022<\n\025random_"
+      "selector_param\030y \001(\0132\035.deepflow.RandomSe"
+      "lectorParam\022+\n\014logger_param\030z \001(\0132\025.deep"
+      "flow.LoggerParam\0225\n\021restructure_param\030{ "
+      "\001(\0132\032.deepflow.RestructureParam\0226\n\022image"
+      "_reader_param\030| \001(\0132\032.deepflow.ImageRead"
+      "erParam\0225\n\021multiplexer_param\030} \001(\0132\032.dee"
+      "pflow.MultiplexerParam\022D\n\031batch_normaliz"
+      "ation_param\030\177 \001(\0132!.deepflow.BatchNormal"
+      "izationParam\022*\n\013mnist_param\030\200\001 \001(\0132\024.dee"
+      "pflow.MnistParam\022;\n\024data_generator_param"
+      "\030\201\001 \001(\0132\034.deepflow.DataGeneratorParam\022B\n"
+      "\030image_batch_reader_param\030\202\001 \001(\0132\037.deepf"
+      "low.ImageBatchReaderParam\022&\n\tdot_param\030\203"
+      "\001 \001(\0132\022.deepflow.DotParam\0229\n\023replay_memo"
+      "ry_param\030\204\001 \001(\0132\033.deepflow.ReplayMemoryP"
+      "aram\0227\n\022square_error_param\030\206\001 \001(\0132\032.deep"
+      "flow.SquareErrorParam\0223\n\020sio_output_para"
+      "m\030\207\001 \001(\0132\030.deepflow.SIOOutputParam\022&\n\tlo"
+      "g_param\030\210\001 \001(\0132\022.deepflow.LogParam\022(\n\nlo"
+      "ss_param\030\211\001 \001(\0132\023.deepflow.LossParam\022&\n\t"
+      "exp_param\030\212\001 \001(\0132\022.deepflow.ExpParam\022.\n\r"
+      "lifting_param\030\213\001 \001(\0132\026.deepflow.LiftingP"
+      "aram\0220\n\016patching_param\030\214\001 \001(\0132\027.deepflow"
+      ".PatchingParam\022&\n\tabs_param\030\215\001 \001(\0132\022.dee"
+      "pflow.AbsParam\0223\n\020reduce_all_param\030\216\001 \001("
+      "\0132\030.deepflow.ReduceAllParam\0227\n\022image_wri"
+      "ter_param\030\220\001 \001(\0132\032.deepflow.ImageWriterP"
+      "aram\022,\n\014resize_param\030\221\001 \001(\0132\025.deepflow.R"
+      "esizeParam\022*\n\013split_param\030\222\001 \001(\0132\024.deepf"
+      "low.SplitParam\022,\n\014switch_param\030\223\001 \001(\0132\025."
+      "deepflow.SwitchParam\022&\n\tlrn_param\030\224\001 \001(\013"
+      "2\022.deepflow.LrnParam\022*\n\013prelu_param\030\225\001 \001"
+      "(\0132\024.deepflow.PReluParam\022.\n\rconcate_para"
+      "m\030\226\001 \001(\0132\026.deepflow.ConcateParam\022.\n\rresh"
+      "ape_param\030\227\001 \001(\0132\026.deepflow.ReshapeParam"
+      "\022,\n\014dprelu_param\030\230\001 \001(\0132\025.deepflow.DPRel"
+      "uParam\0227\n\022batch_stddev_param\030\231\001 \001(\0132\032.de"
+      "epflow.BatchStdDevParam\0227\n\022pass_through_"
+      "param\030\232\001 \001(\0132\032.deepflow.PassThroughParam"
+      "\0220\n\016gaussian_param\030\233\001 \001(\0132\027.deepflow.Gau"
+      "ssianParam\022=\n\025gaussian_kernel_param\030\234\001 \001"
+      "(\0132\035.deepflow.GaussianKernelParam\022;\n\024pat"
+      "ch_sampling_param\030\235\001 \001(\0132\034.deepflow.Patc"
+      "hSamplingParam\022F\n\032text_image_generator_p"
+      "aram\030\236\001 \001(\0132!.deepflow.TextImageGenerato"
+      "rParam\022&\n\tmax_param\030\237\001 \001(\0132\022.deepflow.Ma"
+      "xParam\022E\n\026instance_normalization\030\240\001 \001(\0132"
+      "$.deepflow.InstanceNormalizationParam\022E\n"
+      "\031spatial_transformer_param\030\241\001 \001(\0132!.deep"
+      "flow.SpatialTransformerParam\022(\n\nnand_par"
+      "am\030\242\001 \001(\0132\023.deepflow.NandParam\0227\n\022gabor_"
+      "kernel_param\030\243\001 \001(\0132\032.deepflow.GaborKern"
+      "elParam*9\n\nActionType\022\n\n\006VALUES\020\000\022\t\n\005DIF"
+      "FS\020\001\022\024\n\020VALUES_AND_DIFFS\020\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 9365);
+      descriptor, 9514);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "deepflow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -24367,6 +24390,466 @@ void GaussianKernelParam::set_num_channels(::google::protobuf::int32 value) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int GaborKernelParam::kOrientationsFieldNumber;
+const int GaborKernelParam::kScalesFieldNumber;
+const int GaborKernelParam::kPhiFieldNumber;
+const int GaborKernelParam::kApplyScaleFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+GaborKernelParam::GaborKernelParam()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_deepflow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:deepflow.GaborKernelParam)
+}
+GaborKernelParam::GaborKernelParam(const GaborKernelParam& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      orientations_(from.orientations_),
+      scales_(from.scales_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&phi_, &from.phi_,
+    reinterpret_cast<char*>(&apply_scale_) -
+    reinterpret_cast<char*>(&phi_) + sizeof(apply_scale_));
+  // @@protoc_insertion_point(copy_constructor:deepflow.GaborKernelParam)
+}
+
+void GaborKernelParam::SharedCtor() {
+  ::memset(&phi_, 0, reinterpret_cast<char*>(&apply_scale_) -
+    reinterpret_cast<char*>(&phi_) + sizeof(apply_scale_));
+  _cached_size_ = 0;
+}
+
+GaborKernelParam::~GaborKernelParam() {
+  // @@protoc_insertion_point(destructor:deepflow.GaborKernelParam)
+  SharedDtor();
+}
+
+void GaborKernelParam::SharedDtor() {
+}
+
+void GaborKernelParam::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* GaborKernelParam::descriptor() {
+  protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const GaborKernelParam& GaborKernelParam::default_instance() {
+  protobuf_deepflow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+GaborKernelParam* GaborKernelParam::New(::google::protobuf::Arena* arena) const {
+  GaborKernelParam* n = new GaborKernelParam;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void GaborKernelParam::Clear() {
+// @@protoc_insertion_point(message_clear_start:deepflow.GaborKernelParam)
+  orientations_.Clear();
+  scales_.Clear();
+  ::memset(&phi_, 0, reinterpret_cast<char*>(&apply_scale_) -
+    reinterpret_cast<char*>(&phi_) + sizeof(apply_scale_));
+}
+
+bool GaborKernelParam::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:deepflow.GaborKernelParam)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated float orientations = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, this->mutable_orientations())));
+        } else if (static_cast< ::google::protobuf::uint8>(tag) ==
+                   static_cast< ::google::protobuf::uint8>(13u)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 1, 10u, input, this->mutable_orientations())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated float scales = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, this->mutable_scales())));
+        } else if (static_cast< ::google::protobuf::uint8>(tag) ==
+                   static_cast< ::google::protobuf::uint8>(21u)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 1, 18u, input, this->mutable_scales())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float phi = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(29u)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &phi_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool apply_scale = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(32u)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &apply_scale_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:deepflow.GaborKernelParam)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:deepflow.GaborKernelParam)
+  return false;
+#undef DO_
+}
+
+void GaborKernelParam::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:deepflow.GaborKernelParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated float orientations = 1;
+  if (this->orientations_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(1, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(_orientations_cached_byte_size_);
+    ::google::protobuf::internal::WireFormatLite::WriteFloatArray(
+      this->orientations().data(), this->orientations_size(), output);
+  }
+
+  // repeated float scales = 2;
+  if (this->scales_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(2, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(_scales_cached_byte_size_);
+    ::google::protobuf::internal::WireFormatLite::WriteFloatArray(
+      this->scales().data(), this->scales_size(), output);
+  }
+
+  // float phi = 3;
+  if (this->phi() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->phi(), output);
+  }
+
+  // bool apply_scale = 4;
+  if (this->apply_scale() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->apply_scale(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:deepflow.GaborKernelParam)
+}
+
+::google::protobuf::uint8* GaborKernelParam::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:deepflow.GaborKernelParam)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated float orientations = 1;
+  if (this->orientations_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      1,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+      _orientations_cached_byte_size_, target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteFloatNoTagToArray(this->orientations_, target);
+  }
+
+  // repeated float scales = 2;
+  if (this->scales_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      2,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+      _scales_cached_byte_size_, target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteFloatNoTagToArray(this->scales_, target);
+  }
+
+  // float phi = 3;
+  if (this->phi() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->phi(), target);
+  }
+
+  // bool apply_scale = 4;
+  if (this->apply_scale() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->apply_scale(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:deepflow.GaborKernelParam)
+  return target;
+}
+
+size_t GaborKernelParam::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:deepflow.GaborKernelParam)
+  size_t total_size = 0;
+
+  // repeated float orientations = 1;
+  {
+    unsigned int count = this->orientations_size();
+    size_t data_size = 4UL * count;
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _orientations_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
+  // repeated float scales = 2;
+  {
+    unsigned int count = this->scales_size();
+    size_t data_size = 4UL * count;
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _scales_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
+  // float phi = 3;
+  if (this->phi() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // bool apply_scale = 4;
+  if (this->apply_scale() != 0) {
+    total_size += 1 + 1;
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void GaborKernelParam::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:deepflow.GaborKernelParam)
+  GOOGLE_DCHECK_NE(&from, this);
+  const GaborKernelParam* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const GaborKernelParam>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:deepflow.GaborKernelParam)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:deepflow.GaborKernelParam)
+    MergeFrom(*source);
+  }
+}
+
+void GaborKernelParam::MergeFrom(const GaborKernelParam& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:deepflow.GaborKernelParam)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  orientations_.MergeFrom(from.orientations_);
+  scales_.MergeFrom(from.scales_);
+  if (from.phi() != 0) {
+    set_phi(from.phi());
+  }
+  if (from.apply_scale() != 0) {
+    set_apply_scale(from.apply_scale());
+  }
+}
+
+void GaborKernelParam::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:deepflow.GaborKernelParam)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void GaborKernelParam::CopyFrom(const GaborKernelParam& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:deepflow.GaborKernelParam)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool GaborKernelParam::IsInitialized() const {
+  return true;
+}
+
+void GaborKernelParam::Swap(GaborKernelParam* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void GaborKernelParam::InternalSwap(GaborKernelParam* other) {
+  orientations_.InternalSwap(&other->orientations_);
+  scales_.InternalSwap(&other->scales_);
+  std::swap(phi_, other->phi_);
+  std::swap(apply_scale_, other->apply_scale_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata GaborKernelParam::GetMetadata() const {
+  protobuf_deepflow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_deepflow_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// GaborKernelParam
+
+// repeated float orientations = 1;
+int GaborKernelParam::orientations_size() const {
+  return orientations_.size();
+}
+void GaborKernelParam::clear_orientations() {
+  orientations_.Clear();
+}
+float GaborKernelParam::orientations(int index) const {
+  // @@protoc_insertion_point(field_get:deepflow.GaborKernelParam.orientations)
+  return orientations_.Get(index);
+}
+void GaborKernelParam::set_orientations(int index, float value) {
+  orientations_.Set(index, value);
+  // @@protoc_insertion_point(field_set:deepflow.GaborKernelParam.orientations)
+}
+void GaborKernelParam::add_orientations(float value) {
+  orientations_.Add(value);
+  // @@protoc_insertion_point(field_add:deepflow.GaborKernelParam.orientations)
+}
+const ::google::protobuf::RepeatedField< float >&
+GaborKernelParam::orientations() const {
+  // @@protoc_insertion_point(field_list:deepflow.GaborKernelParam.orientations)
+  return orientations_;
+}
+::google::protobuf::RepeatedField< float >*
+GaborKernelParam::mutable_orientations() {
+  // @@protoc_insertion_point(field_mutable_list:deepflow.GaborKernelParam.orientations)
+  return &orientations_;
+}
+
+// repeated float scales = 2;
+int GaborKernelParam::scales_size() const {
+  return scales_.size();
+}
+void GaborKernelParam::clear_scales() {
+  scales_.Clear();
+}
+float GaborKernelParam::scales(int index) const {
+  // @@protoc_insertion_point(field_get:deepflow.GaborKernelParam.scales)
+  return scales_.Get(index);
+}
+void GaborKernelParam::set_scales(int index, float value) {
+  scales_.Set(index, value);
+  // @@protoc_insertion_point(field_set:deepflow.GaborKernelParam.scales)
+}
+void GaborKernelParam::add_scales(float value) {
+  scales_.Add(value);
+  // @@protoc_insertion_point(field_add:deepflow.GaborKernelParam.scales)
+}
+const ::google::protobuf::RepeatedField< float >&
+GaborKernelParam::scales() const {
+  // @@protoc_insertion_point(field_list:deepflow.GaborKernelParam.scales)
+  return scales_;
+}
+::google::protobuf::RepeatedField< float >*
+GaborKernelParam::mutable_scales() {
+  // @@protoc_insertion_point(field_mutable_list:deepflow.GaborKernelParam.scales)
+  return &scales_;
+}
+
+// float phi = 3;
+void GaborKernelParam::clear_phi() {
+  phi_ = 0;
+}
+float GaborKernelParam::phi() const {
+  // @@protoc_insertion_point(field_get:deepflow.GaborKernelParam.phi)
+  return phi_;
+}
+void GaborKernelParam::set_phi(float value) {
+  
+  phi_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.GaborKernelParam.phi)
+}
+
+// bool apply_scale = 4;
+void GaborKernelParam::clear_apply_scale() {
+  apply_scale_ = false;
+}
+bool GaborKernelParam::apply_scale() const {
+  // @@protoc_insertion_point(field_get:deepflow.GaborKernelParam.apply_scale)
+  return apply_scale_;
+}
+void GaborKernelParam::set_apply_scale(bool value) {
+  
+  apply_scale_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.GaborKernelParam.apply_scale)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int PatchSamplingParam::kPatchHeightFieldNumber;
 const int PatchSamplingParam::kPatchWidthFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -25746,6 +26229,7 @@ const int NodeParam::kMaxParamFieldNumber;
 const int NodeParam::kInstanceNormalizationFieldNumber;
 const int NodeParam::kSpatialTransformerParamFieldNumber;
 const int NodeParam::kNandParamFieldNumber;
+const int NodeParam::kGaborKernelParamFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 NodeParam::NodeParam()
@@ -26071,14 +26555,19 @@ NodeParam::NodeParam(const NodeParam& from)
   } else {
     nand_param_ = NULL;
   }
+  if (from.has_gabor_kernel_param()) {
+    gabor_kernel_param_ = new ::deepflow::GaborKernelParam(*from.gabor_kernel_param_);
+  } else {
+    gabor_kernel_param_ = NULL;
+  }
   // @@protoc_insertion_point(copy_constructor:deepflow.NodeParam)
 }
 
 void NodeParam::SharedCtor() {
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   scope_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&block_param_, 0, reinterpret_cast<char*>(&nand_param_) -
-    reinterpret_cast<char*>(&block_param_) + sizeof(nand_param_));
+  ::memset(&block_param_, 0, reinterpret_cast<char*>(&gabor_kernel_param_) -
+    reinterpret_cast<char*>(&block_param_) + sizeof(gabor_kernel_param_));
   _cached_size_ = 0;
 }
 
@@ -26269,6 +26758,9 @@ void NodeParam::SharedDtor() {
   }
   if (this != internal_default_instance()) {
     delete nand_param_;
+  }
+  if (this != internal_default_instance()) {
+    delete gabor_kernel_param_;
   }
 }
 
@@ -26541,6 +27033,10 @@ void NodeParam::Clear() {
     delete nand_param_;
   }
   nand_param_ = NULL;
+  if (GetArenaNoVirtual() == NULL && gabor_kernel_param_ != NULL) {
+    delete gabor_kernel_param_;
+  }
+  gabor_kernel_param_ = NULL;
 }
 
 bool NodeParam::MergePartialFromCodedStream(
@@ -27339,6 +27835,18 @@ bool NodeParam::MergePartialFromCodedStream(
         break;
       }
 
+      // .deepflow.GaborKernelParam gabor_kernel_param = 163;
+      case 163: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(1306u)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_gabor_kernel_param()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -27764,6 +28272,12 @@ void NodeParam::SerializeWithCachedSizes(
   if (this->has_nand_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       162, *this->nand_param_, output);
+  }
+
+  // .deepflow.GaborKernelParam gabor_kernel_param = 163;
+  if (this->has_gabor_kernel_param()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      163, *this->gabor_kernel_param_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:deepflow.NodeParam)
@@ -28237,6 +28751,13 @@ void NodeParam::SerializeWithCachedSizes(
         162, *this->nand_param_, deterministic, target);
   }
 
+  // .deepflow.GaborKernelParam gabor_kernel_param = 163;
+  if (this->has_gabor_kernel_param()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        163, *this->gabor_kernel_param_, deterministic, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:deepflow.NodeParam)
   return target;
 }
@@ -28695,6 +29216,13 @@ size_t NodeParam::ByteSizeLong() const {
         *this->nand_param_);
   }
 
+  // .deepflow.GaborKernelParam gabor_kernel_param = 163;
+  if (this->has_gabor_kernel_param()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->gabor_kernel_param_);
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -28914,6 +29442,9 @@ void NodeParam::MergeFrom(const NodeParam& from) {
   if (from.has_nand_param()) {
     mutable_nand_param()->::deepflow::NandParam::MergeFrom(from.nand_param());
   }
+  if (from.has_gabor_kernel_param()) {
+    mutable_gabor_kernel_param()->::deepflow::GaborKernelParam::MergeFrom(from.gabor_kernel_param());
+  }
 }
 
 void NodeParam::CopyFrom(const ::google::protobuf::Message& from) {
@@ -29003,6 +29534,7 @@ void NodeParam::InternalSwap(NodeParam* other) {
   std::swap(instance_normalization_, other->instance_normalization_);
   std::swap(spatial_transformer_param_, other->spatial_transformer_param_);
   std::swap(nand_param_, other->nand_param_);
+  std::swap(gabor_kernel_param_, other->gabor_kernel_param_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -31596,6 +32128,45 @@ void NodeParam::set_allocated_nand_param(::deepflow::NandParam* nand_param) {
     
   }
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.nand_param)
+}
+
+// .deepflow.GaborKernelParam gabor_kernel_param = 163;
+bool NodeParam::has_gabor_kernel_param() const {
+  return this != internal_default_instance() && gabor_kernel_param_ != NULL;
+}
+void NodeParam::clear_gabor_kernel_param() {
+  if (GetArenaNoVirtual() == NULL && gabor_kernel_param_ != NULL) delete gabor_kernel_param_;
+  gabor_kernel_param_ = NULL;
+}
+const ::deepflow::GaborKernelParam& NodeParam::gabor_kernel_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.gabor_kernel_param)
+  return gabor_kernel_param_ != NULL ? *gabor_kernel_param_
+                         : *::deepflow::GaborKernelParam::internal_default_instance();
+}
+::deepflow::GaborKernelParam* NodeParam::mutable_gabor_kernel_param() {
+  
+  if (gabor_kernel_param_ == NULL) {
+    gabor_kernel_param_ = new ::deepflow::GaborKernelParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.gabor_kernel_param)
+  return gabor_kernel_param_;
+}
+::deepflow::GaborKernelParam* NodeParam::release_gabor_kernel_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.gabor_kernel_param)
+  
+  ::deepflow::GaborKernelParam* temp = gabor_kernel_param_;
+  gabor_kernel_param_ = NULL;
+  return temp;
+}
+void NodeParam::set_allocated_gabor_kernel_param(::deepflow::GaborKernelParam* gabor_kernel_param) {
+  delete gabor_kernel_param_;
+  gabor_kernel_param_ = gabor_kernel_param;
+  if (gabor_kernel_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.gabor_kernel_param)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

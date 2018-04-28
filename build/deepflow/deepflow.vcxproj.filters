@@ -118,6 +118,9 @@
     <CudaCompile Include="..\..\src\nodes\nand.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
+    <CudaCompile Include="..\..\src\nodes\gabor_kernel.cu">
+      <Filter>source\nodes</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\initializer.cpp">
@@ -525,6 +528,9 @@
       <Filter>include\initializers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\nand.h">
+      <Filter>include\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nodes\gabor_kernel.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
   </ItemGroup>

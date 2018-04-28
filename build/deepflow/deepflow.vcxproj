@@ -25,6 +25,7 @@
     <ClCompile Include="..\..\src\initializers\constant.cpp" />
     <ClCompile Include="..\..\src\initializers\truncated_normal.cpp" />
     <ClCompile Include="..\..\src\nodes\lrn.cpp" />
+    <CudaCompile Include="..\..\src\nodes\gabor_kernel.cu" />
     <CudaCompile Include="..\..\src\nodes\max.cu">
       <FileType>Document</FileType>
     </CudaCompile>
@@ -76,6 +77,7 @@
     <ClInclude Include="..\..\include\nodes\dropout.h" />
     <ClInclude Include="..\..\include\nodes\equal.h" />
     <ClInclude Include="..\..\include\nodes\exp.h" />
+    <ClInclude Include="..\..\include\nodes\gabor_kernel.h" />
     <ClInclude Include="..\..\include\nodes\gaussian.h" />
     <ClInclude Include="..\..\include\nodes\gaussian_kernel.h" />
     <ClInclude Include="..\..\include\nodes\image_writer.h" />

@@ -447,6 +447,13 @@ message GaussianKernelParam {
 	int32 num_channels = 3;
 }
 
+message GaborKernelParam {	
+	repeated float orientations = 1;
+	repeated float scales = 2;
+	float phi = 3;
+	bool apply_scale = 4;
+}
+
 message PatchSamplingParam {	
 	int32 patch_height = 1;
 	int32 patch_width = 2;
@@ -533,5 +540,6 @@ message NodeParam {
   InstanceNormalizationParam instance_normalization = 160;
   SpatialTransformerParam spatial_transformer_param = 161;
   NandParam nand_param = 162;
+  GaborKernelParam gabor_kernel_param = 163;
 }
 

@@ -92,6 +92,9 @@ extern EqualParamDefaultTypeInternal _EqualParam_default_instance_;
 class ExpParam;
 class ExpParamDefaultTypeInternal;
 extern ExpParamDefaultTypeInternal _ExpParam_default_instance_;
+class GaborKernelParam;
+class GaborKernelParamDefaultTypeInternal;
+extern GaborKernelParamDefaultTypeInternal _GaborKernelParam_default_instance_;
 class GaussianKernelParam;
 class GaussianKernelParamDefaultTypeInternal;
 extern GaussianKernelParamDefaultTypeInternal _GaussianKernelParam_default_instance_;
@@ -7535,6 +7538,121 @@ class GaussianKernelParam : public ::google::protobuf::Message /* @@protoc_inser
 };
 // -------------------------------------------------------------------
 
+class GaborKernelParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.GaborKernelParam) */ {
+ public:
+  GaborKernelParam();
+  virtual ~GaborKernelParam();
+
+  GaborKernelParam(const GaborKernelParam& from);
+
+  inline GaborKernelParam& operator=(const GaborKernelParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GaborKernelParam& default_instance();
+
+  static inline const GaborKernelParam* internal_default_instance() {
+    return reinterpret_cast<const GaborKernelParam*>(
+               &_GaborKernelParam_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    73;
+
+  void Swap(GaborKernelParam* other);
+
+  // implements Message ----------------------------------------------
+
+  inline GaborKernelParam* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  GaborKernelParam* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const GaborKernelParam& from);
+  void MergeFrom(const GaborKernelParam& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(GaborKernelParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated float orientations = 1;
+  int orientations_size() const;
+  void clear_orientations();
+  static const int kOrientationsFieldNumber = 1;
+  float orientations(int index) const;
+  void set_orientations(int index, float value);
+  void add_orientations(float value);
+  const ::google::protobuf::RepeatedField< float >&
+      orientations() const;
+  ::google::protobuf::RepeatedField< float >*
+      mutable_orientations();
+
+  // repeated float scales = 2;
+  int scales_size() const;
+  void clear_scales();
+  static const int kScalesFieldNumber = 2;
+  float scales(int index) const;
+  void set_scales(int index, float value);
+  void add_scales(float value);
+  const ::google::protobuf::RepeatedField< float >&
+      scales() const;
+  ::google::protobuf::RepeatedField< float >*
+      mutable_scales();
+
+  // float phi = 3;
+  void clear_phi();
+  static const int kPhiFieldNumber = 3;
+  float phi() const;
+  void set_phi(float value);
+
+  // bool apply_scale = 4;
+  void clear_apply_scale();
+  static const int kApplyScaleFieldNumber = 4;
+  bool apply_scale() const;
+  void set_apply_scale(bool value);
+
+  // @@protoc_insertion_point(class_scope:deepflow.GaborKernelParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< float > orientations_;
+  mutable int _orientations_cached_byte_size_;
+  ::google::protobuf::RepeatedField< float > scales_;
+  mutable int _scales_cached_byte_size_;
+  float phi_;
+  bool apply_scale_;
+  mutable int _cached_size_;
+  friend struct protobuf_deepflow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class PatchSamplingParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:deepflow.PatchSamplingParam) */ {
  public:
   PatchSamplingParam();
@@ -7555,7 +7673,7 @@ class PatchSamplingParam : public ::google::protobuf::Message /* @@protoc_insert
                &_PatchSamplingParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    73;
+    74;
 
   void Swap(PatchSamplingParam* other);
 
@@ -7642,7 +7760,7 @@ class TextImageGeneratorParam : public ::google::protobuf::Message /* @@protoc_i
                &_TextImageGeneratorParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    74;
+    75;
 
   void Swap(TextImageGeneratorParam* other);
 
@@ -7763,7 +7881,7 @@ class MaxParam : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_MaxParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    75;
+    76;
 
   void Swap(MaxParam* other);
 
@@ -7836,7 +7954,7 @@ class SpatialTransformerParam : public ::google::protobuf::Message /* @@protoc_i
                &_SpatialTransformerParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    76;
+    77;
 
   void Swap(SpatialTransformerParam* other);
 
@@ -7909,7 +8027,7 @@ class NandParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NandParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    77;
+    78;
 
   void Swap(NandParam* other);
 
@@ -7982,7 +8100,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_NodeParam_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    78;
+    79;
 
   void Swap(NodeParam* other);
 
@@ -8638,6 +8756,15 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::NandParam* release_nand_param();
   void set_allocated_nand_param(::deepflow::NandParam* nand_param);
 
+  // .deepflow.GaborKernelParam gabor_kernel_param = 163;
+  bool has_gabor_kernel_param() const;
+  void clear_gabor_kernel_param();
+  static const int kGaborKernelParamFieldNumber = 163;
+  const ::deepflow::GaborKernelParam& gabor_kernel_param() const;
+  ::deepflow::GaborKernelParam* mutable_gabor_kernel_param();
+  ::deepflow::GaborKernelParam* release_gabor_kernel_param();
+  void set_allocated_gabor_kernel_param(::deepflow::GaborKernelParam* gabor_kernel_param);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -8706,6 +8833,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::InstanceNormalizationParam* instance_normalization_;
   ::deepflow::SpatialTransformerParam* spatial_transformer_param_;
   ::deepflow::NandParam* nand_param_;
+  ::deepflow::GaborKernelParam* gabor_kernel_param_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -12178,6 +12306,98 @@ inline void GaussianKernelParam::set_num_channels(::google::protobuf::int32 valu
 
 // -------------------------------------------------------------------
 
+// GaborKernelParam
+
+// repeated float orientations = 1;
+inline int GaborKernelParam::orientations_size() const {
+  return orientations_.size();
+}
+inline void GaborKernelParam::clear_orientations() {
+  orientations_.Clear();
+}
+inline float GaborKernelParam::orientations(int index) const {
+  // @@protoc_insertion_point(field_get:deepflow.GaborKernelParam.orientations)
+  return orientations_.Get(index);
+}
+inline void GaborKernelParam::set_orientations(int index, float value) {
+  orientations_.Set(index, value);
+  // @@protoc_insertion_point(field_set:deepflow.GaborKernelParam.orientations)
+}
+inline void GaborKernelParam::add_orientations(float value) {
+  orientations_.Add(value);
+  // @@protoc_insertion_point(field_add:deepflow.GaborKernelParam.orientations)
+}
+inline const ::google::protobuf::RepeatedField< float >&
+GaborKernelParam::orientations() const {
+  // @@protoc_insertion_point(field_list:deepflow.GaborKernelParam.orientations)
+  return orientations_;
+}
+inline ::google::protobuf::RepeatedField< float >*
+GaborKernelParam::mutable_orientations() {
+  // @@protoc_insertion_point(field_mutable_list:deepflow.GaborKernelParam.orientations)
+  return &orientations_;
+}
+
+// repeated float scales = 2;
+inline int GaborKernelParam::scales_size() const {
+  return scales_.size();
+}
+inline void GaborKernelParam::clear_scales() {
+  scales_.Clear();
+}
+inline float GaborKernelParam::scales(int index) const {
+  // @@protoc_insertion_point(field_get:deepflow.GaborKernelParam.scales)
+  return scales_.Get(index);
+}
+inline void GaborKernelParam::set_scales(int index, float value) {
+  scales_.Set(index, value);
+  // @@protoc_insertion_point(field_set:deepflow.GaborKernelParam.scales)
+}
+inline void GaborKernelParam::add_scales(float value) {
+  scales_.Add(value);
+  // @@protoc_insertion_point(field_add:deepflow.GaborKernelParam.scales)
+}
+inline const ::google::protobuf::RepeatedField< float >&
+GaborKernelParam::scales() const {
+  // @@protoc_insertion_point(field_list:deepflow.GaborKernelParam.scales)
+  return scales_;
+}
+inline ::google::protobuf::RepeatedField< float >*
+GaborKernelParam::mutable_scales() {
+  // @@protoc_insertion_point(field_mutable_list:deepflow.GaborKernelParam.scales)
+  return &scales_;
+}
+
+// float phi = 3;
+inline void GaborKernelParam::clear_phi() {
+  phi_ = 0;
+}
+inline float GaborKernelParam::phi() const {
+  // @@protoc_insertion_point(field_get:deepflow.GaborKernelParam.phi)
+  return phi_;
+}
+inline void GaborKernelParam::set_phi(float value) {
+  
+  phi_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.GaborKernelParam.phi)
+}
+
+// bool apply_scale = 4;
+inline void GaborKernelParam::clear_apply_scale() {
+  apply_scale_ = false;
+}
+inline bool GaborKernelParam::apply_scale() const {
+  // @@protoc_insertion_point(field_get:deepflow.GaborKernelParam.apply_scale)
+  return apply_scale_;
+}
+inline void GaborKernelParam::set_apply_scale(bool value) {
+  
+  apply_scale_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.GaborKernelParam.apply_scale)
+}
+
+// -------------------------------------------------------------------
+
 // PatchSamplingParam
 
 // int32 patch_height = 1;
@@ -14973,7 +15193,48 @@ inline void NodeParam::set_allocated_nand_param(::deepflow::NandParam* nand_para
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.nand_param)
 }
 
+// .deepflow.GaborKernelParam gabor_kernel_param = 163;
+inline bool NodeParam::has_gabor_kernel_param() const {
+  return this != internal_default_instance() && gabor_kernel_param_ != NULL;
+}
+inline void NodeParam::clear_gabor_kernel_param() {
+  if (GetArenaNoVirtual() == NULL && gabor_kernel_param_ != NULL) delete gabor_kernel_param_;
+  gabor_kernel_param_ = NULL;
+}
+inline const ::deepflow::GaborKernelParam& NodeParam::gabor_kernel_param() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.gabor_kernel_param)
+  return gabor_kernel_param_ != NULL ? *gabor_kernel_param_
+                         : *::deepflow::GaborKernelParam::internal_default_instance();
+}
+inline ::deepflow::GaborKernelParam* NodeParam::mutable_gabor_kernel_param() {
+  
+  if (gabor_kernel_param_ == NULL) {
+    gabor_kernel_param_ = new ::deepflow::GaborKernelParam;
+  }
+  // @@protoc_insertion_point(field_mutable:deepflow.NodeParam.gabor_kernel_param)
+  return gabor_kernel_param_;
+}
+inline ::deepflow::GaborKernelParam* NodeParam::release_gabor_kernel_param() {
+  // @@protoc_insertion_point(field_release:deepflow.NodeParam.gabor_kernel_param)
+  
+  ::deepflow::GaborKernelParam* temp = gabor_kernel_param_;
+  gabor_kernel_param_ = NULL;
+  return temp;
+}
+inline void NodeParam::set_allocated_gabor_kernel_param(::deepflow::GaborKernelParam* gabor_kernel_param) {
+  delete gabor_kernel_param_;
+  gabor_kernel_param_ = gabor_kernel_param;
+  if (gabor_kernel_param) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.gabor_kernel_param)
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
