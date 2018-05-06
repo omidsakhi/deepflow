@@ -220,7 +220,7 @@ void main(int argc, char** argv) {
 				per_stage_multiplex[stage]->selectInput(0);
 
 				session->forward( "" );
-				float d_loss = loss->output(0)->value()->toFloat();
+				float d_loss = loss->output(0)->value()->to_float();
 				session->backward( "" );
 
 				for (int m = 0; m < 6; m++)
@@ -229,7 +229,7 @@ void main(int argc, char** argv) {
 				per_stage_multiplex[stage]->selectInput(1);
 
 				session->forward( "" );
-				d_loss += loss->output(0)->value()->toFloat();
+				d_loss += loss->output(0)->value()->to_float();
 				session->backward( "" );
 
 				std::cout << " - d_loss: " << d_loss;
@@ -246,7 +246,7 @@ void main(int argc, char** argv) {
 				per_stage_multiplex[stage]->selectInput(1);
 
 				session->forward( "" );
-				float g_loss = loss->output(0)->value()->toFloat();
+				float g_loss = loss->output(0)->value()->to_float();
 				session->backward( "" );
 				std::cout << " - g_loss: " << g_loss << std::endl;
 				session->apply_solvers(std::list<std::string>({ "g_adam" }));

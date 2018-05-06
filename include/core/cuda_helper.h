@@ -12,6 +12,7 @@
 #define DF_CUDA_CHECK(XX) { cudaError_t status; LOG_IF(FATAL, (status = XX) != 0 ) << "[FAILED] " << #XX << " - " << cudaGetErrorString(status); }
 #define DF_KERNEL_CHECK() LOG_IF(FATAL, cudaPeekAtLastError() != 0) << "[FAILED]";
 #define DF_NODE_KERNEL_CHECK() LOG_IF(FATAL, cudaPeekAtLastError() != 0) << "[FAILED] " << _name;
+#define DF_LINE std::string(__FILE__) + "|" + std::string(__func__) + ":" + std::to_string(__LINE__)
 
 class DeepFlowDllExport CudaHelper {
 public:		

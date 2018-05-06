@@ -124,8 +124,8 @@ public:
 	// PRINTERS & DISPLAYS
 	void print(std::list<std::string> inputs, std::string message, PrintOp &params = PrintOp());
 	void logger(std::list<std::string> inputs, std::string file_path, std::string message, LoggerOp &params = LoggerOp());
-	std::string display(std::string input, DisplayOp &params = DisplayOp());
-	std::string imwrite(std::string input, std::string filename, ImwriteOp &params = ImwriteOp());
+	void display(std::string input, DisplayOp &params = DisplayOp());
+	void imwrite(std::string input, std::string filename, ImwriteOp &params = ImwriteOp());
 	void psnr(std::string a, std::string b, PsnrOp &params = PsnrOp());	
 
 	// NORMALIZATION
@@ -139,8 +139,7 @@ public:
 
 	// OTHER	
 	std::string loss(std::string input, LossOp &params = LossOp());
-	std::string equal(std::string a, std::string b, EqualOp &params = EqualOp());
-	std::string cast_float(std::string input, CastFloatOp &params = CastFloatOp());	
+	std::string equal(std::string a, std::string b, EqualOp &params = EqualOp());	
 	std::array<std::string,2> accumulator(std::string input, AccumulatorOp &params = AccumulatorOp());
 	std::string replay_memory(std::string input, int capacity, ReplayMemoryOp &params = ReplayMemoryOp());
 	std::string batch_stddev(std::string input, BatchStddevOp &params = BatchStddevOp());

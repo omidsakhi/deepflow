@@ -9,8 +9,7 @@ class Node;
 
 class DeepFlowDllExport Initializer : public CudaHelper {
 public:
-	Initializer(deepflow::InitParam *param);
-	//Initializer(std::array<int, 4> dims, Tensor::TensorType type);
+	Initializer(deepflow::InitParam *param);	
 	virtual void init() = 0;
 	virtual void apply(Node *node) = 0;	
 	std::array<int, 4> dims() const;	
@@ -18,7 +17,6 @@ public:
 	virtual std::string to_cpp() const = 0;
 protected:	
 	deepflow::InitParam *_param;
-	std::array<int, 4> _dims;
-	Tensor::TensorType _reader_type;
+	std::array<int, 4> _dims;	
 };
 

@@ -18,16 +18,16 @@ void RandomSelector::forward()
 	float rnd = ((float)rand() / RAND_MAX);
 	_selection = (rnd < _probability) ? 0 : 1;
 	if (_selection == 0)
-		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[0]->value()->data(), _inputs[0]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice))
+		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->gpu_data(DF_LINE), _inputs[0]->value()->gpu_data(DF_LINE), _inputs[0]->value()->bytes(), cudaMemcpyDeviceToDevice))
 	else
-		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[1]->value()->data(), _inputs[1]->value()->sizeInBytes(), cudaMemcpyDeviceToDevice))
+		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), _inputs[1]->value()->bytes(), cudaMemcpyDeviceToDevice))
 }
 
 void RandomSelector::backward()
 {
 	auto t = _inputs[_selection == 0 ? 0 : 1]->diff();
 	if (t) {
-		cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 1, t->mutableData());
+		cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->gpu_data(DF_LINE), 1, t->gpu_data(DF_LINE));
 	}
 }
 

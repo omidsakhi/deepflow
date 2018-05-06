@@ -68,7 +68,6 @@
     <ClInclude Include="..\..\include\nodes\batch_stddev.h" />
     <ClInclude Include="..\..\include\nodes\bias_add.h" />
     <ClInclude Include="..\..\include\nodes\block.h" />
-    <ClInclude Include="..\..\include\nodes\cast_float.h" />
     <ClInclude Include="..\..\include\nodes\concate.h" />
     <ClInclude Include="..\..\include\nodes\convolution_2d.h" />
     <ClInclude Include="..\..\include\nodes\display.h" />
@@ -163,7 +162,6 @@
     <ClCompile Include="..\..\src\nodes\bias_add.cpp">
       <FileType>Document</FileType>
     </ClCompile>
-    <CudaCompile Include="..\..\src\nodes\cast_float.cu" />
     <CudaCompile Include="..\..\src\nodes\display.cu" />
     <CudaCompile Include="..\..\src\nodes\dprelu.cu" />
     <CudaCompile Include="..\..\src\nodes\equal.cu" />

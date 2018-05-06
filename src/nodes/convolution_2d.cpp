@@ -7,11 +7,10 @@ Convolution2D::Convolution2D(deepflow::NodeParam *param) : Node(param) {
 
 void Convolution2D::init() {
 	_xDesc = _inputs[0]->value()->descriptor();
-	_x = _inputs[0]->value()->mutableData();
+	
 	auto inputDims = _inputs[0]->dims();	
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
-	DF_NODE_CUDNN_CHECK(cudnnCreateFilterDescriptor(&_wDesc));
-	_w = _inputs[1]->value()->mutableData();
+	DF_NODE_CUDNN_CHECK(cudnnCreateFilterDescriptor(&_wDesc));	
 	auto filterDims = _inputs[1]->dims();	
 	LOG_IF(FATAL, filterDims[1] != inputDims[1]) << _name << " Input channels " << inputDims[1] << " != Filter channels " << filterDims[1];	
 	DF_NODE_CUDNN_CHECK(cudnnSetFilter4dDescriptor(_wDesc, CUDNN_DATA_FLOAT, CUDNN_TENSOR_NCHW, filterDims[0], filterDims[1], filterDims[2], filterDims[3]));	
@@ -27,25 +26,16 @@ void Convolution2D::init() {
 	int n, c, h, w;
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolution2dForwardOutputDim(_convDesc, _xDesc, _wDesc, &n, &c, &h, &w));
 	_outputs[0]->initValue({ n, c, h, w });
-	_yDesc = _outputs[0]->value()->descriptor();
-	_y = _outputs[0]->value()->mutableData();	
+	_yDesc = _outputs[0]->value()->descriptor();	
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionForwardAlgorithm(_cudnnHandle, _xDesc, _wDesc, _convDesc, _yDesc, CUDNN_CONVOLUTION_FWD_PREFER_FASTEST, 0, &_fwdAlgo));
 	DF_NODE_CUDNN_CHECK(cudnnGetConvolutionForwardWorkspaceSize(_cudnnHandle, _xDesc, _wDesc, _convDesc, _yDesc, _fwdAlgo, &_fwdWorkspaceSize));	
 	_maxWorkspaceSize = _fwdWorkspaceSize;
 
-	if (_inputs[0]->diff()) {
-		_dxDesc = _inputs[0]->diff()->descriptor();
-		_dx = _inputs[0]->diff()->mutableData();
-	}
-	if (_inputs[1]->diff())
-		_dw = _inputs[1]->diff()->mutableData();
-	else
-		_dw = nullptr;
 	_outputs[0]->initDiff();
-	_dyDesc = _outputs[0]->diff()->descriptor();
-	_dy = _outputs[0]->diff()->mutableData();
+	_dyDesc = _outputs[0]->diff()->descriptor();	
 
 	if (_inputs[0]->diff()) {
+		_dxDesc = _inputs[0]->diff()->descriptor();
 		DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardDataAlgorithm(_cudnnHandle, _wDesc, _dyDesc, _convDesc, _dxDesc, CUDNN_CONVOLUTION_BWD_DATA_PREFER_FASTEST, 0, &_bwdDataAlgo));
 		DF_NODE_CUDNN_CHECK(cudnnGetConvolutionBackwardDataWorkspaceSize(_cudnnHandle, _wDesc, _dyDesc, _convDesc, _dxDesc, _bwdDataAlgo, &_bwdDataWorkspaceSize));
 		_maxWorkspaceSize = std::max({ _maxWorkspaceSize, _bwdDataWorkspaceSize });
@@ -59,14 +49,24 @@ void Convolution2D::init() {
 }
 
 void Convolution2D::forward() {
-		DF_NODE_CUDNN_CHECK(cudnnConvolutionForward(_cudnnHandle, &one, _xDesc, _x, _wDesc, _w, _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &zero, _yDesc, _y));
+	float *_x = _inputs[0]->value()->gpu_data(DF_LINE);
+	float *_w = _inputs[1]->value()->gpu_data(DF_LINE);	
+	float *_y = _outputs[0]->value()->gpu_data(DF_LINE);
+	DF_NODE_CUDNN_CHECK(cudnnConvolutionForward(_cudnnHandle, &one, _xDesc, _x, _wDesc, _w, _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &zero, _yDesc, _y));
 }
 
-void Convolution2D::backward() {
-	if (_inputs[0]->diff())
+void Convolution2D::backward() {	
+	float *_dy = _outputs[0]->diff()->gpu_data(DF_LINE);	
+	if (_inputs[0]->diff()) {
+		float *_w = _inputs[1]->value()->gpu_data(DF_LINE);
+		float *_dx = _inputs[0]->diff()->gpu_data(DF_LINE);
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &one, _wDesc, _w, _dyDesc, _dy, _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &zero, _dxDesc, _dx));
-	if (_inputs[1]->diff())
+	}
+	if (_inputs[1]->diff()) {
+		float *_x = _inputs[0]->value()->gpu_data(DF_LINE);
+		float *_dw = _inputs[1]->diff()->gpu_data(DF_LINE);
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &one, _xDesc, _x, _dyDesc, _dy, _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &zero, _wDesc, _dw));
+	}
 }
 
 std::string Convolution2D::to_cpp() const

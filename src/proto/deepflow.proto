@@ -259,9 +259,6 @@ message MnistParam {
 	int32 batch_size = 4;
 }
 
-message CastFloatParam {
-}
-
 message InstanceNormalizationParam {
 	float eps = 1;
 }
@@ -495,8 +492,7 @@ message NodeParam {
   PoolingParam pooling_param = 112;  
   ReduceParam reduce_param = 113;
   EqualParam equal_param = 114;
-  PrintParam print_param = 115;
-  CastFloatParam cast_float_param = 116;
+  PrintParam print_param = 115;  
   AccumulatorParam accumulator_param = 117;
   DisplayParam display_param = 118;
   ActivationParam activation_param = 119;

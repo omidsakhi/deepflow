@@ -90,15 +90,15 @@ void PatchSampling::forward()
 		_patch_width,
 		_d_x_pos,
 		_d_y_pos,
-		(float*)_inputs[0]->value()->data(),
-		(float*)_outputs[0]->value()->mutableData());
+		_inputs[0]->value()->gpu_data(DF_LINE),
+		_outputs[0]->value()->gpu_data(DF_LINE));
 	DF_KERNEL_CHECK();
 }
 
 void PatchSampling::backward()
 {
 	if (_inputs[0]->diff()) {
-		cudaMemset(_inputs[0]->diff()->mutableData(), 0, _inputs[0]->diff()->sizeInBytes());
+		cudaMemset(_inputs[0]->diff()->gpu_data(DF_LINE), 0, _inputs[0]->diff()->bytes());
 		auto size = _outputs[0]->value()->size();
 		PatchSamplingBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (
 			size,
@@ -109,8 +109,8 @@ void PatchSampling::backward()
 			_patch_width,
 			_d_x_pos,
 			_d_y_pos,
-			(float*)_outputs[0]->diff()->data(),
-			(float*)_inputs[0]->diff()->mutableData());
+			_outputs[0]->diff()->gpu_data(DF_LINE),
+			_inputs[0]->diff()->gpu_data(DF_LINE));
 		DF_KERNEL_CHECK();
 	}
 }

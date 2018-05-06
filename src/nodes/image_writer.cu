@@ -11,7 +11,7 @@ void ImageWriter::init() {
 
 	auto dims = _inputs[0]->value()->dims();
 	input_size = _inputs[0]->value()->size();
-	input_size_in_bytes = _inputs[0]->value()->sizeInBytes();
+	input_size_in_bytes = _inputs[0]->value()->bytes();
 	num_channels = dims[1];
 	num_samples = dims[0];
 	num_images = num_samples * (num_channels == 3 ? 1 : num_channels);
@@ -22,17 +22,17 @@ void ImageWriter::init() {
 	pic_height = per_image_height * ((int)ceil(((float)num_images / num_image_per_row_and_col)));
 	num_pic_pixels = pic_width * pic_height * (num_channels == 3 ? 3 : 1);	
 	_filename = _param->image_writer_param().filename();
-	_outputs[0]->initValue({ 1 , (num_channels == 3 ? 3 : 1), pic_height, pic_width }, Tensor::Int8);
+	cudaMalloc(&_output, (num_channels == 3 ? 3 : 1) * pic_height * pic_width);	
 	disp = std::make_shared<cv::Mat>(cv::Mat(pic_height, pic_width, (num_channels == 3 ? CV_8UC3 : CV_8U)));
 }
 
 void ImageWriter::forward() {
 	if (num_channels == 3)
-		ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, (float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col, (unsigned char*)_outputs[0]->value()->mutableData());
+		ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, _inputs[0]->value()->gpu_data(DF_LINE), per_image_height, per_image_width, num_image_per_row_and_col, _output);
 	else
-		GrayPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, (float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col, (unsigned char*)_outputs[0]->value()->mutableData());
+		GrayPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, _inputs[0]->value()->gpu_data(DF_LINE), per_image_height, per_image_width, num_image_per_row_and_col, _output);
 	DF_KERNEL_CHECK();
-	DF_NODE_CUDA_CHECK(cudaMemcpy(disp->ptr<uchar>(), _outputs[0]->value()->data(), num_pic_pixels, cudaMemcpyDeviceToHost));	
+	DF_NODE_CUDA_CHECK(cudaMemcpy(disp->ptr<uchar>(), _output, num_pic_pixels, cudaMemcpyDeviceToHost));	
 	auto filename = _filename;
 	auto start_pos = filename.find("{it}");
 	if (start_pos != std::string::npos) {

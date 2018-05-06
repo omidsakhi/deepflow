@@ -12,7 +12,7 @@ void Loss::init() {
 	_outputs[0]->initValue({ 1,1,1,1 });
 	_alpha = _param->loss_param().alpha();
 	_beta = _param->loss_param().beta();	
-	cudaMemset(_inputs[0]->diff()->mutableData(), 0, _inputs[0]->diff()->sizeInBytes());
+	cudaMemset(_inputs[0]->diff()->gpu_data(DF_LINE), 0, _inputs[0]->diff()->bytes());
 	DF_NODE_CUDNN_CHECK(cudnnCreateReduceTensorDescriptor(&_reduceTensorDesciptor));
 	DF_NODE_CUDNN_CHECK(cudnnSetReduceTensorDescriptor(_reduceTensorDesciptor, _reduceTensorOp, CUDNN_DATA_FLOAT, CUDNN_PROPAGATE_NAN, CUDNN_REDUCE_TENSOR_NO_INDICES, CUDNN_32BIT_INDICES));
 	DF_NODE_CUDNN_CHECK(cudnnGetReductionWorkspaceSize(_cudnnHandle, _reduceTensorDesciptor, _inputs[0]->value()->descriptor(), _outputs[0]->value()->descriptor(), &_workspaceSizeInBytes));
@@ -21,7 +21,7 @@ void Loss::init() {
 
 void Loss::forward() {
 	if (_inputs[0]->value()->size() == 1) {		
-		cpy(1, one, _inputs[0]->value()->data(), zero, _outputs[0]->value()->mutableData());
+		cpy(1, one, _inputs[0]->value()->gpu_data(DF_LINE), zero, _outputs[0]->value()->gpu_data(DF_LINE));
 	}
 	else {		
 		DF_NODE_CUDNN_CHECK(
@@ -34,17 +34,17 @@ void Loss::forward() {
 				_workspaceSizeInBytes,
 				&one,
 				_inputs[0]->value()->descriptor(),
-				_inputs[0]->value()->data(),
+				_inputs[0]->value()->gpu_data(DF_LINE),
 				&zero,
 				_outputs[0]->value()->descriptor(),
-				_outputs[0]->value()->mutableData())
+				_outputs[0]->value()->gpu_data(DF_LINE))
 		);
 	}
 }
 
 void Loss::backward() {	
 	if (_inputs[0]->diff())
-		cpy(_inputs[0]->value()->size(), _alpha, _inputs[0]->value()->data(), _beta, _inputs[0]->diff()->mutableData());	
+		cpy(_inputs[0]->value()->size(), _alpha, _inputs[0]->value()->gpu_data(DF_LINE), _beta, _inputs[0]->diff()->gpu_data(DF_LINE));	
 }
 
 std::string Loss::to_cpp() const
@@ -66,6 +66,5 @@ void Loss::set_beta(float value)
 
 float Loss::loss() const
 {
-	auto val = _outputs[0]->value()->cpyToHost<float>();
-	return val->at(0);
+	return _outputs[0]->value()->to_float();	
 }

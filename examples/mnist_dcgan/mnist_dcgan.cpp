@@ -162,7 +162,7 @@ void main(int argc, char** argv) {
 				{ loss_input , discriminator_output->output(0)->value() } ,
 				{ loss_target , mnist_labels->output(0)->value() } ,
 			});
-			p_d_loss_avg.add(loss->output(0)->value()->toFloat());
+			p_d_loss_avg.add(loss->output(0)->value()->to_float());
 			std::cout << " - p_d_loss: " << p_d_loss_avg.result();
 			session->backward({ loss });
 			session->backward({ discriminator_output }, { { discriminator_output , loss_input->output(0)->diff() } });
@@ -174,7 +174,7 @@ void main(int argc, char** argv) {
 				{ loss_input , discriminator_output->output(0)->value() },
 				{ loss_target, generator_labels->output(0)->value() }
 			});
-			n_d_loss_avg.add(loss->output(0)->value()->toFloat());
+			n_d_loss_avg.add(loss->output(0)->value()->to_float());
 			std::cout << " - n_d_loss: " << n_d_loss_avg.result();
 			session->backward({ loss });
 			session->backward({ discriminator_output }, { { discriminator_output, loss_input->output(0)->diff() } });
@@ -186,7 +186,7 @@ void main(int argc, char** argv) {
 				{ loss_input , discriminator_output->output(0)->value() },
 				{ loss_target, mnist_labels->output(0)->value() }
 			});
-			float g_loss = loss->output(0)->value()->toFloat();
+			float g_loss = loss->output(0)->value()->to_float();
 			g_loss_avg.add(g_loss);
 			session->backward({ loss });
 			session->backward({ discriminator_output }, { { discriminator_output, loss_input->output(0)->diff() } });

@@ -33,7 +33,6 @@
 #include "nodes/pooling.h"
 #include "nodes/reduce.h"
 #include "nodes/equal.h"
-#include "nodes/cast_float.h"
 #include "nodes/display.h"
 #include "nodes/transposed_conv_2d.h"
 #include "nodes/square_error.h"
@@ -205,8 +204,6 @@ std::shared_ptr<Node> Session::_create_node(deepflow::NodeParam *node_param) {
 		return std::make_shared<Exp>(node_param);
 	else if (node_param->has_bias_add_param())
 		return std::make_shared<BiasAdd>(node_param);
-	else if (node_param->has_cast_float_param())
-		return std::make_shared<CastFloat>(node_param);
 	else if (node_param->has_equal_param())
 		return std::make_shared<Equal>(node_param);
 	else if (node_param->has_activation_param())
@@ -657,7 +654,7 @@ void Session::forward(std::list<std::shared_ptr<Node>> end_nodes, std::list<std:
 		path.pop_front();
 		int _verbose = node->executionContext()->debug_level;
 		LOG_IF(INFO, _verbose > 2) << "FWRD -> " << node->name();
-		node->forward();
+		node->_forward();
 		LOG_IF(FATAL, cudaPeekAtLastError() != 0) << "[FAILED] " << node->name() << " | " << cudaGetErrorString(cudaPeekAtLastError());
 	}
 }
@@ -669,16 +666,9 @@ void Session::forward(const std::string & scope, std::list<std::pair<std::shared
 
 void Session::reset_gradients(const std::string &scope)
 {
-	auto variables = _get_nodes<Variable>(scope);
-	std::list<cudaStream_t> streams;	
+	auto variables = _get_nodes<Variable>(scope);	
 	for (auto var : variables) {
-		streams.push_back(cudaStream_t());
-		cudaStreamCreate(&streams.back());
-		var->reset_gradients(streams.back());
-	}
-	for (auto stream : streams) {
-		cudaStreamSynchronize(stream);
-		cudaStreamDestroy(stream);
+		var->reset_gradients();
 	}
 }
 
@@ -705,7 +695,7 @@ void Session::backward(std::list<std::shared_ptr<Node>> end_nodes, std::list <st
 		path.pop_back();
 		int _verbose = node->executionContext()->debug_level;
 		LOG_IF(INFO, _verbose > 2) << "BWRD -> " << node->name();
-		node->backward();
+		node->_backward();
 		LOG_IF(FATAL, cudaPeekAtLastError() != 0) << "[FAILED] " << node->name() << " | " << cudaGetErrorString(cudaPeekAtLastError());
 	}
 }
@@ -717,50 +707,29 @@ void Session::backward(const std::string & scope, std::list<std::pair<std::share
 
 void Session::apply_solvers(std::list<std::string> solver_names)
 {
-	if (solver_names.size() > 0) {
-		std::list<cudaStream_t> streams;
+	if (solver_names.size() > 0) {		
 		for (auto item : _solvers) {
 			for (auto name : solver_names) {
-				if (item.second->name() == name) {
-					streams.push_back(cudaStream_t());
-					cudaStreamCreate(&streams.back());
-					item.second->apply(item.first, streams.back());
+				if (item.second->name() == name) {										
+					item.second->apply(item.first);
 				}
 			}
 		}
-		for (auto stream : streams) {
-			cudaStreamSynchronize(stream);			
-			cudaStreamDestroy(stream);
-		}
 	}
 	else {
-		std::list<cudaStream_t> streams;
 		for (auto item : _solvers) {
-			streams.push_back(cudaStream_t());
-			cudaStreamCreate(&streams.back());
-			item.second->apply(item.first, streams.back());
-		}
-		for (auto stream : streams) {
-			cudaStreamSynchronize(stream);
-			cudaStreamDestroy(stream);
+			item.second->apply(item.first);
 		}
 	}
 }
 
 void Session::apply_solvers(const std::string & scope)
-{
-	std::list<cudaStream_t> streams;
+{	
 	for (auto item : _solvers) {
 		if (!scope.empty() && item.first->scope() != scope) {			
 			continue;
 		}
-		streams.push_back(cudaStream_t());
-		cudaStreamCreate(&streams.back());
-		item.second->apply(item.first, streams.back());
-	}
-	for (auto stream : streams) {
-		cudaStreamSynchronize(stream);
-		cudaStreamDestroy(stream);
+		item.second->apply(item.first);
 	}
 }
 
@@ -850,7 +819,7 @@ void Session::print_variables_info(const std::string &scope)
 		if (output->diff()) {
 			output->diff()->statistics(&mean, &std, &min, &max);
 			LOG(INFO) << output->diff()->name() << " | " << mean << " " << std << " | " << min << " " << max;
-		}
+		}		
 	}
 }
 
@@ -858,7 +827,7 @@ void Session::print_nodes_info(const std::string &scope)
 {	
 	double mean, std, min, max;
 	for (auto node : _nodes) {
-		if (node->scope() != scope) continue;
+		if (!scope.empty() && node->scope() != scope) continue;
 		for (auto output : node->outputs()) {
 			output->value()->statistics(&mean, &std, &min, &max);
 			LOG(INFO) << output->value()->name() << " | "<< mean << " " << std << " | " << min << " " << max;
@@ -866,8 +835,17 @@ void Session::print_nodes_info(const std::string &scope)
 				output->diff()->statistics(&mean, &std, &min, &max);
 				LOG(INFO) << output->diff()->name() << " | " << mean << " " << std << " | " << min << " " << max;
 			}
+			output->value()->gpu_data(DF_LINE);
 		}
 	}	
+}
+
+void Session::print_nodes(const std::string & scope)
+{
+	for (auto node : _nodes) {
+		if (!scope.empty() && node->scope() != scope) continue;
+		node->print();
+	}
 }
 
 std::shared_ptr<Node> Session::end_node(const std::string &scope) const

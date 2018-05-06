@@ -28,9 +28,6 @@
     <CudaCompile Include="..\..\src\nodes\variable.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\src\nodes\cast_float.cu">
-      <Filter>source\nodes</Filter>
-    </CudaCompile>
     <CudaCompile Include="..\..\src\nodes\display.cu">
       <Filter>source\nodes</Filter>
     </CudaCompile>
@@ -384,9 +381,6 @@
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\bias_add.h">
-      <Filter>include\nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\nodes\cast_float.h">
       <Filter>include\nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\nodes\convolution_2d.h">

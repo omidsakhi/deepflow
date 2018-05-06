@@ -133,12 +133,12 @@ void Patching::forward()
 		int patch_w = dims[3] / _num_horizontal_patches;
 		PatchingDownKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size,  
 			_mode == deepflow::PatchingParam_Mode_DOWNSAMPLES,
-			(float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData(), dims[0], dims[1], dims[2], dims[3], patch_h, patch_w, 0);
+			_inputs[0]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE), dims[0], dims[1], dims[2], dims[3], patch_h, patch_w, 0);
 	}
 	else
 		PatchingUpKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size,
 			_mode == deepflow::PatchingParam_Mode_UPSAMPLES,
-		(float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData(), dims[0], dims[1], dims[2], dims[3], _num_vertical_patches, _num_horizontal_patches, 0);
+		_inputs[0]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE), dims[0], dims[1], dims[2], dims[3], _num_vertical_patches, _num_horizontal_patches, 0);
 	DF_KERNEL_CHECK();
 }
 
@@ -150,13 +150,13 @@ void Patching::backward()
 		if (_mode == deepflow::PatchingParam_Mode_DOWNSAMPLES || _mode == deepflow::PatchingParam_Mode_DOWNCHANNELS)
 			PatchingUpKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size,
 				_mode == deepflow::PatchingParam_Mode_DOWNSAMPLES,
-				(float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], _num_vertical_patches, _num_horizontal_patches, 0);
+				_outputs[0]->diff()->gpu_data(DF_LINE), _inputs[0]->diff()->gpu_data(DF_LINE), dims[0], dims[1], dims[2], dims[3], _num_vertical_patches, _num_horizontal_patches, 0);
 		else {
 			int patch_h = dims[2] / _num_vertical_patches;
 			int patch_w = dims[3] / _num_horizontal_patches;
 			PatchingDownKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size,
 				_mode == deepflow::PatchingParam_Mode_UPSAMPLES,
-				(float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], patch_h, patch_w, 0);
+				_outputs[0]->diff()->gpu_data(DF_LINE), _inputs[0]->diff()->gpu_data(DF_LINE), dims[0], dims[1], dims[2], dims[3], patch_h, patch_w, 0);
 		}
 		DF_KERNEL_CHECK();
 	}

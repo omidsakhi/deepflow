@@ -13,18 +13,22 @@ void BiasAdd::init() {
 	LOG_IF(FATAL, inputDim[1] != weightDim[1]) << _name << "Bias channels between input and bias weights must be the same.";
 	LOG_IF(FATAL, weightDim[0] != 1 || weightDim[2] != 1 || weightDim[3] != 1) << _name << "All bias weight dimentions must be one except channels.";
 	_bias_dim = weightDim[1];	
-	_outputs[0]->initValue(inputDim, _inputs[0]->value());
-	_outputs[0]->initDiff(inputDim, _inputs[0]->diff());
+	_outputs[0]->initValue(inputDim);
+	_outputs[0]->initDiff();
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
 }
 
-void BiasAdd::forward() {	
-	cudnnAddTensor(_cudnnHandle, &one, _inputs[1]->value()->descriptor(), _inputs[1]->value()->data(), &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData());
+void BiasAdd::forward() {
+	cudaMemcpy(_outputs[0]->value()->gpu_data(DF_LINE), _inputs[0]->value()->gpu_data(DF_LINE), _inputs[0]->value()->bytes(), cudaMemcpyDeviceToDevice);
+	cudnnAddTensor(_cudnnHandle, &one, _inputs[1]->value()->descriptor(), _inputs[1]->value()->gpu_data(DF_LINE), &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE));
 }
 
 void BiasAdd::backward() {
-	if (_inputs[1]->diff()) {		
-		cudnnConvolutionBackwardBias(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), &zero, _inputs[1]->diff()->descriptor(), _inputs[1]->diff()->mutableData());
+	if (_inputs[0]->diff()) {
+		cudaMemcpy(_inputs[0]->diff()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), _outputs[0]->diff()->bytes(), cudaMemcpyDeviceToDevice);
+	}
+	if (_inputs[1]->diff()) {
+		cudnnConvolutionBackwardBias(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(DF_LINE), &zero, _inputs[1]->diff()->descriptor(), _inputs[1]->diff()->gpu_data(DF_LINE));
 	}
 }
 

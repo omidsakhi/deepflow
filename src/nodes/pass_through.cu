@@ -20,7 +20,7 @@ void PassThrough::forward()
 void PassThrough::backward()
 {
 	if (_stop_gradients && _inputs[0]->diff())
-		cudaMemset(_inputs[0]->diff()->mutableData(), 0, _inputs[0]->diff()->sizeInBytes());
+		cudaMemset(_inputs[0]->diff()->gpu_data(DF_LINE), 0, _inputs[0]->diff()->bytes());
 }
 
 std::string PassThrough::to_cpp() const

@@ -28,14 +28,14 @@ void Square::init() {
 
 void Square::forward() {	
 	auto size = _inputs[0]->value()->size();
-	SquareKernelForward <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData());
+	SquareKernelForward <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, _inputs[0]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE));
 	DF_KERNEL_CHECK();
 }
 
 void Square::backward() {
 	if (_inputs[0]->diff()) {
 		auto size = _inputs[0]->value()->size();
-		SquareKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
+		SquareKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE));
 		DF_KERNEL_CHECK();
 	}
 }

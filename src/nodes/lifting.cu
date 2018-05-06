@@ -184,13 +184,13 @@ void Lifting::forward()
 	auto size = _inputs[0]->value()->size();
 	auto dims = _inputs[0]->dims();
 	if (_mode == deepflow::LiftingParam_Mode_DOWN_REGULAR)
-		LiftDownRegularKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
+		LiftDownRegularKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE), dims[0], dims[1], dims[2], dims[3], 0);
 	else if (_mode == deepflow::LiftingParam_Mode_DOWN_FLIP)
-		LiftDownFlipKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
+		LiftDownFlipKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE), dims[0], dims[1], dims[2], dims[3], 0);
 	else if (_mode == deepflow::LiftingParam_Mode_UP_REGULAR)
-		LiftUpRegularKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
+		LiftUpRegularKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE), dims[0], dims[1], dims[2], dims[3], 0);
 	else if (_mode == deepflow::LiftingParam_Mode_UP_FLIP)
-		LiftUpFlipKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
+		LiftUpFlipKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE), dims[0], dims[1], dims[2], dims[3], 0);
 	else 
 		LOG(FATAL);
 	DF_KERNEL_CHECK();
@@ -202,13 +202,13 @@ void Lifting::backward()
 		auto size = _outputs[0]->diff()->size();
 		auto dims = _outputs[0]->dims();
 		if (_mode == deepflow::LiftingParam_Mode_DOWN_REGULAR)
-			LiftUpRegularKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
+			LiftUpRegularKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE), dims[0], dims[1], dims[2], dims[3], 0);
 		else if (_mode == deepflow::LiftingParam_Mode_DOWN_FLIP)
-			LiftUpFlipKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
+			LiftUpFlipKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE), dims[0], dims[1], dims[2], dims[3], 0);
 		else if (_mode == deepflow::LiftingParam_Mode_UP_REGULAR)
-			LiftDownRegularKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
+			LiftDownRegularKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE), dims[0], dims[1], dims[2], dims[3], 0);
 		else if (_mode == deepflow::LiftingParam_Mode_UP_FLIP)
-			LiftDownFlipKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData(), dims[0], dims[1], dims[2], dims[3], 0);
+			LiftDownFlipKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE), dims[0], dims[1], dims[2], dims[3], 0);
 		else
 			LOG(FATAL);
 		DF_KERNEL_CHECK();

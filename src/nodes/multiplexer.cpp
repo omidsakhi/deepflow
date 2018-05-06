@@ -21,7 +21,7 @@ void Multiplexer::init()
 		LOG_IF(FATAL, dims != firstInputDim) << _name << " Mismatch size for input " << i << " " << _inputs[0]->value()->shape() << " != " << _inputs[i]->value()->shape();
 	}
 	_outputs[0]->initValue(firstInputDim);
-	_output_size_in_bytes = _outputs[0]->value()->sizeInBytes();
+	_output_size_in_bytes = _outputs[0]->value()->bytes();
 	_outputs[0]->initDiff();	
 }
 
@@ -33,7 +33,7 @@ void Multiplexer::forward()
 	}
 	LOG_IF(FATAL, _selected_input >= _num_inputs) << _name << " INPUT TO SELECTOR MUST BE LESS THAN " << (_num_inputs - 1);
 	LOG_IF(INFO, _verbose > 2) << "MULTIPLEXER FORWARD " << _name << " - SELECTED INPUT " << _inputs[_selected_input]->connectedNode()->name();
-	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->mutableData(), _inputs[_selected_input]->value()->data(), _output_size_in_bytes, cudaMemcpyDeviceToDevice))
+	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->gpu_data(DF_LINE), _inputs[_selected_input]->value()->gpu_data(DF_LINE), _output_size_in_bytes, cudaMemcpyDeviceToDevice))
 }
 
 void Multiplexer::backward()
@@ -42,14 +42,14 @@ void Multiplexer::backward()
 		LOG_IF(INFO, _verbose > 2) << _name << " MULTIPLEXER OFF";
 		for (auto input : _inputs) {
 			if (input->diff())
-				fill(input->diff()->size(), 0, input->diff()->mutableData());
+				fill(input->diff()->size(), 0, input->diff()->gpu_data(DF_LINE));
 		}
 		return;
 	}
 	auto input = _inputs[_selected_input];
 	if (input->diff()) {
 		LOG_IF(INFO, _verbose > 2) << "MULTIPLEXER BACKWARD " << _name << " - SELECTED INPUT " << _inputs[_selected_input]->connectedNode()->name();
-		cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->data(), 0, input->diff()->mutableData());
+		cpy(_outputs[0]->diff()->size(), 1, _outputs[0]->diff()->gpu_data(DF_LINE), 0, input->diff()->gpu_data(DF_LINE));
 	}
 }
 

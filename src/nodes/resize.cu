@@ -92,8 +92,8 @@ void Resize::forward() {
 		dims[3] * m_width_scale,
 		m_height_scale,
 		m_width_scale,
-		(float*)_inputs[0]->value()->data(),
-		(float*)_outputs[0]->value()->mutableData());
+		_inputs[0]->value()->gpu_data(DF_LINE),
+		(float*)_outputs[0]->value()->gpu_data(DF_LINE));
 	DF_KERNEL_CHECK();
 }
 
@@ -102,7 +102,7 @@ void Resize::backward() {
 		auto size = _outputs[0]->value()->size();
 		auto output_dims = _outputs[0]->value()->dims();
 		auto input_dims = _inputs[0]->value()->dims();
-		DF_CUDA_CHECK(cudaMemset(_inputs[0]->diff()->mutableData(), 0, _inputs[0]->diff()->sizeInBytes()));
+		DF_CUDA_CHECK(cudaMemset(_inputs[0]->diff()->gpu_data(DF_LINE), 0, _inputs[0]->diff()->bytes()));
 		NearestNeighborGradientKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (
 			size,
 			output_dims[1],
@@ -112,8 +112,8 @@ void Resize::backward() {
 			input_dims[3],
 			m_height_scale,
 			m_width_scale,
-			(float*)_outputs[0]->diff()->data(),
-			(float*)_inputs[0]->diff()->mutableData());
+			_outputs[0]->diff()->gpu_data(DF_LINE),
+			(float*)_inputs[0]->diff()->gpu_data(DF_LINE));
 		DF_KERNEL_CHECK();
 	}
 }

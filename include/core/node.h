@@ -40,6 +40,8 @@ public:
 	virtual int minNumOutputs() = 0;
 	virtual void forward() = 0;
 	virtual void backward() = 0;	
+	void _forward();
+	void _backward();
 	virtual bool is_generator() { return false; }
 	virtual bool is_last_batch() { return false; }
 	virtual std::string to_cpp() const = 0;
@@ -53,10 +55,10 @@ public:
 	void write_values(std::initializer_list<float> values);
 	void write_diffs(std::shared_ptr<Tensor> tensor, float alpha = 1.0, float beta = 0.0f);	
 	void write_diffs(std::initializer_list<float> values);
-	void cpy(int n, const float alpha, const void *src, const float beta, void *dst, cudaStream_t stream = 0);
+	void cpy(int n, const float alpha, const void *src, const float beta, void *dst);
 	void dot(const int n, const float alpha, const void *a, const void *b, const float beta, void *dst);
-	void fill(int n, const float value, void *dst, const float beta = 0, cudaStream_t stream = 0);
-	void fill(const float value, cudaStream_t stream = 0);
+	void fill(int n, const float value, void *dst, const float beta = 0);
+	void fill(const float value);
 	std::vector<NodeInputPtr> &inputs();
 	std::vector<NodeOutputPtr> &outputs();
 	NodeInputPtr input(int index);
@@ -68,6 +70,7 @@ public:
 	ExecutionContextPtr executionContext();
 	virtual std::list<std::shared_ptr<Node>> inputNodes() const;
 	virtual std::list<std::shared_ptr<Node>> outputNodes() const;
+	void print();
 protected:	
 	std::vector<NodeInputPtr> _inputs;
 	std::vector<NodeOutputPtr> _outputs;

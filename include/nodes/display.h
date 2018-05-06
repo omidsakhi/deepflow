@@ -8,7 +8,7 @@ class DeepFlowDllExport Display : public Node {
 public:
 	Display(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
-	int minNumOutputs() { return 1; }	
+	int minNumOutputs() { return 0; }	
 	std::string op_name() const override { return "display"; }
 	void init();	
 	void forward();
@@ -34,4 +34,5 @@ private:
 	int _iter_frequency = 1;
 	bool _draw_iteration = true;
 	deepflow::ActionType _display_type;
+	unsigned char *_output = nullptr;
 };

@@ -19,7 +19,7 @@ void IndexFill::apply(Node *node) {
 	float offset = _param->index_fill_param().offset();
 	DF_KERNEL_CHECK();
 	for (auto output : node->outputs()) {		
-		IndexFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)output->value()->mutableData(), offset);		
+		IndexFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, (float*)output->value()->gpu_data(DF_LINE), offset);		
 		DF_KERNEL_CHECK();
 	}
 

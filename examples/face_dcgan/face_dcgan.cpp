@@ -13,7 +13,7 @@ DEFINE_int32(z_dim, 100, "Z dimention");
 DEFINE_int32(total, 200000, "Total images");
 DEFINE_int32(batch, 40, "Batch size");
 DEFINE_int32(debug, 0, "Debug Level");
-DEFINE_int32(iter, 200000, "Maximum iterations");
+DEFINE_int32(iter, 2000000, "Maximum iterations");
 DEFINE_string(load, "", "Load from face_dcganXXXX.bin");
 DEFINE_int32(save_image, 100, "Save image iteration frequency (Don't Save = 0)");
 DEFINE_int32(save_model, 1000, "Save model iteration frequency (Don't Save = 0)");
@@ -33,7 +33,7 @@ void create_loss(DeepFlow *df, int num) {
 
 	auto discriminator_input = df->place_holder({ FLAGS_batch, 1, 1, 1 }, PlaceholderOp("loss" + std::to_string(num) + "_input"));	
 	auto discriminator_target = df->place_holder({ FLAGS_batch, 1, 1, 1 }, PlaceholderOp("loss" + std::to_string(num) + "_target"));
-	std::string err = df->reduce_all(df->square_error(discriminator_input, discriminator_target));
+	std::string err = df->square_error(discriminator_input, discriminator_target);
 	df->loss(err, LossOp("loss" + std::to_string(num)));
 }
 
@@ -42,47 +42,59 @@ void create_generator(DeepFlow *df) {
 	df->with("generator");
 
 	int fn = 64;
-	float ef = 0.001f;
+	float ef = 0.01f;
 
-	auto solver = df->adam_solver( AdamSolverOp("g_adam").lr(0.0002f).beta1(0.0f).beta2(0.98f));
+	auto solver = df->adam_solver( AdamSolverOp("g_adam").lr(0.0002f).beta1(0.5f).beta2(0.98f));
 	
 	auto node = df->place_holder({ FLAGS_batch, FLAGS_z_dim, 1, 1 }, PlaceholderOp("g_input"));
 
 	node = df->dense(node, { FLAGS_z_dim, fn * 4, 4 , 4 }, solver, DenseOp("gfc").no_bias());
-	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("gfc_bn").exponent_factor(ef));
+	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("gfc_bn").exponent_factor(ef));	
 	node = df->relu(node);
 
-	node = df->transposed_conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("g8_1").kernel(3).pad(1).stride(2));
+	node = df->transposed_conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("g8_1").kernel(3).stride(2));
 	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g8_1_bn").exponent_factor(ef));
 	node = df->relu(node);
 
-	node = df->transposed_conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("g8_2").kernel(3).pad(1).stride(1));
+	node = df->transposed_conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("g8_2").kernel(3).stride(1));
 	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g8_2_bn").exponent_factor(ef));
+	auto g8 = node;
 	node = df->relu(node);
 
-	node = df->transposed_conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("g16_1").kernel(3).pad(1).stride(2));
+	node = df->transposed_conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("g16_1").kernel(3).stride(2));
 	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g16_1_bn").exponent_factor(ef));
 	node = df->relu(node);
 
-	node = df->transposed_conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("g16_2").kernel(3).pad(1).stride(1));
+	node = df->transposed_conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("g16_2").kernel(3).stride(1));
 	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g16_2_bn").exponent_factor(ef));
+	auto g16 = node;
 	node = df->relu(node);
 
-	node = df->transposed_conv2d(node, fn * 4, fn * 2, solver, ConvolutionOp("g32").kernel(3).pad(1).stride(2));
-	node = df->batch_normalization(node, fn * 2, solver, BatchNormalizationOp("g32_bn").exponent_factor(ef));
+	node = df->transposed_conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("g32_1").kernel(3).stride(2));
+	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g32_1_bn").exponent_factor(ef));
 	node = df->relu(node);
 
-	node = df->transposed_conv2d(node, fn * 2, fn * 2, solver, ConvolutionOp("g64").kernel(3).pad(1).stride(2));
-	node = df->batch_normalization(node, fn * 2, solver, BatchNormalizationOp("g64_bn").exponent_factor(ef));
+	node = df->transposed_conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("g32_2").kernel(3).stride(1));
+	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g32_2_bn").exponent_factor(ef));
+	auto g32 = node;
 	node = df->relu(node);
 
-	node = df->transposed_conv2d(node, fn * 2, fn, solver, ConvolutionOp("g128_1").kernel(3).pad(1).stride(2));
-	node = df->batch_normalization(node, fn, solver, BatchNormalizationOp("g128_1_bn").exponent_factor(ef));
+	node = df->lifting(node, LiftingOp().up()); // 64x64
+
+	node = df->transposed_conv2d(node, fn, fn * 4, solver, ConvolutionOp("g64").kernel(3).stride(1));
+	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g64_bn").exponent_factor(ef));
 	node = df->relu(node);
 
-	node = df->transposed_conv2d(node, fn, 3, solver, ConvolutionOp("g128_2").kernel(3).pad(1).stride(1));
+	node = df->lifting(node, LiftingOp().up()); // 128x128
 
-	node = df->tanh(node, TanhOp("g_output"));
+	node = df->transposed_conv2d(node, fn, fn * 4, solver, ConvolutionOp("g128_1").kernel(3).stride(1));
+	node = df->batch_normalization(node, fn * 4, solver, BatchNormalizationOp("g128_1_bn").exponent_factor(ef));
+	node = df->add(df->resize(g8, 16, 16), node);
+	node = df->add(df->resize(g16, 8, 8), node);
+	node = df->add(df->resize(g32, 4, 4), node);
+	node = df->relu(node);
+
+	node = df->transposed_conv2d(node, fn * 4, 3, solver, ConvolutionOp("g128_2").kernel(3).stride(1));
 	
 }
 
@@ -96,22 +108,32 @@ void create_discriminator(DeepFlow *df) {
 
 	auto node = df->place_holder({ FLAGS_batch , FLAGS_channels, FLAGS_size, FLAGS_size }, PlaceholderOp("d_input"));	
 
-	node = df->conv2d(node, 3, fn, solver, ConvolutionOp("d64").kernel(5).pad(2).stride(2).with_bias());
+	node = df->lifting(node, LiftingOp().down().with_flip()); // 64x64
+
+	node = df->conv2d(node, 3 * 4, fn, solver, ConvolutionOp("d641").kernel(3).stride(1).with_bias());	
 	node = df->leaky_relu(node);
 
-	node = df->conv2d(node, fn, fn * 2, solver, ConvolutionOp("d32").kernel(5).pad(2).stride(2).with_bias());	
+	node = df->lifting(node, LiftingOp().down().with_flip()); // 32x32
+
+	node = df->conv2d(node, fn * 4, fn * 2, solver, ConvolutionOp("d321").kernel(3).stride(1).with_bias());
 	node = df->leaky_relu(node);
 
-	node = df->conv2d(node, fn * 2, fn * 4, solver, ConvolutionOp("d16").kernel(5).pad(2).stride(2).with_bias());	
+	node = df->lifting(node, LiftingOp().down().with_flip()); // 16x16
+
+	node = df->conv2d(node, fn * 8, fn * 2, solver, ConvolutionOp("d16").kernel(3).stride(1).with_bias());
 	node = df->leaky_relu(node);
 
-	node = df->conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("d8").kernel(5).pad(2).stride(2).with_bias());	
+	node = df->lifting(node, LiftingOp().down().with_flip()); // 8x8
+
+	node = df->conv2d(node, fn * 8, fn * 4, solver, ConvolutionOp("d6").kernel(3).pad(0).stride(1).with_bias());
 	node = df->leaky_relu(node);
 
-	node = df->conv2d(node, fn * 4, fn * 8, solver, ConvolutionOp("d4").kernel(5).pad(2).stride(2).with_bias());	
+	node = df->conv2d(node, fn * 4, fn * 4, solver, ConvolutionOp("d4").kernel(3).pad(0).stride(1).with_bias());
 	node = df->leaky_relu(node);
 
-	df->dense(node, { (fn * 8) * 4 * 4, 1, 1, 1 }, solver, DenseOp("d_output").with_bias());	
+	node = df->dense(node, { (fn * 4) * 4 * 4, 1, 1, 1 }, solver, DenseOp("ddense").with_bias());	
+
+	df->sigmoid(node, SigmoidOp("d_output"));
 }
 
 void main(int argc, char** argv) {
@@ -179,8 +201,6 @@ void main(int argc, char** argv) {
 		if (!FLAGS_load.empty())
 			iter = std::stoi(FLAGS_load) + 1;
 
-		float alpha = 0.01f;
-
 		session->forward({ face_labels });
 		session->forward({ generator_labels });
 
@@ -189,16 +209,13 @@ void main(int argc, char** argv) {
 			execution_context->current_iteration = iter;
 			std::cout << "Iteration: [" << iter << "/" << FLAGS_iter << "]";
 
-			loss1->set_alpha(alpha);
-			loss1->set_beta(1 - alpha);
-
 			session->forward({ face_data });
 			session->forward({ discriminator_output }, { { discriminator_input, face_data->output(0)->value() } });
 			session->forward({ loss1 }, {
 				{ loss1_input , discriminator_output->output(0)->value() } ,
 				{ loss1_target , face_labels->output(0)->value() } ,
 			});
-			p_d_loss_avg.add(loss1->output(0)->value()->toFloat());
+			p_d_loss_avg.add(loss1->output(0)->value()->to_float());
 			std::cout << " - p_d_loss: " << p_d_loss_avg.result();
 			session->backward({ loss1 });
 			session->backward({ discriminator_output }, { { discriminator_output , loss1_input->output(0)->diff() } });
@@ -210,22 +227,19 @@ void main(int argc, char** argv) {
 				{ loss1_input , discriminator_output->output(0)->value() },
 				{ loss1_target, generator_labels->output(0)->value() }
 			});
-			n_d_loss_avg.add(loss1->output(0)->value()->toFloat());
+			n_d_loss_avg.add(loss1->output(0)->value()->to_float());
 			std::cout << " - n_d_loss: " << n_d_loss_avg.result();
 			session->backward({ loss1 });
 			session->backward({ discriminator_output }, { { discriminator_output, loss1_input->output(0)->diff() } });
 
 			session->apply_solvers("discriminator");
 
-			loss2->set_alpha(alpha);
-			loss2->set_beta(1 - alpha);
-
 			session->forward({ discriminator_output }, { { discriminator_input, generator_output->output(0)->value() } });
 			session->forward({ loss2 }, {
 				{ loss2_input , discriminator_output->output(0)->value() },
 				{ loss2_target, face_labels->output(0)->value() }
 			});
-			float g_loss = loss2->output(0)->value()->toFloat();
+			float g_loss = loss2->output(0)->value()->to_float();
 			g_loss_avg.add(g_loss);
 			session->backward({ loss2 });
 			session->backward({ discriminator_output }, { { discriminator_output, loss2_input->output(0)->diff() } });

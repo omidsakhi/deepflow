@@ -49,6 +49,7 @@ public:
 	void print_total_parameters(const std::string &scope);
 	void print_variables_info(const std::string &scope);
 	void print_nodes_info(const std::string &scope);
+	void print_nodes(const std::string &scope);
 	std::shared_ptr<Node> end_node(const std::string &scope) const;
 	std::list<std::shared_ptr<Node>> end_nodes(const std::string &scope) const;
 	bool check_quit() { return _execution_context->quit; }

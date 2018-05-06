@@ -21,16 +21,8 @@ Initializer::Initializer(deepflow::InitParam *param) : CudaHelper() {
 		break;
 	default:
 		LOG(FATAL) << "Unsupported shape.";
-	}
-	_reader_type = (Tensor::TensorType) tensorParam.type();
+	}	
 }
-/*
-Initializer::Initializer(std::array<int, 4> dims, Tensor::TensorType type) {
-	_dims = dims;
-	_reader_type = type;
-	_param = new deepflow::InitParam;
-}
-*/
 
 std::array<int, 4> Initializer::dims() const {
 	return _dims;

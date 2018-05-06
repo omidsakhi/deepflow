@@ -52,13 +52,13 @@ void BatchStdDev::forward()
 			_workspaceSizeInBytes,
 			&one,
 			_inputs[0]->value()->descriptor(),
-			_inputs[0]->value()->data(),
+			_inputs[0]->value()->gpu_data(DF_LINE),
 			&zero,
 			_avgDesc1,
 			_d_avg)
 	);	
 	float alpha = 1.0f / sqrt(_inner_dim - 1);
-	StdDevKernel <<< numOfBlocks(_inner_dim), maxThreadsPerBlock >>> (_inner_dim, _inner_dim, (float*)_inputs[0]->value()->data(), _d_avg,  _d_std);
+	StdDevKernel <<< numOfBlocks(_inner_dim), maxThreadsPerBlock >>> (_inner_dim, _inner_dim, _inputs[0]->value()->gpu_data(DF_LINE), _d_avg,  _d_std);
 	DF_NODE_KERNEL_CHECK();
 	DF_NODE_CUDNN_CHECK(
 		cudnnReduceTensor(
@@ -73,14 +73,14 @@ void BatchStdDev::forward()
 			_d_std,
 			&zero,
 			_outputs[0]->value()->descriptor(),
-			_outputs[0]->value()->mutableData())
+			_outputs[0]->value()->gpu_data(DF_LINE))
 	);
 }
 
 void BatchStdDev::backward()
 {
 	if (_inputs[0]->diff()) {
-		cudaMemset(_inputs[0]->diff()->mutableData(), 0, _inputs[0]->diff()->sizeInBytes());
+		cudaMemset(_inputs[0]->diff()->gpu_data(DF_LINE), 0, _inputs[0]->diff()->bytes());
 	}
 }
 

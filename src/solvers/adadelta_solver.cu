@@ -30,7 +30,7 @@ AdaDeltaSolver::AdaDeltaSolver(deepflow::SolverParam *param) : Solver(param) {
 	_learning_rate = param->learning_rate();
 }
 
-void AdaDeltaSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {
+void AdaDeltaSolver::apply(std::shared_ptr<Variable> var) {
 	auto context = var->executionContext();
 	bool verbos = (context && context->debug_level > 3) ? true : false;
 	if (_initialized == false) {
@@ -41,14 +41,14 @@ void AdaDeltaSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {
 		return;
 	LOG_IF(INFO, verbos) << "applying solver " << name() << " ON " << var->name();	
 	auto size = var->output(0)->value()->size();
-	AdaDeltaKernel << <numOfBlocks(size), maxThreadsPerBlock, 0, stream >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _h1, _h2, _my_param->momentum(), _learning_rate, _my_param->delta());
+	AdaDeltaKernel << <numOfBlocks(size), maxThreadsPerBlock, 0>> > (size, (float*)var->output(0)->value()->gpu_data(DF_LINE), (float*)var->gradients(), _h1, _h2, _my_param->momentum(), _learning_rate, _my_param->delta());
 	DF_KERNEL_CHECK();
-	var->reset_gradients(stream);
+	var->reset_gradients();
 }
 
 void AdaDeltaSolver::init(std::shared_ptr<Variable> var) {
 	auto size = var->output(0)->value()->size();
-	auto sizeInBytes = var->output(0)->value()->sizeInBytes();
+	auto sizeInBytes = var->output(0)->value()->bytes();
 	DF_CUDA_CHECK(cudaMalloc(&_h1, sizeInBytes));
 	FillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, _h1);
 	DF_KERNEL_CHECK();

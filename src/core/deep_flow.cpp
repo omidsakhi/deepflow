@@ -283,16 +283,6 @@ std::string DeepFlow::truncated_normal(std::initializer_list<int> dims, float me
 	return init_param->name();
 }
 
-std::string DeepFlow::cast_float(std::string input, CastFloatOp &params) {
-	auto node_param = _block->add_node_param();
-	add_scope(node_param, _scope, params._scope);
-	node_param->set_name(_block->get_unique_node_param_name(params._name));
-	add_outputs(node_param, 1);
-	node_param->add_input(input);	
-	node_param->mutable_cast_float_param();
-	return node_param->output(0);
-}
-
 std::string DeepFlow::softmax(std::string a, SoftmaxOp &params) {
 	auto node_param = _block->add_node_param();
 	add_scope(node_param, _scope, params._scope);
@@ -699,12 +689,11 @@ void DeepFlow::logger(std::list<std::string> inputs, std::string file_path, std:
 	logger_param->set_logging_type((deepflow::ActionType)type);
 }
 
-std::string DeepFlow::display(std::string input, DisplayOp &params)
+void DeepFlow::display(std::string input, DisplayOp &params)
 {
 	auto node_param = _block->add_node_param();
 	add_scope(node_param, _scope, params._scope);
-	node_param->set_name(_block->get_unique_node_param_name(params._name));
-	add_outputs(node_param, 1);
+	node_param->set_name(_block->get_unique_node_param_name(params._name));	
 	node_param->add_input(input);
 	auto display_param = node_param->mutable_display_param();
 	display_param->set_delay_msec(params._delay_msec);
@@ -716,20 +705,17 @@ std::string DeepFlow::display(std::string input, DisplayOp &params)
 	display_param->set_display_type((deepflow::ActionType)type);
 	display_param->set_draw_iteration(params._draw_iterations);
 	display_param->set_epoch_frequency(params._epoch_freuqency);
-	display_param->set_iter_frequency(params._iter_frequency);
-	return node_param->output(0);
+	display_param->set_iter_frequency(params._iter_frequency);	
 }
 
-std::string DeepFlow::imwrite(std::string input, std::string filename, ImwriteOp &params)
+void DeepFlow::imwrite(std::string input, std::string filename, ImwriteOp &params)
 {
 	auto node_param = _block->add_node_param();
 	add_scope(node_param, _scope, params._scope);
-	node_param->set_name(_block->get_unique_node_param_name(params._name));
-	add_outputs(node_param, 1);
+	node_param->set_name(_block->get_unique_node_param_name(params._name));	
 	node_param->add_input(input);
 	auto writer_param = node_param->mutable_image_writer_param();
-	writer_param->set_filename(filename);	
-	return node_param->output(0);
+	writer_param->set_filename(filename);		
 }
 
 void DeepFlow::psnr(std::string a, std::string b, PsnrOp &params)

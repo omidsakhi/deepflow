@@ -41,18 +41,18 @@ void Add::init() {
 
 void Add::forward() {	
 	DF_NODE_CUDNN_CHECK(
-	cudnnOpTensor(_cudnnHandle, _opTensorDesc, &_alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &_beta, _inputs[1]->value()->descriptor(), _inputs[1]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData())
+	cudnnOpTensor(_cudnnHandle, _opTensorDesc, &_alpha, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE), &_beta, _inputs[1]->value()->descriptor(), _inputs[1]->value()->gpu_data(DF_LINE), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE))
 	);
 }
 
 void Add::backward() {
 	if (_inputs[0]->diff()) {
-		cudaMemcpy(_inputs[0]->diff()->mutableData(), _outputs[0]->diff()->data(), _outputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice);
-		cudnnScaleTensor(_cudnnHandle, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData(), &_alpha);
+		cudaMemcpy(_inputs[0]->diff()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), _outputs[0]->diff()->bytes(), cudaMemcpyDeviceToDevice);
+		cudnnScaleTensor(_cudnnHandle, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data(DF_LINE), &_alpha);
 	}
 	if (_inputs[1]->diff()) {
-		cudaMemcpy(_inputs[1]->diff()->mutableData(), _outputs[0]->diff()->data(), _outputs[0]->diff()->sizeInBytes(), cudaMemcpyDeviceToDevice);
-		cudnnScaleTensor(_cudnnHandle, _inputs[1]->diff()->descriptor(), _inputs[1]->diff()->mutableData(), &_beta);
+		cudaMemcpy(_inputs[1]->diff()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), _outputs[0]->diff()->bytes(), cudaMemcpyDeviceToDevice);
+		cudnnScaleTensor(_cudnnHandle, _inputs[1]->diff()->descriptor(), _inputs[1]->diff()->gpu_data(DF_LINE), &_beta);
 	}
 }
 

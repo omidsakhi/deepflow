@@ -29,7 +29,7 @@ void Log::init() {
 void Log::forward() {
 	auto size = _inputs[0]->value()->size();
 	auto coef = _param->log_param().coef();
-	LogKernelForward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, coef, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->value()->mutableData());
+	LogKernelForward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, coef, _inputs[0]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE));
 	DF_KERNEL_CHECK();
 }
 
@@ -37,7 +37,7 @@ void Log::backward() {
 	if (_inputs[0]->diff()) {
 		auto size = _inputs[0]->value()->size();
 		auto coef = _param->log_param().coef();
-		LogKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, coef, (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
+		LogKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, coef, _inputs[0]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE));
 		DF_KERNEL_CHECK();
 	}
 }

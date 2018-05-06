@@ -16,8 +16,6 @@ void BatchNormalization::init()
 	output->initValue(inputDims);
 	_xDesc = input->value()->descriptor();
 	_yDesc = output->value()->descriptor();
-	_x = (float*)input->value()->mutableData();
-	_y = (float*)output->value()->mutableData();
 	
 	std::array<int, 4> scaleBiasExpectedDims;
 
@@ -72,19 +70,16 @@ void BatchNormalization::init()
 	if (_eps < CUDNN_BN_MIN_EPSILON)
 		_eps = CUDNN_BN_MIN_EPSILON;
 	LOG_IF(FATAL, _exp_avg_factor == 0) << "Average factor cannot be zero.";
-	_bnScale = (float*)_inputs[1]->value()->data();
-	_bnBias = (float*)_inputs[2]->value()->data();
 
-	_outputs[0]->initDiff();	
-	_dy = (float*)_outputs[0]->diff()->mutableData();
-	if (_inputs[0]->diff())
-		_dx = (float*)_inputs[0]->diff()->mutableData();
-	_resultBnScaleDiff = (float*)_inputs[1]->diff()->mutableData();
-	_resultBnBiasDiff = (float*)_inputs[2]->diff()->mutableData();
+	_outputs[0]->initDiff();		
 }
 
 void BatchNormalization::forward()
 {
+	float * _x = _inputs[0]->value()->gpu_data(DF_LINE);
+	float * _y = _outputs[0]->value()->gpu_data(DF_LINE);
+	float *_bnScale = _inputs[1]->value()->gpu_data(DF_LINE);
+	float *_bnBias = _inputs[2]->value()->gpu_data(DF_LINE);
 	if (_context->execution_mode == ExecutionContext::TRAIN) {
 		DF_NODE_CUDNN_CHECK(
 			cudnnBatchNormalizationForwardTraining(
@@ -131,6 +126,12 @@ void BatchNormalization::forward()
 void BatchNormalization::backward()
 {		
 	if (_inputs[0]->diff()) {
+		float *_dy = _outputs[0]->diff()->gpu_data(DF_LINE);
+		float *_dx = _inputs[0]->diff()->gpu_data(DF_LINE);
+		float * _x = _inputs[0]->value()->gpu_data(DF_LINE);
+		float *_bnScale = _inputs[1]->value()->gpu_data(DF_LINE);		
+		float * _resultBnScaleDiff = (float*)_inputs[1]->diff()->gpu_data(DF_LINE);
+		float * _resultBnBiasDiff = (float*)_inputs[2]->diff()->gpu_data(DF_LINE);
 		DF_NODE_CUDNN_CHECK(
 			cudnnBatchNormalizationBackward(
 				_cudnnHandle,

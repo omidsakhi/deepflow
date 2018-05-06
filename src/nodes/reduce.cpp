@@ -57,8 +57,8 @@ void Reduce::init() {
 	auto outputDims = inputDims;
 	outputDims[reduceDim] = 1;
 
-	_outputs[0]->initValue(outputDims, Tensor::Float);
-	_outputs[1]->initValue(outputDims, Tensor::Int32);	
+	_outputs[0]->initValue(outputDims);
+	//_outputs[1]->initValue(outputDims, Tensor::Int32);	
 	
 	if (requiresIndices())
 		_reduceTensorIndices = CUDNN_REDUCE_TENSOR_FLATTENED_INDICES;
@@ -90,16 +90,16 @@ void Reduce::forward() {
 		cudnnReduceTensor(
 			_cudnnHandle,
 			_reduceTensorDesciptor,
-			requiresIndices() ? _outputs[1]->value()->mutableData() : 0,
-			requiresIndices() ? _outputs[1]->value()->sizeInBytes() : 0,
+			requiresIndices() ? _outputs[1]->value()->gpu_data(DF_LINE) : 0,
+			requiresIndices() ? _outputs[1]->value()->bytes() : 0,
 			_d_workspace,
 			_workspaceSizeInBytes,
 			&one,
 			_inputs[0]->value()->descriptor(),
-			_inputs[0]->value()->data(),
+			_inputs[0]->value()->gpu_data(DF_LINE),
 			&zero,
 			_outputs[0]->value()->descriptor(),
-			_outputs[0]->value()->mutableData()));
+			_outputs[0]->value()->gpu_data(DF_LINE)));
 }
 
 void Reduce::backward() {

@@ -20,7 +20,7 @@ void TruncatedNormal::apply(Node *node) {
 				value = distribution(generator);
 			h_rand[i] = value;
 		}
-		DF_CUDA_CHECK(cudaMemcpy((float*)output->value()->mutableData(), h_rand, output->value()->sizeInBytes(), cudaMemcpyHostToDevice));
+		DF_CUDA_CHECK(cudaMemcpy((float*)output->value()->gpu_data(DF_LINE), h_rand, output->value()->bytes(), cudaMemcpyHostToDevice));
 	}
 	delete[] h_rand;
 }

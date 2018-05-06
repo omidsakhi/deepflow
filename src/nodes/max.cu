@@ -37,7 +37,7 @@ void Max::init()
 void Max::forward()
 {
 	auto size = _inputs[0]->value()->size();
-	MaxForwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->value()->mutableData());
+	MaxForwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE));
 	DF_KERNEL_CHECK();
 }
 
@@ -45,11 +45,11 @@ void Max::backward()
 {
 	auto size = _inputs[0]->value()->size();
 	if (_inputs[0]->diff()) {
-		MaxBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[0]->diff()->mutableData());
+		MaxBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE));
 		DF_KERNEL_CHECK();
 	}
 	if (_inputs[1]->diff()) {
-		MaxBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)_inputs[1]->value()->data(), (float*)_inputs[0]->value()->data(), (float*)_outputs[0]->diff()->data(), (float*)_inputs[1]->diff()->mutableData());
+		MaxBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[1]->value()->gpu_data(DF_LINE), _inputs[0]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[1]->diff()->gpu_data(DF_LINE));
 		DF_KERNEL_CHECK();
 	}
 }

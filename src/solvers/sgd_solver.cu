@@ -21,7 +21,7 @@ SGDSolver::SGDSolver(deepflow::SolverParam *param) : Solver(param) {
 	_learning_rate = param->learning_rate();
 }
 
-void SGDSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {
+void SGDSolver::apply(std::shared_ptr<Variable> var) {
 	auto context = var->executionContext();
 	bool verbos = (context && context->debug_level > 3) ? true : false;
 	if (_initialized == false) {
@@ -32,14 +32,14 @@ void SGDSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {
 		return;
 	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name();
 	auto size = var->output(0)->value()->size();
-	ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock, 0, stream>> > (size, _my_param->momentum(), _learning_rate, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _h);
+	ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock, 0>> > (size, _my_param->momentum(), _learning_rate, (float*)var->output(0)->value()->gpu_data(DF_LINE), (float*)var->gradients(), _h);
 	DF_KERNEL_CHECK();
-	var->reset_gradients(stream);
+	var->reset_gradients();
 }
 
 void SGDSolver::init(std::shared_ptr<Variable> var) {
 	auto size = var->output(0)->value()->size();
-	auto sizeInBytes = var->output(0)->value()->sizeInBytes();
+	auto sizeInBytes = var->output(0)->value()->bytes();
 	DF_CUDA_CHECK(cudaMalloc(&_h, sizeInBytes));
 	DF_CUDA_CHECK(cudaMemset(_h, 0, sizeInBytes));
 	_initialized = true;

@@ -120,9 +120,9 @@ std::shared_ptr<Tensor> NodeOutput::diff() {
 	return _diff;
 }
 
-void NodeOutput::initValue(std::array<int, 4> dims, Tensor::TensorType type) {
+void NodeOutput::initValue(std::array<int, 4> dims) {
 	LOG_IF(FATAL, _value != nullptr) << "_value != nullptr";
-	_value = std::make_shared<Tensor>(dims,type, _name + "_v");
+	_value = std::make_shared<Tensor>(dims, _name + "_v");
 }
 
 void NodeOutput::initValue(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor)
@@ -135,7 +135,7 @@ void NodeOutput::initDiff(bool reset)
 {
 	LOG_IF(FATAL, _value == nullptr) << "_value == nullptr";
 	LOG_IF(FATAL, _diff != nullptr) << "_diff != nullptr";
-	_diff = std::make_shared<Tensor>(_value->dims(), _value->type(), _name + "_d", reset);
+	_diff = std::make_shared<Tensor>(_value->dims(), _name + "_d", reset);
 }
 
 void NodeOutput::initDiff(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor)
@@ -146,25 +146,16 @@ void NodeOutput::initDiff(std::array<int, 4> dims, std::shared_ptr<Tensor> tenso
 	_diff = std::make_shared<Tensor>(dims, tensor, _name + "_d");
 }
 
-void NodeOutput::resetDiff(cudaStream_t stream)
+void NodeOutput::resetDiff()
 {
 	if (_diff) {
-		if (stream) {
-			DF_NODE_CUDA_CHECK(cudaMemsetAsync(_diff->mutableData(), 0, _diff->sizeInBytes(), stream));
-		}
-		else {
-			DF_NODE_CUDA_CHECK(cudaMemset(_diff->mutableData(), 0, _diff->sizeInBytes()));
-		}		
+		_diff->reset();
 	}
 }
 
 void NodeOutput::resetValue()
 {
-	DF_NODE_CUDA_CHECK(cudaMemset(_value->mutableData(), 0, _value->sizeInBytes()));
-}
-
-void NodeOutput::cpyValueToDiff() {
-	DF_NODE_CUDA_CHECK(cudaMemcpy(_diff->mutableData(), _value->data(), _value->sizeInBytes(), cudaMemcpyDeviceToDevice));	
+	_value->reset();	
 }
 
 std::array<int, 4> NodeInput::dims() {
@@ -176,6 +167,6 @@ std::array<int, 4> NodeOutput::dims() {
 }
 
 void NodeOutput::feed(std::shared_ptr<NodeOutput> t) {
-	LOG_IF(FATAL, t->value()->sizeInBytes() != value()->sizeInBytes()) << "Size mismatch between terminals: " << _name << " and " << t->name();
-	DF_NODE_CUDA_CHECK(cudaMemcpy(value()->mutableData(), t->value()->data(), value()->sizeInBytes(), cudaMemcpyDeviceToDevice));	
+	LOG_IF(FATAL, t->value()->bytes() != value()->bytes()) << "Size mismatch between terminals: " << _name << " and " << t->name();
+	DF_NODE_CUDA_CHECK(cudaMemcpy(value()->gpu_data(DF_LINE), t->value()->gpu_data(DF_LINE), value()->bytes(), cudaMemcpyDeviceToDevice));	
 }

@@ -25,8 +25,7 @@ void PlaceHolder::init() {
 	default:
 		LOG(FATAL) << "Unsupported shape.";
 	}
-	Tensor::TensorType type = (Tensor::TensorType) tensorParam.type();
-	_outputs[0]->initValue(dims,type);
+	_outputs[0]->initValue(dims);
 	_outputs[0]->initDiff();	
 
 }

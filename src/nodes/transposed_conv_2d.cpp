@@ -57,14 +57,14 @@ void TransposedConvolution2D::init() {
 void TransposedConvolution2D::forward() {
 	if (d_workspace == 0 && _maxWorkspaceSize != 0)
 		DF_NODE_CUDA_CHECK(cudaMalloc(&d_workspace, _maxWorkspaceSize));		
-	DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &one, _wDesc, _inputs[1]->value()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
+	DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &one, _wDesc, _inputs[1]->value()->gpu_data(DF_LINE), _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE), _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE)));
 }
 
 void TransposedConvolution2D::backward() {
 	if (_inputs[1]->diff())
-		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &zero, _wDesc, _inputs[1]->diff()->mutableData()));
+		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(DF_LINE), _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE), _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &zero, _wDesc, _inputs[1]->diff()->gpu_data(DF_LINE)));
 	if (_inputs[0]->diff())
-		DF_NODE_CUDNN_CHECK(cudnnConvolutionForward(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), _wDesc, _inputs[1]->value()->data(), _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));	
+		DF_NODE_CUDNN_CHECK(cudnnConvolutionForward(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(DF_LINE), _wDesc, _inputs[1]->value()->gpu_data(DF_LINE), _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data(DF_LINE)));	
 }
 
 std::string TransposedConvolution2D::to_cpp() const

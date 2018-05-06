@@ -5,7 +5,7 @@
 class DeepFlowDllExport SGDSolver : public Solver {
 public:
 	SGDSolver(deepflow::SolverParam *param);
-	void apply(std::shared_ptr<Variable> var, cudaStream_t stream = 0) override;
+	void apply(std::shared_ptr<Variable> var) override;
 	void init(std::shared_ptr<Variable> var) override;
 	std::string to_cpp() const override;	
 protected:

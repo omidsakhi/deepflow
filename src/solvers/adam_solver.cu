@@ -32,7 +32,7 @@ AdamSolver::AdamSolver(deepflow::SolverParam *param) : Solver(param) {
 	_learning_rate = param->learning_rate();
 }
 
-void AdamSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {	
+void AdamSolver::apply(std::shared_ptr<Variable> var) {	
 	auto context = var->executionContext();
 	bool verbos = (context && context->debug_level > 2) ? true : false;
 	bool dry_run = false;
@@ -49,14 +49,14 @@ void AdamSolver::apply(std::shared_ptr<Variable> var, cudaStream_t stream) {
 	double iter = context->current_iteration + 1;	
 	float corrected_lr = (float)((double)_learning_rate * std::sqrt(1.0 - pow(beta2, iter)) / (1.0 - pow(beta1, iter)));
 	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name() << " | lr: " << corrected_lr;
-	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock, 0, stream >> > (size, (float*)var->output(0)->value()->mutableData(), (float*)var->gradients(), _m, _v, _my_param->beta1(), _my_param->beta2(), _my_param->eps(), corrected_lr, dry_run);
+	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock, 0 >> > (size, (float*)var->output(0)->value()->gpu_data(DF_LINE), (float*)var->gradients(), _m, _v, _my_param->beta1(), _my_param->beta2(), _my_param->eps(), corrected_lr, dry_run);
 	DF_KERNEL_CHECK();	
-	var->reset_gradients(stream);
+	var->reset_gradients();
 }
 
 void AdamSolver::init(std::shared_ptr<Variable> var) {
 	auto size = var->output(0)->value()->size();
-	auto sizeInBytes = var->output(0)->value()->sizeInBytes();
+	auto sizeInBytes = var->output(0)->value()->bytes();
 	DF_CUDA_CHECK(cudaMalloc(&_m, sizeInBytes));	
 	DF_CUDA_CHECK(cudaMemset(_m, 0, sizeInBytes));
 	DF_CUDA_CHECK(cudaMalloc(&_v, sizeInBytes));

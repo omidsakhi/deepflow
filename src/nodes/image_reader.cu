@@ -44,11 +44,11 @@ void ImageReader::init() {
 	DF_NODE_CUDA_CHECK(cudaMalloc(&d_img, size));
 	DF_NODE_CUDA_CHECK(cudaMemcpy(d_img, img.ptr<uchar>(), size, cudaMemcpyHostToDevice));
 	if (img.channels() == 1) {
-		GrayImageReaderKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (d_img, img.cols, img.rows, (float*)_outputs[0]->value()->mutableData());
+		GrayImageReaderKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (d_img, img.cols, img.rows, (float*)_outputs[0]->value()->gpu_data(DF_LINE));
 		DF_KERNEL_CHECK();
 	}
 	else if (img.channels() == 3) {
-		ColorImageReaderKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (d_img, img.cols, img.rows, (float*)_outputs[0]->value()->mutableData());
+		ColorImageReaderKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (d_img, img.cols, img.rows, (float*)_outputs[0]->value()->gpu_data(DF_LINE));
 		DF_KERNEL_CHECK();
 	}
 	else {

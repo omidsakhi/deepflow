@@ -9,7 +9,7 @@ class Variable;
 class DeepFlowDllExport Solver : public CudaHelper {
 public:
 	Solver(deepflow::SolverParam *param);
-	virtual void apply(std::shared_ptr<Variable> var, cudaStream_t stream = 0) = 0;
+	virtual void apply(std::shared_ptr<Variable> var) = 0;
 	virtual void init(std::shared_ptr<Variable> var) = 0;
 	virtual std::string to_cpp() const = 0;
 	deepflow::SolverParam *param() const;

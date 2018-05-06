@@ -17,7 +17,7 @@ public:
 	virtual void forward();
 	virtual void backward();
 	float * gradients();
-	void reset_gradients(cudaStream_t stream = 0);
+	void reset_gradients();
 	void prep_for_saving();
 	void clamp(float min, float max);
 	virtual std::string to_cpp() const;

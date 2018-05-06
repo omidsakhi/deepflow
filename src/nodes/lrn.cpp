@@ -19,8 +19,8 @@ void LRN::forward()
 {
 	DF_NODE_CUDNN_CHECK(
 		cudnnLRNCrossChannelForward(_cudnnHandle, _normDesc, CUDNN_LRN_CROSS_CHANNEL_DIM1,
-			&one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(),
-			&zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
+			&one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE),
+			&zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE)));
 }
 
 void LRN::backward()
@@ -29,16 +29,16 @@ void LRN::backward()
 		/*
 		DF_NODE_CUDNN_CHECK(
 			cudnnLRNCrossChannelForward(_cudnnHandle, _normDesc, CUDNN_LRN_CROSS_CHANNEL_DIM1,
-				&one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(),
-				&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+				&one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(DF_LINE),
+				&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data(DF_LINE)));
 		*/
 
 		DF_NODE_CUDNN_CHECK(
 			cudnnLRNCrossChannelBackward(_cudnnHandle, _normDesc, CUDNN_LRN_CROSS_CHANNEL_DIM1, &one,
-				_outputs[0]->value()->descriptor(), _outputs[0]->value()->data(),
-				_outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(),
-				_inputs[0]->value()->descriptor(), _inputs[0]->value()->data(),
-				&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+				_outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE),
+				_outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(DF_LINE),
+				_inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE),
+				&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data(DF_LINE)));
 	}
 }
 

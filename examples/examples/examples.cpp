@@ -81,20 +81,21 @@ void main(int argc, char** argv) {
 			df.psnr(recon, image);
 		}
 		else if (FLAGS_x3) {			
-			auto solver = df.adam_solver(AdamSolverOp().lr(0.1f).beta1(0.5f).beta2(0.9f));
+			auto solver = df.adam_solver(AdamSolverOp().lr(0.05f).beta1(0.5f).beta2(0.97f));
 			auto image = df.imread(FLAGS_image1, ImreadOp().color());
 			auto recon = df.variable(df.random_normal({ 1,3,256,256 }, 0, 0.1), solver, VariableOp("recon"));			
 			auto f1 = df.data_generator(df.random_uniform({ 10,3,3,3 }, -1, 1));
-			auto f2 = df.restructure(f1, 0, 1);
-			auto conv = df.conv2d(image, f1, ConvolutionOp().pad(1).dilation(1).stride(1));
-			auto tconv = df.transposed_conv2d(recon, f2, ConvolutionOp().pad(1).dilation(1).stride(1));
-			auto euclidean = df.square_error(conv, tconv);
+			auto f2 = df.data_generator(df.random_uniform({ 10,3,3,3 }, 0, 1));			
+			auto conv1 = df.conv2d(image, f1, ConvolutionOp().pad(1).dilation(1).stride(1));
+			auto conv2 = df.conv2d(recon, f2, ConvolutionOp().pad(1).dilation(1).stride(1));			
+			auto conv4 = df.nand(conv1, conv2);
+			auto euclidean = df.square_error(conv1, conv4);
 			auto loss = df.loss(euclidean);
-			df.display(recon, DisplayOp("input").delay(20));
+			df.display(recon, DisplayOp("input").delay(1));
 			df.psnr(recon, image);
 		}
 		else if (FLAGS_x4) {				
-			auto solver = df.adam_solver( AdamSolverOp().lr(0.1f).beta1(0.5f).beta2(0.9f));
+			auto solver = df.adam_solver( AdamSolverOp().lr(0.01f).beta1(0.5f).beta2(0.9f));
 			auto image = df.imread(FLAGS_image1, ImreadOp().color());
 			auto generator1 = df.data_generator(df.random_uniform({ 1, 3, 256, 256 }, -0.1, 0.1), DataGeneratorOp().solver(solver).name("gen1"));
 			auto generator2 = df.data_generator(df.random_normal({ 1, 3, 256, 256 }, 0, 0.1), DataGeneratorOp().solver(solver).name("gen2"));
@@ -230,6 +231,8 @@ void main(int argc, char** argv) {
 		std::cout << "Iteration " << iter << " -->" << std::endl;
 		auto epoch_start = std::chrono::high_resolution_clock::now();
 		session->forward("");
+		//session->print_nodes_info("");		
+		//session->print_nodes("");
 		if (psnr_node) {
 			std::cout << "PSNR: " << psnr_node->psnr() << std::endl;
 		}

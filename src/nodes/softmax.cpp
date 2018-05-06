@@ -17,12 +17,12 @@ void Softmax::init() {
 }
 
 void Softmax::forward() {	
-	DF_NODE_CUDNN_CHECK(cudnnSoftmaxForward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, _mode, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData()));
+	DF_NODE_CUDNN_CHECK(cudnnSoftmaxForward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, _mode, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE)));
 }
 
 void Softmax::backward() {
 	if (_inputs[0]->diff())
-		DF_NODE_CUDNN_CHECK(cudnnSoftmaxBackward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, _mode, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(), &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData()));
+		DF_NODE_CUDNN_CHECK(cudnnSoftmaxBackward(_cudnnHandle, CUDNN_SOFTMAX_ACCURATE, _mode, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(DF_LINE), &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data(DF_LINE)));
 }
 
 std::string Softmax::to_cpp() const

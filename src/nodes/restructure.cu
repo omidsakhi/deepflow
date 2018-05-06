@@ -3,7 +3,7 @@
 #include "core/common_cu.h"
 
 __global__
-void RestructureKernel(int n, const float * __restrict__ x, const int N, const int C, const int H, const int W, const int swap_dim_1, const int swap_dim_2, float * __restrict__ y)
+void RestructureKernel(int n, const float *x, const int N, const int C, const int H, const int W, const int swap_dim_1, const int swap_dim_2, float *y)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 	if (i < n) {
@@ -60,8 +60,8 @@ void Restructure::forward() {
 	auto size = _inputs[0]->value()->size();
 	auto dim = _inputs[0]->value()->dims();
 	RestructureKernel << < numOfBlocks(size), maxThreadsPerBlock >> > 
-		(size, (float*)_inputs[0]->value()->data(), dim[0], dim[1], dim[2], dim[3], _first_dim, _second_dim, (float*)_outputs[0]->value()->mutableData());
-	DF_KERNEL_CHECK();
+		(size, _inputs[0]->value()->gpu_data(DF_LINE), dim[0], dim[1], dim[2], dim[3], _first_dim, _second_dim, _outputs[0]->value()->gpu_data(DF_LINE));
+	DF_NODE_KERNEL_CHECK();
 }
 
 void Restructure::backward() {
@@ -69,8 +69,8 @@ void Restructure::backward() {
 		auto size = _outputs[0]->diff()->size();
 		auto dim = _outputs[0]->diff()->dims();
 		RestructureKernel << < numOfBlocks(size), maxThreadsPerBlock >> > 
-			(size, (float*)_outputs[0]->diff()->data(), dim[0], dim[1], dim[2], dim[3], _first_dim, _second_dim, (float*)_inputs[0]->diff()->mutableData());
-		DF_KERNEL_CHECK();
+			(size, _outputs[0]->diff()->gpu_data(DF_LINE), dim[0], dim[1], dim[2], dim[3], _first_dim, _second_dim, _inputs[0]->diff()->gpu_data(DF_LINE));
+		DF_NODE_KERNEL_CHECK();
 	}
 }
 

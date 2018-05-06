@@ -31,10 +31,10 @@ void SpatialTransformer::init()
 void SpatialTransformer::forward()
 {
 	DF_NODE_CUDNN_CHECK(
-		cudnnSpatialTfGridGeneratorForward(_cudnnHandle, _stDesc, _inputs[1]->value()->data(), _inputs[2]->value()->mutableData())
+		cudnnSpatialTfGridGeneratorForward(_cudnnHandle, _stDesc, _inputs[1]->value()->gpu_data(DF_LINE), _inputs[2]->value()->gpu_data(DF_LINE))
 	);
 	DF_NODE_CUDNN_CHECK(
-		cudnnSpatialTfSamplerForward(_cudnnHandle, _stDesc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(), _inputs[2]->value()->data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->mutableData())
+		cudnnSpatialTfSamplerForward(_cudnnHandle, _stDesc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE), _inputs[2]->value()->gpu_data(DF_LINE), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE))
 	);
 }
 
@@ -43,15 +43,15 @@ void SpatialTransformer::backward()
 	if (_inputs[0]->diff()) {		
 		DF_NODE_CUDNN_CHECK(
 			cudnnSpatialTfSamplerBackward(_cudnnHandle, _stDesc,
-				&one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->data(),
-				&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->mutableData(),
-				&one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->data(),
-				_inputs[2]->value()->data(), &zero, _inputs[2]->diff()->mutableData())
+				&one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE),
+				&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data(DF_LINE),
+				&one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(DF_LINE),
+				_inputs[2]->value()->gpu_data(DF_LINE), &zero, _inputs[2]->diff()->gpu_data(DF_LINE))
 		);
 	}
 	if (_inputs[1]->diff()) {
 		DF_NODE_CUDNN_CHECK(
-			cudnnSpatialTfGridGeneratorBackward(_cudnnHandle, _stDesc, _inputs[2]->diff()->data(), _inputs[1]->diff()->mutableData())
+			cudnnSpatialTfGridGeneratorBackward(_cudnnHandle, _stDesc, _inputs[2]->diff()->gpu_data(DF_LINE), _inputs[1]->diff()->gpu_data(DF_LINE))
 		);
 	}
 }

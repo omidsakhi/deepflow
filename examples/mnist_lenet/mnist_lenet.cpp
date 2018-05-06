@@ -102,8 +102,8 @@ void main(int argc, char** argv) {
 				session->forward({ correct_count }, { { pred_softmax_input, output->output(0)->value() },{ pred_target_labels, mnist_test_labels->output(0)->value() } });
 			} while (!mnist_test_data->is_last_batch());
 			{
-				auto num_correct = correct_count->output(0)->value()->toFloat();
-				auto num_total = acc->output(1)->value()->toFloat();
+				auto num_correct = correct_count->output(0)->value()->to_float();
+				auto num_total = acc->output(1)->value()->to_float();
 				std::cout << " Test accuracy: " << num_correct << " out of " << num_total << " - " << num_correct / num_total * 100.0f << "%" << std::endl;
 			}
 			acc->reset();
@@ -119,8 +119,8 @@ void main(int argc, char** argv) {
 				session->apply_solvers("");
 			} while (!mnist_train_data->is_last_batch());
 			{
-				auto num_correct = correct_count->output(0)->value()->toFloat();
-				auto num_total = acc->output(1)->value()->toFloat();
+				auto num_correct = correct_count->output(0)->value()->to_float();
+				auto num_total = acc->output(1)->value()->to_float();
 				std::cout << "Train accuracy: " << num_correct << " out of " << num_total << " - " << num_correct / num_total * 100.0f << "%" << std::endl;
 			}
 			if (FLAGS_save != 0 && epoch % FLAGS_save == 0) {

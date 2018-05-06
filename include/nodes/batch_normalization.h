@@ -23,14 +23,6 @@ private:
 	float * _cachedVariance = nullptr;
 	float * _runningMean = nullptr;
 	float * _runningVariance = nullptr;
-	float *_bnScale = nullptr;
-	float *_bnBias = nullptr;
-	float *_resultBnScaleDiff = nullptr;
-	float *_resultBnBiasDiff = nullptr;
-	float *_x = nullptr;
-	float *_y = nullptr;
-	float *_dy = nullptr;
-	float *_dx = nullptr;
 	size_t _bnScaleBiasMeanVarSize;
 	size_t _bnScaleBiasMeanVarSizeInBytes;
 };

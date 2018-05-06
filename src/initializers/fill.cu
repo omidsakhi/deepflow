@@ -18,7 +18,7 @@ void Fill::apply(Node *node) {
 	auto size = node->output(0)->value()->size();
 	float value = _param->fill_param().value();
 	for (auto output : node->outputs()) {		
-		FillKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), value);
+		FillKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->gpu_data(DF_LINE), value);
 		DF_KERNEL_CHECK();
 	}
 }

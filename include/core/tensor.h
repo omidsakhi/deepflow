@@ -14,86 +14,55 @@
 class DeepFlowDllExport Tensor : public CudaHelper {
 public:
 	
-	enum TensorType
+	enum DataLocation
 	{
-		Float = 0,
-		Double = 1,
-		Half = 2,
-		Int8 = 3,
-		Int32 = 4,
-		Int8x4 = 5
+		CPU,
+		GPU,
+		SHADOW
 	};
 
 	Tensor();
 	Tensor(deepflow::TensorParam *param);	
-	Tensor(std::array<int, 4> dims, TensorType type, std::string name, bool reset = false);
+	Tensor(std::array<int, 4> dims, std::string name, bool reset = false);
 	Tensor(std::array<int, 4> dims, std::shared_ptr<Tensor> shadow_tensor, std::string name);
-	cudnnDataType_t cudnnType() const;
-	TensorType type() const;
-	std::string typeString() const;
 	void init(bool reset_to_zero = false);	
 	std::string shape() const;
 	int size() const;
-	size_t sizeInBytes() const;
+	size_t bytes() const;
 	cudnnTensorDescriptor_t descriptor() const;
 	int dim(int i) const;
 	std::array<int, 4> dims() const;
-	const void * data() const;
-	void * mutableData();
+	void offload_data();
+	float * cpu_data(std::string caller);
+	float * gpu_data(std::string caller);	
 	void reset();
 	void release();
 		
-	int isValid() const;
-	void statistics(double *mean, double *std, double *min, double *max) const;
+	int is_valid();
+	void statistics(double *mean, double *std, double *min, double *max);	
+	void print();
 
-	template <typename T>
-	void print() const;
+	void set(const std::vector<float> &values);
 
-	template <typename T>
-	std::shared_ptr<std::vector<T>> cpyToHost() const;
-	
-	template <typename T>
-	void cpyFromHost(std::vector<T> &vec);
+	bool verify(const std::vector<float> &values);
 
-	void set(std::initializer_list<float> values);
+	float to_float();
+	std::shared_ptr<std::vector<float>> to_vec();
 
-	bool verify(std::initializer_list<float> values);
-
-	float toFloat() const;
-
-	std::string toString() const;
+	std::string toString();
 	std::string name() const;
 protected:
 	std::array<int, 4> _dims;
 	size_t _size = 0;
-	size_t _sizeInBytes = 0;
-	cudnnTensorDescriptor_t _desc = 0;
-	TensorType _reader_type;
+	size_t _bytes = 0;
+	cudnnTensorDescriptor_t _desc = 0;	
 	std::string _shapeString;
-	void *d_data = nullptr;
+	float *_gpu_data = nullptr;
+	float *_cpu_data = nullptr;
 	std::string _name;
+	DataLocation _location = CPU;
+	std::shared_ptr<Tensor> _shadow_tensor;	
+	cudaStream_t _offload_stream = nullptr;
+	cudaEvent_t _offload_event = nullptr;
 };
 
-
-template <typename T>
-void Tensor::print() const {
-	std::cout << "Shape: " << shape() << std::endl;
-	auto h_data = cpyToHost<T>();
-	for (int i = 0; i < _size; ++i) {
-		std::cout << h_data->data()[i] << " ";
-	}
-	std::cout << std::endl;
-}
-
-template <typename T>
-std::shared_ptr<std::vector<T>> Tensor::cpyToHost() const {
-	auto h_data = std::make_shared<std::vector<T>>(_size);		
-	cudaMemcpy(h_data->data(), d_data, _sizeInBytes, cudaMemcpyDeviceToHost);
-	return h_data;
-}
-
-template <typename T>
-void Tensor::cpyFromHost(std::vector<T> &vec)
-{
-	DF_CUDA_CHECK(cudaMemcpy(d_data, vec.data(), vec.size() * sizeof(T), cudaMemcpyHostToDevice));
-}

@@ -36,7 +36,7 @@ void Step::apply(Node *node) {
 	float min = _param->step_param().min();
 	float max = _param->step_param().max();
 	for (auto output : node->outputs()) {
-		StepFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->mutableData(), min, (max - min) / size);
+		StepFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> > (size, (float*)output->value()->gpu_data(DF_LINE), min, (max - min) / size);
 		DF_KERNEL_CHECK();
 	}
 }

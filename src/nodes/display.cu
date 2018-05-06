@@ -14,7 +14,7 @@ void Display::init() {
 	_iter_frequency = display_param.iter_frequency();
 	auto dims = _inputs[0]->value()->dims();	
 	input_size = _inputs[0]->value()->size();
-	input_size_in_bytes = _inputs[0]->value()->sizeInBytes();
+	input_size_in_bytes = _inputs[0]->value()->bytes();
 	num_channels = dims[1]; 
 	num_samples = dims[0];	
 	num_images = num_samples * (num_channels == 3? 1 : num_channels);
@@ -23,10 +23,8 @@ void Display::init() {
 	num_image_per_row_and_col = (int)floor(sqrt((float)num_images));
 	pic_width = per_image_width * num_image_per_row_and_col;
 	pic_height = per_image_height * ((int)ceil(((float)num_images / num_image_per_row_and_col)));
-	num_pic_pixels = pic_width * pic_height * (num_channels == 3 ? 3 : 1);	
-
-	_outputs[0]->initValue({ 1 , (num_channels == 3 ? 3 : 1), pic_height, pic_width }, Tensor::Int8);	
-
+	num_pic_pixels = pic_width * pic_height * (num_channels == 3 ? 3 : 1);		
+	cudaMalloc(&_output, (num_channels == 3 ? 3 : 1) * pic_height * pic_width);	
 	disp = cv::Mat(pic_height, pic_width, (num_channels == 3 ? CV_8UC3 : CV_8U));	
 }
 
@@ -41,19 +39,19 @@ void Display::forward() {
 	}
 	if (_display_type == deepflow::ActionType::VALUES) {
 		if (num_channels == 3) {
-			ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, (float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col,(unsigned char*) _outputs[0]->value()->mutableData());
+			ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, _inputs[0]->value()->gpu_data(DF_LINE), per_image_height, per_image_width, num_image_per_row_and_col, _output);
 		}
 		else
-			GrayPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->value()->data(), per_image_height, per_image_width, num_image_per_row_and_col, (unsigned char*)_outputs[0]->value()->mutableData());
+			GrayPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, _inputs[0]->value()->gpu_data(DF_LINE), per_image_height, per_image_width, num_image_per_row_and_col, _output);
 	}
 	if (_display_type == deepflow::ActionType::DIFFS) {
 		if (num_channels == 3)
-			ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, (float*)_inputs[0]->diff()->data(), per_image_height, per_image_width, num_image_per_row_and_col, (unsigned char*)_outputs[0]->value()->mutableData());
+			ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, _inputs[0]->diff()->gpu_data(DF_LINE), per_image_height, per_image_width, num_image_per_row_and_col, _output);
 		else
-			GrayPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images,(float*)_inputs[0]->diff()->data(), per_image_height, per_image_width, num_image_per_row_and_col, (unsigned char*)_outputs[0]->value()->mutableData());
+			GrayPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, _inputs[0]->diff()->gpu_data(DF_LINE), per_image_height, per_image_width, num_image_per_row_and_col, _output);
 	}
 	DF_KERNEL_CHECK();
-	DF_NODE_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), _outputs[0]->value()->data(), num_pic_pixels, cudaMemcpyDeviceToHost));
+	DF_NODE_CUDA_CHECK(cudaMemcpy(disp.ptr<uchar>(), _output, num_pic_pixels, cudaMemcpyDeviceToHost));
 	if (_context && _draw_iteration) {
 		cv::putText(disp, std::string("Iteration: ") + std::to_string(_context->current_iteration), cv::Point(5, 15), cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(255, 255, 255), 1, 8, false);
 	}

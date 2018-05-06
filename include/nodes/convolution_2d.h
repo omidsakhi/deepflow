@@ -13,8 +13,7 @@ public:
 	void backward();
 	std::string to_cpp() const;
 protected:
-	cudnnHandle_t _cudnnHandle;
-	void *_x, *_y, *_w, *_dx, *_dy, *_dw;	
+	cudnnHandle_t _cudnnHandle;		
 	cudnnTensorDescriptor_t _xDesc, _yDesc, _dxDesc, _dyDesc;
 	cudnnFilterDescriptor_t _wDesc;	
 	cudnnConvolutionDescriptor_t _convDesc;

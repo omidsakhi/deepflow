@@ -70,6 +70,6 @@ std::string ConvGaussianKernel::to_cpp() const
 void ConvGaussianKernel::generate()
 {
 	auto size = _outputs[0]->value()->size();
-	GaussianWeightsKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _current_sigma, _window_size, _num_channels, (float*)_outputs[0]->value()->mutableData());
+	GaussianWeightsKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _current_sigma, _window_size, _num_channels, (float*)_outputs[0]->value()->gpu_data(DF_LINE));
 	DF_KERNEL_CHECK();
 }

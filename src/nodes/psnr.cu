@@ -19,7 +19,7 @@ Psnr::Psnr(deepflow::NodeParam *param) : Node(param) {
 void Psnr::init() {	
 	LOG_IF(FATAL, _inputs[0]->value()->size() != _inputs[1]->value()->size()) << "Input " << _inputs[0]->value()->shape() << " != " << " Target " << _inputs[1]->value()->shape();	
 	DF_NODE_CUDNN_CHECK(cudnnCreate(&_cudnnHandle));
-	DF_NODE_CUDA_CHECK(cudaMalloc(&d_square_error, _inputs[0]->value()->sizeInBytes()));
+	DF_NODE_CUDA_CHECK(cudaMalloc(&d_square_error, _inputs[0]->value()->bytes()));
 	DF_NODE_CUDA_CHECK(cudaMalloc(&d_sum_square_error, sizeof(float)));
 	DF_NODE_CUDNN_CHECK(cudnnCreateReduceTensorDescriptor(&_reduce_tensor_desciptor));
 	cudnnReduceTensorOp_t op = CUDNN_REDUCE_TENSOR_ADD;
@@ -33,7 +33,7 @@ void Psnr::init() {
 
 void Psnr::forward() {
 	auto size = _inputs[0]->value()->size();
-	SquareErrorKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, (float*)_inputs[0]->value()->data(), (float*)_inputs[1]->value()->data(), d_square_error);
+	SquareErrorKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), d_square_error);
 	DF_KERNEL_CHECK();	
 	DF_NODE_CUDNN_CHECK(
 		cudnnReduceTensor(

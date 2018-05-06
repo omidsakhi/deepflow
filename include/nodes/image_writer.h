@@ -10,7 +10,7 @@ class DeepFlowDllExport ImageWriter : public Node {
 public:
 	ImageWriter(deepflow::NodeParam *param);
 	int minNumInputs() { return 1; }
-	int minNumOutputs() { return 1; }
+	int minNumOutputs() { return 0; }
 	std::string op_name() const override { return "imwrite"; }
 	void init();	
 	void forward();
@@ -30,6 +30,7 @@ private:
 	int pic_width;
 	int pic_height;
 	int num_pic_pixels;
+	unsigned char * _output = nullptr;
 	std::string _filename;
 	std::string _text_line;
 	std::shared_ptr<cv::Mat> disp;

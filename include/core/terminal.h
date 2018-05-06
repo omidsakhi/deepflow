@@ -52,15 +52,14 @@ protected:
 class DeepFlowDllExport NodeOutput : public Terminal {
 public:
 	NodeOutput(std::shared_ptr<Node> parentNode, int index, const std::string &name);		
-	void initValue(std::array<int, 4> dims, Tensor::TensorType type = Tensor::Float);
+	void initValue(std::array<int, 4> dims);
 	void initValue(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor);
 	std::array<int, 4> dims();
 	void feed(std::shared_ptr<NodeOutput> t);
 	void initDiff(bool reset = false);
 	void initDiff(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor);
-	void resetDiff(cudaStream_t stream = 0);
-	void resetValue();
-	void cpyValueToDiff();
+	void resetDiff();
+	void resetValue();	
 	std::shared_ptr<Tensor> value();
 	std::shared_ptr<Tensor> diff();
 	virtual const std::string& name() const;
