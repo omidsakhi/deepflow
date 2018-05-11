@@ -21,18 +21,18 @@ void Dot::init() {
 
 void Dot::forward() {	
 	auto size = _outputs[0]->value()->size();
-	dot(size, 1.0, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), 0.0, _outputs[0]->value()->gpu_data(DF_LINE));	
+	dot(size, 1.0, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data(), 0.0, _outputs[0]->value()->gpu_data());	
 	DF_KERNEL_CHECK();
 }
 
 void Dot::backward() {
 	auto size = _outputs[0]->diff()->size();
 	if (_inputs[0]->diff()) {
-		dot(size, 1.0, _outputs[0]->diff()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), 0.0, _inputs[0]->diff()->gpu_data(DF_LINE));
+		dot(size, 1.0, _outputs[0]->diff()->gpu_data(), _inputs[1]->value()->gpu_data(), 0.0, _inputs[0]->diff()->gpu_data());
 		DF_KERNEL_CHECK();
 	}
 	if (_inputs[1]->diff()) {
-		dot(size, 1.0, _outputs[0]->diff()->gpu_data(DF_LINE), _inputs[0]->value()->gpu_data(DF_LINE), 0.0, _inputs[1]->diff()->gpu_data(DF_LINE));
+		dot(size, 1.0, _outputs[0]->diff()->gpu_data(), _inputs[0]->value()->gpu_data(), 0.0, _inputs[1]->diff()->gpu_data());
 		DF_KERNEL_CHECK();
 	}
 }

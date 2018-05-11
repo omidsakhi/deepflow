@@ -11,7 +11,7 @@ void Constant::apply(Node * node)
 {
 	LOG_IF(FATAL, _param->constant_param().values().size() != node->output(0)->value()->size());
 	DF_CUDA_CHECK(
-		cudaMemcpy(node->output(0)->value()->gpu_data(DF_LINE), _param->constant_param().values().data(), node->output(0)->value()->bytes(), cudaMemcpyHostToDevice)
+		cudaMemcpy(node->output(0)->value()->gpu_data(), _param->constant_param().values().data(), node->output(0)->value()->bytes(), cudaMemcpyHostToDevice)
 	);
 }
 

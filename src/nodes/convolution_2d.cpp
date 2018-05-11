@@ -49,22 +49,22 @@ void Convolution2D::init() {
 }
 
 void Convolution2D::forward() {
-	float *_x = _inputs[0]->value()->gpu_data(DF_LINE);
-	float *_w = _inputs[1]->value()->gpu_data(DF_LINE);	
-	float *_y = _outputs[0]->value()->gpu_data(DF_LINE);
+	float *_x = _inputs[0]->value()->gpu_data();
+	float *_w = _inputs[1]->value()->gpu_data();	
+	float *_y = _outputs[0]->value()->gpu_data();
 	DF_NODE_CUDNN_CHECK(cudnnConvolutionForward(_cudnnHandle, &one, _xDesc, _x, _wDesc, _w, _convDesc, _fwdAlgo, d_workspace, _fwdWorkspaceSize, &zero, _yDesc, _y));
 }
 
 void Convolution2D::backward() {	
-	float *_dy = _outputs[0]->diff()->gpu_data(DF_LINE);	
+	float *_dy = _outputs[0]->diff()->gpu_data();	
 	if (_inputs[0]->diff()) {
-		float *_w = _inputs[1]->value()->gpu_data(DF_LINE);
-		float *_dx = _inputs[0]->diff()->gpu_data(DF_LINE);
+		float *_w = _inputs[1]->value()->gpu_data();
+		float *_dx = _inputs[0]->diff()->gpu_data();
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardData(_cudnnHandle, &one, _wDesc, _w, _dyDesc, _dy, _convDesc, _bwdDataAlgo, d_workspace, _bwdDataWorkspaceSize, &zero, _dxDesc, _dx));
 	}
 	if (_inputs[1]->diff()) {
-		float *_x = _inputs[0]->value()->gpu_data(DF_LINE);
-		float *_dw = _inputs[1]->diff()->gpu_data(DF_LINE);
+		float *_x = _inputs[0]->value()->gpu_data();
+		float *_dw = _inputs[1]->diff()->gpu_data();
 		DF_NODE_CUDNN_CHECK(cudnnConvolutionBackwardFilter(_cudnnHandle, &one, _xDesc, _x, _dyDesc, _dy, _convDesc, _bwdFilterAlgo, d_workspace, _bwdFilterWorkspaceSize, &zero, _wDesc, _dw));
 	}
 }

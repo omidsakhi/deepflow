@@ -33,7 +33,7 @@ void Psnr::init() {
 
 void Psnr::forward() {
 	auto size = _inputs[0]->value()->size();
-	SquareErrorKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), d_square_error);
+	SquareErrorKernel <<< numOfBlocks(size), maxThreadsPerBlock >>> (size, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data(), d_square_error);
 	DF_KERNEL_CHECK();	
 	DF_NODE_CUDNN_CHECK(
 		cudnnReduceTensor(

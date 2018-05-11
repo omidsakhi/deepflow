@@ -16,7 +16,8 @@ bool DataGenerator::is_generator()
 }
 
 void DataGenerator::forward() {
-	if (_no_solver) {
+	auto freq = _param->data_generator_param().freq();
+	if (_no_solver && (_context->current_iteration > 2 && _context->current_iteration % freq == 0)) {
 		_initializer->apply(this);
 	}	
 }

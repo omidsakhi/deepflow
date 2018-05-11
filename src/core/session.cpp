@@ -835,7 +835,7 @@ void Session::print_nodes_info(const std::string &scope)
 				output->diff()->statistics(&mean, &std, &min, &max);
 				LOG(INFO) << output->diff()->name() << " | " << mean << " " << std << " | " << min << " " << max;
 			}
-			output->value()->gpu_data(DF_LINE);
+			output->value()->gpu_data();
 		}
 	}	
 }

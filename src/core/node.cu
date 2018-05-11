@@ -61,7 +61,7 @@ void Node::fill(int n, const float value, void * dst, const float beta)
 
 void Node::fill(const float value)
 {
-	fill(_outputs[0]->value()->size(), value, _outputs[0]->value()->gpu_data(DF_LINE), 0.0f);	
+	fill(_outputs[0]->value()->size(), value, _outputs[0]->value()->gpu_data(), 0.0f);	
 }
 
 

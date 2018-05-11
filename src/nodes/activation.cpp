@@ -44,13 +44,13 @@ void Activation::init()
 
 void Activation::forward()
 {
-	DF_NODE_CUDNN_CHECK(cudnnActivationForward(_cudnnHandle, _activation_desc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE)));	
+	DF_NODE_CUDNN_CHECK(cudnnActivationForward(_cudnnHandle, _activation_desc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data()));	
 }
 
 void Activation::backward()
 {
 	if (_inputs[0]->diff()) {
-		DF_NODE_CUDNN_CHECK(cudnnActivationBackward(_cudnnHandle, _activation_desc, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(DF_LINE), _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE), &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data(DF_LINE)));		
+		DF_NODE_CUDNN_CHECK(cudnnActivationBackward(_cudnnHandle, _activation_desc, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(), &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data()));		
 	}
 }
 

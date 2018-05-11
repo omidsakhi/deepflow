@@ -227,7 +227,8 @@ void main(int argc, char** argv) {
 
 	session->initialize(execution_context);		
 	auto psnr_node = session->get_node<Psnr>("psnr", "", false);
-	for (int iter = 1; iter <= FLAGS_iter; ++iter) {		
+	for (int iter = 1; iter <= FLAGS_iter; ++iter) {	
+		execution_context->current_iteration = iter;
 		std::cout << "Iteration " << iter << " -->" << std::endl;
 		auto epoch_start = std::chrono::high_resolution_clock::now();
 		session->forward("");

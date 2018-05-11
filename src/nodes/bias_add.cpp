@@ -19,16 +19,16 @@ void BiasAdd::init() {
 }
 
 void BiasAdd::forward() {
-	cudaMemcpy(_outputs[0]->value()->gpu_data(DF_LINE), _inputs[0]->value()->gpu_data(DF_LINE), _inputs[0]->value()->bytes(), cudaMemcpyDeviceToDevice);
-	cudnnAddTensor(_cudnnHandle, &one, _inputs[1]->value()->descriptor(), _inputs[1]->value()->gpu_data(DF_LINE), &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE));
+	cudaMemcpy(_outputs[0]->value()->gpu_data(), _inputs[0]->value()->gpu_data(), _inputs[0]->value()->bytes(), cudaMemcpyDeviceToDevice);
+	cudnnAddTensor(_cudnnHandle, &one, _inputs[1]->value()->descriptor(), _inputs[1]->value()->gpu_data(), &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data());
 }
 
 void BiasAdd::backward() {
 	if (_inputs[0]->diff()) {
-		cudaMemcpy(_inputs[0]->diff()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), _outputs[0]->diff()->bytes(), cudaMemcpyDeviceToDevice);
+		cudaMemcpy(_inputs[0]->diff()->gpu_data(), _outputs[0]->diff()->gpu_data(), _outputs[0]->diff()->bytes(), cudaMemcpyDeviceToDevice);
 	}
 	if (_inputs[1]->diff()) {
-		cudnnConvolutionBackwardBias(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(DF_LINE), &zero, _inputs[1]->diff()->descriptor(), _inputs[1]->diff()->gpu_data(DF_LINE));
+		cudnnConvolutionBackwardBias(_cudnnHandle, &one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(), &zero, _inputs[1]->diff()->descriptor(), _inputs[1]->diff()->gpu_data());
 	}
 }
 

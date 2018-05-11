@@ -35,7 +35,7 @@ void Nand::init()
 void Nand::forward()
 {
 	auto size = _inputs[0]->value()->size();
-	NandForwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE));
+	NandForwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data(), (float*)_outputs[0]->value()->gpu_data());
 	DF_KERNEL_CHECK();
 }
 
@@ -43,11 +43,11 @@ void Nand::backward()
 {
 	auto size = _inputs[0]->value()->size();
 	if (_inputs[0]->diff()) {
-		NandBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE));
+		NandBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data(), _outputs[0]->diff()->gpu_data(), (float*)_inputs[0]->diff()->gpu_data());
 		DF_KERNEL_CHECK();
 	}
 	if (_inputs[1]->diff()) {
-		NandBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[1]->value()->gpu_data(DF_LINE), _inputs[0]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[1]->diff()->gpu_data(DF_LINE));
+		NandBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[1]->value()->gpu_data(), _inputs[0]->value()->gpu_data(), _outputs[0]->diff()->gpu_data(), (float*)_inputs[1]->diff()->gpu_data());
 		DF_KERNEL_CHECK();
 	}
 }

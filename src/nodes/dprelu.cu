@@ -74,7 +74,7 @@ void DPRelu::forward()
 	auto a_channels = _inputs[1]->value()->dim(1);
 	auto size = _inputs[0]->value()->size();
 	DPReluForwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> >
-		(size, input_dims[1], input_dims[2], input_dims[3], a_channels, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE));
+		(size, input_dims[1], input_dims[2], input_dims[3], a_channels, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data(), (float*)_outputs[0]->value()->gpu_data());
 	DF_NODE_KERNEL_CHECK();
 }
 
@@ -85,7 +85,7 @@ void DPRelu::backward()
 		auto a_channels = _inputs[1]->value()->dim(1);
 		auto size = _inputs[0]->value()->size();
 		DPReluBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> >
-			(size, input_dims[1], input_dims[2], input_dims[3], a_channels, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE));
+			(size, input_dims[1], input_dims[2], input_dims[3], a_channels, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data(), _outputs[0]->diff()->gpu_data(), (float*)_inputs[0]->diff()->gpu_data());
 		DF_NODE_KERNEL_CHECK();
 	}
 }

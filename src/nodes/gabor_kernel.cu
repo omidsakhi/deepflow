@@ -79,6 +79,6 @@ std::string GaborKernel::to_cpp() const
 void GaborKernel::generate()
 {
 	auto size = _outputs[0]->value()->size();
-	GaborWeightsKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _apply_scale, _phi, _window_size, _num_orientations, _num_scales, _d_orientations, _d_scales, (float*)_outputs[0]->value()->gpu_data(DF_LINE));
+	GaborWeightsKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _apply_scale, _phi, _window_size, _num_orientations, _num_scales, _d_orientations, _d_scales, (float*)_outputs[0]->value()->gpu_data());
 	DF_KERNEL_CHECK();
 }

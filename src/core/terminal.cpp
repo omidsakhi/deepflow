@@ -122,7 +122,7 @@ std::shared_ptr<Tensor> NodeOutput::diff() {
 
 void NodeOutput::initValue(std::array<int, 4> dims) {
 	LOG_IF(FATAL, _value != nullptr) << "_value != nullptr";
-	_value = std::make_shared<Tensor>(dims, _name + "_v");
+	_value = std::make_shared<Tensor>(dims, _name + "_v", _parentNode->policy());
 }
 
 void NodeOutput::initValue(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor)
@@ -131,11 +131,11 @@ void NodeOutput::initValue(std::array<int, 4> dims, std::shared_ptr<Tensor> tens
 	_value = std::make_shared<Tensor>(dims, tensor, _name + "_v");
 }
 
-void NodeOutput::initDiff(bool reset)
+void NodeOutput::initDiff()
 {
 	LOG_IF(FATAL, _value == nullptr) << "_value == nullptr";
 	LOG_IF(FATAL, _diff != nullptr) << "_diff != nullptr";
-	_diff = std::make_shared<Tensor>(_value->dims(), _name + "_d", reset);
+	_diff = std::make_shared<Tensor>(_value->dims(), _name + "_d", _parentNode->policy());
 }
 
 void NodeOutput::initDiff(std::array<int, 4> dims, std::shared_ptr<Tensor> tensor)
@@ -168,5 +168,5 @@ std::array<int, 4> NodeOutput::dims() {
 
 void NodeOutput::feed(std::shared_ptr<NodeOutput> t) {
 	LOG_IF(FATAL, t->value()->bytes() != value()->bytes()) << "Size mismatch between terminals: " << _name << " and " << t->name();
-	DF_NODE_CUDA_CHECK(cudaMemcpy(value()->gpu_data(DF_LINE), t->value()->gpu_data(DF_LINE), value()->bytes(), cudaMemcpyDeviceToDevice));	
+	DF_NODE_CUDA_CHECK(cudaMemcpy(value()->gpu_data(), t->value()->gpu_data(), value()->bytes(), cudaMemcpyDeviceToDevice));	
 }

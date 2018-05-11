@@ -18,23 +18,30 @@ public:
 	{
 		CPU,
 		GPU,
+		CUDA_MANAGED,
 		SHADOW
 	};
 
-	Tensor();
-	Tensor(deepflow::TensorParam *param);	
-	Tensor(std::array<int, 4> dims, std::string name, bool reset = false);
+	enum DataPolicy
+	{
+		GPU_ONLY_POLICY,
+		GPU_WITH_CPU_OFFLOAD_POLICY,
+		CUDA_MANAGED_POLICY
+	};
+
+	Tensor();	
+	Tensor(std::array<int, 4> dims, std::string name, DataPolicy policy);
 	Tensor(std::array<int, 4> dims, std::shared_ptr<Tensor> shadow_tensor, std::string name);
-	void init(bool reset_to_zero = false);	
+	void init(DataPolicy policy);	
 	std::string shape() const;
 	int size() const;
 	size_t bytes() const;
 	cudnnTensorDescriptor_t descriptor() const;
 	int dim(int i) const;
 	std::array<int, 4> dims() const;
-	void offload_data();
-	float * cpu_data(std::string caller);
-	float * gpu_data(std::string caller);	
+	void offload_data();	
+	float * cpu_data();
+	float * gpu_data();	
 	void reset();
 	void release();
 		
@@ -42,7 +49,7 @@ public:
 	void statistics(double *mean, double *std, double *min, double *max);	
 	void print();
 
-	void set(const std::vector<float> &values);
+	void set(const std::vector<float> &values);	
 
 	bool verify(const std::vector<float> &values);
 
@@ -51,6 +58,9 @@ public:
 
 	std::string toString();
 	std::string name() const;
+	
+	static size_t used_gpu();
+
 protected:
 	std::array<int, 4> _dims;
 	size_t _size = 0;
@@ -61,8 +71,10 @@ protected:
 	float *_cpu_data = nullptr;
 	std::string _name;
 	DataLocation _location = CPU;
+	DataPolicy _policy;
 	std::shared_ptr<Tensor> _shadow_tensor;	
-	cudaStream_t _offload_stream = nullptr;
+	cudaStream_t _stream = nullptr;
 	cudaEvent_t _offload_event = nullptr;
+	static size_t _used_gpu_mem_size;
 };
 

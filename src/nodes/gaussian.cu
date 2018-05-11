@@ -51,17 +51,17 @@ void Gaussian::forward()
 		h_rand[i] = dist(_mt19937);
 	DF_NODE_CUDA_CHECK(cudaMemcpy(_normal, h_rand, _size * sizeof(float), cudaMemcpyHostToDevice));
 	delete[] h_rand;
-	GaussianKernelForward << < numOfBlocks(_size), maxThreadsPerBlock >> > (_size, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), _normal, _outputs[0]->value()->gpu_data(DF_LINE));
+	GaussianKernelForward << < numOfBlocks(_size), maxThreadsPerBlock >> > (_size, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data(), _normal, _outputs[0]->value()->gpu_data());
 }
 
 void Gaussian::backward()
 {
 	if (_inputs[0]->diff()) {
-		GaussianKernelMeanBackward << < numOfBlocks(_size), maxThreadsPerBlock >> > (_size, _outputs[0]->diff()->gpu_data(DF_LINE), _inputs[0]->diff()->gpu_data(DF_LINE));
+		GaussianKernelMeanBackward << < numOfBlocks(_size), maxThreadsPerBlock >> > (_size, _outputs[0]->diff()->gpu_data(), _inputs[0]->diff()->gpu_data());
 		DF_NODE_KERNEL_CHECK();
 	}
 	if (_inputs[1]->diff()) {
-		GaussianKernelSigmaBackward << < numOfBlocks(_size), maxThreadsPerBlock >> > (_size, _normal, _outputs[0]->diff()->gpu_data(DF_LINE), _inputs[1]->diff()->gpu_data(DF_LINE));
+		GaussianKernelSigmaBackward << < numOfBlocks(_size), maxThreadsPerBlock >> > (_size, _normal, _outputs[0]->diff()->gpu_data(), _inputs[1]->diff()->gpu_data());
 		DF_NODE_KERNEL_CHECK();
 	}
 }

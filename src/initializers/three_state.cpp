@@ -22,7 +22,7 @@ void ThreeState::apply(Node *node)
 			else
 				h_rand[i] = 1;
 		}
-		DF_CUDA_CHECK(cudaMemcpy((float*)output->value()->gpu_data(DF_LINE), h_rand, output->value()->bytes(), cudaMemcpyHostToDevice));
+		DF_CUDA_CHECK(cudaMemcpy((float*)output->value()->gpu_data(), h_rand, output->value()->bytes(), cudaMemcpyHostToDevice));
 	}
 	delete[] h_rand;
 }

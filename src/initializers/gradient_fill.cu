@@ -27,7 +27,7 @@ void GradientFill::apply(Node *node) {
 	auto dims = node->output(0)->dims();
 	LOG_IF(FATAL, dims[1] > 2) << "[FAILED] - Number of channels for gradient fill must be less than 2.";
 	auto size = node->output(0)->value()->size();
-	GradientFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, dims[1], dims[2], dims[3], (float*)node->output(0)->value()->gpu_data(DF_LINE));
+	GradientFillKernel << <numOfBlocks(size), maxThreadsPerBlock >> >(size, dims[1], dims[2], dims[3], (float*)node->output(0)->value()->gpu_data());
 	DF_KERNEL_CHECK();
 }
 

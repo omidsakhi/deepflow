@@ -583,6 +583,28 @@ inline bool LiftingParam_Mode_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<LiftingParam_Mode>(
     LiftingParam_Mode_descriptor(), name, value);
 }
+enum NodeParam_DataPolicy {
+  NodeParam_DataPolicy_GPU_ONLY_POLICY = 0,
+  NodeParam_DataPolicy_GPU_WITH_CPU_OFFLOAD_POLICY = 1,
+  NodeParam_DataPolicy_CUDA_MANAGED_POLICY = 2,
+  NodeParam_DataPolicy_NodeParam_DataPolicy_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  NodeParam_DataPolicy_NodeParam_DataPolicy_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool NodeParam_DataPolicy_IsValid(int value);
+const NodeParam_DataPolicy NodeParam_DataPolicy_DataPolicy_MIN = NodeParam_DataPolicy_GPU_ONLY_POLICY;
+const NodeParam_DataPolicy NodeParam_DataPolicy_DataPolicy_MAX = NodeParam_DataPolicy_CUDA_MANAGED_POLICY;
+const int NodeParam_DataPolicy_DataPolicy_ARRAYSIZE = NodeParam_DataPolicy_DataPolicy_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* NodeParam_DataPolicy_descriptor();
+inline const ::std::string& NodeParam_DataPolicy_Name(NodeParam_DataPolicy value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    NodeParam_DataPolicy_descriptor(), value);
+}
+inline bool NodeParam_DataPolicy_Parse(
+    const ::std::string& name, NodeParam_DataPolicy* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<NodeParam_DataPolicy>(
+    NodeParam_DataPolicy_descriptor(), name, value);
+}
 enum ActionType {
   VALUES = 0,
   DIFFS = 1,
@@ -3850,10 +3872,17 @@ class DataGeneratorParam : public ::google::protobuf::Message /* @@protoc_insert
 
   // accessors -------------------------------------------------------
 
+  // int32 freq = 1;
+  void clear_freq();
+  static const int kFreqFieldNumber = 1;
+  ::google::protobuf::int32 freq() const;
+  void set_freq(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:deepflow.DataGeneratorParam)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 freq_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -8066,6 +8095,34 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // nested types ----------------------------------------------------
 
+  typedef NodeParam_DataPolicy DataPolicy;
+  static const DataPolicy GPU_ONLY_POLICY =
+    NodeParam_DataPolicy_GPU_ONLY_POLICY;
+  static const DataPolicy GPU_WITH_CPU_OFFLOAD_POLICY =
+    NodeParam_DataPolicy_GPU_WITH_CPU_OFFLOAD_POLICY;
+  static const DataPolicy CUDA_MANAGED_POLICY =
+    NodeParam_DataPolicy_CUDA_MANAGED_POLICY;
+  static inline bool DataPolicy_IsValid(int value) {
+    return NodeParam_DataPolicy_IsValid(value);
+  }
+  static const DataPolicy DataPolicy_MIN =
+    NodeParam_DataPolicy_DataPolicy_MIN;
+  static const DataPolicy DataPolicy_MAX =
+    NodeParam_DataPolicy_DataPolicy_MAX;
+  static const int DataPolicy_ARRAYSIZE =
+    NodeParam_DataPolicy_DataPolicy_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  DataPolicy_descriptor() {
+    return NodeParam_DataPolicy_descriptor();
+  }
+  static inline const ::std::string& DataPolicy_Name(DataPolicy value) {
+    return NodeParam_DataPolicy_Name(value);
+  }
+  static inline bool DataPolicy_Parse(const ::std::string& name,
+      DataPolicy* value) {
+    return NodeParam_DataPolicy_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   // repeated string input = 3;
@@ -8680,6 +8737,12 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::GaborKernelParam* release_gabor_kernel_param();
   void set_allocated_gabor_kernel_param(::deepflow::GaborKernelParam* gabor_kernel_param);
 
+  // .deepflow.NodeParam.DataPolicy data_policy = 6;
+  void clear_data_policy();
+  static const int kDataPolicyFieldNumber = 6;
+  ::deepflow::NodeParam_DataPolicy data_policy() const;
+  void set_data_policy(::deepflow::NodeParam_DataPolicy value);
+
   // @@protoc_insertion_point(class_scope:deepflow.NodeParam)
  private:
 
@@ -8748,6 +8811,7 @@ class NodeParam : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::deepflow::SpatialTransformerParam* spatial_transformer_param_;
   ::deepflow::NandParam* nand_param_;
   ::deepflow::GaborKernelParam* gabor_kernel_param_;
+  int data_policy_;
   mutable int _cached_size_;
   friend struct protobuf_deepflow_2eproto::TableStruct;
 };
@@ -10209,6 +10273,20 @@ inline void VariableParam::set_allocated_weights(::deepflow::TensorData* weights
 // -------------------------------------------------------------------
 
 // DataGeneratorParam
+
+// int32 freq = 1;
+inline void DataGeneratorParam::clear_freq() {
+  freq_ = 0;
+}
+inline ::google::protobuf::int32 DataGeneratorParam::freq() const {
+  // @@protoc_insertion_point(field_get:deepflow.DataGeneratorParam.freq)
+  return freq_;
+}
+inline void DataGeneratorParam::set_freq(::google::protobuf::int32 value) {
+  
+  freq_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.DataGeneratorParam.freq)
+}
 
 // -------------------------------------------------------------------
 
@@ -12802,6 +12880,20 @@ inline void NodeParam::set_allocated_block_param(::deepflow::BlockParam* block_p
   // @@protoc_insertion_point(field_set_allocated:deepflow.NodeParam.block_param)
 }
 
+// .deepflow.NodeParam.DataPolicy data_policy = 6;
+inline void NodeParam::clear_data_policy() {
+  data_policy_ = 0;
+}
+inline ::deepflow::NodeParam_DataPolicy NodeParam::data_policy() const {
+  // @@protoc_insertion_point(field_get:deepflow.NodeParam.data_policy)
+  return static_cast< ::deepflow::NodeParam_DataPolicy >(data_policy_);
+}
+inline void NodeParam::set_data_policy(::deepflow::NodeParam_DataPolicy value) {
+  
+  data_policy_ = value;
+  // @@protoc_insertion_point(field_set:deepflow.NodeParam.data_policy)
+}
+
 // .deepflow.VariableParam variable_param = 100;
 inline bool NodeParam::has_variable_param() const {
   return this != internal_default_instance() && variable_param_ != NULL;
@@ -15334,6 +15426,11 @@ template <> struct is_proto_enum< ::deepflow::LiftingParam_Mode> : ::google::pro
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::LiftingParam_Mode>() {
   return ::deepflow::LiftingParam_Mode_descriptor();
+}
+template <> struct is_proto_enum< ::deepflow::NodeParam_DataPolicy> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::deepflow::NodeParam_DataPolicy>() {
+  return ::deepflow::NodeParam_DataPolicy_descriptor();
 }
 template <> struct is_proto_enum< ::deepflow::ActionType> : ::google::protobuf::internal::true_type {};
 template <>

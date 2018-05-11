@@ -64,12 +64,17 @@ public:
 class DeepFlowDllExport DataGeneratorOp : public NodeOp<DataGeneratorOp> {
 public:
 	std::string _solver;
+	int _freq = 1;
 public:
 	DataGeneratorOp(const std::string &name = "data_generator") {
 		this->name(name);
 	}
 	DataGeneratorOp &solver(std::string solver) {
 		this->_solver = solver;
+		return *this;
+	}
+	DataGeneratorOp &freq(int value = 1) {
+		this->_freq = value;
 		return *this;
 	}
 };

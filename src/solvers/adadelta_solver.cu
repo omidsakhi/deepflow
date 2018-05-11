@@ -41,7 +41,7 @@ void AdaDeltaSolver::apply(std::shared_ptr<Variable> var) {
 		return;
 	LOG_IF(INFO, verbos) << "applying solver " << name() << " ON " << var->name();	
 	auto size = var->output(0)->value()->size();
-	AdaDeltaKernel << <numOfBlocks(size), maxThreadsPerBlock, 0>> > (size, (float*)var->output(0)->value()->gpu_data(DF_LINE), (float*)var->gradients(), _h1, _h2, _my_param->momentum(), _learning_rate, _my_param->delta());
+	AdaDeltaKernel << <numOfBlocks(size), maxThreadsPerBlock, 0>> > (size, (float*)var->output(0)->value()->gpu_data(), (float*)var->gradients(), _h1, _h2, _my_param->momentum(), _learning_rate, _my_param->delta());
 	DF_KERNEL_CHECK();
 	var->reset_gradients();
 }

@@ -32,7 +32,7 @@ void SGDSolver::apply(std::shared_ptr<Variable> var) {
 		return;
 	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name();
 	auto size = var->output(0)->value()->size();
-	ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock, 0>> > (size, _my_param->momentum(), _learning_rate, (float*)var->output(0)->value()->gpu_data(DF_LINE), (float*)var->gradients(), _h);
+	ApplyGradientKernel << <numOfBlocks(size), maxThreadsPerBlock, 0>> > (size, _my_param->momentum(), _learning_rate, (float*)var->output(0)->value()->gpu_data(), (float*)var->gradients(), _h);
 	DF_KERNEL_CHECK();
 	var->reset_gradients();
 }

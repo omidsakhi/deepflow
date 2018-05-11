@@ -130,7 +130,7 @@ void MNISTReader::forward()
 		LOG(FATAL);
 	}
 
-	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->gpu_data(DF_LINE), _buf, _outputs[0]->value()->bytes(), cudaMemcpyHostToDevice));
+	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->gpu_data(), _buf, _outputs[0]->value()->bytes(), cudaMemcpyHostToDevice));
 	LOG_IF(INFO, _verbose > 2) << "MNIST " << _name << " - BATCH @ " << _current_batch;
 }
 

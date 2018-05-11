@@ -29,14 +29,14 @@ void LeakyRelu::init() {
 
 void LeakyRelu::forward() {	
 	auto size = _inputs[0]->value()->size();
-	ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[0]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE), _negative_slope);
+	ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, _inputs[0]->value()->gpu_data(), _inputs[0]->value()->gpu_data(), (float*)_outputs[0]->value()->gpu_data(), _negative_slope);
 	DF_KERNEL_CHECK();	
 }
 
 void LeakyRelu::backward() {
 	if (_inputs[0]->diff()) {
 		auto size = _inputs[0]->value()->size();
-		ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE), _negative_slope);
+		ReluKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(), _outputs[0]->diff()->gpu_data(), (float*)_inputs[0]->diff()->gpu_data(), _negative_slope);
 		DF_KERNEL_CHECK();
 	}
 }

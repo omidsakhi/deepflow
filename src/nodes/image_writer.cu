@@ -28,9 +28,9 @@ void ImageWriter::init() {
 
 void ImageWriter::forward() {
 	if (num_channels == 3)
-		ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, _inputs[0]->value()->gpu_data(DF_LINE), per_image_height, per_image_width, num_image_per_row_and_col, _output);
+		ColorPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, _inputs[0]->value()->gpu_data(), per_image_height, per_image_width, num_image_per_row_and_col, _output);
 	else
-		GrayPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, _inputs[0]->value()->gpu_data(DF_LINE), per_image_height, per_image_width, num_image_per_row_and_col, _output);
+		GrayPictureGeneratorKernel << < numOfBlocks(num_images), maxThreadsPerBlock >> >(num_images, _inputs[0]->value()->gpu_data(), per_image_height, per_image_width, num_image_per_row_and_col, _output);
 	DF_KERNEL_CHECK();
 	DF_NODE_CUDA_CHECK(cudaMemcpy(disp->ptr<uchar>(), _output, num_pic_pixels, cudaMemcpyDeviceToHost));	
 	auto filename = _filename;

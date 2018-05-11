@@ -31,10 +31,10 @@ void SpatialTransformer::init()
 void SpatialTransformer::forward()
 {
 	DF_NODE_CUDNN_CHECK(
-		cudnnSpatialTfGridGeneratorForward(_cudnnHandle, _stDesc, _inputs[1]->value()->gpu_data(DF_LINE), _inputs[2]->value()->gpu_data(DF_LINE))
+		cudnnSpatialTfGridGeneratorForward(_cudnnHandle, _stDesc, _inputs[1]->value()->gpu_data(), _inputs[2]->value()->gpu_data())
 	);
 	DF_NODE_CUDNN_CHECK(
-		cudnnSpatialTfSamplerForward(_cudnnHandle, _stDesc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE), _inputs[2]->value()->gpu_data(DF_LINE), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE))
+		cudnnSpatialTfSamplerForward(_cudnnHandle, _stDesc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(), _inputs[2]->value()->gpu_data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data())
 	);
 }
 
@@ -43,15 +43,15 @@ void SpatialTransformer::backward()
 	if (_inputs[0]->diff()) {		
 		DF_NODE_CUDNN_CHECK(
 			cudnnSpatialTfSamplerBackward(_cudnnHandle, _stDesc,
-				&one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE),
-				&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data(DF_LINE),
-				&one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(DF_LINE),
-				_inputs[2]->value()->gpu_data(DF_LINE), &zero, _inputs[2]->diff()->gpu_data(DF_LINE))
+				&one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(),
+				&zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data(),
+				&one, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(),
+				_inputs[2]->value()->gpu_data(), &zero, _inputs[2]->diff()->gpu_data())
 		);
 	}
 	if (_inputs[1]->diff()) {
 		DF_NODE_CUDNN_CHECK(
-			cudnnSpatialTfGridGeneratorBackward(_cudnnHandle, _stDesc, _inputs[2]->diff()->gpu_data(DF_LINE), _inputs[1]->diff()->gpu_data(DF_LINE))
+			cudnnSpatialTfGridGeneratorBackward(_cudnnHandle, _stDesc, _inputs[2]->diff()->gpu_data(), _inputs[1]->diff()->gpu_data())
 		);
 	}
 }

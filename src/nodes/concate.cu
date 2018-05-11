@@ -65,7 +65,7 @@ void Concate::forward()
 		auto input = _inputs[i];
 		int size = input->value()->size();
 		int channels = input->value()->dim(1);
-		ConcateKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, true, _width, _height, channels, _output_channels, channel_offset, input->value()->gpu_data(DF_LINE), _outputs[0]->value()->gpu_data(DF_LINE));
+		ConcateKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, true, _width, _height, channels, _output_channels, channel_offset, input->value()->gpu_data(), _outputs[0]->value()->gpu_data());
 		DF_KERNEL_CHECK();
 		channel_offset += channels;
 	}	
@@ -79,7 +79,7 @@ void Concate::backward()
 		int size = input->value()->size();
 		int channels = input->value()->dim(1);
 		if (input->diff()) {
-			ConcateKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, false, _width, _height, channels, _output_channels, channel_offset, _outputs[0]->diff()->gpu_data(DF_LINE), input->diff()->gpu_data(DF_LINE));
+			ConcateKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, false, _width, _height, channels, _output_channels, channel_offset, _outputs[0]->diff()->gpu_data(), input->diff()->gpu_data());
 			DF_KERNEL_CHECK();
 		}
 		channel_offset += channels;

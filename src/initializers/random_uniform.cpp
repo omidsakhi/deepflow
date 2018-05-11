@@ -21,7 +21,7 @@ void RandomUniform::apply(Node *node) {
 	for (auto output : node->outputs()) {
 		for (int i = 0; i < size; ++i)
 			h_rand[i] = distribution(generator);
-		DF_CUDA_CHECK(cudaMemcpy((float*)output->value()->gpu_data(DF_LINE), h_rand, output->value()->bytes(), cudaMemcpyHostToDevice));
+		DF_CUDA_CHECK(cudaMemcpy((float*)output->value()->gpu_data(), h_rand, output->value()->bytes(), cudaMemcpyHostToDevice));
 	}
 	delete[] h_rand;
 }

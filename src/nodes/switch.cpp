@@ -38,10 +38,10 @@ void Switch::init()
 void Switch::forward()
 {
 	if (m_on) {
-		cpy(_inputs[0]->value()->size(), 1.0, _inputs[0]->value()->gpu_data(DF_LINE), 0.0, _outputs[0]->value()->gpu_data(DF_LINE));
+		cpy(_inputs[0]->value()->size(), 1.0, _inputs[0]->value()->gpu_data(), 0.0, _outputs[0]->value()->gpu_data());
 	}
 	else {
-		fill(_outputs[0]->value()->size(), 0.0, _outputs[0]->value()->gpu_data(DF_LINE));
+		fill(_outputs[0]->value()->size(), 0.0, _outputs[0]->value()->gpu_data());
 	}
 }
 
@@ -49,10 +49,10 @@ void Switch::backward()
 {
 	if (_inputs[0]->diff()) {
 		if (m_on) {
-			cpy(_inputs[0]->diff()->size(), 1.0, _outputs[0]->diff()->gpu_data(DF_LINE), 0.0, _inputs[0]->diff()->gpu_data(DF_LINE));
+			cpy(_inputs[0]->diff()->size(), 1.0, _outputs[0]->diff()->gpu_data(), 0.0, _inputs[0]->diff()->gpu_data());
 		}
 		else {
-			fill(_outputs[0]->diff()->size(), 0.0, _inputs[0]->diff()->gpu_data(DF_LINE));
+			fill(_outputs[0]->diff()->size(), 0.0, _inputs[0]->diff()->gpu_data());
 		}
 	}
 }

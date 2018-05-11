@@ -20,12 +20,12 @@ void Pooling::init() {
 }
 
 void Pooling::forward() {
-	DF_NODE_CUDNN_CHECK(cudnnPoolingForward(_cudnnHandle, _poolingDesc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE)));
+	DF_NODE_CUDNN_CHECK(cudnnPoolingForward(_cudnnHandle, _poolingDesc, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(), &zero, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data()));
 }
 
 void Pooling::backward() {
 	if (_inputs[0]->diff())
-		DF_NODE_CUDNN_CHECK(cudnnPoolingBackward(_cudnnHandle, _poolingDesc, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(DF_LINE), _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE), &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data(DF_LINE)));
+		DF_NODE_CUDNN_CHECK(cudnnPoolingBackward(_cudnnHandle, _poolingDesc, &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(), _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(), _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(), &zero, _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data()));
 }
 
 std::string Pooling::to_cpp() const

@@ -49,7 +49,7 @@ void AdamSolver::apply(std::shared_ptr<Variable> var) {
 	double iter = context->current_iteration + 1;	
 	float corrected_lr = (float)((double)_learning_rate * std::sqrt(1.0 - pow(beta2, iter)) / (1.0 - pow(beta1, iter)));
 	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name() << " | lr: " << corrected_lr;
-	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock, 0 >> > (size, (float*)var->output(0)->value()->gpu_data(DF_LINE), (float*)var->gradients(), _m, _v, _my_param->beta1(), _my_param->beta2(), _my_param->eps(), corrected_lr, dry_run);
+	AdamKernel << <numOfBlocks(size), maxThreadsPerBlock, 0 >> > (size, (float*)var->output(0)->value()->gpu_data(), (float*)var->gradients(), _m, _v, _my_param->beta1(), _my_param->beta2(), _my_param->eps(), corrected_lr, dry_run);
 	DF_KERNEL_CHECK();	
 	var->reset_gradients();
 }

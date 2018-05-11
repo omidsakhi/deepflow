@@ -126,7 +126,7 @@ void ImageBatchReader::forward()
 	for (int index = 0; index < _indices.size(); ++index)
 	{
 		std::string file_name = _list_of_files[_indices[index]].string();
-		thread_list.push_back(std::thread(thread_internal_read_image, index, file_name, (float*)_outputs[0]->value()->gpu_data(DF_LINE), _dims[1], _dims[2], _dims[3], numOfBlocks(_dims[1] * _dims[2] * _dims[3]), maxThreadsPerBlock, _between_0_and_1));
+		thread_list.push_back(std::thread(thread_internal_read_image, index, file_name, (float*)_outputs[0]->value()->gpu_data(), _dims[1], _dims[2], _dims[3], numOfBlocks(_dims[1] * _dims[2] * _dims[3]), maxThreadsPerBlock, _between_0_and_1));
 	}
 	for (auto &thread : thread_list)
 		thread.join();

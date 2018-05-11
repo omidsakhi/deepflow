@@ -1,11 +1,14 @@
 #include "nodes/equal.h"
 
 __global__
-void EqualKernel(int n, const float * __restrict__ a,  const float * __restrict__ b, float * __restrict__ c)
+void EqualKernel(int n, const float *  a,  const float *  b, float *  c)
 {
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
-	if (i < n)
-		c[i] = (llroundf(a[i]) == llroundf (b[i]) ? 1.0 : 0.0);
+	if (i < n) {
+		if (a[i] == 0 || b[i] == 0)
+			printf("%f %f\n", a[i], b[i]);
+		c[i] = fabs(a[i] - b[i]) < 0.0000000000000001f ? 1.0 : 0.0;
+	}
 }
 
 
@@ -20,7 +23,7 @@ void Equal::init() {
 
 void Equal::forward() {
 	auto size = _inputs[0]->value()->size();
-	EqualKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE));
+	EqualKernel << < numOfBlocks(size), maxThreadsPerBlock >> >(size, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data(), _outputs[0]->value()->gpu_data());
 	DF_KERNEL_CHECK();
 }
 

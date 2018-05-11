@@ -4,33 +4,14 @@
 
 #include <mutex>
 
+size_t Tensor::_used_gpu_mem_size = 0;
+
 Tensor::Tensor() {}
 
-Tensor::Tensor(deepflow::TensorParam *param) {
-	switch (param->dims_size()) {
-	case 1:
-		_dims = { 1,param->dims(0),1,1 };
-		break;
-	case 2:
-		_dims = { param->dims(0),param->dims(1),1,1 };
-		break;
-	case 3:
-		_dims = { param->dims(0), 1, param->dims(1),param->dims(2) };
-		break;
-	case 4:
-		_dims = { param->dims(0),param->dims(1),param->dims(2),param->dims(3) };
-		break;
-	default:
-		LOG(FATAL) << "Unsupported shape.";
-	}	
-	_name = param->name();
-	init();
-}
-
-Tensor::Tensor(std::array<int, 4> dims, std::string name, bool reset) {
+Tensor::Tensor(std::array<int, 4> dims, std::string name, DataPolicy policy) {
 	_dims = dims;	
 	_name = name;
-	init(reset);
+	init(policy);
 }
 
 Tensor::Tensor(std::array<int, 4> dims, std::shared_ptr<Tensor> shadow_tensor, std::string name)
@@ -47,30 +28,47 @@ Tensor::Tensor(std::array<int, 4> dims, std::shared_ptr<Tensor> shadow_tensor, s
 	DF_CUDNN_CHECK(cudnnGetTensorSizeInBytes(_desc, &_bytes));
 	_shadow_tensor = shadow_tensor;
 	_location = SHADOW;
-	cudaStreamCreate(&_offload_stream);	
+	cudaStreamCreate(&_stream);	
 }
 
-void Tensor::init(bool reset_to_zero) {
+void Tensor::init(DataPolicy policy) {
 	_size = _dims[0] * _dims[1] * _dims[2] * _dims[3];	
 	_shapeString = std::to_string(_dims[0]);
+	_policy = policy;
 	for (int i = 1; i < 4; ++i)
 		_shapeString += "x" + std::to_string(_dims[i]);	
 	DF_CUDNN_CHECK(cudnnCreateTensorDescriptor(&_desc));
 	DF_CUDNN_CHECK(cudnnSetTensor4dDescriptor(_desc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, _dims[0], _dims[1], _dims[2], _dims[3]));
 	DF_CUDNN_CHECK(cudnnGetTensorSizeInBytes(_desc, &_bytes));
-	try
-	{
-		_cpu_data = new float[_size];
+	if (_policy == GPU_ONLY_POLICY) {
+		_cpu_data = nullptr;
+		DF_CUDA_CHECK(cudaMalloc(&_gpu_data, _bytes));
+		_used_gpu_mem_size += _bytes;
+		DF_CUDA_CHECK(cudaMemset(_gpu_data, 0, _bytes));
+		_location = GPU;
 	}
-	catch (std::bad_alloc&)
-	{
-		LOG(FATAL) << "[FAILED] - host memory alocation failed for " << _name;
-	}	
-	LOG_IF(FATAL, _cpu_data == nullptr);
-	if (reset_to_zero) {
+	else if (_policy == GPU_WITH_CPU_OFFLOAD_POLICY) {
+		_gpu_data = nullptr;
+		try
+		{
+			_cpu_data = new float[_size];
+		}
+		catch (std::bad_alloc&)
+		{
+			LOG(FATAL) << "[FAILED] - host memory alocation failed for " << _name;
+		}
+		LOG_IF(FATAL, _cpu_data == nullptr);
 		memset(_cpu_data, 0, _bytes);
-	}	
-	cudaStreamCreate(&_offload_stream);	
+		_location = CPU;
+	}
+	else if (_policy == CUDA_MANAGED_POLICY) {
+		_cpu_data = nullptr;
+		DF_CUDA_CHECK(cudaMallocManaged(&_gpu_data, _bytes));
+		_used_gpu_mem_size += _bytes;
+		DF_CUDA_CHECK(cudaMemset(_gpu_data, 0, _bytes));
+		_location = CUDA_MANAGED;
+	}
+	cudaStreamCreate(&_stream);	
 }
 
 std::string Tensor::shape() const {
@@ -107,40 +105,48 @@ void Tensor::offload_data()
 		_shadow_tensor->offload_data();
 		return;
 	}
-	if (_location == GPU) {
+	if (_location == GPU && _policy == GPU_WITH_CPU_OFFLOAD_POLICY) {
 		LOG_IF(FATAL, _cpu_data == nullptr);
 		LOG_IF(FATAL, _gpu_data == nullptr);
 		if (_offload_event) {
 			cudaEventDestroy(_offload_event);
+			_offload_event = nullptr;
 		}
 		cudaEventCreate(&_offload_event);
-		DF_CUDA_CHECK(cudaMemcpyAsync(_cpu_data, _gpu_data, _bytes, cudaMemcpyDeviceToHost, _offload_stream));
+		DF_CUDA_CHECK(cudaMemcpyAsync(_cpu_data, _gpu_data, _bytes, cudaMemcpyDeviceToHost, _stream));
 		DF_CUDA_CHECK(cudaFree(_gpu_data));
+		_used_gpu_mem_size -= _bytes;
 		cudaEventRecord(_offload_event);
-		_location = CPU;		
+		_location = CPU;
 		_gpu_data = nullptr;		
 	}
 }
 
-float * Tensor::cpu_data(std::string caller) {
+float * Tensor::cpu_data() {
 	if (_offload_event) {
 		cudaEventSynchronize(_offload_event);
 	}
 	if (_location == SHADOW) {
 		//LOG(INFO) << "Tensor " << _name << " CPU shahdow access from " << caller;
-		return _shadow_tensor->cpu_data(DF_LINE);
+		return _shadow_tensor->cpu_data();
+	}
+	else if (_location == CUDA_MANAGED) {
+		return _gpu_data;
 	}
 	else if (_location == GPU) {
+		LOG_IF(FATAL, _policy == GPU_ONLY_POLICY);
 		//LOG(INFO) << "Tensor " << _name << " switched to CPU from " << caller;
 		LOG_IF(FATAL, _cpu_data == nullptr);
 		LOG_IF(FATAL, _gpu_data == nullptr);
 		DF_CUDA_CHECK(cudaMemcpy(_cpu_data, _gpu_data, _bytes, cudaMemcpyDeviceToHost));
 		_location = CPU;
 		DF_CUDA_CHECK(cudaFree(_gpu_data));
+		_used_gpu_mem_size -= _bytes;
 		_gpu_data = nullptr;		
 		return _cpu_data;
 	}
 	else if (_location == CPU) {
+		LOG_IF(FATAL, _policy == GPU_ONLY_POLICY);
 		LOG_IF(FATAL, _cpu_data == nullptr);
 		//LOG(INFO) << "Tensor " << _name << " CPU access from " << caller;
 		return _cpu_data;
@@ -148,24 +154,26 @@ float * Tensor::cpu_data(std::string caller) {
 	return nullptr;
 }
 
-float * Tensor::gpu_data(std::string caller) {
+float * Tensor::gpu_data() {
 	if (_offload_event) {
 		cudaEventSynchronize(_offload_event);
 	}
 	if (_location == SHADOW) {		
 		//LOG(INFO) << "Tensor " << _name << " GPU shahdow access from " << caller;
-		return _shadow_tensor->gpu_data(DF_LINE);
+		return _shadow_tensor->gpu_data();
 	}
-	else if (_location == GPU) {
-		LOG_IF(FATAL, _gpu_data == nullptr);		
+	else if (_location == GPU || _location == CUDA_MANAGED) {
+		LOG_IF(FATAL, _gpu_data == nullptr);
 		//LOG(INFO) << "Tensor " << _name << " GPU access from " << caller;
 		return _gpu_data;
 	}
 	else if (_location == CPU) {
 		//LOG(INFO) << "Tensor " << _name << " switched to GPU from " << caller;
+		LOG_IF(FATAL, _policy == GPU_ONLY_POLICY);
 		LOG_IF(FATAL, _cpu_data == nullptr);
 		LOG_IF(FATAL, _gpu_data != nullptr);
 		DF_CUDA_CHECK(cudaMalloc(&_gpu_data, _bytes));
+		_used_gpu_mem_size += _bytes;
 		LOG_IF(FATAL, _gpu_data == nullptr);
 		DF_CUDA_CHECK(cudaMemcpy(_gpu_data, _cpu_data, _bytes, cudaMemcpyHostToDevice));
 		_location = GPU;		
@@ -242,23 +250,28 @@ void Tensor::release() {
 		_cpu_data = nullptr;
 	}
 	else {
-		LOG_IF(FATAL, _gpu_data == nullptr);		
-		cudaFree(_gpu_data);
-		_gpu_data = nullptr;
-		free(_cpu_data);
-		_cpu_data = nullptr;
+		LOG_IF(FATAL, _gpu_data == nullptr);
+		if (_gpu_data) {
+			cudaFree(_gpu_data);
+			_used_gpu_mem_size -= _bytes;
+			_gpu_data = nullptr;
+		}
+		if (_cpu_data) {
+			free(_cpu_data);
+			_cpu_data = nullptr;
+		}
 	}
 }
 
 void Tensor::reset() {	
-	if (_location == SHADOW) {		
+	if (_location == SHADOW) {
 		_shadow_tensor->reset();
 	}
 	else if (_location == CPU) {
 		LOG_IF(FATAL, _cpu_data == nullptr);
 		memset(_cpu_data, 0, _bytes);
 	}
-	else if (_location == GPU) {
+	else if (_location == GPU || _location == CUDA_MANAGED) {
 		LOG_IF(FATAL, _gpu_data == nullptr);		
 		DF_CUDA_CHECK(cudaMemset(_gpu_data, 0, _bytes));
 	}	
@@ -274,7 +287,7 @@ void Tensor::set(const std::vector<float> &values)
 		LOG_IF(FATAL, _cpu_data == nullptr);
 		memcpy(_cpu_data, values.data(), _bytes);
 	}
-	else if (_location == GPU) {
+	else if (_location == GPU || _location == CUDA_MANAGED) {
 		LOG_IF(FATAL, _gpu_data == nullptr);
 		DF_CUDA_CHECK(cudaMemcpy(_gpu_data, values.data(), _bytes, cudaMemcpyHostToDevice));
 	}
@@ -312,7 +325,7 @@ std::shared_ptr<std::vector<float>> Tensor::to_vec()
 	if (_location == SHADOW)
 		return _shadow_tensor->to_vec();
 	auto vec = std::make_shared<std::vector<float>>(_size);
-	if (_location == GPU) {
+	if (_location == GPU || _location == CUDA_MANAGED) {
 		DF_CUDA_CHECK(
 			cudaMemcpy(vec->data(), _gpu_data, _bytes, cudaMemcpyDeviceToHost)
 		);
@@ -334,4 +347,9 @@ std::string Tensor::toString() {
 std::string Tensor::name() const
 {
 	return _name;
+}
+
+size_t Tensor::used_gpu()
+{
+	return _used_gpu_mem_size;	
 }

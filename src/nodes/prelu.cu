@@ -64,7 +64,7 @@ void PRelu::forward()
 	auto size = _inputs[0]->value()->size();
 	auto channels = _inputs[0]->dims()[1];
 	auto inner_dims = _inputs[0]->dims()[2] * _inputs[0]->dims()[3];
-	PReluForwardKernel << < numOfBlocks(size), maxThreadsPerBlock>> >(size, channels, inner_dims, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE));
+	PReluForwardKernel << < numOfBlocks(size), maxThreadsPerBlock>> >(size, channels, inner_dims, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data(), (float*)_outputs[0]->value()->gpu_data());
 	DF_NODE_KERNEL_CHECK();
 }
 
@@ -74,12 +74,12 @@ void PRelu::backward()
 	auto channels = _inputs[0]->dims()[1];
 	auto inner_dims = _inputs[0]->dims()[2] * _inputs[0]->dims()[3];
 	if (_inputs[0]->diff()) {
-		PReluBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, channels, inner_dims, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE));
+		PReluBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, channels, inner_dims, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data(), _outputs[0]->diff()->gpu_data(), (float*)_inputs[0]->diff()->gpu_data());
 		DF_NODE_KERNEL_CHECK();
 	}
 	if (_inputs[1]->diff()) {
-		DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->gpu_data(DF_LINE), 0, _inputs[1]->diff()->bytes()));
-		PReluBackwardWeightKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, channels, inner_dims, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[1]->diff()->gpu_data(DF_LINE));
+		DF_CUDA_CHECK(cudaMemset(_inputs[1]->diff()->gpu_data(), 0, _inputs[1]->diff()->bytes()));
+		PReluBackwardWeightKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, channels, inner_dims, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data(), _outputs[0]->diff()->gpu_data(), (float*)_inputs[1]->diff()->gpu_data());
 		DF_NODE_KERNEL_CHECK();
 	}
 }

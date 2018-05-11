@@ -21,20 +21,20 @@ void Dropout::init() {
 
 void Dropout::forward() {
 	if (_context->execution_mode == ExecutionContext::TRAIN) {
-		DF_NODE_CUDNN_CHECK(cudnnDropoutForward(_cudnnHandle, _dropoutDesc, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE), _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE), d_reserve, _reserve_sizes_in_bytes));
+		DF_NODE_CUDNN_CHECK(cudnnDropoutForward(_cudnnHandle, _dropoutDesc, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(), _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(), d_reserve, _reserve_sizes_in_bytes));
 	}
 	else {
-		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->gpu_data(DF_LINE), _inputs[0]->value()->gpu_data(DF_LINE), _inputs[0]->value()->bytes(), cudaMemcpyDeviceToDevice));
+		DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[0]->value()->gpu_data(), _inputs[0]->value()->gpu_data(), _inputs[0]->value()->bytes(), cudaMemcpyDeviceToDevice));
 	}	
 }
 
 void Dropout::backward() {
 	if (_inputs[0]->diff()) {
 		if (_context->execution_mode == ExecutionContext::TRAIN) {
-			DF_NODE_CUDNN_CHECK(cudnnDropoutBackward(_cudnnHandle, _dropoutDesc, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(DF_LINE), _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data(DF_LINE), d_reserve, _reserve_sizes_in_bytes));
+			DF_NODE_CUDNN_CHECK(cudnnDropoutBackward(_cudnnHandle, _dropoutDesc, _outputs[0]->diff()->descriptor(), _outputs[0]->diff()->gpu_data(), _inputs[0]->diff()->descriptor(), _inputs[0]->diff()->gpu_data(), d_reserve, _reserve_sizes_in_bytes));
 		}
 		else {
-			DF_NODE_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), _inputs[0]->diff()->bytes(), cudaMemcpyDeviceToDevice));
+			DF_NODE_CUDA_CHECK(cudaMemcpy(_inputs[0]->diff()->gpu_data(), _outputs[0]->diff()->gpu_data(), _inputs[0]->diff()->bytes(), cudaMemcpyDeviceToDevice));
 		}		
 	}
 }

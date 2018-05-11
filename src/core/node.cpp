@@ -40,7 +40,7 @@ void Node::write_values(std::shared_ptr<Tensor> tensor, float alpha, float beta)
 	auto feed_dim = tensor->dims();
 	auto my_dim = _outputs[0]->value()->dims();
 	LOG_IF(FATAL, feed_dim != my_dim) << _name << " Forward feed dimension mismatch between dst (" << _outputs[0]->value()->name()  << " - " << _outputs[0]->value()->shape() << ") and src (" << tensor->name()  << " - " << tensor->shape() << ")";
-	cpy(_outputs[0]->value()->size(), alpha, tensor->gpu_data(DF_LINE), beta, _outputs[0]->value()->gpu_data(DF_LINE));
+	cpy(_outputs[0]->value()->size(), alpha, tensor->gpu_data(), beta, _outputs[0]->value()->gpu_data());
 }
 
 void Node::write_values(std::initializer_list<float> values)
@@ -54,7 +54,7 @@ void Node::write_diffs(std::shared_ptr<Tensor> tensor, float alpha, float beta)
 	auto feed_dim = tensor->dims();
 	auto my_dim = _outputs[0]->diff()->dims();
 	LOG_IF(FATAL, feed_dim != my_dim) << _name << " Backward feed dimension mismatch between dst (" << _outputs[0]->diff()->name() << " - " << _outputs[0]->diff()->shape() << ") and src (" << tensor->name() << " - " << tensor->shape() << ")";
-	cpy(_outputs[0]->diff()->size(), alpha, tensor->gpu_data(DF_LINE), beta, _outputs[0]->diff()->gpu_data(DF_LINE));
+	cpy(_outputs[0]->diff()->size(), alpha, tensor->gpu_data(), beta, _outputs[0]->diff()->gpu_data());
 }
 
 void Node::write_diffs(std::initializer_list<float> values)
@@ -152,6 +152,11 @@ void Node::print()
 		str += output->name() + ", ";
 	}
 	LOG(INFO) << str;
+}
+
+Tensor::DataPolicy Node::policy() const
+{
+	return (Tensor::DataPolicy) _param->data_policy();	
 }
 
 void Node::_forward()

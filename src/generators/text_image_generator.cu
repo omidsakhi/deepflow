@@ -102,9 +102,9 @@ void TextImageGenerator::forward()
 		auto size = _h * _w * 3;
 		DF_NODE_CUDA_CHECK(cudaMemcpy(d_img_actual, cv_img_actual->ptr<uchar>(), size, cudaMemcpyHostToDevice));
 		DF_NODE_CUDA_CHECK(cudaMemcpy(d_img_target, cv_img_target->ptr<uchar>(), size, cudaMemcpyHostToDevice));
-		TextImageGeneratorKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, index * size, d_img_actual, _h, _w, (float*) _outputs[0]->value()->gpu_data(DF_LINE));
+		TextImageGeneratorKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, index * size, d_img_actual, _h, _w, (float*) _outputs[0]->value()->gpu_data());
 		DF_KERNEL_CHECK();
-		TextImageGeneratorKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, index * size, d_img_target, _h, _w, (float*)_outputs[1]->value()->gpu_data(DF_LINE));
+		TextImageGeneratorKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, index * size, d_img_target, _h, _w, (float*)_outputs[1]->value()->gpu_data());
 		DF_KERNEL_CHECK();
 	}
 }

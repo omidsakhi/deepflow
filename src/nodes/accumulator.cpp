@@ -17,9 +17,9 @@ void Accumulator::init() {
 
 void Accumulator::forward() {
 	auto size = _inputs[0]->value()->size();	
-	DF_NODE_CUDNN_CHECK(cudnnAddTensor(_cudnnHandle, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(DF_LINE), &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data(DF_LINE)));
+	DF_NODE_CUDNN_CHECK(cudnnAddTensor(_cudnnHandle, &one, _inputs[0]->value()->descriptor(), _inputs[0]->value()->gpu_data(), &one, _outputs[0]->value()->descriptor(), _outputs[0]->value()->gpu_data()));
 	_total += _inputs[0]->dims()[0];	
-	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[1]->value()->gpu_data(DF_LINE), &_total, sizeof(float), cudaMemcpyHostToDevice));
+	DF_NODE_CUDA_CHECK(cudaMemcpy(_outputs[1]->value()->gpu_data(), &_total, sizeof(float), cudaMemcpyHostToDevice));
 }
 
 void Accumulator::backward() {
@@ -35,6 +35,6 @@ std::string Accumulator::to_cpp() const
 
 void Accumulator::reset()
 {
-	DF_NODE_CUDA_CHECK(cudaMemset(_outputs[0]->value()->gpu_data(DF_LINE), 0, _outputs[0]->value()->bytes()));
+	DF_NODE_CUDA_CHECK(cudaMemset(_outputs[0]->value()->gpu_data(), 0, _outputs[0]->value()->bytes()));
 	_total = 0;
 }

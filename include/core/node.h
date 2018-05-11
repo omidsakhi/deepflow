@@ -71,6 +71,7 @@ public:
 	virtual std::list<std::shared_ptr<Node>> inputNodes() const;
 	virtual std::list<std::shared_ptr<Node>> outputNodes() const;
 	void print();
+	Tensor::DataPolicy policy() const;
 protected:	
 	std::vector<NodeInputPtr> _inputs;
 	std::vector<NodeOutputPtr> _outputs;

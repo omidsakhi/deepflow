@@ -60,7 +60,7 @@ void Restructure::forward() {
 	auto size = _inputs[0]->value()->size();
 	auto dim = _inputs[0]->value()->dims();
 	RestructureKernel << < numOfBlocks(size), maxThreadsPerBlock >> > 
-		(size, _inputs[0]->value()->gpu_data(DF_LINE), dim[0], dim[1], dim[2], dim[3], _first_dim, _second_dim, _outputs[0]->value()->gpu_data(DF_LINE));
+		(size, _inputs[0]->value()->gpu_data(), dim[0], dim[1], dim[2], dim[3], _first_dim, _second_dim, _outputs[0]->value()->gpu_data());
 	DF_NODE_KERNEL_CHECK();
 }
 
@@ -69,7 +69,7 @@ void Restructure::backward() {
 		auto size = _outputs[0]->diff()->size();
 		auto dim = _outputs[0]->diff()->dims();
 		RestructureKernel << < numOfBlocks(size), maxThreadsPerBlock >> > 
-			(size, _outputs[0]->diff()->gpu_data(DF_LINE), dim[0], dim[1], dim[2], dim[3], _first_dim, _second_dim, _inputs[0]->diff()->gpu_data(DF_LINE));
+			(size, _outputs[0]->diff()->gpu_data(), dim[0], dim[1], dim[2], dim[3], _first_dim, _second_dim, _inputs[0]->diff()->gpu_data());
 		DF_NODE_KERNEL_CHECK();
 	}
 }

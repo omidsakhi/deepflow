@@ -38,7 +38,7 @@ void RMSPropSolver::apply(std::shared_ptr<Variable> var) {
 		return;
 	LOG_IF(INFO, verbos) << "applying solver " << name() << " on " << var->name();
 	auto size = var->output(0)->value()->size();
-	RMSPropKernel << <numOfBlocks(size), maxThreadsPerBlock, 0 >> > (size, (float*)var->output(0)->value()->gpu_data(DF_LINE), (float*)var->gradients(), _h, _my_param->rms_decay(), _my_param->eps(), _learning_rate, dry_run);
+	RMSPropKernel << <numOfBlocks(size), maxThreadsPerBlock, 0 >> > (size, (float*)var->output(0)->value()->gpu_data(), (float*)var->gradients(), _h, _my_param->rms_decay(), _my_param->eps(), _learning_rate, dry_run);
 	DF_KERNEL_CHECK();
 	var->reset_gradients();
 }

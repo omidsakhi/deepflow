@@ -37,15 +37,15 @@ void ReduceAll::init() {
 
 void ReduceAll::forward() {
 	auto size = _inputs[0]->value()->size();
-	DF_CUDA_CHECK(cudaMemset(_outputs[0]->value()->gpu_data(DF_LINE), 0, _outputs[0]->value()->bytes()));	
-	ReduceAllKernelForward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _reduce_op == deepflow::ReduceAllParam_ReduceAllOp_AVG, _inputs[0]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE));
+	DF_CUDA_CHECK(cudaMemset(_outputs[0]->value()->gpu_data(), 0, _outputs[0]->value()->bytes()));	
+	ReduceAllKernelForward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _reduce_op == deepflow::ReduceAllParam_ReduceAllOp_AVG, _inputs[0]->value()->gpu_data(), (float*)_outputs[0]->value()->gpu_data());
 	DF_KERNEL_CHECK();
 }
 
 void ReduceAll::backward() {
 	if (_inputs[0]->diff()) {
 		auto size = _inputs[0]->value()->size();
-		ReduceAllKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _reduce_op == deepflow::ReduceAllParam_ReduceAllOp_AVG, _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE));
+		ReduceAllKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _reduce_op == deepflow::ReduceAllParam_ReduceAllOp_AVG, _outputs[0]->diff()->gpu_data(), (float*)_inputs[0]->diff()->gpu_data());
 		DF_KERNEL_CHECK();
 	}
 }

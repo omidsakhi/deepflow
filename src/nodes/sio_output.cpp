@@ -47,7 +47,7 @@ void SIOOutput::forward()
 				input_element->get_map()["shape"] = shape_array;
 
 				auto data_array = sio::array_message::create();				
-				auto data = input_node_value->cpu_data(DF_LINE);
+				auto data = input_node_value->cpu_data();
 				for (int i = 0; i < input_node_value_size; i++)
 					data_array->get_vector().push_back(sio::double_message::create(data[i]));
 				input_element->get_map()["data"] = data_array;

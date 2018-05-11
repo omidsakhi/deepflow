@@ -28,14 +28,14 @@ void Exp::init() {
 
 void Exp::forward() {
 	auto size = _inputs[0]->value()->size();
-	ExpKernelForward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), (float*)_outputs[0]->value()->gpu_data(DF_LINE));
+	ExpKernelForward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(), (float*)_outputs[0]->value()->gpu_data());
 	DF_KERNEL_CHECK();
 }
 
 void Exp::backward() {
 	if (_inputs[0]->diff()) {
 		auto size = _inputs[0]->value()->size();
-		ExpKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), _outputs[0]->diff()->gpu_data(DF_LINE), (float*)_inputs[0]->diff()->gpu_data(DF_LINE));
+		ExpKernelBackward << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(), _outputs[0]->diff()->gpu_data(), (float*)_inputs[0]->diff()->gpu_data());
 		DF_KERNEL_CHECK();
 	}
 }

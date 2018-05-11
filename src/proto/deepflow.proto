@@ -214,6 +214,7 @@ message VariableParam {
 }
 
 message DataGeneratorParam {		
+	int32 freq = 1;
 }
 
 message ActivationParam {
@@ -477,6 +478,13 @@ message NodeParam {
   repeated string input = 3;
   repeated string output = 4;    
   BlockParam block_param = 5;  
+
+  enum DataPolicy {
+	GPU_ONLY_POLICY = 0;
+	GPU_WITH_CPU_OFFLOAD_POLICY = 1;
+	CUDA_MANAGED_POLICY = 2;
+  }
+  DataPolicy data_policy = 6;
 
   VariableParam variable_param = 100;  
   PlaceHolderParam place_holder_param = 101;   

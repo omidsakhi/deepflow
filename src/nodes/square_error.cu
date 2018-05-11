@@ -33,18 +33,18 @@ void SquareError::init() {
 
 void SquareError::forward() {
 	auto size = _inputs[0]->value()->size();
-	SquareErrorForwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE), _outputs[0]->value()->gpu_data(DF_LINE));
+	SquareErrorForwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data(), _outputs[0]->value()->gpu_data());
 	DF_KERNEL_CHECK();
 }
 
 void SquareError::backward() {
 	auto size = _inputs[0]->value()->size();
 	if (_inputs[0]->diff()) {
-		SquareErrorBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, 1.0f, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE) , _outputs[0]->diff()->gpu_data(DF_LINE), _inputs[0]->diff()->gpu_data(DF_LINE));
+		SquareErrorBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, 1.0f, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data() , _outputs[0]->diff()->gpu_data(), _inputs[0]->diff()->gpu_data());
 		DF_KERNEL_CHECK();
 	}
 	if (_inputs[1]->diff()) {
-		SquareErrorBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, -1.0f, _inputs[0]->value()->gpu_data(DF_LINE), _inputs[1]->value()->gpu_data(DF_LINE) , _outputs[0]->diff()->gpu_data(DF_LINE), _inputs[1]->diff()->gpu_data(DF_LINE));
+		SquareErrorBackwardKernel << < numOfBlocks(size), maxThreadsPerBlock >> > (size, -1.0f, _inputs[0]->value()->gpu_data(), _inputs[1]->value()->gpu_data() , _outputs[0]->diff()->gpu_data(), _inputs[1]->diff()->gpu_data());
 		DF_KERNEL_CHECK();
 	}
 }
